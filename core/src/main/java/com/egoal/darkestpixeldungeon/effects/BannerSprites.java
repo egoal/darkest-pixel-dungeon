@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.effects;
 
+import android.text.style.AbsoluteSizeSpan;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.watabou.noosa.Image;
 
@@ -30,11 +31,15 @@ public class BannerSprites {
 		BOSS_SLAIN,
 		GAME_OVER,
 		SELECT_YOUR_HERO,
-		PIXEL_DUNGEON_SIGNS
+		PIXEL_DUNGEON_SIGNS,
+
+		DPD_PIXEL_DUNGEON,
+		DPD_PIXEL_DUNGEON_SIGNS
 	};
 
 	public static Image get( Type type ) {
 		Image icon = new Image( Assets.BANNERS );
+		boolean isDPDAssets =   false;
 		switch (type) {
 			case PIXEL_DUNGEON:
 				icon.frame( icon.texture.uvRect( 0, 0, 132, 90 ) );
@@ -51,7 +56,22 @@ public class BannerSprites {
 			case PIXEL_DUNGEON_SIGNS:
 				icon.frame( icon.texture.uvRect( 133, 0, 255, 90 ) );
 				break;
+			default:
+				isDPDAssets =   true;
+				break;
 		}
+		if(isDPDAssets){
+			icon    =   new Image(Assets.DPD_BANNERS);
+			switch(type){
+			case DPD_PIXEL_DUNGEON:
+				icon.frame(icon.texture.uvRect(0, 0, 128, 80));
+				break;
+			case DPD_PIXEL_DUNGEON_SIGNS:
+				icon.frame(icon.texture.uvRect(0, 80, 128, 160));
+				break;
+			}
+		}
+
 		return icon;
 	}
 }

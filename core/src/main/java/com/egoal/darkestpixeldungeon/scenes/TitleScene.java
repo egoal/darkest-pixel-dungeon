@@ -60,8 +60,9 @@ public class TitleScene extends PixelScene {
 		Archs archs = new Archs();
 		archs.setSize( w, h );
 		add( archs );
-		
-		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
+
+		// modified as darkest pixel dungeon
+		Image title = BannerSprites.get( BannerSprites.Type.DPD_PIXEL_DUNGEON );
 		add( title );
 
 		float topRegion = Math.max(95f, h*0.45f);
@@ -74,10 +75,11 @@ public class TitleScene extends PixelScene {
 
 		align(title);
 
+		// torches beside the title
 		placeTorch(title.x + 22, title.y + 46);
 		placeTorch(title.x + title.width - 22, title.y + 46);
 
-		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
+		Image signs = new Image( BannerSprites.get( BannerSprites.Type.DPD_PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;
 			@Override
 			public void update() {
@@ -94,7 +96,8 @@ public class TitleScene extends PixelScene {
 		signs.x = title.x + (title.width() - signs.width())/2f;
 		signs.y = title.y;
 		add( signs );
-		
+
+		// main buttons
 		DashboardItem btnBadges = new DashboardItem( Messages.get(this, "badges"), 3 ) {
 			@Override
 			protected void onClick() {
@@ -139,17 +142,28 @@ public class TitleScene extends PixelScene {
 			btnAbout.setPos( w / 2, btnBadges.top() );
 		}
 
-		BitmapText version = new BitmapText( "v " + Game.version + "", pixelFont);
+		// version & changes
+		// add sdp version
+		BitmapText sdpVersion   =   new BitmapText("v 0.4.2b", pixelFont);
+		sdpVersion.measure();
+		sdpVersion.hardlight(0x888888);
+		sdpVersion.x    =   w-sdpVersion.width();
+		sdpVersion.y    =   h-sdpVersion.height();
+		add(sdpVersion);
+
+		BitmapText version = new BitmapText( "version " + Game.version + "", pixelFont);
 		version.measure();
 		version.hardlight( 0xCCCCCC );
 		version.x = w - version.width();
-		version.y = h - version.height();
+		version.y = h - sdpVersion.height()- version.height();
 		add( version );
 
 		Button changes = new ChangesButton();
-		changes.setPos( w-changes.width(), h - version.height() - changes.height());
+		changes.setPos( w-changes.width(), h - sdpVersion.height()-
+			version.height() - changes.height());
 		add( changes );
-		
+
+		// settings & language
 		PrefsButton btnPrefs = new PrefsButton();
 		btnPrefs.setPos( 0, 0 );
 		add( btnPrefs );

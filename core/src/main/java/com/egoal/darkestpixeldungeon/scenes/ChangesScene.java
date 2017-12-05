@@ -118,7 +118,7 @@ public class ChangesScene extends PixelScene {
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
 		add( btnExit );
 
-		RenderedTextMultiline text = renderMultiline(TXT_Update, 6 );
+		RenderedTextMultiline text = renderMultiline(Messages.get(this, "info"), 6 );
 
 
 		int pw = w - 6;
