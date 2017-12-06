@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
 import com.egoal.darkestpixeldungeon.effects.Ripple;
 import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
@@ -137,13 +138,24 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	protected void createItems() {
-		if (!Dungeon.limitedDrops.dewVial.dropped() && Random.Int( 4 - Dungeon.depth ) == 0) {
+		// drop vial in the first floor
+		if(Dungeon.depth==1 && !Dungeon.limitedDrops.dewVial.dropped()){
+//		if (!Dungeon.limitedDrops.dewVial.dropped() && Random.Int( 4 - Dungeon.depth ) == 0) {
 			addItemToSpawn( new DewVial() );
 			Dungeon.limitedDrops.dewVial.drop();
 		}
 
 		Ghost.Quest.spawn( this );
-		
+
+		// spawn Cat lix
+		if(Dungeon.depth==1){
+			CatLix cl=new CatLix();
+			do{
+				cl.pos=pointToCell(roomEntrance.random());
+			}while(map[cl.pos]==Terrain.ENTRANCE||map[cl.pos]==Terrain.SIGN);
+			mobs.add(cl);
+		}
+
 		super.createItems();
 	}
 	

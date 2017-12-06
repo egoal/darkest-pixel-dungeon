@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
+import com.egoal.darkestpixeldungeon.levels.*;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
@@ -43,21 +44,6 @@ import com.egoal.darkestpixeldungeon.windows.WndResurrect;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;
-import com.egoal.darkestpixeldungeon.levels.CavesBossLevel;
-import com.egoal.darkestpixeldungeon.levels.CavesLevel;
-import com.egoal.darkestpixeldungeon.levels.CityBossLevel;
-import com.egoal.darkestpixeldungeon.levels.CityLevel;
-import com.egoal.darkestpixeldungeon.levels.DeadEndLevel;
-import com.egoal.darkestpixeldungeon.levels.HallsBossLevel;
-import com.egoal.darkestpixeldungeon.levels.HallsLevel;
-import com.egoal.darkestpixeldungeon.levels.LastLevel;
-import com.egoal.darkestpixeldungeon.levels.LastShopLevel;
-import com.egoal.darkestpixeldungeon.levels.Level;
-import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
-import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
-import com.egoal.darkestpixeldungeon.levels.Room;
-import com.egoal.darkestpixeldungeon.levels.SewerBossLevel;
-import com.egoal.darkestpixeldungeon.levels.SewerLevel;
 import com.egoal.darkestpixeldungeon.utils.BArray;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
@@ -73,6 +59,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Dungeon {
+
+	public static final int initialDepth_   =   -1;
 
 	public static int transmutation;	// depth number for a well of transmutation
 
@@ -204,6 +192,9 @@ public class Dungeon {
 		
 		Level level;
 		switch (depth) {
+		case 0:
+			level   =   new VillageLevel();
+			break;
 		case 1:
 		case 2:
 		case 3:

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.messages;
 
+import android.util.Log;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 
 import java.util.Arrays;
@@ -131,6 +132,7 @@ public class Messages {
 			if (c != null && c.getSuperclass() != null){
 				return get(c.getSuperclass(), k, args);
 			} else {
+				Log.d("dpd", "missed string: "+c.getName()+" | "+k+" || "+key);
 				return "!!!NO TEXT FOUND!!!";
 			}
 		}
