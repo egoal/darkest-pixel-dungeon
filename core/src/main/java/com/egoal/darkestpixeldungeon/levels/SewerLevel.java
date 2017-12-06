@@ -147,15 +147,6 @@ public class SewerLevel extends RegularLevel {
 
 		Ghost.Quest.spawn( this );
 
-		// spawn Cat lix
-		if(Dungeon.depth==1){
-			CatLix cl=new CatLix();
-			do{
-				cl.pos=pointToCell(roomEntrance.random());
-			}while(map[cl.pos]==Terrain.ENTRANCE||map[cl.pos]==Terrain.SIGN);
-			mobs.add(cl);
-		}
-
 		super.createItems();
 	}
 	

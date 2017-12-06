@@ -180,10 +180,15 @@ public class Assets {
 
 	// dpd assets
 	//////////////////////////////////////////////////////
-	public static final String DPD_CAT_LIX      =   "dpd/cat_lix.png";
-	public static final String DPD_DASHBOARD    =   "dpd/dashboard.png";
-	public static final String DPD_ICONS        =   "dpd/icons.png";
-	public static final String DPD_ITEMS        =   "dpd/items.png";
-	public static final String DPD_BANNERS      =   "dpd/banners.png";
-	public static final String DPD_FIREBALL     =   "dpd/fireball.png";
+	public static final String DPD_DASHBOARD        =   "dpd/dashboard.png";
+	public static final String DPD_ICONS            =   "dpd/icons.png";
+	public static final String DPD_ITEMS            =   "dpd/items.png";
+	public static final String DPD_BANNERS          =   "dpd/banners.png";
+
+	public static final String DPD_FIREBALL         =   "dpd/fireball.png";
+
+	public static final String DPD_CAT_LIX          =   "dpd/cat_lix.png";
+
+	public static final String DPD_TILES_VILLAGE    =   "dpd/tiles_village.png";
+	public static final String DPD_WATER_VILLAGE    =   "dpd/water_village.png";
 }
