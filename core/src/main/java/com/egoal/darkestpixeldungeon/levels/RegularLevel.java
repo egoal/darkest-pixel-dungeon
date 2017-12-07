@@ -357,7 +357,8 @@ public abstract class RegularLevel extends Level {
 		}
 
 		//no more than one trap every 5 valid tiles.
-		nTraps = Math.min(nTraps, validCells.size()/5);
+		// nTraps = Math.min(nTraps, validCells.size()/5);
+		nTraps  =   Math.min(nTraps(), (int)(validCells.size()*0.15f));
 
 		Collections.shuffle(validCells);
 

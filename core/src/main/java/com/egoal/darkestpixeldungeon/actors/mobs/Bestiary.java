@@ -63,7 +63,7 @@ public class Bestiary {
 	}
 	
 	private static Class<?> mobClass( int depth ) {
-		
+		// mobs can created in each depth
 		float[] chances;
 		Class<?>[] classes;
 		

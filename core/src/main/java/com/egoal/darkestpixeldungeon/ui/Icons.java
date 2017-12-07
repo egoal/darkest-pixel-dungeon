@@ -57,7 +57,9 @@ public enum Icons {
 	LANGS,
 	CHALLENGE_OFF,
 	CHALLENGE_ON,
-	RESUME;
+	RESUME,
+
+	DPD_LIX;
 
 	public Image get() {
 		return get( this );
@@ -65,6 +67,7 @@ public enum Icons {
 	
 	public static Image get( Icons type ) {
 		Image icon = new Image( Assets.ICONS );
+		boolean isDPD   =   false;
 		switch (type) {
 		case SKULL:
 			icon.frame( icon.texture.uvRect( 0, 0, 8, 8 ) );
@@ -162,7 +165,20 @@ public enum Icons {
 		case RESUME:
 			icon.frame( icon.texture.uvRect( 13, 53, 24, 64 ) );
 			break;
+		default:
+			isDPD   =   true;
+			break;
 		}
+
+		if(isDPD){
+			icon    =   new Image(Assets.DPD_ICONS);
+			switch(type){
+			case DPD_LIX:
+				icon.frame(icon.texture.uvRect(63, 42, 79, 58));
+				break;
+			}
+		}
+
 		return icon;
 	}
 	

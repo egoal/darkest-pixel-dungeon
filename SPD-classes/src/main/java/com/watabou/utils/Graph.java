@@ -62,12 +62,14 @@ public class Graph {
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends Node> List<T> buildPath( Collection<T> nodes, T from, T to ) {
-		
+		// this return the series to link rooms
+
 		List<T> path = new ArrayList<T>();
 		
 		T room = from;
 		while (room != to) {
-			
+
+			// find next room with min distance
 			int min = room.distance();
 			T next = null;
 			

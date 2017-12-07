@@ -38,6 +38,10 @@ import com.watabou.noosa.TouchArea;
 
 public class AboutScene extends PixelScene {
 
+	private static final String TTL_DPD =   "Darkest Pixel Dungeon";
+
+	private static final String TXT_DPD =   "Design, Code, & Graphics: Lix";
+
 	private static final String TTL_SHPX = "Shattered Pixel Dungeon";
 
 	private static final String TXT_SHPX =
@@ -58,16 +62,40 @@ public class AboutScene extends PixelScene {
 		super.create();
 
 		final float colWidth = Camera.main.width / (DarkestPixelDungeon.landscape() ? 2 : 1);
-		final float colTop = (Camera.main.height / 2) - (DarkestPixelDungeon.landscape() ? 30 : 90);
+		final float colTop = (Camera.main.height / 2) - (DarkestPixelDungeon.landscape() ? 36 : 84);
 		final float wataOffset = DarkestPixelDungeon.landscape() ? colWidth : 0;
 
+		// add dpd sign
+		Image lix   =   Icons.DPD_LIX.get();
+		lix.x   =   (colWidth - lix.width()) / 2;
+		lix.y   =   colTop;
+		align(lix);
+		add(lix);
+
+		new Flare(7, 64.f).color(Window.DPD_COLOR, true).show(lix, 0).angularSpeed  =   +30;
+
+		RenderedText dpdTitle   =   renderText(TTL_DPD, 8);
+		dpdTitle.hardlight(Window.DPD_COLOR);    // set the font color
+		add(dpdTitle);
+		dpdTitle.x  =   (colWidth-dpdTitle.width())/2;
+		dpdTitle.y  =   lix.y+lix.height+5;
+		align(dpdTitle);
+
+		RenderedTextMultiline dpdText   =   renderMultiline(TXT_DPD, 8);
+		dpdText.maxWidth((int)Math.min(colWidth, 120));
+		add(dpdText);
+		dpdText.setPos((colWidth-dpdText.width())/2, dpdTitle.y+dpdTitle.height()+12);
+		dpdText.hardlight(Window.DPD_COLOR);
+		align(dpdText);
+
+		// shattered pixel dungeon
 		Image shpx = Icons.SHPX.get();
 		shpx.x = (colWidth - shpx.width()) / 2;
-		shpx.y = colTop;
+		shpx.y = dpdText.bottom()+30;
 		align(shpx);
 		add( shpx );
 
-		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
+		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +10;
 
 		RenderedText shpxtitle = renderText( TTL_SHPX, 8 );
 		shpxtitle.hardlight( Window.SHPX_COLOR );
@@ -77,19 +105,12 @@ public class AboutScene extends PixelScene {
 		shpxtitle.y = shpx.y + shpx.height + 5;
 		align(shpxtitle);
 
-		RenderedTextMultiline shpxtext = renderMultiline( TXT_SHPX, 8 );
-		shpxtext.maxWidth((int)Math.min(colWidth, 120));
-		add( shpxtext );
-
-		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.y + shpxtitle.height() + 12);
-		align(shpxtext);
-
 		RenderedTextMultiline shpxlink = renderMultiline( LNK_SHPX, 8 );
-		shpxlink.maxWidth(shpxtext.maxWidth());
+		shpxlink.maxWidth(dpdText.maxWidth());
 		shpxlink.hardlight( Window.SHPX_COLOR );
 		add( shpxlink );
 
-		shpxlink.setPos((colWidth - shpxlink.width()) / 2, shpxtext.bottom() + 6);
+		shpxlink.setPos((colWidth - shpxlink.width()) / 2, shpxtitle.y+shpxtitle.height()+ 6);
 		align(shpxlink);
 
 		TouchArea shpxhotArea = new TouchArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {
@@ -101,37 +122,31 @@ public class AboutScene extends PixelScene {
 		};
 		add( shpxhotArea );
 
+		// pixel dungeon
 		Image wata = Icons.WATA.get();
 		wata.x = wataOffset + (colWidth - wata.width()) / 2;
 		wata.y = DarkestPixelDungeon.landscape() ?
 						colTop:
-						shpxlink.top() + wata.height + 20;
+						shpxlink.bottom()+8;
 		align(wata);
 		add( wata );
 
-		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
+		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +10;
 
 		RenderedText wataTitle = renderText( TTL_WATA, 8 );
 		wataTitle.hardlight(Window.TITLE_COLOR);
 		add( wataTitle );
 
 		wataTitle.x = wataOffset + (colWidth - wataTitle.width()) / 2;
-		wataTitle.y = wata.y + wata.height + 11;
+		wataTitle.y = wata.y + wata.height + 8;
 		align(wataTitle);
-
-		RenderedTextMultiline wataText = renderMultiline( TXT_WATA, 8 );
-		wataText.maxWidth((int)Math.min(colWidth, 120));
-		add( wataText );
-
-		wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.y + wataTitle.height() + 12);
-		align(wataText);
 		
 		RenderedTextMultiline wataLink = renderMultiline( LNK_WATA, 8 );
 		wataLink.maxWidth((int)Math.min(colWidth, 120));
 		wataLink.hardlight(Window.TITLE_COLOR);
 		add(wataLink);
 		
-		wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2 , wataText.bottom() + 6);
+		wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2 , wataTitle.y+wataTitle.height()+ 6);
 		align(wataLink);
 		
 		TouchArea hotArea = new TouchArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {

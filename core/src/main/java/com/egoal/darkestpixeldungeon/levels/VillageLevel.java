@@ -1,18 +1,20 @@
 package com.egoal.darkestpixeldungeon.levels;
 
+import android.util.Log;
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.Challenges;
-import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
-import com.egoal.darkestpixeldungeon.levels.painters.ShopPainter;
-import com.watabou.utils.*;
+import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 
 import java.util.*;
 
 public class VillageLevel extends RegularLevel{
+	{
+		color1  =   0x48763c;
+		color2  =   0x59994a;
+	}
 
-	// properties
 	@Override
 	public String tilesTex(){
 		return Assets.DPD_TILES_VILLAGE;
@@ -23,194 +25,128 @@ public class VillageLevel extends RegularLevel{
 		return Assets.DPD_WATER_VILLAGE;
 	}
 
-	// create actions
-	@Override
-	public void create() {
-		// small
-		width   =   16;
-		height  =   16;
-
-		setupSize();
-		PathFinder.setMapSize(width(), height());
-		passable	= new boolean[length()];
-		losBlocking	= new boolean[length()];
-		flamable	= new boolean[length()];
-		secret		= new boolean[length()];
-		solid		= new boolean[length()];
-		avoid		= new boolean[length()];
-		water		= new boolean[length()];
-		pit			= new boolean[length()];
-
-		map = new int[length()];
-		visited = new boolean[length()];
-		Arrays.fill( visited, false );
-		mapped = new boolean[length()];
-		Arrays.fill( mapped, false );
-
-		do {
-			Arrays.fill( map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL );
-
-			pitRoomNeeded   =   false;
-			weakFloorCreated    =   false;
-
-			mobs = new HashSet<>();
-			heaps = new SparseArray<>();
-			blobs = new HashMap<>();
-			plants = new SparseArray<>();
-			traps = new SparseArray<>();
-			customTiles = new HashSet<>();
-
-		} while (!build());
-		decorate();
-
-		buildFlagMaps();
-		cleanWalls();
-
-		createMobs();
-		createItems();
-	}
-
-	@Override
 	protected boolean build(){
-		// rewrite build method
-		if (!initRooms()) {
+		if(!initRooms() || rooms.size()<2)
 			return false;
+
+		// select entrance & exit
+		// entrance is below while exit(entrance to the dungeon is on the top)
+
+		// room at bottom is entrance, while exit on the top
+		Iterator iter   =   rooms.iterator();
+		roomEntrance    =   roomExit    =   (Room)iter.next();
+		while(iter.hasNext()){
+			Room rm =   (Room)(iter.next());
+			if(rm.bottom>roomEntrance.bottom)
+				roomEntrance    =   rm;
+			if(rm.top<roomExit.top)
+				roomExit    =   rm;
+			else if(rm.top==roomExit.top && rm.square()>roomExit.square())
+				roomExit    =   rm;
 		}
+		// check size
+		if(roomExit.square()<50)
+			return false;
 
-		int distance;
-		int retry = 0;
-		int minDistance = (int)Math.sqrt( rooms.size() );
+		roomEntrance.type   =   Room.Type.ENTRANCE;
+		roomExit.type   =   Room.Type.EXIT;
 
-		Iterator<Room> iter =   rooms.iterator();
-		roomEntrance    =   iter.next();
-		roomExit    =   iter.next();
-
+		// now build path
 		Graph.buildDistanceMap(rooms, roomExit);
-//		do {
-//			do {
-//				roomEntrance = Random.element( rooms );
-//			} while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
-//
-//			do {
-//				roomExit = Random.element( rooms );
-//			} while (roomExit == roomEntrance || roomExit.width() < 4 || roomExit.height() < 4);
-//
-//			Graph.buildDistanceMap( rooms, roomExit );
-//			distance = roomEntrance.distance();
-//
-//			if (retry++ > 10) {
-//				return false;
-//			}
-//
-//		} while (distance < minDistance);
+		List<Room> lstPath  =   Graph.buildPath(rooms, roomEntrance, roomExit);
 
-		roomEntrance.type = Room.Type.ENTRANCE;
-		roomExit.type = Room.Type.EXIT;
-
-		HashSet<Room> connected = new HashSet<Room>();
-		connected.add( roomEntrance );
-
-		Graph.buildDistanceMap( rooms, roomExit );
-		List<Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
-
-		Room room = roomEntrance;
-		for (Room next : path) {
-			room.connect( next );
-			room = next;
-			connected.add( room );
-		}
-
-		Graph.setPrice( path, roomEntrance.distance );
-
-		Graph.buildDistanceMap( rooms, roomExit );
-		path = Graph.buildPath( rooms, roomEntrance, roomExit );
-
-		room = roomEntrance;
-		for (Room next : path) {
-			room.connect( next );
-			room = next;
-			connected.add( room );
-		}
-
-		int nConnected = (int)(rooms.size() * Random.Float( 0.5f, 0.7f ));
-		while (connected.size() < nConnected) {
-
-			Room cr = Random.element( connected );
-			Room or = Random.element( cr.neigbours );
-			if (!connected.contains( or )) {
-
-				cr.connect( or );
-				connected.add( or );
+		HashSet<Room> rmConnected   =   new HashSet<>();
+		{
+			Room room=roomEntrance;
+			rmConnected.add(room);
+			for(Room next : lstPath){
+				room.connect(next);
+				room    =   next;
+				rmConnected.add(room);
 			}
 		}
 
-		specials = new ArrayList<Room.Type>( Room.SPECIALS );
-		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
-			specials.remove( Room.Type.WEAK_FLOOR );
+		// build again
+		Graph.setPrice(lstPath, roomEntrance.distance);
+		Graph.buildDistanceMap(rooms, roomExit);
+		lstPath =   Graph.buildPath(rooms, roomEntrance, roomExit);
+		{
+			Room room   =   roomEntrance;
+			for(Room next: lstPath){
+				room.connect(next);
+				room    =   next;
+				rmConnected.add(room);
+			}
 		}
 
-		// left room type has effects
-		if (!assignRoomType())
+		// ensure connections
+		int nConnected  =   (int)(rooms.size()*Random.Float(0.5f, 0.7f));
+		while(rmConnected.size()<nConnected){
+			Room cr =   Random.element(rmConnected);
+			Room or =   Random.element(cr.neigbours);
+			if(!rmConnected.contains(or)){
+				cr.connect(or);
+				rmConnected.add(or);
+			}
+		}
+
+		// no need to give special rooms
+		specials    =   new ArrayList<>();
+		if(!assignRoomType())
 			return false;
 
 		paint();
 		paintWater();
 		paintGrass();
 
-		return true;
-	}
-
-	// init room
-	@Override
-	protected boolean initRooms(){
-		rooms   =   new HashSet<>();
-		rooms.add((Room)new Room().set(new Rect(6, 0, 6, 6)));
-		rooms.add((Room)new Room().set(new Rect(4, 12, 4, 6)));
-
-		Room[] ra = rooms.toArray( new Room[0] );
-		for (int i=0; i < ra.length-1; i++) {
-			for (int j=i+1; j < ra.length; j++) {
-				ra[i].addNeigbour( ra[j] );
-			}
-		}
+		// no traps
+		// no sign
 
 		return true;
 	}
 
 	@Override
 	protected boolean[] water(){
-		boolean[] nowater   =   new boolean[length];
+		boolean[] arWater   =   new boolean[length];
+		Arrays.fill(arWater, false);
 
-		Arrays.fill(nowater, false);
-		return nowater;
+		return arWater;
 	}
 
 	@Override
 	protected boolean[] grass(){
-		boolean[] noGrass   =   new boolean[length];
-		Arrays.fill(noGrass, false);
-
-		return noGrass;
+		return Patch.generate(this, 0.4f, 8);
 	}
 
 	@Override
 	protected void decorate(){
-		// do nothing
+
 	}
+
+	// create
+
+	// don't generate any mobs
+	@Override
+	public int nMobs(){ return 0; }
 
 	@Override
 	protected void createMobs(){
-		CatLix cl=new CatLix();
+		// add lix the cat in the entrance room
+		CatLix cl   =   new CatLix();
 		do{
-			cl.pos=pointToCell(roomEntrance.random());
-		}while(map[cl.pos]==Terrain.ENTRANCE||map[cl.pos]==Terrain.SIGN);
+			cl.pos  =   pointToCell(roomEntrance.random());
+		}while(map[cl.pos]==Terrain.ENTRANCE || map[cl.pos]==Terrain.SIGN);
 		mobs.add(cl);
 
 		super.createMobs();
 	}
 
+	// will not auto generate monsters
+	@Override
+	public Actor respawner(){ return null; }
+
 	@Override
 	protected void createItems(){
-		super.createItems();
+		// does not generate anything
 	}
 }
