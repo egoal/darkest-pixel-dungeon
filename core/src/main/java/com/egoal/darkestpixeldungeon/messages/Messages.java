@@ -133,7 +133,7 @@ public class Messages {
 				return get(c.getSuperclass(), k, args);
 			} else {
 				Log.d("dpd", "missed string: "+c.getName()+" | "+k+" || "+key);
-				return "!!!NO TEXT FOUND!!!";
+				return "missed string: "+c.getName()+" | "+k+" || "+key;
 			}
 		}
 	}

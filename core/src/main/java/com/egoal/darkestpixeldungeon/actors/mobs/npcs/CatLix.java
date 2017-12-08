@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
+import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
@@ -50,7 +51,10 @@ public class CatLix extends NPC{
 		gift.identify();
 		gift.addItem(new Gold(Random.Int(120, 150)));
 
-		// 1. give something positive
+		// 1. give a piece of food
+		gift.addItem(new Food());
+
+		// 2. give something positive
 		ArrayList<Item > alItems    =   new ArrayList<>();
 		if(isPraised_){
 			alItems.add(new ScrollOfIdentify());

@@ -3,13 +3,13 @@ package com.egoal.darkestpixeldungeon.levels;
 import android.util.Log;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
-import com.watabou.utils.Graph;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
+import com.watabou.utils.*;
 import com.watabou.utils.Random;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 
 public class VillageLevel extends RegularLevel{
 	{
@@ -37,7 +37,6 @@ public class VillageLevel extends RegularLevel{
 		// room at bottom is entrance, while exit on the top
 		Iterator iter   =   rooms.iterator();
 		roomEntrance    =   roomExit    =   (Room)iter.next();
-		Iterator iterExit   =   iter;
 		while(iter.hasNext()){
 			Room rm =   (Room)(iter.next());
 			if(rm.bottom>roomEntrance.bottom)
@@ -47,7 +46,8 @@ public class VillageLevel extends RegularLevel{
 			}
 			else if(rm.top==roomExit.top && rm.square()>roomExit.square()){
 				// choose bigger size, make sure only one room is on the top
-				// rooms.remove(roomExit);
+//				if(roomExit!=roomEntrance)
+//					rooms.remove(roomExit);
 				roomExit    =   rm;
 			}
 		}
@@ -98,9 +98,12 @@ public class VillageLevel extends RegularLevel{
 		}
 
 		// no need to give special rooms
-		specials    =   new ArrayList<>();
-		if(!assignRoomType())
-			return false;
+		for(Room rm: rooms)
+			rm.type =   rm.type==Room.Type.NULL?Room.Type.STANDARD:rm.type;
+
+//		specials    =   new ArrayList<>();
+//		if(!assignRoomType())
+//			return false;
 
 		// no feeling
 		feeling =   Feeling.NONE;
@@ -170,7 +173,7 @@ public class VillageLevel extends RegularLevel{
 
 		for(int c=roomExit.left+1; c<roomExit.right; ++c){
 			int i   =   roomEntrance.top*width()+c;
-			if(map[i]==exit || map[i]==Terrain.WALL)
+			if(map[i]==exit || map[i]!=Terrain.WALL)
 				map[i+width()]  =   Terrain.EMPTY;
 		}
 
@@ -191,6 +194,14 @@ public class VillageLevel extends RegularLevel{
 		}while(map[cl.pos]==Terrain.ENTRANCE || map[cl.pos]==Terrain.SIGN);
 		mobs.add(cl);
 
+		// add villagers
+		// old alchemist
+		Alchemist a =   new Alchemist();
+		do{
+			a.pos   =   pointToCell(roomExit.random());
+		}while(findMob(a.pos)!=null || !passable[a.pos]);
+		mobs.add(a);
+
 		super.createMobs();
 	}
 
@@ -201,5 +212,20 @@ public class VillageLevel extends RegularLevel{
 	@Override
 	protected void createItems(){
 		// does not generate anything
+	}
+
+	private static final String STAIRS  =   "stairs";
+	@Override
+	public void storeInBundle(Bundle bundle){
+		super.storeInBundle(bundle);
+
+
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle){
+		super.restoreFromBundle(bundle);
+
+
 	}
 }

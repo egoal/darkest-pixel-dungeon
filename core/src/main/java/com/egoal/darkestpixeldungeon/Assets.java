@@ -188,6 +188,7 @@ public class Assets {
 	public static final String DPD_FIREBALL         =   "dpd/fireball.png";
 
 	public static final String DPD_CAT_LIX          =   "dpd/cat_lix.png";
+	public static final String DPD_ALCHEMIST        =   "dpd/alchemist.png";
 
 	public static final String DPD_TILES_VILLAGE    =   "dpd/tiles_village.png";
 	public static final String DPD_WATER_VILLAGE    =   "dpd/water_village.png";

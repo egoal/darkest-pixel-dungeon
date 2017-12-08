@@ -117,6 +117,8 @@ public class DewVial extends Item {
 		}
 	}
 
+	public int getVolume(){ return volume; }
+
 	public void empty() {volume = 0; updateQuickslot();}
 
 	@Override
