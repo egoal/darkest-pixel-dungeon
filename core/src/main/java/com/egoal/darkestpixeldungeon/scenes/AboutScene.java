@@ -90,8 +90,13 @@ public class AboutScene extends PixelScene {
 
 		// shattered pixel dungeon
 		Image shpx = Icons.SHPX.get();
-		shpx.x = (colWidth - shpx.width()) / 2;
-		shpx.y = dpdText.bottom()+30;
+		if(DarkestPixelDungeon.landscape()){
+			shpx.y  =   colTop;
+			shpx.x  =   lix.x+colWidth;
+		}else{
+			shpx.x=(colWidth-shpx.width())/2;
+			shpx.y=dpdText.bottom()+30;
+		}
 		align(shpx);
 		add( shpx );
 
@@ -102,6 +107,8 @@ public class AboutScene extends PixelScene {
 		add( shpxtitle );
 
 		shpxtitle.x = (colWidth - shpxtitle.width()) / 2;
+		if(DarkestPixelDungeon.landscape())
+			shpxtitle.x +=  colWidth;
 		shpxtitle.y = shpx.y + shpx.height + 5;
 		align(shpxtitle);
 
@@ -125,9 +132,7 @@ public class AboutScene extends PixelScene {
 		// pixel dungeon
 		Image wata = Icons.WATA.get();
 		wata.x = wataOffset + (colWidth - wata.width()) / 2;
-		wata.y = DarkestPixelDungeon.landscape() ?
-						colTop:
-						shpxlink.bottom()+8;
+		wata.y =    shpxlink.bottom()+8;
 		align(wata);
 		add( wata );
 

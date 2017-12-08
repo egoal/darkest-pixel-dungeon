@@ -5,6 +5,8 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.watabou.utils.Graph;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.*;
@@ -35,17 +37,22 @@ public class VillageLevel extends RegularLevel{
 		// room at bottom is entrance, while exit on the top
 		Iterator iter   =   rooms.iterator();
 		roomEntrance    =   roomExit    =   (Room)iter.next();
+		Iterator iterExit   =   iter;
 		while(iter.hasNext()){
 			Room rm =   (Room)(iter.next());
 			if(rm.bottom>roomEntrance.bottom)
 				roomEntrance    =   rm;
-			if(rm.top<roomExit.top)
+			if(rm.top<roomExit.top){
 				roomExit    =   rm;
-			else if(rm.top==roomExit.top && rm.square()>roomExit.square())
+			}
+			else if(rm.top==roomExit.top && rm.square()>roomExit.square()){
+				// choose bigger size, make sure only one room is on the top
+				// rooms.remove(roomExit);
 				roomExit    =   rm;
+			}
 		}
 		// check size
-		if(roomExit.square()<50)
+		if(roomExit.square()<50 || roomExit.top>5 || roomEntrance.bottom<width-5)
 			return false;
 
 		roomEntrance.type   =   Room.Type.ENTRANCE;
@@ -95,7 +102,23 @@ public class VillageLevel extends RegularLevel{
 		if(!assignRoomType())
 			return false;
 
+		// no feeling
+		feeling =   Feeling.NONE;
+
 		paint();
+
+		// exit is on the room Exit
+		exit    =   roomExit.top * width() + (roomExit.left + roomExit.right) / 2;
+		// map[exit] = Terrain.UNLOCKED_EXIT;
+		map[exit]   =   Terrain.LOCKED_EXIT;
+		{
+			for(int i=-1;i<=1;++i){
+				if(map[exit+width+i]==Terrain.WALL)
+					return false;
+			}
+
+		}
+
 		paintWater();
 		paintGrass();
 
@@ -115,11 +138,41 @@ public class VillageLevel extends RegularLevel{
 
 	@Override
 	protected boolean[] grass(){
-		return Patch.generate(this, 0.4f, 8);
+		return Patch.generate(this, 0.5f, 8);
+	}
+
+	@Override
+	protected void paintGrass(){
+		boolean[] grass =   grass();
+
+		for(int i=width()+1; i<length()-width()-1; ++i){
+			if(map[i]==Terrain.EMPTY && grass[i]){
+				// no high grass, the grass is the grassland
+				int count   =   1;
+				for(int n: PathFinder.NEIGHBOURS8){
+					if(grass[i+n])
+						count++;
+				}
+				map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
+			}
+		}
 	}
 
 	@Override
 	protected void decorate(){
+		// the village main stage should be stone tile
+		for(int r=roomExit.top+1; r<roomExit.bottom; ++r){
+			for(int c=roomExit.left+1; c<roomExit.right; ++c){
+				int pos =   pointToCell(new Point(c, r));
+				map[pos]    =   Terrain.EMPTY_SP;
+			}
+		}
+
+		for(int c=roomExit.left+1; c<roomExit.right; ++c){
+			int i   =   roomEntrance.top*width()+c;
+			if(map[i]==exit || map[i]==Terrain.WALL)
+				map[i+width()]  =   Terrain.EMPTY;
+		}
 
 	}
 

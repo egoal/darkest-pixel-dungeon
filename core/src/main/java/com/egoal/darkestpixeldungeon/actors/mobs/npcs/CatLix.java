@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
+import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -65,6 +66,8 @@ public class CatLix extends NPC{
 			alItems.add(new PotionOfInvisibility());
 		}
 		gift.addItem(alItems.get(Random.Int(alItems.size())));
+
+		gift.addItem(new SkeletonKey(Dungeon.depth));
 	}
 
 	@Override

@@ -360,7 +360,8 @@ public class StartScene extends PixelScene {
 
 		private static final int WIDTH	= 24;
 		private static final int HEIGHT	= 32;
-		private static final float SCALE	= 1.75f;
+		// private static final float SCALE	= 1.75f;
+		private static final float SCALE    =   1.f;
 
 		private HeroClass cl;
 
