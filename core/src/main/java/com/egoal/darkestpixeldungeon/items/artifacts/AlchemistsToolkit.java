@@ -40,6 +40,7 @@ import java.util.Collections;
 public class AlchemistsToolkit extends Artifact {
 
 	{
+		name    =   "alchemists tool kit";
 		image = ItemSpriteSheet.ARTIFACT_TOOLKIT;
 
 		levelCap = 10;

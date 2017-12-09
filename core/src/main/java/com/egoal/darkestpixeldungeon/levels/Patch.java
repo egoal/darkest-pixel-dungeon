@@ -42,6 +42,7 @@ public class Patch {
 				for (int x=1; x < w-1; x++) {
 					
 					int pos = x + y * w;
+					// check nearest 8
 					int count = 0;
 					if (off[pos-w-1]) {
 						count++;

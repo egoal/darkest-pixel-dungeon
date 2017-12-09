@@ -1,7 +1,13 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
+import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.effects.Flare;
+import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Fragile;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -13,6 +19,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.IconTitle;
 import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 public class Alchemist extends NPC{
@@ -58,6 +65,35 @@ public class Alchemist extends NPC{
 
 
 		return false;
+	}
+
+	// drink and give reward
+	public void drink(){
+		DewVial dv  =   Dungeon.hero.belongings.getItem(DewVial.class);
+		assert(dv!=null);
+		// drink
+		int vol =   dv.getVolume();
+		// sprite.emitter().burst(Speck.factory(Speck.HEALING), vol>5?2:1);
+		new Flare(6, 32).show(sprite, 2f);
+		sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+		GLog.i(Messages.get(this, "drink"));
+
+		Dungeon.hero.spend(1.0f);
+		Dungeon.hero.busy();
+		Sample.INSTANCE.play(Assets.SND_DRINK);
+		// empty dew vial
+		dv.empty();
+
+		// give reward
+		AlchemistsToolkit atk   =   new AlchemistsToolkit();
+		if(atk.doPickUp(Dungeon.hero)){
+			GLog.i(Messages.get(Dungeon.hero, "you_now_have", atk.name()));
+		}else{
+			Dungeon.level.drop(atk, Dungeon.hero.pos).sprite.drop();
+		}
+
+		Quest.hasCompleted_ =   true;
+		// yell(Messages.get(""));
 	}
 
 	@Override
@@ -154,16 +190,29 @@ public class Alchemist extends NPC{
 				GameScene.show(new WndQuest(alchemist_, Messages.get(this, "bottle_miss")));
 			}else{
 				int vol =   dv.getVolume();
-				if(vol<3){
-
-				}else if(dv.isFull()){
-
+				if(vol==0){
+					GameScene.show(new WndQuest(alchemist_, Messages.get(this, "empty")));
 				}else{
+					String responds =   "";
+					if(vol<5){
+						responds    =   Messages.get(this, "little");
+					}else if(dv.isFull()){
+						responds    =   Messages.get(this, "full");
+					}else
+						responds    =   Messages.get(this, "enough");
 
+					GameScene.show(new WndQuest(alchemist_, responds){
+						@Override
+						public void onBackPressed(){
+							super.onBackPressed();
+							alchemist_.drink();
+						}
+					});
 				}
 			}
 
 		}
+
 	}
 
 

@@ -117,7 +117,8 @@ public class AboutScene extends PixelScene {
 		shpxlink.hardlight( Window.SHPX_COLOR );
 		add( shpxlink );
 
-		shpxlink.setPos((colWidth - shpxlink.width()) / 2, shpxtitle.y+shpxtitle.height()+ 6);
+		shpxlink.setPos((DarkestPixelDungeon.landscape()?colWidth:0)+
+			(colWidth - shpxlink.width()) / 2, shpxtitle.y+shpxtitle.height()+ 6);
 		align(shpxlink);
 
 		TouchArea shpxhotArea = new TouchArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {

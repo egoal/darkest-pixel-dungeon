@@ -2,9 +2,11 @@ package com.egoal.darkestpixeldungeon.levels;
 
 import android.util.Log;
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
+import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
 
@@ -145,6 +147,15 @@ public class VillageLevel extends RegularLevel{
 	}
 
 	@Override
+	protected void paint(){
+		// simple fill all rooms as normal
+		// super.paint();
+		for(Room r: rooms){
+			Painter.fill(this, r, 1, Terrain.EMPTY);
+		}
+	}
+
+	@Override
 	protected void paintGrass(){
 		boolean[] grass =   grass();
 
@@ -197,6 +208,7 @@ public class VillageLevel extends RegularLevel{
 		// add villagers
 		// old alchemist
 		Alchemist a =   new Alchemist();
+		Alchemist.Quest.reset();
 		do{
 			a.pos   =   pointToCell(roomExit.random());
 		}while(findMob(a.pos)!=null || !passable[a.pos]);

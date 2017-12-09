@@ -345,6 +345,7 @@ public abstract class RegularLevel extends Level {
 		for (int i = 0; i < length(); i ++) {
 			if (map[i] == Terrain.EMPTY){
 
+				/*
 				if(Dungeon.depth == 1){
 					//extra check to prevent annoying inactive traps in hallways on floor 1
 					Room r = room(i);
@@ -353,6 +354,17 @@ public abstract class RegularLevel extends Level {
 					}
 				} else
 					validCells.add(i);
+				*/
+				Room r  =   room(i);
+				if(r!=null){
+					if(Dungeon.depth>1)
+						validCells.add(i);
+				}else if(r.type==Type.TUNNEL){
+					// decrease traps on the tunnel(hallways)
+					if(Dungeon.depth>1 && Random.Float()<0.9f)
+						validCells.add(i);
+				}
+
 			}
 		}
 
