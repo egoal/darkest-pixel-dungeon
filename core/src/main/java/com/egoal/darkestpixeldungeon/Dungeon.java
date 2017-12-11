@@ -28,10 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Blacksmith;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Wandmaker;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*;
 import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
@@ -440,6 +437,8 @@ public class Dungeon {
 			Wandmaker	.Quest.storeInBundle( quests );
 			Blacksmith	.Quest.storeInBundle( quests );
 			Imp			.Quest.storeInBundle( quests );
+			// dpd save
+			Alchemist.Quest.storeInBundle(quests);
 			bundle.put( QUESTS, quests );
 			
 			Room.storeRoomsInBundle( bundle );
@@ -549,11 +548,15 @@ public class Dungeon {
 				Wandmaker.Quest.restoreFromBundle( quests );
 				Blacksmith.Quest.restoreFromBundle( quests );
 				Imp.Quest.restoreFromBundle( quests );
+
+				Alchemist.Quest.restoreFromBundle(quests);
 			} else {
 				Ghost.Quest.reset();
 				Wandmaker.Quest.reset();
 				Blacksmith.Quest.reset();
 				Imp.Quest.reset();
+
+				Alchemist.Quest.reset();
 			}
 			
 			Room.restoreRoomsFromBundle(bundle);

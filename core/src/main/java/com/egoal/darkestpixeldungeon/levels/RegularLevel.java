@@ -355,11 +355,12 @@ public abstract class RegularLevel extends Level {
 				} else
 					validCells.add(i);
 				*/
+
+				// add room tile
 				Room r  =   room(i);
-				if(r!=null){
-					if(Dungeon.depth>1)
-						validCells.add(i);
-				}else if(r.type==Type.TUNNEL){
+				if(r!=null && r.type!=Type.NULL){
+					validCells.add(i);
+				}else{
 					// decrease traps on the tunnel(hallways)
 					if(Dungeon.depth>1 && Random.Float()<0.9f)
 						validCells.add(i);
@@ -460,7 +461,7 @@ public abstract class RegularLevel extends Level {
 		}
 	}
 	
-	private void placeDoors( Room r ) {
+	protected void placeDoors( Room r ) {
 		for (Room n : r.connected.keySet()) {
 			Room.Door door = r.connected.get( n );
 			if (door == null) {

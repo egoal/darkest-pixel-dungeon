@@ -58,7 +58,7 @@ public class VillageLevel extends RegularLevel{
 			return false;
 
 		roomEntrance.type   =   Room.Type.ENTRANCE;
-		roomExit.type   =   Room.Type.EXIT;
+		roomExit.type   =   Room.Type.BOSS_EXIT;
 
 		// now build path
 		Graph.buildDistanceMap(rooms, roomExit);
@@ -151,7 +151,26 @@ public class VillageLevel extends RegularLevel{
 		// simple fill all rooms as normal
 		// super.paint();
 		for(Room r: rooms){
-			Painter.fill(this, r, 1, Terrain.EMPTY);
+			if(r.type!=Room.Type.NULL){
+				super.placeDoors(r);
+
+				// paint wall
+				Painter.fill(this,r,Terrain.WALL);
+				Painter.fill(this,r,1,Terrain.EMPTY);
+
+				// paint doors
+				for(Room.Door d : r.connected.values())
+					d.set(Room.Door.Type.TUNNEL);
+
+				paintDoors(r);
+			}
+
+			// place entrance
+			if(r.type==Room.Type.ENTRANCE){
+				do{
+					entrance    =   pointToCell(r.random(1));
+				}while(findMob(entrance)!=null);
+			}
 		}
 	}
 
@@ -188,6 +207,9 @@ public class VillageLevel extends RegularLevel{
 				map[i+width()]  =   Terrain.EMPTY;
 		}
 
+		// hide the entrance stairs
+		map[entrance]   =   Terrain.EMPTY;
+
 	}
 
 	// create
@@ -202,13 +224,13 @@ public class VillageLevel extends RegularLevel{
 		CatLix cl   =   new CatLix();
 		do{
 			cl.pos  =   pointToCell(roomEntrance.random());
-		}while(map[cl.pos]==Terrain.ENTRANCE || map[cl.pos]==Terrain.SIGN);
+		}while(findMob(cl.pos)!=null);
 		mobs.add(cl);
 
 		// add villagers
 		// old alchemist
 		Alchemist a =   new Alchemist();
-		Alchemist.Quest.reset();
+		// Alchemist.Quest.reset();
 		do{
 			a.pos   =   pointToCell(roomExit.random());
 		}while(findMob(a.pos)!=null || !passable[a.pos]);
@@ -226,7 +248,6 @@ public class VillageLevel extends RegularLevel{
 		// does not generate anything
 	}
 
-	private static final String STAIRS  =   "stairs";
 	@Override
 	public void storeInBundle(Bundle bundle){
 		super.storeInBundle(bundle);
