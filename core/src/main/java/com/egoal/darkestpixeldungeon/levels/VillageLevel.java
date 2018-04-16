@@ -230,7 +230,7 @@ public class VillageLevel extends RegularLevel{
 		// add villagers
 		// old alchemist
 		Alchemist a =   new Alchemist();
-		// Alchemist.Quest.reset();
+		Alchemist.Quest.reset();
 		do{
 			a.pos   =   pointToCell(roomExit.random());
 		}while(findMob(a.pos)!=null || !passable[a.pos]);
@@ -251,7 +251,6 @@ public class VillageLevel extends RegularLevel{
 	@Override
 	public void storeInBundle(Bundle bundle){
 		super.storeInBundle(bundle);
-
 
 	}
 

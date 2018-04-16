@@ -192,4 +192,7 @@ public class Assets {
 
 	public static final String DPD_TILES_VILLAGE    =   "dpd/tiles_village.png";
 	public static final String DPD_WATER_VILLAGE    =   "dpd/water_village.png";
+
+	public static final String DPD_SORCERESS        =   "dpd/sorceress.png";
+	public static final String DPD_AVATARS          =   "dpd/avatars.png";
 }

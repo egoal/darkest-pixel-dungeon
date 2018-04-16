@@ -150,15 +150,19 @@ public class StartScene extends PixelScene {
 		float centralHeight = buttonY - title.y - title.height();
 
 		HeroClass[] classes = {
-				HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS
+				HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS,
+
+			HeroClass.SORCERESS,
 		};
 		for (HeroClass cl : classes) {
 			ClassShield shield = new ClassShield( cl );
 			shields.put( cl, shield );
 			add( shield );
 		}
+
+		// layout
 		if (DarkestPixelDungeon.landscape()) {
-			float shieldW = width / 4;
+			float shieldW = width / 5;
 			float shieldH = Math.min( centralHeight, shieldW );
 			top = title.y + title.height + (centralHeight - shieldH) / 2;
 			for (int i=0; i < classes.length; i++) {
@@ -174,22 +178,24 @@ public class StartScene extends PixelScene {
 			add( challenge );
 
 		} else {
-			float shieldW = width / 2;
+			float shieldW = width / 3;
 			float shieldH = Math.min( centralHeight / 2, shieldW * 1.2f );
-			top = title.y + title.height() + centralHeight / 2 - shieldH;
+			top =   title.y+title.height+shieldH*.25f;
+			// top = title.y + title.height() + centralHeight / 2 - shieldH;
 			for (int i=0; i < classes.length; i++) {
 				ClassShield shield = shields.get( classes[i] );
 				shield.setRect(
-						left + (i % 2) * shieldW,
-						top + (i / 2) * shieldH,
+						left + (i % 3) * shieldW,
+						top + (i / 3) * shieldH,
 						shieldW, shieldH );
 				align(shield);
 			}
 
 			ChallengeButton challenge = new ChallengeButton();
-			challenge.setPos(
-					w/2 - challenge.width()/2,
-					top + shieldH - challenge.height()/2 );
+//			challenge.setPos(
+//					w/2 - challenge.width()/2,
+//					top + shieldH - challenge.height()/2 );
+			challenge.setPos(w/2-challenge.width()/2, buttonY-10);
 			align(challenge);
 			add( challenge );
 
@@ -402,7 +408,8 @@ public class StartScene extends PixelScene {
 
 			super.createChildren();
 
-			avatar = new Image( Assets.AVATARS );
+			// avatar = new Image( Assets.AVATARS );
+			avatar  =   new Image(Assets.DPD_AVATARS);
 			add( avatar );
 
 			name = renderText( 9 );

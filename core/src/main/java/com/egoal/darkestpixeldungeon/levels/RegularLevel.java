@@ -362,7 +362,7 @@ public abstract class RegularLevel extends Level {
 					validCells.add(i);
 				}else{
 					// decrease traps on the tunnel(hallways)
-					if(Dungeon.depth>1 && Random.Float()<0.9f)
+					if(Dungeon.depth>1 && Random.Float()<0.8f)
 						validCells.add(i);
 				}
 
@@ -371,7 +371,7 @@ public abstract class RegularLevel extends Level {
 
 		//no more than one trap every 5 valid tiles.
 		// nTraps = Math.min(nTraps, validCells.size()/5);
-		nTraps  =   Math.min(nTraps(), (int)(validCells.size()*0.15f));
+		nTraps  =   Math.min(nTraps(), (int)(validCells.size()*0.10f));
 
 		Collections.shuffle(validCells);
 

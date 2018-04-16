@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -29,8 +30,11 @@ import com.egoal.darkestpixeldungeon.items.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMindVision;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
@@ -47,7 +51,9 @@ public enum HeroClass {
 	WARRIOR( "warrior" ),
 	MAGE( "mage" ),
 	ROGUE( "rogue" ),
-	HUNTRESS( "huntress" );
+	HUNTRESS( "huntress" ),
+
+	SORCERESS("sorceress");
 
 	private String title;
 
@@ -77,6 +83,11 @@ public enum HeroClass {
 			case HUNTRESS:
 				initHuntress( hero );
 				break;
+
+			//
+		case SORCERESS:
+			initSorceress(hero);
+			break;
 		}
 
 		hero.updateAwareness();
@@ -169,7 +180,21 @@ public enum HeroClass {
 
 		new PotionOfMindVision().setKnown();
 	}
-	
+
+	private static void initSorceress(Hero hero){
+		// give equipments
+		(hero.belongings.weapon =   new Dagger()).identify();
+
+		ScrollOfRemoveCurse scroll  =   new ScrollOfRemoveCurse();
+		scroll.setKnown();
+		scroll.identify().collect();
+		new ScrollHolder().identify().collect();
+
+		new RingOfMagic().identify().collect();
+
+		new PotionOfLiquidFlame().setKnown();
+	}
+
 	public String title() {
 		return Messages.get(HeroClass.class, title);
 	}
@@ -185,6 +210,8 @@ public enum HeroClass {
 			return Assets.ROGUE;
 		case HUNTRESS:
 			return Assets.HUNTRESS;
+		case SORCERESS:
+			return Assets.DPD_SORCERESS;
 		}
 		
 		return null;
@@ -225,6 +252,14 @@ public enum HeroClass {
 					Messages.get(HeroClass.class, "huntress_perk3"),
 					Messages.get(HeroClass.class, "huntress_perk4"),
 					Messages.get(HeroClass.class, "huntress_perk5"),
+			};
+		case SORCERESS:
+			return new String[]{
+				Messages.get(HeroClass.class, "sorceress_perk1"),
+				Messages.get(HeroClass.class, "sorceress_perk2"),
+				Messages.get(HeroClass.class, "sorceress_perk3"),
+				Messages.get(HeroClass.class, "sorceress_perk4"),
+				Messages.get(HeroClass.class, "sorceress_perk5"),
 			};
 		}
 		

@@ -243,7 +243,7 @@ public class SewerBossLevel extends RegularLevel {
 		return pointToCell(roomEntrance.random());
 	}
 
-	
+	// lock until the boos down
 	public void seal() {
 		if (entrance != 0) {
 
