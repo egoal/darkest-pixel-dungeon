@@ -966,7 +966,7 @@ public class Hero extends Char {
 			
 			// sorceress
 			if(heroClass==HeroClass.SORCERESS){
-				dmg	=	int(dmg*.75);
+				dmg	*=  0.75;
 			}
 		}
 		// if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)

@@ -48,8 +48,8 @@ import java.util.Locale;
 
 public class WndRanking extends WndTabbed {
 	
-	private static final int WIDTH			= 115;
-	private static final int HEIGHT			= 144;
+	private static final int WIDTH			= 91;
+	private static final int HEIGHT			= 137;
 	
 	private Thread thread;
 	private String error = null;
@@ -242,7 +242,7 @@ public class WndRanking extends WndTabbed {
 					add(slot);
 
 				} else {
-					ColorBlock bg = new ColorBlock( 28, 28, 0x9953564D );
+					ColorBlock bg = new ColorBlock( 22, 22, 0x9953564D );
 					bg.x = pos;
 					bg.y = 116;
 					add(bg);

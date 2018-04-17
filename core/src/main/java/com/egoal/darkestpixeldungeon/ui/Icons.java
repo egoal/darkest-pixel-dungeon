@@ -59,7 +59,8 @@ public enum Icons {
 	CHALLENGE_ON,
 	RESUME,
 
-	DPD_LIX;
+	DPD_LIX,
+	DPD_SORCERESS;
 
 	public Image get() {
 		return get( this );
@@ -174,7 +175,10 @@ public enum Icons {
 			icon    =   new Image(Assets.DPD_ICONS);
 			switch(type){
 			case DPD_LIX:
-				icon.frame(icon.texture.uvRect(63, 42, 79, 58));
+				icon.frame(icon.texture.uvRect(63,42,79,58));
+				break;
+			case DPD_SORCERESS:
+				icon.frame(icon.texture.uvRect(96, 48, 112, 64));
 				break;
 			}
 		}
@@ -192,6 +196,8 @@ public enum Icons {
 			return get( ROGUE );
 		case HUNTRESS:
 			return get( HUNTRESS );
+		case SORCERESS:
+			return get(DPD_SORCERESS);
 		default:
 			return null;
 		}

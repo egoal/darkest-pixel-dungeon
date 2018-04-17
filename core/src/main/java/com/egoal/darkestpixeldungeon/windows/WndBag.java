@@ -190,7 +190,7 @@ public class WndBag extends WndTabbed {
 		}
 		
 		// Free Space
-		while (count-(backpack ? 4 : nCols) < container.size) {
+		while (count-(backpack ? 5 : nCols) < container.size) {
 			placeItem( null );
 		}
 		

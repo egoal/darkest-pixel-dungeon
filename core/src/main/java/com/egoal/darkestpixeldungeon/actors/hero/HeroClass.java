@@ -109,6 +109,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_ROGUE;
 			case HUNTRESS:
 				return Badges.Badge.MASTERY_HUNTRESS;
+		case SORCERESS:
+			return Badges.Badge.MASTERY_SORCERESS;
 		}
 		return null;
 	}
