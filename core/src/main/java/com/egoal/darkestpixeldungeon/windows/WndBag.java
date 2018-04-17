@@ -76,10 +76,10 @@ public class WndBag extends WndTabbed {
 		EQUIPMENT
 	}
 
-	protected static final int COLS_P    = 4;
+	protected static final int COLS_P    = 4+1;
 	protected static final int COLS_L    = 6;
 
-	protected static final int SLOT_SIZE	= 28;
+	protected static final int SLOT_SIZE	= 22;
 	protected static final int SLOT_MARGIN	= 1;
 	
 	protected static final int TITLE_HEIGHT	= 12;
@@ -110,7 +110,9 @@ public class WndBag extends WndTabbed {
 		lastBag = bag;
 
 		nCols = DarkestPixelDungeon.landscape() ? COLS_L : COLS_P;
-		nRows = (Belongings.BACKPACK_SIZE + 4 + 1) / nCols + ((Belongings.BACKPACK_SIZE + 4 + 1) % nCols > 0 ? 1 : 0);
+		// +5+1 the equipments, the gold
+		nRows	=	(Belongings.BACKPACK_SIZE+5+1)/nCols+
+			((Belongings.BACKPACK_SIZE+5+1)%nCols>0? 1: 0);		
 
 		int slotsWidth = SLOT_SIZE * nCols + SLOT_MARGIN * (nCols - 1);
 		int slotsHeight = SLOT_SIZE * nRows + SLOT_MARGIN * (nRows - 1);
@@ -173,6 +175,7 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR_HOLDER ) );
 		placeItem( stuff.misc1 != null ? stuff.misc1 : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
 		placeItem( stuff.misc2 != null ? stuff.misc2 : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
+		placeItem(stuff.misc3!=null? stuff.misc3: new Placeholder(ItemSpriteSheet.RING_HOLDER));
 
 		boolean backpack = (container == Dungeon.hero.belongings.backpack);
 		if (!backpack) {

@@ -158,16 +158,17 @@ public class WndSettings extends WndTabbed {
 			add(chkImmersive);
 
 
-			RedButton btnOrientation = new RedButton( DarkestPixelDungeon.landscape() ?
-					Messages.get(this, "portrait")
-					: Messages.get(this, "landscape") ) {
-				@Override
-				protected void onClick() {
-					DarkestPixelDungeon.landscape(!DarkestPixelDungeon.landscape());
-				}
-			};
-			btnOrientation.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
-			add( btnOrientation );
+			// disable landscape
+			// RedButton btnOrientation = new RedButton( DarkestPixelDungeon.landscape() ?
+			// 		Messages.get(this, "portrait")
+			// 		: Messages.get(this, "landscape") ) {
+			// 	@Override
+			// 	protected void onClick() {
+			// 		DarkestPixelDungeon.landscape(!DarkestPixelDungeon.landscape());
+			// 	}
+			// };
+			// btnOrientation.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+			// add( btnOrientation );
 		}
 	}
 
