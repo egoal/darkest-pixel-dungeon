@@ -195,7 +195,8 @@ public class StartScene extends PixelScene {
 //			challenge.setPos(
 //					w/2 - challenge.width()/2,
 //					top + shieldH - challenge.height()/2 );
-			challenge.setPos(w/2-challenge.width()/2, buttonY-10);
+			challenge.setPos(w/2-challenge.width()/2,
+				buttonY-challenge.height()-6);
 			align(challenge);
 			add( challenge );
 

@@ -29,9 +29,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.items.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfMindVision;
+import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
@@ -181,18 +179,20 @@ public enum HeroClass {
 		new PotionOfMindVision().setKnown();
 	}
 
+	// extra classes
 	private static void initSorceress(Hero hero){
-		// give equipments
-		(hero.belongings.weapon =   new Dagger()).identify();
+		// perks
+		hero.STR    =   9;
 
-		ScrollOfRemoveCurse scroll  =   new ScrollOfRemoveCurse();
-		scroll.setKnown();
-		scroll.identify().collect();
-		new ScrollHolder().identify().collect();
+		(hero.belongings.weapon =   new Knuckles()).identify();
+		if (!Dungeon.isChallenged(Challenges.NO_ARMOR)){
+			(hero.belongings.armor=new ClothArmor()).identify().upgrade();
+		}
 
-		new RingOfMagic().identify().collect();
+		new PotionOfToxicGas().identify().collect();
+		new PotionOfParalyticGas().identify();
+		new PotionOfLiquidFlame().identify();
 
-		new PotionOfLiquidFlame().setKnown();
 	}
 
 	public String title() {
@@ -260,6 +260,7 @@ public enum HeroClass {
 				Messages.get(HeroClass.class, "sorceress_perk3"),
 				Messages.get(HeroClass.class, "sorceress_perk4"),
 				Messages.get(HeroClass.class, "sorceress_perk5"),
+				Messages.get(HeroClass.class, "sorceress_perk6"),
 			};
 		}
 		
