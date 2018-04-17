@@ -227,13 +227,17 @@ public class WndRanking extends WndTabbed {
 			if (stuff.misc2 != null) {
 				addItem( stuff.misc2);
 			}
+			if(stuff.misc3!=null){
+				addItem(stuff.misc3);
+			}
 
+			// quickslots
 			pos = 0;
 			for (int i = 0; i < 4; i++){
 				if (Dungeon.quickslot.getItem(i) != null){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
-					slot.setRect( pos, 116, 28, 28 );
+					slot.setRect( pos, 116, 22, 22 );
 
 					add(slot);
 
@@ -243,7 +247,7 @@ public class WndRanking extends WndTabbed {
 					bg.y = 116;
 					add(bg);
 				}
-				pos += 29;
+				pos += 22+1;
 			}
 		}
 		
@@ -272,7 +276,7 @@ public class WndRanking extends WndTabbed {
 	
 	private class ItemButton extends Button {
 		
-		public static final int HEIGHT	= 28;
+		public static final int HEIGHT	= 22;	// same as bag
 		
 		private Item item;
 		
@@ -353,7 +357,7 @@ public class WndRanking extends WndTabbed {
 
 	private class QuickSlotButton extends ItemSlot{
 
-		public static final int HEIGHT	= 28;
+		public static final int HEIGHT	= 22;
 
 		private Item item;
 		private ColorBlock bg;

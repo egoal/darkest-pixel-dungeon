@@ -288,11 +288,13 @@ public class Hero extends Char {
 		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 10 - STR();
 		
 		if (aEnc > 0) {
+			// wear heavy armor
 			return (int)(defenseSkill * evasion / Math.pow( 1.5, aEnc ));
 		} else {
 
 			bonus = 0;
 			if (heroClass == HeroClass.ROGUE) bonus += -aEnc;
+			else if(heroClass==HeroClass.SORCERESS) bonus	*=	0.8;
 
 			if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
 				bonus += 5 + belongings.armor.level()*1.5f;
@@ -301,6 +303,7 @@ public class Hero extends Char {
 		}
 	}
 	
+	// defense
 	@Override
 	public int drRoll() {
 		int dr = 0;
@@ -957,10 +960,19 @@ public class Hero extends Char {
 			dmg = (int)Math.ceil((float)dmg * Math.pow(0.85, tenacity*((float)(HT - HP)/HT)));
 
 		//TODO improve this when I have proper damage source logic
-		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
-				&& RingOfElements.FULL.contains(src.getClass())){
-			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
+		if(RingOfElements.FULL.contains(src.getClass())){
+			if(belongings.armor!=null && belongings.armor.hasGlyph(AntiMagic.class))
+				dmg	-=	Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
+			
+			// sorceress
+			if(heroClass==HeroClass.SORCERESS){
+				dmg	=	int(dmg*.75);
+			}
 		}
+		// if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
+		// 		&& RingOfElements.FULL.contains(src.getClass())){
+		// 	dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
+		// }
 
 		super.damage( dmg, src );
 	}

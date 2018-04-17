@@ -74,7 +74,7 @@ public class Bones {
 	private static Item pickItem(Hero hero){
 		Item item = null;
 		if (Random.Int(2) == 0) {
-			switch (Random.Int(5)) {
+			switch (Random.Int(6)) {
 				case 0:
 					item = hero.belongings.weapon;
 					break;
@@ -88,6 +88,9 @@ public class Bones {
 					item = hero.belongings.misc2;
 					break;
 				case 4:
+					item	=	hero.belongings.misc3;
+					break;
+				case 5:
 					item = Dungeon.quickslot.randomNonePlaceholder();
 					break;
 			}

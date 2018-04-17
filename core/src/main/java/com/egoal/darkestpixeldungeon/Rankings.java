@@ -162,6 +162,7 @@ public enum Rankings {
 		//include worn rings
 		if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1);
 		if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2);
+		if (belongings.misc3!=null) belongings.backpack.items.add(belongings.misc3);
 		Ring.saveSelectively(handler, belongings.backpack.items);
 		rec.gameData.put( HANDLERS, handler);
 

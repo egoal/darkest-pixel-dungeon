@@ -62,7 +62,7 @@ public abstract class Char extends Actor {
 	
 	public String name = "mob";
 	
-	public int HT;
+	public int HT;	// max hp
 	public int HP;
 	public int SHLD;
 	
@@ -192,6 +192,7 @@ public abstract class Char extends Actor {
 		}
 	}
 	
+	// check hit or miss
 	public static boolean hit( Char attacker, Char defender, boolean magic ) {
 		float acuRoll = Random.Float( attacker.attackSkill( defender ) );
 		float defRoll = Random.Float( defender.defenseSkill( attacker ) );
@@ -200,6 +201,7 @@ public abstract class Char extends Actor {
 		return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
 	}
 	
+	// attack or edoge ratio
 	public int attackSkill( Char target ) {
 		return 0;
 	}

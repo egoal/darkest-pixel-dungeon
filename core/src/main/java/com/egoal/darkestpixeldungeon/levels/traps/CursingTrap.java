@@ -107,6 +107,13 @@ public class CursingTrap extends Trap {
 			canCurse.add(misc2);
 		}
 
+		KindofMisc misc3 = hero.belongings.misc3;
+		if (misc3 instanceof Artifact){
+			priorityCurse.add(misc3);
+		} else if (misc3 instanceof Ring){
+			canCurse.add(misc3);
+		}
+
 		Collections.shuffle(priorityCurse);
 		Collections.shuffle(canCurse);
 
