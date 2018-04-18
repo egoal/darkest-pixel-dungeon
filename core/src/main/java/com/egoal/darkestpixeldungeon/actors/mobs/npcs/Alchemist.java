@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Fragile;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -21,6 +22,7 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Alchemist extends NPC{
 	{
@@ -85,15 +87,16 @@ public class Alchemist extends NPC{
 		dv.empty();
 
 		// give reward
-		AlchemistsToolkit atk   =   new AlchemistsToolkit();
-		if(atk.doPickUp(Dungeon.hero)){
-			GLog.i(Messages.get(Dungeon.hero, "you_now_have", atk.name()));
-		}else{
-			Dungeon.level.drop(atk, Dungeon.hero.pos).sprite.drop();
-		}
+		// currently some money
+		(new Gold(Random.Int(0, vol*10)+50)).doPickUp(Dungeon.hero);
+//		AlchemistsToolkit atk   =   new AlchemistsToolkit();
+//		if(atk.doPickUp(Dungeon.hero)){
+//			GLog.i(Messages.get(Dungeon.hero, "you_now_have", atk.name()));
+//		}else{
+//			Dungeon.level.drop(atk, Dungeon.hero.pos).sprite.drop();
+//		}
 
 		Quest.hasCompleted_ =   true;
-		// yell(Messages.get(""));
 	}
 
 	@Override

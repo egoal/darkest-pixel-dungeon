@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class DewVial extends Item {
 
-	private static final int MAX_VOLUME	= 10;
+	private static final int MAX_VOLUME	= 25;
 
 	private static final String AC_DRINK	= "DRINK";
 
@@ -86,20 +86,29 @@ public class DewVial extends Item {
 
 			if (volume > 0) {
 
-				int value = 1 + (Dungeon.depth - 1) / 5;
-				if (hero.heroClass == HeroClass.HUNTRESS) {
-					value++;
-				}
-				value *= volume;
-				value = (int)Math.max(volume*volume*.01*hero.HT, value);
-				int effect = Math.min( hero.HT - hero.HP, value );
+				int hppv    =   (int)(hero.HT*
+					(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05));
+
+				int needToFill  =   (hero.HT-hero.HP)/hppv;
+				int drink   =   volume<needToFill?volume:needToFill;
+
+				int effect  =   Math.min(hero.HT-hero.HP, drink*hppv);
+
+//				int value = 1 + (Dungeon.depth - 1) / 5;
+//				if (hero.heroClass == HeroClass.HUNTRESS) {
+//					value++;
+//				}
+//				value *= volume;
+//				value = (int)Math.max(volume*volume*.01*hero.HT, value);
+//				int effect = Math.min( hero.HT - hero.HP, value );
 				if (effect > 0) {
 					hero.HP += effect;
 					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), volume > 5 ? 2 : 1 );
 					hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "value", effect) );
 				}
-
-				volume = 0;
+//
+//				volume = 0;
+				volume  -=  drink;
 
 				hero.spend( TIME_TO_DRINK );
 				hero.busy();

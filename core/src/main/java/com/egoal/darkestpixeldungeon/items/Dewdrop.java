@@ -44,7 +44,7 @@ public class Dewdrop extends Item {
 		
 		DewVial vial = hero.belongings.getItem( DewVial.class );
 		
-		if (hero.HP < hero.HT || vial == null || vial.isFull()) {
+		if (vial == null || vial.isFull()) {
 			
 			int value = 1 + (Dungeon.depth - 1) / 5;
 			if (hero.subClass == HeroSubClass.WARDEN) {

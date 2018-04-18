@@ -192,8 +192,8 @@ public enum HeroClass {
 		}
 
 		new PotionOfToxicGas().identify().collect();
-		new PotionOfParalyticGas().identify();
-		new PotionOfLiquidFlame().identify();
+		// new PotionOfParalyticGas().identify();
+		new PotionOfLiquidFlame().identify().collect();
 
 	}
 

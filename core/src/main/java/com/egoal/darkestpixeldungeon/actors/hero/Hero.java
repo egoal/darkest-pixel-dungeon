@@ -284,9 +284,11 @@ public class Hero extends Char {
 		if (paralysed > 0) {
 			evasion /= 2;
 		}
-		
+
+		if(heroClass==HeroClass.SORCERESS)
+			evasion *=  0.8;
+
 		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 10 - STR();
-		
 		if (aEnc > 0) {
 			// wear heavy armor
 			return (int)(defenseSkill * evasion / Math.pow( 1.5, aEnc ));
@@ -294,7 +296,6 @@ public class Hero extends Char {
 
 			bonus = 0;
 			if (heroClass == HeroClass.ROGUE) bonus += -aEnc;
-			else if(heroClass==HeroClass.SORCERESS) bonus	*=	0.8;
 
 			if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
 				bonus += 5 + belongings.armor.level()*1.5f;
