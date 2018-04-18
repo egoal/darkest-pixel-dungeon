@@ -20,8 +20,11 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.effects.Halo;
+import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
@@ -32,10 +35,6 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
-import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.Challenges;
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy;
@@ -79,12 +78,8 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
-import com.watabou.utils.SparseArray;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,7 +108,9 @@ public abstract class Level implements Bundlable {
 	public boolean[] visited;
 	public boolean[] mapped;
 
-	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 3: 8;
+	// public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 3: 8;
+	public int viewDistance =   4;
+	public int seeDistance  =   8;
 
 	//FIXME should not be static!
 	public static boolean[] fieldOfView;
@@ -126,6 +123,7 @@ public abstract class Level implements Bundlable {
 	public static boolean[] avoid;
 	public static boolean[] water;
 	public static boolean[] pit;
+	public static boolean[] luminary;
 	
 	public static boolean[] discoverable;
 	
@@ -182,7 +180,8 @@ public abstract class Level implements Bundlable {
 		avoid		= new boolean[length()];
 		water		= new boolean[length()];
 		pit			= new boolean[length()];
-		
+		luminary    =   new boolean[length()];
+
 		map = new int[length()];
 		visited = new boolean[length()];
 		Arrays.fill( visited, false );
@@ -245,7 +244,8 @@ public abstract class Level implements Bundlable {
 				case 3:
 					feeling = Feeling.DARK;
 					addItemToSpawn(new Torch());
-					viewDistance = (int)Math.ceil(viewDistance/3f);
+					// viewDistance = (int)Math.ceil(viewDistance/3f);
+					viewDistance    /=  2;
 					break;
 				}
 			}
@@ -267,6 +267,7 @@ public abstract class Level implements Bundlable {
 			customTiles = new HashSet<>();
 			
 		} while (!build());
+
 		decorate();
 		
 		buildFlagMaps();
@@ -460,10 +461,17 @@ public abstract class Level implements Bundlable {
 					visuals.add( new FlowParticle.Flow( i - width() ) );
 				}
 			}
+			if(luminary[i]){
+				addLightVisuals(this, visuals, i);
+			}
 		}
 		return visuals;
 	}
-	
+
+	public void addLightVisuals(Level level, Group group, int pos){
+		group.add(new TorchLight(pos));
+	}
+
 	public int nMobs() {
 		return 0;
 	}
@@ -560,7 +568,9 @@ public abstract class Level implements Bundlable {
 		avoid		= new boolean[length()];
 		water		= new boolean[length()];
 		pit			= new boolean[length()];
-		
+
+		luminary    =   new boolean[length()];
+
 		for (int i=0; i < length(); i++) {
 			int flags = Terrain.flags[map[i]];
 			passable[i]		= (flags & Terrain.PASSABLE) != 0;
@@ -571,6 +581,7 @@ public abstract class Level implements Bundlable {
 			avoid[i]		= (flags & Terrain.AVOID) != 0;
 			water[i]		= (flags & Terrain.LIQUID) != 0;
 			pit[i]			= (flags & Terrain.PIT) != 0;
+			luminary[i]     =   (flags & Terrain.LUMINARY)!=0;
 		}
 		
 		int lastRow = length() - width();
@@ -915,7 +926,7 @@ public abstract class Level implements Bundlable {
 		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
-			ShadowCaster.castShadow( cx, cy, fieldOfView, c.viewDistance );
+			ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance, c.seeDistance);
 		} else {
 			BArray.setFalse(fieldOfView);
 		}
@@ -1077,6 +1088,8 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "bookshelf_name");
 			case Terrain.ALCHEMY:
 				return Messages.get(Level.class, "alchemy_name");
+		case Terrain.LUMINARY:
+			return Messages.get(Level.class, "luminary_name");
 			default:
 				return Messages.get(Level.class, "default_name");
 		}
@@ -1115,6 +1128,8 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "alchemy_desc");
 			case Terrain.EMPTY_WELL:
 				return Messages.get(Level.class, "empty_well_desc");
+		case Terrain.LUMINARY:
+			return Messages.get(Level.class, "luminary_desc");
 			default:
 				if (tile >= Terrain.WATER_TILES) {
 					return tileDesc( Terrain.WATER );
@@ -1123,6 +1138,31 @@ public abstract class Level implements Bundlable {
 					return tileDesc( Terrain.CHASM );
 				}
 				return Messages.get(Level.class, "default_desc");
+		}
+	}
+
+	// basic light visual
+	public static class TorchLight extends Emitter{
+		private int pos;
+
+		public TorchLight(int pos) {
+			super();
+
+			this.pos    =   pos;
+
+			PointF p    =   DungeonTilemap.tileCenterToWorld(pos);
+			pos(p.x - 1, p.y + 3, 2, 0);
+
+			// pour(FlameParticle.FACTORY, 0.15f);
+
+			add(new Halo(16, 0xFFFFCC, 0.2f ).point( p.x, p.y ) );
+		}
+
+		@Override
+		public void update() {
+			if (visible = Dungeon.visible[pos]) {
+				super.update();
+			}
 		}
 	}
 }

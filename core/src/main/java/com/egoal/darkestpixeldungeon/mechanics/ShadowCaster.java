@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.mechanics;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.utils.BArray;
+import com.watabou.utils.PathFinder;
 
 public final class ShadowCaster {
 
@@ -41,7 +42,8 @@ public final class ShadowCaster {
 		}
 	}
 	
-	public static void castShadow( int x, int y, boolean[] fieldOfView, int distance ) {
+	public static void castShadow( int x, int y, boolean[] fieldOfView,
+		int viewDistance, int seeDistance){
 
 		BArray.setFalse(fieldOfView);
 
@@ -50,27 +52,27 @@ public final class ShadowCaster {
 		boolean[] losBlocking = Level.losBlocking;
 		Obstacles obs = new Obstacles();
 
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, +1, +1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, -1, +1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, +1, -1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, -1, -1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, +1 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, +1 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, -1 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, -1 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, +1, +1, 0, 0 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, -1, +1, 0, 0 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, +1, -1, 0, 0 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, -1, -1, 0, 0 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, +1 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, +1 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, -1 );
+		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, -1 );
 
 	}
 
 	//FIXME This is is the primary performance bottleneck for game logic, need to optimize or rewrite
-	private static void scanSector( int distance, boolean[] fieldOfView, boolean[] losBlocking, Obstacles obs, int cx, int cy, int m1, int m2, int m3, int m4 ) {
+	private static void scanSector( int viewDistance, int seeDistance, boolean[] fieldOfView, boolean[] losBlocking, Obstacles obs, int cx, int cy, int m1, int m2, int m3, int m4 ) {
 		
 		obs.reset();
 		
-		for (int p=1; p <= distance; p++) {
+		for (int p=1; p <= seeDistance; p++) {
 
 			float dq2 = 0.5f / p;
 			
-			int pp = rounding[distance][p];
+			int pp = rounding[seeDistance][p];
 			for (int q=0; q <= pp; q++) {
 				
 				int x = cx + q * m1 + p * m3;
@@ -88,7 +90,17 @@ public final class ShadowCaster {
 
 						// Do nothing
 					} else {
-						fieldOfView[pos] = true;
+						// in view
+						if(p<viewDistance)
+							fieldOfView[pos] = true;
+						else if(Level.luminary[pos]){
+							// light nearby
+							for(int i: PathFinder.NEIGHBOURS8){
+								int np  =   pos+i;
+								if(np>=0 && np<Dungeon.level.length())
+									fieldOfView[np] =   true;
+							}
+						}
 					}
 					
 					if (losBlocking[pos]) {

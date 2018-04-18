@@ -68,11 +68,14 @@ public class Terrain {
 	public static final int CHASM_FLOOR		= 29;
 	public static final int CHASM_FLOOR_SP	= 30;
 	public static final int CHASM_WALL		= 31;
+
 	public static final int CHASM_WATER		= 32;
+
+	public static final int LIGHT           =   33;
 
 	public static final int WATER_TILES	    = 48;
 	public static final int WATER		    = 63;
-	
+
 	public static final int PASSABLE		= 0x01;
 	public static final int LOS_BLOCKING	= 0x02;
 	public static final int FLAMABLE		= 0x04;
@@ -81,9 +84,11 @@ public class Terrain {
 	public static final int AVOID			= 0x20;
 	public static final int LIQUID			= 0x40;
 	public static final int PIT				= 0x80;
-	
+
 	public static final int UNSTITCHABLE	= 0x100;
-	
+
+	public static final int LUMINARY        =   0x0200;// luminary
+
 	public static final int[] flags = new int[256];
 	static {
 		flags[CHASM]		= AVOID	| PIT									| UNSTITCHABLE;
@@ -127,6 +132,9 @@ public class Terrain {
 		for (int i=WATER_TILES; i < WATER_TILES + 16; i++) {
 			flags[i] = flags[WATER];
 		}
+
+		// dpd
+		flags[LIGHT]    =   LOS_BLOCKING| LUMINARY| UNSTITCHABLE;
 	};
 
 	public static int discover( int terr ) {

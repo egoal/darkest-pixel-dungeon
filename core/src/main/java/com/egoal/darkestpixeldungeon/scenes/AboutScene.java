@@ -42,6 +42,8 @@ public class AboutScene extends PixelScene {
 
 	private static final String TXT_DPD =   "Design, Code, & Graphics: Lix";
 
+	private static final String LNK_DPD =   "github.com/egoal";
+
 	private static final String TTL_SHPX = "Shattered Pixel Dungeon";
 
 	private static final String TXT_SHPX =
@@ -88,6 +90,25 @@ public class AboutScene extends PixelScene {
 		dpdText.hardlight(Window.DPD_COLOR);
 		align(dpdText);
 
+		RenderedTextMultiline dpdlink   =   renderMultiline(LNK_DPD, 8 );
+		dpdlink.maxWidth(dpdText.maxWidth());
+		dpdlink.hardlight(Window.DPD_COLOR);
+		add(dpdlink);
+		dpdlink.setPos((DarkestPixelDungeon.landscape()?colWidth:0)+
+			(colWidth - dpdlink.width()) / 2, dpdText.bottom()+6);
+		align(dpdlink);
+
+		TouchArea dpdhotArea    =   new TouchArea(dpdlink.left(), dpdlink.top(),
+			dpdlink.width(), dpdlink.height()){
+			@Override
+			protected void onClick(Touch touch ){
+				Intent intent   =   new Intent( Intent.ACTION_VIEW,
+					Uri.parse("https://"+LNK_DPD));
+				Game.instance.startActivity(intent);
+			}
+		};
+		add(dpdhotArea);
+
 		// shattered pixel dungeon
 		Image shpx = Icons.SHPX.get();
 		if(DarkestPixelDungeon.landscape()){
@@ -95,7 +116,7 @@ public class AboutScene extends PixelScene {
 			shpx.x  =   lix.x+colWidth;
 		}else{
 			shpx.x=(colWidth-shpx.width())/2;
-			shpx.y=dpdText.bottom()+30;
+			shpx.y  =   dpdhotArea.y+dpdhotArea.height()+30;
 		}
 		align(shpx);
 		add( shpx );

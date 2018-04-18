@@ -43,13 +43,8 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public abstract class RegularLevel extends Level {
 
@@ -162,6 +157,7 @@ public abstract class RegularLevel extends Level {
 			return false;
 		
 		paint();
+		paintLuminary();
 		paintWater();
 		paintGrass();
 		
@@ -371,7 +367,7 @@ public abstract class RegularLevel extends Level {
 
 		//no more than one trap every 5 valid tiles.
 		// nTraps = Math.min(nTraps, validCells.size()/5);
-		nTraps  =   Math.min(nTraps(), (int)(validCells.size()*0.10f));
+		nTraps  =   Math.min(nTraps(), (int)(validCells.size()*0.15f));
 
 		Collections.shuffle(validCells);
 
@@ -401,7 +397,7 @@ public abstract class RegularLevel extends Level {
 	protected float[] trapChances() {
 		return new float[]{1};
 	}
-	
+
 	protected int minRoomSize = 7;
 	protected int maxRoomSize = 9;
 	
@@ -459,6 +455,90 @@ public abstract class RegularLevel extends Level {
 		for (Room r : rooms) {
 			paintDoors( r );
 		}
+	}
+
+	protected  void paintLuminary(){
+		HashSet<Integer> setPsgCells    =   new HashSet<Integer>();
+
+		for(Room rm: rooms){
+			if(rm.type==Type.GARDEN || rm.type==Type.MAGIC_WELL)
+				continue;
+			// rooms must have lights
+			if(rm.type==Type.BLACKSMITH || rm.type==Type.ENTRANCE
+				|| rm.type==Type.RAT_KING || rm.type==Type.SHOP){
+				placeLuminary(rm);
+			}else if(rm.type!=Type.NULL){
+				// random place lights
+				if(Random.Float()<(feeling==Feeling.DARK?0.25f:0.5f)){
+					placeLuminary(rm);
+				}
+			}else{
+				// Type.NULL, passage
+				for(int x=rm.left+1; x<rm.right; ++x){
+					int pos =   rm.top*width+x;
+					if(map[pos]==Terrain.WALL)
+						setPsgCells.add(pos);
+					pos =   rm.bottom*width+x;
+					if(map[pos]==Terrain.WALL)
+						setPsgCells.add(pos);
+				}
+				for(int y=rm.top+1; y<rm.bottom; ++y){
+					int pos =   y*width+rm.left;
+					if(map[pos]==Terrain.WALL)
+						setPsgCells.add(pos);
+					pos =   y*width+rm.right;
+					if(map[pos]==Terrain.WALL)
+						setPsgCells.add(pos);
+				}
+			}
+		}
+
+		for(Integer pos: setPsgCells){
+			if(Random.Int(feeling==Feeling.DARK? 20: 12)==0)
+				map[pos.intValue()] =   Terrain.LIGHT;
+		}
+
+		// passages
+//		int lightStep   =   feeling==Feeling.DARK? 12: 8;
+//		for(int i=0; i<width(); ++i){
+//			if(map[i]==Terrain.WALL &&
+//				(map[i+width]==Terrain.EMPTY || map[i+width]==Terrain.EMPTY_SP) &&
+//				Random.Int(lightStep)==0){
+//				map[i]  =   Terrain.LIGHT;
+//			}
+//		}
+//		for(int i=width; i<length-width; ++i){
+//			if(map[i]==Terrain.WALL &&
+//				((map[i-width]==Terrain.EMPTY || map[i-width]==Terrain.EMPTY_SP) ||
+//				(map[i+width]==Terrain.EMPTY || map[i+width]==Terrain.EMPTY_SP)) &&
+//				Random.Int(lightStep)==0){
+//				map[i]  =   Terrain.LIGHT;
+//			}
+//		}
+	}
+	protected void placeLuminary(Room r){
+		ArrayList<Integer> alCells  =   new ArrayList<Integer>();
+		for(int x=r.left+1; x<r.right; ++x){
+			int pos =   r.top*width+x;
+			if(map[pos]==Terrain.WALL)
+				alCells.add(pos);
+			pos =   r.bottom*width+x;
+			if(map[pos]==Terrain.WALL)
+				alCells.add(pos);
+		}
+		for(int y=r.top+1; y<r.bottom; ++y){
+			int pos =   y*width+r.left;
+			if(map[pos]==Terrain.WALL)
+				alCells.add(pos);
+			pos =   y*width+r.right;
+			if(map[pos]==Terrain.WALL)
+				alCells.add(pos);
+		}
+
+		int lights  =   Random.Float()<0.8f? 1: 2;
+		Collections.shuffle(alCells);
+		for(int i=0; i<lights; ++i)
+			map[alCells.get(i)] =   Terrain.LIGHT;
 	}
 	
 	protected void placeDoors( Room r ) {
