@@ -109,7 +109,7 @@ public abstract class Level implements Bundlable {
 	public boolean[] mapped;
 
 	// public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 3: 8;
-	public int viewDistance =   4;
+	public int viewDistance =   3;
 	public int seeDistance  =   8;
 
 	//FIXME should not be static!
@@ -123,8 +123,9 @@ public abstract class Level implements Bundlable {
 	public static boolean[] avoid;
 	public static boolean[] water;
 	public static boolean[] pit;
-	public static boolean[] luminary;
-	
+	public static boolean[] luminary;	// the luminaries in the level
+	public static boolean[] lighted;	// is lighted by the luminaries
+
 	public static boolean[] discoverable;
 	
 	public Feeling feeling = Feeling.NONE;
@@ -180,7 +181,9 @@ public abstract class Level implements Bundlable {
 		avoid		= new boolean[length()];
 		water		= new boolean[length()];
 		pit			= new boolean[length()];
+
 		luminary    =   new boolean[length()];
+		lighted		=	new boolean[length()];
 
 		map = new int[length()];
 		visited = new boolean[length()];
@@ -570,6 +573,7 @@ public abstract class Level implements Bundlable {
 		pit			= new boolean[length()];
 
 		luminary    =   new boolean[length()];
+		lighted		=	new boolean[length()];
 
 		for (int i=0; i < length(); i++) {
 			int flags = Terrain.flags[map[i]];
@@ -583,7 +587,18 @@ public abstract class Level implements Bundlable {
 			pit[i]			= (flags & Terrain.PIT) != 0;
 			luminary[i]     =   (flags & Terrain.LUMINARY)!=0;
 		}
-		
+		// update lights
+		BArray.setFalse(lighted);
+		for(int i=0; i<length(); ++i){
+			if(luminary[i]){
+				for(int np: PathFinder.NEIGHBOURS9){
+					int pos	=	i+np;
+					if(pos>=0 && pos<length())
+						lighted[pos]	=	true;
+				}
+			}
+		}
+
 		int lastRow = length() - width();
 		for (int i=0; i < width(); i++) {
 			passable[i] = avoid[i] = false;
@@ -1088,8 +1103,11 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "bookshelf_name");
 			case Terrain.ALCHEMY:
 				return Messages.get(Level.class, "alchemy_name");
-		case Terrain.LUMINARY:
-			return Messages.get(Level.class, "luminary_name");
+		case Terrain.LIGHT_ON:
+			return Messages.get(Level.class, "lighton_name");
+		case Terrain.LIGHT_OFF:
+			return Messages.get(Level.class, "lightoff_name");
+
 			default:
 				return Messages.get(Level.class, "default_name");
 		}
@@ -1128,8 +1146,11 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "alchemy_desc");
 			case Terrain.EMPTY_WELL:
 				return Messages.get(Level.class, "empty_well_desc");
-		case Terrain.LUMINARY:
-			return Messages.get(Level.class, "luminary_desc");
+			case Terrain.LIGHT_ON:
+				return Messages.get(Level.class, "lighton_desc");
+			case Terrain.LIGHT_OFF:
+				return Messages.get(Level.class, "lightoff_desc");
+
 			default:
 				if (tile >= Terrain.WATER_TILES) {
 					return tileDesc( Terrain.WATER );

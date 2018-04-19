@@ -17,6 +17,8 @@ public class VillageLevel extends RegularLevel{
 	{
 		color1  =   0x48763c;
 		color2  =   0x59994a;
+		viewDistance	=	8;
+		seeDistance	=	8;
 	}
 
 	@Override

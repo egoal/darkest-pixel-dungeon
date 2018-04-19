@@ -206,7 +206,7 @@ public abstract class RegularLevel extends Level {
 
 				if (specials.size() > 0 &&
 					r.width() > 3 && r.height() > 3 &&
-					Random.Int( specialRooms * specialRooms + 2 ) == 0) {
+					Random.Int( specialRooms * (specialRooms-1) + 2 ) == 0) {
 
 					if (pitRoomNeeded && !pitMade) {
 
@@ -495,26 +495,8 @@ public abstract class RegularLevel extends Level {
 
 		for(Integer pos: setPsgCells){
 			if(Random.Int(feeling==Feeling.DARK? 20: 12)==0)
-				map[pos.intValue()] =   Terrain.LIGHT;
+				map[pos.intValue()] =   Random.Int(3)==0? Terrain.LIGHT_ON: Terrain.LIGHT_OFF;
 		}
-
-		// passages
-//		int lightStep   =   feeling==Feeling.DARK? 12: 8;
-//		for(int i=0; i<width(); ++i){
-//			if(map[i]==Terrain.WALL &&
-//				(map[i+width]==Terrain.EMPTY || map[i+width]==Terrain.EMPTY_SP) &&
-//				Random.Int(lightStep)==0){
-//				map[i]  =   Terrain.LIGHT;
-//			}
-//		}
-//		for(int i=width; i<length-width; ++i){
-//			if(map[i]==Terrain.WALL &&
-//				((map[i-width]==Terrain.EMPTY || map[i-width]==Terrain.EMPTY_SP) ||
-//				(map[i+width]==Terrain.EMPTY || map[i+width]==Terrain.EMPTY_SP)) &&
-//				Random.Int(lightStep)==0){
-//				map[i]  =   Terrain.LIGHT;
-//			}
-//		}
 	}
 	protected void placeLuminary(Room r){
 		ArrayList<Integer> alCells  =   new ArrayList<Integer>();
@@ -538,7 +520,7 @@ public abstract class RegularLevel extends Level {
 		int lights  =   Random.Float()<0.8f? 1: 2;
 		Collections.shuffle(alCells);
 		for(int i=0; i<lights; ++i)
-			map[alCells.get(i)] =   Terrain.LIGHT;
+			map[alCells.get(i)] =   Random.Int(2)==0? Terrain.LIGHT_ON: Terrain.LIGHT_OFF;
 	}
 	
 	protected void placeDoors( Room r ) {

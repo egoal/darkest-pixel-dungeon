@@ -90,16 +90,9 @@ public final class ShadowCaster {
 
 						// Do nothing
 					} else {
-						// in view
-						if(p<viewDistance)
-							fieldOfView[pos] = true;
-						else if(Level.luminary[pos]){
-							// light nearby
-							for(int i: PathFinder.NEIGHBOURS8){
-								int np  =   pos+i;
-								if(np>=0 && np<Dungeon.level.length())
-									fieldOfView[np] =   true;
-							}
+						if(p<viewDistance || Level.lighted[pos]){
+							// in view or lighted
+							fieldOfView[pos]	=	true;
 						}
 					}
 					

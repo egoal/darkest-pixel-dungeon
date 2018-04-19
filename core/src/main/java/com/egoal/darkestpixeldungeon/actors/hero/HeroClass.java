@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
 import com.egoal.darkestpixeldungeon.items.food.Food;
+import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Challenges;
@@ -97,6 +98,9 @@ public enum HeroClass {
 
 		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
 			new Food().identify().collect();
+
+		if(!Dungeon.isChallenged(Challenges.DARKNESS))
+			new Torch().identify().collect();
 	}
 
 	public Badges.Badge masteryBadge() {
