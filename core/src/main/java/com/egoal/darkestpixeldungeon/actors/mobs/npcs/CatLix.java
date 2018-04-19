@@ -60,12 +60,9 @@ public class CatLix extends NPC{
 			alItems.add(new ScrollOfIdentify());
 			alItems.add(new ScrollOfMagicMapping());
 			alItems.add(new ScrollOfRemoveCurse());
-			alItems.add(new ScrollOfUpgrade());
 		}else{
 			alItems.add(new PotionOfHealing());
 			alItems.add(new PotionOfExperience());
-			alItems.add(new PotionOfStrength());
-			// alItems.add(new PotionOfMight());
 			alItems.add(new PotionOfMindVision());
 			alItems.add(new PotionOfInvisibility());
 		}
@@ -171,7 +168,7 @@ public class CatLix extends NPC{
 			// give items
 			for(Item item: alItems_){
 				if(item.doPickUp(hero)){
-					GLog.i(Messages.get(Dungeon.hero, "you_now_have", item.name()));
+					GLog.w(Messages.get(Dungeon.hero, "you_now_have", item.name()));
 				}else
 					Dungeon.level.drop(item, hero.pos).sprite.drop();
 			}

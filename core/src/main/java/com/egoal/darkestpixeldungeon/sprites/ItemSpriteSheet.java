@@ -262,4 +262,5 @@ public class ItemSpriteSheet {
 	                                                                                    //64 free slots
 	/////
 	public static final int DPD_CAT_GIFT    =   CONTAINERS+7;
+	public static final int DPD_TEST_PAPER  =   SINGLE_USE+15;
 }

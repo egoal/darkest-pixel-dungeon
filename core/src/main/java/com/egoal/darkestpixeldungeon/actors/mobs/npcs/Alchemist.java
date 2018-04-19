@@ -2,12 +2,17 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.DewVial;
 import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.PotionTestPaper;
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Fragile;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -23,6 +28,8 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class Alchemist extends NPC{
 	{
@@ -87,15 +94,38 @@ public class Alchemist extends NPC{
 		dv.empty();
 
 		// give reward
-		// currently some money
-		(new Gold(Random.Int(0, vol*10)+50)).doPickUp(Dungeon.hero);
-//		AlchemistsToolkit atk   =   new AlchemistsToolkit();
-//		if(atk.doPickUp(Dungeon.hero)){
-//			GLog.i(Messages.get(Dungeon.hero, "you_now_have", atk.name()));
-//		}else{
-//			Dungeon.level.drop(atk, Dungeon.hero.pos).sprite.drop();
-//		}
+		(new Gold(Random.Int(0, vol*10)+20)).doPickUp(Dungeon.hero);
 
+		// give 0~3 test paper
+		ArrayList<Potion > alItems    =   new ArrayList<>();
+		alItems.add(new PotionOfFrost());
+		if(Dungeon.hero.heroClass!=HeroClass.WARRIOR) 
+			alItems.add(new PotionOfHealing());
+		alItems.add(new PotionOfInvisibility());
+		alItems.add(new PotionOfLevitation());
+		if(Dungeon.hero.heroClass!=HeroClass.HUNTRESS)
+			alItems.add(new PotionOfMindVision());
+		alItems.add(new PotionOfParalyticGas());
+		alItems.add(new PotionOfPurity());
+		alItems.add(new PotionOfStrength());
+		if(Dungeon.hero.heroClass!=HeroClass.SORCERESS){
+			alItems.add(new PotionOfLiquidFlame());
+			alItems.add(new PotionOfToxicGas());
+		}
+
+		if(vol>=5){
+			// give test papers
+			for(int i=0; i<vol/5 && i<3; ++i){
+				PotionTestPaper ptp=new PotionTestPaper();
+				ptp.setTargetPotion(alItems.get(Random.Int(alItems.size())));
+				if(ptp.doPickUp(Dungeon.hero)){
+				}else{
+					Dungeon.level.drop(ptp,Dungeon.hero.pos).sprite.drop();
+				}
+			}
+
+			GLog.i(Messages.get(this,"reward_given"));
+		}
 		Quest.hasCompleted_ =   true;
 	}
 

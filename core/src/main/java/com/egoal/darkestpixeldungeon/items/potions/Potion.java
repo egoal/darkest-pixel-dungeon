@@ -86,7 +86,7 @@ public class Potion extends Item {
 			put("ivory",ItemSpriteSheet.POTION_IVORY);
 		}
 	};
-	
+
 	private static ItemStatusHandler<Potion> handler;
 	
 	private String color;
