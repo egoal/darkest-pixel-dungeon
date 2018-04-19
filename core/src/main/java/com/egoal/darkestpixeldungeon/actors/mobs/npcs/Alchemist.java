@@ -99,7 +99,7 @@ public class Alchemist extends NPC{
 		// give 0~3 test paper
 		ArrayList<Potion > alItems    =   new ArrayList<>();
 		alItems.add(new PotionOfFrost());
-		if(Dungeon.hero.heroClass!=HeroClass.WARRIOR) 
+		if(Dungeon.hero.heroClass!=HeroClass.WARRIOR)
 			alItems.add(new PotionOfHealing());
 		alItems.add(new PotionOfInvisibility());
 		alItems.add(new PotionOfLevitation());

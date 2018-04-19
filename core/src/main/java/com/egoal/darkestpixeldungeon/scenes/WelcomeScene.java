@@ -58,7 +58,7 @@ public class WelcomeScene extends PixelScene {
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 
-		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
+		Image title = BannerSprites.get( BannerSprites.Type.DPD_PIXEL_DUNGEON );
 		title.brightness(0.6f);
 		add( title );
 
@@ -72,7 +72,7 @@ public class WelcomeScene extends PixelScene {
 
 		align(title);
 
-		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
+		Image signs = new Image( BannerSprites.get( BannerSprites.Type.DPD_PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;
 			@Override
 			public void update() {

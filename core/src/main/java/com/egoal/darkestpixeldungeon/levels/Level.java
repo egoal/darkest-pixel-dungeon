@@ -246,10 +246,22 @@ public abstract class Level implements Bundlable {
 					break;
 				case 3:
 					feeling = Feeling.DARK;
-					addItemToSpawn(new Torch());
+					// addItemToSpawn(new Torch());
 					// viewDistance = (int)Math.ceil(viewDistance/3f);
 					viewDistance    /=  2;
 					break;
+				}
+			}
+
+			// give extra torches
+			int torchCount  =   0;
+			int torchSpawnTime  =   10;
+			for(int i=0; i<torchSpawnTime; ++i){
+				// 0, 1, 4, 9, 16 ...
+				// 1, 5, 17, 37, 65 ...
+				if(Random.Int(4*torchCount*torchCount+1)==0){
+					addItemToSpawn(new Torch());
+					++torchCount;
 				}
 			}
 		}
