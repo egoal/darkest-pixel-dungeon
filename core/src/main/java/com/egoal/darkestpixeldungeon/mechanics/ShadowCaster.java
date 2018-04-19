@@ -90,7 +90,7 @@ public final class ShadowCaster {
 
 						// Do nothing
 					} else {
-						if(p<viewDistance || Level.lighted[pos]){
+						if(p<=viewDistance || Level.lighted[pos]){
 							// in view or lighted
 							fieldOfView[pos]	=	true;
 						}

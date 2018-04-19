@@ -589,9 +589,14 @@ public abstract class Level implements Bundlable {
 		}
 		// update lights
 		BArray.setFalse(lighted);
+		int[] L1norm2   =   new int[]{-width*2,
+			-width-1, -width, -width+1,
+			-2, -1, 0, +1, +2,
+			+width-1, +width, +width+1
+			+width*2};
 		for(int i=0; i<length(); ++i){
 			if(luminary[i]){
-				for(int np: PathFinder.NEIGHBOURS9){
+				for(int np: L1norm2){
 					int pos	=	i+np;
 					if(pos>=0 && pos<length())
 						lighted[pos]	=	true;
