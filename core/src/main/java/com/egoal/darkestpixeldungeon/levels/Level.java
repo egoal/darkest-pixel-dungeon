@@ -251,17 +251,18 @@ public abstract class Level implements Bundlable {
 					viewDistance    /=  2;
 					break;
 				}
-			}
 
-			// give extra torches
-			int torchCount  =   0;
-			int torchSpawnTime  =   10;
-			for(int i=0; i<torchSpawnTime; ++i){
-				// 0, 1, 4, 9, 16 ...
-				// 1, 5, 17, 37, 65 ...
-				if(Random.Int(4*torchCount*torchCount+1)==0){
-					addItemToSpawn(new Torch());
-					++torchCount;
+				// give extra torches
+				int torchCount  =   0;
+				int torchSpawnTime  =   10;
+				for(int i=0; i<torchSpawnTime; ++i){
+					int PROB_NUM	=	4*(torchCount+1)*(torchCount+1)+
+						(Dungeon.depth/2+1)*(Dungeon.depth/2+1)/20;
+					// now the expactation is 1.3->0.7 with 1->25
+					if(Random.Int(PROB_NUM)==0){
+						addItemToSpawn(new Torch());
+						++torchCount;
+					}
 				}
 			}
 		}

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -113,7 +114,10 @@ public class WndTradeItem extends Window {
 		
 		float pos = createDescription( item, true );
 		
-		final int price = price( item );
+		final int price = price(item);
+		// sorcess perk1
+		if(Dungeon.hero.heroClass==HeroClass.SORCERESS)
+			price	=	price*3/4;
 		
 		if (canBuy) {
 			

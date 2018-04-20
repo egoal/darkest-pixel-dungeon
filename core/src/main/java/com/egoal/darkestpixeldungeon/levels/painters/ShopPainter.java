@@ -133,6 +133,9 @@ public class ShopPainter extends Painter {
 					new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
 					new CurareDart().quantity(Random.NormalIntRange(1, 3)));
 			itemsToSpawn.add( new LeatherArmor().identify() );
+			itemsToSpawn.add(new Torch());
+			if(Random.Int(5)==0)
+				itemsToSpawn.add(new Torch());
 			break;
 			
 		case 11:
@@ -141,6 +144,9 @@ public class ShopPainter extends Painter {
 					new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
 					new Shuriken().quantity(Random.NormalIntRange(3, 6)));
 			itemsToSpawn.add( new MailArmor().identify() );
+			itemsToSpawn.add(new Torch());
+			if(Random.Int(6)==0)
+				itemsToSpawn.add(new Torch());
 			break;
 			
 		case 16:
@@ -149,6 +155,9 @@ public class ShopPainter extends Painter {
 					new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
 					new Javelin().quantity(Random.NormalIntRange(3, 6)));
 			itemsToSpawn.add( new ScaleArmor().identify() );
+			itemsToSpawn.add(new Torch());
+			if(Random.Int(10)==0)
+				itemsToSpawn.add(new Torch());
 			break;
 			
 		case 21:
@@ -159,6 +168,7 @@ public class ShopPainter extends Painter {
 			itemsToSpawn.add( new PlateArmor().identify() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
+			itemsToSpawn.add(new Torch());
 			break;
 		}
 

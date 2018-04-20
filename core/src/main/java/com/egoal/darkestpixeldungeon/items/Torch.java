@@ -63,8 +63,9 @@ public class Torch extends Item {
 			hero.sprite.operate( hero.pos );
 			
 			detach( hero.belongings.backpack );
-			Buff.affect( hero, Light.class, Light.DURATION );
-			
+			// Buff.affect( hero, Light.class, Light.DURATION );
+			Buff.affect(hero, Light.class);
+
 			Emitter emitter = hero.sprite.centerEmitter();
 			emitter.start( FlameParticle.FACTORY, 0.2f, 3 );
 			
@@ -83,7 +84,7 @@ public class Torch extends Item {
 	
 	@Override
 	public int price() {
-		return 10 * quantity;
+		return 5*quantity;
 	}
 
 }
