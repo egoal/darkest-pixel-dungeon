@@ -203,7 +203,7 @@ public class Hero extends Char {
 		bundle.put( DEFENSE, defenseSkill );
 		
 		bundle.put( STRENGTH, STR );
-		
+			
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
 

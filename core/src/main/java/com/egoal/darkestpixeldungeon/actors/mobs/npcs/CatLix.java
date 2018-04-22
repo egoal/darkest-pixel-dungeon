@@ -26,6 +26,8 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
+import javafx.scene.control.ButtonBar.ButtonData;
+
 import javax.microedition.khronos.opengles.GL;
 import java.util.ArrayList;
 
@@ -175,6 +177,13 @@ public class CatLix extends NPC{
 
 			Sample.INSTANCE.play(Assets.SND_OPEN);
 			hero.sprite.operate(hero.pos);
+		}
+
+		private static final String ALL_ITEM	=	"all_items";
+		@Override
+		public void storeInBundle(Bundle bundle){
+			super.storeInBundle(bundle);
+			
 		}
 	}
 }
