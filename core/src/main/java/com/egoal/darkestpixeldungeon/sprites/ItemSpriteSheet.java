@@ -260,7 +260,8 @@ public class ItemSpriteSheet {
 	public static final int HOLSTER     = BAGS+4;
 
 	                                                                                    //64 free slots
-	/////
+	// dpd
 	public static final int DPD_CAT_GIFT    =   CONTAINERS+7;
 	public static final int DPD_TEST_PAPER  =   SINGLE_USE+15;
+	public static final int DPD_SORCERESS_WAND	=	WEP_TIER1+6;
 }

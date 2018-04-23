@@ -46,6 +46,7 @@ import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
@@ -210,7 +211,7 @@ public enum HeroClass {
 		// perks
 		hero.STR    =   9;
 
-		(hero.belongings.weapon =   new Knuckles()).identify();
+		(hero.belongings.weapon =   new SorceressWand()).identify();
 		if (!Dungeon.isChallenged(Challenges.NO_ARMOR)){
 			(hero.belongings.armor=new ClothArmor()).identify().upgrade();
 		}
