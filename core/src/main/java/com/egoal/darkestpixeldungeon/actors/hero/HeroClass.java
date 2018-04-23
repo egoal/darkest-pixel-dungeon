@@ -20,6 +20,12 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor;
+import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
+import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
+import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty;
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
@@ -31,6 +37,7 @@ import com.egoal.darkestpixeldungeon.items.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.potions.*;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
@@ -101,6 +108,19 @@ public enum HeroClass {
 
 		if(!Dungeon.isChallenged(Challenges.DARKNESS))
 			new Torch().identify().collect();
+		
+		if(DarkestPixelDungeon.debug()){
+			// debug mde
+			for(int i=0; i<5; ++i){
+				(new PotionOfHealing()).identify().collect();
+				(new ScrollOfMagicMapping()).identify().collect();
+				(new PotionOfStrength()).identify().collect();
+			}
+			(new PlateArmor()).upgrade(6).identify().collect();
+			(new RingOfEvasion()).identify().collect();
+			(new HornOfPlenty()).identify().collect();
+			(new ChaliceOfBlood()).identify().collect();
+		}
 	}
 
 	public Badges.Badge masteryBadge() {

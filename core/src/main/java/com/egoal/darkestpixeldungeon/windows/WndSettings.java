@@ -158,6 +158,19 @@ public class WndSettings extends WndTabbed {
 			add(chkImmersive);
 
 
+			// add debug checkbox
+			CheckBox chkDebug	=	new CheckBox(Messages.get(this, "debug")){
+				@Override
+				protected  void onClick(){
+					super.onClick();
+					DarkestPixelDungeon.debug(checked());
+				}
+			};
+			chkDebug.setRect(0, chkImmersive.bottom()+GAP_LRG, WIDTH, BTN_HEIGHT);
+			chkDebug.checked(DarkestPixelDungeon.debug());
+			chkDebug.enable(true);
+			add(chkDebug);
+			
 			// disable landscape
 			// RedButton btnOrientation = new RedButton( DarkestPixelDungeon.landscape() ?
 			// 		Messages.get(this, "portrait")
@@ -169,6 +182,7 @@ public class WndSettings extends WndTabbed {
 			// };
 			// btnOrientation.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
 			// add( btnOrientation );
+
 		}
 	}
 

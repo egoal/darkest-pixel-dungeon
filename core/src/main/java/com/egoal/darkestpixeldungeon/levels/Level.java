@@ -246,7 +246,7 @@ public abstract class Level implements Bundlable {
 					break;
 				case 3:
 					feeling = Feeling.DARK;
-					// addItemToSpawn(new Torch());
+					addItemToSpawn(new Torch());
 					// viewDistance = (int)Math.ceil(viewDistance/3f);
 					viewDistance    /=  2;
 					break;

@@ -113,11 +113,10 @@ public class WndTradeItem extends Window {
 		Item item = heap.peek();
 		
 		float pos = createDescription( item, true );
-		
-		final int price = price(item);
-		// sorcess perk1
-		if(Dungeon.hero.heroClass==HeroClass.SORCERESS)
-			price	=	price*3/4;
+
+		// sorceress perk1
+		final int price	=	(int)(price(item)*
+				(Dungeon.hero.heroClass==HeroClass.HUNTRESS? 0.75: 1.));
 		
 		if (canBuy) {
 			

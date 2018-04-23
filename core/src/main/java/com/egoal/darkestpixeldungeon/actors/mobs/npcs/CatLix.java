@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -7,28 +8,27 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.CatLixSprite;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndCatLix;
 import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import javafx.scene.control.ButtonBar.ButtonData;
+// import javafx.scene.control.ButtonBar.ButtonData;
 
-import javax.microedition.khronos.opengles.GL;
+// import javax.microedition.khronos.opengles.GL;
 import java.util.ArrayList;
 
 public class CatLix extends NPC{
@@ -51,7 +51,7 @@ public class CatLix extends NPC{
 		// prepare rewards
 		// 0. give some gold
 		gift.identify();
-		gift.addItem(new Gold(Random.Int(120, 150)));
+		gift.addItem(new Gold(Random.Int(60, 90)));
 
 		// 1. give a piece of food
 		gift.addItem(new Food());
@@ -112,13 +112,23 @@ public class CatLix extends NPC{
 		return 1000;
 	}
 
+	private static final String ANSWERED	=	"answered";
+	private static final String PRAISED	=	"praised";
 	@Override
-	public void damage( int dmg, Object src ) {
+	public void storeInBundle(Bundle bundle){
+		super.storeInBundle(bundle);
+		
+		bundle.put(ANSWERED, isAnswered_);
+		bundle.put(PRAISED, isPraised_);
 	}
-
 	@Override
-	public void add( Buff buff ) {
+	public void restoreFromBundle(Bundle bundle){
+		super.restoreFromBundle(bundle);
+		
+		isAnswered_	=	bundle.getBoolean(ANSWERED);
+		isPraised_	=	bundle.getBoolean(PRAISED);
 	}
+	
 
 	/* gift */
 	public static class Gift extends Item{
@@ -180,10 +190,22 @@ public class CatLix extends NPC{
 		}
 
 		private static final String ALL_ITEM	=	"all_items";
+
 		@Override
-		public void storeInBundle(Bundle bundle){
+		public void storeInBundle(Bundle bundle ){
 			super.storeInBundle(bundle);
 			
+			bundle.put(ALL_ITEM, alItems_);
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle){
+			super.restoreFromBundle(bundle);
+			
+			for(Bundlable item: bundle.getCollection(ALL_ITEM)){
+				if(item!=null)
+					alItems_.add((Item)item);
+			}
 		}
 	}
 }

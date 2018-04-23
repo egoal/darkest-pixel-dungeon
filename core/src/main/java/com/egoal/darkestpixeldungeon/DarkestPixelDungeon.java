@@ -263,6 +263,13 @@ public class DarkestPixelDungeon extends Game {
 	 * ---> Prefernces
 	 */
 	
+	public static void debug(boolean value){
+		Preferences.INSTANCE.put(Preferences.KEY_DEBUG, value);
+	}
+	public static boolean debug(){
+		return Preferences.INSTANCE.getBoolean(Preferences.KEY_DEBUG, false);
+	}
+	
 	public static void landscape( boolean value ) {
 		if (android.os.Build.VERSION.SDK_INT >= 9) {
 			Game.instance.setRequestedOrientation(value ?
@@ -429,7 +436,7 @@ public class DarkestPixelDungeon extends Game {
 	}
 	
 	public static int lastClass() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_LAST_CLASS, 0, 0, 3 );
+		return Preferences.INSTANCE.getInt( Preferences.KEY_LAST_CLASS, 0, 0, 4 );
 	}
 
 	public static void challenges( int value ) {

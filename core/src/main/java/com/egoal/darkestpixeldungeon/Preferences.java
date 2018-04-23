@@ -48,6 +48,8 @@ enum Preferences {
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_VERSION      = "version";
 	
+	public static final String KEY_DEBUG	=	"debug";
+	
 	private SharedPreferences prefs;
 	
 	private SharedPreferences get() {

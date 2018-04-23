@@ -18,8 +18,9 @@ public class PotionTestPaper extends Item{
 	private static final String AC_TEST =   "TEST";
 
 	// the target potion
-	private Class<Potion> targetPotion_;
-
+	// private Class<Potion> targetPotion_;
+	private Potion targetPotion_	=	null;
+	
 	{
 		image   =   ItemSpriteSheet.DPD_TEST_PAPER;
 		unique  =   false;
@@ -29,13 +30,14 @@ public class PotionTestPaper extends Item{
 	}
 
 	public<T extends Potion> void setTarget(Class<T> target){
-		targetPotion_	=	target;
+		try{
+			targetPotion_	=	target.newInstance();
+		}catch(Exception e){}
 	}
 
 	@Override
 	public String desc(){
-		Potion p	=	targetPotion_.newInstance();
-		return Messages.get(this, "desc", p.trueName());
+		return Messages.get(this, "desc", targetPotion_.trueName());
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class PotionTestPaper extends Item{
 		}else{
 			// try test and identify
 			detach(curUser.belongings.backpack);
-			if(targetPotion_.isInstance(item)){
+			if(targetPotion_.getClass()==item.getClass()){
 				item.identify();
 				GLog.i(Messages.get(this, "test_succeed", item.name()));
 			}else{
@@ -105,6 +107,6 @@ public class PotionTestPaper extends Item{
 	public void restoreFromBundle(Bundle bundle){
 		super.restoreFromBundle(bundle);
 		if(bundle.contains(TARGET))
-			targetPotion_   =   (Class<Potion>)(bundle.get(TARGET));
+			targetPotion_   =   (Potion)(bundle.get(TARGET));
 	}
 }

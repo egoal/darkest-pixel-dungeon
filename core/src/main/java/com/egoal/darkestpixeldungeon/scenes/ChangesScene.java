@@ -30,12 +30,15 @@ import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.ExitButton;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.windows.WndMessage;
-import com.sun.prism.Image;
+// import com.sun.prism.Image;
+import com.watabou.input.Touchscreen;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 import com.watabou.noosa.TouchArea;
+
+import java.lang.annotation.Inherited;
 
 public class ChangesScene extends PixelScene {
 
@@ -100,7 +103,7 @@ public class ChangesScene extends PixelScene {
 		DarkestPixelDungeon.switchNoFade(TitleScene.class);
 	}
 
-	private RedButton createChangeButton(String version){
+	private RedButton createChangeButton(final String version){
 		RedButton btnVersion	=	new RedButton(version){
 			@Override
 			protected void onClick(){
@@ -117,8 +120,8 @@ public class ChangesScene extends PixelScene {
 
 			add(new TouchArea(chrome){
 				@Override
-				protected void onClick(TouchScene.Touch touch){
-					hide();
+				protected void onClick(Touchscreen.Touch touch){
+					hide();	
 				}
 			});
 		}

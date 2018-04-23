@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
+import com.watabou.utils.Bundle;
 
 public class Light extends FlavourBuff {
 
