@@ -20,9 +20,12 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
+import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
+import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -971,7 +974,9 @@ public class Hero extends Char {
 			
 			// sorceress
 			if(heroClass==HeroClass.SORCERESS){
-				dmg	*=  0.75;
+				// dmg	*=	HeroClass.mapSorceressAnti.getOrDefault(src.getClass(), 1.f);
+				if(HeroClass.mapSorceressAnti.containsKey(src.getClass()))
+					dmg	*=	HeroClass.mapSorceressAnti.get(src.getClass());
 			}
 		}
 		// if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)

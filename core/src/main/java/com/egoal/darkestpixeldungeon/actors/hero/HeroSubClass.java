@@ -39,8 +39,9 @@ public enum HeroSubClass {
 	SNIPER( "sniper" ),
 	WARDEN( "warden" ),
 
-	SLUT("slut"),
-	HUMANCATTLE("humancattle")
+	INVOKER("invoker"),
+	WITCH("witch")
+	
 	;
 	
 	private String title;

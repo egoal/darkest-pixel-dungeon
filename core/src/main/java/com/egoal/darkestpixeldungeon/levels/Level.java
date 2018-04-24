@@ -246,7 +246,7 @@ public abstract class Level implements Bundlable {
 					break;
 				case 3:
 					feeling = Feeling.DARK;
-					addItemToSpawn(new Torch());
+					// addItemToSpawn(new Torch());
 					// viewDistance = (int)Math.ceil(viewDistance/3f);
 					viewDistance    /=  2;
 					break;
@@ -693,7 +693,9 @@ public abstract class Level implements Bundlable {
 			
 			for (int j=0; j < PathFinder.NEIGHBOURS9.length; j++) {
 				int n = i + PathFinder.NEIGHBOURS9[j];
-				if (n >= 0 && n < length() && map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO) {
+				if (n >= 0 && n < length() && 
+						map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO && 
+						map[n]!=Terrain.LIGHT_OFF && map[n]!=Terrain.LIGHT_ON) {
 					d = true;
 					break;
 				}

@@ -158,6 +158,7 @@ public class WndSettings extends WndTabbed {
 			add(chkImmersive);
 
 
+			boolean enableDebug	=	true;
 			// add debug checkbox
 			CheckBox chkDebug	=	new CheckBox(Messages.get(this, "debug")){
 				@Override
@@ -167,8 +168,8 @@ public class WndSettings extends WndTabbed {
 				}
 			};
 			chkDebug.setRect(0, chkImmersive.bottom()+GAP_LRG, WIDTH, BTN_HEIGHT);
-			chkDebug.checked(DarkestPixelDungeon.debug());
-			chkDebug.enable(true);
+			chkDebug.checked(enableDebug? DarkestPixelDungeon.debug(): false);
+			chkDebug.enable(enableDebug);
 			add(chkDebug);
 			
 			// disable landscape

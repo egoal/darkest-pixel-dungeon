@@ -188,7 +188,7 @@ public class VillageLevel extends RegularLevel{
 					if(grass[i+n])
 						count++;
 				}
-				map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
+				map[i]	=	(Random.Int(12)<count)? Terrain.HIGH_GRASS: Terrain.GRASS;
 			}
 		}
 	}

@@ -21,12 +21,19 @@
 package com.egoal.darkestpixeldungeon.actors.hero;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
-import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor;
-import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
+import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
+import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
+import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
+import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
+import com.egoal.darkestpixeldungeon.actors.mobs.Eye;
+import com.egoal.darkestpixeldungeon.actors.mobs.Warlock;
+import com.egoal.darkestpixeldungeon.actors.mobs.Yog;
+import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty;
-import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -38,11 +45,10 @@ import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfRegrowth;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
@@ -50,8 +56,15 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
+import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.plants.Blindweed;
+import com.egoal.darkestpixeldungeon.plants.Firebloom;
+import com.egoal.darkestpixeldungeon.plants.Sorrowmoss;
 import com.watabou.utils.Bundle;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public enum HeroClass {
 
@@ -62,6 +75,19 @@ public enum HeroClass {
 
 	SORCERESS("sorceress");
 
+	public static final HashMap<Class<?>, Float> mapSorceressAnti;
+	static{
+		mapSorceressAnti	=	new HashMap<>();
+		mapSorceressAnti.put(ToxicGas.class, .5f);
+		mapSorceressAnti.put(Poison.class, .5f);
+		mapSorceressAnti.put(Venom.class, .5f);
+		mapSorceressAnti.put(Burning.class, .8f);
+		mapSorceressAnti.put(LightningTrap.Electricity.class, .8f);
+		mapSorceressAnti.put(Warlock.class, .8f);
+		mapSorceressAnti.put(Eye.class, .8f);
+		mapSorceressAnti.put(Yog.BurningFist.class, .8f);
+	}
+	
 	private String title;
 
 	HeroClass( String title ) {
@@ -112,7 +138,7 @@ public enum HeroClass {
 		
 		if(DarkestPixelDungeon.debug()){
 			// debug mde
-			for(int i=0; i<5; ++i){
+			for(int i=0; i<9; ++i){
 				(new PotionOfHealing()).identify().collect();
 				(new ScrollOfMagicMapping()).identify().collect();
 				(new PotionOfStrength()).identify().collect();
@@ -121,6 +147,12 @@ public enum HeroClass {
 			(new RingOfEvasion()).identify().collect();
 			(new HornOfPlenty()).identify().collect();
 			(new ChaliceOfBlood()).identify().collect();
+			(new ExtractionFlask()).identify().collect();
+			(new TomeOfMastery()).identify().collect();
+			(new Blindweed.Seed()).identify().collect();
+			(new Sorrowmoss.Seed()).identify().collect();
+			(new Firebloom.Seed()).identify().collect();
+			(new DewVial()).setVolume(20).identify().collect();
 		}
 	}
 

@@ -458,7 +458,7 @@ public abstract class RegularLevel extends Level {
 	}
 
 	protected  void paintLuminary(){
-		HashSet<Integer> setPsgCells    =   new HashSet<Integer>();
+		HashSet<Integer> setPsgCells    =   new HashSet<>();
 
 		for(Room rm: rooms){
 			if(rm.type==Type.GARDEN || rm.type==Type.MAGIC_WELL)

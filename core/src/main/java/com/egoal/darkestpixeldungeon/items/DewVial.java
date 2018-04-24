@@ -127,7 +127,13 @@ public class DewVial extends Item {
 	}
 
 	public int getVolume(){ return volume; }
-
+	public DewVial setVolume(int v){
+		v	=	v<0? 0: v;
+		v	=	v>MAX_VOLUME? MAX_VOLUME: v;
+		volume	=	v;
+		return this;
+	}
+	
 	public void empty() {volume = 0; updateQuickslot();}
 
 	@Override

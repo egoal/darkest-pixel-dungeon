@@ -264,4 +264,5 @@ public class ItemSpriteSheet {
 	public static final int DPD_CAT_GIFT    =   CONTAINERS+7;
 	public static final int DPD_TEST_PAPER  =   SINGLE_USE+15;
 	public static final int DPD_SORCERESS_WAND	=	WEP_TIER1+6;
+	public static final int DPD_EXTRACTION_FLASK	=	ARTIFACTS+23;
 }

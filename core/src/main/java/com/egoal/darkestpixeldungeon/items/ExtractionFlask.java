@@ -1,0 +1,254 @@
+package com.egoal.darkestpixeldungeon.items;
+
+import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.Chrome;
+import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
+import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas;
+import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.egoal.darkestpixeldungeon.scenes.PixelScene;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.ui.ItemSlot;
+import com.egoal.darkestpixeldungeon.ui.RedButton;
+import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
+import com.egoal.darkestpixeldungeon.ui.Window;
+import com.egoal.darkestpixeldungeon.utils.GLog;
+import com.egoal.darkestpixeldungeon.windows.IconTitle;
+import com.egoal.darkestpixeldungeon.windows.WndBag;
+import com.egoal.darkestpixeldungeon.windows.WndBlacksmith;
+import com.egoal.darkestpixeldungeon.windows.WndMessage;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+
+/**
+ * Created by 93942 on 4/24/2018.
+ */
+
+public class ExtractionFlask extends Item{
+	
+	{
+		image	=	ItemSpriteSheet.DPD_EXTRACTION_FLASK;
+		
+		defaultAction	=	AC_REFINE;
+	}
+	
+	public static final String AC_REFINE	=	"refine";
+	public static final String AC_STRENGTHEN	=	"strengthen";
+	
+	private static final int REFINE_MIN_DEW	=	5;
+	
+	@Override
+	public ArrayList<String > actions(Hero hero){
+		ArrayList<String > actions	=	super.actions(hero);
+		actions.add(AC_REFINE);
+		// witch's perk
+		if(hero.subClass==HeroSubClass.WITCH)
+			actions.add(AC_STRENGTHEN);
+		
+		return actions;
+	}
+	
+	@Override
+	public void execute(Hero hero, String action){
+		super.execute(hero, action);
+		
+		if(action.equals(AC_REFINE)){
+			GameScene.show(new WndExtractionFlask(this, hero, WndExtractionFlask.MODE_REFINE));
+		}else if(action.equals(AC_STRENGTHEN)){
+			GameScene.show(new WndExtractionFlask(this, hero, WndExtractionFlask.MODE_STRENGTHEN));
+		}
+	}
+	
+	@Override
+	public String desc(){
+		String desc	=	super.desc();
+		
+		if(isEquipped(Dungeon.hero)){
+			if(!cursed){
+				desc	+=	"\n\n"+Messages.get(this, "desc_hint");
+			}else{
+				desc	+=	"\n\n"+Messages.get(this, "desc_cursed");
+			}
+		}
+		
+		return desc;
+	}
+	
+	public static String verifyItems(Item item1, Item itme2, int mode){
+		if(mode==WndExtractionFlask.MODE_REFINE){
+			DewVial dv	=	Dungeon.hero.belongings.getItem(DewVial.class);
+			if(dv==null || dv.getVolume()<REFINE_MIN_DEW){
+				return Messages.get(ExtractionFlask.class, "no_water", REFINE_MIN_DEW);
+			}
+		}else if(mode==WndExtractionFlask.MODE_STRENGTHEN){
+			return Messages.get(ExtractionFlask.class, "cannot_strengthen");
+		}
+		return null;
+	}
+	public static void refine(Item item1, Item item2){
+		// cast items
+		item1.detach(Dungeon.hero.belongings.backpack);
+		item2.detach(Dungeon.hero.belongings.backpack);
+		DewVial dv	=	Dungeon.hero.belongings.getItem(DewVial.class);
+		dv.setVolume(dv.getVolume()-REFINE_MIN_DEW);
+
+		// more likely to be toxic gas
+		Item potion	=	Random.Int(2)==0? Generator.random(Generator.Category.POTION): 
+				new PotionOfToxicGas();
+		
+		GLog.i(Messages.get(ExtractionFlask.class, "refine", potion.name));
+		if(potion.doPickUp(Dungeon.hero)){
+		}else{
+			Dungeon.level.drop(potion, Dungeon.hero.pos).sprite.drop();
+		}
+	}
+	public static void strengthen(Item item1, Item item2){
+		
+	}
+	
+	private class WndExtractionFlask extends Window{
+		
+		private static final int BTN_SIZE	=	36;
+		private static final float GAP	=	2;
+		private static final float BTN_GAP	=	10;
+		private static final int WIDTH	=	116;
+		
+		public static final int MODE_REFINE	=	0;
+		public static final int MODE_STRENGTHEN	=	1;
+		
+		private ItemButton btnPressed_;
+		private ItemButton btnItem1_;
+		private ItemButton btnItem2_;
+		private RedButton btnDone_;
+		private int mode_;
+		
+		public WndExtractionFlask(ExtractionFlask ef, Hero hero, int mode){
+			super();
+
+			mode_	=	mode;
+			
+			RenderedTextMultiline rtm	=
+					PixelScene.renderMultiline(Messages.get(this, "prompt"), 6);
+			rtm.maxWidth(WIDTH);
+			rtm.setPos(GAP, GAP);
+			add(rtm);
+			
+			btnItem1_	=	new ItemButton(){
+				@Override
+				protected void onClick(){
+					btnPressed_	=	btnItem1_;
+					GameScene.selectItem(itemSelector, WndBag.Mode.SEED, Messages.get(WndExtractionFlask.class, "select_seed"));
+				}
+			};
+			btnItem1_.setRect((WIDTH-BTN_GAP)/2-BTN_SIZE, rtm.top()+rtm.height()+BTN_GAP, BTN_SIZE, BTN_SIZE);
+			add(btnItem1_);
+			
+			// second one
+			final WndBag.Mode wm	=	mode_==MODE_REFINE? WndBag.Mode.SEED: WndBag.Mode.POTION;
+			final String tip	=	Messages.get(WndExtractionFlask.class, "select_potion");
+			btnItem2_	=	new ItemButton(){
+				@Override
+				protected void onClick(){
+					btnPressed_	=	btnItem2_;
+					GameScene.selectItem(itemSelector, wm, tip);
+				}
+			};
+			btnItem2_.setRect(btnItem1_.right()+BTN_GAP, btnItem1_.top(), BTN_SIZE, BTN_SIZE);			
+			add(btnItem2_);
+			
+			btnDone_	=	new RedButton(Messages.get(this, "done")){
+				@Override
+				protected void onClick(){
+					ExtractionFlask.refine(btnItem1_.item, btnItem2_.item);
+					hide();
+				}
+			};
+			btnDone_.enable(false);
+			btnDone_.setRect(0, btnItem1_.bottom()+BTN_GAP, WIDTH, 20);
+			add(btnDone_);
+			
+			resize(WIDTH, (int)btnDone_.bottom());
+		}
+		
+		protected WndBag.Listener itemSelector	=	new WndBag.Listener(){
+			@Override
+			public void onSelect(Item item){
+				if(item!=null){
+					btnPressed_.item(item);
+					
+					if(btnItem1_.item!=null && btnItem2_.item!=null){
+						String result	=	ExtractionFlask.verifyItems(btnItem1_.item, btnItem2_.item, mode_);
+						if(result==null)
+							btnDone_.enable(true);
+						else{
+							GameScene.show(new WndMessage(result));
+							btnDone_.enable(false);
+						}
+					}
+				}
+			}
+		};
+		
+		// item button
+		public class ItemButton extends Component{
+
+			protected NinePatch bg;
+			protected ItemSlot slot;
+
+			public Item item = null;
+
+			@Override
+			protected void createChildren() {
+				super.createChildren();
+
+				bg = Chrome.get( Chrome.Type.BUTTON );
+				add( bg );
+
+				slot = new ItemSlot() {
+					@Override
+					protected void onTouchDown() {
+						bg.brightness( 1.2f );
+						Sample.INSTANCE.play( Assets.SND_CLICK );
+					};
+					@Override
+					protected void onTouchUp() {
+						bg.resetColor();
+					}
+					@Override
+					protected void onClick() {
+						WndExtractionFlask.ItemButton.this.onClick();
+					}
+				};
+				slot.enable(true);
+				add( slot );
+			}
+
+			protected void onClick() {};
+
+			@Override
+			protected void layout() {
+				super.layout();
+
+				bg.x = x;
+				bg.y = y;
+				bg.size( width, height );
+
+				slot.setRect( x + 2, y + 2, width - 4, height - 4 );
+			};
+
+			public void item( Item item ) {
+				slot.item( this.item = item );
+			}
+		}
+	}
+}
