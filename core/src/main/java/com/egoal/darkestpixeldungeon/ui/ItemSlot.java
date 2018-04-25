@@ -222,6 +222,7 @@ public class ItemSlot extends Button {
 			bottomRight.measure();
 			bottomRight.hardlight( level > 0 ? UPGRADED : DEGRADED );
 		} else if (item instanceof Scroll|| item instanceof Potion) {
+			// scroll and potion gain a icon
 			bottomRight.text( null );
 
 			Integer iconInt;
@@ -231,7 +232,7 @@ public class ItemSlot extends Button {
 				iconInt = ((Potion) item).initials();
 			}
 			if (iconInt != null && iconVisible) {
-				bottomRightIcon = new Image(Assets.CONS_ICONS);
+				bottomRightIcon = new Image(Assets.DPD_CONS_ICONS);
 				int left = iconInt*7;
 				int top = item instanceof Potion ? 0 : 8;
 				bottomRightIcon.frame(left, top, 7, 8);

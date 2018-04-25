@@ -195,4 +195,6 @@ public class Assets {
 
 	public static final String DPD_SORCERESS        =   "dpd/sorceress.png";
 	public static final String DPD_AVATARS          =   "dpd/avatars.png";
+
+	public static final String DPD_CONS_ICONS		=	"dpd/consumable_icons.png";
 }

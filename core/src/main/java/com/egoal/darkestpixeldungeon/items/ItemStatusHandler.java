@@ -37,7 +37,7 @@ public class ItemStatusHandler<T extends Item> {
 	private HashSet<Class<? extends T>> known;
 
 	public ItemStatusHandler( Class<? extends T>[] items, HashMap<String, Integer> labelImages ) {
-
+		// connect item with spritesheet index
 		this.items = items;
 
 		this.itemLabels = new HashMap<>();

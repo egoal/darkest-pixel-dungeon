@@ -50,4 +50,5 @@ public class PotionOfToxicGas extends Potion {
 	public int price() {
 		return isKnown() ? 30 * quantity : super.price();
 	}
+	
 }

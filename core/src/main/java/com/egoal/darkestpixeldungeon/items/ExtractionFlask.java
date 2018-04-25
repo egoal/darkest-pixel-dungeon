@@ -5,9 +5,13 @@ import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
-import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
+import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfHighlyToxicGas;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Spear;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.plants.Sorrowmoss;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -16,14 +20,9 @@ import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.utils.GLog;
-import com.egoal.darkestpixeldungeon.windows.IconTitle;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
-import com.egoal.darkestpixeldungeon.windows.WndBlacksmith;
 import com.egoal.darkestpixeldungeon.windows.WndMessage;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Random;
@@ -45,7 +44,8 @@ public class ExtractionFlask extends Item{
 	public static final String AC_REFINE	=	"refine";
 	public static final String AC_STRENGTHEN	=	"strengthen";
 	
-	private static final int REFINE_MIN_DEW	=	5;
+	// private static final int REFINE_MIN_DEW	=	5;
+	private static final float TIME_TO_EXTRACT	=	2;
 	
 	@Override
 	public ArrayList<String > actions(Hero hero){
@@ -73,38 +73,49 @@ public class ExtractionFlask extends Item{
 	public String desc(){
 		String desc	=	super.desc();
 		
-		if(isEquipped(Dungeon.hero)){
-			if(!cursed){
-				desc	+=	"\n\n"+Messages.get(this, "desc_hint");
-			}else{
-				desc	+=	"\n\n"+Messages.get(this, "desc_cursed");
-			}
+		if(!cursed){
+			desc	+=	"\n\n"+Messages.get(this, "desc_hint");
+		}else{
+			desc	+=	"\n\n"+Messages.get(this, "desc_cursed");
 		}
 		
 		return desc;
 	}
 	
-	public static String verifyItems(Item item1, Item itme2, int mode){
+	public static String verifyItems(Item item1, Item item2, int mode){
 		if(mode==WndExtractionFlask.MODE_REFINE){
 			DewVial dv	=	Dungeon.hero.belongings.getItem(DewVial.class);
-			if(dv==null || dv.getVolume()<REFINE_MIN_DEW){
-				return Messages.get(ExtractionFlask.class, "no_water", REFINE_MIN_DEW);
+			if(dv==null || dv.getVolume()<minDewRequire()){
+				return Messages.get(ExtractionFlask.class, "no_water", minDewRequire());
 			}
 		}else if(mode==WndExtractionFlask.MODE_STRENGTHEN){
-			return Messages.get(ExtractionFlask.class, "cannot_strengthen");
+			// only strengthen toxic gas!
+			if(!(item2 instanceof PotionOfToxicGas))
+				return Messages.get(ExtractionFlask.class, "not_strengthen");
+			if(item2 instanceof PotionOfHighlyToxicGas)
+				return Messages.get(ExtractionFlask.class, "cannot_strengthen");
 		}
 		return null;
 	}
 	public static void refine(Item item1, Item item2){
+		// spend time
+		Dungeon.hero.sprite.centerEmitter().start(Speck.factory(Speck.FORGE), 0.05f, 10);
+		Dungeon.hero.spend(TIME_TO_EXTRACT);
+		Dungeon.hero.busy();
+		
 		// cast items
 		item1.detach(Dungeon.hero.belongings.backpack);
 		item2.detach(Dungeon.hero.belongings.backpack);
 		DewVial dv	=	Dungeon.hero.belongings.getItem(DewVial.class);
-		dv.setVolume(dv.getVolume()-REFINE_MIN_DEW);
+		dv.setVolume(dv.getVolume()-minDewRequire());
 
 		// more likely to be toxic gas
-		Item potion	=	Random.Int(2)==0? Generator.random(Generator.Category.POTION): 
-				new PotionOfToxicGas();
+		Item potion;
+		if(item1 instanceof Sorrowmoss.Seed || item2 instanceof Sorrowmoss.Seed)
+			potion	=	new PotionOfToxicGas();
+		else
+			potion	=	Random.Int(3)==0? new PotionOfToxicGas(): 
+				Generator.random(Generator.Category.POTION);
 		
 		GLog.i(Messages.get(ExtractionFlask.class, "refine", potion.name));
 		if(potion.doPickUp(Dungeon.hero)){
@@ -113,7 +124,25 @@ public class ExtractionFlask extends Item{
 		}
 	}
 	public static void strengthen(Item item1, Item item2){
+		// spend time
+		Dungeon.hero.sprite.centerEmitter().start(Speck.factory(Speck.FORGE), 0.05f, 10);
+		Dungeon.hero.spend(TIME_TO_EXTRACT);
+		Dungeon.hero.busy();
+
+		// cast items
+		item1.detach(Dungeon.hero.belongings.backpack);
+		item2.detach(Dungeon.hero.belongings.backpack);
 		
+		Item potion	=	(new PotionOfHighlyToxicGas()).identify();
+		if(potion.doPickUp(Dungeon.hero)){
+			GLog.i(Messages.get(ExtractionFlask.class, "strengthen", item1.name, item2.name));
+		}else{
+			Dungeon.level.drop(potion, Dungeon.hero.pos).sprite.drop();
+		}
+	}
+	
+	public static int minDewRequire(){
+		return Dungeon.hero.subClass==HeroSubClass.WITCH? 4: 5;
 	}
 	
 	private class WndExtractionFlask extends Window{
@@ -143,6 +172,7 @@ public class ExtractionFlask extends Item{
 			rtm.setPos(GAP, GAP);
 			add(rtm);
 			
+			// first one is seed
 			btnItem1_	=	new ItemButton(){
 				@Override
 				protected void onClick(){
@@ -153,7 +183,7 @@ public class ExtractionFlask extends Item{
 			btnItem1_.setRect((WIDTH-BTN_GAP)/2-BTN_SIZE, rtm.top()+rtm.height()+BTN_GAP, BTN_SIZE, BTN_SIZE);
 			add(btnItem1_);
 			
-			// second one
+			// second one is seed or potion
 			final WndBag.Mode wm	=	mode_==MODE_REFINE? WndBag.Mode.SEED: WndBag.Mode.POTION;
 			final String tip	=	Messages.get(WndExtractionFlask.class, "select_potion");
 			btnItem2_	=	new ItemButton(){
@@ -169,7 +199,11 @@ public class ExtractionFlask extends Item{
 			btnDone_	=	new RedButton(Messages.get(this, "done")){
 				@Override
 				protected void onClick(){
-					ExtractionFlask.refine(btnItem1_.item, btnItem2_.item);
+					if(mode_==MODE_REFINE)
+						ExtractionFlask.refine(btnItem1_.item, btnItem2_.item);
+					else if(mode_==MODE_STRENGTHEN)
+						ExtractionFlask.strengthen(btnItem1_.item, btnItem2_.item);
+					
 					hide();
 				}
 			};
@@ -184,7 +218,8 @@ public class ExtractionFlask extends Item{
 			@Override
 			public void onSelect(Item item){
 				if(item!=null){
-					btnPressed_.item(item);
+					// take from the backpack
+					btnPressed_.item(item.detach(Dungeon.hero.belongings.backpack));
 					
 					if(btnItem1_.item!=null && btnItem2_.item!=null){
 						String result	=	ExtractionFlask.verifyItems(btnItem1_.item, btnItem2_.item, mode_);

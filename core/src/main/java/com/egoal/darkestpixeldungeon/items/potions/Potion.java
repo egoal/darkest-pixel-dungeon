@@ -84,12 +84,13 @@ public class Potion extends Item {
 			put("charcoal",ItemSpriteSheet.POTION_CHARCOAL);
 			put("silver",ItemSpriteSheet.POTION_SILVER);
 			put("ivory",ItemSpriteSheet.POTION_IVORY);
+			// put("darkgreen")
 		}
 	};
 
 	private static ItemStatusHandler<Potion> handler;
 	
-	private String color;
+	protected String color;
 
 	public boolean ownedByFruit = false;
 	
@@ -143,9 +144,11 @@ public class Potion extends Item {
 		if (action.equals( AC_DRINK )) {
 			
 			if (isKnown() && (
+					// debuffs
 					this instanceof PotionOfLiquidFlame ||
 					this instanceof PotionOfToxicGas ||
-					this instanceof PotionOfParalyticGas)) {
+					this instanceof PotionOfParalyticGas ||
+					this instanceof PotionOfHighlyToxicGas)) {
 				
 					GameScene.show(
 						new WndOptions( Messages.get(Potion.class, "harmful"),

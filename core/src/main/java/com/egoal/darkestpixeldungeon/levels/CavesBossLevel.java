@@ -50,7 +50,7 @@ public class CavesBossLevel extends Level {
 		color1 = 0x534f3e;
 		color2 = 0xb9d661;
 		
-		viewDistance = 6;
+		viewDistance = 3;
 	}
 
 	private static final int WIDTH = 32;

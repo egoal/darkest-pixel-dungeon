@@ -29,7 +29,7 @@ public class WandHolster extends Bag {
 	{
 		image = ItemSpriteSheet.HOLSTER;
 		
-		size = 12;
+		size = 16;
 	}
 
 	public static float HOLSTER_SCALE_FACTOR = 0.85f;

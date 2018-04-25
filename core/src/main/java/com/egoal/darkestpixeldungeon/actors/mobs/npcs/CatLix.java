@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.items.potions.*;
@@ -51,7 +52,7 @@ public class CatLix extends NPC{
 		// prepare rewards
 		// 0. give some gold
 		gift.identify();
-		gift.addItem(new Gold(Random.Int(60, 90)));
+		gift.addItem(new Gold(Random.Int(50, 80)));
 
 		// 1. give a piece of food
 		gift.addItem(new Food());

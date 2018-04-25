@@ -72,6 +72,7 @@ public class RogueArmor extends ClassArmor {
 					}
 				}
 				
+				// use a teleportation scroll
 				ScrollOfTeleportation.appear( curUser, target );
 				CellEmitter.get( target ).burst( Speck.factory( Speck.WOOL ), 10 );
 				Sample.INSTANCE.play( Assets.SND_PUFF );

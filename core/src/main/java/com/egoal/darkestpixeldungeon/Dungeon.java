@@ -57,7 +57,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-	public static final int initialDepth_   =   12;
+	public static final int initialDepth_   =   -1;
 
 	public static int transmutation;	// depth number for a well of transmutation
 
@@ -661,7 +661,8 @@ public class Dungeon {
 	}
 
 	public static void observe(){
-		observe( hero.viewDistance+1 );
+		// observe( hero.viewDistance+1 );
+		observe(hero.seeDistance+1);
 	}
 	
 	public static void observe( int dist ) {

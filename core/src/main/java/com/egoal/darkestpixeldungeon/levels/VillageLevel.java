@@ -1,17 +1,17 @@
 package com.egoal.darkestpixeldungeon.levels;
 
-import android.util.Log;
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
+import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
 
 import java.util.*;
-import java.util.concurrent.Callable;
 
 public class VillageLevel extends RegularLevel{
 	{

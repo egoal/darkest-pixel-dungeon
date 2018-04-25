@@ -24,6 +24,8 @@ import com.watabou.utils.Random;
 
 public class Patch {
 	
+	// the live game to generate some thing, like grass, 
+	// i can use this to generate valley
 	public static boolean[] generate( Level level, float seed, int nGen ) {
 		
 		int w = level.width();

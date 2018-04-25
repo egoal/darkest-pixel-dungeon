@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -41,6 +42,7 @@ import com.watabou.noosa.ui.Button;
 
 import java.util.Locale;
 
+// window shown when press the status pane avatar
 public class WndHero extends WndTabbed {
 	
 	private static final int WIDTH		= 115;
@@ -110,7 +112,12 @@ public class WndHero extends WndTabbed {
 			if (hero.SHLD > 0) statSlot( Messages.get(this, "health"), hero.HP + "+" + hero.SHLD + "/" + hero.HT );
 			else statSlot( Messages.get(this, "health"), (hero.HP) + "/" + hero.HT );
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
-
+			
+			// add hunger state slot
+			Hunger hg	=	((Hunger)hero.buff(Hunger.class));
+			statSlot(Messages.get(this, "hunger"), 
+				hg.hunger()+"/"+(int)hg.STARVING);
+			
 			pos += GAP;
 
 			statSlot( Messages.get(this, "gold"), Statistics.goldCollected );

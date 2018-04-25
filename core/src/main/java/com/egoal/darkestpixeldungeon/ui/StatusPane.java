@@ -43,6 +43,7 @@ import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.ColorMath;
 
+// status pane in the game scene
 public class StatusPane extends Component {
 
 	private NinePatch bg;
@@ -78,6 +79,7 @@ public class StatusPane extends Component {
 		bg = new NinePatch( Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
+		// hero portrait
 		add( new TouchArea( 0, 1, 31, 31 ) {
 			@Override
 			protected void onClick( Touch touch ) {
@@ -89,6 +91,7 @@ public class StatusPane extends Component {
 			}
 		} );
 
+		// journal
 		btnJournal = new JournalButton();
 		add( btnJournal );
 
@@ -101,6 +104,7 @@ public class StatusPane extends Component {
 		compass = new Compass( Dungeon.level.exit );
 		add( compass );
 
+		// hp bar
 		rawShielding = new Image( Assets.SHLD_BAR );
 		rawShielding.alpha(0.5f);
 		add(rawShielding);
@@ -111,12 +115,15 @@ public class StatusPane extends Component {
 		hp = new Image( Assets.HP_BAR );
 		add( hp );
 
+		// exp bar
 		exp = new Image( Assets.XP_BAR );
 		add( exp );
 
+		// boss hp
 		bossHP = new BossHealthBar();
 		add( bossHP );
 
+		// the others
 		level = new BitmapText( PixelScene.pixelFont);
 		level.hardlight( 0xFFEBA4 );
 		add( level );

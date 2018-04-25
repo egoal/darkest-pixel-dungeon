@@ -28,12 +28,14 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
 import com.egoal.darkestpixeldungeon.actors.mobs.Eye;
 import com.egoal.darkestpixeldungeon.actors.mobs.Warlock;
 import com.egoal.darkestpixeldungeon.actors.mobs.Yog;
+import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DewVial;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty;
+import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -137,22 +139,26 @@ public enum HeroClass {
 			new Torch().identify().collect();
 		
 		if(DarkestPixelDungeon.debug()){
-			// debug mde
+			// debug mde, give extra materials
 			for(int i=0; i<9; ++i){
-				(new PotionOfHealing()).identify().collect();
 				(new ScrollOfMagicMapping()).identify().collect();
+				
+				(new PotionOfHealing()).identify().collect();
 				(new PotionOfStrength()).identify().collect();
+				(new PotionOfToxicGas()).identify().collect();
+				
+				(new Blindweed.Seed()).identify().collect();
+				(new Sorrowmoss.Seed()).identify().collect();
+				(new Firebloom.Seed()).identify().collect();
 			}
+			
 			(new PlateArmor()).upgrade(6).identify().collect();
 			(new RingOfEvasion()).identify().collect();
 			(new HornOfPlenty()).identify().collect();
 			(new ChaliceOfBlood()).identify().collect();
-			(new ExtractionFlask()).identify().collect();
 			(new TomeOfMastery()).identify().collect();
-			(new Blindweed.Seed()).identify().collect();
-			(new Sorrowmoss.Seed()).identify().collect();
-			(new Firebloom.Seed()).identify().collect();
 			(new DewVial()).setVolume(20).identify().collect();
+			(new ArmorKit()).identify().collect();
 		}
 	}
 
@@ -248,9 +254,11 @@ public enum HeroClass {
 			(hero.belongings.armor=new ClothArmor()).identify().upgrade();
 		}
 
+		(new ExtractionFlask()).identify().collect();
+		
 		new PotionOfToxicGas().identify().collect();
 		// new PotionOfParalyticGas().identify();
-		new PotionOfLiquidFlame().identify().collect();
+		// new PotionOfLiquidFlame().identify().collect();
 
 	}
 
