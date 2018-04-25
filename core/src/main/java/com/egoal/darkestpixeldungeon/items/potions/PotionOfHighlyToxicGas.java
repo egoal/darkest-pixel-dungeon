@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.items.potions;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
+import com.egoal.darkestpixeldungeon.actors.blobs.HighlyToxicGas;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -27,13 +28,8 @@ public class PotionOfHighlyToxicGas extends Potion{
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
 
-		GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
-	}
-	
-	// disable something, since i dont want to shuffle it
-	// item->object, so skip super() here is okay
-	public PotionOfHighlyToxicGas(){
-		super();
+		// longer, sharper
+		GameScene.add( Blob.seed( cell, 1200, HighlyToxicGas.class));
 	}
 	
 	@Override

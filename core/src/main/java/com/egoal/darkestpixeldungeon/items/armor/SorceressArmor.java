@@ -35,7 +35,7 @@ public class SorceressArmor extends ClassArmor{
 		curUser.HP	-=	curUser.HP/3;
 		
 		// effects
-		new Flare(8, 48).color(0xFF0000, true).show(curUser.sprite, 2f);
+		new Flare(8, 48).color(0xFF0000, true).show(curUser.sprite, 3f);
 		Sample.INSTANCE.play(Assets.SND_DEGRADE);
 		Invisibility.dispel();
 		

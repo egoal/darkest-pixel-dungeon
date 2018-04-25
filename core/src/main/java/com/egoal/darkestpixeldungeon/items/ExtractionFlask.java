@@ -145,6 +145,7 @@ public class ExtractionFlask extends Item{
 		return Dungeon.hero.subClass==HeroSubClass.WITCH? 4: 5;
 	}
 	
+	// todo: may lost items, no restore
 	private class WndExtractionFlask extends Window{
 		
 		private static final int BTN_SIZE	=	36;
@@ -204,6 +205,10 @@ public class ExtractionFlask extends Item{
 					else if(mode_==MODE_STRENGTHEN)
 						ExtractionFlask.strengthen(btnItem1_.item, btnItem2_.item);
 					
+					// kill items
+					btnItem1_.item(null);
+					btnItem2_.item(null);
+					
 					hide();
 				}
 			};
@@ -233,6 +238,22 @@ public class ExtractionFlask extends Item{
 				}
 			}
 		};
+
+		@Override
+		public void destroy() {
+			// when close, take back the items not used
+			if(btnItem1_!=null && btnItem1_.item!=null){
+				if(!btnItem1_.item.collect())
+					Dungeon.level.drop(btnItem1_.item, Dungeon.hero.pos);
+			}
+
+			if(btnItem2_!=null && btnItem2_.item!=null){
+				if(!btnItem2_.item.collect())
+					Dungeon.level.drop(btnItem2_.item, Dungeon.hero.pos);
+			}
+
+			super.destroy();
+		}
 		
 		// item button
 		public class ItemButton extends Component{
