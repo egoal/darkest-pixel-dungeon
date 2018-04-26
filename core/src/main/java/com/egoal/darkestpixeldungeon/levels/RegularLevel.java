@@ -469,7 +469,7 @@ public abstract class RegularLevel extends Level {
 				placeLuminary(rm);
 			}else if(rm.type!=Type.NULL){
 				// random place lights
-				if(Random.Float()<(feeling==Feeling.DARK?0.25f:0.5f)){
+				if(Random.Float()<(feeling==Feeling.DARK?0.3f:0.5f)){
 					placeLuminary(rm);
 				}
 			}else{
@@ -494,7 +494,7 @@ public abstract class RegularLevel extends Level {
 		}
 
 		for(Integer pos: setPsgCells){
-			if(Random.Int(feeling==Feeling.DARK? 20: 12)==0)
+			if(Random.Int(feeling==Feeling.DARK? 15: 12)==0)
 				map[pos.intValue()] =   Random.Int(4)==0? Terrain.LIGHT_OFF: Terrain.LIGHT_ON;
 		}
 	}

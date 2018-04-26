@@ -226,7 +226,7 @@ public class VillageLevel extends RegularLevel{
 		CatLix cl   =   new CatLix();
 		do{
 			cl.pos  =   pointToCell(roomEntrance.random());
-		}while(findMob(cl.pos)!=null);
+		}while(findMob(cl.pos)!=null && cl.pos!=entrance);
 		mobs.add(cl);
 
 		// add villagers

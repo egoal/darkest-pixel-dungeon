@@ -39,9 +39,14 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.noosa.TouchArea;
 
 import java.lang.annotation.Inherited;
+import java.util.ArrayList;
 
 public class ChangesScene extends PixelScene {
 
+	private static final int BTN_WIDTH	=	30;
+	private static final int BTN_HEIGHT	=	15;
+	private static final int BTN_GAP	=	2;
+	
 	@Override
 	public void create() {
 		super.create();
@@ -77,13 +82,42 @@ public class ChangesScene extends PixelScene {
 		
 		Component content = list.content();
 		content.clear();
-		RenderedTextMultiline text	=	renderMultiline(Messages.get(this, "info"), 6 );
+		RenderedTextMultiline text	=	renderMultiline(Messages.get(this, "warning")+"\n\n_"+
+			DarkestPixelDungeon.version+"_\n"+
+			Messages.get(this, "info"+DarkestPixelDungeon.version), 6 );
 		text.maxWidth((int) panel.innerWidth());
 		content.add(text);
-		content.setSize( panel.innerWidth(), text.height() );
 
-		//todo: add version buttons
-
+		// add versions' button
+		String[] oldVersions	=	new String[]{
+			"0.1.0", 
+		};
+		{
+			// todo: code lint
+			float sx	=	0f;
+			float sy	=	text.height()+8;
+			int r	=	0;
+			int c	=	0;
+			for(String v: oldVersions){
+				RedButton rb	=	createChangeButton(v);
+				rb.setRect(sx+(BTN_WIDTH+BTN_GAP)*c, sy+(BTN_GAP+BTN_HEIGHT)*r, 
+						BTN_WIDTH, BTN_HEIGHT);
+				content.add(rb);
+				
+				if((++c)==3){
+					++r;
+					c	=	0;
+				}
+			}
+			content.setSize(panel.innerWidth(), sy+(BTN_GAP+BTN_HEIGHT)*r+BTN_HEIGHT);
+		}
+		
+//		RedButton rb	=	createChangeButton("0.1.0");
+//		rb.setRect(0, text.height()+8, BTN_WIDTH, BTN_HEIGHT);
+//		content.add(rb);
+//
+//		content.setSize( panel.innerWidth(), rb.bottom());
+		
 		list.setRect(
 				panel.x + panel.marginLeft(),
 				panel.y + panel.marginTop(),
@@ -107,7 +141,8 @@ public class ChangesScene extends PixelScene {
 		RedButton btnVersion	=	new RedButton(version){
 			@Override
 			protected void onClick(){
-				parent.add(new ChangesWindow("this is a test message: "+version));
+				parent.add(new ChangesWindow(
+						Messages.get(ChangesScene.class, "info"+version)));
 			}
 		};
 

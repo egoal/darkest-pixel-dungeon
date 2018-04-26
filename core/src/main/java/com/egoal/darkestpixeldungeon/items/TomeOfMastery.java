@@ -86,7 +86,7 @@ public class TomeOfMastery extends Item {
 				way2 = HeroSubClass.WARDEN;
 				break;
 			case SORCERESS:
-				way1	=	HeroSubClass.INVOKER;
+				way1	=	HeroSubClass.STARGAZER;
 				way2	=	HeroSubClass.WITCH;
 			}
 			GameScene.show( new WndChooseWay( this, way1, way2 ) );

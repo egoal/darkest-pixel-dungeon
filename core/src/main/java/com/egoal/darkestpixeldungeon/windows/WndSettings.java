@@ -158,7 +158,9 @@ public class WndSettings extends WndTabbed {
 			add(chkImmersive);
 
 
-			boolean enableDebug	=	true;
+			boolean enableDebug	=	false;
+			if(!enableDebug)
+				DarkestPixelDungeon.debug(false);
 			// add debug checkbox
 			CheckBox chkDebug	=	new CheckBox(Messages.get(this, "debug")){
 				@Override
@@ -168,7 +170,7 @@ public class WndSettings extends WndTabbed {
 				}
 			};
 			chkDebug.setRect(0, chkImmersive.bottom()+GAP_LRG, WIDTH, BTN_HEIGHT);
-			chkDebug.checked(enableDebug? DarkestPixelDungeon.debug(): false);
+			chkDebug.checked(DarkestPixelDungeon.debug());
 			chkDebug.enable(enableDebug);
 			add(chkDebug);
 			

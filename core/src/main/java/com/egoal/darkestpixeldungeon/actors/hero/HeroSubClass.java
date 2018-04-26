@@ -39,7 +39,7 @@ public enum HeroSubClass {
 	SNIPER( "sniper" ),
 	WARDEN( "warden" ),
 
-	INVOKER("invoker"),
+	STARGAZER("stargazer"),
 	WITCH("witch")
 	
 	;

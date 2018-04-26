@@ -170,11 +170,16 @@ public class PrisonLevel extends RegularLevel {
 		}
 	}
 	
+//	@Override
+//	public Group addVisuals() {
+//		super.addVisuals();
+//		addPrisonVisuals(this, visuals);
+//		return visuals;
+//	}
+	
 	@Override
-	public Group addVisuals() {
-		super.addVisuals();
-		addPrisonVisuals(this, visuals);
-		return visuals;
+	public void addLightVisuals(Level level, Group group, int pos){
+		group.add(new Torch(pos));
 	}
 
 	public static void addPrisonVisuals(Level level, Group group){

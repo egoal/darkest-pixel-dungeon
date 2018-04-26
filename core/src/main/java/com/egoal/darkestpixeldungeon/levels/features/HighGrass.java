@@ -48,6 +48,7 @@ public class HighGrass {
 		GameScene.updateMap( pos );
 
 		if (!Dungeon.isChallenged( Challenges.NO_HERBALISM )) {
+			// the sandals artifact effect
 			int naturalismLevel = 0;
 
 			if (ch != null) {
@@ -64,7 +65,9 @@ public class HighGrass {
 
 			if (naturalismLevel >= 0) {
 				// Seed, scales from 1/16 to 1/4
-				if (Random.Int(16 - ((int) (naturalismLevel * 3))) == 0) {
+				// in the village level, more unlikely to drop seed
+				int chance	=	Dungeon.depth==0? 30: (16-naturalismLevel*3);
+				if (Random.Int(chance) == 0) {
 					Item seed = Generator.random(Generator.Category.SEED);
 
 					if (seed instanceof BlandfruitBush.Seed) {
@@ -85,7 +88,6 @@ public class HighGrass {
 
 		int leaves = 4;
 		
-
 		if (ch instanceof Hero) {
 			Hero hero = (Hero)ch;
 

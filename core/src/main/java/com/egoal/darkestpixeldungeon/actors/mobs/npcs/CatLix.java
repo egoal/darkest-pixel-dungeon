@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class CatLix extends NPC{
 	{
-		name    =   Messages.get(this, "name");
+		// name    =   Messages.get(this, "name");
 		spriteClass =   CatLixSprite.class;
 
 		properties.add(Property.IMMOVABLE);
@@ -52,7 +52,7 @@ public class CatLix extends NPC{
 		// prepare rewards
 		// 0. give some gold
 		gift.identify();
-		gift.addItem(new Gold(Random.Int(50, 80)));
+		gift.addItem(new Gold(Random.Int(30, 70)));
 
 		// 1. give a piece of food
 		gift.addItem(new Food());
@@ -97,6 +97,7 @@ public class CatLix extends NPC{
 		return Messages.get(this, "desc");
 	}
 
+	// unbreakable
 	@Override
 	public boolean reset() {
 		return true;
@@ -113,6 +114,14 @@ public class CatLix extends NPC{
 		return 1000;
 	}
 
+	@Override
+	public void damage( int dmg, Object src ) {
+	}
+
+	@Override
+	public void add( Buff buff ) {
+	}
+	
 	private static final String ANSWERED	=	"answered";
 	private static final String PRAISED	=	"praised";
 	@Override

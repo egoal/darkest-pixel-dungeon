@@ -1196,13 +1196,9 @@ public class Hero extends Char {
 		while (this.exp >= maxExp()) {
 			this.exp -= maxExp();
 			if (lvl < MAX_LEVEL) {
-				lvl++;
 				levelUp = true;
 
-				HT += 5;
-				HP += 5;
-				attackSkill++;
-				defenseSkill++;
+				updateLevelStates();
 
 			} else {
 				Buff.prolong(this, Bless.class, 30f);
@@ -1225,6 +1221,18 @@ public class Hero extends Char {
 			
 			Badges.validateLevelReached();
 		}
+	}
+	
+	// called when level up
+	private void updateLevelStates(){
+		lvl++;
+		// HT += 5;
+		// holy java conversions!
+		float flvl	=	(float)lvl;
+		HT	=	Math.round(0.003f*(flvl*flvl*flvl)-0.195f*(flvl*flvl)+8f*flvl+15f);
+		HP += 5;
+		attackSkill++;
+		defenseSkill++;
 	}
 	
 	public int maxExp() {

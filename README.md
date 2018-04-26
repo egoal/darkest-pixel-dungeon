@@ -10,6 +10,3 @@ https://github.com/00-Evan/shattered-pixel-dungeon
 Source code of original Pixel Dungeon:
 https://github.com/watabou/pixel-dungeon
 
----
-
-0.0.0 learning source code, few features is added & modified

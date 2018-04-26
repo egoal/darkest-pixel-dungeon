@@ -2,6 +2,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Flare;
@@ -134,6 +136,31 @@ public class Alchemist extends NPC{
 		return Messages.get(this, "desc");
 	}
 
+	// unbreakable
+	@Override
+	public boolean reset() {
+		return true;
+	}
+
+	@Override
+	protected boolean act() {
+		throwItem();
+		return super.act();
+	}
+
+	@Override
+	public int defenseSkill( Char enemy ) {
+		return 1000;
+	}
+
+	@Override
+	public void damage( int dmg, Object src ) {
+	}
+
+	@Override
+	public void add( Buff buff ) {
+	}
+	
 	private void tell(String text){
 		GameScene.show(new WndQuest(this, text));
 	}

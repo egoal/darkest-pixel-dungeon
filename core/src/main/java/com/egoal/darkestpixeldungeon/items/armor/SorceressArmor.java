@@ -46,7 +46,7 @@ public class SorceressArmor extends ClassArmor{
 				Buff.affect(mob, Terror.class, 3).object	=	curUser.id();
 				
 				Venom v	=	new Venom();
-				v.set(5f, curUser.damageRoll());
+				v.set(5f, (curUser.damageRoll()/3+2));
 				v.attachTo(mob);
 			}
 		}
