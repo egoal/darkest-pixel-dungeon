@@ -109,6 +109,7 @@ public class Goo extends Mob {
 	@Override
 	public boolean act() {
 
+		// healing in the water, and update health bar animation
 		if (Level.water[pos] && HP < HT) {
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			if (HP*2 == HT) {
@@ -143,6 +144,7 @@ public class Goo extends Mob {
 	@Override
 	protected boolean doAttack( Char enemy ) {
 		if (pumpedUp == 1) {
+			// pumped an extra turn
 			((GooSprite)sprite).pumpUp();
 			PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
@@ -154,15 +156,15 @@ public class Goo extends Mob {
 			spend( attackDelay() );
 
 			return true;
-		} else if (pumpedUp >= 2 || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
-
+		} else if (pumpedUp >= 2 || Random.Int( (HP*2 <= HT) ? 2 : 6)>0) {
+			// pumped or life below half
 			boolean visible = Dungeon.visible[pos];
 
 			if (visible) {
 				if (pumpedUp >= 2) {
 					((GooSprite) sprite).pumpAttack();
 				}
-				else
+				else // normal attack
 					sprite.attack( enemy.pos );
 			} else {
 				attack( enemy );
@@ -173,7 +175,7 @@ public class Goo extends Mob {
 			return !visible;
 
 		} else {
-
+			// increase pump
 			pumpedUp++;
 
 			((GooSprite)sprite).pumpUp();

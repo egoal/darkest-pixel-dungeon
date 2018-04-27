@@ -171,7 +171,7 @@ public class Hero extends Char {
 		super();
 		name = Messages.get(this, "name");
 		
-		HP = HT = 20;
+		HP = HT = 20+2;
 		STR = STARTING_STR;
 		awareness = 0.1f;
 		
@@ -1229,8 +1229,9 @@ public class Hero extends Char {
 		// HT += 5;
 		// holy java conversions!
 		float flvl	=	(float)lvl;
+		int lastHT	=	HT;
 		HT	=	Math.round(0.003f*(flvl*flvl*flvl)-0.195f*(flvl*flvl)+8f*flvl+15f);
-		HP += 5;
+		HP += (HT-lastHT);
 		attackSkill++;
 		defenseSkill++;
 	}

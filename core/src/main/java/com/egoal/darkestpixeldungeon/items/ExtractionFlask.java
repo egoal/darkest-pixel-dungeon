@@ -39,6 +39,7 @@ public class ExtractionFlask extends Item{
 		image	=	ItemSpriteSheet.DPD_EXTRACTION_FLASK;
 		
 		defaultAction	=	AC_REFINE;
+		unique	=	true;
 	}
 	
 	public static final String AC_REFINE	=	"refine";

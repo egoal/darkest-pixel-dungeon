@@ -46,7 +46,7 @@ public class Thief extends Mob {
 		spriteClass = ThiefSprite.class;
 		
 		HP = HT = 20;
-		defenseSkill = 12;
+		defenseSkill = 6;
 		
 		EXP = 5;
 		maxLvl = 10;
@@ -148,6 +148,7 @@ public class Thief extends Mob {
 			Dungeon.quickslot.clearItem( item );
 			item.updateQuickslot();
 
+			// process on the honey pot
 			if (item instanceof Honeypot){
 				this.item = ((Honeypot)item).shatter(this, this.pos);
 				item.detach( hero.belongings.backpack );
