@@ -197,4 +197,7 @@ public class Assets {
 	public static final String DPD_AVATARS          =   "dpd/avatars.png";
 
 	public static final String DPD_CONS_ICONS		=	"dpd/consumable_icons.png";
+	
+	public static final String DPD_STATUS			=	"dpd/status_pane.png";
+	public static final String DPD_SAN_BAR			=	"dpd/san_bar.png";
 }

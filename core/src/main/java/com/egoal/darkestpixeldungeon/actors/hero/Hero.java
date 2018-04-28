@@ -153,6 +153,9 @@ public class Hero extends Char {
 	public MissileWeapon rangedWeapon = null;
 	public Belongings belongings;
 	
+	public int SAN;
+	public int SAN_MAX	=	100;
+	
 	public int STR;
 	public boolean weakened = false;
 	
@@ -173,6 +176,7 @@ public class Hero extends Char {
 		
 		HP = HT = 20+2;
 		STR = STARTING_STR;
+		SAN	=	70;
 		awareness = 0.1f;
 		
 		belongings = new Belongings( this );
@@ -193,6 +197,7 @@ public class Hero extends Char {
 	private static final String STRENGTH	= "STR";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
+	private static final String SANITY		=	"sanity";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -206,7 +211,8 @@ public class Hero extends Char {
 		bundle.put( DEFENSE, defenseSkill );
 		
 		bundle.put( STRENGTH, STR );
-			
+		bundle.put(SANITY, SAN);	
+		
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
 
@@ -224,6 +230,7 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
+		SAN	=	bundle.getInt(SANITY);
 		updateAwareness();
 		
 		lvl = bundle.getInt( LEVEL );

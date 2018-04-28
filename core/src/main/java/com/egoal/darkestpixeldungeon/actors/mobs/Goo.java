@@ -159,7 +159,7 @@ public class Goo extends Mob {
 		} else if (pumpedUp >= 2 || Random.Int( (HP*2 <= HT) ? 2 : 6)>0) {
 			// pumped or life below half
 			boolean visible = Dungeon.visible[pos];
-
+ 
 			if (visible) {
 				if (pumpedUp >= 2) {
 					((GooSprite) sprite).pumpAttack();

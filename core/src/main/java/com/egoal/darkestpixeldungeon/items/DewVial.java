@@ -39,6 +39,7 @@ public class DewVial extends Item {
 	private static final int MAX_VOLUME	= 25;
 
 	private static final String AC_DRINK	= "DRINK";
+	private static final String AC_SIP	=	"SIP";
 
 	private static final float TIME_TO_DRINK = 1f;
 
@@ -73,6 +74,7 @@ public class DewVial extends Item {
 		ArrayList<String> actions = super.actions( hero );
 		if (volume > 0) {
 			actions.add( AC_DRINK );
+			actions.add(AC_SIP);
 		}
 		return actions;
 	}
@@ -82,50 +84,57 @@ public class DewVial extends Item {
 
 		super.execute( hero, action );
 
-		if (action.equals( AC_DRINK )) {
+		if (action.equals( AC_DRINK )){
 
-			if (volume > 0) {
+			if(volume>0){
 
-				int hppv    =   (int)(hero.HT*
-					(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
+				int hppv	=	(int)(hero.HT*
+						(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
 
-				int needToFill  =   (hero.HT-hero.HP)/hppv;
-				int drink   =   volume<needToFill?volume:needToFill;
+				int needToFill=(hero.HT-hero.HP)/hppv;
+				int drink=volume<needToFill?volume:needToFill;
 
-				int effect  =   Math.min(hero.HT-hero.HP, drink*hppv);
-
-//				int value = 1 + (Dungeon.depth - 1) / 5;
-//				if (hero.heroClass == HeroClass.HUNTRESS) {
-//					value++;
-//				}
-//				value *= volume;
-//				value = (int)Math.max(volume*volume*.01*hero.HT, value);
-//				int effect = Math.min( hero.HT - hero.HP, value );
-				if (effect > 0) {
-					hero.HP += effect;
-					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), volume > 5 ? 2 : 1 );
-					hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "value", effect) );
-				}
-//
-//				volume = 0;
-				volume  -=  drink;
-
-				hero.spend( TIME_TO_DRINK );
-				hero.busy();
-
-				Sample.INSTANCE.play( Assets.SND_DRINK );
-				hero.sprite.operate( hero.pos );
-
-				updateQuickslot();
-
-
-			} else {
-				GLog.w( Messages.get(this, "empty") );
+				consume(drink, hero);
+			}else{
+				GLog.w(Messages.get(this,"empty"));
 			}
 
 		}
+		if(action.equals(AC_SIP)){
+			if(volume>0){
+				int hppv	=	(int)(hero.HT*
+						(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
+
+				int needToFill	=	(hero.HT-hero.HP)/hppv;
+				if(needToFill>5) needToFill	=	5;
+
+				int drink	=	volume<needToFill?volume:needToFill;
+				consume(drink, hero);
+			}else{
+				GLog.w(Messages.get(this,"empty"));
+			}
+		}
 	}
 
+	private void consume(int drink, Hero hero){
+		int hppv	=	(int)(hero.HT*(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
+		int effect=Math.min(hero.HT-hero.HP,drink*hppv);
+
+		hero.HP+=effect;
+		hero.sprite.emitter().burst(Speck.factory(Speck.HEALING),volume>5?2:1);
+		hero.sprite.showStatus(CharSprite.POSITIVE,Messages.get(this,"value",effect));
+
+		volume-=drink;
+
+		hero.spend(TIME_TO_DRINK);
+		hero.busy();
+
+		Sample.INSTANCE.play(Assets.SND_DRINK);
+		hero.sprite.operate(hero.pos);
+
+		updateQuickslot();
+	}
+	
 	public int getVolume(){ return volume; }
 	public DewVial setVolume(int v){
 		v	=	v<0? 0: v;

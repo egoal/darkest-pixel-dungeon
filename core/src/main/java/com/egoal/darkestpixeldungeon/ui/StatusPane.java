@@ -56,6 +56,7 @@ public class StatusPane extends Component {
 	private Image shieldedHP;
 	private Image hp;
 	private Image exp;
+	private Image san;
 
 	private BossHealthBar bossHP;
 
@@ -76,7 +77,7 @@ public class StatusPane extends Component {
 	@Override
 	protected void createChildren() {
 
-		bg = new NinePatch( Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
+		bg = new NinePatch( Assets.DPD_STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
 		// hero portrait
@@ -115,6 +116,10 @@ public class StatusPane extends Component {
 		hp = new Image( Assets.HP_BAR );
 		add( hp );
 
+		// sanity
+		san	=	new Image(Assets.DPD_SAN_BAR);
+		add(san);
+		
 		// exp bar
 		exp = new Image( Assets.XP_BAR );
 		add( exp );
@@ -160,6 +165,9 @@ public class StatusPane extends Component {
 		hp.x = shieldedHP.x = rawShielding.x = 30;
 		hp.y = shieldedHP.y = rawShielding.y = 3;
 
+		san.x	=	hp.x;
+		san.y	=	8;
+		
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
 		depth.x = width - 35.5f - depth.width() / 2f;
@@ -183,6 +191,10 @@ public class StatusPane extends Component {
 		float shield = Dungeon.hero.SHLD;
 		float max = Dungeon.hero.HT;
 
+		float sanity	=	Dungeon.hero.SAN;
+		float maxsanity	=	Dungeon.hero.SAN_MAX;
+		
+		// the avatar effect
 		if (!Dungeon.hero.isAlive()) {
 			avatar.tint(0x000000, 0.5f);
 		} else if ((health/max) < 0.3f) {
@@ -193,10 +205,13 @@ public class StatusPane extends Component {
 			avatar.resetColor();
 		}
 
+		// bars
 		hp.scale.x = Math.max( 0, (health-shield)/max);
 		shieldedHP.scale.x = health/max;
 		rawShielding.scale.x = shield/max;
 
+		san.scale.x	=	Math.max(0, sanity/maxsanity);
+		
 		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 
 		if (Dungeon.hero.lvl != lastLvl) {
