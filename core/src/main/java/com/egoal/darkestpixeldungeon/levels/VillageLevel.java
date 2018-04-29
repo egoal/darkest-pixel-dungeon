@@ -60,8 +60,7 @@ public class VillageLevel extends RegularLevel{
 		paintGrass();
 
 		// no traps
-		// no sign
-
+		
 		return true;
 	}
 	
@@ -218,6 +217,37 @@ public class VillageLevel extends RegularLevel{
 
 	@Override
 	protected void decorate(){
+		// decorate like normal level do, 
+		// just put some tiny stone on the floor, some grass on the wall
+		for (int i=0; i<length; ++i){
+			if (map[i] == Terrain.WALL){
+				int nearGrass	=	0;
+				for(int di: PathFinder.NEIGHBOURS4){
+					int pos	=	i+di;
+					if(pos>=0 && pos<length && map[pos]==Terrain.GRASS){
+						++nearGrass;
+					}
+				}
+				if(Random.Int(5)<nearGrass)
+					map[i]	=	Terrain.WALL_DECO;
+			} 
+		}
+
+		for (int i=width() + 1; i < length() - width() - 1; i++) {
+			if (map[i] == Terrain.EMPTY) {
+
+				int count =
+					(map[i + 1] == Terrain.WALL ? 1 : 0) +
+					(map[i - 1] == Terrain.WALL ? 1 : 0) +
+					(map[i + width()] == Terrain.WALL ? 1 : 0) +
+					(map[i - width()] == Terrain.WALL ? 1 : 0);
+
+				if (Random.Int( 16 ) < count * count) {
+					map[i] = Terrain.EMPTY_DECO;
+				}
+			}
+		}
+		
 		// the village main stage should be stone tile
 		for(int r=roomExit.top+1; r<roomExit.bottom; ++r){
 			for(int c=roomExit.left+1; c<roomExit.right; ++c){
@@ -232,9 +262,18 @@ public class VillageLevel extends RegularLevel{
 				map[i+width()]  =   Terrain.EMPTY;
 		}
 
+		// place sign
+		while (true) {
+			int pos = pointToCell(roomExit.random());
+			if (traps.get(pos) == null && findMob(pos) == null) {
+				map[pos] = Terrain.SIGN;
+				break;
+			}
+		}
+		
 		// hide the entrance stairs
 		map[entrance]   =   Terrain.EMPTY;
-
+		
 	}
 
 	// create
