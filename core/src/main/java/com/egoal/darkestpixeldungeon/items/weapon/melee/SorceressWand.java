@@ -15,6 +15,8 @@ public class SorceressWand extends MeleeWeapon{
 		image	=	ItemSpriteSheet.DPD_SORCERESS_WAND;
 		tier	=	1;
 		DLY	=	1.f;
+		unique	=	true;
+		
 	}
 	
 	public SorceressWand(){

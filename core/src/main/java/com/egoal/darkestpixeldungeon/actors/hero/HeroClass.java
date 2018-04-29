@@ -147,6 +147,7 @@ public enum HeroClass {
 				(new PotionOfStrength()).identify().collect();
 				(new PotionOfToxicGas()).identify().collect();
 				(new PotionOfExperience()).identify().collect();
+				(new PotionOfMindVision()).identify().collect();
 				
 				(new Blindweed.Seed()).identify().collect();
 				(new Sorrowmoss.Seed()).identify().collect();

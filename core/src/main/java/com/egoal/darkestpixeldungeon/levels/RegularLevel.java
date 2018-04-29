@@ -43,7 +43,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public abstract class RegularLevel extends Level {
@@ -495,7 +494,7 @@ public abstract class RegularLevel extends Level {
 
 		for(Integer pos: setPsgCells){
 			if(Random.Int(feeling==Feeling.DARK? 15: 12)==0)
-				map[pos.intValue()] =   Random.Int(4)==0? Terrain.LIGHT_OFF: Terrain.LIGHT_ON;
+				map[pos.intValue()] =   Random.Int(4)==0? Terrain.WALL_LIGHT_OFF: Terrain.WALL_LIGHT_ON;
 		}
 	}
 	protected void placeLuminary(Room r){
@@ -520,7 +519,7 @@ public abstract class RegularLevel extends Level {
 		int lights  =   Random.Float()<0.8f? 1: 2;
 		Collections.shuffle(alCells);
 		for(int i=0; i<lights; ++i)
-			map[alCells.get(i)] =   Random.Int(4)==0? Terrain.LIGHT_OFF: Terrain.LIGHT_ON;
+			map[alCells.get(i)] =   Random.Int(4)==0? Terrain.WALL_LIGHT_OFF: Terrain.WALL_LIGHT_ON;
 	}
 	
 	protected void placeDoors( Room r ) {

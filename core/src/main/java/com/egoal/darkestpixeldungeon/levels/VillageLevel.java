@@ -4,8 +4,10 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.*;
@@ -34,85 +36,13 @@ public class VillageLevel extends RegularLevel{
 	protected boolean build(){
 		if(!initRooms() || rooms.size()<2)
 			return false;
-
-		// select entrance & exit
-		// entrance is below while exit(entrance to the dungeon is on the top)
-
-		// room at bottom is entrance, while exit on the top
-		Iterator iter   =   rooms.iterator();
-		roomEntrance    =   roomExit    =   (Room)iter.next();
-		while(iter.hasNext()){
-			Room rm =   (Room)(iter.next());
-			if(rm.bottom>roomEntrance.bottom)
-				roomEntrance    =   rm;
-			if(rm.top<roomExit.top){
-				roomExit    =   rm;
-			}
-			else if(rm.top==roomExit.top && rm.square()>roomExit.square()){
-				// choose bigger size, make sure only one room is on the top
-//				if(roomExit!=roomEntrance)
-//					rooms.remove(roomExit);
-				roomExit    =   rm;
-			}
-		}
-		// check size
-		if(roomExit.square()<50 || roomExit.top>5 || roomEntrance.bottom<width-5)
-			return false;
-
-		roomEntrance.type   =   Room.Type.ENTRANCE;
-		roomExit.type   =   Room.Type.BOSS_EXIT;
-
-		// now build path
-		Graph.buildDistanceMap(rooms, roomExit);
-		List<Room> lstPath  =   Graph.buildPath(rooms, roomEntrance, roomExit);
-
-		HashSet<Room> rmConnected   =   new HashSet<>();
-		{
-			Room room=roomEntrance;
-			rmConnected.add(room);
-			for(Room next : lstPath){
-				room.connect(next);
-				room    =   next;
-				rmConnected.add(room);
-			}
-		}
-
-		// build again
-		Graph.setPrice(lstPath, roomEntrance.distance);
-		Graph.buildDistanceMap(rooms, roomExit);
-		lstPath =   Graph.buildPath(rooms, roomEntrance, roomExit);
-		{
-			Room room   =   roomEntrance;
-			for(Room next: lstPath){
-				room.connect(next);
-				room    =   next;
-				rmConnected.add(room);
-			}
-		}
-
-		// ensure connections
-		int nConnected  =   (int)(rooms.size()*Random.Float(0.5f, 0.7f));
-		while(rmConnected.size()<nConnected){
-			Room cr =   Random.element(rmConnected);
-			Room or =   Random.element(cr.neigbours);
-			if(!rmConnected.contains(or)){
-				cr.connect(or);
-				rmConnected.add(or);
-			}
-		}
-
-		// no need to give special rooms
-		for(Room rm: rooms)
-			rm.type =   rm.type==Room.Type.NULL?Room.Type.STANDARD:rm.type;
-
-//		specials    =   new ArrayList<>();
-//		if(!assignRoomType())
-//			return false;
-
-		// no feeling
+		
 		feeling =   Feeling.NONE;
-
+		
 		paint();
+		
+		// lanes between the rooms is painted
+		paintLanes();
 
 		// exit is on the room Exit
 		exit    =   roomExit.top * width() + (roomExit.left + roomExit.right) / 2;
@@ -132,6 +62,60 @@ public class VillageLevel extends RegularLevel{
 		// no traps
 		// no sign
 
+		return true;
+	}
+	
+	@Override
+	protected boolean initRooms(){
+		// rewrite the room placement, 
+		// actually, no rooms anymore
+		rooms	=	new HashSet<>();
+		//0. exit room, 1->4
+		{
+			int w	=	Random.Int(10, 16);
+			int h	=	Random.Int(6, 12);
+			int x	=	Random.Int(10, width-w-10);
+			int y	=	Random.Int(1, 4);
+			roomExit	=	(Room) new Room().set(new Rect(x, y, x+w, y+h));
+		}
+		roomExit.type	=	Room.Type.BOSS_EXIT;
+		rooms.add(roomExit);
+		
+		//1. entrance, -3->-1
+		{
+			int x	=	Random.Int(10, width-13);
+			int y	=	height-5;
+			roomEntrance	=	(Room) new Room().set(new Rect(x, y, x+4, y+4));
+		}
+		roomEntrance.type	=	Room.Type.ENTRANCE;
+		rooms.add(roomEntrance);
+		
+		//2. place more rooms
+		{
+			int numRooms	=	Random.Int(6, 12)+2;
+			for(int i=0; i<1000 && rooms.size()<numRooms; ++i){
+				int w	=	Random.Int(4, 9);
+				int h	=	Random.Int(4, 9);
+				int x	=	Random.Int(0, width-w);
+				int y	=	Random.Int(4, height-3-h);
+				Room newRoom	=	(Room)new Room().set(new Rect(x, y, x+w, y+h));
+				
+				for(Room rm: rooms){
+					if(!newRoom.intersect(rm).isEmpty()){
+						// intersects, failed
+						newRoom	=	null;
+						break;
+					}
+				}
+				
+				if(newRoom==null)
+					continue;
+				// set as standard type
+				newRoom.type	=	Room.Type.STANDARD;
+				rooms.add(newRoom);
+			}
+		}
+		
 		return true;
 	}
 
@@ -176,6 +160,45 @@ public class VillageLevel extends RegularLevel{
 		}
 	}
 
+	protected void paintLanes(){
+		ArrayList<Room> rmNotConnected	=	new ArrayList<>();
+		rmNotConnected.addAll(rooms);
+		
+		Room curRoom	=	Random.element(rmNotConnected);
+		rmNotConnected.remove(curRoom);
+		while(!rmNotConnected.isEmpty()){
+			Room toRoom	=	Random.element(rmNotConnected);
+			rmNotConnected.remove(toRoom);
+			
+			// link lanes
+			Point pt0	=	curRoom.random();
+			Point pt1	=	toRoom.random();
+			if(Random.Int(2)==0){
+				linkLaneH(pt0.y, pt0.x, pt1.x);
+				linkLaneV(pt1.x, pt0.y, pt1.y);
+			}else{
+				linkLaneV(pt0.x, pt0.y, pt1.y);
+				linkLaneH(pt1.y, pt0.x, pt1.x);
+			}
+			
+			curRoom	=	toRoom;
+		}
+		
+	}
+	
+	private void linkLaneV(int x, int y1, int y2){
+		int ds	=	y1<y2? 1: -1;
+		for(int y=y1; y!=y2; y+=ds){
+			map[y*width+x]	=	Terrain.EMPTY;
+		}
+	}
+	private void linkLaneH(int y, int x1, int x2){
+		int ds	=	x1<x2? 1: -1;
+		for(int x=x1; x!=x2; x+=ds){
+			map[y*width+x]	=	Terrain.EMPTY;
+		}
+	}
+	
 	@Override
 	protected void paintGrass(){
 		boolean[] grass =   grass();
@@ -223,21 +246,34 @@ public class VillageLevel extends RegularLevel{
 	@Override
 	protected void createMobs(){
 		// add lix the cat in the entrance room
-		CatLix cl   =   new CatLix();
-		do{
-			cl.pos  =   pointToCell(roomEntrance.random());
-		}while(findMob(cl.pos)!=null && cl.pos!=entrance);
-		mobs.add(cl);
-
+		{
+			CatLix cl	=	new CatLix();
+			do{
+				cl.pos	=	pointToCell(roomEntrance.random());
+			}while(findMob(cl.pos)!=null || cl.pos==entrance);
+			mobs.add(cl);
+		}
+		
 		// add villagers
 		// old alchemist
-		Alchemist a =   new Alchemist();
-		Alchemist.Quest.reset();
-		do{
-			a.pos   =   pointToCell(roomExit.random());
-		}while(findMob(a.pos)!=null || !passable[a.pos]);
-		mobs.add(a);
-
+		{
+			Alchemist a	=	new Alchemist();
+			Alchemist.Quest.reset();
+			do{
+				a.pos	=	pointToCell(roomExit.random(1));    // avoid to block the way
+			}while(findMob(a.pos)!=null||!passable[a.pos]);
+			mobs.add(a);
+		}
+		
+		// scholar
+		{
+			Scholar s	=	new Scholar();
+			do{
+				s.pos	=	pointToCell(roomExit.random(1));
+			}while(findMob(s.pos)!=null || !passable[s.pos]);
+			mobs.add(s);
+		}
+		
 		super.createMobs();
 	}
 

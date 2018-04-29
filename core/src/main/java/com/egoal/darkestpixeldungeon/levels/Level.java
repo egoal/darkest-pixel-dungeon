@@ -24,7 +24,6 @@ import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Halo;
-import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
@@ -258,7 +257,7 @@ public abstract class Level implements Bundlable {
 				for(int i=0; i<torchSpawnTime; ++i){
 					int PROB_NUM	=	4*(torchCount+1)*(torchCount+1)+
 						(Dungeon.depth/2+1)*(Dungeon.depth/2+1)/20;
-					// now the expactation is 1.3->0.7 with 1->25
+					// now the expectation is 1.3->0.7 with 1->25
 					if(Random.Int(PROB_NUM)==0){
 						addItemToSpawn(new Torch());
 						++torchCount;
@@ -695,7 +694,7 @@ public abstract class Level implements Bundlable {
 				int n = i + PathFinder.NEIGHBOURS9[j];
 				if (n >= 0 && n < length() && 
 						map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO && 
-						map[n]!=Terrain.LIGHT_OFF && map[n]!=Terrain.LIGHT_ON) {
+						map[n]!=Terrain.WALL_LIGHT_OFF&& map[n]!=Terrain.WALL_LIGHT_ON) {
 					d = true;
 					break;
 				}
@@ -1123,9 +1122,9 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "bookshelf_name");
 			case Terrain.ALCHEMY:
 				return Messages.get(Level.class, "alchemy_name");
-		case Terrain.LIGHT_ON:
+		case Terrain.WALL_LIGHT_ON:
 			return Messages.get(Level.class, "lighton_name");
-		case Terrain.LIGHT_OFF:
+		case Terrain.WALL_LIGHT_OFF:
 			return Messages.get(Level.class, "lightoff_name");
 
 			default:
@@ -1166,9 +1165,9 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "alchemy_desc");
 			case Terrain.EMPTY_WELL:
 				return Messages.get(Level.class, "empty_well_desc");
-			case Terrain.LIGHT_ON:
+			case Terrain.WALL_LIGHT_ON:
 				return Messages.get(Level.class, "lighton_desc");
-			case Terrain.LIGHT_OFF:
+			case Terrain.WALL_LIGHT_OFF:
 				return Messages.get(Level.class, "lightoff_desc");
 
 			default:
@@ -1196,7 +1195,8 @@ public abstract class Level implements Bundlable {
 
 			// pour(FlameParticle.FACTORY, 0.15f);
 
-			add(new Halo(16, 0xFFFFCC, 0.2f ).point( p.x, p.y ) );
+			// add(new Halo(16, 0xFFFFA0, 0.2f).point(p.x, p.y));
+			add(new Halo(20, 0xFFFFCC, 0.2f ).point( p.x, p.y ) );
 		}
 
 		@Override

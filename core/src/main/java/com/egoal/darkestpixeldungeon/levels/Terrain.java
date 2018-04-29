@@ -71,8 +71,8 @@ public class Terrain {
 
 	public static final int CHASM_WATER		= 32;
 
-	public static final int LIGHT_ON		=   33;
-	public static final int LIGHT_OFF		=	34;
+	public static final int WALL_LIGHT_ON	=   33;
+	public static final int WALL_LIGHT_OFF	=	34;
 
 	public static final int WATER_TILES	    = 48;
 	public static final int WATER		    = 63;
@@ -135,8 +135,8 @@ public class Terrain {
 		}
 
 		// dpd
-		flags[LIGHT_ON]		=   LOS_BLOCKING| LUMINARY| UNSTITCHABLE;
-		flags[LIGHT_OFF]	=	flags[WALL];
+		flags[WALL_LIGHT_ON]		=   LOS_BLOCKING| LUMINARY| UNSTITCHABLE;
+		flags[WALL_LIGHT_OFF]	=	flags[WALL];
 	};
 
 	public static int discover( int terr ) {

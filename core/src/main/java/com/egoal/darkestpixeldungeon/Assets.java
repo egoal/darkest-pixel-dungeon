@@ -180,23 +180,26 @@ public class Assets {
 
 	// dpd assets
 	//////////////////////////////////////////////////////
+	// replacement
 	public static final String DPD_DASHBOARD        =   "dpd/dashboard.png";
 	public static final String DPD_ICONS            =   "dpd/icons.png";
 	public static final String DPD_ITEMS            =   "dpd/items.png";
 	public static final String DPD_BANNERS          =   "dpd/banners.png";
-
+	public static final String DPD_CONS_ICONS		=	"dpd/consumable_icons.png";
+	public static final String DPD_AVATARS          =   "dpd/avatars.png";
 	public static final String DPD_FIREBALL         =   "dpd/fireball.png";
 
+	// npc
 	public static final String DPD_CAT_LIX          =   "dpd/cat_lix.png";
 	public static final String DPD_ALCHEMIST        =   "dpd/alchemist.png";
+	public static final String DPD_SCHOLAR			=	"dpd/scholar.png";
 
+	// level
 	public static final String DPD_TILES_VILLAGE    =   "dpd/tiles_village.png";
 	public static final String DPD_WATER_VILLAGE    =   "dpd/water_village.png";
 
+	// character
 	public static final String DPD_SORCERESS        =   "dpd/sorceress.png";
-	public static final String DPD_AVATARS          =   "dpd/avatars.png";
-
-	public static final String DPD_CONS_ICONS		=	"dpd/consumable_icons.png";
 	
 	public static final String DPD_STATUS			=	"dpd/status_pane.png";
 	public static final String DPD_SAN_BAR			=	"dpd/san_bar.png";
