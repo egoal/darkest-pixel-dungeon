@@ -306,9 +306,15 @@ public class VillageLevel extends RegularLevel{
 		
 		// scholar
 		{
+			// scholar is on the right side of the map
 			Scholar s	=	new Scholar();
+			Room theRoom	=	(Room)new Room().set(-1, -1, -1, -1);
+			for(Room rm: rooms){
+				if(rm.right>theRoom.right)
+					theRoom	=	rm;
+			}
 			do{
-				s.pos	=	pointToCell(roomExit.random(1));
+				s.pos	=	pointToCell(theRoom.random(1));
 			}while(findMob(s.pos)!=null || !passable[s.pos]);
 			mobs.add(s);
 		}

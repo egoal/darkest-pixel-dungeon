@@ -17,10 +17,28 @@ ideas:
     地形破坏，需要修改地图机制
     装备系统，misc改动
 
+notes:
+    sprite size: npc-12x14, hero-12x15
+    hit check:
+        roll点: attackSkill > defenseSkill
+        Bless则乘以1.2，如果是魔法则乘以2
+    伤害:
+        effectiveDamage =   damageRoll()-drRoll()
+        effectiveDamage =   attackProc(enemy, effectiveDamage)
+        effectiveDamage =   enemy.defenseProc(this, effectiveDamage)
+
+        enemy.damage(effectiveDamage, this)
+
+        buff imbue
+        
+
 todos:
     炼金术士贴图
+    伤害类型重做，暴击机制        
+
+0.1.2
+done:
     LIGHT_ON, LIGHT_OFF贴图区分
-    伤害类型重做
     村庄生成重写
 
 0.1.1

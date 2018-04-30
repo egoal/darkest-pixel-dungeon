@@ -413,8 +413,9 @@ public class Hero extends Char {
 		if (Dungeon.level.adjacent(pos, enemy.pos))
 			return true;
 
+		//note: check weapon range
 		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
-
+		
 		if (wep != null && Dungeon.level.distance( pos, enemy.pos ) <= wep.reachFactor(this)){
 
 			boolean[] passable = BArray.not(Level.solid, null);
@@ -878,7 +879,7 @@ public class Hero extends Char {
 		enemy = action.target;
 
 		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy )) {
-
+			// can attack, show animation
 			Invisibility.dispel();
 			spend( attackDelay() );
 			sprite.attack( enemy.pos );
@@ -1446,6 +1447,7 @@ public class Hero extends Char {
 		
 		boolean hit = attack( enemy );
 
+		// warrior sub-class perk
 		if (subClass == HeroSubClass.GLADIATOR){
 			if (hit) {
 				Buff.affect( this, Combo.class ).hit();

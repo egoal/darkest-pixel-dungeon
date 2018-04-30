@@ -120,6 +120,7 @@ public abstract class Char extends Actor {
 		}
 	}
 	
+	//note: the attack logical
 	public boolean attack( Char enemy ) {
 
 		if (enemy == null || !enemy.isAlive()) return false;
@@ -129,6 +130,7 @@ public abstract class Char extends Actor {
 		if (hit( this, enemy, false )) {
 			
 			// FIXME
+			// sniper's check
 			int dr = this instanceof Hero&& ((Hero)this).rangedWeapon != null && ((Hero)this).subClass ==
 				HeroSubClass.SNIPER ? 0 : enemy.drRoll();
 			
@@ -156,8 +158,10 @@ public abstract class Char extends Actor {
 			if (shake > 1f)
 				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
 
+			//damage settlement
 			enemy.damage( effectiveDamage, this );
 
+			//note: buff imbue
 			if (buff(FireImbue.class) != null)
 				buff(FireImbue.class).proc(enemy);
 			if (buff(EarthImbue.class) != null)
@@ -226,11 +230,9 @@ public abstract class Char extends Actor {
 	public int attackProc( Char enemy, int damage ) {
 		return damage;
 	}
-	
 	public int defenseProc( Char enemy, int damage ) {
 		return damage;
 	}
-	
 	public float speed() {
 		return buff( Cripple.class ) == null ? baseSpeed : baseSpeed * 0.5f;
 	}
@@ -286,6 +288,9 @@ public abstract class Char extends Actor {
 			die( src );
 		}
 	}
+	
+	// rewrite
+	
 	
 	public void destroy() {
 		HP = 0;
@@ -440,10 +445,10 @@ public abstract class Char extends Actor {
 		// so calling next() here isn't necessary (see Actor.process)
 	}
 	
+	//note: called when the animation is done
 	public void onAttackComplete() {
 		next();
 	}
-	
 	public void onOperateComplete() {
 		next();
 	}

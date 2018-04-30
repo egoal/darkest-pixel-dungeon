@@ -187,8 +187,8 @@ public abstract class Actor implements Bundlable {
 			for (Actor actor : all) {
 
 				//some actors will always go before others if time is equal.
-				if (actor.time < now ||
-						actor.time == now && (current == null || actor.actPriority < current.actPriority)) {
+				if (actor.time < now || actor.time == now && 
+					(current == null || actor.actPriority < current.actPriority)) {
 					now = actor.time;
 					current = actor;
 				}
