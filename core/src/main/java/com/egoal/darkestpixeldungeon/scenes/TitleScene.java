@@ -65,7 +65,7 @@ public class TitleScene extends PixelScene {
 		Image title = BannerSprites.get( BannerSprites.Type.DPD_PIXEL_DUNGEON );
 		add( title );
 
-		float topRegion = Math.max(95f, h*0.45f);
+		float topRegion = Math.max(115f, h*0.45f);
 
 		title.x = (w - title.width()) / 2f;
 		if (DarkestPixelDungeon.landscape())
@@ -76,8 +76,8 @@ public class TitleScene extends PixelScene {
 		align(title);
 
 		// torches beside the title
-		placeTorch(title.x + 22, title.y + 40);
-		placeTorch(title.x + title.width - 22, title.y + 40);
+		placeTorch(title.x + 22, title.y + 55);
+		placeTorch(title.x + title.width - 22, title.y + 55);
 
 		Image signs = new Image( BannerSprites.get( BannerSprites.Type.DPD_PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;

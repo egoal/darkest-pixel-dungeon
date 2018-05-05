@@ -685,34 +685,38 @@ public abstract class Level implements Bundlable {
 
 	protected void cleanWalls() {
 		discoverable = new boolean[length()];
+		if(DarkestPixelDungeon.debug())
+			// can reveal all
+			Arrays.fill(discoverable, true);
+		else{
+			for(int i=0;i<length();i++){
 
-		for (int i=0; i < length(); i++) {
-			
-			boolean d = false;
-			
-			for (int j=0; j < PathFinder.NEIGHBOURS9.length; j++) {
-				int n = i + PathFinder.NEIGHBOURS9[j];
-				if (n >= 0 && n < length() && 
-						map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO && 
-						map[n]!=Terrain.WALL_LIGHT_OFF&& map[n]!=Terrain.WALL_LIGHT_ON) {
-					d = true;
-					break;
-				}
-			}
-			
-			if (d) {
-				d = false;
-				
-				for (int j=0; j < PathFinder.NEIGHBOURS9.length; j++) {
-					int n = i + PathFinder.NEIGHBOURS9[j];
-					if (n >= 0 && n < length() && !pit[n]) {
-						d = true;
+				boolean d=false;
+
+				for(int j=0;j<PathFinder.NEIGHBOURS9.length;j++){
+					int n=i+PathFinder.NEIGHBOURS9[j];
+					if(n>=0&&n<length()&&
+							map[n]!=Terrain.WALL&&map[n]!=Terrain.WALL_DECO&&
+							map[n]!=Terrain.WALL_LIGHT_OFF&&map[n]!=Terrain.WALL_LIGHT_ON){
+						d=true;
 						break;
 					}
 				}
+
+				if(d){
+					d=false;
+
+					for(int j=0;j<PathFinder.NEIGHBOURS9.length;j++){
+						int n=i+PathFinder.NEIGHBOURS9[j];
+						if(n>=0&&n<length()&&!pit[n]){
+							d=true;
+							break;
+						}
+					}
+				}
+
+				discoverable[i]=d;
 			}
-			
-			discoverable[i] = d;
 		}
 	}
 	

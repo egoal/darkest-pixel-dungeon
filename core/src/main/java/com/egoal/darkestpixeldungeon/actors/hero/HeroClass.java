@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Yog;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DewVial;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
+import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
@@ -48,6 +49,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfRegrowth;
@@ -142,6 +144,7 @@ public enum HeroClass {
 			// debug mde, give extra materials
 			for(int i=0; i<9; ++i){
 				(new ScrollOfMagicMapping()).identify().collect();
+				(new ScrollOfPsionicBlast()).identify().collect();
 				
 				(new PotionOfHealing()).identify().collect();
 				(new PotionOfStrength()).identify().collect();
@@ -161,6 +164,8 @@ public enum HeroClass {
 			(new TomeOfMastery()).identify().collect();
 			(new DewVial()).setVolume(20).identify().collect();
 			(new ArmorKit()).identify().collect();
+			
+			(new UrnOfShadow()).identify().collect();
 		}
 	}
 
@@ -249,18 +254,10 @@ public enum HeroClass {
 	// extra classes
 	private static void initSorceress(Hero hero){
 		// perks
-		hero.STR    =   9;
-
 		(hero.belongings.weapon =   new SorceressWand()).identify();
-		if (!Dungeon.isChallenged(Challenges.NO_ARMOR)){
-			(hero.belongings.armor=new ClothArmor()).identify().upgrade();
-		}
-
 		(new ExtractionFlask()).identify().collect();
 		
 		new PotionOfToxicGas().identify().collect();
-		// new PotionOfParalyticGas().identify();
-		// new PotionOfLiquidFlame().identify().collect();
 
 	}
 

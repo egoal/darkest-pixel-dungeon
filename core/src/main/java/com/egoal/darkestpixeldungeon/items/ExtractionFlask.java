@@ -6,11 +6,18 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHighlyToxicGas;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas;
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling;
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable;
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Spear;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.plants.Blindweed;
 import com.egoal.darkestpixeldungeon.plants.Sorrowmoss;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -28,6 +35,7 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by 93942 on 4/24/2018.
@@ -83,6 +91,11 @@ public class ExtractionFlask extends Item{
 		return desc;
 	}
 	
+	private static final HashMap<Class<?>, Class<?> > hmSeed2Enhantment	=	new HashMap<Class<?>, Class<?> >(){
+		{
+			put(Blindweed.Seed.class, Dazzling.class);
+		}
+	};
 	public static String verifyItems(Item item1, Item item2, int mode){
 		if(mode==WndExtractionFlask.MODE_REFINE){
 			DewVial dv	=	Dungeon.hero.belongings.getItem(DewVial.class);
@@ -100,9 +113,10 @@ public class ExtractionFlask extends Item{
 	}
 	public static void refine(Item item1, Item item2){
 		// spend time
-		Dungeon.hero.sprite.centerEmitter().start(Speck.factory(Speck.FORGE), 0.05f, 10);
-		Dungeon.hero.spend(TIME_TO_EXTRACT);
-		Dungeon.hero.busy();
+		curUser.sprite.operate(curUser.pos);
+		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
+		curUser.spend(TIME_TO_EXTRACT);
+		curUser.busy();
 		
 		// cast items
 		item1.detach(Dungeon.hero.belongings.backpack);
@@ -118,10 +132,32 @@ public class ExtractionFlask extends Item{
 			potion	=	Random.Int(3)==0? new PotionOfToxicGas(): 
 				Generator.random(Generator.Category.POTION);
 		
-		GLog.i(Messages.get(ExtractionFlask.class, "refine", potion.name));
+		GLog.i(Messages.get(ExtractionFlask.class, "refine", potion.name()));
 		if(potion.doPickUp(Dungeon.hero)){
 		}else{
 			Dungeon.level.drop(potion, Dungeon.hero.pos).sprite.drop();
+		}
+		
+		// do inscribe
+		KindOfWeapon kow	=	curUser.belongings.weapon;
+		if(kow!=null && kow instanceof Weapon){
+			Weapon wpn	=	(Weapon)kow;
+			if(wpn.STRReq() <= curUser.STR && !wpn.cursed){
+				switch(Random.Int(10)){
+					case 0:
+						wpn.enchant();
+						break;
+					case 1:
+						wpn.enchant(new Venomous());
+						break;
+					case 2:
+					case 3:
+						wpn.enchant(new Unstable());
+						break;
+				}
+			}else{
+				GLog.w(Messages.get(ExtractionFlask.class, "cannot_inscribe"));
+			}
 		}
 	}
 	public static void strengthen(Item item1, Item item2){

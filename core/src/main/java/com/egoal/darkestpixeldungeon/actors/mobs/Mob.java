@@ -88,8 +88,8 @@ public abstract class Mob extends Char{
 
 	protected static final float TIME_TO_WAKE_UP = 1f;
 	
-	public boolean hostile = true;
-	public boolean ally = false;
+	public boolean hostile = true;	// 敌对
+	public boolean ally = false;	// 同盟
 	
 	private static final String STATE	= "state";
 	private static final String SEEN	= "seen";
@@ -507,7 +507,6 @@ public abstract class Mob extends Char{
 		Dungeon.level.mobs.remove( this );
 		
 		if (Dungeon.hero.isAlive()) {
-			
 			if (hostile) {
 				Statistics.enemiesSlain++;
 				Badges.validateMonstersSlain();
@@ -521,6 +520,8 @@ public abstract class Mob extends Char{
 				Badges.validateNightHunter();
 			}
 
+			Dungeon.hero.onMobDied(this);
+			// give exp
 			int exp = exp();
 			if (exp > 0) {
 				Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "exp", exp) );

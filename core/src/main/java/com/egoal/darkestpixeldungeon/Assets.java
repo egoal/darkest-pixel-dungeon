@@ -193,6 +193,7 @@ public class Assets {
 	public static final String DPD_CAT_LIX          =   "dpd/cat_lix.png";
 	public static final String DPD_ALCHEMIST        =   "dpd/alchemist.png";
 	public static final String DPD_SCHOLAR			=	"dpd/scholar.png";
+	public static final String DPD_JESSICA			=	"dpd/jessica.png";
 
 	// level
 	public static final String DPD_TILES_VILLAGE    =   "dpd/tiles_village.png";

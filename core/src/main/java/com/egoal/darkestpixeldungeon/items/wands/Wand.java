@@ -130,11 +130,13 @@ public abstract class Wand extends Item {
 	}
 
 	protected void processSoulMark(Char target, int chargesUsed){
-		if (target != Dungeon.hero &&
-				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
-				Random.Float() < .15f + (level()*chargesUsed*0.03f)){
-			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + level());
-		}
+		// do nothing, since warlock overhauled
+		return;
+//		if (target != Dungeon.hero &&
+//				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
+//				Random.Float() < .15f + (level()*chargesUsed*0.03f)){
+//			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + level());
+//		}
 	}
 
 	@Override

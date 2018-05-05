@@ -99,27 +99,27 @@ public class Alchemist extends NPC{
 		(new Gold(Random.Int(0, vol*10)+20)).doPickUp(Dungeon.hero);
 
 		// give 0~3 test paper
-		ArrayList<Class<?> > potionList	=	new ArrayList<>();
-		potionList.add(PotionOfFrost.class);
-		if(Dungeon.hero.heroClass!=HeroClass.WARRIOR)
-			potionList.add(PotionOfHealing.class);
-		potionList.add(PotionOfInvisibility.class);
-		potionList.add(PotionOfLevitation.class);
-		if(Dungeon.hero.heroClass!=HeroClass.HUNTRESS)
-			potionList.add(PotionOfMindVision.class);
-		potionList.add(PotionOfLiquidFlame.class);
-		potionList.add(PotionOfParalyticGas.class);
-		potionList.add(PotionOfPurity.class);
-		potionList.add(PotionOfStrength.class);
-		if(Dungeon.hero.heroClass!=HeroClass.SORCERESS)
-			potionList.add(PotionOfToxicGas.class);
+//		ArrayList<Class<?> > potionList	=	new ArrayList<>();
+//		potionList.add(PotionOfFrost.class);
+//		if(Dungeon.hero.heroClass!=HeroClass.WARRIOR)
+//			potionList.add(PotionOfHealing.class);
+//		potionList.add(PotionOfInvisibility.class);
+//		potionList.add(PotionOfLevitation.class);
+//		if(Dungeon.hero.heroClass!=HeroClass.HUNTRESS)
+//			potionList.add(PotionOfMindVision.class);
+//		potionList.add(PotionOfLiquidFlame.class);
+//		potionList.add(PotionOfParalyticGas.class);
+//		potionList.add(PotionOfPurity.class);
+//		potionList.add(PotionOfStrength.class);
+//		if(Dungeon.hero.heroClass!=HeroClass.SORCERESS)
+//			potionList.add(PotionOfToxicGas.class);
 		
 		if(vol>=5){
 			// give test papers
 			for(int i=0; i<vol/5 && i<3; ++i){
 				PotionTestPaper ptp=new PotionTestPaper();
 				// ptp.setTargetPotion(alItems.get(Random.Int(alItems.size())));
-				ptp.setTarget((Class<Potion>)potionList.get(Random.Int(potionList.size())));
+				// ptp.setTarget((Class<Potion>)potionList.get(Random.Int(potionList.size())));
 				if(ptp.doPickUp(Dungeon.hero)){
 				}else{
 					Dungeon.level.drop(ptp,Dungeon.hero.pos).sprite.drop();

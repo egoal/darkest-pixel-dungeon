@@ -64,10 +64,10 @@ public class BannerSprites {
 			icon    =   new Image(Assets.DPD_BANNERS);
 			switch(type){
 			case DPD_PIXEL_DUNGEON:
-				icon.frame(icon.texture.uvRect(0, 0, 128, 80));
+				icon.frame(icon.texture.uvRect(0, 0, 128, 100));
 				break;
 			case DPD_PIXEL_DUNGEON_SIGNS:
-				icon.frame(icon.texture.uvRect(0, 80, 128, 160));
+				icon.frame(icon.texture.uvRect(0, 100, 128, 200));
 				break;
 			}
 		}

@@ -36,7 +36,8 @@ import java.util.ArrayList;
 public class Ankh extends Item {
 
 	public static final String AC_BLESS = "BLESS";
-
+	private static int BLESS_CONSUME	=	15;
+	
 	{
 		image = ItemSpriteSheet.ANKH;
 
@@ -61,7 +62,7 @@ public class Ankh extends Item {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions(hero);
 		DewVial vial = hero.belongings.getItem(DewVial.class);
-		if (vial != null && vial.isFull() && !blessed)
+		if (vial != null && vial.getVolume()>=BLESS_CONSUME && !blessed)
 			actions.add( AC_BLESS );
 		return actions;
 	}
@@ -76,7 +77,8 @@ public class Ankh extends Item {
 			DewVial vial = hero.belongings.getItem(DewVial.class);
 			if (vial != null){
 				blessed = true;
-				vial.empty();
+				// vial.empty();
+				vial.setVolume(vial.getVolume()-BLESS_CONSUME);
 				GLog.p( Messages.get(this, "bless") );
 				hero.spend( 1f );
 				hero.busy();

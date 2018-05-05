@@ -466,34 +466,41 @@ public abstract class RegularLevel extends Level {
 			if(rm.type==Type.BLACKSMITH || rm.type==Type.ENTRANCE
 				|| rm.type==Type.RAT_KING || rm.type==Type.SHOP){
 				placeLuminary(rm);
+			}else if(rm.type==Type.TUNNEL || rm.type==Type.PASSAGE){
+				// passages
+				for(int x=rm.left+1; x<rm.right; ++x){
+					for(int y=rm.top+1; y<rm.bottom; ++y){
+						int pos	=	width*y+x;
+						if(map[pos]==Terrain.WALL)
+							// if is adjacent to empty
+							for(int di: PathFinder.NEIGHBOURS4){
+								int np	=	pos+di;
+								if(np>=0 && np<length && (map[np]==Terrain.EMPTY || map[np]==Terrain.EMPTY_DECO)){
+									setPsgCells.add(pos);
+									break;
+								}
+							}
+					}
+				}
 			}else if(rm.type!=Type.NULL){
 				// random place lights
 				if(Random.Float()<(feeling==Feeling.DARK?0.3f:0.5f)){
 					placeLuminary(rm);
 				}
-			}else{
-				// Type.NULL, passage
-				for(int x=rm.left+1; x<rm.right; ++x){
-					int pos =   rm.top*width+x;
-					if(map[pos]==Terrain.WALL)
-						setPsgCells.add(pos);
-					pos =   rm.bottom*width+x;
-					if(map[pos]==Terrain.WALL)
-						setPsgCells.add(pos);
-				}
-				for(int y=rm.top+1; y<rm.bottom; ++y){
-					int pos =   y*width+rm.left;
-					if(map[pos]==Terrain.WALL)
-						setPsgCells.add(pos);
-					pos =   y*width+rm.right;
-					if(map[pos]==Terrain.WALL)
-						setPsgCells.add(pos);
-				}
 			}
 		}
 
+		int NUM_PER	=	0;
+		if(Dungeon.depth<5)
+			NUM_PER	=	8;
+		else if(Dungeon.depth<15)
+			NUM_PER	=	12;
+		else
+			NUM_PER	=	16;
+		if(feeling==Feeling.DARK)
+			NUM_PER	=	NUM_PER/4*5;
 		for(Integer pos: setPsgCells){
-			if(Random.Int(feeling==Feeling.DARK? 15: 12)==0)
+			if(Random.Int(NUM_PER)==0)
 				map[pos.intValue()] =   Random.Int(4)==0? Terrain.WALL_LIGHT_OFF: Terrain.WALL_LIGHT_ON;
 		}
 	}

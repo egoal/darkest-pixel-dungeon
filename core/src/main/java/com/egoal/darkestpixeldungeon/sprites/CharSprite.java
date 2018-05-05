@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.effects.FloatingText;
 import com.egoal.darkestpixeldungeon.effects.TorchHalo;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
+import com.egoal.darkestpixeldungeon.effects.particles.SoulFlameParticle;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfInvisibility;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -64,7 +65,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private static final float FLASH_INTERVAL	= 0.05f;
 	
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, 
+		SOUL_BURNING, 
 	}
 	
 	protected Animation idle;
@@ -89,6 +91,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	protected EmoIcon emo;
 
+	protected Emitter soulburning_;
+	
 	private Tweener jumpTweener;
 	private Callback jumpCallback;
 
@@ -300,6 +304,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				marked = emitter();
 				marked.pour(ShadowParticle.UP, 0.1f);
 				break;
+			case SOUL_BURNING:
+				soulburning_	=	emitter();
+				soulburning_.pour(SoulFlameParticle.FACTORY, 0.06f);
+				if(visible){
+					Sample.INSTANCE.play(Assets.SND_BURNING);
+				}
+				break;
 		}
 	}
 	
@@ -351,6 +362,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				if (marked != null){
 					marked.on = false;
 					marked = null;
+				}
+				break;
+			case SOUL_BURNING:
+				if(soulburning_!=null){
+					soulburning_.on	=	false;
+					soulburning_	=	null;
 				}
 				break;
 		}

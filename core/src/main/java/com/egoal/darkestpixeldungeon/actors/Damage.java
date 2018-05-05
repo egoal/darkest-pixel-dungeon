@@ -15,33 +15,39 @@ public class Damage{
 		PURELY, 
 	}
 	
-	public class Category{
-		public static final int NORMAL		=	0x01;
-		public static final int CRITICAL	=	0x02;
-		public static final int FIRE		=	0x04;
-		public static final int POISON		=	0x08;
+	public class Feature{
+		public static final int NONE		=	0x0000;
+		public static final int CRITICAL	=	0x0001;
+		public static final int EXACTLY		=	0x0002;	// cannot miss
+		
+		public static final int FIRE		=	0x0010;
+		public static final int POISON		=	0x0020;
+		public static final int ICE			=	0x0040;
+		public static final int LIGHT		=	0x0080;
 	}
 	
 	// attributes
 	public int value	=	0;
 	public Type type	=	Type.PHYSICAL;
-	public int category	=	Category.NORMAL;
-	public Char caster	=	null;
-	public Char target	=	null;
+	public int feature	=	Feature.NONE;
+	public Object from	=	null;
+	public Object to	=	null;
 	
-	public Damage(int v){
+	public Damage(int v, Object from, Object to){
 		value	=	v;
+		this.from	=	from;
+		this.to	=	to;
 	}
-	public Damage(int v, Type t, int c){
-		value	=	v;
+	
+	public Damage setType(Type t){
 		type	=	t;
-		category	=	c;
+		return this;
 	}
-	public Damage(int v, Type t, int c, Char from, Char to){
-		value	=	v;
-		type	=	t;
-		category	=	c;
-		caster	=	from;
-		target	=	to;
+	public Damage addFeature(int f){
+		feature	=	feature|f;
+		return this;
+	}
+	public boolean isFeatured(int f){
+		return (feature&f) !=0;
 	}
 }

@@ -89,7 +89,7 @@ public class DewVial extends Item {
 			if(volume>0){
 
 				int hppv	=	(int)(hero.HT*
-						(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
+						(hero.heroClass==HeroClass.HUNTRESS?0.12:0.08));
 
 				int needToFill=(hero.HT-hero.HP)/hppv;
 				int drink=volume<needToFill?volume:needToFill;

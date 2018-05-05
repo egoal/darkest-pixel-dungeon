@@ -2,6 +2,10 @@ package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfHighlyToxicGas;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -19,7 +23,7 @@ public class PotionTestPaper extends Item{
 
 	// the target potion
 	// private Class<Potion> targetPotion_;
-	private Potion targetPotion_	=	null;
+	// private Potion targetPotion_	=	null;
 	
 	{
 		image   =   ItemSpriteSheet.DPD_TEST_PAPER;
@@ -28,17 +32,17 @@ public class PotionTestPaper extends Item{
 		defaultAction   =   AC_TEST;
 		stackable   =   true;
 	}
+	
+//	public<T extends Potion> void setTarget(Class<T> target){
+//		try{
+//			targetPotion_	=	target.newInstance();
+//		}catch(Exception e){}
+//	}
 
-	public<T extends Potion> void setTarget(Class<T> target){
-		try{
-			targetPotion_	=	target.newInstance();
-		}catch(Exception e){}
-	}
-
-	@Override
-	public String desc(){
-		return Messages.get(this, "desc", targetPotion_.trueName());
-	}
+//	@Override
+//	public String desc(){
+//		return Messages.get(this, "desc", targetPotion_.trueName());
+//	}
 
 	@Override
 	public ArrayList<String> actions(Hero hero){
@@ -73,9 +77,10 @@ public class PotionTestPaper extends Item{
 		}else{
 			// try test and identify
 			detach(curUser.belongings.backpack);
-			if(targetPotion_.getClass()==item.getClass()){
-				item.identify();
-				GLog.i(Messages.get(this, "test_succeed", item.name()));
+			if(item instanceof PotionOfLiquidFlame || item instanceof PotionOfToxicGas ||
+				item instanceof PotionOfParalyticGas || item instanceof PotionOfHighlyToxicGas){
+				// item.identify();
+				GLog.w(Messages.get(this, "test_succeed", item.name()));
 			}else{
 				GLog.i(Messages.get(this, "test_failed"));
 			}
@@ -100,13 +105,13 @@ public class PotionTestPaper extends Item{
 	@Override
 	public void storeInBundle(Bundle bundle){
 		super.storeInBundle(bundle);
-		bundle.put(TARGET, targetPotion_);
+		// bundle.put(TARGET, targetPotion_);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle){
 		super.restoreFromBundle(bundle);
-		if(bundle.contains(TARGET))
-			targetPotion_   =   (Potion)(bundle.get(TARGET));
+//		if(bundle.contains(TARGET))
+//			targetPotion_   =   (Potion)(bundle.get(TARGET));
 	}
 }

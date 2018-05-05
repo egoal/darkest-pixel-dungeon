@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -126,8 +127,16 @@ public class TomeOfMastery extends Item {
 		curUser.sprite.emitter().burst( Speck.factory( Speck.MASTERY ), 12 );
 		GLog.w( Messages.get(this, "way", way.title()) );
 		
+		// when choose
 		if (way == HeroSubClass.BERSERKER) {
 			Buff.affect( curUser, Berserk.class );
+		}
+		if(way==HeroSubClass.WARLOCK){
+			UrnOfShadow uos	=	new UrnOfShadow();
+			if(uos.doPickUp(curUser)){
+				GLog.w(Messages.get(Dungeon.hero, "you_now_have", uos.name()));
+			}else
+				Dungeon.level.drop(uos, curUser.pos).sprite.drop();
 		}
 	}
 }

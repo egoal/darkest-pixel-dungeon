@@ -267,4 +267,5 @@ public class ItemSpriteSheet {
 	public static final int DPD_EXTRACTION_FLASK	=	ARTIFACTS+23;
 	public static final int DPD_ARMOR_SORCERESS	=	ARMOR+9;
 	public static final int DPD_HIGHLY_TOXIC_POTION	=	POTIONS+12;
+	public static final int DPD_URN_OF_SHADOW	=	ARTIFACTS+24;
 }

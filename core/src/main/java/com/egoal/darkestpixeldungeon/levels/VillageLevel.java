@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
@@ -91,7 +92,7 @@ public class VillageLevel extends RegularLevel{
 		
 		//2. place more rooms
 		{
-			int numRooms	=	Random.Int(6, 12)+2;
+			int numRooms	=	Random.Int(8, 12)+2;
 			for(int i=0; i<1000 && rooms.size()<numRooms; ++i){
 				int w	=	Random.Int(4, 9);
 				int h	=	Random.Int(4, 9);
@@ -302,6 +303,15 @@ public class VillageLevel extends RegularLevel{
 				a.pos	=	pointToCell(roomExit.random(1));    // avoid to block the way
 			}while(findMob(a.pos)!=null||!passable[a.pos]);
 			mobs.add(a);
+		}
+		
+		// jessica
+		{
+			Jessica j	=	new Jessica();
+			do{
+				j.pos	=	pointToCell(roomExit.random(1));
+			}while(findMob(j.pos)!=null || !passable[j.pos]);
+			mobs.add(j);
 		}
 		
 		// scholar

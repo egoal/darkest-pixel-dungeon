@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
+import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -296,7 +297,7 @@ public class Hero extends Char {
 		}
 
 		if(heroClass==HeroClass.SORCERESS)
-			evasion *=  0.8;
+			evasion *=  0.75;
 
 		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 10 - STR();
 		if (aEnc > 0) {
@@ -1460,6 +1461,14 @@ public class Hero extends Char {
 		curAction = null;
 
 		super.onAttackComplete();
+	}
+	
+	public void onMobDied(Mob mob){
+		// warlock 
+		UrnOfShadow uos	=	belongings.getItem(UrnOfShadow.class);
+		if(uos!=null){
+			uos.collectSoul(mob);
+		}
 	}
 	
 	@Override
