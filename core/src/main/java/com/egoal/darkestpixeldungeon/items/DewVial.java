@@ -20,6 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.items;
 
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
+import com.egoal.darkestpixeldungeon.actors.buffs.Ooze;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -40,8 +43,10 @@ public class DewVial extends Item {
 
 	private static final String AC_DRINK	= "DRINK";
 	private static final String AC_SIP	=	"SIP";
+	private static final String AC_WASH	=	"WASH";
 
 	private static final float TIME_TO_DRINK = 1f;
+	private static final float TIME_TO_WASH	=	1f;
 
 	private static final String TXT_STATUS	= "%d/%d";
 
@@ -75,6 +80,8 @@ public class DewVial extends Item {
 		if (volume > 0) {
 			actions.add( AC_DRINK );
 			actions.add(AC_SIP);
+			if(volume>5)
+				actions.add(AC_WASH);
 		}
 		return actions;
 	}
@@ -112,6 +119,21 @@ public class DewVial extends Item {
 				consume(drink, hero);
 			}else{
 				GLog.w(Messages.get(this,"empty"));
+			}
+		}
+		if(action.equals(AC_WASH)){
+			if(volume>=5){
+				Buff.detach(curUser, Ooze.class);
+				Buff.detach(curUser, Burning.class);
+				
+				volume	-=	5;
+				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "ac_wash"));
+				curUser.spend(TIME_TO_WASH);
+				curUser.busy();
+
+				curUser.sprite.operate(curUser.pos);
+				
+				updateQuickslot();
 			}
 		}
 	}

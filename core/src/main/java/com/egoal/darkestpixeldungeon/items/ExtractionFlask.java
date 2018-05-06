@@ -37,6 +37,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.microedition.khronos.opengles.GL;
+
 /**
  * Created by 93942 on 4/24/2018.
  */
@@ -125,38 +127,44 @@ public class ExtractionFlask extends Item{
 		dv.setVolume(dv.getVolume()-minDewRequire());
 
 		// more likely to be toxic gas
-		Item potion;
+		Item potion	=	null;
 		if(item1 instanceof Sorrowmoss.Seed || item2 instanceof Sorrowmoss.Seed)
 			potion	=	new PotionOfToxicGas();
-		else
-			potion	=	Random.Int(3)==0? new PotionOfToxicGas(): 
-				Generator.random(Generator.Category.POTION);
-		
-		GLog.i(Messages.get(ExtractionFlask.class, "refine", potion.name()));
-		if(potion.doPickUp(Dungeon.hero)){
-		}else{
-			Dungeon.level.drop(potion, Dungeon.hero.pos).sprite.drop();
+		else{
+			if(Random.Int(10)==0)
+				GLog.w(Messages.get(ExtractionFlask.class, "refine_failed"));
+			else
+				potion=Random.Int(3)==0?new PotionOfToxicGas():
+					Generator.random(Generator.Category.POTION);
 		}
 		
-		// do inscribe
-		KindOfWeapon kow	=	curUser.belongings.weapon;
-		if(kow!=null && kow instanceof Weapon){
-			Weapon wpn	=	(Weapon)kow;
-			if(wpn.STRReq() <= curUser.STR && !wpn.cursed){
-				switch(Random.Int(10)){
-					case 0:
-						wpn.enchant();
-						break;
-					case 1:
-						wpn.enchant(new Venomous());
-						break;
-					case 2:
-					case 3:
-						wpn.enchant(new Unstable());
-						break;
-				}
+		if(potion!=null){
+			GLog.i(Messages.get(ExtractionFlask.class,"refine",potion.name()));
+			if(potion.doPickUp(Dungeon.hero)){
 			}else{
-				GLog.w(Messages.get(ExtractionFlask.class, "cannot_inscribe"));
+				Dungeon.level.drop(potion,Dungeon.hero.pos).sprite.drop();
+			}
+
+			// do inscribe
+			KindOfWeapon kow=curUser.belongings.weapon;
+			if(kow!=null&&kow instanceof Weapon){
+				Weapon wpn=(Weapon)kow;
+				if(wpn.STRReq()<curUser.STR&&!wpn.cursed){
+					switch(Random.Int(10)){
+						case 0:
+							wpn.enchant();
+							break;
+						case 1:
+							wpn.enchant(new Venomous());
+							break;
+						case 2:
+						case 3:
+							wpn.enchant(new Unstable());
+							break;
+					}
+				}else{
+					GLog.w(Messages.get(ExtractionFlask.class,"cannot_inscribe"));
+				}
 			}
 		}
 	}
