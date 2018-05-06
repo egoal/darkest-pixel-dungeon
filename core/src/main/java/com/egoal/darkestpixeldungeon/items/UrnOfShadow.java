@@ -2,11 +2,19 @@ package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.SoulBurning;
+import com.egoal.darkestpixeldungeon.actors.buffs.SoulMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
+import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.scenes.CellSelector;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -35,7 +43,7 @@ public class UrnOfShadow extends Item{
 	}
 	
 	private static final int MAX_VOLUME	=	10;
-	private static final float COLLECT_RANGE	=	6;
+	private static final float COLLECT_RANGE	=	4;
 	private int volume	=	0;
 	
 	private static final String AC_CONSUME	=	"CONSUME";
@@ -84,20 +92,31 @@ public class UrnOfShadow extends Item{
 			volume	+=	1;
 			GLog.i(Messages.get(this, "collected", mob.name));
 			// show effect
-			CellEmitter.get(curUser.pos).burst(ShadowParticle.UP, 5);
+			CellEmitter.get(curUser.pos).burst(ShadowParticle.CURSE, 5);
 			Sample.INSTANCE.play(Assets.SND_BURNING);
 		}else{
 			GLog.w(Messages.get(this, "full"));
 		}
+
+		updateQuickslot();
 	}
 	
 	// check to not be negative value
 	int volume(){ return volume; }
-	void consume(int v){ volume-=v; }
+	void consume(int v){ 
+		volume	-=	v;
+		updateQuickslot();
+	}
 	
 	public boolean isFull(){ return volume>= MAX_VOLUME; }
 	@Override
 	public String status(){ return Messages.format("%d", volume); }
+	@Override
+	public String desc(){
+		String desc	=	super.desc();
+		desc	+=	"\n\n"+Messages.get(this, "desc_hint");
+		return desc;
+	}
 	
 	// the casts 
 	public class WndUrnOfShadow extends Window{
@@ -106,9 +125,14 @@ public class UrnOfShadow extends Item{
 		private static final float GAP	=	2;
 		
 		private static final String OP_SOUL_BURN	=	"soul_burn";
+		private static final int COST_SOUL_BURN	=	3;
 		private static final String OP_SOUL_MARK	=	"soul_mark";
+		private static final int COST_SOUL_MARK	=	5;
 		// private static final String OP_SPIRIT_SIPHON	=	"spirit_siphon";
 		private static final String OP_DEMENTAGE	=	"dementage";
+		private static final int COST_DEMENTAGE	=	MAX_VOLUME;
+		
+		private String opCast_;
 		
 		private UrnOfShadow urnOfShadow	=	null;
 		
@@ -123,46 +147,98 @@ public class UrnOfShadow extends Item{
 			add(titlebar);
 			
 			// add casts
-			RedButton btn0	=	new RedButton(Messages.get(this, OP_SOUL_BURN)){
-				@Override
-				protected void onClick(){ opSoulBurn(); }
-			};
+			RedButton btn0	=	addCastButton(OP_SOUL_BURN);
 			btn0.setRect(0, titlebar.bottom()+GAP, WIDTH, BTN_HEIGHT);
 			add(btn0);
+			btn0.enable(urnOfShadow.volume>=COST_SOUL_BURN);
 			
-			RedButton btn1	=	new RedButton(Messages.get(this, OP_SOUL_MARK)){
-				@Override
-				protected void onClick(){ opSoulMark(); }
-			};
+			RedButton btn1	=	addCastButton(OP_SOUL_MARK);
 			btn1.setRect(0, btn0.bottom()+GAP, WIDTH, BTN_HEIGHT);
 			add(btn1);
+			btn1.enable(urnOfShadow.volume>=COST_SOUL_MARK);
 			
-			RedButton btn2	=	new RedButton(Messages.get(this, OP_DEMENTAGE)){
-				@Override
-				protected void onClick(){ opDementage(); }
-			};
+			RedButton btn2	=	addCastButton(OP_DEMENTAGE);
 			btn2.setRect(0, btn1.bottom()+GAP, WIDTH, BTN_HEIGHT);
 			add(btn2);
+			btn2.enable(urnOfShadow.volume>=COST_DEMENTAGE);
 			
 			resize(WIDTH, (int)btn2.bottom());
 		}
-		
-		private void opSoulBurn(){
-			
-			urnOfShadow.consume(3);
-			hide();
+		private RedButton addCastButton(final String op){
+			RedButton btn	=	new RedButton(Messages.get(this, op)){
+				@Override
+				protected void onClick(){
+					opCast_	=	op;
+					hide();
+					GameScene.selectCell(caster);
+				}
+			};
+			return btn;
 		}
 		
-		private void opSoulMark(){
-			hide();
-		}
-		private void opSpiritSiphon(){
+		private void opSoulBurn(Char target){
+			urnOfShadow.consume(COST_SOUL_BURN);
 			
-			hide();
+			target.damage(curUser.damageRoll(), curUser);
+			Buff.affect(target, SoulBurning.class).reignite(target);
 		}
-		private void opDementage(){
-			hide();
+		
+		private void opSoulMark(Char target){
+			urnOfShadow.consume(COST_SOUL_MARK);
+
+			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION);
 		}
+
+		private void opDementage(Char target){
+			if(target.buffs(Corruption.class)!=null){
+				GLog.w(Messages.get(this, "already_dementage"));
+				return;
+			}
+			if(target.properties().contains(Char.Property.BOSS) || 
+					target.properties().contains(Char.Property.MINIBOSS)){
+				GLog.w(Messages.get(this, "boss"));
+				return;
+			}
+			
+			// corruption, refill health
+			urnOfShadow.consume(COST_DEMENTAGE);
+			
+			Buff.append(target, Corruption.class);
+			target.HP	=	target.HT;
+			GLog.i(Messages.get(this, "sucess_dementage", target.name));
+			
+		}
+		
+		protected CellSelector.Listener caster	=	new CellSelector.Listener(){
+			@Override
+			public void onSelect(Integer target){
+				if(target!=null){
+					final Ballistica shot	=	new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT);
+					//todo: check
+					Char c	=	Actor.findChar(shot.collisionPos);
+					if(c!=null){
+						switch(opCast_){
+							case OP_SOUL_BURN:
+								opSoulBurn(c);
+								break;
+							case OP_SOUL_MARK:
+								opSoulMark(c);
+								break;
+							case OP_DEMENTAGE:
+								opDementage(c);
+								break;
+						}
+					}else{
+						GLog.w(Messages.get(UrnOfShadow.WndUrnOfShadow.class, "not_select_target"));
+					}
+;				}
+			}
+
+			@Override
+			public String prompt(){
+				return Messages.get(UrnOfShadow.WndUrnOfShadow.class, "prompt");
+			}
+		};
 		
 	}
 }

@@ -40,6 +40,7 @@ import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
@@ -354,10 +355,11 @@ public abstract class RegularLevel extends Level {
 				// add room tile
 				Room r  =   room(i);
 				if(r!=null && r.type!=Type.NULL){
-					validCells.add(i);
-				}else{
-					// decrease traps on the tunnel(hallways)
-					if(Dungeon.depth>1 && Random.Float()<0.8f)
+					// decrease traps on tunnel
+					if((r.type==Type.TUNNEL || r.type==Type.PASSAGE)){
+						if(Random.Float()<0.7f)
+							validCells.add(i);
+					}else
 						validCells.add(i);
 				}
 
@@ -366,7 +368,7 @@ public abstract class RegularLevel extends Level {
 
 		//no more than one trap every 5 valid tiles.
 		// nTraps = Math.min(nTraps, validCells.size()/5);
-		nTraps  =   Math.min(nTraps(), (int)(validCells.size()*0.15f));
+		nTraps  =   Math.min(nTraps(), (int)(validCells.size()*0.12f));
 
 		Collections.shuffle(validCells);
 
@@ -376,6 +378,8 @@ public abstract class RegularLevel extends Level {
 
 			try {
 				Trap trap = ((Trap)trapClasses[Random.chances( trapChances )].newInstance()).hide();
+				if(Random.Float()>0.9f) trap.reveal();
+				
 				setTrap( trap, trapPos );
 				//some traps will not be hidden
 				map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
@@ -386,7 +390,7 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected int nTraps() {
-		return Random.NormalIntRange( 1, 4+(Dungeon.depth/2) );
+		return Random.NormalIntRange( 1, 3+(Dungeon.depth/2) );
 	}
 	
 	protected Class<?>[] trapClasses(){
@@ -457,73 +461,45 @@ public abstract class RegularLevel extends Level {
 	}
 
 	protected  void paintLuminary(){
-		HashSet<Integer> setPsgCells    =   new HashSet<>();
-
 		for(Room rm: rooms){
+			// rooms without lights
 			if(rm.type==Type.GARDEN || rm.type==Type.MAGIC_WELL)
 				continue;
 			// rooms must have lights
 			if(rm.type==Type.BLACKSMITH || rm.type==Type.ENTRANCE
 				|| rm.type==Type.RAT_KING || rm.type==Type.SHOP){
-				placeLuminary(rm);
-			}else if(rm.type==Type.TUNNEL || rm.type==Type.PASSAGE){
-				// passages
-				for(int x=rm.left+1; x<rm.right; ++x){
-					for(int y=rm.top+1; y<rm.bottom; ++y){
-						int pos	=	width*y+x;
-						if(map[pos]==Terrain.WALL)
-							// if is adjacent to empty
-							for(int di: PathFinder.NEIGHBOURS4){
-								int np	=	pos+di;
-								if(np>=0 && np<length && (map[np]==Terrain.EMPTY || map[np]==Terrain.EMPTY_DECO)){
-									setPsgCells.add(pos);
-									break;
-								}
-							}
-					}
-				}
-			}else if(rm.type!=Type.NULL){
+				placeLuminary(rm,Random.Int(1,3));
+			}
+			else if(rm.type!=Type.NULL){
 				// random place lights
-				if(Random.Float()<(feeling==Feeling.DARK?0.3f:0.5f)){
-					placeLuminary(rm);
+				if(Random.Float()<(feeling==Feeling.DARK?0.4f:0.6f)){
+					// have lights
+					int maxLights	=	(rm.type==Type.PASSAGE||rm.type==Type.TUNNEL)? 3: 2;
+					placeLuminary(rm, Random.Int(1, maxLights));
+				}
+			}
+		}
+	}
+	protected void placeLuminary(Room r, int lights){
+		ArrayList<Integer> alCells  =   new ArrayList<Integer>();
+		for(int x=r.left; x<r.right+1; ++x){
+			for(int y=r.top; y<r.bottom+1; ++y){
+				int pos	=	width*y+x;
+				// NEIGHBOUR 4
+				if(map[pos]==Terrain.WALL){
+					for(int dp: PathFinder.NEIGHBOURS4){
+						int np	=	pos+dp;
+						if(np>=0 && np<length && r.inside(cellToPoint(np)) && 
+							(map[np]==Terrain.EMPTY || map[np]==Terrain.EMPTY_DECO)){
+							alCells.add(pos);
+							break;
+						}
+					}
 				}
 			}
 		}
 
-		int NUM_PER	=	0;
-		if(Dungeon.depth<5)
-			NUM_PER	=	8;
-		else if(Dungeon.depth<15)
-			NUM_PER	=	12;
-		else
-			NUM_PER	=	16;
-		if(feeling==Feeling.DARK)
-			NUM_PER	=	NUM_PER/4*5;
-		for(Integer pos: setPsgCells){
-			if(Random.Int(NUM_PER)==0)
-				map[pos.intValue()] =   Random.Int(4)==0? Terrain.WALL_LIGHT_OFF: Terrain.WALL_LIGHT_ON;
-		}
-	}
-	protected void placeLuminary(Room r){
-		ArrayList<Integer> alCells  =   new ArrayList<Integer>();
-		for(int x=r.left+1; x<r.right; ++x){
-			int pos =   r.top*width+x;
-			if(map[pos]==Terrain.WALL)
-				alCells.add(pos);
-			pos =   r.bottom*width+x;
-			if(map[pos]==Terrain.WALL)
-				alCells.add(pos);
-		}
-		for(int y=r.top+1; y<r.bottom; ++y){
-			int pos =   y*width+r.left;
-			if(map[pos]==Terrain.WALL)
-				alCells.add(pos);
-			pos =   y*width+r.right;
-			if(map[pos]==Terrain.WALL)
-				alCells.add(pos);
-		}
-
-		int lights  =   Random.Float()<0.8f? 1: 2;
+		lights	=	Math.min(lights, alCells.size());
 		Collections.shuffle(alCells);
 		for(int i=0; i<lights; ++i)
 			map[alCells.get(i)] =   Random.Int(4)==0? Terrain.WALL_LIGHT_OFF: Terrain.WALL_LIGHT_ON;
@@ -747,7 +723,7 @@ public abstract class RegularLevel extends Level {
 		int nItems = 3;
 		int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
 
-		//just incase someone gets a ridiculous ring, cap this at 80%
+		//just in case someone gets a ridiculous ring, cap this at 80%
 		bonus = Math.min(bonus, 10);
 		while (Random.Float() < (0.3f + bonus*0.05f)) {
 			nItems++;

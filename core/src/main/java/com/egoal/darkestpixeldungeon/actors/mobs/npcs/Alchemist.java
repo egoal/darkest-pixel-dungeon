@@ -96,7 +96,7 @@ public class Alchemist extends NPC{
 		dv.empty();
 
 		// give reward
-		(new Gold(Random.Int(0, vol*10)+20)).doPickUp(Dungeon.hero);
+		(new Gold(Random.Int(0, vol*15)+20)).doPickUp(Dungeon.hero);
 
 		// give 0~3 test paper
 //		ArrayList<Class<?> > potionList	=	new ArrayList<>();

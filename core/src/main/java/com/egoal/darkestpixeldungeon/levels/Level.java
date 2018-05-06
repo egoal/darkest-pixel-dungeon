@@ -193,6 +193,7 @@ public abstract class Level implements Bundlable {
 		if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
 
+			// special items
 			int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
 
 			if (Dungeon.posNeeded()) {

@@ -61,6 +61,8 @@ public class SoulBurning extends Buff implements Hero.Doom{
 		return true;
 	}
 	
+	public void reignite(Char ch){ left_=duration(ch); }
+	
 	@Override
 	public int icon(){ return BuffIndicator.SOUL_FIRE; }
 	@Override

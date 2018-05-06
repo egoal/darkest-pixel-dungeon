@@ -132,7 +132,7 @@ public class TomeOfMastery extends Item {
 			Buff.affect( curUser, Berserk.class );
 		}
 		if(way==HeroSubClass.WARLOCK){
-			UrnOfShadow uos	=	new UrnOfShadow();
+			Item uos	=	new UrnOfShadow().identify();
 			if(uos.doPickUp(curUser)){
 				GLog.w(Messages.get(Dungeon.hero, "you_now_have", uos.name()));
 			}else

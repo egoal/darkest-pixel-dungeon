@@ -26,7 +26,7 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
 public class SoulMark extends FlavourBuff {
 
-	public static final float DURATION	= 10f;
+	public static final float DURATION	= 20f;
 
 	{
 		type = buffType.NEGATIVE;

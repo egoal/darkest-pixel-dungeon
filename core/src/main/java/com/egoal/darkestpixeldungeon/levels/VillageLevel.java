@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
+import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
@@ -173,13 +174,14 @@ public class VillageLevel extends RegularLevel{
 			// link lanes
 			Point pt0	=	curRoom.random();
 			Point pt1	=	toRoom.random();
-			if(Random.Int(2)==0){
-				linkLaneH(pt0.y, pt0.x, pt1.x);
-				linkLaneV(pt1.x, pt0.y, pt1.y);
-			}else{
-				linkLaneV(pt0.x, pt0.y, pt1.y);
-				linkLaneH(pt1.y, pt0.x, pt1.x);
-			}
+//			if(Random.Int(2)==0){
+//				linkLaneH(pt0.y, pt0.x, pt1.x);
+//				linkLaneV(pt1.x, pt0.y, pt1.y);
+//			}else{
+//				linkLaneV(pt0.x, pt0.y, pt1.y);
+//				linkLaneH(pt1.y, pt0.x, pt1.x);
+//			}
+			linkLane(pt0.x, pt0.y, pt1.x, pt1.y);
 			
 			curRoom	=	toRoom;
 		}
@@ -195,6 +197,28 @@ public class VillageLevel extends RegularLevel{
 	private void linkLaneH(int y, int x1, int x2){
 		int ds	=	x1<x2? 1: -1;
 		for(int x=x1; x!=x2; x+=ds){
+			map[y*width+x]	=	Terrain.EMPTY;
+		}
+	}
+	private void linkLane(int x1, int y1, int x2, int y2){
+		int dx	=	x1>x2? -1: 1;
+		int nx	=	(x2-x1)/dx;
+		int dy	=	y1>y2? -1: 1;
+		int ny	=	(y2-y1)/dy;
+		
+		ArrayList<Point> adp	=	new ArrayList<>();
+		for(int i=0; i<nx; ++i)
+			adp.add(new Point(dx, 0));
+		for(int i=0; i<ny; ++i)
+			adp.add(new Point(0, dy));
+		Collections.shuffle(adp);
+		
+		int x	=	x1;
+		int y	=	y1;
+		for(Point dp: adp){
+			x	+=	dp.x;
+			y	+=	dp.y;
+			
 			map[y*width+x]	=	Terrain.EMPTY;
 		}
 	}

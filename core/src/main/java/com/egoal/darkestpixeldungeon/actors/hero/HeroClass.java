@@ -166,6 +166,8 @@ public enum HeroClass {
 			(new ArmorKit()).identify().collect();
 			
 			(new UrnOfShadow()).identify().collect();
+			
+			hero.HP	=	1;
 		}
 	}
 
