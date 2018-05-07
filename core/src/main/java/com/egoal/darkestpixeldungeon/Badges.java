@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Shielded;
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
+import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.actors.mobs.Acidic;
@@ -87,6 +88,7 @@ public class Badges {
 		BOSS_SLAIN_1_MAGE,
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
+		BOSS_SLAIN_1_SORCERESS, 
 		BOSS_SLAIN_1( 12 ),
 		BOSS_SLAIN_2( 13 ),
 		BOSS_SLAIN_3( 14 ),
@@ -100,6 +102,8 @@ public class Badges {
 		BOSS_SLAIN_3_ASSASSIN,
 		BOSS_SLAIN_3_SNIPER,
 		BOSS_SLAIN_3_WARDEN,
+		BOSS_SLAIN_3_STARGAZER, 
+		BOSS_SLAIN_3_WITCH, 
 		BOSS_SLAIN_3_ALL_SUBCLASSES( 33, true ),
 		RING_OF_HAGGLER( 20 ),
 		RING_OF_THORNS( 21 ),
@@ -132,6 +136,7 @@ public class Badges {
 		VICTORY_MAGE,
 		VICTORY_ROGUE,
 		VICTORY_HUNTRESS,
+		VICTORY_SORCERESS, 
 		VICTORY( 22 ),
 		VICTORY_ALL_CLASSES( 36, true ),
 		MASTERY_COMBO( 56 ),
@@ -618,6 +623,9 @@ public class Badges {
 				case HUNTRESS:
 					badge = Badge.BOSS_SLAIN_1_HUNTRESS;
 					break;
+				case SORCERESS:
+					badge	=	Badge.BOSS_SLAIN_1_SORCERESS;
+					break;
 				}
 				local.add( badge );
 				if (!global.contains( badge )) {
@@ -628,7 +636,8 @@ public class Badges {
 				if (global.contains( Badge.BOSS_SLAIN_1_WARRIOR ) &&
 					global.contains( Badge.BOSS_SLAIN_1_MAGE ) &&
 					global.contains( Badge.BOSS_SLAIN_1_ROGUE ) &&
-					global.contains( Badge.BOSS_SLAIN_1_HUNTRESS)) {
+					global.contains( Badge.BOSS_SLAIN_1_HUNTRESS) &&
+					global.contains(Badge.BOSS_SLAIN_1_SORCERESS)) {
 					
 					badge = Badge.BOSS_SLAIN_1_ALL_CLASSES;
 					if (!global.contains( badge )) {
@@ -664,6 +673,12 @@ public class Badges {
 				case WARDEN:
 					badge = Badge.BOSS_SLAIN_3_WARDEN;
 					break;
+				case STARGAZER:
+					badge	=	Badge.BOSS_SLAIN_3_STARGAZER;
+					break;
+				case WITCH:
+					badge	=	Badge.BOSS_SLAIN_3_WITCH;
+					break;
 				default:
 					return;
 				}
@@ -680,7 +695,9 @@ public class Badges {
 					global.contains( Badge.BOSS_SLAIN_3_FREERUNNER ) &&
 					global.contains( Badge.BOSS_SLAIN_3_ASSASSIN ) &&
 					global.contains( Badge.BOSS_SLAIN_3_SNIPER ) &&
-					global.contains( Badge.BOSS_SLAIN_3_WARDEN )) {
+					global.contains( Badge.BOSS_SLAIN_3_WARDEN ) &&
+					global.contains( Badge.BOSS_SLAIN_3_STARGAZER ) &&
+					global.contains( Badge.BOSS_SLAIN_3_WITCH)) {
 					
 					badge = Badge.BOSS_SLAIN_3_ALL_SUBCLASSES;
 					if (!global.contains( badge )) {
@@ -708,6 +725,9 @@ public class Badges {
 			break;
 		case HUNTRESS:
 			badge = Badge.MASTERY_HUNTRESS;
+			break;
+		case SORCERESS:
+			badge	=	Badge.MASTERY_SORCERESS;
 			break;
 		}
 		
@@ -791,6 +811,9 @@ public class Badges {
 		case HUNTRESS:
 			badge = Badge.VICTORY_HUNTRESS;
 			break;
+		case SORCERESS:
+			badge	=	Badge.VICTORY_SORCERESS;
+			break;
 		}
 		local.add( badge );
 		if (!global.contains( badge )) {
@@ -801,7 +824,8 @@ public class Badges {
 		if (global.contains( Badge.VICTORY_WARRIOR ) &&
 			global.contains( Badge.VICTORY_MAGE ) &&
 			global.contains( Badge.VICTORY_ROGUE ) &&
-			global.contains( Badge.VICTORY_HUNTRESS )) {
+			global.contains( Badge.VICTORY_HUNTRESS ) &&
+			global.contains( Badge.VICTORY_SORCERESS )) {
 			
 			badge = Badge.VICTORY_ALL_CLASSES;
 			displayBadge( badge );

@@ -131,10 +131,10 @@ public class ExtractionFlask extends Item{
 		if(item1 instanceof Sorrowmoss.Seed || item2 instanceof Sorrowmoss.Seed)
 			potion	=	new PotionOfToxicGas();
 		else{
-			if(Random.Int(10)==0)
+			if(Random.Int(15)==0)
 				GLog.w(Messages.get(ExtractionFlask.class, "refine_failed"));
 			else
-				potion=Random.Int(3)==0?new PotionOfToxicGas():
+				potion=Random.Int(2)==0?new PotionOfToxicGas():
 					Generator.random(Generator.Category.POTION);
 		}
 		
@@ -149,7 +149,7 @@ public class ExtractionFlask extends Item{
 			KindOfWeapon kow=curUser.belongings.weapon;
 			if(kow!=null&&kow instanceof Weapon){
 				Weapon wpn=(Weapon)kow;
-				if(wpn.STRReq()<curUser.STR&&!wpn.cursed){
+				if(wpn.STRReq()<curUser.STR()&&!wpn.cursed){
 					switch(Random.Int(10)){
 						case 0:
 							wpn.enchant();
@@ -187,7 +187,7 @@ public class ExtractionFlask extends Item{
 	}
 	
 	public static int minDewRequire(){
-		return Dungeon.hero.subClass==HeroSubClass.WITCH? 4: 5;
+		return Dungeon.hero.subClass==HeroSubClass.WITCH? 3: 5;
 	}
 	
 	// todo: may lost items, no restore

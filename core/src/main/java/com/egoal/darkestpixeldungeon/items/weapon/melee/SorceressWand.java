@@ -23,4 +23,18 @@ public class SorceressWand extends MeleeWeapon{
 		// give enchantment
 		enchant(new Unstable());
 	}
+	
+	// 1~7
+	@Override
+	public int max(int lvl){
+		return 4*tier+3 +    //base
+				lvl*(tier+1);   //level scaling
+	}
+
+	@Override
+	public int STRReq(int lvl){
+		lvl = Math.max(0, lvl);
+		//strength req decreases at +1,+3,+6,+10,etc.
+		return (7 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+	}
 }

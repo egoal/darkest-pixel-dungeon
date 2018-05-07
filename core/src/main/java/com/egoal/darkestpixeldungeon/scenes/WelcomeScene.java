@@ -123,23 +123,31 @@ public class WelcomeScene extends PixelScene {
 
 		RenderedTextMultiline text = renderMultiline(6);
 		String message;
-		if (previousVersion == 0) {
-			message = Messages.get(this, "welcome_msg");
-		} else if (previousVersion <= DarkestPixelDungeon.versionCode) {
-			if (previousVersion < LATEST_UPDATE){
-				message = Messages.get(this, "update_intro");
-				message += "\n\n" + Messages.get(this, "update_msg");
-			} else {
-				//TODO: change the messages here in accordance with the type of patch.
-				message = Messages.get(this, "patch_intro");
-				message += "\n\n" + Messages.get(this, "patch_bugfixes");
-				//message += "\n" + Messages.get(this, "patch_translations");
-				//message += "\n" + Messages.get(this, "patch_balance");
-
-			}
-		} else {
-			message = Messages.get(this, "what_msg");
+		
+		if(previousVersion==0)
+			message	=	Messages.get(this, "welcome_msg");
+		else{
+			message	=	Messages.get(this,"update_intro");
+			message	+=	"\n\n"+Messages.get(this,"update_msg");
+			message	+=	"\n\n"+Messages.get(this,"suggest_msg");
 		}
+//		if (previousVersion == 0) {
+//			message = Messages.get(this, "welcome_msg");
+//		} else if (previousVersion <= DarkestPixelDungeon.versionCode) {
+//			if (previousVersion < LATEST_UPDATE){
+//				message = Messages.get(this, "update_intro");
+//				message += "\n\n" + Messages.get(this, "update_msg");
+//			} else {
+//				//TODO: change the messages here in accordance with the type of patch.
+//				message = Messages.get(this, "patch_intro");
+//				message += "\n\n" + Messages.get(this, "patch_bugfixes");
+//				//message += "\n" + Messages.get(this, "patch_translations");
+//				//message += "\n" + Messages.get(this, "patch_balance");
+//
+//			}
+//		} else {
+//			message = Messages.get(this, "what_msg");
+//		}
 		text.text(message, w-20);
 		float textSpace = h - title.y - (title.height() - 10) - okay.height() - 2;
 		text.setPos((w - text.width()) / 2f, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));

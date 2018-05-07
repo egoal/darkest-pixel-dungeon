@@ -1237,10 +1237,22 @@ public class Hero extends Char {
 		lvl++;
 		// HT += 5;
 		// holy java conversions!
-		float flvl	=	(float)lvl;
-		int lastHT	=	HT;
-		HT	=	Math.round(0.003f*(flvl*flvl*flvl)-0.195f*(flvl*flvl)+8f*flvl+15f);
-		HP += (HT-lastHT);
+//		float flvl	=	(float)lvl;
+//		int lastHT	=	HT;
+//		HT	=	Math.round(0.003f*(flvl*flvl*flvl)-0.195f*(flvl*flvl)+8f*flvl+15f);
+//		HP += (HT-lastHT);
+		int dHT	=	0;
+		if(lvl<=5)
+			dHT	=	6;
+		else if(lvl<=20)
+			dHT	=	5;
+		else if(lvl<=30)
+			dHT	=	4;
+		else
+			dHT	=	1;
+		HT	+=	dHT;
+		HP	+=	dHT;
+		
 		attackSkill++;
 		defenseSkill++;
 	}

@@ -261,11 +261,13 @@ public class ItemSpriteSheet {
 
 	                                                                                    //64 free slots
 	// dpd
-	public static final int DPD_CAT_GIFT    =   CONTAINERS+7;
-	public static final int DPD_TEST_PAPER  =   SINGLE_USE+15;
+	public static final int DPD_CAT_GIFT    	=   CONTAINERS+7;
+	public static final int DPD_TEST_PAPER  	=   SINGLE_USE+15;
 	public static final int DPD_SORCERESS_WAND	=	WEP_TIER1+6;
 	public static final int DPD_EXTRACTION_FLASK	=	ARTIFACTS+23;
 	public static final int DPD_ARMOR_SORCERESS	=	ARMOR+9;
 	public static final int DPD_HIGHLY_TOXIC_POTION	=	POTIONS+12;
 	public static final int DPD_URN_OF_SHADOW	=	ARTIFACTS+24;
+	
+	public static final int DPD_BOOKS			=	xy(1, 23);
 }

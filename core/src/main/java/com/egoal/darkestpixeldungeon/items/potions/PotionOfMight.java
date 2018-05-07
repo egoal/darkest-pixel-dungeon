@@ -39,8 +39,8 @@ public class PotionOfMight extends Potion {
 		setKnown();
 		
 		hero.STR++;
-		hero.HT += 5;
-		hero.HP += 5;
+		hero.HT += 6;
+		hero.HP += 6;
 		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
 		GLog.p( Messages.get(this, "msg_2") );
 

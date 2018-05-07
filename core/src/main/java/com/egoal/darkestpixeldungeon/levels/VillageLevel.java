@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
@@ -336,6 +337,15 @@ public class VillageLevel extends RegularLevel{
 				j.pos	=	pointToCell(roomExit.random(1));
 			}while(findMob(j.pos)!=null || !passable[j.pos]);
 			mobs.add(j);
+		}
+		
+		// sodan
+		{
+			DisheartenedBuddy sodan	=	new DisheartenedBuddy();
+			do{
+				sodan.pos	=	pointToCell(roomExit.random(1));
+			}while(findMob(sodan.pos)!=null || !passable[sodan.pos]);
+			mobs.add(sodan);
 		}
 		
 		// scholar

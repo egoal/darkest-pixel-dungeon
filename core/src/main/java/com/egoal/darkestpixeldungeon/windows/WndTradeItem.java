@@ -124,7 +124,7 @@ public class WndTradeItem extends Window {
 				@Override
 				protected void onClick() {
 					hide();
-					buy( heap );
+					buy( heap, price);
 				}
 			};
 			btnBuy.setRect( 0, pos + GAP, WIDTH, BTN_HEIGHT );
@@ -256,12 +256,12 @@ public class WndTradeItem extends Window {
 		return price;
 	}
 	
-	private void buy( Heap heap ) {
+	private void buy( Heap heap, int price ) {
 		
 		Hero hero = Dungeon.hero;
 		Item item = heap.pickUp();
 		
-		int price = price( item );
+		// int price = price( item );
 		Dungeon.gold -= price;
 		
 		if (!item.doPickUp( hero )) {
