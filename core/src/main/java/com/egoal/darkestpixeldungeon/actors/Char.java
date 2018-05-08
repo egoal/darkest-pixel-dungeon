@@ -74,7 +74,7 @@ public abstract class Char extends Actor {
 	public boolean flying		= false;
 	public int invisible		= 0;
 	
-	public int viewDistance =   4;
+	public int viewDistance =   8;
 	public int seeDistance  =   8;
 	
 	private HashSet<Buff> buffs = new HashSet<>();

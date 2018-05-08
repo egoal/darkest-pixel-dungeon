@@ -387,7 +387,7 @@ public abstract class Level implements Bundlable {
 
 		feeling = bundle.getEnum( FEELING, Feeling.class );
 		if (feeling == Feeling.DARK)
-			viewDistance = (int)Math.ceil(viewDistance/3f);
+			viewDistance = (int)Math.ceil(viewDistance/2f);
 
 		buildFlagMaps();
 		cleanWalls();
@@ -602,11 +602,13 @@ public abstract class Level implements Bundlable {
 		}
 		// update lights
 		BArray.setFalse(lighted);
-		int[] L1norm2   =   new int[]{-width*2,
-			-width-1, -width, -width+1,
-			-2, -1, 0, +1, +2,
-			+width-1, +width, +width+1
-			+width*2};
+		int[] L1norm2   =   new int[]{
+							-width*2,  
+					-width-1, -width, -width+1,
+			-2, 		-1, 	0, 		+1, 		+2,
+					+width-1, +width, +width+1, 
+							+width*2, 
+		};
 		for(int i=0; i<length(); ++i){
 			if(luminary[i]){
 				for(int np: L1norm2){

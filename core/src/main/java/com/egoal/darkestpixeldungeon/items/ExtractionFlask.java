@@ -92,6 +92,9 @@ public class ExtractionFlask extends Item{
 		
 		return desc;
 	}
+
+	@Override
+	public boolean isUpgradable() { return false; }
 	
 	private static final HashMap<Class<?>, Class<?> > hmSeed2Enhantment	=	new HashMap<Class<?>, Class<?> >(){
 		{

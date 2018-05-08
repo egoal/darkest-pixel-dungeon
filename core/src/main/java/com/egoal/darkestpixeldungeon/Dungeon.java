@@ -294,6 +294,11 @@ public class Dungeon {
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		hero.seeDistance    =   level.seeDistance;
+		// huntress perk
+		if(hero.heroClass==HeroClass.HUNTRESS){
+			hero.viewDistance	+=	1;
+			hero.seeDistance	+=	1;
+		}
 
 		observe();
 		try {

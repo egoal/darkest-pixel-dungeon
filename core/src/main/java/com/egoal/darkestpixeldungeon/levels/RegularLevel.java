@@ -494,7 +494,7 @@ public abstract class RegularLevel extends Level {
 					for(int dp: PathFinder.NEIGHBOURS4){
 						int np	=	pos+dp;
 						if(np>=0 && np<length && r.inside(cellToPoint(np)) && 
-							(map[np]==Terrain.EMPTY || map[np]==Terrain.EMPTY_DECO)){
+							(map[np]==Terrain.EMPTY || map[np]==Terrain.EMPTY_DECO || map[np]==Terrain.EMPTY_SP)){
 							alCells.add(pos);
 							break;
 						}

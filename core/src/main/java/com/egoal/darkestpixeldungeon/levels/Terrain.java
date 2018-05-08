@@ -135,7 +135,7 @@ public class Terrain {
 		}
 
 		// dpd
-		flags[WALL_LIGHT_ON]		=   LOS_BLOCKING| LUMINARY| UNSTITCHABLE;
+		flags[WALL_LIGHT_ON]	=   flags[WALL] | LUMINARY;
 		flags[WALL_LIGHT_OFF]	=	flags[WALL];
 	};
 

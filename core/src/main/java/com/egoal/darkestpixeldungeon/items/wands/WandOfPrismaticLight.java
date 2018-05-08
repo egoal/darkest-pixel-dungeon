@@ -60,7 +60,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	public int max(int lvl){
-		return 5+3*lvl;
+		return 6+3*lvl;
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class WandOfPrismaticLight extends DamageWand {
 		affectMap(beam);
 
 		if (Dungeon.level.viewDistance < 4)
-			Buff.prolong( curUser, Light.class, 6f+level()*3);
+			Buff.prolong( curUser, Light.class, 6f+level()*2);
 	}
 
 	private void affectTarget(Char ch){

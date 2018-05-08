@@ -37,13 +37,13 @@ public class DisheartenedBuddy extends NPC{
 	@Override
 	public boolean interact(){
 		sprite.turnTo(pos, Dungeon.hero.pos);
-		
-		if(meetTimes_==0){
-			tell(Messages.get(this,"discourage0"));
-		}else{
-			float[] chances=new float[]{1,2,2,2};
-			tell(Messages.get(this,"discourage"+Random.chances(chances)));
+
+		float[] chances=new float[]{1,2,2,2};
+		if(meetTimes_++==0){
+			chances[0]	=	10;
 		}
+		
+		tell(Messages.get(this,"discourage"+Random.chances(chances)));
 		
 		return false;
 	}

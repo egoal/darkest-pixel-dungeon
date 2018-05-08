@@ -19,7 +19,7 @@ public class DisheartenedBuddySprite extends MobSprite{
 		TextureFilm frames	=	new TextureFilm(texture, 12, 15);
 		
 		idle	=	new Animation(1, true);
-		idle.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1);
+		idle.frames(frames, 0, 0, 0, 0, 0, 0, 1, 0, 1);
 		
 		run	=	new Animation(20, true);
 		run.frames(frames, 0);

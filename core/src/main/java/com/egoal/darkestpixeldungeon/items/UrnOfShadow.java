@@ -22,6 +22,8 @@ import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.IconTitle;
+import com.egoal.darkestpixeldungeon.windows.WndMessage;
+import com.egoal.darkestpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
@@ -61,6 +63,9 @@ public class UrnOfShadow extends Item{
 		volume	=	bundle.getInt(VOLUME);
 	}
 	
+	@Override
+	public boolean isUpgradable() { return false; }
+	
 	// functions
 	@Override
 	public ArrayList<String> actions(Hero hero){
@@ -87,6 +92,12 @@ public class UrnOfShadow extends Item{
 		if(Math.abs(cp.x-mp.x)+Math.abs(cp.y-mp.y) > COLLECT_RANGE)
 			// not in range
 			return;
+		
+		// check soul
+		if(!mob.hostile || mob.properties().contains(Char.Property.UNDEAD)){
+			// no soul to grasp
+			return;
+		}
 		
 		if(!isFull()){
 			volume	+=	1;
@@ -147,25 +158,19 @@ public class UrnOfShadow extends Item{
 			add(titlebar);
 			
 			// add casts
-			RedButton btn0	=	addCastButton(OP_SOUL_BURN);
-			btn0.setRect(0, titlebar.bottom()+GAP, WIDTH, BTN_HEIGHT);
-			add(btn0);
-			btn0.enable(urnOfShadow.volume>=COST_SOUL_BURN);
+			RedButton btn0	=	addCastAndHelpButton(OP_SOUL_BURN, titlebar.bottom()+GAP, COST_SOUL_BURN);
 			
-			RedButton btn1	=	addCastButton(OP_SOUL_MARK);
-			btn1.setRect(0, btn0.bottom()+GAP, WIDTH, BTN_HEIGHT);
-			add(btn1);
-			btn1.enable(urnOfShadow.volume>=COST_SOUL_MARK);
+			RedButton btn1	=	addCastAndHelpButton(OP_SOUL_MARK, btn0.bottom()+GAP, COST_SOUL_MARK);
 			
-			RedButton btn2	=	addCastButton(OP_DEMENTAGE);
-			btn2.setRect(0, btn1.bottom()+GAP, WIDTH, BTN_HEIGHT);
-			add(btn2);
-			btn2.enable(urnOfShadow.volume>=COST_DEMENTAGE);
+			RedButton btn2	=	addCastAndHelpButton(OP_DEMENTAGE, btn1.bottom()+GAP, COST_DEMENTAGE);
 			
 			resize(WIDTH, (int)btn2.bottom());
 		}
-		private RedButton addCastButton(final String op){
-			RedButton btn	=	new RedButton(Messages.get(this, op)){
+		
+		private static final int WIDTH_CAST_BUTTON	=	60;
+		private static final int WIDTH_HELP_BUTTON	=	15;
+		private RedButton addCastAndHelpButton(final String op, float y, final int cost){
+			RedButton btnCast	=	new RedButton(Messages.get(this, op)){
 				@Override
 				protected void onClick(){
 					opCast_	=	op;
@@ -173,7 +178,25 @@ public class UrnOfShadow extends Item{
 					GameScene.selectCell(caster);
 				}
 			};
-			return btn;
+			btnCast.setRect(0, y, WIDTH_CAST_BUTTON, BTN_HEIGHT);
+			add(btnCast);
+			btnCast.enable(urnOfShadow.volume()>=cost);
+			
+			// todo: use sprite instead
+			RedButton btnHelp	=	new RedButton("?"){
+				@Override
+				protected void onClick(){
+					GameScene.show(new WndTitledMessage(
+						new ItemSprite(urnOfShadow.image(), null), 
+							Messages.get(UrnOfShadow.WndUrnOfShadow.class, op), 
+							Messages.get(UrnOfShadow.WndUrnOfShadow.class, op+"_desc")+
+								Messages.get(UrnOfShadow.WndUrnOfShadow.class, "cost", cost)));
+				}
+			};
+			btnHelp.setRect(WIDTH-WIDTH_HELP_BUTTON, btnCast.top(), WIDTH_HELP_BUTTON, BTN_HEIGHT);
+			add(btnHelp);
+			
+			return btnCast;
 		}
 		
 		private void opSoulBurn(Char target){
