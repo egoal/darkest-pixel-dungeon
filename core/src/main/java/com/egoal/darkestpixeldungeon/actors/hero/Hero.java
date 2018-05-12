@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
+import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
@@ -113,6 +114,7 @@ import com.egoal.darkestpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -146,6 +148,9 @@ public class Hero extends Char {
 	public HeroAction lastAction = null;
 
 	private Char enemy;
+	
+	private static final int MAX_FOLLOWERS	=	3;
+	private ArrayList<Char > followers_	=	new ArrayList<Char>();	// the followers will follow hero during level switch
 	
 	private Item theKey;
 	
@@ -199,6 +204,7 @@ public class Hero extends Char {
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String SANITY		=	"sanity";
+	private static final String FOLLOWERS	=	"followers";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -217,6 +223,8 @@ public class Hero extends Char {
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
 
+		bundle.put(FOLLOWERS, followers_);
+		
 		belongings.storeInBundle( bundle );
 	}
 	
@@ -237,6 +245,12 @@ public class Hero extends Char {
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
 		
+		for(Bundlable b: bundle.getCollection(FOLLOWERS)){
+			try{
+				followers_.add((Char)b);
+			}catch(Exception e){}
+		}
+				
 		belongings.restoreFromBundle( bundle );
 	}
 	
@@ -802,6 +816,10 @@ public class Hero extends Char {
 		int stairs = action.dst;
 		if (pos == stairs && pos == Dungeon.level.exit) {
 			
+			if(Dungeon.depth==0){
+				// leave village
+			}
+			
 			curAction = null;
 
 			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
@@ -830,20 +848,20 @@ public class Hero extends Char {
 		if (pos == stairs && pos == Dungeon.level.entrance) {
 			
 			if(Dungeon.depth==0){
-				GameScene.show(new WndMessage(Messages.get(this, "leave_village")));
-				ready();
-			}
-			else if (Dungeon.depth == 1) {
-				
-				if (belongings.getItem( Amulet.class ) == null) {
-					GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
+				if(belongings.getItem(Amulet.class)==null){
+					GameScene.show(new WndMessage(Messages.get(this,"leave_village")));
 					ready();
-				} else {
-					Dungeon.win( Amulet.class );
-					Dungeon.deleteGame( Dungeon.hero.heroClass, true );
-					Game.switchScene( SurfaceScene.class );
+				}else{
+					// end game
+					Dungeon.win(Amulet.class);
+					Dungeon.deleteGame(Dungeon.hero.heroClass, true);
+					Game.switchScene(SurfaceScene.class);
 				}
 				
+			}
+			else if (Dungeon.depth == 1 && belongings.getItem(Amulet.class)==null) {
+				GameScene.show(new WndMessage(Messages.get(this, "leave")));
+				ready();
 			} else {
 				
 				curAction = null;
@@ -923,6 +941,7 @@ public class Hero extends Char {
 		case SNIPER:
 			if (rangedWeapon != null) {
 				Buff.prolong( this, SnipersMark.class, attackDelay() * 1.1f ).object = enemy.id();
+				Buff.prolong(enemy, ViewMark.class, attackDelay()*1.1f).observer	=	this.id();
 			}
 			break;
 		default:

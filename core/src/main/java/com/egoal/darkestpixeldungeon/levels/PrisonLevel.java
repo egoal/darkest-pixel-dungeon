@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.levels.traps.PoisonTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.TeleportationTrap;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -97,7 +98,8 @@ public class PrisonLevel extends RegularLevel {
 			}
 		}
 
-		return Wandmaker.Quest.spawn( this, roomEntrance, rooms );
+		return Wandmaker.Quest.spawn( this, roomEntrance, rooms ) &&
+			Jessica.Quest.spawnBook(this, rooms);
 	}
 	
 	@Override

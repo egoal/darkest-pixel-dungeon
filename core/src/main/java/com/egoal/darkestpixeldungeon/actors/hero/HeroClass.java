@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
 import com.egoal.darkestpixeldungeon.actors.mobs.Eye;
 import com.egoal.darkestpixeldungeon.actors.mobs.Warlock;
 import com.egoal.darkestpixeldungeon.actors.mobs.Yog;
+import com.egoal.darkestpixeldungeon.items.Amulet;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DewVial;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
@@ -37,6 +38,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
+import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -165,7 +167,9 @@ public enum HeroClass {
 			(new DewVial()).setVolume(20).identify().collect();
 			(new ArmorKit()).identify().collect();
 			
-			(new UrnOfShadow()).identify().collect();
+			// (new UrnOfShadow()).identify().collect();
+			// (new Book()).identify().collect();
+			// (new Amulet()).identify().collect();
 			
 			hero.HP	=	1;
 		}

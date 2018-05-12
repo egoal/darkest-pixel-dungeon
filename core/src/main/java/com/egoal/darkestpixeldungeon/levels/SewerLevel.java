@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.levels;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.effects.Ripple;
 import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ChillingTrap;
@@ -88,6 +89,13 @@ public class SewerLevel extends RegularLevel {
 						1, 1, 1};
 	}
 
+//	@Override
+//	protected boolean assignRoomType(){
+//		if(!super.assignRoomType()) return false;
+//		
+//		return Jessica.Quest.spawnBook(this, rooms);
+//	}
+	
 	@Override
 	protected void decorate() {
 		

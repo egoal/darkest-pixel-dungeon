@@ -20,8 +20,11 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import android.view.View;
+
 import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
+import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Halo;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -1027,6 +1030,16 @@ public abstract class Level implements Bundlable {
 					for (int i : PathFinder.NEIGHBOURS9)
 						fieldOfView[p+i] = true;
 				}
+			}
+		}
+		
+		// view mark
+		for(Mob mob: mobs){
+			ViewMark vm	=	mob.buff(ViewMark.class);
+			if(vm!=null && vm.observer==c.id()){
+				int p	=	mob.pos;
+				for(int i: PathFinder.NEIGHBOURS9)
+					fieldOfView[p+i]	=	true;
 			}
 		}
 

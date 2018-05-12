@@ -86,7 +86,7 @@ public class VillageLevel extends RegularLevel{
 		//1. entrance, -3->-1
 		{
 			int x	=	Random.Int(10, width-13);
-			int y	=	height-5;
+			int y	=	height-6;
 			roomEntrance	=	(Room) new Room().set(new Rect(x, y, x+4, y+4));
 		}
 		roomEntrance.type	=	Room.Type.ENTRANCE;
@@ -156,8 +156,10 @@ public class VillageLevel extends RegularLevel{
 			// place entrance
 			if(r.type==Room.Type.ENTRANCE){
 				do{
-					entrance    =   pointToCell(r.random(1));
+					// entrance    =   pointToCell(r.random(1));
+					entrance	=	r.bottom*width()+Random.Int(r.left+1, r.right);
 				}while(findMob(entrance)!=null);
+				map[entrance]	=	Terrain.ENTRANCE;
 			}
 		}
 	}
@@ -175,13 +177,6 @@ public class VillageLevel extends RegularLevel{
 			// link lanes
 			Point pt0	=	curRoom.random();
 			Point pt1	=	toRoom.random();
-//			if(Random.Int(2)==0){
-//				linkLaneH(pt0.y, pt0.x, pt1.x);
-//				linkLaneV(pt1.x, pt0.y, pt1.y);
-//			}else{
-//				linkLaneV(pt0.x, pt0.y, pt1.y);
-//				linkLaneH(pt1.y, pt0.x, pt1.x);
-//			}
 			linkLane(pt0.x, pt0.y, pt1.x, pt1.y);
 			
 			curRoom	=	toRoom;
@@ -296,10 +291,6 @@ public class VillageLevel extends RegularLevel{
 				break;
 			}
 		}
-		
-		// hide the entrance stairs
-		map[entrance]   =   Terrain.EMPTY;
-		
 	}
 
 	// create
@@ -326,25 +317,19 @@ public class VillageLevel extends RegularLevel{
 			Alchemist.Quest.reset();
 			do{
 				a.pos	=	pointToCell(roomExit.random(1));    // avoid to block the way
-			}while(findMob(a.pos)!=null||!passable[a.pos]);
+			}while(findMob(a.pos)!=null||!passable[a.pos] || map[a.pos]==Terrain.SIGN);
 			mobs.add(a);
 		}
 		
 		// jessica
-		{
-			Jessica j	=	new Jessica();
-			do{
-				j.pos	=	pointToCell(roomExit.random(1));
-			}while(findMob(j.pos)!=null || !passable[j.pos]);
-			mobs.add(j);
-		}
+		Jessica.Quest.spawnJessica(this, roomExit);
 		
 		// sodan
 		{
 			DisheartenedBuddy sodan	=	new DisheartenedBuddy();
 			do{
 				sodan.pos	=	pointToCell(roomExit.random(1));
-			}while(findMob(sodan.pos)!=null || !passable[sodan.pos]);
+			}while(findMob(sodan.pos)!=null || !passable[sodan.pos] || map[sodan.pos]==Terrain.SIGN);
 			mobs.add(sodan);
 		}
 		
@@ -365,7 +350,7 @@ public class VillageLevel extends RegularLevel{
 		
 		super.createMobs();
 	}
-
+	
 	// will not auto generate monsters
 	@Override
 	public Actor respawner(){ return null; }

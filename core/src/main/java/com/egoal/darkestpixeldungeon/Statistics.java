@@ -43,7 +43,8 @@ public class Statistics {
 	public static void reset() {
 		
 		goldCollected	= 0;
-		deepestFloor	=   Dungeon.initialDepth_;
+		// deepestFloor	=   Dungeon.initialDepth_;
+		deepestFloor	=	-1; // DarkestPixelDungeon.debug()? 0: -1;
 		enemiesSlain	= 0;
 		foodEaten		= 0;
 		potionsCooked	= 0;

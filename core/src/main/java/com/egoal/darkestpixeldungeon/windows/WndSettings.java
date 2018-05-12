@@ -167,6 +167,9 @@ public class WndSettings extends WndTabbed {
 				protected  void onClick(){
 					super.onClick();
 					DarkestPixelDungeon.debug(checked());
+					if(checked())
+						parent.add(new WndMessage(Messages.get(
+							WndSettings.ScreenTab.class, "debug_warning")));
 				}
 			};
 			chkDebug.setRect(0, chkImmersive.bottom()+GAP_LRG, WIDTH, BTN_HEIGHT);

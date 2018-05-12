@@ -27,7 +27,7 @@ import com.watabou.utils.PathFinder;
 
 public final class ShadowCaster {
 
-	private static final int MAX_DISTANCE = 8;
+	private static final int MAX_DISTANCE = 10;
 
 	private static boolean[] falseArray;
 	

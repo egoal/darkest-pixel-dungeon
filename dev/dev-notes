@@ -31,16 +31,30 @@ notes:
 
         buff imbue
     
+    地图:
+        repeat build
+            initRooms
+            build path, assign entrance& exit
+            assignRoomType
+            paint   // paint rooms
+            paintLuminary
+            paintWater
+            paintGrass
+            placeTraps
+        decorate
+        buildFlagMaps
+        createMobs
+        createItems
+
 todos:
     炼金术士贴图
     伤害类型重做，暴击机制
-    杰西卡任务
     学者任务
-    骷髅骑士
-    caveslevel地图生成重做
+    - 骷髅骑士    --> 连击
+    caveslevel地图生成重做  --> 推迟
     允许更多的快捷栏
-    灵龛技能说明、校验
-    q群
+    炼金术士瓶子检测
+    感谢
 
 known bugs:
     ? 露水有时收集不到
@@ -49,7 +63,6 @@ known bugs:
     ? 第三个神器有时候无效
     ? 炼金可能丢失材料
     下第11层有时闪退
-    灵魂收集修正, 技能说明
 
 reporter:
     用爱发电qi某人
@@ -59,17 +72,20 @@ reporter:
 0.1.3
 done:
     +灰心哥
+    +杰西卡任务，书本
 
     ~制杖老人：女巫对话补全；
     ~棱光法杖：降低光照时间，最大伤害提升1点；
-    ~女猎手：新的特质——视界和视野均提升一点；
-    ~影之灵龛：亡灵被击杀时不会触发灵魂吸纳效果，修复了npc离开时的灵魂吸收bug，添加了技能说明；
+    ~女猎手：新的特质——视界和视野均提升1点，狙击手将持续获得被专注攻击的目标的视野；
+    ~影之灵龛：现在施法需要消耗时间，现在亡灵单位被击杀时不会触发灵魂吸纳效果，修复了npc离开时的灵魂吸收bug，添加了技能说明，修正了摄魂术判定，被摄魂的单位将随着英雄带下楼；
+    ~火把：点燃耗时降低；
 
-    -新职业导致的成就不正常
+    -新职业女巫导致的成就不正常
     -毒气穿墙
-    -光源放置empty
+    -部分房间的光源放置
     -萃取瓶不可升级
     -生物视野修正
+    -暂时隐藏压力值
 
 0.1.2
 done:

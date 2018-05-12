@@ -57,7 +57,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-	public static final int initialDepth_   =   -1;
+	// public static int initialDepth_   =   10;
 
 	public static int transmutation;	// depth number for a well of transmutation
 
@@ -138,8 +138,8 @@ public class Dungeon {
 
 		quickslot.reset();
 		QuickSlotButton.reset();
-		
-		depth = initialDepth_;
+
+		depth	=	-1;// DarkestPixelDungeon.debug()? 0: -1;
 		gold = 0;
 
 		droppedItems = new SparseArray<ArrayList<Item>>();
@@ -214,7 +214,7 @@ public class Dungeon {
 		case 12:
 		case 13:
 		case 14:
-			level = new CavesLevel();
+			level	=	new CavesLevel();
 			break;
 		case 15:
 			level = new CavesBossLevel();
@@ -452,6 +452,7 @@ public class Dungeon {
 			Imp			.Quest.storeInBundle( quests );
 			// dpd save
 			Alchemist.Quest.storeInBundle(quests);
+			Jessica.Quest.storeInBundle(quests);
 			bundle.put( QUESTS, quests );
 			
 			Room.storeRoomsInBundle( bundle );
@@ -562,7 +563,9 @@ public class Dungeon {
 				Blacksmith.Quest.restoreFromBundle( quests );
 				Imp.Quest.restoreFromBundle( quests );
 
+				// restore quests
 				Alchemist.Quest.restoreFromBundle(quests);
+				Jessica.Quest.restoreFromBundle(quests);
 			} else {
 				Ghost.Quest.reset();
 				Wandmaker.Quest.reset();

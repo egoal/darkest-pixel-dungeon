@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.SoulBurning;
 import com.egoal.darkestpixeldungeon.actors.buffs.SoulMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -143,6 +144,8 @@ public class UrnOfShadow extends Item{
 		private static final String OP_DEMENTAGE	=	"dementage";
 		private static final int COST_DEMENTAGE	=	MAX_VOLUME;
 		
+		private static final int TIME_TO_CAST	=	1;
+		
 		private String opCast_;
 		
 		private UrnOfShadow urnOfShadow	=	null;
@@ -204,18 +207,34 @@ public class UrnOfShadow extends Item{
 			
 			target.damage(curUser.damageRoll(), curUser);
 			Buff.affect(target, SoulBurning.class).reignite(target);
+			
+			curUser.sprite.attack(target.pos);
+			curUser.spend(TIME_TO_CAST);
+			curUser.busy();
 		}
 		
 		private void opSoulMark(Char target){
 			urnOfShadow.consume(COST_SOUL_MARK);
 
 			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION);
+			
+			curUser.sprite.attack(target.pos);
+			curUser.spend(TIME_TO_CAST);
+			curUser.busy();
 		}
 
 		private void opDementage(Char target){
-			if(target.buffs(Corruption.class)!=null){
+			if(target.buff(Corruption.class)!=null){
 				GLog.w(Messages.get(this, "already_dementage"));
 				return;
+			}else{
+				if(target instanceof Mob){
+					Mob mob	=	(Mob)target;
+					if(!mob.hostile || mob.properties().contains(Char.Property.UNDEAD)){
+						GLog.w(Messages.get(this, "no_soul"));
+						return;
+					}
+				}
 			}
 			if(target.properties().contains(Char.Property.BOSS) || 
 					target.properties().contains(Char.Property.MINIBOSS)){
@@ -226,10 +245,13 @@ public class UrnOfShadow extends Item{
 			// corruption, refill health
 			urnOfShadow.consume(COST_DEMENTAGE);
 			
-			Buff.append(target, Corruption.class);
+			Buff.append(target, Dementage.class);
 			target.HP	=	target.HT;
+
+			curUser.sprite.attack(target.pos);
+			curUser.spend(TIME_TO_CAST);
+			curUser.busy();
 			GLog.i(Messages.get(this, "sucess_dementage", target.name));
-			
 		}
 		
 		protected CellSelector.Listener caster	=	new CellSelector.Listener(){
@@ -239,7 +261,7 @@ public class UrnOfShadow extends Item{
 					final Ballistica shot	=	new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT);
 					//todo: check
 					Char c	=	Actor.findChar(shot.collisionPos);
-					if(c!=null){
+					if(c!=null && c!=curUser){
 						switch(opCast_){
 							case OP_SOUL_BURN:
 								opSoulBurn(c);

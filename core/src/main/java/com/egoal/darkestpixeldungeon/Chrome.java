@@ -34,7 +34,8 @@ public class Chrome {
 		SCROLL,
 		TAB_SET,
 		TAB_SELECTED,
-		TAB_UNSELECTED
+		TAB_UNSELECTED, 
+		DPD_BOOK, 
 	};
 	
 	public static NinePatch get( Type type ) {
@@ -60,6 +61,8 @@ public class Chrome {
 			return new NinePatch( Asset, 65, 22, 8, 13, 3, 7, 3, 5 );
 		case TAB_UNSELECTED:
 			return new NinePatch( Asset, 75, 22, 8, 13, 3, 7, 3, 5 );
+		case DPD_BOOK:
+			return new NinePatch(Asset, 64, 40, 24, 24, 3, 3, 3, 3);
 		default:
 			return null;
 		}
