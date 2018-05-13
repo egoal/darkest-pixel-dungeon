@@ -54,6 +54,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfRegrowth;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
@@ -160,16 +161,17 @@ public enum HeroClass {
 			}
 			
 			(new PlateArmor()).upgrade(6).identify().collect();
-			(new RingOfEvasion()).identify().collect();
-			(new HornOfPlenty()).identify().collect();
-			(new ChaliceOfBlood()).identify().collect();
+
+			(new WandOfPrismaticLight()).identify().collect();
+			
 			(new TomeOfMastery()).identify().collect();
 			(new DewVial()).setVolume(20).identify().collect();
 			(new ArmorKit()).identify().collect();
 			
-			// (new UrnOfShadow()).identify().collect();
+			(new UrnOfShadow()).identify().collect();
 			// (new Book()).identify().collect();
 			// (new Amulet()).identify().collect();
+			(new PotionBandolier()).identify().collect();
 			
 			hero.HP	=	1;
 		}

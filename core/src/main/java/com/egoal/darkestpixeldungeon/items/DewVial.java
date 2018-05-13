@@ -140,13 +140,13 @@ public class DewVial extends Item {
 
 	private void consume(int drink, Hero hero){
 		int hppv	=	(int)(hero.HT*(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
-		int effect=Math.min(hero.HT-hero.HP,drink*hppv);
+		int effect	=	Math.min(hero.HT-hero.HP,drink*hppv);
 
-		hero.HP+=effect;
+		hero.HP	+=	effect;
 		hero.sprite.emitter().burst(Speck.factory(Speck.HEALING),volume>5?2:1);
 		hero.sprite.showStatus(CharSprite.POSITIVE,Messages.get(this,"value",effect));
 
-		volume-=drink;
+		volume	-=	drink;
 
 		hero.spend(TIME_TO_DRINK);
 		hero.busy();

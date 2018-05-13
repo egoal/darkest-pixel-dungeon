@@ -31,13 +31,8 @@ import com.watabou.utils.Bundle;
 public class Light extends FlavourBuff {
 
 	public static final float DURATION	= 200f;
-	public static final float DURATION_2	=	80f;
 	public static final int DISTANCE	=	6;
-	public static final int DISTANCE_2	=	4;	// nearly
 	
-	private float left_	=	DURATION;
-	private boolean reObserved_	=	false;	// cache, no need to store in bundle
-
 	@Override
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
@@ -56,29 +51,6 @@ public class Light extends FlavourBuff {
 		target.viewDistance = Dungeon.level.viewDistance;
 		Dungeon.observe(DISTANCE+1);
 		super.detach();
-	}
-	
-	@Override
-	public boolean act(){
-		if(target.isAlive()){
-			spend(TICK);
-			if((left_-=TICK)<=0)
-				detach();
-			else{
-				// still on
-				if(left_<DURATION_2 && !reObserved_){
-					reObserved_	=	true;
-					if(Dungeon.level != null){
-						target.viewDistance	=	Math.max(Dungeon.level.viewDistance, DISTANCE_2);
-						Dungeon.observe();
-					}
-				}
-			}
-		}else{
-			detach();
-		}
-
-		return true;
 	}
 
 	@Override
@@ -101,17 +73,5 @@ public class Light extends FlavourBuff {
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns());
 	}
-
-	private static final String LEFT	=	"left";
-	@Override
-	public void storeInBundle(Bundle bundle ) {
-		super.storeInBundle(bundle);
-		bundle.put(LEFT, left_);
-		
-	}
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle(bundle);
-		left_	=	bundle.getFloat(LEFT);
-	}
+	
 }

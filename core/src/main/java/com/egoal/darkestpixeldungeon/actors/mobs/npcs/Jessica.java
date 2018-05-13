@@ -160,7 +160,7 @@ public class Jessica extends NPC{
 					Heap heap	=	new Heap();
 					heap.type	=	Heap.Type.SKELETON;
 					heap.drop(new Book());
-					heap.drop(Generator.random(Generator.Category.RING));
+					heap.drop(Generator.random(Generator.Category.RING).random());
 
 					do{
 						heap.pos	=	level.pointToCell(room.random());

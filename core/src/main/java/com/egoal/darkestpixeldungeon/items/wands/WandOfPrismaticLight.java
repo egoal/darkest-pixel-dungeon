@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
+import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.Beam;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -73,12 +74,15 @@ public class WandOfPrismaticLight extends DamageWand {
 		affectMap(beam);
 
 		if (Dungeon.level.viewDistance < 4)
-			Buff.prolong( curUser, Light.class, 6f+level()*2);
+			Buff.prolong( curUser, Light.class, 4f+level()*3);
 	}
 
 	private void affectTarget(Char ch){
 		int dmg = damageRoll();
 
+		// view mark
+		Buff.prolong(ch, ViewMark.class, 4f+level()).observer	=	curUser.id();
+		
 		//three in (5+lvl) chance of failing
 		if (Random.Int(5+level()) >= 3) {
 			Buff.prolong(ch, Blindness.class, 2f + (level() * 0.333f));

@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
+import com.egoal.darkestpixeldungeon.actors.mobs.SkeletonKnight;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
@@ -347,6 +348,15 @@ public class VillageLevel extends RegularLevel{
 			}while(findMob(s.pos)!=null || !passable[s.pos]);
 			mobs.add(s);
 		}
+		
+		// test 
+//		{
+//			SkeletonKnight sk	=	new SkeletonKnight();
+//			do{
+//				sk.pos	=	pointToCell(roomEntrance.random());
+//			}while(findMob(sk.pos)!=null || sk.pos==entrance);
+//			mobs.add(sk);
+//		}
 		
 		super.createMobs();
 	}

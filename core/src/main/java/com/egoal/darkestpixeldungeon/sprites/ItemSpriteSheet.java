@@ -269,5 +269,7 @@ public class ItemSpriteSheet {
 	public static final int DPD_HIGHLY_TOXIC_POTION	=	POTIONS+12;
 	public static final int DPD_URN_OF_SHADOW	=	ARTIFACTS+24;
 	
+	public static final int DPD_HUMANITY		=	FOOD+8;
+	
 	public static final int DPD_BOOKS			=	xy(1, 23);
 }
