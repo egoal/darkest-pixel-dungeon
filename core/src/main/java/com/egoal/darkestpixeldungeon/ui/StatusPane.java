@@ -176,7 +176,7 @@ public class StatusPane extends Component {
 
 		danger.setPos( width - danger.width(), 20 );
 
-		buffs.setPos( 34, 9 );
+		buffs.setPos( 34, 12 );
 
 		btnJournal.setPos( width - 42, 1 );
 

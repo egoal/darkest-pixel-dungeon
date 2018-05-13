@@ -135,6 +135,9 @@ public abstract class Actor implements Bundlable {
 	public static void init() {
 		
 		add( Dungeon.hero );
+		// add hero followers
+//		for(Char c: Dungeon.hero.followers_)
+//			add(c);
 		
 		for (Mob mob : Dungeon.level.mobs) {
 			add( mob );

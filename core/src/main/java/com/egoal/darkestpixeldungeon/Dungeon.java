@@ -279,6 +279,10 @@ public class Dungeon {
 	public static void switchLevel( final Level level, int pos ) {
 		
 		Dungeon.level = level;
+		if (pos < 0 || pos >= level.length()){
+			pos = level.exit;
+		}
+		hero.restoreFollowers(level, pos);
 		Actor.init();
 
 		PathFinder.setMapSize(level.width(), level.height());
@@ -289,7 +293,7 @@ public class Dungeon {
 			Actor.add( level.respawner() );
 		}
 
-		hero.pos = pos != -1 ? pos : level.exit;
+		hero.pos	=	pos;
 		
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );

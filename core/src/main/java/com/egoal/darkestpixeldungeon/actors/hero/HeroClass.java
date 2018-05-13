@@ -36,6 +36,7 @@ import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.books.Book;
@@ -172,6 +173,7 @@ public enum HeroClass {
 			// (new Book()).identify().collect();
 			// (new Amulet()).identify().collect();
 			(new PotionBandolier()).identify().collect();
+			(new DriedRose()).identify().collect();
 			
 			hero.HP	=	1;
 		}

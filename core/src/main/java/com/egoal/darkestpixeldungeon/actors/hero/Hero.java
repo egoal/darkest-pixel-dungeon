@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
+import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
@@ -148,9 +149,11 @@ public class Hero extends Char {
 	public HeroAction lastAction = null;
 
 	private Char enemy;
-	
+
+	// the followers will follow hero during level switch
+	// the cache, no need to store in bundle
 	private static final int MAX_FOLLOWERS	=	3;
-	private ArrayList<Char > followers_	=	new ArrayList<Char>();	// the followers will follow hero during level switch
+	private ArrayList<Char > followers_	=	new ArrayList<Char>();
 	
 	private Item theKey;
 	
@@ -204,7 +207,7 @@ public class Hero extends Char {
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String SANITY		=	"sanity";
-	private static final String FOLLOWERS	=	"followers";
+	// private static final String FOLLOWERS	=	"followers";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -223,7 +226,7 @@ public class Hero extends Char {
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
 
-		bundle.put(FOLLOWERS, followers_);
+		// bundle.put(FOLLOWERS, followers_);
 		
 		belongings.storeInBundle( bundle );
 	}
@@ -245,13 +248,54 @@ public class Hero extends Char {
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
 		
-		for(Bundlable b: bundle.getCollection(FOLLOWERS)){
-			try{
-				followers_.add((Char)b);
-			}catch(Exception e){}
-		}
+//		for(Bundlable b: bundle.getCollection(FOLLOWERS)){
+//			try{
+//				followers_.add((Char)b);
+//			}catch(Exception e){}
+//		}
 				
 		belongings.restoreFromBundle( bundle );
+	}
+	
+	public void holdFollowers(Level level){
+		followers_.clear();
+		
+		// bring the ghost
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )){
+			if(mob instanceof DriedRose.GhostHero){
+				level.mobs.remove(mob);
+				followers_.add(mob);
+				break;
+			}
+		}
+		
+		// bring the controlled
+		for(Mob mob: Dungeon.level.mobs.toArray(new Mob[0])){
+			if(mob.buff(Dementage.class)!=null){
+				level.mobs.remove(mob);
+				followers_.add(mob);
+				if(followers_.size()==MAX_FOLLOWERS)
+					break;
+			}
+		}
+	}
+	public void restoreFollowers(Level level, int heropos){
+		final int MAX_TRAILS	=	1000;	// avoid hang...
+		int cntTrails	=	0;
+		for(Char c: followers_){
+			if(c!=null){
+				level.mobs.add((Mob)c);
+				do{
+					c.pos	=	heropos+PathFinder.NEIGHBOURS8[Random.Int(8)];
+					if(++cntTrails>=MAX_TRAILS)
+						break;
+				}while(level.solid[c.pos] || level.findMob(c.pos)!=null);
+			}
+		}
+		followers_.clear();
+	}
+	public void clearFollowers(){
+		followers_.clear();
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -824,9 +868,6 @@ public class Hero extends Char {
 
 			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
 			if (buff != null) buff.detach();
-
-			for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] ))
-				if (mob instanceof DriedRose.GhostHero) mob.destroy();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 			Game.switchScene( InterlevelScene.class );
@@ -873,9 +914,6 @@ public class Hero extends Char {
 
 				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
 				if (buff != null) buff.detach();
-
-				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] ))
-					if (mob instanceof DriedRose.GhostHero) mob.destroy();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );

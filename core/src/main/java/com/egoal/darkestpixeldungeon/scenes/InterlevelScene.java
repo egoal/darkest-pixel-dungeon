@@ -196,6 +196,7 @@ public class InterlevelScene extends PixelScene {
 			}
 			GameLog.wipe();
 		} else {
+			Dungeon.hero.holdFollowers(Dungeon.level);
 			Dungeon.saveAll();
 		}
 
@@ -212,6 +213,7 @@ public class InterlevelScene extends PixelScene {
 	private void fall() throws IOException {
 
 		Actor.fixTime();
+		Dungeon.hero.holdFollowers(Dungeon.level);
 		Dungeon.saveAll();
 
 		Level level;
@@ -226,6 +228,7 @@ public class InterlevelScene extends PixelScene {
 	
 	private void ascend() throws IOException {
 		Actor.fixTime();
+		Dungeon.hero.holdFollowers(Dungeon.level);
 
 		Dungeon.saveAll();
 		Dungeon.depth--;
@@ -236,6 +239,7 @@ public class InterlevelScene extends PixelScene {
 	private void returnTo() throws IOException {
 		
 		Actor.fixTime();
+		Dungeon.hero.holdFollowers(Dungeon.level);
 
 		Dungeon.saveAll();
 		Dungeon.depth = returnDepth;
@@ -246,7 +250,8 @@ public class InterlevelScene extends PixelScene {
 	private void restore() throws IOException {
 		
 		Actor.fixTime();
-
+		Dungeon.hero.clearFollowers();
+		
 		GameLog.wipe();
 
 		Dungeon.loadGame( StartScene.curClass );
@@ -262,7 +267,8 @@ public class InterlevelScene extends PixelScene {
 	private void resurrect() throws IOException {
 		
 		Actor.fixTime();
-		
+		Dungeon.hero.holdFollowers(Dungeon.level);
+
 		if (Dungeon.level.locked) {
 			Dungeon.hero.resurrect( Dungeon.depth );
 			Dungeon.depth--;
@@ -277,6 +283,7 @@ public class InterlevelScene extends PixelScene {
 	private void reset() throws IOException {
 
 		Actor.fixTime();
+		Dungeon.hero.holdFollowers(Dungeon.level);
 
 		Dungeon.depth--;
 		Level level = Dungeon.newLevel();
