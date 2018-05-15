@@ -35,9 +35,11 @@ import com.watabou.utils.Bundle;
 public class Poison extends Buff implements Hero.Doom{
 	
 	protected float left;
+	protected float extraDamage	=	0;
 	
 	private static final String LEFT	= "left";
-
+	private static final String EXTRA_DAMAGE	=	"extra-damage";
+	
 	{
 		type = buffType.NEGATIVE;
 	}
@@ -46,17 +48,21 @@ public class Poison extends Buff implements Hero.Doom{
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEFT, left );
-		
+		bundle.put(EXTRA_DAMAGE, extraDamage);
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		left = bundle.getFloat( LEFT );
+		extraDamage	=	bundle.getFloat(EXTRA_DAMAGE);
 	}
 	
 	public void set( float duration ) {
 		this.left = Math.max(duration, left);
+	}
+	public void addDamage(int damage){
+		this.extraDamage	=	damage;
 	}
 
 	public void extend( float duration ) {
@@ -96,7 +102,7 @@ public class Poison extends Buff implements Hero.Doom{
 	public boolean act() {
 		if (target.isAlive()) {
 			
-			target.damage( (int)(left / 3) + 1, this );
+			target.damage( (int)(left / 3+extraDamage) + 1, this );
 			spend( TICK );
 			
 			if ((left -= TICK) <= 0) {

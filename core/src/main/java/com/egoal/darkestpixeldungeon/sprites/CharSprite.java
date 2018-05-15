@@ -55,11 +55,11 @@ import com.watabou.utils.Random;
 public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip.Listener {
 	
 	// Color constants for floating text
-	public static final int DEFAULT		= 0xFFFFFF;
-	public static final int POSITIVE	= 0x00FF00;
-	public static final int NEGATIVE	= 0xFF0000;
-	public static final int WARNING		= 0xFF8800;
-	public static final int NEUTRAL		= 0xFFFF00;
+	public static final int DEFAULT		= 0xFFFFFF;	// 白
+	public static final int POSITIVE	= 0x00FF00; // 绿
+	public static final int NEGATIVE	= 0xFF0000;	// 红
+	public static final int WARNING		= 0xFF8800;	// 橙
+	public static final int NEUTRAL		= 0xFFFF00; // 中立黄
 	
 	private static final float MOVE_INTERVAL	= 0.1f;
 	private static final float FLASH_INTERVAL	= 0.05f;

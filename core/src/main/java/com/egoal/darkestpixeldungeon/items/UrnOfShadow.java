@@ -205,7 +205,7 @@ public class UrnOfShadow extends Item{
 		private void opSoulBurn(Char target){
 			urnOfShadow.consume(COST_SOUL_BURN);
 			
-			target.damage(curUser.damageRoll(), curUser);
+			target.damage(curUser.damageRoll()*4/5, curUser);
 			Buff.affect(target, SoulBurning.class).reignite(target);
 			
 			curUser.sprite.attack(target.pos);

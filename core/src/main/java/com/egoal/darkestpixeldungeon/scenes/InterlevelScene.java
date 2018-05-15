@@ -250,7 +250,7 @@ public class InterlevelScene extends PixelScene {
 	private void restore() throws IOException {
 		
 		Actor.fixTime();
-		Dungeon.hero.clearFollowers();
+		// Dungeon.hero.clearFollowers();
 		
 		GameLog.wipe();
 

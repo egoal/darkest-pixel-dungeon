@@ -57,6 +57,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfRegrowth;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
@@ -162,7 +163,8 @@ public enum HeroClass {
 			}
 			
 			(new PlateArmor()).upgrade(6).identify().collect();
-
+			(new AssassinsBlade()).upgrade(6).identify().collect();	
+			
 			(new WandOfPrismaticLight()).identify().collect();
 			
 			(new TomeOfMastery()).identify().collect();

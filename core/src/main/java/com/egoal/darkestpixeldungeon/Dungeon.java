@@ -57,7 +57,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-	// public static int initialDepth_   =   10;
+	public static int initialDepth_   =   -1;
 
 	public static int transmutation;	// depth number for a well of transmutation
 
@@ -139,7 +139,7 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 
-		depth	=	-1;// DarkestPixelDungeon.debug()? 0: -1;
+		depth	=	initialDepth_;
 		gold = 0;
 
 		droppedItems = new SparseArray<ArrayList<Item>>();

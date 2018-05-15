@@ -185,7 +185,7 @@ public class Hero extends Char {
 		
 		HP = HT = 20+2;
 		STR = STARTING_STR;
-		SAN	=	70;
+		SAN	=	0;
 		awareness = 0.1f;
 		
 		belongings = new Belongings( this );
@@ -294,9 +294,9 @@ public class Hero extends Char {
 		}
 		followers_.clear();
 	}
-	public void clearFollowers(){
-		followers_.clear();
-	}
+//	public void clearFollowers(){
+//		followers_.clear();
+//	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.level = bundle.getInt( LEVEL );
@@ -1051,6 +1051,28 @@ public class Hero extends Char {
 		// }
 
 		super.damage( dmg, src );
+	}
+	
+	public void damageMentally(int dmg, Object from){
+		SAN	+=	dmg;
+		if(SAN>=SAN_MAX)
+			SAN	=	SAN_MAX;
+		else if(SAN<0)
+			SAN	=	0;
+
+		final int POSITIVE	=	0xC0D6D2;
+		final int NORMAL	=	0x361936;
+		final int WARNING	=	0x0A0A0A;
+		
+		if(dmg!=0){
+			int color	=	NORMAL;
+			if(dmg<0)
+				color	=	POSITIVE;
+			else if(SAN>SAN_MAX)
+				color	=	WARNING;
+			
+			sprite.showStatus(color, Integer.toString(dmg));
+		}
 	}
 	
 	private void checkVisibleMobs() {
