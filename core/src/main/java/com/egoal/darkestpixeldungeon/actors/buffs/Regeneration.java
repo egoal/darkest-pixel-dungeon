@@ -26,7 +26,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 
 public class Regeneration extends Buff {
 	
-	private static final float REGENERATION_DELAY = 10;
+	private static final float REGENERATION_DELAY = 8;
 	
 	@Override
 	public boolean act() {

@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -313,6 +314,7 @@ public class Hero extends Char {
 	public void live() {
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
+		Buff.affect(this, Pressure.class);
 	}
 	
 	public int tier() {
@@ -1068,10 +1070,10 @@ public class Hero extends Char {
 			int color	=	NORMAL;
 			if(dmg<0)
 				color	=	POSITIVE;
-			else if(SAN>SAN_MAX)
+			else if(SAN>SAN_MAX/2)
 				color	=	WARNING;
 			
-			sprite.showStatus(color, Integer.toString(dmg));
+			// sprite.showStatus(color, Integer.toString(dmg));
 		}
 	}
 	

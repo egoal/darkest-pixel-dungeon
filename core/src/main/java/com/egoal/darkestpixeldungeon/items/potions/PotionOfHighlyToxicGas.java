@@ -51,7 +51,7 @@ public class PotionOfHighlyToxicGas extends Potion{
 	
 	private void affectChar(Char c){
 		Poison p	=	Buff.affect(c, Poison.class);
-		p.set(Random.Int(6, 12));
+		p.set(Random.Int(6, 10));
 		p.addDamage(Dungeon.depth/2+Random.Int(1, 4));
 	}
 	

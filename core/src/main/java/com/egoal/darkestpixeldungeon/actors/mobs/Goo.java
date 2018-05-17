@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -220,6 +221,10 @@ public class Goo extends Mob {
 	@Override
 	public void damage(int dmg, Object src) {
 		boolean bleeding = (HP*2 <= HT);
+		
+		// fire
+		if(src instanceof Burning)
+			dmg	*=	1.5;
 		super.damage(dmg, src);
 		if ((HP*2 <= HT) && !bleeding){
 			BossHealthBar.bleed(true);

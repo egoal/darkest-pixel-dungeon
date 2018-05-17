@@ -67,7 +67,7 @@ public class Bat extends Mob {
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		
-		int reg = Math.min( damage, HT - HP );
+		int reg = (int)(Math.min( damage, HT - HP )*.4f);
 		
 		if (reg > 0) {
 			HP += reg;

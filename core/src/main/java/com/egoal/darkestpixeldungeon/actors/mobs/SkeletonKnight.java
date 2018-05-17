@@ -28,8 +28,8 @@ public class SkeletonKnight extends Mob{
 		properties.add(Property.UNDEAD);
 	}
 	
-	private static final float COUNTER	=	.2f;
-	private static final float COMBO	=	.2f;
+	private static final float COUNTER	=	.15f;
+	private static final float COMBO	=	.15f;
 	
 	@Override
 	public int damageRoll(){ return Random.NormalIntRange(4, 12); }

@@ -39,7 +39,7 @@ public class Pressure extends Buff implements Hero.Doom{
 		
 		if(target.isAlive()){
 			// chance to increase
-			float pIncrease	=	(Dungeon.depth/5+1)*0.1f;
+			float pIncrease	=	(Dungeon.depth/10+1)*0.1f;
 			
 			if(Random.Float()<pIncrease){
 				Hero hero	=	(Hero)target;

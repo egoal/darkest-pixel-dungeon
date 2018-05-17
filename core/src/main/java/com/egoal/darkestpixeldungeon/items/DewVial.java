@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 public class DewVial extends Item {
 
-	private static final int MAX_VOLUME	= 25;
+	private static final int MAX_VOLUME	= 30;
 
 	private static final String AC_DRINK	= "DRINK";
 	private static final String AC_SIP	=	"SIP";

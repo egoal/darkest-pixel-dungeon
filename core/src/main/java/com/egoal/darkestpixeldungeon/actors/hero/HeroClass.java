@@ -172,7 +172,7 @@ public enum HeroClass {
 			(new ArmorKit()).identify().collect();
 			
 			(new UrnOfShadow()).identify().collect();
-			// (new Book()).identify().collect();
+			(new Book()).collect();
 			// (new Amulet()).identify().collect();
 			(new PotionBandolier()).identify().collect();
 			(new DriedRose()).identify().collect();

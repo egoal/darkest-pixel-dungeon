@@ -95,15 +95,15 @@ public class Bestiary {
 			classes = new Class<?>[]{ Skeleton.class, Thief.class, Swarm.class,   Shaman.class };
 			break;
 		case 7:
-			chances = new float[]{ 3, 1, 1, 1, .2f };
+			chances = new float[]{ 3, 1, 1, 1, .5f };
 			classes = new Class<?>[]{ Skeleton.class, Shaman.class, Thief.class, Guard.class, SkeletonKnight.class };
 			break;
 		case 8:
-			chances = new float[]{ 3, 2, 2, 1, .5f,  0.02f };
+			chances = new float[]{ 3, 2, 2, 1, .75f,  0.02f };
 			classes = new Class<?>[]{ Skeleton.class, Shaman.class, Guard.class, Thief.class,  SkeletonKnight.class, Bat.class };
 			break;
 		case 9:
-			chances = new float[]{ 3, 3, 2, 1,  .5f, 0.02f, 0.01f };
+			chances = new float[]{ 3, 2, 2, 1,  1, 0.02f, 0.01f };
 			classes = new Class<?>[]{ Skeleton.class, Guard.class, Shaman.class, Thief.class, SkeletonKnight.class,  Bat.class, Brute.class };
 			break;
 			
