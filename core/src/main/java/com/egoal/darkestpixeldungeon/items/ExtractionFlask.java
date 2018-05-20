@@ -271,6 +271,13 @@ public class ExtractionFlask extends Item{
 			@Override
 			public void onSelect(Item item){
 				if(item!=null){
+					if(btnPressed_.item!=null){
+						// give back
+						if(!btnPressed_.item.collect()){
+							Dungeon.level.drop(btnPressed_.item, Dungeon.hero.pos);
+						}
+					}
+					
 					// take from the backpack
 					btnPressed_.item(item.detach(Dungeon.hero.belongings.backpack));
 					

@@ -100,7 +100,8 @@ public class CavesLevel extends RegularLevel {
 	@Override
 	protected boolean assignRoomType() {
 		if (!super.assignRoomType()) return false;
-
+		
+		// black smith must spawned before 14th floor
 		if (!Blacksmith.Quest.spawn( rooms ) && Dungeon.depth == 14)
 			return false;
 
