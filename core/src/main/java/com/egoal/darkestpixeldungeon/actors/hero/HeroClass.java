@@ -83,19 +83,6 @@ public enum HeroClass {
 	HUNTRESS( "huntress" ),
 
 	SORCERESS("sorceress");
-
-	public static final HashMap<Class<?>, Float> mapSorceressAnti;
-	static{
-		mapSorceressAnti	=	new HashMap<>();
-		mapSorceressAnti.put(ToxicGas.class, .5f);
-		mapSorceressAnti.put(Poison.class, .5f);
-		mapSorceressAnti.put(Venom.class, .5f);
-		mapSorceressAnti.put(Burning.class, .8f);
-		mapSorceressAnti.put(LightningTrap.Electricity.class, .8f);
-		mapSorceressAnti.put(Warlock.class, .8f);
-		mapSorceressAnti.put(Eye.class, .8f);
-		mapSorceressAnti.put(Yog.BurningFist.class, .8f);
-	}
 	
 	private String title;
 

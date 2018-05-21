@@ -8,27 +8,33 @@ package com.egoal.darkestpixeldungeon.actors;
 // my work truely start from here
 	
 public class Damage{
+	
 	public enum Type{
 		PHYSICAL, 
 		MAGICAL, 
 		MENTAL, 
-		PURELY, 
+	}
+	
+	public class Element{
+		public static final int NONE	=	0x0000;
+		public static final int FIRE	=	0x0001;
+		public static final int POISON	=	0x0002;
+		public static final int ICE		=	0x0004;
+		public static final int LIGHT	=	0x0008;
+		public static final int SHADOW	=	0x0010;
 	}
 	
 	public class Feature{
 		public static final int NONE		=	0x0000;
-		public static final int CRITICAL	=	0x0001;
-		public static final int EXACTLY		=	0x0002;	// cannot miss
-		
-		public static final int FIRE		=	0x0010;
-		public static final int POISON		=	0x0020;
-		public static final int ICE			=	0x0040;
-		public static final int LIGHT		=	0x0080;
+		public static final int CRITCIAL	=	0x0001;
+		public static final int ACCURATE	=	0x0002;
+		public static final int PURE		=	0x0004;
 	}
 	
 	// attributes
 	public int value	=	0;
 	public Type type	=	Type.PHYSICAL;
+	public int element	=	Element.NONE;
 	public int feature	=	Feature.NONE;
 	public Object from	=	null;
 	public Object to	=	null;
@@ -39,15 +45,21 @@ public class Damage{
 		this.to	=	to;
 	}
 	
-	public Damage setType(Type t){
+	public Damage type(Type t){
 		type	=	t;
+		return this;
+	}
+	public Damage addElement(int e){
+		element	=	element| e;
 		return this;
 	}
 	public Damage addFeature(int f){
 		feature	=	feature|f;
 		return this;
 	}
+	
 	public boolean isFeatured(int f){
-		return (feature&f) !=0;
+		return (feature& f)!=0;
 	}
+	public boolean hasElement(int e){ return (element& e)!=0; }
 }

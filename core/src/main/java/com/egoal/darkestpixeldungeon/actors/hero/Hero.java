@@ -20,6 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import android.text.method.TimeKeyListener;
+
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
@@ -30,7 +33,9 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
+import com.egoal.darkestpixeldungeon.items.Humanity;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -123,7 +128,11 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+
+import javax.microedition.khronos.opengles.GL;
 
 public class Hero extends Char {
 
@@ -377,43 +386,58 @@ public class Hero extends Char {
 	
 	// defense
 	@Override
-	public int drRoll() {
-		int dr = 0;
-		Barkskin bark = buff(Barkskin.class);
-
-		if (belongings.armor != null) {
-			dr += Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
-			if (STR() < belongings.armor.STRReq()){
-				dr -= 2*(belongings.armor.STRReq() - STR());
-				dr = Math.max(dr, 0);
+	public Damage defendDamage(Damage dmg){
+		if(dmg.type==Damage.Type.MENTAL){
+			// do nothing, todo: mental defense
+		}else{
+			// barkskin buff
+			Barkskin bark	=	buff(Barkskin.class);
+			
+			int dr	=	Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax());
+			if(STR()< belongings.armor.STRReq()){
+				// ware heavy armor
+				dr	-=	2*(belongings.armor.STRReq()-STR());
+				dr	=	Math.max(dr, 0);
 			}
+			
+			if(belongings.weapon!=null) dr	+=	Random.NormalIntRange(0, belongings.weapon.defenseFactor(this));
+			if(bark!=null) dr	+=	Random.NormalIntRange(0, bark.level());
+			
+			dmg.value	-=	dr;
 		}
-		if (belongings.weapon != null)  dr += Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
-		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
-
-		return dr;
+		
+		return dmg;
 	}
-	
-	@Override
-	public int damageRoll() {
-		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
-		int dmg;
-		int bonus = RingOfForce.getBonus(this, RingOfForce.Force.class);
 
-		if (wep != null) {
-			dmg = wep.damageRoll( this ) + bonus;
-		} else {
-			if (bonus != 0){
-				dmg = RingOfForce.damageRoll(this);
-			} else {
-				dmg = Random.NormalIntRange(1, Math.max(STR()-8, 1));
+	@Override
+	public Damage giveDamage(Char enemy){
+		Damage dmg	=	new Damage(0, this, enemy);
+		
+		// ring of force
+		int bonus	=	RingOfForce.getBonus(this, RingOfForce.Force.class);
+
+		KindOfWeapon wep	=	rangedWeapon!=null? rangedWeapon: belongings.weapon;
+		if(wep!=null){
+			dmg.value	=	wep.damageRoll(this)+bonus;
+		}else{
+			// bare hand
+			if(bonus!=0){
+				dmg.value	=	RingOfForce.damageRoll(this);
+			}else{
+				dmg.value	=	Random.NormalIntRange(1, Math.max(STR()-8, 1));
 			}
 		}
-		if (dmg < 0) dmg = 0;
-		if (subClass == HeroSubClass.BERSERKER){
-			dmg = Buff.affect(this, Berserk.class).damageFactor(dmg);
-		}
-		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
+		
+		if(dmg.value<0) dmg.value	=	0;
+		
+		// berserker perk
+		if(subClass==HeroSubClass.BERSERKER)
+			dmg.value	=	Buff.affect(this, Berserk.class).damageFactor(dmg.value);
+
+		if(buff(Fury.class)!=null)
+			dmg.value	*=	1.5f;
+		
+		return dmg;
 	}
 	
 	@Override
@@ -972,108 +996,131 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
-		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
-
-		if (wep != null) damage = wep.proc( this, enemy, damage );
-			
-		switch (subClass) {
-		case SNIPER:
-			if (rangedWeapon != null) {
-				Buff.prolong( this, SnipersMark.class, attackDelay() * 1.1f ).object = enemy.id();
-				Buff.prolong(enemy, ViewMark.class, attackDelay()*1.1f).observer	=	this.id();
-			}
-			break;
-		default:
-		}
-
+	public Damage attackProc(Damage dmg){
+		KindOfWeapon wep	=	rangedWeapon!=null? rangedWeapon: belongings.weapon;
+		if(wep!=null)
+			dmg.value	=	wep.proc(this, enemy, dmg.value);
 		
-		return damage;
+		// sniper perk
+		if(subClass==HeroSubClass.SNIPER && rangedWeapon!=null){
+			Buff.prolong(this, SnipersMark.class, attackDelay()*1.1f).object	=	enemy.id();
+			Buff.prolong(enemy, ViewMark.class, attackDelay()*1.1f).observer	=	this.id();
+		}
+		
+		return dmg;
 	}
 	
 	@Override
-	public int defenseProc( Char enemy, int damage ) {
+	public Damage defenseProc(Damage dmg){
+		Earthroot.Armor ea	=	buff(Earthroot.Armor.class);
+		if(ea!=null)
+			dmg.value	=	ea.absorb(dmg.value);
 		
-		Earthroot.Armor armor = buff( Earthroot.Armor.class );
-		if (armor != null) {
-			damage = armor.absorb( damage );
-		}
-
-		Sungrass.Health health = buff( Sungrass.Health.class );
-		if (health != null) {
-			health.absorb( damage );
-		}
+		Sungrass.Health health	=	buff(Sungrass.Health.class);
+		if(health!=null)
+			health.absorb(dmg.value);
 		
-		if (belongings.armor != null) {
-			damage = belongings.armor.proc( enemy, this, damage );
-		}
+		if(belongings.armor!=null)
+			dmg.value	=	belongings.armor.proc(enemy, this, dmg.value);
 		
-		return damage;
+		return dmg;
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
-		if (buff(TimekeepersHourglass.timeStasis.class) != null)
+	public void takeDamage(Damage dmg){
+		// freeze self
+		if(buff(TimekeepersHourglass.timeStasis.class)!=null)
 			return;
-
-		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
+		
+		// interrupt action or resting
+		if(!(dmg.from instanceof Hunger|| dmg.from instanceof Viscosity.DeferedDamage) && damageInterrupt){
 			interrupt();
-			resting = false;
+			resting	=	false;
 		}
-
-		if (this.buff(Drowsy.class) != null){
+		
+		// interrupt sleep
+		if(this.buff(Drowsy.class)!=null){
 			Buff.detach(this, Drowsy.class);
-			GLog.w( Messages.get(this, "pain_resist") );
+			GLog.w(Messages.get(this, "pain_resist"));
 		}
+		
+		CapeOfThorns.Thorns thorns	=	buff(CapeOfThorns.Thorns.class);
+		if(thorns!=null)
+			dmg.value	=	thorns.proc(dmg.value, (dmg.from instanceof Char? (Char)dmg.from: null), this);
+		
+		int tenacity	=	RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
+		if(tenacity!=0)
+			dmg.value	=	(int)Math.ceil((float)dmg.value*Math.pow(0.85, tenacity*((float)(HT-HP)/HT)));
+		
+		// note: resistance move to resistDamage
+		
+		if(dmg.type==Damage.Type.MENTAL)
+			takeMentalDamage(dmg);
+		else
+			super.takeDamage(dmg);
+	}
 
-		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );
-		if (thorns != null) {
-			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
+	@Override
+	public Damage resistDamage(Damage dmg){
+		// immunities
+		for(Buff buff: buffs()){
+			for(Class<?> im: buff.immunities)
+				if(dmg.from.getClass()==im){
+					dmg.value	=	0;
+					return dmg;
+				}
 		}
-
-		int tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
-		if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
-			dmg = (int)Math.ceil((float)dmg * Math.pow(0.85, tenacity*((float)(HT - HP)/HT)));
-
-		//TODO improve this when I have proper damage source logic
-		if(RingOfElements.FULL.contains(src.getClass())){
-			if(belongings.armor!=null && belongings.armor.hasGlyph(AntiMagic.class))
-				dmg	-=	Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
-			
-			// sorceress
-			if(heroClass==HeroClass.SORCERESS){
-				// dmg	*=	HeroClass.mapSorceressAnti.getOrDefault(src.getClass(), 1.f);
-				if(HeroClass.mapSorceressAnti.containsKey(src.getClass()))
-					dmg	*=	HeroClass.mapSorceressAnti.get(src.getClass());
+		
+		// resistance
+		if(dmg.type==Damage.Type.MAGICAL){
+			//! resist magical, resist magical only
+			if(belongings.armor!=null&&belongings.armor.hasGlyph(AntiMagic.class)){
+				dmg.value	*=	.75f;
 			}
 		}
-		// if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
-		// 		&& RingOfElements.FULL.contains(src.getClass())){
-		// 	dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
-		// }
+		// sorceress perk
+		if(heroClass==HeroClass.SORCERESS){
+			if(dmg.element!=Damage.Element.NONE){
+				// sorceress element resistance, todo: refactor
+				final HashMap<Integer, Float> mapAnti	=	new HashMap<>();
+				mapAnti.put(Damage.Element.FIRE, .8f);
+				mapAnti.put(Damage.Element.POISON, .5f);
+				mapAnti.put(Damage.Element.ICE, .8f);
+				mapAnti.put(Damage.Element.LIGHT, .8f);
+				mapAnti.put(Damage.Element.SHADOW, .8f);
 
-		super.damage( dmg, src );
+				float rst	=	1.f;
+				for(Map.Entry<Integer, Float> e: mapAnti.entrySet()){
+					if(dmg.hasElement(e.getKey()) && e.getValue()<rst)
+						rst	=	e.getValue();
+				}
+				dmg.value	*=	rst;
+			}
+		}
+		
+		// resistance of ring, 
+		// todo: rework this ring, use my style resistance, the ratio
+		RingOfElements.Resistance r	=	buff(RingOfElements.Resistance.class);
+		if(r!=null && r.resistances()==RingOfElements.FULL)
+			dmg.value	=	Random.Int(0, dmg.value);
+		
+		return dmg;
 	}
 	
-	public void damageMentally(int dmg, Object from){
-		SAN	+=	dmg;
+	public void takeMentalDamage(Damage dmg){
+		// keep in mind that SAN is pressure, it increases
+		SAN	+=	dmg.value;
 		if(SAN>=SAN_MAX)
 			SAN	=	SAN_MAX;
 		else if(SAN<0)
 			SAN	=	0;
 
-		final int POSITIVE	=	0xC0D6D2;
+		// final int POSITIVE	=	0xC0D6D2;
 		final int NORMAL	=	0x361936;
 		final int WARNING	=	0x0A0A0A;
-		
-		if(dmg!=0){
-			int color	=	NORMAL;
-			if(dmg<0)
-				color	=	POSITIVE;
-			else if(SAN>SAN_MAX/2)
-				color	=	WARNING;
-			
-			// sprite.showStatus(color, Integer.toString(dmg));
+
+		if(dmg.value!=0){
+			sprite.showStatus(SAN>SAN_MAX/2? WARNING: NORMAL, Integer.toString(dmg.value));
 		}
 	}
 	
@@ -1700,22 +1747,6 @@ public class Hero extends Char {
 		belongings.resurrect( resetLevel );
 
 		live();
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		RingOfElements.Resistance r = buff( RingOfElements.Resistance.class );
-		return r == null ? super.resistances() : r.resistances();
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		HashSet<Class<?>> immunities = new HashSet<Class<?>>();
-		for (Buff buff : buffs()){
-			for (Class<?> immunity : buff.immunities)
-				immunities.add(immunity);
-		}
-		return immunities;
 	}
 
 	@Override

@@ -20,10 +20,13 @@
  */
 package com.egoal.darkestpixeldungeon.actors;
 
+import android.text.style.AbsoluteSizeSpan;
+
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -43,8 +46,10 @@ import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.features.Door;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -52,7 +57,12 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import org.xml.sax.SAXNotRecognizedException;
+
+import java.sql.DatabaseMetaData;
 import java.util.HashSet;
+
+import javax.microedition.khronos.opengles.GL;
 
 public abstract class Char extends Actor {
 	
@@ -120,91 +130,164 @@ public abstract class Char extends Actor {
 		}
 	}
 	
-	//note: the attack logical
-	public boolean attack( Char enemy ) {
-
-		if (enemy == null || !enemy.isAlive()) return false;
+	public boolean attack(Char enemy){
+		if(enemy==null || !enemy.isAlive()) return false;
 		
-		boolean visibleFight = Dungeon.visible[pos] || Dungeon.visible[enemy.pos];
+		boolean visibleFight	=	Dungeon.visible[pos] || Dungeon.visible[enemy.pos];
 		
-		if (hit( this, enemy, false )) {
+		Damage dmg	=	giveDamage(enemy);
+		if(enemy.checkHit(dmg)){
 			
-			// FIXME
-			// sniper's check
-			int dr = this instanceof Hero&& ((Hero)this).rangedWeapon != null && ((Hero)this).subClass ==
-				HeroSubClass.SNIPER ? 0 : enemy.drRoll();
+			// enemy armor defense
 			
-			int dmg = damageRoll();
-			int effectiveDamage = Math.max( dmg - dr, 0 );
+			// sniper's perk, todo: use pure damage instead
+			if(this instanceof Hero && ((Hero)this).rangedWeapon!=null && ((Hero)this).subClass==HeroSubClass.SNIPER){
+				// sniper's perk: ignore defence
+			}else if(!dmg.isFeatured(Damage.Feature.PURE))
+				dmg	=	defendDamage(dmg);
 			
-			effectiveDamage = attackProc( enemy, effectiveDamage );
-			effectiveDamage = enemy.defenseProc( this, effectiveDamage );
-
-			if (visibleFight) {
-				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
-			}
-
-			// If the enemy is already dead, interrupt the attack.
-			// This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.
-			if (!enemy.isAlive()){
-				return true;
-			}
-
-			//TODO: consider revisiting this and shaking in more cases.
-			float shake = 0f;
-			if (enemy == Dungeon.hero)
-				shake = effectiveDamage / (enemy.HT / 4);
-
-			if (shake > 1f)
-				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
-
-			//damage settlement
-			enemy.damage( effectiveDamage, this );
-
-			//note: buff imbue
-			if (buff(FireImbue.class) != null)
+			dmg	=	attackProc(dmg);
+			dmg	=	enemy.defenseProc(dmg);
+			
+			// todo: use more sfx
+			if(visibleFight)
+				Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
+			
+			// may died in proc
+			if(!enemy.isAlive()) return true;
+			
+			// camera shake, todo: add more effects here
+			float shake	=	0f;
+			if(enemy==Dungeon.hero)
+				shake	=	dmg.value/(enemy.HT/4);
+			if(shake>1f)
+				Camera.main.shake(GameMath.gate(1, shake, 5), .3f);
+			
+			// take!
+			enemy.takeDamage(dmg);
+			
+			// buffs, dont know why this piece of code exists, 
+			// maybe the mage? or the attack effect?
+			if(buff(FireImbue.class)!=null)
 				buff(FireImbue.class).proc(enemy);
-			if (buff(EarthImbue.class) != null)
+			if(buff(EarthImbue.class)!=null)
 				buff(EarthImbue.class).proc(enemy);
-
-			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
+			
+			// effects
+			enemy.sprite.bloodBurstA(sprite.center(), dmg.value);
 			enemy.sprite.flash();
-
-			if (!enemy.isAlive() && visibleFight) {
-				if (enemy == Dungeon.hero) {
-
-					Dungeon.fail( getClass() );
-					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
-					
-				} else if (this == Dungeon.hero) {
-					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
+			if(!enemy.isAlive() && visibleFight){
+				if(enemy==Dungeon.hero){
+					// hero die
+					Dungeon.fail(getClass());
+					GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name)));
+				}else if(this==Dungeon.hero){
+					// killed by hero
+					GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)));
 				}
 			}
 			
 			return true;
-			
-		} else {
-			
-			if (visibleFight) {
-				String defense = enemy.defenseVerb();
-				enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
+		}else{
+			// missed
+			if(visibleFight){
+				String str	=	enemy.defenseVerb();
+				enemy.sprite.showStatus(CharSprite.NEUTRAL, str);
 				
 				Sample.INSTANCE.play(Assets.SND_MISS);
 			}
 			
 			return false;
-			
 		}
 	}
-	
-	// check hit or miss
-	public static boolean hit( Char attacker, Char defender, boolean magic ) {
-		float acuRoll = Random.Float( attacker.attackSkill( defender ) );
-		float defRoll = Random.Float( defender.defenseSkill( attacker ) );
-		if (attacker.buff(Bless.class) != null) acuRoll *= 1.20f;
-		if (defender.buff(Bless.class) != null) defRoll *= 1.20f;
-		return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
+
+	public Damage giveDamage(Char enemy){
+		// default normal damage
+		return new Damage(1, this, enemy);
 	}
+	public Damage defendDamage(Damage dmg){
+		// normal defend, do nothing
+		return dmg;
+	}
+
+	public boolean checkHit(Damage dmg){
+		if(dmg.isFeatured(Damage.Feature.ACCURATE))
+			return true;
+		
+		Char attacker	=	(Char)dmg.from;
+		Char defender	=	(Char)dmg.to;
+		float acuRoll	=	Random.Float(attacker.attackSkill(defender));
+		float defRoll	=	Random.Float(defender.defenseSkill(attacker));
+		if(attacker.buffs(Bless.class)!=null) acuRoll	*=	1.2f;
+		if(defender.buffs(Bless.class)!=null) defRoll	*=	1.2f;
+		
+		float bonus	=	1.f;
+		if(dmg.type==Damage.Type.MAGICAL || dmg.type==Damage.Type.MENTAL)
+			bonus	=	2f;
+		
+		return bonus*acuRoll >= defRoll;
+	}
+	
+	public Damage attackProc(Damage dmg){
+		return dmg;
+	}
+	
+	public Damage defenseProc(Damage dmg){
+		return dmg;
+	}
+	
+	public void takeDamage(Damage dmg){
+		// currently, only hero suffer from mental damage
+		if(!isAlive() || dmg.value<0 || (dmg.type==Damage.Type.MENTAL && !(this instanceof Hero)))
+			return;
+		
+		// buffs shall remove when take damage
+		if(this.buff(Frost.class)!=null)
+			Buff.detach(this, Frost.class);
+		if(this.buff(MagicalSleep.class)!=null)
+			Buff.detach(this, MagicalSleep.class);
+		
+		// immunities, resistance 
+		if(!dmg.isFeatured(Damage.Feature.PURE))
+			dmg	=	resistDamage(dmg);
+		
+		// buffs when take damage
+		if(buff(Paralysis.class)!=null){
+			if(Random.Int(dmg.value)>= Random.Int(HP)){
+				Buff.detach(this, Paralysis.class);
+				if(Dungeon.visible[pos])
+					GLog.i(Messages.get(Char.class, "out_of_paralysis", name));
+			}
+		}
+		
+		// deal with types
+		//todo: the damage number can have different colour refer to the element they carry
+		switch(dmg.type){
+			case PHYSICAL:
+				// physical
+				if(SHLD>=dmg.value)
+					SHLD	-=	dmg.value;
+				else{
+					HP	-=	(dmg.value-SHLD);
+					SHLD	=	0;
+				}
+				break;
+			case MAGICAL:
+				HP	-=	dmg.value;
+				break;
+		}
+		
+		// effects, show number
+		if(dmg.value>0 || dmg.from instanceof Char){
+			sprite.showStatus(HP>HT/2? CharSprite.WARNING: CharSprite.NEGATIVE, Integer.toString(dmg.value));
+		}
+		
+		if(!isAlive())
+			die(dmg.from);
+		
+	}
+	
+	public Damage resistDamage(Damage dmg){ return dmg; }
 	
 	// attack or edoge ratio
 	public int attackSkill( Char target ) {
@@ -218,79 +301,10 @@ public abstract class Char extends Actor {
 	public String defenseVerb() {
 		return Messages.get(this, "def_verb");
 	}
-	
-	public int drRoll() {
-		return 0;
-	}
-	
-	public int damageRoll() {
-		return 1;
-	}
-	
-	public int attackProc( Char enemy, int damage ) {
-		return damage;
-	}
-	public int defenseProc( Char enemy, int damage ) {
-		return damage;
-	}
+
 	public float speed() {
 		return buff( Cripple.class ) == null ? baseSpeed : baseSpeed * 0.5f;
 	}
-	
-	public void damage( int dmg, Object src ) {
-		
-		if (!isAlive() || dmg < 0) {
-			return;
-		}
-		if (this.buff(Frost.class) != null){
-			Buff.detach( this, Frost.class );
-		}
-		if (this.buff(MagicalSleep.class) != null){
-			Buff.detach(this, MagicalSleep.class);
-		}
-		
-		Class<?> srcClass = src.getClass();
-		if (immunities().contains( srcClass )) {
-			dmg = 0;
-		} else if (resistances().contains( srcClass )) {
-			dmg = Random.IntRange( 0, dmg );
-		}
-		
-		if (buff( Paralysis.class ) != null) {
-			if (Random.Int( dmg ) >= Random.Int( HP )) {
-				Buff.detach( this, Paralysis.class );
-				if (Dungeon.visible[pos]) {
-					GLog.i( Messages.get(Char.class, "out_of_paralysis", name) );
-				}
-			}
-		}
-
-		//FIXME: when I add proper damage properties, should add an IGNORES_SHIELDS property to use here.
-		if (src instanceof Hunger || SHLD == 0){
-			HP -= dmg;
-		} else if (SHLD >= dmg){
-			SHLD -= dmg;
-		} else if (SHLD > 0) {
-			HP -= (dmg - SHLD);
-			SHLD = 0;
-		}
-
-		if (dmg > 0 || src instanceof Char) {
-			sprite.showStatus( HP > HT / 2 ?
-				CharSprite.WARNING :
-				CharSprite.NEGATIVE,
-				Integer.toString( dmg ) );
-		}
-
-		if (HP < 0) HP = 0;
-
-		if (!isAlive()) {
-			die( src );
-		}
-	}
-	
-	// rewrite
-	
 	
 	public void destroy() {
 		HP = 0;
@@ -451,16 +465,6 @@ public abstract class Char extends Actor {
 	}
 	public void onOperateComplete() {
 		next();
-	}
-	
-	private static final HashSet<Class<?>> EMPTY = new HashSet<>();
-	
-	public HashSet<Class<?>> resistances() {
-		return EMPTY;
-	}
-	
-	public HashSet<Class<?>> immunities() {
-		return EMPTY;
 	}
 
 	protected HashSet<Property> properties = new HashSet<>();

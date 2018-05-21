@@ -72,6 +72,26 @@ reporter:
 
 --------------------------------------------------------------------------------
 0.2.0
+    +伤害类型，机制重做：
+        类型：物理，魔法，精神，
+            命中机制不变，精神与魔法相当
+            魔法伤害和精神伤害无视护盾
+            装甲对物理伤害和魔法伤害的抵抗未更改，精神伤害无视
+        元素：火，毒，电，冰，暗，
+        属性：暴击，必中，纯粹，
+            存粹伤害无视所有护甲，抗性
+        接口调整:
+            attack->        attack
+            hit->           checkHit
+            damageRoll->    giveDamage
+            drRoll->        defendDamage    物理抵抗
+            attackProc->    attackProc
+            defenseProc->   defenseProc
+            damage->        takeDamage
+            immunities->    resistDamage    魔法、元素抵抗
+            resistances->   
+
+    ~敌法刻印给予魔法抗性，元素戒指给予元素抗性
 
 0.1.3
 done:
