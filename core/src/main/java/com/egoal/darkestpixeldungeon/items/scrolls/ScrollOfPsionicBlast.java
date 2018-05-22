@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.scrolls;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -52,11 +53,11 @@ public class ScrollOfPsionicBlast extends Scroll {
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Level.fieldOfView[mob.pos]) {
-				mob.damage(mob.HT, this );
+				mob.takeDamage(new Damage(mob.HT, this, mob).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.DEATH));
 			}
 		}
 
-		curUser.damage(Math.max(curUser.HT/5, curUser.HP/2), this);
+		curUser.takeDamage(new Damage(Math.max(curUser.HT/5, curUser.HP/2), this, curUser).type(Damage.Type.MAGICAL));
 		Buff.prolong( curUser, Paralysis.class, Random.Int( 4, 6 ) );
 		Buff.prolong( curUser, Blindness.class, Random.Int( 6, 9 ) );
 		Dungeon.observe();

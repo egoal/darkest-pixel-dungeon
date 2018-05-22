@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.wands.Wand;
@@ -63,15 +64,15 @@ public class GreatCrab extends Crab {
 	}
 
 	@Override
-	public void damage( int dmg, Object src ){
+	public void takeDamage(Damage dmg){
 		//crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
 		//All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
 		if ((enemySeen && state != SLEEPING && paralysed == 0)
-				&& (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
+				&& (dmg.from instanceof Wand || dmg.from instanceof LightningTrap.Electricity || dmg.from instanceof Char)){
 			GLog.n( Messages.get(this, "noticed") );
 			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "blocked") );
 		} else {
-			super.damage( dmg, src );
+			super.takeDamage(dmg);
 		}
 	}
 

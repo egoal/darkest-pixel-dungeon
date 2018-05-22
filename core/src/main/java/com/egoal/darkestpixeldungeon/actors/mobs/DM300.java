@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
@@ -69,8 +70,8 @@ public class DM300 extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 20, 25 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange( 20, 25 ), this, target);
 	}
 	
 	@Override
@@ -79,8 +80,9 @@ public class DM300 extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 10);
+		return dmg;
 	}
 	
 	@Override
@@ -134,10 +136,11 @@ public class DM300 extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
-		super.damage(dmg, src);
+	public void takeDamage(Damage dmg){
+		super.takeDamage(dmg);
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null && !immunities().contains(src.getClass())) lock.addTime(dmg*1.5f);
+		if (lock != null && !immunizedBuffs().contains(dmg.from.getClass())) 
+			lock.addTime(dmg.value*1.5f);
 	}
 
 	@Override
@@ -165,15 +168,11 @@ public class DM300 extends Mob {
 		yell( Messages.get(this, "notice") );
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
-	}
-	
 	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.isFeatured(Damage.Feature.DEATH))
+			dmg.value	*=	0.8;
+		return dmg;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -183,7 +182,7 @@ public class DM300 extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 

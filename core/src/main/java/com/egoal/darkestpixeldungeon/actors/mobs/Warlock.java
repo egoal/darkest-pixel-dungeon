@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -57,20 +58,21 @@ public class Warlock extends Mob implements Callback {
 
 		properties.add(Property.UNDEAD);
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(16, 22), this, target);
 	}
-	
+
+	@Override
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 8);
+		return dmg;
+	}
+
 	@Override
 	public int attackSkill( Char target ) {
 		return 25;
-	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
 	}
 	
 	@Override
@@ -100,13 +102,15 @@ public class Warlock extends Mob implements Callback {
 	private void zap() {
 		spend( TIME_TO_ZAP );
 		
-		if (hit( this, enemy, true )) {
+		Damage dmg	=	new Damage(Random.Int( 12, 18 ), 
+				this, enemy).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
+		
+		if (enemy.checkHit(dmg)) {
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
 				Buff.prolong( enemy, Weakness.class, Weakness.duration( enemy ) );
 			}
 			
-			int dmg = Random.Int( 12, 18 );
-			enemy.damage( dmg, this );
+			enemy.takeDamage(dmg);
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Dungeon.fail( getClass() );
@@ -144,13 +148,10 @@ public class Warlock extends Mob implements Callback {
 		return loot;
 	}
 
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( Grim.class );
-	}
-	
 	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.SHADOW))
+			dmg.value	*=	0.8;
+		return dmg;
 	}
 }

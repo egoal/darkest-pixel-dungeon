@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -51,10 +52,16 @@ public class Skeleton extends Mob {
 
 		properties.add(Property.UNDEAD);
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 2, 10 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(2, 10), this, target);
+	}
+
+	@Override
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 5);
+		return dmg;
 	}
 	
 	@Override
@@ -66,8 +73,9 @@ public class Skeleton extends Mob {
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
 			if (ch != null && ch.isAlive()) {
-				int damage = Math.max( 0,  damageRoll() - (ch.drRoll() / 2) );
-				ch.damage( damage, this );
+				Damage dmg	=	new Damage(Random.NormalIntRange(4, 12), 
+					this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
+				ch.takeDamage(dmg);
 				if (ch == Dungeon.hero && !ch.isAlive()) {
 					heroKilled = true;
 				}
@@ -98,11 +106,6 @@ public class Skeleton extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
-	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
 	}
 
 }

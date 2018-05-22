@@ -20,7 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.items;
 
+import android.app.admin.DeviceAdminInfo;
+
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle;
@@ -144,10 +147,10 @@ public class Bomb extends Item {
 					int minDamage = c == cell ? Dungeon.depth+5 : 1;
 					int maxDamage = 10 + Dungeon.depth * 2;
 
-					int dmg = Random.NormalIntRange( minDamage, maxDamage ) - ch.drRoll();
-					if (dmg > 0) {
-						ch.damage( dmg, this );
-					}
+					Damage dmg	=	new Damage(Random.NormalIntRange(minDamage, maxDamage), 
+						this, ch).addElement(Damage.Element.FIRE);
+					ch.defendDamage(dmg);
+					ch.takeDamage(dmg);
 
 					if (ch == Dungeon.hero && !ch.isAlive())
 						Dungeon.fail( getClass() );

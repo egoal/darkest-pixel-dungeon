@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
@@ -135,7 +136,9 @@ public class Heap implements Bundlable {
 				if (item.cursed) {
 					if (Wraith.spawnAt( pos ) == null) {
 						hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
-						hero.damage( hero.HP / 2, this );
+						// fixme: what does this do?
+						// hero.damage( hero.HP / 2, this );
+						hero.takeDamage(new Damage(hero.HP/2, this, hero));
 					}
 					Sample.INSTANCE.play( Assets.SND_CURSED );
 					break;

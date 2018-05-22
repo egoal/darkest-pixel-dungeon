@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.sprites.GnollSprite;
 import com.watabou.utils.Random;
@@ -41,17 +42,18 @@ public class Gnoll extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 6 );
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange(1, 5), this, target);
+	}
+
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 2);
+		return dmg;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 10;
 	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
-	}
+
 }

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
@@ -72,7 +73,9 @@ public class Goo extends Mob {
 	private int pumpedUp = 0;
 
 	@Override
-	public int damageRoll() {
+	public Damage giveDamage(Char target) {
+		Damage dmg	=	new Damage(0, this, target);
+		
 		int min = 1;
 		int max = (HP*2 <= HT) ? 15 : 10;
 		if (pumpedUp > 0) {
@@ -83,10 +86,12 @@ public class Goo extends Mob {
 					CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
 			}
 			Sample.INSTANCE.play( Assets.SND_BURNING );
-			return Random.NormalIntRange( min*3, max*3 );
+			dmg.value	-=	Random.NormalIntRange( min*3, max*3 );
 		} else {
-			return Random.NormalIntRange( min, max );
+			dmg.value	-=	Random.NormalIntRange( min, max );
 		}
+		
+		return dmg;
 	}
 
 	@Override
@@ -103,8 +108,9 @@ public class Goo extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 2);
+		return dmg;
 	}
 
 	@Override
@@ -129,7 +135,8 @@ public class Goo extends Mob {
 	}
 
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage damage ) {
+		Char enemy	=	(Char)damage.to;
 		if (Random.Int( 3 ) == 0) {
 			Buff.affect( enemy, Ooze.class );
 			enemy.sprite.burst( 0x000000, 5 );
@@ -219,13 +226,10 @@ public class Goo extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public void takeDamage(Damage dmg) {
 		boolean bleeding = (HP*2 <= HT);
 		
-		// fire
-		if(src instanceof Burning)
-			dmg	*=	1.5;
-		super.damage(dmg, src);
+		super.takeDamage(dmg);
 		if ((HP*2 <= HT) && !bleeding){
 			BossHealthBar.bleed(true);
 			GLog.w( Messages.get(this, "enraged_text") );
@@ -234,7 +238,7 @@ public class Goo extends Mob {
 			yell(Messages.get(this, "gluuurp"));
 		}
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null) lock.addTime(dmg*2);
+		if (lock != null) lock.addTime(dmg.value*2);
 	}
 
 	@Override
@@ -280,15 +284,18 @@ public class Goo extends Mob {
 
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
-	}
-	
 	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		// fire
+		if(dmg.hasElement(Damage.Element.FIRE))
+			dmg.value	*=	1.5f;
+		
+		if(dmg.hasElement(Damage.Element.POISON))
+			dmg.value	*=	0.8f;
+		
+		if(dmg.isFeatured(Damage.Feature.DEATH))
+			dmg.value	*=	0.8f;
+		
+		return dmg;
 	}
 }

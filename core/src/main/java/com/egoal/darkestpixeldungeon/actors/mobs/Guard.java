@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Chains;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -60,8 +61,8 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange(4, 12);
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange(4, 12), this, target);
 	}
 
 	@Override
@@ -137,8 +138,9 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 8);
+		return dmg;
 	}
 
 	@Override

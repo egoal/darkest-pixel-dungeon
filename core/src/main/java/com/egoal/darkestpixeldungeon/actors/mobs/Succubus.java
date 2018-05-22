@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
@@ -63,14 +64,21 @@ public class Succubus extends Mob {
 
 		properties.add(Property.DEMONIC);
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 22, 30 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(22, 30), this, target);
+	}
+
+	@Override
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 10);
+		return dmg;
 	}
 	
 	@Override
-	public int attackProc(Char enemy,int damage ) {
+	public Damage attackProc(Damage damage ) {
+		Char enemy	=	(Char)damage.to;
 		
 		if (Random.Int( 3 ) == 0) {
 			Buff.affect( enemy, Charm.class, Charm.durationFactor( enemy ) * Random.IntRange( 3, 7 ) ).object = id();
@@ -133,18 +141,10 @@ public class Succubus extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
-	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( Vampiric.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.SHADOW))
+			dmg.value	*=	0.8f;
+		return dmg;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -153,7 +153,7 @@ public class Succubus extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

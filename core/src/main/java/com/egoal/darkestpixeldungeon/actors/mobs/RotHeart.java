@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -50,21 +51,21 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
-		//TODO: when effect properties are done, change this to FIRE
-		if (src instanceof Burning) {
+	public void takeDamage(Damage dmg){
+		
+		if(dmg.hasElement(Damage.Element.FIRE)){
 			destroy();
 			sprite.die();
 		} else {
-			super.damage(dmg, src);
+			super.takeDamage(dmg);
 		}
 	}
 
 	@Override
-	public int defenseProc(Char enemy,int damage) {
+	public Damage defenseProc(Damage damage) {
 		GameScene.add(Blob.seed(pos, 20, ToxicGas.class));
 
-		return super.defenseProc(enemy, damage);
+		return super.defenseProc(damage);
 	}
 
 	@Override
@@ -92,10 +93,10 @@ public class RotHeart extends Mob {
 		super.die(cause);
 		Dungeon.level.drop( new Rotberry.Seed(), pos ).sprite.drop();
 	}
-
+	
 	@Override
-	public int damageRoll() {
-		return 0;
+	public Damage giveDamage(Char target) {
+		return new Damage(0, this, target);
 	}
 
 	@Override
@@ -104,8 +105,9 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 5);
+		return dmg;
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -115,7 +117,7 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 

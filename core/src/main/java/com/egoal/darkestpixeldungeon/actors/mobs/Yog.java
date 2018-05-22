@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
@@ -103,8 +104,7 @@ public class Yog extends Mob {
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
-
+	public void takeDamage(Damage dmg){
 		HashSet<Mob> fists = new HashSet<>();
 
 		for (Mob mob : Dungeon.level.mobs)
@@ -114,19 +114,20 @@ public class Yog extends Mob {
 		for (Mob fist : fists)
 			fist.beckon( pos );
 
-		dmg >>= fists.size();
+		dmg.value >>= fists.size();
 		
-		super.damage( dmg, src );
+		super.takeDamage(dmg);
 
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null) lock.addTime(dmg*0.5f);
+		if (lock != null) lock.addTime(dmg.value*0.5f);
 
 	}
 	
 	@Override
-	public int defenseProc(Char enemy,int damage ) {
-
+	public Damage defenseProc(Damage damage ) {
+		Char enemy	=	(Char)damage.from;
+		
 		ArrayList<Integer> spawnPoints = new ArrayList<>();
 		
 		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -150,7 +151,7 @@ public class Yog extends Mob {
 			}
 		}
 
-		return super.defenseProc(enemy, damage);
+		return super.defenseProc(damage);
 	}
 	
 	@Override
@@ -196,7 +197,7 @@ public class Yog extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 
@@ -228,19 +229,21 @@ public class Yog extends Mob {
 		public int attackSkill( Char target ) {
 			return 36;
 		}
-		
+
 		@Override
-		public int damageRoll() {
-			return Random.NormalIntRange( 20, 50 );
+		public Damage giveDamage(Char target) {
+			return new Damage(Random.NormalIntRange(20, 50), this, target);
+		}
+
+		@Override
+		public Damage defendDamage(Damage dmg) {
+			dmg.value	-=	Random.NormalIntRange(0, 15);
+			return dmg;
 		}
 		
 		@Override
-		public int drRoll() {
-			return Random.NormalIntRange(0, 15);
-		}
-		
-		@Override
-		public int attackProc( Char enemy, int damage ) {
+		public Damage attackProc(Damage damage ) {
+			Char enemy	=	(Char)damage.to;
 			if (Random.Int( 3 ) == 0) {
 				Buff.affect( enemy, Ooze.class );
 				enemy.sprite.burst( 0xFF000000, 5 );
@@ -261,22 +264,18 @@ public class Yog extends Mob {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
-			super.damage(dmg, src);
+		public void takeDamage(Damage dmg) {
+			super.takeDamage(dmg);
 			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-			if (lock != null) lock.addTime(dmg*0.5f);
-		}
-		
-		private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-		static {
-			RESISTANCES.add( ToxicGas.class );
-			RESISTANCES.add( Grim.class );
-			RESISTANCES.add( ScrollOfPsionicBlast.class );
+			if (lock != null) lock.addTime(dmg.value*0.5f);
 		}
 		
 		@Override
-		public HashSet<Class<?>> resistances() {
-			return RESISTANCES;
+		public Damage resistDamage(Damage dmg){
+			if(dmg.isFeatured(Damage.Feature.DEATH) || 
+					dmg.hasElement(Damage.Element.POISON|Damage.Element.SHADOW))
+				dmg.value	*=	0.8;
+			return dmg;
 		}
 		
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -289,7 +288,7 @@ public class Yog extends Mob {
 		}
 		
 		@Override
-		public HashSet<Class<?>> immunities() {
+		public HashSet<Class<?>> immunizedBuffs() {
 			return IMMUNITIES;
 		}
 	}
@@ -314,17 +313,18 @@ public class Yog extends Mob {
 		public int attackSkill( Char target ) {
 			return 36;
 		}
-		
+
 		@Override
-		public int damageRoll() {
-			return Random.NormalIntRange( 26, 32 );
+		public Damage giveDamage(Char target) {
+			return new Damage(Random.NormalIntRange(26, 32), this, target);
 		}
-		
+
 		@Override
-		public int drRoll() {
-			return Random.NormalIntRange(0, 15);
+		public Damage defendDamage(Damage dmg) {
+			dmg.value	-=	Random.NormalIntRange(0, 15);
+			return dmg;
 		}
-		
+
 		@Override
 		protected boolean canAttack( Char enemy ) {
 			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
@@ -336,12 +336,12 @@ public class Yog extends Mob {
 			if (!Dungeon.level.adjacent( pos, enemy.pos )) {
 				spend( attackDelay() );
 				
-				if (hit( this, enemy, true )) {
+				Damage dmg	=	giveDamage(enemy).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE);
+				if (enemy.checkHit(dmg)) {
+
+					enemy.takeDamage(dmg);
 					
-					int dmg =  damageRoll();
-					enemy.damage( dmg, this );
-					
-					enemy.sprite.bloodBurstA( sprite.center(), dmg );
+					enemy.sprite.bloodBurstA( sprite.center(), dmg.value );
 					enemy.sprite.flash();
 					
 					if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -371,22 +371,18 @@ public class Yog extends Mob {
 		}
 
 		@Override
-		public void damage(int dmg, Object src) {
-			super.damage(dmg, src);
+		public void takeDamage(Damage dmg) {
+			super.takeDamage(dmg);
 			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-			if (lock != null) lock.addTime(dmg*0.5f);
+			if (lock != null) lock.addTime(dmg.value*0.5f);
 		}
-		
-		private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-		static {
-			RESISTANCES.add( ToxicGas.class );
-			RESISTANCES.add( Grim.class );
 
-		}
-		
 		@Override
-		public HashSet<Class<?>> resistances() {
-			return RESISTANCES;
+		public Damage resistDamage(Damage dmg){
+			if(dmg.isFeatured(Damage.Feature.DEATH) ||
+					dmg.hasElement(Damage.Element.POISON|Damage.Element.SHADOW))
+				dmg.value	*=	0.8;
+			return dmg;
 		}
 		
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -400,7 +396,7 @@ public class Yog extends Mob {
 		}
 		
 		@Override
-		public HashSet<Class<?>> immunities() {
+		public HashSet<Class<?>> immunizedBuffs() {
 			return IMMUNITIES;
 		}
 	}
@@ -424,16 +420,16 @@ public class Yog extends Mob {
 		public int attackSkill( Char target ) {
 			return 30;
 		}
-		
+
 		@Override
-		public int damageRoll() {
-			return Random.NormalIntRange( 22, 30 );
-		}
-		
-		@Override
-		public int drRoll() {
-			return Random.NormalIntRange(0, 8);
+		public Damage giveDamage(Char target) {
+			return new Damage(Random.NormalIntRange(22, 30), this, target);
 		}
 
+		@Override
+		public Damage defendDamage(Damage dmg) {
+			dmg.value	-=	Random.NormalIntRange(0, 8);
+			return dmg;
+		}
 	}
 }

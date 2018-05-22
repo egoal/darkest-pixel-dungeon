@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
@@ -83,7 +84,10 @@ public class Piranha extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
+	public Damage giveDamage(Char target) {
+		return new Damage(damageRoll(), this, target);
+	}
+	int damageRoll() {
 		return Random.NormalIntRange( Dungeon.depth, 4 + Dungeon.depth * 2 );
 	}
 	
@@ -91,9 +95,13 @@ public class Piranha extends Mob {
 	public int attackSkill( Char target ) {
 		return 20 + Dungeon.depth * 2;
 	}
-	
+
 	@Override
-	public int drRoll() {
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	drRoll();
+		return dmg;
+	}
+	int drRoll() {
 		return Random.NormalIntRange(0, Dungeon.depth);
 	}
 	
@@ -153,7 +161,7 @@ public class Piranha extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
@@ -75,16 +76,17 @@ public class Swarm extends Mob {
 		generation = bundle.getInt( GENERATION );
 		if (generation > 0) EXP = 0;
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(1, 4), this, target);
 	}
 	
 	@Override
-	public int defenseProc(Char enemy,int damage ) {
-
-		if (HP >= damage + 2) {
+	public Damage defenseProc(Damage damage ) {
+		// Char enemy	=	
+		
+		if (HP >= damage.value + 2) {
 			ArrayList<Integer> candidates = new ArrayList<>();
 			boolean[] passable = Level.passable;
 			
@@ -98,7 +100,7 @@ public class Swarm extends Mob {
 			if (candidates.size() > 0) {
 				
 				Swarm clone = split();
-				clone.HP = (HP - damage) / 2;
+				clone.HP = (HP - damage.value) / 2;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
 				
@@ -113,7 +115,7 @@ public class Swarm extends Mob {
 			}
 		}
 		
-		return super.defenseProc(enemy, damage);
+		return super.defenseProc(damage);
 	}
 	
 	@Override

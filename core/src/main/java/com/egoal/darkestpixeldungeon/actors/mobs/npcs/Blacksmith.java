@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.windows.WndBlacksmith;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -211,7 +212,7 @@ public class Blacksmith extends NPC {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public void takeDamage(Damage dmg){
 	}
 	
 	@Override

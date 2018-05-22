@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.armor.glyphs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -45,7 +46,7 @@ public class Potential extends Armor.Glyph{
 
 			shockDmg *= Math.pow(0.9, level);
 
-			defender.damage( shockDmg, LightningTrap.LIGHTNING );
+			defender.takeDamage(new Damage(shockDmg, this, defender).addElement(Damage.Element.LIGHT));
 			
 			checkOwner( defender );
 			if (defender == Dungeon.hero) {

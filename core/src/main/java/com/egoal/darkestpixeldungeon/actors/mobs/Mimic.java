@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -75,8 +76,8 @@ public class Mimic extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( HT / 10, HT / 4 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange( HT / 10, HT / 4), this, target);
 	}
 	
 	@Override
@@ -173,7 +174,7 @@ public class Mimic extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Badges;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.sprites.ShieldedSprite;
 import com.watabou.utils.Random;
 
@@ -31,10 +32,11 @@ public class Shielded extends Brute {
 		
 		defenseSkill = 20;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 10);
+		return dmg;
 	}
 	
 	@Override

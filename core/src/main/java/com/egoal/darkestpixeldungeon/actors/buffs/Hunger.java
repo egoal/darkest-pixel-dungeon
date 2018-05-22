@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Badges;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
@@ -76,7 +77,8 @@ public class Hunger extends Buff implements Hero.Doom{
 				partialDamage += target.HT/100f;
 
 				if (partialDamage > 1){
-					target.damage( (int)partialDamage, this);
+					// target.damage( (int)partialDamage, this);
+					target.takeDamage(new Damage((int)partialDamage, this, target).addFeature(Damage.Feature.PURE));
 					partialDamage -= (int)partialDamage;
 				}
 				
@@ -88,7 +90,7 @@ public class Hunger extends Buff implements Hero.Doom{
 
 					GLog.n( Messages.get(this, "onstarving") );
 					hero.resting = false;
-					hero.damage( 1, this );
+					target.takeDamage(new Damage(1, this, target).addFeature(Damage.Feature.PURE));
 					statusUpdated = true;
 
 					hero.interrupt();

@@ -47,9 +47,8 @@ public class Buff extends Actor {
 	
 	public boolean attachTo( Char target ) {
 
-		if (target.immunities().contains( getClass() )) {
+		if(target.immunizedBuffs().contains(getClass()))
 			return false;
-		}
 		
 		this.target = target;
 		target.add( this );

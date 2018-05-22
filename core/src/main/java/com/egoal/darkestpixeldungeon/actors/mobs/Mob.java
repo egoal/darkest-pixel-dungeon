@@ -23,9 +23,12 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Wound;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
@@ -446,32 +449,35 @@ public abstract class Mob extends Char{
 	}
 	
 	@Override
-	public int defenseProc( Char enemy, int damage ) {
-		if (!enemySeen && enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
-			if (((Hero)enemy).subClass == HeroSubClass.ASSASSIN) {
-				damage *= 1.25f;
+	public Damage defenseProc(Damage dmg){
+		Char enemy	=	(Char)dmg.from;
+		if(!enemySeen && enemy==Dungeon.hero && Dungeon.hero.canSurpriseAttack()){
+			// surprise attack!
+			if(((Hero)enemy).subClass==HeroSubClass.ASSASSIN){
+				// assassin perl
+				dmg.value	*=	1.25f;
 				Wound.hit(this);
-			} else {
+			}else
 				Surprise.hit(this);
-			}
 		}
 
 		//become aggro'd by a corrupted enemy
-		if (enemy.buff(Corruption.class) != null) {
+		if(enemy.buff(Corruption.class)!=null){
 			aggro(enemy);
-			target = enemy.pos;
-			if (state == SLEEPING || state == WANDERING)
-				state = HUNTING;
+			target	=	enemy.pos;
+			if(state==SLEEPING || state==WANDERING)
+				state	=	HUNTING;
 		}
-
-		if (buff(SoulMark.class) != null) {
-			int restoration = Math.min(damage, HP);
+		
+		// process buff: soul mark
+		if(buff(SoulMark.class)!=null){
+			int restoration	=	Math.min(dmg.value, HP);
 			Dungeon.hero.buff(Hunger.class).satisfy(restoration*0.6f);
-			Dungeon.hero.HP = (int)Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP+(restoration*0.3f)));
-			Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
+			Dungeon.hero.HP	=	(int)Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HT+restoration*.3f));
+			Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 		}
-
-		return damage;
+		
+		return dmg;
 	}
 
 	public boolean surprisedBy( Char enemy ){
@@ -486,18 +492,15 @@ public abstract class Mob extends Char{
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
-
-		Terror.recover( this );
-
-		if (state == SLEEPING) {
-			state = WANDERING;
-		}
-		alerted = true;
+	public void takeDamage(Damage dmg){
+		Terror.recover(this);
 		
-		super.damage( dmg, src );
+		if(state==SLEEPING)
+			state	=	WANDERING;
+		alerted	=	true;
+		
+		super.takeDamage(dmg);
 	}
-	
 	
 	@Override
 	public void destroy() {

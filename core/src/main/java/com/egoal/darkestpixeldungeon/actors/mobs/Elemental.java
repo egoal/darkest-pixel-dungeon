@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
@@ -55,8 +56,14 @@ public class Elemental extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 16, 26 );
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange( 16, 26 ), this, target).addElement(Damage.Element.FIRE);
+	}
+	
+	@Override
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 5);
+		return dmg;
 	}
 	
 	@Override
@@ -65,12 +72,8 @@ public class Elemental extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
-	}
-	
-	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage damage ) {
+		Char enemy	=	(Char)damage.to;
 		if (Random.Int( 2 ) == 0) {
 			Buff.affect( enemy, Burning.class ).reignite( enemy );
 		}
@@ -87,9 +90,9 @@ public class Elemental extends Mob {
 			}
 		} else if (buff instanceof Frost || buff instanceof Chill) {
 				if (Level.water[this.pos])
-					damage( Random.NormalIntRange( HT / 2, HT ), buff );
+					takeDamage(new Damage(Random.NormalIntRange( HT / 2, HT ), buff, this).addElement(Damage.Element.ICE));
 				else
-					damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
+					takeDamage(new Damage(Random.NormalIntRange(1, HT*2/3), buff, this).addElement(Damage.Element.ICE));
 		} else {
 			super.add( buff );
 		}
@@ -103,7 +106,7 @@ public class Elemental extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

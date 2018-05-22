@@ -20,13 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.actors;
 
-import android.text.style.AbsoluteSizeSpan;
-
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -35,7 +32,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.EarthImbue;
 import com.egoal.darkestpixeldungeon.actors.buffs.FireImbue;
-import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
 import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.actors.buffs.Slow;
@@ -46,10 +42,8 @@ import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.features.Door;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -57,12 +51,7 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import org.xml.sax.SAXNotRecognizedException;
-
-import java.sql.DatabaseMetaData;
 import java.util.HashSet;
-
-import javax.microedition.khronos.opengles.GL;
 
 public abstract class Char extends Actor {
 	
@@ -263,7 +252,7 @@ public abstract class Char extends Actor {
 		// deal with types
 		//todo: the damage number can have different colour refer to the element they carry
 		switch(dmg.type){
-			case PHYSICAL:
+			case NORMAL:
 				// physical
 				if(SHLD>=dmg.value)
 					SHLD	-=	dmg.value;
@@ -467,6 +456,11 @@ public abstract class Char extends Actor {
 		next();
 	}
 
+	private static final HashSet<Class<?>> EMPTY	=	new HashSet<>();
+	public HashSet<Class<?> > immunizedBuffs(){
+		return EMPTY;
+	}
+	
 	protected HashSet<Property> properties = new HashSet<>();
 
 	public HashSet<Property> properties() { return properties; }

@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
@@ -65,7 +66,7 @@ public class Wandmaker extends NPC {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public void takeDamage(Damage dmg){
 	}
 	
 	@Override

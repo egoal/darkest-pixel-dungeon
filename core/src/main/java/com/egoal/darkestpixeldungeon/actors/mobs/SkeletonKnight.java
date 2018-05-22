@@ -1,6 +1,9 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import android.app.admin.DeviceAdminInfo;
+
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.Humanity;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
@@ -30,29 +33,36 @@ public class SkeletonKnight extends Mob{
 	
 	private static final float COUNTER	=	.15f;
 	private static final float COMBO	=	.15f;
-	
+
 	@Override
-	public int damageRoll(){ return Random.NormalIntRange(4, 12); }
-	
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(4, 12), this, target);
+	}
+
 	@Override
-	public int drRoll(){ return Random.NormalIntRange(0, 5); }
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 5);
+		return dmg;
+	}
 	
 	@Override
 	public int attackSkill(Char target){ return 12; }
 	
 	@Override
-	public int defenseProc(Char enemy, int damage){
+	public Damage defenseProc(Damage damage){
+		Char enemy	=	(Char)damage.from;
+		
 		if(Random.Float()<COUNTER){
 			sprite.showStatus(CharSprite.WARNING, Messages.get(this, "counter"));
-			enemy.damage(damage, this);
+			enemy.takeDamage(damage);
 			
-			return 0;
+			damage.value	=	0;
 		}
-		return super.defenseProc(enemy, damage);
+		return super.defenseProc(damage);
 	}
 	
 	@Override
-	public int attackProc(Char enemy, int damage){
+	public Damage attackProc(Damage damage){
 		if(Random.Float()<COMBO){
 			// almost, no time cost
 			spend(-cooldown()*0.99f);

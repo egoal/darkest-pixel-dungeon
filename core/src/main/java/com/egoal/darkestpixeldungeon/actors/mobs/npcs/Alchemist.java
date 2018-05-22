@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
@@ -97,22 +98,6 @@ public class Alchemist extends NPC{
 
 		// give reward
 		(new Gold(Random.Int(0, vol*15)+20)).doPickUp(Dungeon.hero);
-
-		// give 0~3 test paper
-//		ArrayList<Class<?> > potionList	=	new ArrayList<>();
-//		potionList.add(PotionOfFrost.class);
-//		if(Dungeon.hero.heroClass!=HeroClass.WARRIOR)
-//			potionList.add(PotionOfHealing.class);
-//		potionList.add(PotionOfInvisibility.class);
-//		potionList.add(PotionOfLevitation.class);
-//		if(Dungeon.hero.heroClass!=HeroClass.HUNTRESS)
-//			potionList.add(PotionOfMindVision.class);
-//		potionList.add(PotionOfLiquidFlame.class);
-//		potionList.add(PotionOfParalyticGas.class);
-//		potionList.add(PotionOfPurity.class);
-//		potionList.add(PotionOfStrength.class);
-//		if(Dungeon.hero.heroClass!=HeroClass.SORCERESS)
-//			potionList.add(PotionOfToxicGas.class);
 		
 		if(vol>=5){
 			// give test papers
@@ -154,7 +139,7 @@ public class Alchemist extends NPC{
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
+	public void takeDamage(Damage dmg){
 	}
 
 	@Override

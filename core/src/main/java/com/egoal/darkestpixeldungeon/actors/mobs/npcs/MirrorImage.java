@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
@@ -71,7 +72,7 @@ public class MirrorImage extends NPC {
 	public void duplicate( Hero hero ) {
 		tier = hero.tier();
 		attack = hero.attackSkill( hero );
-		damage = hero.damageRoll();
+		damage = hero.giveDamage(null).value;
 	}
 	
 	@Override
@@ -80,18 +81,18 @@ public class MirrorImage extends NPC {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return damage;
+	public Damage giveDamage(Char target) {
+		return new Damage(damage, this, target).addFeature(Damage.Feature.ACCURATE);
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
-		int dmg = super.attackProc( enemy, damage );
-
+	public Damage attackProc(Damage damage ) {
+		damage	=	super.attackProc(damage);
+		
 		destroy();
 		sprite.die();
 		
-		return dmg;
+		return damage;
 	}
 	
 	protected Char chooseEnemy() {
@@ -142,7 +143,7 @@ public class MirrorImage extends NPC {
 	}
 
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

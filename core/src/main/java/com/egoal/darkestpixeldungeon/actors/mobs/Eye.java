@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -66,18 +67,19 @@ public class Eye extends Mob {
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange(20, 30);
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange(20, 30), this, target);
 	}
 
 	@Override
 	public int attackSkill( Char target ) {
 		return 30;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 10);
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 10);
+		return dmg;
 	}
 	
 	private Ballistica beam;
@@ -145,9 +147,10 @@ public class Eye extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
-		if (beamCharged) dmg /= 4;
-		super.damage(dmg, src);
+	public void takeDamage(Damage dmg){
+		if (beamCharged) dmg.value /= 4;
+		
+		super.takeDamage(dmg);
 	}
 
 	public void deathGaze(){
@@ -174,8 +177,10 @@ public class Eye extends Mob {
 				continue;
 			}
 
-			if (hit( this, ch, true )) {
-				ch.damage( Random.NormalIntRange( 30, 50 ), this );
+			Damage dmg	=	new Damage(Random.NormalIntRange(30, 50), 
+				this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT);
+			if(ch.checkHit(dmg)){
+				ch.takeDamage(dmg);
 
 				if (Dungeon.visible[pos]) {
 					ch.sprite.flash();
@@ -220,17 +225,12 @@ public class Eye extends Mob {
 		beamCooldown = bundle.getInt(BEAM_COOLDOWN);
 		beamCharged = bundle.getBoolean(BEAM_CHARGED);
 	}
-
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( WandOfDisintegration.class );
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( Vampiric.class );
-	}
 	
 	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.SHADOW))
+			dmg.value	*=	0.8f;
+		return dmg;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -239,7 +239,7 @@ public class Eye extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 

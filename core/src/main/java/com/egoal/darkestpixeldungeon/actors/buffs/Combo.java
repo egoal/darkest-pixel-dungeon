@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
@@ -193,40 +194,42 @@ public class Combo extends Buff implements ActionIndicator.Action{
 
 			AttackIndicator.target(enemy);
 
-			int dmg = target.damageRoll();
-
-			//variance in damage dealt
+			Damage dmg	=	target.giveDamage(enemy);
 			switch(type){
 				case CLOBBER:
-					dmg = Math.round(dmg*0.6f);
+					dmg.value	*=	0.6f;
 					break;
 				case CLEAVE:
-					dmg = Math.round(dmg*1.5f);
+					dmg.value	*=	1.5f;
 					break;
 				case SLAM:
-					//rolls 2 times, takes the highest roll
-					int dmgReroll = target.damageRoll();
-					if (dmgReroll > dmg) dmg = dmgReroll;
-					dmg = Math.round(dmg*1.6f);
+					// rolls twice
+					Damage dmg2	=	target.giveDamage(enemy);
+					if(dmg2.value>dmg.value) dmg	=	dmg2;
+					dmg.value	*=	1.6f;
 					break;
 				case CRUSH:
-					//rolls 4 times, takes the highest roll
-					for (int i = 1; i < 4; i++) {
-						dmgReroll = target.damageRoll();
-						if (dmgReroll > dmg) dmg = dmgReroll;
+					// roll 4 times, take the highest
+					for(int i=1; i<4; ++i){
+						Damage dmgp	=	target.giveDamage(enemy);
+						if(dmgp.value>dmg.value) dmg	=	dmgp;
 					}
-					dmg = Math.round(dmg*2.5f);
+					dmg.value	*=	2.5f;
 					break;
 				case FURY:
-					dmg = Math.round(dmg*0.6f);
+					dmg.value	*=	0.6f;
 					break;
 			}
-
-			dmg -= enemy.drRoll();
-			dmg = target.attackProc(enemy, dmg);
-			dmg = enemy.defenseProc(target, dmg);
-			enemy.damage( dmg, this );
-
+			
+			// normal attack process
+			if(dmg.isFeatured(Damage.Feature.PURE)){}
+			else
+				dmg	=	enemy.defendDamage(dmg);
+			dmg	=	target.attackProc(dmg);
+			dmg	=	enemy.defenseProc(dmg);
+			
+			enemy.takeDamage(dmg);
+			
 			//special effects
 			switch (type){
 				case CLOBBER:
@@ -257,7 +260,7 @@ public class Combo extends Buff implements ActionIndicator.Action{
 					}
 					break;
 				case SLAM:
-					target.SHLD = Math.max( target.SHLD, dmg/2);
+					target.SHLD = Math.max( target.SHLD, dmg.value/2);
 					break;
 				default:
 					//nothing
@@ -270,7 +273,7 @@ public class Combo extends Buff implements ActionIndicator.Action{
 				target.buff(EarthImbue.class).proc(enemy);
 
 			Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
-			enemy.sprite.bloodBurstA( target.sprite.center(), dmg );
+			enemy.sprite.bloodBurstA( target.sprite.center(), dmg.value );
 			enemy.sprite.flash();
 
 			if (!enemy.isAlive()){

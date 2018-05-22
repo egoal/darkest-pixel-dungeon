@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.mobs.GreatCrab;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
@@ -95,7 +96,7 @@ public class Ghost extends NPC {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public void takeDamage(Damage dmg){
 	}
 	
 	@Override
@@ -184,7 +185,7 @@ public class Ghost extends NPC {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 

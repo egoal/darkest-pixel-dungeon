@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.sprites.RatSprite;
 import com.watabou.utils.Random;
 
@@ -36,17 +37,18 @@ public class Rat extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange( 1, 4 ), this, target);
+	}
+	
+	@Override
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 1);
+		return dmg;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 8;
-	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 1);
 	}
 }

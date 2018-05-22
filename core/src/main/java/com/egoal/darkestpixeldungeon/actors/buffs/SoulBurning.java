@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfElements;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -47,7 +48,9 @@ public class SoulBurning extends Buff implements Hero.Doom{
 			if(target instanceof Hero){
 				//todo: affect hero
 			}else{
-				target.damage(dmgHP, this);
+				// target.damage(dmgHP, this);
+				target.takeDamage(new Damage(dmgHP, 
+					this, target).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW));
 			}
 		}else{
 			detach();

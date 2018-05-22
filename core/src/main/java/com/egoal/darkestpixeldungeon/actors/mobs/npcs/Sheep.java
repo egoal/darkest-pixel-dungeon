@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.SheepSprite;
@@ -53,7 +54,7 @@ public class Sheep extends NPC {
 	}
 
 	@Override
-	public void damage( int dmg, Object src ) {
+	public void takeDamage(Damage dmg){
 	}
 
 	@Override

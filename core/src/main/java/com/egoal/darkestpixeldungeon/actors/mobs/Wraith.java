@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -67,10 +68,10 @@ public class Wraith extends Mob {
 		level = bundle.getInt( LEVEL );
 		adjustStats( level );
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1 + level/2, 2 + level );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(1 + level/2, 2 + level), this, target);
 	}
 	
 	@Override
@@ -126,7 +127,7 @@ public class Wraith extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

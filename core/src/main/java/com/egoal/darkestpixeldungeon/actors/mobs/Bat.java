@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.sprites.BatSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -50,8 +51,8 @@ public class Bat extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 5, 18 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange( 5, 18), this, target);
 	}
 	
 	@Override
@@ -60,14 +61,15 @@ public class Bat extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 4);
+		return dmg;
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage damage ) {
 		
-		int reg = (int)(Math.min( damage, HT - HP )*.4f);
+		int reg = (int)(Math.min(damage.value, HT - HP )*.4f);
 		
 		if (reg > 0) {
 			HP += reg;
@@ -96,7 +98,10 @@ public class Bat extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.SHADOW))
+			dmg.value	*=	.8;
+		
+		return dmg;
 	}
 }

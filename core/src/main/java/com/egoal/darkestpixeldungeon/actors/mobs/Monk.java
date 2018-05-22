@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -53,10 +54,10 @@ public class Monk extends Mob {
 
 		properties.add(Property.UNDEAD);
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 12, 25 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange( 12, 25 ), this, target);
 	}
 	
 	@Override
@@ -68,10 +69,11 @@ public class Monk extends Mob {
 	protected float attackDelay() {
 		return 0.5f;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 2);
+		return dmg;
 	}
 	
 	@Override
@@ -84,9 +86,9 @@ public class Monk extends Mob {
 	private int hitsToDisarm = 0;
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage damage ) {
 		
-		if (enemy == Dungeon.hero) {
+		if (damage.to == Dungeon.hero) {
 			
 			Hero hero = Dungeon.hero;
 			KindOfWeapon weapon = hero.belongings.weapon;
@@ -114,7 +116,7 @@ public class Monk extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 

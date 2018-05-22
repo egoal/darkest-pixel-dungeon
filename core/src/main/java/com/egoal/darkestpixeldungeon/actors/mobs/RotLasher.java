@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
@@ -59,19 +60,19 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
-		if (src instanceof Burning) {
+	public void takeDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.FIRE)){
 			destroy();
 			sprite.die();
 		} else {
-			super.damage(dmg, src);
+			super.takeDamage(dmg);
 		}
 	}
 
 	@Override
-	public int attackProc(Char enemy, int damage) {
-		Buff.affect( enemy, Cripple.class, 2f );
-		return super.attackProc(enemy, damage);
+	public Damage attackProc(Damage damage) {
+		Buff.affect((Char)damage.to, Cripple.class, 2f );
+		return super.attackProc(damage);
 	}
 
 	@Override
@@ -85,8 +86,8 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange(8, 15);
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(8, 15 ), this, target);
 	}
 
 	@Override
@@ -95,8 +96,9 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 8);
+		return dmg;
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -105,7 +107,7 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 

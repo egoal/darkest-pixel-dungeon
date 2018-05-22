@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -40,7 +41,8 @@ public class Corruption extends Buff {
 		buildToDamage -= damage;
 
 		if (damage > 0)
-			target.damage(damage, this);
+			// target.damage(damage, this);
+			target.takeDamage(new Damage(damage, this, target).addElement(Damage.Element.SHADOW));
 
 		spend(TICK);
 

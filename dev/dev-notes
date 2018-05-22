@@ -78,7 +78,7 @@ reporter:
             魔法伤害和精神伤害无视护盾
             装甲对物理伤害和魔法伤害的抵抗未更改，精神伤害无视
         元素：火，毒，电，冰，暗，
-        属性：暴击，必中，纯粹，
+        属性：暴击，必中，纯粹，必杀
             存粹伤害无视所有护甲，抗性
         接口调整:
             attack->        attack
@@ -88,10 +88,16 @@ reporter:
             attackProc->    attackProc
             defenseProc->   defenseProc
             damage->        takeDamage
-            immunities->    resistDamage    魔法、元素抵抗
+            immunities->    resistDamage, immunizedBuffs    魔法、元素抵抗
             resistances->   
 
     ~敌法刻印给予魔法抗性，元素戒指给予元素抗性
+    ~蝎子抗性为毒、暗，之前是吸血
+    ~骷髅爆炸伤害为魔法-暗
+
+    + 装备附加重做
+
+    雕像不可摄魂
 
 0.1.3
 done:

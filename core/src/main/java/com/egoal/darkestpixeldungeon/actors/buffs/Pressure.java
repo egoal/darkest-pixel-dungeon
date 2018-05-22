@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -43,7 +44,8 @@ public class Pressure extends Buff implements Hero.Doom{
 			
 			if(Random.Float()<pIncrease){
 				Hero hero	=	(Hero)target;
-				hero.damageMentally(Random.Int(1, Dungeon.depth/10+1), this);
+				hero.takeDamage(new Damage(Random.Int(1, Dungeon.depth/10+1), 
+					this, hero).type(Damage.Type.MENTAL).addFeature(Damage.Feature.PURE));
 			}
 			
 		}else{

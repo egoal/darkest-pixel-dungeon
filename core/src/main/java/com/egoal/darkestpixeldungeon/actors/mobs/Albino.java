@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.sprites.AlbinoSprite;
@@ -42,11 +43,12 @@ public class Albino extends Rat {
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage dmg){
+		
 		if (Random.Int( 2 ) == 0) {
-			Buff.affect( enemy, Bleeding.class ).set( damage );
+			Buff.affect(enemy, Bleeding.class).set(dmg.value);
 		}
 		
-		return damage;
+		return dmg;
 	}
 }

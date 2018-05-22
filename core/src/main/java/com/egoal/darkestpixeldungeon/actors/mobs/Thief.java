@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -80,11 +81,6 @@ public class Thief extends Mob {
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 10 );
-	}
-
-	@Override
 	protected float attackDelay() {
 		return 0.5f;
 	}
@@ -116,26 +112,33 @@ public class Thief extends Mob {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 3);
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange( 1, 10 ), this, target);
 	}
-
+	
+	@Override 
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 3);
+		return dmg;
+	}
+	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage dmg){
+		Char enemy	=	(Char)dmg.to;
 		if (item == null && enemy instanceof Hero&& steal( (Hero)enemy )) {
 			state = FLEEING;
 		}
 
-		return damage;
+		return dmg;
 	}
 
 	@Override
-	public int defenseProc(Char enemy, int damage) {
+	public Damage defenseProc(Damage damage) {
 		if (state == FLEEING) {
 			Dungeon.level.drop( new Gold(), pos ).sprite.drop();
 		}
 
-		return super.defenseProc(enemy, damage);
+		return super.defenseProc(damage);
 	}
 
 	protected boolean steal( Hero hero ) {

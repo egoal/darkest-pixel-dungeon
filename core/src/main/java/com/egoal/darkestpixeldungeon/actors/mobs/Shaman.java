@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -35,6 +37,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import java.util.EventListener;
 import java.util.HashSet;
 
 public class Shaman extends Mob implements Callback {
@@ -53,20 +56,21 @@ public class Shaman extends Mob implements Callback {
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.33f;
 	}
+
+	@Override
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(2, 8), this, target);
+	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 2, 8 );
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 4);
+		return dmg;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 11;
-	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
 	}
 	
 	@Override
@@ -90,12 +94,14 @@ public class Shaman extends Mob implements Callback {
 			
 			spend( TIME_TO_ZAP );
 			
-			if (hit( this, enemy, true )) {
-				int dmg = Random.NormalIntRange(3, 10);
+			Damage dmg	=	new Damage(Random.NormalIntRange(3, 10), 
+				this, enemy).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT);
+			
+			if (enemy.checkHit(dmg)){
 				if (Level.water[enemy.pos] && !enemy.flying) {
-					dmg *= 1.5f;
+					dmg.value *= 1.5f;
 				}
-				enemy.damage( dmg, LightningTrap.LIGHTNING );
+				enemy.takeDamage(dmg);
 				
 				enemy.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
 				enemy.sprite.flash();
@@ -121,14 +127,11 @@ public class Shaman extends Mob implements Callback {
 	public void call() {
 		next();
 	}
-
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( LightningTrap.Electricity.class );
-	}
 	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	@Override 
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.LIGHT))
+			dmg.value	*=	0.8f;
+		return dmg;
 	}
 }

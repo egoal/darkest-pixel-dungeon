@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -93,12 +94,13 @@ public class Bee extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( HT / 10, HT / 4 );
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange( HT / 10, HT / 4 ), this, target);
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage damage ) {
+		Char enemy	=	(Char)damage.to;
 		if (enemy instanceof Mob) {
 			((Mob)enemy).aggro( this );
 		}
@@ -145,14 +147,11 @@ public class Bee extends Mob {
 		return super.getCloser( target );
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Poison.class );
-		IMMUNITIES.add( Amok.class );
-	}
-	
 	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.POISON))
+			dmg.value	*=	0.8;
+		
+		return dmg;
 	}
 }

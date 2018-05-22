@@ -10,7 +10,7 @@ package com.egoal.darkestpixeldungeon.actors;
 public class Damage{
 	
 	public enum Type{
-		PHYSICAL, 
+		NORMAL, 
 		MAGICAL, 
 		MENTAL, 
 	}
@@ -22,6 +22,7 @@ public class Damage{
 		public static final int ICE		=	0x0004;
 		public static final int LIGHT	=	0x0008;
 		public static final int SHADOW	=	0x0010;
+		public static final int ACID	=	0x0020;
 	}
 	
 	public class Feature{
@@ -29,11 +30,12 @@ public class Damage{
 		public static final int CRITCIAL	=	0x0001;
 		public static final int ACCURATE	=	0x0002;
 		public static final int PURE		=	0x0004;
+		public static final int DEATH		=	0x0008;
 	}
 	
 	// attributes
 	public int value	=	0;
-	public Type type	=	Type.PHYSICAL;
+	public Type type	=	Type.NORMAL;
 	public int element	=	Element.NONE;
 	public int feature	=	Feature.NONE;
 	public Object from	=	null;

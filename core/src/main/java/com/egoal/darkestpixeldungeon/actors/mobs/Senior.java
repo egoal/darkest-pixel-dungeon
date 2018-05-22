@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.sprites.SeniorSprite;
@@ -32,18 +33,19 @@ public class Senior extends Monk {
 	{
 		spriteClass = SeniorSprite.class;
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 16, 24 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(16, 24), this, target);
 	}
 	
 	@Override
-	public int attackProc(Char enemy,int damage ) {
+	public Damage attackProc(Damage damage ) {
+		Char enemy	=	(Char)damage.to;
 		if (Random.Int( 10 ) == 0) {
 			Buff.prolong( enemy, Paralysis.class, 1.1f );
 		}
-		return super.attackProc( enemy, damage );
+		return super.attackProc(damage);
 	}
 	
 	@Override

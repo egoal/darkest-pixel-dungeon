@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.sprites.BruteSprite;
@@ -57,10 +58,9 @@ public class Brute extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return enraged ?
-			Random.NormalIntRange( 15, 45 ) :
-			Random.NormalIntRange( 6, 26 );
+	public Damage giveDamage(Char target){
+		return new Damage(enraged? Random.NormalIntRange( 15, 45 ) : Random.NormalIntRange( 6, 26 ), 
+			this, target);
 	}
 	
 	@Override
@@ -69,17 +69,16 @@ public class Brute extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 8);
+		return dmg;
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
-		super.damage( dmg, src );
+	public void takeDamage(Damage dmg){
+		super.takeDamage(dmg);
 		
-		if (isAlive() && !enraged && HP < HT / 4) {
-			enraged = true;
-			spend( TICK );
+		if(isAlive() && !enraged && HP<HT/4){
 			if (Dungeon.visible[pos]) {
 				GLog.w( Messages.get(this, "enraged_text") );
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );
@@ -93,7 +92,7 @@ public class Brute extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

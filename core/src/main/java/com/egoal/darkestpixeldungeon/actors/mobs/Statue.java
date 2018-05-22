@@ -22,6 +22,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
@@ -83,10 +85,16 @@ public class Statue extends Mob {
 		}
 		return super.act();
 	}
-	
+
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( weapon.min(), weapon.max() );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(weapon.min(), weapon.max()), this, target);
+	}
+
+	@Override
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(null));
+		return dmg;
 	}
 	
 	@Override
@@ -103,25 +111,21 @@ public class Statue extends Mob {
 	protected boolean canAttack(Char enemy) {
 		return Dungeon.level.distance( pos, enemy.pos ) <= weapon.RCH;
 	}
-
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(null));
-	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {
+	public void takeDamage(Damage dmg) {
 
 		if (state == PASSIVE) {
 			state = HUNTING;
 		}
 		
-		super.damage( dmg, src );
+		super.takeDamage(dmg);
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
-		return weapon.proc( this, enemy, damage );
+	public Damage attackProc(Damage damage ) {
+		damage.value	=	weapon.proc( this, (Char)damage.to, damage.value);
+		return damage;
 	}
 	
 	@Override
@@ -152,22 +156,21 @@ public class Statue extends Mob {
 		return Messages.get(this, "desc", weapon.name());
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Poison.class );
-		RESISTANCES.add( Grim.class );
 		IMMUNITIES.add( Vampiric.class );
+		IMMUNITIES.add(Dementage.class);
 	}
 	
 	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.POISON) || dmg.isFeatured(Damage.Feature.DEATH))
+			dmg.value	*=	0.8;
+		return dmg;
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

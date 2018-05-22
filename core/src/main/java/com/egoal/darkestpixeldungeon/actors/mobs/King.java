@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
@@ -88,18 +89,19 @@ public class King extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 25, 40 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange( 25, 40 ), this, target);
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 32;
 	}
-	
+
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 14);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 14);
+		return dmg;
 	}
 	
 	@Override
@@ -139,10 +141,10 @@ public class King extends Mob {
 	}
 
 	@Override
-	public void damage(int dmg, Object src) {
-		super.damage(dmg, src);
+	public void takeDamage(Damage dmg) {
+		super.takeDamage(dmg);
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null) lock.addTime(dmg);
+		if (lock != null) lock.addTime(dmg.value);
 	}
 	
 	@Override
@@ -235,10 +237,14 @@ public class King extends Mob {
 		RESISTANCES.add( ScrollOfPsionicBlast.class );
 		RESISTANCES.add( WandOfDisintegration.class );
 	}
-	
+
 	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	public Damage resistDamage(Damage dmg){
+		if(dmg.isFeatured(Damage.Feature.DEATH))
+			dmg.value	*=	0.8;
+		if(dmg.hasElement(Damage.Element.POISON))
+			dmg.value	*=	0.8;
+		return dmg;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -248,7 +254,7 @@ public class King extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 	
@@ -280,10 +286,10 @@ public class King extends Mob {
 			count--;
 			super.onRemove();
 		}
-		
+
 		@Override
-		public int damageRoll() {
-			return Random.NormalIntRange( 15, 25 );
+		public Damage giveDamage(Char target) {
+			return new Damage(Random.NormalIntRange(15, 25), this, target);
 		}
 		
 		@Override
@@ -292,19 +298,19 @@ public class King extends Mob {
 		}
 		
 		@Override
-		public int attackProc( Char enemy, int damage ) {
+		public Damage attackProc(Damage damage ) {
 			if (Random.Int( MAX_ARMY_SIZE ) == 0) {
-				Buff.prolong( enemy, Paralysis.class, 1 );
+				Buff.prolong((Char)damage.to, Paralysis.class, 1 );
 			}
 			
 			return damage;
 		}
 		
 		@Override
-		public void damage( int dmg, Object src ) {
-			super.damage( dmg, src );
-			if (src instanceof ToxicGas) {
-				((ToxicGas)src).clear( pos );
+		public void takeDamage(Damage dmg){
+			super.takeDamage(dmg);
+			if (dmg.from instanceof ToxicGas) {
+				((ToxicGas)dmg.from).clear( pos );
 			}
 		}
 		
@@ -316,10 +322,11 @@ public class King extends Mob {
 				Sample.INSTANCE.play( Assets.SND_BONES );
 			}
 		}
-		
+
 		@Override
-		public int drRoll() {
-			return Random.NormalIntRange(0, 5);
+		public Damage defendDamage(Damage dmg) {
+			dmg.value	-=	Random.NormalIntRange(0, 5);
+			return dmg;
 		}
 
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -329,7 +336,7 @@ public class King extends Mob {
 		}
 		
 		@Override
-		public HashSet<Class<?>> immunities() {
+		public HashSet<Class<?>> immunizedBuffs() {
 			return IMMUNITIES;
 		}
 	}

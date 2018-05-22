@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.sprites.ScorpioSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -55,8 +56,8 @@ public class Scorpio extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 26, 36 );
+	public Damage giveDamage(Char target){
+		return new Damage(Random.NormalIntRange(26, 36), this, target);
 	}
 	
 	@Override
@@ -65,8 +66,9 @@ public class Scorpio extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 16);
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 16);
+		return dmg;
 	}
 	
 	@Override
@@ -76,12 +78,11 @@ public class Scorpio extends Mob {
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
-		if (Random.Int( 2 ) == 0) {
-			Buff.prolong( enemy, Cripple.class, Cripple.DURATION );
-		}
+	public Damage attackProc(Damage dmg){
+		if(Random.Int(2)==0)
+			Buff.prolong((Char)dmg.to, Cripple.class, Cripple.DURATION);
 		
-		return damage;
+		return dmg;
 	}
 	
 	@Override
@@ -104,14 +105,14 @@ public class Scorpio extends Mob {
 		}
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( Vampiric.class );
-		RESISTANCES.add( Poison.class );
+	@Override
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.POISON))
+			dmg.value	*=	0.8f;
+		if(dmg.hasElement(Damage.Element.SHADOW))
+			dmg.value	*=	0.8f;
+		
+		return dmg;
 	}
 	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
 }

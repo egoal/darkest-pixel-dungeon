@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -334,7 +335,7 @@ public class DriedRose extends Artifact {
 
 		@Override
 		protected boolean act() {
-			if (Random.Int(10) == 0) damage(1 , this);
+			if (Random.Int(10) == 0) takeDamage(new Damage(1, this, this).addFeature(Damage.Feature.PURE));
 			if (!isAlive())
 				return true;
 			if (!Dungeon.hero.isAlive()){
@@ -375,15 +376,15 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public int damageRoll() {
+		public Damage giveDamage(Char target) {
 			int lvl = (HT-10)/3;
-			return Random.NormalIntRange( lvl/2, 5+lvl);
+			return new Damage(Random.NormalIntRange(lvl/2, 5+lvl), this, target);
 		}
 
 		@Override
-		public int drRoll() {
-			//defence is equal to the level of rose.
-			return Random.NormalIntRange(0, (HT-10)/3);
+		public Damage defendDamage(Damage dmg) {
+			dmg.value	-=	Random.NormalIntRange(0, (HT-10)/3);
+			return dmg;
 		}
 
 		@Override
@@ -433,7 +434,7 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public HashSet<Class<?>> immunities() {
+		public HashSet<Class<?>> immunizedBuffs() {
 			return IMMUNITIES;
 		}
 

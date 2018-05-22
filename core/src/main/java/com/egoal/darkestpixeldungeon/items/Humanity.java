@@ -46,7 +46,8 @@ public class Humanity extends Item{
 			hero.SAN	-=	hero.SAN_MAX*0.7;
 			if(hero.SAN<0)
 				hero.SAN	=	0;
-			hero.damageMentally(-hero.SAN_MAX*7/10, this);
+			// hero.damageMentally(-hero.SAN_MAX*7/10, this);
+			//todo: show effects
 			
 			//1. recover hp
 			hero.HP	+=	hero.HT*0.3;

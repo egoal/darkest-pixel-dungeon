@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
@@ -96,7 +97,8 @@ public class Burning extends Buff implements Hero.Doom{
 
 				} else {
 
-					hero.damage( damage, this );
+					// hero.damage( damage, this );
+					hero.takeDamage(new Damage(damage, this, hero).addElement(Damage.Element.FIRE));
 					Item item = hero.belongings.randomUnequipped();
 					if (item instanceof Scroll
 							&& !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
@@ -122,7 +124,8 @@ public class Burning extends Buff implements Hero.Doom{
 				}
 				
 			} else {
-				target.damage( damage, this );
+				// target.damage( damage, this );
+				target.takeDamage(new Damage(damage, this, target).addElement(Damage.Element.FIRE));
 			}
 
 			if (target instanceof Thief) {

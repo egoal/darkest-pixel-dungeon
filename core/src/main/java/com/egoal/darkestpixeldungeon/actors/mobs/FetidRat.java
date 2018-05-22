@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ooze;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
@@ -54,25 +55,26 @@ public class FetidRat extends Rat {
 	}
 
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 2);
+	public Damage defendDamage(Damage dmg){
+		dmg.value	-=	Random.NormalIntRange(0, 2);
+		return dmg;
 	}
 
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage damage) {
 		if (Random.Int(3) == 0) {
-			Buff.affect(enemy, Ooze.class);
+			Buff.affect((Char)damage.to, Ooze.class);
 		}
 
 		return damage;
 	}
 
 	@Override
-	public int defenseProc( Char enemy, int damage ) {
+	public Damage defenseProc(Damage damage ) {
 
 		GameScene.add(Blob.seed(pos, 20, StenchGas.class));
 
-		return super.defenseProc(enemy, damage);
+		return super.defenseProc(damage);
 	}
 
 	@Override
@@ -88,7 +90,7 @@ public class FetidRat extends Rat {
 	}
 
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -118,7 +119,7 @@ public class Viscosity extends Armor.Glyph{
 			if (target.isAlive()) {
 
 				int damageThisTick = Math.max(1, damage/10);
-				target.damage( damageThisTick, this );
+				target.takeDamage(new Damage(damageThisTick, this, target));
 				if (target == Dungeon.hero && !target.isAlive()) {
 
 					Dungeon.fail( getClass() );

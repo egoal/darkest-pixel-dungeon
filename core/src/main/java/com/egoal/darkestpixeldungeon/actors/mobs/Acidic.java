@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.sprites.AcidicSprite;
 import com.watabou.utils.Random;
 
@@ -32,14 +33,12 @@ public class Acidic extends Scorpio {
 	}
 	
 	@Override
-	public int defenseProc(Char enemy,int damage ) {
+	public Damage defenseProc(Damage dmg){
+		int feadback	=	Random.IntRange(0, dmg.value);
+		if(feadback>0)
+			((Char)dmg.from).takeDamage(new Damage(feadback, this, dmg.from).addElement(Damage.Element.ACID));
 		
-		int dmg = Random.IntRange( 0, damage );
-		if (dmg > 0) {
-			enemy.damage( dmg, this );
-		}
-		
-		return super.defenseProc( enemy, damage );
+		return super.defenseProc(dmg);
 	}
 	
 	@Override

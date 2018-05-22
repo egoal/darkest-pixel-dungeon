@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -75,26 +76,27 @@ public class Tengu extends Mob {
 	}
 
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 6, 20 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(6, 20), this, target);
+	}
+
+	@Override
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 5);
+		return dmg;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
 		return 20;
 	}
-	
-	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 5);
-	}
 
 	@Override
-	public void damage(int dmg, Object src) {
+	public void takeDamage(Damage damage) {
 
 		int beforeHitHP = HP;
-		super.damage(dmg, src);
-		dmg = beforeHitHP - HP;
+		super.takeDamage(damage);
+		int dmg	=	beforeHitHP - HP;
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) {
@@ -224,20 +226,14 @@ public class Tengu extends Mob {
 			yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
 		}
 	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Poison.class );
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
 
+	@Override
+	public Damage resistDamage(Damage dmg){
+		if(dmg.hasElement(Damage.Element.POISON) || dmg.isFeatured(Damage.Feature.DEATH))
+			dmg.value	*=	0.8;
+		return dmg;
+	}
+	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);

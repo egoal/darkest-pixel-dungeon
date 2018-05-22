@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.BlobEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -50,8 +51,9 @@ public class ToxicGas extends Blob implements Hero.Doom{
 					if (Random.Int( 40 ) < (ch.HT + levelDamage) % 40) {
 						damage++;
 					}
-
-					ch.damage( damage, this );
+					
+					ch.takeDamage(new Damage(damage, this, ch).addElement(Damage.Element.POISON));
+					// ch.damage( damage, this );
 				}
 			}
 		}

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -72,7 +73,8 @@ public class Venom extends Poison implements Hero.Doom{
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			target.damage(damage, this);
+			// target.damage(damage, this);
+			target.takeDamage(new Damage(damage, this, target).addElement(Damage.Element.POISON));
 			if (damage < ((Dungeon.depth+1)/2)+1)
 				damage++;
 

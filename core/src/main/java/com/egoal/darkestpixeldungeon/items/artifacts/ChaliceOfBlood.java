@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -84,27 +85,28 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	private void prick(Hero hero){
-		int damage = 3*(level()*level());
+		// int damage = 3*(level()*level());
+		Damage damage	=	new Damage(3*(level()*level()), this, hero);
 
 		Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
 		if (armor != null) {
-			damage = armor.absorb(damage);
+			damage.value = armor.absorb(damage.value);
 		}
 
-		damage -= hero.drRoll();
+		hero.defendDamage(damage);
 
 		hero.sprite.operate( hero.pos );
 		hero.busy();
 		hero.spend(3f);
 		GLog.w( Messages.get(this, "onprick") );
-		if (damage <= 0){
-			damage = 1;
+		if (damage.value <= 0){
+			damage.value = 1;
 		} else {
 			Sample.INSTANCE.play(Assets.SND_CURSED);
-			hero.sprite.emitter().burst( ShadowParticle.CURSE, 4+(damage/10) );
+			hero.sprite.emitter().burst( ShadowParticle.CURSE, 4+(damage.value/10) );
 		}
 
-		hero.damage(damage, this);
+		hero.takeDamage(damage);
 
 		if (!hero.isAlive()) {
 			Dungeon.fail( getClass() );

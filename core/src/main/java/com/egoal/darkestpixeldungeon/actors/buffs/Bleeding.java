@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Splash;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -72,7 +73,8 @@ public class Bleeding extends Buff {
 			
 			if ((level = Random.NormalIntRange( level / 2, level )) > 0) {
 				
-				target.damage( level, this );
+				// target.damage( level, this );
+				target.takeDamage(new Damage(level, this, target));
 				if (target.sprite.visible) {
 					Splash.at( target.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
 							target.sprite.blood(), Math.min( 10 * level / target.HT, 10 ) );

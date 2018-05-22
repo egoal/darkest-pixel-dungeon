@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -69,7 +70,8 @@ public class GnollTrickster extends Gnoll {
 	}
 
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public Damage attackProc(Damage damage ) {
+		Char enemy	=	(Char)damage.to;
 		//The gnoll's attacks get more severe the more the player lets it hit them
 		combo++;
 		int effect = Random.Int(4)+combo;

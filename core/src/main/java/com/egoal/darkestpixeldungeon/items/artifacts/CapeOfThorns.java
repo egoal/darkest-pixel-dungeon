@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.artifacts;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -93,7 +94,7 @@ public class CapeOfThorns extends Artifact {
 				damage -= deflected;
 
 				if (attacker != null && Dungeon.level.adjacent(attacker.pos, defender.pos)) {
-					attacker.damage(deflected, this);
+					attacker.takeDamage(new Damage(deflected, this, attacker));
 				}
 
 				exp+= deflected;

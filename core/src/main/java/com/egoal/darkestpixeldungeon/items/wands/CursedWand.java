@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
@@ -231,18 +232,19 @@ public class CursedWand {
 				if (target != null) {
 					cursedFX(user, bolt, new Callback() {
 						public void call() {
-							int damage = user.lvl * 2;
+							// int damage = user.lvl * 2;
+							Damage damage	=	new Damage(user.lvl * 2, this, target).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
 							switch (Random.Int(2)) {
 								case 0:
-									user.HP = Math.min(user.HT, user.HP + damage);
+									user.HP = Math.min(user.HT, user.HP + damage.value);
 									user.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
-									target.damage(damage, wand);
+									target.takeDamage(damage);
 									target.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
 									break;
 								case 1:
-									user.damage( damage, this );
+									user.takeDamage(damage);
 									user.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
-									target.HP = Math.min(target.HT, target.HP + damage);
+									target.HP = Math.min(target.HT, target.HP + damage.value);
 									target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
 									Sample.INSTANCE.play(Assets.SND_CURSED);
 									if (!user.isAlive()) {

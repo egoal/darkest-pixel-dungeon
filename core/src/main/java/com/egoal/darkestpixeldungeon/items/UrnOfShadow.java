@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
@@ -205,7 +206,10 @@ public class UrnOfShadow extends Item{
 		private void opSoulBurn(Char target){
 			urnOfShadow.consume(COST_SOUL_BURN);
 			
-			target.damage(curUser.damageRoll()*4/5, curUser);
+			Damage dmg	=	curUser.giveDamage(target);
+			dmg.value	*=	0.8;
+			dmg.type(Damage.Type.MAGICAL).addFeature(Damage.Feature.ACCURATE).addElement(Damage.Element.SHADOW);
+			target.takeDamage(dmg);
 			Buff.affect(target, SoulBurning.class).reignite(target);
 			
 			curUser.sprite.attack(target.pos);

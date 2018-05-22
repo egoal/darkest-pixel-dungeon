@@ -1107,7 +1107,7 @@ public class Hero extends Char {
 		return dmg;
 	}
 	
-	public void takeMentalDamage(Damage dmg){
+	protected void takeMentalDamage(Damage dmg){
 		// keep in mind that SAN is pressure, it increases
 		SAN	+=	dmg.value;
 		if(SAN>=SAN_MAX)

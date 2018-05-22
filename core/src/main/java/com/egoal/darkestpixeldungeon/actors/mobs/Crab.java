@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.sprites.CrabSprite;
 import com.watabou.utils.Random;
@@ -42,8 +43,8 @@ public class Crab extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 8 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange(1, 8), this, target);
 	}
 	
 	@Override
@@ -52,7 +53,8 @@ public class Crab extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 4);
+		return dmg;
 	}
 }

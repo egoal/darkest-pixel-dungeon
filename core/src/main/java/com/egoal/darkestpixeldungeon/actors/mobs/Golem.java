@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
@@ -43,8 +44,8 @@ public class Golem extends Mob {
 	}
 	
 	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 25, 40 );
+	public Damage giveDamage(Char target) {
+		return new Damage(Random.NormalIntRange( 25, 40), this, target);
 	}
 	
 	@Override
@@ -58,8 +59,9 @@ public class Golem extends Mob {
 	}
 	
 	@Override
-	public int drRoll() {
-		return Random.NormalIntRange(0, 12);
+	public Damage defendDamage(Damage dmg) {
+		dmg.value	-=	Random.NormalIntRange(0, 12);
+		return dmg;
 	}
 
 	@Override
@@ -67,14 +69,6 @@ public class Golem extends Mob {
 		Imp.Quest.process( this );
 		
 		super.die( cause );
-	}
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -85,7 +79,7 @@ public class Golem extends Mob {
 	}
 	
 	@Override
-	public HashSet<Class<?>> immunities() {
+	public HashSet<Class<?>> immunizedBuffs() {
 		return IMMUNITIES;
 	}
 }

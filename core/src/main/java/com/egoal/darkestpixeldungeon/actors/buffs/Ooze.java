@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -57,9 +58,10 @@ public class Ooze extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 			if (Dungeon.depth > 4)
-				target.damage( Dungeon.depth/5, this );
+				// target.damage( Dungeon.depth/5, this );
+				target.takeDamage(new Damage(Dungeon.depth/5, this, target).addFeature(Damage.Feature.PURE));
 			else if (Random.Int(2) == 0)
-				target.damage( 1, this );
+				target.takeDamage(new Damage(1, this, target).addFeature(Damage.Feature.PURE));
 			if (!target.isAlive() && target == Dungeon.hero) {
 				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );
