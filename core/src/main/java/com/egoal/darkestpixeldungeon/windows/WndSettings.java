@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.ui.Toolbar;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
@@ -240,7 +241,7 @@ public class WndSettings extends WndTabbed {
 					Toolbar.updateLayout();
 				}
 			};
-			chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
+			chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, WIDTH/2-1, BTN_HEIGHT);
 			chkFlipToolbar.checked(DarkestPixelDungeon.flipToolbar());
 			add(chkFlipToolbar);
 
@@ -252,10 +253,21 @@ public class WndSettings extends WndTabbed {
 					GameScene.layoutTags();
 				}
 			};
-			chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
+			chkFlipTags.setRect(WIDTH/2+1, chkFlipToolbar.top(), WIDTH/2-1, BTN_HEIGHT);
 			chkFlipTags.checked(DarkestPixelDungeon.flipTags());
 			add(chkFlipTags);
 
+			RedButton btnLanguage	=	new RedButton(Messages.get(this, "language")){
+				@Override
+				protected void onClick(){
+					((WndSettings)parent.parent).hide();
+					((WndSettings)parent.parent).parent.add(new WndLangs());
+					// parent.add(new WndLangs());
+				}
+			};
+			btnLanguage.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
+			add(btnLanguage);
+			
 			OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"), "0", "4", 0, 4) {
 				@Override
 				protected void onChange() {
@@ -264,7 +276,7 @@ public class WndSettings extends WndTabbed {
 				}
 			};
 			slots.setSelectedValue(DarkestPixelDungeon.quickSlots());
-			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
+			slots.setRect(0, btnLanguage.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(slots);
 
 			CheckBox chkFont = new CheckBox(Messages.get(this, "smooth_font")){
@@ -287,6 +299,8 @@ public class WndSettings extends WndTabbed {
 			chkFont.setRect(0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
 			chkFont.checked(!DarkestPixelDungeon.classicFont());
 			add(chkFont);
+			
+			
 		}
 
 	}

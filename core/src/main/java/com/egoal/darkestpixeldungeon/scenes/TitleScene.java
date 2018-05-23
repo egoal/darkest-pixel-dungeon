@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.ui.ChangesButton;
 import com.egoal.darkestpixeldungeon.ui.ExitButton;
 import com.egoal.darkestpixeldungeon.ui.LanguageButton;
 import com.egoal.darkestpixeldungeon.ui.PrefsButton;
+import com.egoal.darkestpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -39,6 +40,8 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
+
+import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -71,7 +74,7 @@ public class TitleScene extends PixelScene {
 		if (DarkestPixelDungeon.landscape())
 			title.y = (topRegion - title.height()) / 2f;
 		else
-			title.y = 16 + (topRegion - title.height() - 16) / 2f;
+			title.y = 8 + (topRegion - title.height() - 16) / 2f;
 
 		align(title);
 
@@ -98,48 +101,58 @@ public class TitleScene extends PixelScene {
 		add( signs );
 
 		// main buttons
-		DashboardItem btnBadges = new DashboardItem( Messages.get(this, "badges"), 3 ) {
-			@Override
-			protected void onClick() {
-				DarkestPixelDungeon.switchNoFade( BadgesScene.class );
-			}
-		};
-		add(btnBadges);
-		
-		DashboardItem btnAbout = new DashboardItem( Messages.get(this, "about"), 1 ) {
-			@Override
-			protected void onClick() {
-				DarkestPixelDungeon.switchNoFade( AboutScene.class );
-			}
-		};
-		add( btnAbout );
-		
-		DashboardItem btnPlay = new DashboardItem( Messages.get(this, "play"), 0 ) {
-			@Override
-			protected void onClick() {
-				DarkestPixelDungeon.switchNoFade( StartScene.class );
-			}
-		};
-		add( btnPlay );
-		
-		DashboardItem btnRankings = new DashboardItem( Messages.get(this, "rankings"), 2 ) {
-			@Override
-			protected void onClick() {
+		DashboardItem[] btnsMain	=	new DashboardItem[]{
+			new DashboardItem( Messages.get(this, "play"), 0 ) {
+				@Override
+				protected void onClick() {
+					DarkestPixelDungeon.switchNoFade( StartScene.class );
+					
+				}
+			},
+			new DashboardItem( Messages.get(this, "rankings"), 2 ) {
+				@Override
+				protected void onClick() {
 				DarkestPixelDungeon.switchNoFade( RankingsScene.class );
-			}
+				}
+			},
+			new DashboardItem( Messages.get(this, "badges"), 3 ) {
+				@Override
+				protected void onClick() {
+					DarkestPixelDungeon.switchNoFade( BadgesScene.class );
+				}
+			},
+			new DashboardItem( Messages.get(this, "about"), 1 ) {
+				@Override
+				protected void onClick() {
+					DarkestPixelDungeon.switchNoFade( AboutScene.class );
+				}
+			},
+			new DashboardItem(Messages.get(this, "guide"), 4){
+				@Override
+				protected void onClick(){
+					
+				}
+			},
+			new DashboardItem(Messages.get(this, "settings"), 5){
+				@Override
+				protected void onClick(){
+					parent.add(new WndSettings());
+				}
+			},
 		};
-		add( btnRankings );
+		// align main buttons
+		{
+			final float btnHeight	=	btnsMain[0].height();
+			final float btnWidth	=	btnsMain[0].width();
+			final float btnGap	=	1;
+			final int btnRows	=	4;
+			for(int i=0; i<btnsMain.length; ++i){
+				add(btnsMain[i]);
 
-		if (DarkestPixelDungeon.landscape()) {
-			btnRankings     .setPos( w / 2 - btnRankings.width(), topRegion );
-			btnBadges       .setPos( w / 2, topRegion );
-			btnPlay         .setPos( btnRankings.left() - btnPlay.width(), topRegion );
-			btnAbout        .setPos( btnBadges.right(), topRegion );
-		} else {
-			btnPlay.setPos( w / 2 - btnPlay.width(), topRegion );
-			btnRankings.setPos( w / 2, btnPlay.top() );
-			btnBadges.setPos( w / 2 - btnBadges.width(), btnPlay.top() + DashboardItem.SIZE );
-			btnAbout.setPos( w / 2, btnBadges.top() );
+				int col	=	i/btnRows;
+				int row	=	i%btnRows;
+				btnsMain[i].setPos((w/2-btnWidth)/2+w/2*col,topRegion+2+(btnHeight+btnGap)*row);
+			}
 		}
 
 		// version & changes
@@ -163,15 +176,7 @@ public class TitleScene extends PixelScene {
 			version.height() - changes.height());
 		add( changes );
 
-		// settings & language
-		PrefsButton btnPrefs = new PrefsButton();
-		btnPrefs.setPos( 0, 0 );
-		add( btnPrefs );
-
-		LanguageButton btnLang = new LanguageButton();
-		btnLang.setPos(16, 1);
-		add( btnLang );
-
+		// exit
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
@@ -187,9 +192,11 @@ public class TitleScene extends PixelScene {
 	
 	private static class DashboardItem extends Button {
 		
-		public static final float SIZE	= 48;
+		public static final float BTN_WIDTH	=	48;
+		public static final float BTN_HEIGHT	=	24;
 		
-		private static final int IMAGE_SIZE	= 32;
+		private static final int IMAGE_SIZE	= 16;
+		private static final int FONT_SIZE	=	8;
 		
 		private Image image;
 		private RenderedText label;
@@ -200,7 +207,7 @@ public class TitleScene extends PixelScene {
 			image.frame( image.texture.uvRect( index * IMAGE_SIZE, 0, (index + 1) * IMAGE_SIZE, IMAGE_SIZE ) );
 			this.label.text( text );
 			
-			setSize( SIZE, SIZE );
+			setSize(BTN_WIDTH, BTN_HEIGHT);
 		}
 		
 		@Override
@@ -210,7 +217,7 @@ public class TitleScene extends PixelScene {
 			image = new Image( Assets.DASHBOARD );
 			add( image );
 			
-			label = renderText( 9 );
+			label = renderText(FONT_SIZE);
 			add( label );
 		}
 		
@@ -218,12 +225,12 @@ public class TitleScene extends PixelScene {
 		protected void layout() {
 			super.layout();
 			
-			image.x = x + (width - image.width()) / 2;
+			image.x = x + (width - image.width())/2-FONT_SIZE;
 			image.y = y;
 			align(image);
 			
-			label.x = x + (width - label.width()) / 2;
-			label.y = image.y + image.height() +2;
+			label.x	=	image.x+image.width+2;
+			label.y	=	y+4;
 			align(label);
 		}
 		

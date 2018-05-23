@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -88,8 +89,12 @@ abstract public class KindOfWeapon extends EquipableItem {
 	abstract public int min(int lvl);
 	abstract public int max(int lvl);
 
+	// damage attach to normal attack, called in give damage
 	public int damageRoll( Hero owner ) {
 		return Random.NormalIntRange( min(), max() );
+	}
+	public Damage giveDamage(Hero owner, Char target){
+		return new Damage(Random.NormalIntRange(min(), max()), owner, target);
 	}
 	
 	public float accuracyFactor(Hero hero ) {
@@ -108,8 +113,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 		return 0;
 	}
 	
+	// process, called in attackProc
 	public int proc( Char attacker, Char defender, int damage ) {
 		return damage;
 	}
-	
+	public Damage proc(Damage dmg){
+		return dmg;
+	}
 }
