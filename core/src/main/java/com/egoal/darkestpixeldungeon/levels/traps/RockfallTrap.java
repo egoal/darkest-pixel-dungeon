@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -67,8 +68,7 @@ public class RockfallTrap extends Trap {
 
 			if (ch != null){
 				int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth*2);
-				damage -= ch.drRoll();
-				ch.damage( Math.max(damage, 0) , this);
+				ch.takeDamage(ch.defendDamage(new Damage(Math.max(0, damage), this, ch)));
 
 				Buff.prolong( ch, Paralysis.class, Paralysis.duration(ch)/2);
 

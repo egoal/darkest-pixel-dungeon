@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
@@ -44,8 +45,9 @@ public class Grim extends Weapon.Enchantment{
 		int chance = Math.round(((defender.HT - enemyHealth) / (float)defender.HT)*30 + level);
 		
 		if (Random.Int( 100 ) < chance) {
-			
-			defender.damage( defender.HP, this );
+			// defender.damage( defender.HP, this );
+			defender.takeDamage(new Damage(defender.HP, 
+				this, defender).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE).addElement(Damage.Element.SHADOW));
 			defender.sprite.emitter().burst( ShadowParticle.UP, 5 );
 			
 			if (!defender.isAlive() && attacker instanceof Hero) {

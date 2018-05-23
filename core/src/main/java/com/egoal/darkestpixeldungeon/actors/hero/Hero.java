@@ -1107,6 +1107,14 @@ public class Hero extends Char {
 		return dmg;
 	}
 	
+	public void recoverSanity(int value){
+		int rv	=	SAN>value? value: SAN;
+		
+		SAN	-=	value;
+		if(SAN<0) SAN	=	0;
+		
+		sprite.showStatus(0xFFFFFF, Integer.toString(rv));
+	}
 	protected void takeMentalDamage(Damage dmg){
 		// keep in mind that SAN is pressure, it increases
 		SAN	+=	dmg.value;
@@ -1114,8 +1122,7 @@ public class Hero extends Char {
 			SAN	=	SAN_MAX;
 		else if(SAN<0)
 			SAN	=	0;
-
-		// final int POSITIVE	=	0xC0D6D2;
+		
 		final int NORMAL	=	0x361936;
 		final int WARNING	=	0x0A0A0A;
 

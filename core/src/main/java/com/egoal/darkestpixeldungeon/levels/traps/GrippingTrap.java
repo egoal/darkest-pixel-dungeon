@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.levels.traps;
 
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
@@ -43,7 +44,8 @@ public class GrippingTrap extends Trap {
 		Char c = Actor.findChar( pos );
 
 		if (c != null) {
-			int damage = Math.max( 0,  (Dungeon.depth) - ( c.drRoll() / 2 ) );
+			int damage	=	c.defendDamage(new Damage(Dungeon.depth, this, c)).value;
+			if(damage<0) damage	=	0;
 			Buff.affect( c, Bleeding.class ).set( damage );
 			Buff.prolong( c, Cripple.class, 15f);
 			Buff.prolong( c, Roots.class, 5f);

@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.wands;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
@@ -97,7 +98,8 @@ public class WandOfTransfusion extends Wand {
 
 				//deals 30%+5%*lvl total HP.
 				int damage = (int) Math.ceil(ch.HT*(0.3f+(0.05f*level())));
-				ch.damage(damage, this);
+				// ch.damage(damage, this);
+				ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL));
 				ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
 				Sample.INSTANCE.play(Assets.SND_BURNING);
 
@@ -172,7 +174,7 @@ public class WandOfTransfusion extends Wand {
 	private void damageHero(){
 		// 15% of max hp
 		int damage = (int)Math.ceil(curUser.HT*0.15f);
-		curUser.damage(damage, this);
+		curUser.takeDamage(new Damage(damage, this, curUser).type(Damage.Type.MAGICAL));
 
 		if (!curUser.isAlive()){
 			Dungeon.fail( getClass() );

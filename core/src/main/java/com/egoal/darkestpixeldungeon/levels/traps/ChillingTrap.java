@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels.traps;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -53,7 +54,7 @@ public class ChillingTrap extends Trap{
 		Char ch = Actor.findChar( pos );
 		if (ch != null){
 			Chill.prolong(ch, Chill.class, 5f + Random.Int(Dungeon.depth));
-			ch.damage(Random.NormalIntRange(1 , Dungeon.depth), this);
+			ch.takeDamage(new Damage(Random.NormalIntRange(1 , Dungeon.depth), this, ch).addElement(Damage.Element.ICE));
 			if (!ch.isAlive() && ch == Dungeon.hero){
 				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );

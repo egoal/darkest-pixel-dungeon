@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.wands;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Lightning;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking;
@@ -73,8 +74,9 @@ public class WandOfLightning extends DamageWand {
 
 		for (Char ch : affected){
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(Math.round(damageRoll() * multipler), LightningTrap.LIGHTNING);
-
+			ch.takeDamage(new Damage(Math.round(damageRoll() * multipler), 
+				this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
+			
 			if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
 			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
 			ch.sprite.flash();

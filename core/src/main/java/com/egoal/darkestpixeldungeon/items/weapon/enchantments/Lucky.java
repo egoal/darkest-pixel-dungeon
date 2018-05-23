@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -41,9 +42,11 @@ public class Lucky extends Weapon.Enchantment{
 		if (Random.Int(100) < (55 + level)){
 			int exStr = 0;
 			if (attacker == Dungeon.hero) exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
-			damage = weapon.imbue.damageFactor(weapon.max()) + exStr - defender.drRoll();
+			damage = weapon.imbue.damageFactor(weapon.max()) + exStr;
+			damage	=	defender.defendDamage(new Damage(damage, this, defender)).value;
 		} else {
-			damage = weapon.imbue.damageFactor(weapon.min()) - defender.drRoll();
+			damage = weapon.imbue.damageFactor(weapon.min());
+			damage	=	defender.defendDamage(new Damage(damage, this, defender)).value;
 		}
 
 		if (attacker == Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.BERSERKER ){

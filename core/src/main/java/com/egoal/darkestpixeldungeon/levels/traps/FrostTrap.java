@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.levels.traps;
 
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
 import com.egoal.darkestpixeldungeon.effects.Splash;
@@ -54,7 +55,7 @@ public class FrostTrap extends Trap {
 
 		Char ch = Actor.findChar(pos);
 		if (ch != null){
-			ch.damage(Random.NormalIntRange(1 , Dungeon.depth), this);
+			ch.takeDamage(new Damage(Random.NormalIntRange(1 , Dungeon.depth), this, ch).addElement(Damage.Element.ICE));
 			Chill.prolong(ch, Frost.class, 10f + Random.Int(Dungeon.depth));
 			if (!ch.isAlive() && ch == Dungeon.hero){
 				Dungeon.fail( getClass() );

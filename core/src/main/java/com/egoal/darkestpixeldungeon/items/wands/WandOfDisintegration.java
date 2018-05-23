@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Beam;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
@@ -100,7 +101,8 @@ public class WandOfDisintegration extends DamageWand {
 		int lvl = level + (chars.size()-1) + terrainBonus;
 		for (Char ch : chars) {
 			processSoulMark(ch, chargesPerCast());
-			ch.damage( damageRoll(lvl), this );
+			// ch.damage( damageRoll(lvl), this );
+			ch.takeDamage(new Damage(damageRoll(lvl), this, ch).type(Damage.Type.MAGICAL));
 			ch.sprite.centerEmitter().burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
 			ch.sprite.flash();
 		}

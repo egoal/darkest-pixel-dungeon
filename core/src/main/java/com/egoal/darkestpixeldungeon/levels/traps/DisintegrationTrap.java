@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.levels.traps;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Beam;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
@@ -59,7 +60,8 @@ public class DisintegrationTrap extends Trap {
 
 		Char ch = Actor.findChar(pos);
 		if (ch != null){
-			ch.damage( Math.max( ch.HT/5, Random.Int(ch.HP / 2, 2 * ch.HP / 3) ), this );
+			ch.takeDamage(new Damage(Math.max( ch.HT/5, Random.Int(ch.HP / 2, 2 * ch.HP / 3) ), 
+				this, ch).addElement(Damage.Element.SHADOW));
 			if (ch == Dungeon.hero){
 				Hero hero = (Hero)ch;
 				if (!hero.isAlive()){

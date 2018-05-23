@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels.traps;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
@@ -50,7 +51,8 @@ public class LightningTrap extends Trap {
 		Char ch = Actor.findChar( pos );
 
 		if (ch != null) {
-			ch.damage( Math.max( 1, Random.Int( ch.HP / 3, 2 * ch.HP / 3 ) ), LIGHTNING );
+			ch.takeDamage(new Damage( Math.max( 1, Random.Int( ch.HP / 3, 2 * ch.HP / 3)), 
+				this, ch).addElement(Damage.Element.LIGHT));
 			if (ch == Dungeon.hero) {
 
 				Camera.main.shake( 2, 0.3f );

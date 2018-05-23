@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Wound;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
@@ -61,8 +62,7 @@ public class SpearTrap extends Trap {
 		Char ch = Actor.findChar( pos);
 		if (ch != null && !ch.flying){
 			int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth*2);
-			damage -= ch.drRoll();
-			ch.damage( Math.max(damage, 0) , this);
+			ch.takeDamage(ch.defendDamage(new Damage(Math.max(damage, 0) , this, ch)));
 			if (!ch.isAlive() && ch == Dungeon.hero){
 				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );

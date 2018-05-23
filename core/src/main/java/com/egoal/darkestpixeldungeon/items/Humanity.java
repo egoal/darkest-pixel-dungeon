@@ -43,10 +43,7 @@ public class Humanity extends Item{
 		if(action==AC_CONSUME){
 			//todo: add effects
 			//0. recover sanity
-			hero.SAN	-=	hero.SAN_MAX*0.7;
-			if(hero.SAN<0)
-				hero.SAN	=	0;
-			// hero.damageMentally(-hero.SAN_MAX*7/10, this);
+			hero.recoverSanity((int)(hero.SAN_MAX*0.7f));
 			//todo: show effects
 			
 			//1. recover hp

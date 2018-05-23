@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -80,7 +81,7 @@ public class WandOfFireblast extends DamageWand {
 
 				int damage = damageRoll();
 
-				ch.damage(damage, this);
+				ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE));
 				Buff.affect( ch, Burning.class ).reignite( ch );
 				switch(chargesPerCast()){
 					case 1:

@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
@@ -93,11 +94,12 @@ public class WandOfPrismaticLight extends DamageWand {
 			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level() );
 			Sample.INSTANCE.play(Assets.SND_BURNING);
 
-			ch.damage(Math.round(dmg*1.333f), this);
+			// ch.damage(Math.round(dmg*1.333f), this);
+			ch.takeDamage(new Damage(Math.round(dmg*1.333f), this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
 		} else {
 			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+level() );
 
-			ch.damage(dmg, this);
+			ch.takeDamage(new Damage(dmg, this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
 		}
 
 	}

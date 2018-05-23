@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
@@ -72,10 +73,12 @@ public class GrimTrap extends Trap {
 					if (finalTarget == Dungeon.hero) {
 						//almost kill the player
 						if (((float)finalTarget.HP/finalTarget.HT) >= 0.9f){
-							finalTarget.damage((finalTarget.HP-1), trap);
+							finalTarget.takeDamage(new Damage((finalTarget.HP-1), 
+								trap, finalTarget).addFeature(Damage.Feature.PURE));
 						//kill 'em
 						} else {
-							finalTarget.damage(finalTarget.HP, trap);
+							finalTarget.takeDamage(new Damage((finalTarget.HP),
+									trap, finalTarget).addFeature(Damage.Feature.PURE));
 						}
 						Sample.INSTANCE.play(Assets.SND_CURSED);
 						if (!finalTarget.isAlive()) {
@@ -83,7 +86,8 @@ public class GrimTrap extends Trap {
 							GLog.n( Messages.get(GrimTrap.class, "ondeath") );
 						}
 					} else {
-						finalTarget.damage(finalTarget.HP, this);
+						finalTarget.takeDamage(new Damage((finalTarget.HP),
+								trap, finalTarget).addFeature(Damage.Feature.PURE));
 						Sample.INSTANCE.play(Assets.SND_BURNING);
 					}
 					finalTarget.sprite.emitter().burst(ShadowParticle.UP, 10);

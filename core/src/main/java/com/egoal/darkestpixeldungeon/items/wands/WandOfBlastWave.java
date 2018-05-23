@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.effects.Effects;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
@@ -77,7 +78,7 @@ public class WandOfBlastWave extends DamageWand {
 
 			if (ch != null){
 				processSoulMark(ch, chargesPerCast());
-				ch.damage(Math.round(damage * 0.667f), this);
+				ch.takeDamage(new Damage(Math.round(damage * 0.667f), this, ch).type(Damage.Type.MAGICAL));
 
 				if (ch.isAlive()) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
@@ -91,7 +92,7 @@ public class WandOfBlastWave extends DamageWand {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(damage, this);
+			ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL));
 
 			if (ch.isAlive() && bolt.path.size() > bolt.dist+1) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
@@ -134,7 +135,10 @@ public class WandOfBlastWave extends DamageWand {
 				}
 				ch.pos = newPos;
 				if (ch.pos == trajectory.collisionPos) {
-					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
+					// ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
+					ch.takeDamage(new Damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), 
+						this, ch).type(Damage.Type.MAGICAL));
+
 					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
 				}
 				Dungeon.level.press(ch.pos, ch);

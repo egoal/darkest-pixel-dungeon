@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
@@ -44,7 +45,8 @@ public class Blazing extends Weapon.Enchantment{
 			if (Random.Int( 2 ) == 0) {
 				Buff.affect( defender, Burning.class ).reignite( defender );
 			}
-			defender.damage( Random.Int( 1, level + 2 ), this );
+			// defender.damage( Random.Int( 1, level + 2 ), this );
+			defender.takeDamage(new Damage(Random.Int( 1, level + 2 ), this, defender).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
 			
 			defender.sprite.emitter().burst( FlameParticle.FACTORY, level + 1 );
 			

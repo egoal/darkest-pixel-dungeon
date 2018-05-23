@@ -23,6 +23,9 @@ package com.egoal.darkestpixeldungeon.levels.features;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Barkskin;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
@@ -42,6 +45,8 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
+
+import javax.microedition.khronos.opengles.GL;
 
 public class Chasm {
 
@@ -100,15 +105,14 @@ public class Chasm {
 		
 		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
 		Buff.affect( hero, Bleeding.class).set( hero.HT / 6 );
-		hero.damage( Random.NormalIntRange( hero.HP / 4, hero.HT / 4 ), new Hero.Doom() {
+		hero.takeDamage(new Damage(Random.NormalIntRange(hero.HP/4, hero.HT/4), new Hero.Doom(){
 			@Override
-			public void onDeath() {
+			public void onDeath(){
 				Badges.validateDeathFromFalling();
-				
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(Chasm.class, "ondeath") );
+				Dungeon.fail(getClass());
+				GLog.n(Messages.get(Chasm.class, "ondeath"));
 			}
-		} );
+		}, hero));
 	}
 
 	public static void mobFall( Mob mob ) {

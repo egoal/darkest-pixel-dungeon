@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.wands;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -48,9 +49,8 @@ public class WandOfMagicMissile extends DamageWand {
 				
 		Char ch = Actor.findChar( bolt.collisionPos );
 		if (ch != null) {
-
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(damageRoll(), this);
+			ch.takeDamage(new Damage(damageRoll(), this, ch).type(Damage.Type.MAGICAL));
 
 			ch.sprite.burst(0xFFFFFFFF, level() / 2 + 2);
 

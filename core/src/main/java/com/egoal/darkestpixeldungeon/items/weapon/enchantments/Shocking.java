@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
@@ -78,7 +79,9 @@ public class Shocking extends Weapon.Enchantment{
 		}
 		
 		affected.add(ch);
-		ch.damage(Level.water[ch.pos] && !ch.flying ? (int) (damage * 2) : damage, LightningTrap.LIGHTNING);
+		
+		ch.takeDamage(new Damage(Level.water[ch.pos] && !ch.flying ? (int) (damage * 2) : damage, 
+			this, ch).addElement(Damage.Element.LIGHT));
 		
 		ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
 		ch.sprite.flash();

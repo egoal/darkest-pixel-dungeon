@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.wands;
 
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
@@ -78,8 +79,9 @@ public class WandOfFrost extends DamageWand {
 			}
 
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(damage, this);
-
+			// ch.damage(damage, this);
+			ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.ICE));
+			
 			if (ch.isAlive()){
 				if (Level.water[ch.pos])
 					Buff.prolong(ch, Chill.class, 4+level());
