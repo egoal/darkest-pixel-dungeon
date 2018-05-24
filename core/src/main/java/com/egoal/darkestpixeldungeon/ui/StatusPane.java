@@ -20,8 +20,11 @@
  */
 package com.egoal.darkestpixeldungeon.ui;
 
+import android.database.DatabaseUtils;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -191,9 +194,11 @@ public class StatusPane extends Component {
 		float health = Dungeon.hero.HP;
 		float shield = Dungeon.hero.SHLD;
 		float max = Dungeon.hero.HT;
-
-		float sanity	=	Dungeon.hero.SAN;
-		float maxsanity	=	Dungeon.hero.SAN_MAX;
+		
+		Pressure p	=	Dungeon.hero.buff(Pressure.class);
+		if(p!=null){
+			san.scale.x	=	Math.max(0, p.pressure/Pressure.MAX_PRESSURE);
+		}
 		
 		// the avatar effect
 		if (!Dungeon.hero.isAlive()) {
@@ -210,8 +215,6 @@ public class StatusPane extends Component {
 		hp.scale.x = Math.max( 0, (health-shield)/max);
 		shieldedHP.scale.x = health/max;
 		rawShielding.scale.x = shield/max;
-
-		san.scale.x	=	Math.max(0, sanity/maxsanity);
 		
 		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 

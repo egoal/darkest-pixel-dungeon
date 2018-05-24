@@ -23,6 +23,8 @@ public class Damage{
 		public static final int LIGHT	=	0x0008;
 		public static final int SHADOW	=	0x0010;
 		public static final int ACID	=	0x0020;
+		
+		public static final int ELEMENT_COUNT	=	6;
 	}
 	
 	public class Feature{
@@ -31,6 +33,8 @@ public class Damage{
 		public static final int ACCURATE	=	0x0002;
 		public static final int PURE		=	0x0004;
 		public static final int DEATH		=	0x0008;
+		
+		public static final int FEATURE_COUNT	=	4;
 	}
 	
 	// attributes

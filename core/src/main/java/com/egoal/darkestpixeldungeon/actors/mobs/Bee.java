@@ -44,6 +44,8 @@ public class Bee extends Mob {
 		
 		flying = true;
 		state = WANDERING;
+		
+		mapResists.put(Damage.Element.POISON, 1.25f);
 	}
 
 	private int level;
@@ -147,11 +149,4 @@ public class Bee extends Mob {
 		return super.getCloser( target );
 	}
 	
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.POISON))
-			dmg.value	*=	0.8;
-		
-		return dmg;
-	}
 }

@@ -46,6 +46,8 @@ public class Statue extends Mob {
 
 		EXP = 0;
 		state = PASSIVE;
+		
+		mapResists.put(Damage.Element.POISON, 1.25f);
 	}
 	
 	protected Weapon weapon;
@@ -164,9 +166,9 @@ public class Statue extends Mob {
 	
 	@Override
 	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.POISON) || dmg.isFeatured(Damage.Feature.DEATH))
+		if(dmg.isFeatured(Damage.Feature.DEATH))
 			dmg.value	*=	0.8;
-		return dmg;
+		return super.resistDamage(dmg);
 	}
 	
 	@Override

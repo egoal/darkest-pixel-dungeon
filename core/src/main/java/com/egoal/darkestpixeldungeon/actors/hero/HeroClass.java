@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.hero;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
@@ -253,6 +254,12 @@ public enum HeroClass {
 	// extra classes
 	private static void initSorceress(Hero hero){
 		// perks
+		// resists and extra resists to poison
+		for(int i=0; i<Damage.Element.ELEMENT_COUNT; ++i){
+			hero.mapResists.put(1<<i, .8f);
+		}
+		hero.mapResists.put(Damage.Element.POISON, .5f);
+		
 		(hero.belongings.weapon =   new SorceressWand()).identify();
 		(new ExtractionFlask()).identify().collect();
 		

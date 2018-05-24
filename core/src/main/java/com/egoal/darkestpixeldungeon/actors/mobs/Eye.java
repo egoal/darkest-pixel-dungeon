@@ -64,6 +64,8 @@ public class Eye extends Mob {
 		lootChance = 0.5f;
 
 		properties.add(Property.DEMONIC);
+
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 
 	@Override
@@ -224,13 +226,6 @@ public class Eye extends Mob {
 			beamTarget = bundle.getInt(BEAM_TARGET);
 		beamCooldown = bundle.getInt(BEAM_COOLDOWN);
 		beamCharged = bundle.getBoolean(BEAM_CHARGED);
-	}
-	
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.SHADOW))
-			dmg.value	*=	0.8f;
-		return dmg;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

@@ -69,6 +69,8 @@ public class King extends Mob {
 
 		properties.add(Property.BOSS);
 		properties.add(Property.UNDEAD);
+
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	private boolean nextPedestal = true;
@@ -229,22 +231,12 @@ public class King extends Mob {
 		BossHealthBar.assignBoss(this);
 		yell( Messages.get(this, "notice") );
 	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
-		RESISTANCES.add( WandOfDisintegration.class );
-	}
 
 	@Override
 	public Damage resistDamage(Damage dmg){
 		if(dmg.isFeatured(Damage.Feature.DEATH))
 			dmg.value	*=	0.8;
-		if(dmg.hasElement(Damage.Element.POISON))
-			dmg.value	*=	0.8;
-		return dmg;
+		return super.resistDamage(dmg);
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

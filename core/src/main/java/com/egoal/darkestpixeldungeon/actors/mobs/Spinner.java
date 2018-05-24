@@ -50,6 +50,8 @@ public class Spinner extends Mob {
 		lootChance = 0.125f;
 
 		FLEEING = new Fleeing();
+
+		mapResists.put(Damage.Element.POISON, 1.25f);
 	}
 
 	@Override
@@ -96,13 +98,6 @@ public class Spinner extends Mob {
 			GameScene.add(Blob.seed(pos, Random.Int(5, 7), Web.class));
 		}
 		super.move(step);
-	}
-	
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.POISON))
-			dmg.value	*=	0.8f;
-		return dmg;
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

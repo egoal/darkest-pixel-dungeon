@@ -63,6 +63,8 @@ public class Succubus extends Mob {
 		lootChance = 0.05f;
 
 		properties.add(Property.DEMONIC);
+		
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 
 	@Override
@@ -138,13 +140,6 @@ public class Succubus extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		return 40;
-	}
-	
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.SHADOW))
-			dmg.value	*=	0.8f;
-		return dmg;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

@@ -74,6 +74,9 @@ public class Yog extends Mob {
 		properties.add(Property.BOSS);
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.DEMONIC);
+
+		mapResists.put(Damage.Element.POISON, 1.25f);
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	public Yog() {
@@ -272,10 +275,9 @@ public class Yog extends Mob {
 		
 		@Override
 		public Damage resistDamage(Damage dmg){
-			if(dmg.isFeatured(Damage.Feature.DEATH) || 
-					dmg.hasElement(Damage.Element.POISON|Damage.Element.SHADOW))
+			if(dmg.isFeatured(Damage.Feature.DEATH))
 				dmg.value	*=	0.8;
-			return dmg;
+			return super.resistDamage(dmg);
 		}
 		
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -307,6 +309,9 @@ public class Yog extends Mob {
 
 			properties.add(Property.BOSS);
 			properties.add(Property.DEMONIC);
+
+			mapResists.put(Damage.Element.POISON, 1.25f);
+			mapResists.put(Damage.Element.SHADOW, 1.25f);
 		}
 		
 		@Override
@@ -379,8 +384,7 @@ public class Yog extends Mob {
 
 		@Override
 		public Damage resistDamage(Damage dmg){
-			if(dmg.isFeatured(Damage.Feature.DEATH) ||
-					dmg.hasElement(Damage.Element.POISON|Damage.Element.SHADOW))
+			if(dmg.isFeatured(Damage.Feature.DEATH))
 				dmg.value	*=	0.8;
 			return dmg;
 		}

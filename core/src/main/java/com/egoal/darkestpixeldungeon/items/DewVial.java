@@ -80,7 +80,7 @@ public class DewVial extends Item {
 		if (volume > 0) {
 			actions.add( AC_DRINK );
 			actions.add(AC_SIP);
-			if(volume>5)
+			if(volume>=5)
 				actions.add(AC_WASH);
 		}
 		return actions;

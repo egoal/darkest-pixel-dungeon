@@ -85,6 +85,9 @@ public class BuffIndicator extends Component {
 	public static final int RECOVERING  = 42;
 	public static final int SOUL_FIRE	=	43;
 	public static final int STARE	=	44;
+	public static final int CONFIDENT	=	45;
+	public static final int NERVOUS		=	46;
+	public static final int COLLAPSE	=	47;
 
 	public static final int SIZE	= 7;
 	

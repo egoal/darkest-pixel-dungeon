@@ -57,6 +57,8 @@ public class Warlock extends Mob implements Callback {
 		lootChance = 0.83f;
 
 		properties.add(Property.UNDEAD);
+
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 
 	@Override
@@ -146,12 +148,5 @@ public class Warlock extends Mob implements Callback {
 		}
 
 		return loot;
-	}
-
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.SHADOW))
-			dmg.value	*=	0.8;
-		return dmg;
 	}
 }

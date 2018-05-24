@@ -53,6 +53,9 @@ public class Scorpio extends Mob {
 		lootChance = 0.2f;
 
 		properties.add(Property.DEMONIC);
+		
+		mapResists.put(Damage.Element.POISON, 1.25f);
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	@Override
@@ -103,16 +106,6 @@ public class Scorpio extends Mob {
 		} else {
 			return new MysteryMeat();
 		}
-	}
-	
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.POISON))
-			dmg.value	*=	0.8f;
-		if(dmg.hasElement(Damage.Element.SHADOW))
-			dmg.value	*=	0.8f;
-		
-		return dmg;
 	}
 	
 }

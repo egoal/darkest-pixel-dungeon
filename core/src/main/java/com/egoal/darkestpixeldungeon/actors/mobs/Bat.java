@@ -48,6 +48,8 @@ public class Bat extends Mob {
 		
 		loot = new PotionOfHealing();
 		lootChance = 0.1667f; //by default, see die()
+
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	@Override
@@ -92,16 +94,4 @@ public class Bat extends Mob {
 		return super.createLoot();
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( Vampiric.class );
-	}
-	
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.SHADOW))
-			dmg.value	*=	.8;
-		
-		return dmg;
-	}
 }

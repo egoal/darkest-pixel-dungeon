@@ -172,9 +172,6 @@ public class Hero extends Char {
 	public MissileWeapon rangedWeapon = null;
 	public Belongings belongings;
 	
-	public int SAN;
-	public int SAN_MAX	=	100;
-	
 	public int STR;
 	public boolean weakened = false;
 	
@@ -195,7 +192,6 @@ public class Hero extends Char {
 		
 		HP = HT = 20+2;
 		STR = STARTING_STR;
-		SAN	=	0;
 		awareness = 0.1f;
 		
 		belongings = new Belongings( this );
@@ -216,7 +212,6 @@ public class Hero extends Char {
 	private static final String STRENGTH	= "STR";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
-	private static final String SANITY		=	"sanity";
 	// private static final String FOLLOWERS	=	"followers";
 	
 	@Override
@@ -231,7 +226,6 @@ public class Hero extends Char {
 		bundle.put( DEFENSE, defenseSkill );
 		
 		bundle.put( STRENGTH, STR );
-		bundle.put(SANITY, SAN);	
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
@@ -252,7 +246,6 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
-		SAN	=	bundle.getInt(SANITY);
 		updateAwareness();
 		
 		lvl = bundle.getInt( LEVEL );
@@ -1078,25 +1071,6 @@ public class Hero extends Char {
 				dmg.value	*=	.75f;
 			}
 		}
-		// sorceress perk
-		if(heroClass==HeroClass.SORCERESS){
-			if(dmg.element!=Damage.Element.NONE){
-				// sorceress element resistance, todo: refactor
-				final HashMap<Integer, Float> mapAnti	=	new HashMap<>();
-				mapAnti.put(Damage.Element.FIRE, .8f);
-				mapAnti.put(Damage.Element.POISON, .5f);
-				mapAnti.put(Damage.Element.ICE, .8f);
-				mapAnti.put(Damage.Element.LIGHT, .8f);
-				mapAnti.put(Damage.Element.SHADOW, .8f);
-
-				float rst	=	1.f;
-				for(Map.Entry<Integer, Float> e: mapAnti.entrySet()){
-					if(dmg.hasElement(e.getKey()) && e.getValue()<rst)
-						rst	=	e.getValue();
-				}
-				dmg.value	*=	rst;
-			}
-		}
 		
 		// resistance of ring, 
 		// todo: rework this ring, use my style resistance, the ratio
@@ -1104,30 +1078,23 @@ public class Hero extends Char {
 		if(r!=null && r.resistances()==RingOfElements.FULL)
 			dmg.value	=	Random.Int(0, dmg.value);
 		
-		return dmg;
+		return super.resistDamage(dmg);
 	}
 	
 	public void recoverSanity(int value){
-		int rv	=	SAN>value? value: SAN;
+		float rv	=	buff(Pressure.class).downPressure(value);
 		
-		SAN	-=	value;
-		if(SAN<0) SAN	=	0;
-		
-		sprite.showStatus(0xFFFFFF, Integer.toString(rv));
+		sprite.showStatus(0xFFFFFF, Integer.toString((int)rv));
 	}
 	protected void takeMentalDamage(Damage dmg){
 		// keep in mind that SAN is pressure, it increases
-		SAN	+=	dmg.value;
-		if(SAN>=SAN_MAX)
-			SAN	=	SAN_MAX;
-		else if(SAN<0)
-			SAN	=	0;
+		int rv	=	(int)buff(Pressure.class).upPressure(dmg.value);
 		
-		final int NORMAL	=	0x361936;
+		// final int NORMAL	=	0x361936;
 		final int WARNING	=	0x0A0A0A;
 
-		if(dmg.value!=0){
-			sprite.showStatus(SAN>SAN_MAX/2? WARNING: NORMAL, Integer.toString(dmg.value));
+		if(rv!=0){
+			sprite.showStatus(WARNING, Integer.toString(rv));
 		}
 	}
 	

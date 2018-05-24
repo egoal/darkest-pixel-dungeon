@@ -66,6 +66,8 @@ public class Tengu extends Mob {
 		flying = true; //doesn't literally fly, but he is fleet-of-foot enough to avoid hazards
 
 		properties.add(Property.BOSS);
+
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	@Override
@@ -105,7 +107,7 @@ public class Tengu extends Mob {
 		}
 
 		//phase 2 of the fight is over
-		if (HP == 0 && beforeHitHP <= HT/2) {
+		if (HP <= 0 && beforeHitHP <= HT/2) {
 			((PrisonBossLevel)Dungeon.level).progress();
 			return;
 		}
@@ -229,9 +231,9 @@ public class Tengu extends Mob {
 
 	@Override
 	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.POISON) || dmg.isFeatured(Damage.Feature.DEATH))
+		if(dmg.isFeatured(Damage.Feature.DEATH))
 			dmg.value	*=	0.8;
-		return dmg;
+		return super.resistDamage(dmg);
 	}
 	
 	@Override

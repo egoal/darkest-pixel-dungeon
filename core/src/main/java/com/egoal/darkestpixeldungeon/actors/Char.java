@@ -51,6 +51,7 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public abstract class Char extends Actor {
@@ -275,8 +276,17 @@ public abstract class Char extends Actor {
 			die(dmg.from);
 		
 	}
-	
-	public Damage resistDamage(Damage dmg){ return dmg; }
+
+	public HashMap<Integer, Float > mapResists	=	new HashMap<>();
+	protected Damage resistDamage(Damage dmg){
+		for(int of=0; of<Damage.Element.ELEMENT_COUNT; ++of){
+			int ele	=	1<<of;
+			if(mapResists.containsKey(ele))
+				dmg.value	/=	mapResists.get(ele);
+		}
+		
+		return dmg;
+	}
 	
 	// attack or edoge ratio
 	public int attackSkill( Char target ) {

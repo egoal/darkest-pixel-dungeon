@@ -68,6 +68,9 @@ public class Goo extends Mob {
 
 		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
+
+		mapResists.put(Damage.Element.FIRE, 0.667f);
+		mapResists.put(Damage.Element.POISON, 1.25f);
 	}
 
 	private int pumpedUp = 0;
@@ -286,16 +289,9 @@ public class Goo extends Mob {
 	
 	@Override
 	public Damage resistDamage(Damage dmg){
-		// fire
-		if(dmg.hasElement(Damage.Element.FIRE))
-			dmg.value	*=	1.5f;
-		
-		if(dmg.hasElement(Damage.Element.POISON))
-			dmg.value	*=	0.8f;
-		
 		if(dmg.isFeatured(Damage.Feature.DEATH))
 			dmg.value	*=	0.8f;
 		
-		return dmg;
+		return super.resistDamage(dmg);
 	}
 }

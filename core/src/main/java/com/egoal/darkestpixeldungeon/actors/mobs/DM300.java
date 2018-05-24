@@ -172,7 +172,7 @@ public class DM300 extends Mob {
 	public Damage resistDamage(Damage dmg){
 		if(dmg.isFeatured(Damage.Feature.DEATH))
 			dmg.value	*=	0.8;
-		return dmg;
+		return super.resistDamage(dmg);
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

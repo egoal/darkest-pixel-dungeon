@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.windows;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -114,7 +115,9 @@ public class WndHero extends WndTabbed {
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
 
 			// sanity slot
-			statSlot(Messages.get(this, "sanity"), hero.SAN+"/"+hero.SAN_MAX);
+			Pressure p	=	hero.buff(Pressure.class);
+			if(p!=null)
+				statSlot(Messages.get(this, "sanity"), (int)p.pressure+"/"+(int)Pressure.MAX_PRESSURE);
 			
 			// add hunger state slot
 			Hunger hg	=	((Hunger)hero.buff(Hunger.class));

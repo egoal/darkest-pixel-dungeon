@@ -55,6 +55,8 @@ public class Shaman extends Mob implements Callback {
 		
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.33f;
+
+		mapResists.put(Damage.Element.LIGHT, 1.25f);
 	}
 
 	@Override
@@ -126,12 +128,5 @@ public class Shaman extends Mob implements Callback {
 	@Override
 	public void call() {
 		next();
-	}
-	
-	@Override 
-	public Damage resistDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.LIGHT))
-			dmg.value	*=	0.8f;
-		return dmg;
 	}
 }
