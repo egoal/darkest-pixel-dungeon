@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
@@ -34,7 +35,8 @@ public class Eldritch extends Weapon.Enchantment{
 	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x222222 );
 	
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
@@ -45,12 +47,12 @@ public class Eldritch extends Weapon.Enchantment{
 			if (defender == Dungeon.hero) {
 				Buff.affect( defender, Vertigo.class, Vertigo.duration(defender) );
 			} else {
-				Buff.affect( defender, Terror.class, Terror.DURATION ).object = attacker.id();
+				Buff.affect( defender, Terror.class, Terror.DURATION ).object = ((Char)damage.from).id();
 			}
 
 		}
 
-		return damage;
+		return damage.addElement(Damage.Element.SHADOW);
 	}
 	
 	@Override

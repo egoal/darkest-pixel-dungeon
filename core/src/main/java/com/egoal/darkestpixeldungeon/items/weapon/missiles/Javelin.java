@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.missiles;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -58,9 +59,9 @@ public class Javelin extends MissileWeapon {
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.prolong( defender, Cripple.class, Cripple.DURATION );
-		return super.proc( attacker, defender, damage );
+	public Damage proc(Damage damage){
+		Buff.prolong( (Char)damage.to, Cripple.class, Cripple.DURATION );
+		return super.proc(damage);
 	}
 	
 	@Override

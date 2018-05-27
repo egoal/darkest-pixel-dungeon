@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.missiles;
 
+import com.egoal.darkestpixeldungeon.Badges;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.actors.Actor;
@@ -72,9 +74,9 @@ public class IncendiaryDart extends MissileWeapon {
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.affect( defender, Burning.class ).reignite( defender );
-		return super.proc( attacker, defender, damage );
+	public Damage proc(Damage damage){
+		Buff.affect( (Char)damage.to, Burning.class ).reignite( (Char)damage.to );
+		return super.proc(damage);
 	}
 	
 	@Override

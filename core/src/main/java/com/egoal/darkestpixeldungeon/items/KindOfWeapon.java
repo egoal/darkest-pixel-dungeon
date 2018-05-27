@@ -90,9 +90,6 @@ abstract public class KindOfWeapon extends EquipableItem {
 	abstract public int max(int lvl);
 
 	// damage attach to normal attack, called in give damage
-	public int damageRoll( Hero owner ) {
-		return Random.NormalIntRange( min(), max() );
-	}
 	public Damage giveDamage(Hero owner, Char target){
 		return new Damage(Random.NormalIntRange(min(), max()), owner, target);
 	}
@@ -114,9 +111,6 @@ abstract public class KindOfWeapon extends EquipableItem {
 	}
 	
 	// process, called in attackProc
-	public int proc( Char attacker, Char defender, int damage ) {
-		return damage;
-	}
 	public Damage proc(Damage dmg){
 		return dmg;
 	}

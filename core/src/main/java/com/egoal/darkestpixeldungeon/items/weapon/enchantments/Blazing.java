@@ -34,26 +34,25 @@ public class Blazing extends Weapon.Enchantment{
 	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 	
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon, Damage damage){
+		Char defender	=	(Char)damage.to;
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
 		int level = Math.max( 0, weapon.level() );
-		
+
 		if (Random.Int( level + 3 ) >= 2) {
-			
 			if (Random.Int( 2 ) == 0) {
 				Buff.affect( defender, Burning.class ).reignite( defender );
 			}
 			// defender.damage( Random.Int( 1, level + 2 ), this );
-			defender.takeDamage(new Damage(Random.Int( 1, level + 2 ), this, defender).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
-			
+			defender.takeDamage(new Damage(Random.Int( 1, level + 2 ), 
+				this, defender).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE));
+
 			defender.sprite.emitter().burst( FlameParticle.FACTORY, level + 1 );
-			
 		}
 
-		return damage;
-
+		return damage.addElement(Damage.Element.FIRE);
 	}
 	
 	@Override

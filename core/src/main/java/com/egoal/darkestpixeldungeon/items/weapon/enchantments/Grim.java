@@ -34,11 +34,13 @@ public class Grim extends Weapon.Enchantment{
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 	
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon, Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 
 		int level = Math.max( 0, weapon.level() );
 
-		int enemyHealth = defender.HP - damage;
+		int enemyHealth = defender.HP - damage.value;
 		if (enemyHealth == 0) return damage; //no point in proccing if they're already dead.
 
 		//scales from 0 - 30% based on how low hp the enemy is, plus 1% per level

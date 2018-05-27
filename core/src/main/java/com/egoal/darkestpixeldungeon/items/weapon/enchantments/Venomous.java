@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -35,7 +36,9 @@ public class Venomous extends Weapon.Enchantment{
 	private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x4400AA );
 	
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
@@ -48,7 +51,7 @@ public class Venomous extends Weapon.Enchantment{
 
 		}
 
-		return damage;
+		return damage.addElement(Damage.Element.POISON);
 	}
 	
 	@Override

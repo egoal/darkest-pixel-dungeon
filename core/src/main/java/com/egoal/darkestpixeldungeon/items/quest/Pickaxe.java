@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.quest;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Bat;
@@ -153,12 +154,14 @@ public class Pickaxe extends Weapon{
 	}
 	
 	@Override
-	public int proc(Char attacker,Char defender,int damage ) {
-		if (!bloodStained && defender instanceof Bat&& (defender.HP <= damage)) {
-			bloodStained = true;
+	public Damage proc(Damage dmg){
+		if(!bloodStained && dmg.to instanceof Bat && ((Char)dmg.to).HP<=dmg.value){
+			//fixme: may not die, since we use damage resistance
+			bloodStained=true;
 			updateQuickslot();
 		}
-		return damage;
+		
+		return dmg;
 	}
 	
 	private static final String BLOODSTAINED = "bloodStained";

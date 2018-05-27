@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -33,7 +34,9 @@ public class Stunning extends Weapon.Enchantment{
 	private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xCCAA44 );
 	
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 		// lvl 0 - 13%
 		// lvl 1 - 22%
 		// lvl 2 - 30%

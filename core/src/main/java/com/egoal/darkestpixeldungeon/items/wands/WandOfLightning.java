@@ -91,7 +91,8 @@ public class WandOfLightning extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//acts like shocking enchantment
-		new Shocking().proc(staff, attacker, defender, damage);
+		// new Shocking().proc(staff, attacker, defender, damage);
+		new Shocking().proc(staff, new Damage(damage, attacker, defender));
 	}
 
 	private void arc( Char ch ) {

@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
@@ -44,9 +45,9 @@ public class Unstable extends Weapon.Enchantment{
 	};
 
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
 		try {
-			return Random.oneOf(randomEnchants).newInstance().proc( weapon, attacker, defender, damage );
+			return Random.oneOf(randomEnchants).newInstance().proc( weapon, damage );
 		} catch (Exception e) {
 			DarkestPixelDungeon.reportException(e);
 			return damage;

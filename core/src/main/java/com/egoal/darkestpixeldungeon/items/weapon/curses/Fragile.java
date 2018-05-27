@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.curses;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Bundle;
@@ -31,9 +32,11 @@ public class Fragile extends Weapon.Enchantment{
 	private int hits = 0;
 
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 		//degrades from 100% to 25% damage over 150 hits
-		damage *= (1f - hits*0.005f);
+		damage.value *= (1f - hits*0.005f);
 		if (hits < 150) hits++;
 		return damage;
 	}

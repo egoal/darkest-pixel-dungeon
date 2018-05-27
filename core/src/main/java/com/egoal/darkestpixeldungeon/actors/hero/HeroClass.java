@@ -256,9 +256,9 @@ public enum HeroClass {
 		// perks
 		// resists and extra resists to poison
 		for(int i=0; i<Damage.Element.ELEMENT_COUNT; ++i){
-			hero.mapResists.put(1<<i, .8f);
+			hero.mapResists.put(1<<i, 1.25f);
 		}
-		hero.mapResists.put(Damage.Element.POISON, .5f);
+		hero.mapResists.put(Damage.Element.POISON, 2.f);
 		
 		(hero.belongings.weapon =   new SorceressWand()).identify();
 		(new ExtractionFlask()).identify().collect();

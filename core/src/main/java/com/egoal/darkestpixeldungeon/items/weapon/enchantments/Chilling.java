@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.effects.Splash;
@@ -33,20 +34,20 @@ public class Chilling extends Weapon.Enchantment{
 	private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x00FFFF );
 	
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon, Damage damage){
+		Char defender	=	(Char)damage.to;
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
 		int level = Math.max( 0, weapon.level() );
-		
+
 		if (Random.Int( level + 5 ) >= 4) {
-			
 			Buff.prolong( defender, Chill.class, Random.Float( 2f, 3f ) );
 			Splash.at( defender.sprite.center(), 0xFFB2D6FF, 5);
 
 		}
 
-		return damage;
+		return damage.addElement(Damage.Element.ICE);
 	}
 	
 	@Override

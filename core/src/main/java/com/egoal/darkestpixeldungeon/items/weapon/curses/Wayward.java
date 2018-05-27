@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.curses;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
@@ -29,7 +30,7 @@ public class Wayward extends Weapon.Enchantment{
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
 		//no proc effect, see weapon.accuracyFactor for effect
 		return damage;
 	}

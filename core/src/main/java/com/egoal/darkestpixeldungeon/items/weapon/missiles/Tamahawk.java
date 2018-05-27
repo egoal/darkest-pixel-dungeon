@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.missiles;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -59,9 +60,9 @@ public class Tamahawk extends MissileWeapon {
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.affect( defender, Bleeding.class ).set( damage );
-		return super.proc( attacker, defender, damage );
+	public Damage proc(Damage dmg){
+		Buff.affect( (Char)dmg.to, Bleeding.class).set(dmg.value);
+		return super.proc(dmg);
 	}
 	
 	@Override

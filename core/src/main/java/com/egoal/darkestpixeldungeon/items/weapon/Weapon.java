@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting;
@@ -50,12 +51,15 @@ import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vorpal;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.egoal.darkestpixeldungeon.levels.features.Chasm;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import javax.microedition.khronos.opengles.GL;
 
 abstract public class Weapon extends KindOfWeapon {
 
@@ -67,6 +71,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public float	DLY	= 1f;	// Speed modifier
 	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
 
+	// 灌注
 	public enum Imbue {
 		NONE	(1.0f, 1.00f),
 		LIGHT	(0.7f, 0.67f),
@@ -95,21 +100,19 @@ abstract public class Weapon extends KindOfWeapon {
 	public Enchantment enchantment;
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
+	public Damage proc(Damage dmg){
+		if(enchantment!=null)
+			dmg	=	enchantment.proc(this, dmg);
 		
-		if (enchantment != null) {
-			damage = enchantment.proc( this, attacker, defender, damage );
-		}
-		
-		if (!levelKnown) {
-			if (--hitsToKnow <= 0) {
-				levelKnown = true;
-				GLog.i( Messages.get(Weapon.class, "identify") );
-				Badges.validateItemLevelAquired( this );
+		if(!levelKnown){
+			if(--hitsToKnow<=0){
+				levelKnown	=	true;
+				GLog.i(Messages.get(Weapon.class, "identify"));
+				Badges.validateItemLevelAquired(this);
 			}
 		}
-
-		return damage;
+		
+		return dmg;
 	}
 
 	private static final String UNFAMILIRIARITY	= "unfamiliarity";
@@ -176,18 +179,20 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	@Override
-	public int damageRoll( Hero hero ) {
+	public Damage giveDamage(Hero hero, Char target){
+		Damage dmg	=	super.giveDamage(hero, target);
 		
-		int damage = super.damageRoll( hero );
+		// extra damage
+		int exStr	=	hero.STR()-STRReq();
+		if(exStr>0)
+			dmg.value	+=	exStr;
 		
-		if (this instanceof MeleeWeapon || (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS)) {
-			int exStr = hero.STR() - STRReq();
-			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
-			}
-		}
+		// huntress perk
+		if(this instanceof MissileWeapon && hero.heroClass==HeroClass.HUNTRESS)
+			dmg.value	+=	exStr;
 		
-		return imbue.damageFactor(damage);
+		dmg.value	=	imbue.damageFactor(dmg.value);
+		return dmg;
 	}
 
 	public int STRReq(){
@@ -283,8 +288,9 @@ abstract public class Weapon extends KindOfWeapon {
 		private static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Exhausting.class, Fragile.class, Sacrificial.class, Wayward.class
 		};
-			
-		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
+		
+		public abstract Damage proc(Weapon weapon, Damage damage);
+		// public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
 		public String name() {
 			if (!curse())

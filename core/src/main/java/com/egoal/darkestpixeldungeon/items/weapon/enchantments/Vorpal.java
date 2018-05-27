@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -34,7 +35,8 @@ public class Vorpal extends Weapon.Enchantment{
 	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0xAA6666 );
 
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
@@ -42,7 +44,7 @@ public class Vorpal extends Weapon.Enchantment{
 
 		if (Random.Int( level + 3 ) >= 2) {
 
-			Buff.affect(defender, Bleeding.class).set(damage/4);
+			Buff.affect(defender, Bleeding.class).set(damage.value/4);
 			Splash.at( defender.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
 					defender.sprite.blood(), 10 );
 

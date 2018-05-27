@@ -40,7 +40,9 @@ public class Shocking extends Weapon.Enchantment{
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.6f );
 
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public Damage proc(Weapon weapon, Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
@@ -53,13 +55,13 @@ public class Shocking extends Weapon.Enchantment{
 
 			arcs.clear();
 			arcs.add(new Lightning.Arc(attacker.pos, defender.pos));
-			hit(defender, Random.Int(1, damage / 3));
+			hit(defender, Random.Int(1, damage.value / 3));
 
 			attacker.sprite.parent.add( new Lightning( arcs, null ) );
 			
 		}
 
-		return damage;
+		return damage.addElement(Damage.Element.LIGHT);
 
 	}
 

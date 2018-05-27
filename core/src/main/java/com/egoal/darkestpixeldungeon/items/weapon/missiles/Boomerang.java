@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.missiles;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -65,7 +66,7 @@ public class Boomerang extends MissileWeapon {
 	public int STRReq(int lvl) {
 		lvl = Math.max(0, lvl);
 		//strength req decreases at +1,+3,+6,+10,etc.
-		return 10 - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return 9 - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 
 	@Override
@@ -93,11 +94,12 @@ public class Boomerang extends MissileWeapon {
 	}
 
 	@Override
-	public int proc(Char attacker,Char defender,int damage ) {
-		if (attacker instanceof Hero && ((Hero)attacker).rangedWeapon == this) {
-			circleBack( defender.pos, (Hero)attacker );
+	public Damage proc(Damage damage){
+		if(damage.from instanceof Hero && ((Hero)damage.from).rangedWeapon==this){
+			// launch by hero
+			circleBack(((Char)damage.to).pos, (Hero)damage.from);
 		}
-		return super.proc( attacker, defender, damage );
+		return super.proc(damage);
 	}
 
 	@Override

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.curses;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
@@ -33,7 +34,9 @@ public class Exhausting extends Weapon.Enchantment{
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 
 		if (attacker == Dungeon.hero && Random.Int(20) == 0) {
 			Buff.affect(attacker, Weakness.class, Random.Float(5f, 25f));

@@ -411,7 +411,8 @@ public class Hero extends Char {
 
 		KindOfWeapon wep	=	rangedWeapon!=null? rangedWeapon: belongings.weapon;
 		if(wep!=null){
-			dmg.value	=	wep.damageRoll(this)+bonus;
+			dmg	=	wep.giveDamage(this, enemy);
+			dmg.value	+=	bonus;
 		}else{
 			// bare hand
 			if(bonus!=0){
@@ -992,7 +993,7 @@ public class Hero extends Char {
 	public Damage attackProc(Damage dmg){
 		KindOfWeapon wep	=	rangedWeapon!=null? rangedWeapon: belongings.weapon;
 		if(wep!=null)
-			dmg.value	=	wep.proc(this, enemy, dmg.value);
+			dmg	=	wep.proc(dmg);
 		
 		// sniper perk
 		if(subClass==HeroSubClass.SNIPER && rangedWeapon!=null){
@@ -1087,6 +1088,13 @@ public class Hero extends Char {
 		sprite.showStatus(0xFFFFFF, Integer.toString((int)rv));
 	}
 	protected void takeMentalDamage(Damage dmg){
+		// sorceress perk
+		if(!(dmg.from instanceof Pressure) && heroClass==HeroClass.SORCERESS){
+			if(Random.Int(5)==0){
+				dmg.value	=	0;
+			}
+		}
+		
 		// keep in mind that SAN is pressure, it increases
 		int rv	=	(int)buff(Pressure.class).upPressure(dmg.value);
 		

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.melee;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -41,18 +42,32 @@ public class AssassinsBlade extends MeleeWeapon {
 	}
 
 	@Override
-	public int damageRoll(Hero hero) {
-		Char enemy = hero.enemy();
-		if (enemy instanceof Mob&& ((Mob) enemy).surprisedBy(hero)) {
-			//deals avg damage to max on surprise, instead of min to max.
-			int damage = imbue.damageFactor(Random.NormalIntRange((min() + max()) / 2, max()));
-			int exStr = hero.STR() - STRReq();
-			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
-			}
-			return damage;
-		} else
-			return super.damageRoll(hero);
+	public Damage giveDamage(Hero hero, Char target){
+		// Char enemy	=	hero.enemy();
+		if(target instanceof Mob && ((Mob)target).surprisedBy(hero)){
+			// assassin, deals avg damage to max on surprise, instead of min to max.
+			Damage dmg	=	new Damage(imbue.damageFactor(Random.NormalIntRange((min() + max()) / 2, max())), 
+				hero, target);
+			int exStr	=	hero.STR()-STRReq();
+			if(exStr>0)
+				dmg.value	+=	exStr;
+			return dmg;
+		}else
+			return super.giveDamage(hero, target);
 	}
+	
+//	public int damageRoll(Hero hero) {
+//		Char enemy = hero.enemy();
+//		if (enemy instanceof Mob&& ((Mob) enemy).surprisedBy(hero)) {
+//			//deals avg damage to max on surprise, instead of min to max.
+//			int damage = imbue.damageFactor(Random.NormalIntRange((min() + max()) / 2, max()));
+//			int exStr = hero.STR() - STRReq();
+//			if (exStr > 0) {
+//				damage += Random.IntRange( 0, exStr );
+//			}
+//			return damage;
+//		} else
+//			return super.damageRoll(hero);
+//	}
 
 }

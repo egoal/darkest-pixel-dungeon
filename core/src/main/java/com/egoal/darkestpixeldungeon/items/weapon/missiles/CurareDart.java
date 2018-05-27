@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.missiles;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -60,9 +61,9 @@ public class CurareDart extends MissileWeapon {
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.prolong( defender, Paralysis.class, DURATION );
-		return super.proc( attacker, defender, damage );
+	public Damage proc(Damage dmg){
+		Buff.prolong( (Char)dmg.to, Paralysis.class, DURATION );
+		return super.proc(dmg);
 	}
 	
 	@Override

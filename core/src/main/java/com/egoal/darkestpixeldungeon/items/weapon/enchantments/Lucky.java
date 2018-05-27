@@ -36,24 +36,29 @@ public class Lucky extends Weapon.Enchantment{
 	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x00FF00 );
 	
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public Damage proc(Weapon weapon, Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
+		
 		int level = Math.max( 0, weapon.level() );
 
 		if (Random.Int(100) < (55 + level)){
 			int exStr = 0;
 			if (attacker == Dungeon.hero) exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
-			damage = weapon.imbue.damageFactor(weapon.max()) + exStr;
-			damage	=	defender.defendDamage(new Damage(damage, this, defender)).value;
+			damage.value = weapon.imbue.damageFactor(weapon.max()) + exStr;
+			damage	=	defender.defendDamage(damage);
 		} else {
-			damage = weapon.imbue.damageFactor(weapon.min());
-			damage	=	defender.defendDamage(new Damage(damage, this, defender)).value;
+			damage.value = weapon.imbue.damageFactor(weapon.min());
+			damage	=	defender.defendDamage(damage);
 		}
 
+		// berserker perk
 		if (attacker == Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.BERSERKER ){
-			damage = Buff.affect(Dungeon.hero, Berserk.class).damageFactor(damage);
+			damage.value = Buff.affect(Dungeon.hero, Berserk.class).damageFactor(damage.value);
 		}
 
-		return Math.max(0, damage);
+		damage.value	=	Math.max(0, damage.value);
+		return damage;
 	}
 
 	@Override

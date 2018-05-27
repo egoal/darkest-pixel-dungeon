@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.wands;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas;
 import com.egoal.darkestpixeldungeon.effects.MagicMissile;
@@ -66,7 +67,8 @@ public class WandOfVenom extends Wand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//acts like venomous enchantment
-		new Venomous().proc(staff, attacker, defender, damage);
+		// new Venomous().proc(staff, attacker, defender, damage);
+		new Venomous().proc(staff, new Damage(damage, attacker, defender));
 	}
 
 	@Override

@@ -21,9 +21,12 @@
 package com.egoal.darkestpixeldungeon.items.weapon.melee;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfCorruption;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfRegrowth;
 import com.egoal.darkestpixeldungeon.windows.WndOptions;
@@ -127,13 +130,16 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
-	public int proc(Char attacker, Char defender, int damage) {
-		if (wand != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
-			if (wand.curCharges < wand.maxCharges) wand.partialCharge += 0.33f;
-			ScrollOfRecharging.charge((Hero)attacker);
-			wand.onHit(this, attacker, defender, damage);
+	public Damage proc(Damage dmg){
+		// battle mage perk
+		if(wand!=null && Dungeon.hero.subClass==HeroSubClass.BATTLEMAGE){
+			if(wand.curCharges<wand.maxCharges)
+				wand.partialCharge	+=	0.33f;
+			ScrollOfRecharging.charge((Hero)dmg.from);
+			wand.onHit(this, (Char)dmg.from, (Char)dmg.to, dmg.value);
 		}
-		return super.proc(attacker, defender, damage);
+		
+		return super.proc(dmg);
 	}
 
 	@Override

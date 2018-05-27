@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
@@ -29,7 +30,7 @@ public class Projecting extends Weapon.Enchantment {
 	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x888888 );
 
 	@Override
-	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
+	public Damage proc(Weapon weapon,Damage damage) {
 		//Does nothing as a proc, instead increases weapon range.
 		//See weapon.reachFactor, and MissileWeapon.throwPos;
 		return damage;

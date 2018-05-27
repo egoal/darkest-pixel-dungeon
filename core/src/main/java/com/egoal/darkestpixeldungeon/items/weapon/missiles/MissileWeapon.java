@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.weapon.missiles;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.PinCushion;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -102,19 +103,17 @@ abstract public class MissileWeapon extends Weapon{
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		
-		Hero hero = (Hero)attacker;
-		if (hero.rangedWeapon == null && stackable) {
-			if (quantity == 1) {
-				doUnequip( hero, false, false );
-			} else {
-				detach( null );
-			}
+	public Damage proc(Damage dmg){
+		Hero hero	=	(Hero)(dmg.from);
+		// remove self
+		if(hero.rangedWeapon==null && stackable){
+			if(quantity==1)
+				doUnequip(hero, false, false);
+			else
+				detach(null);
 		}
-
-		return super.proc( attacker, defender, damage );
-
+		
+		return super.proc(dmg);
 	}
 	
 	@Override

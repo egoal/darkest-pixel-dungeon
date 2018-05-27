@@ -21,10 +21,12 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
@@ -34,7 +36,8 @@ public class Dazzling extends Weapon.Enchantment {
 	private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xFFFF00 );
 
 	@Override
-	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
+	public Damage proc(Weapon weapon, Damage damage) {
+		Char defender	=	(Char)damage.to;
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%

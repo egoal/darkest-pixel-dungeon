@@ -21,25 +21,30 @@
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
+import java.util.EventListener;
+
 public class Vampiric extends Weapon.Enchantment{
 
 	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0x660022 );
 	
 	@Override
-	public int proc(Weapon weapon,Char attacker,Char defender,int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 		
 		int level = Math.max( 0, weapon.level() );
 		
 		// lvl 0 - 20%
 		// lvl 1 - 21.5%
 		// lvl 2 - 23%
-		int maxValue = Math.round(damage * ((level + 10) / (float)(level + 50)));
+		int maxValue = Math.round(damage.value * ((level + 10) / (float)(level + 50)));
 		int effValue = Math.min( Random.IntRange( 0, maxValue ), attacker.HT - attacker.HP );
 		
 		if (effValue > 0) {
@@ -50,7 +55,7 @@ public class Vampiric extends Weapon.Enchantment{
 			
 		}
 
-		return damage;
+		return damage.addElement(Damage.Element.SHADOW);
 	}
 	
 	@Override

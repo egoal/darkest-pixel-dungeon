@@ -281,7 +281,7 @@ public abstract class Char extends Actor {
 	protected Damage resistDamage(Damage dmg){
 		for(int of=0; of<Damage.Element.ELEMENT_COUNT; ++of){
 			int ele	=	1<<of;
-			if(mapResists.containsKey(ele))
+			if(dmg.hasElement(ele) && mapResists.containsKey(ele))
 				dmg.value	/=	mapResists.get(ele);
 		}
 		

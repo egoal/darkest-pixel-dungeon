@@ -1,5 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -31,21 +33,27 @@ public class Pressure extends Buff implements Hero.Doom{
 		Level(String t){ title=t; }
 	}
 	
+	// private int stepsToCollapse	=	5;
+	private int collapseDuration	=	0;
+	
 	public float pressure	=	0f;
 	public static final float MAX_PRESSURE	=	100f;
 	Level level	=	Level.CONFIDENT;
 	
 	private static final String PRESSURE	=	"pressure";
+	private static final String COLLASPE_DURATION	=	"collapse_duration";
 	@Override
 	public void storeInBundle(Bundle bundle){
 		super.storeInBundle(bundle);
 		bundle.put(PRESSURE, pressure);
+		bundle.put(COLLASPE_DURATION, collapseDuration);
 		
 	}
 	@Override
 	public void restoreFromBundle(Bundle bundle){
 		super.restoreFromBundle(bundle);
 		pressure	=	bundle.getFloat(PRESSURE);
+		collapseDuration	=	bundle.getInt(COLLASPE_DURATION);
 		updateLevel();
 	}
 	
@@ -65,12 +73,35 @@ public class Pressure extends Buff implements Hero.Doom{
 	}
 	
 	public void updateLevel(){
-		if(pressure<=LVL_CONFIDENT) level	=	Level.CONFIDENT;
-		else if(pressure<=LVL_NORMAL) level	=	Level.NORMAL;
-		else if(pressure<LVL_NERVOUS) level	=	Level.NERVOUS;
-		else level	=	Level.COLLAPSE;
+		Level newLevel	=	null;
+		if(pressure<=LVL_CONFIDENT) newLevel	=	Level.CONFIDENT;
+		else if(pressure<=LVL_NORMAL) newLevel	=	Level.NORMAL;
+		else if(pressure<LVL_NERVOUS) newLevel	=	Level.NERVOUS;
+		else newLevel	=	Level.COLLAPSE;
 		
-		BuffIndicator.refreshHero();
+		if(newLevel.title!=level.title){
+			// level changed
+			level	=	newLevel;
+			BuffIndicator.refreshHero();
+			
+			// reset collapse
+			if(level!=Level.COLLAPSE)
+				collapseDuration	=	0;
+			
+			switch(level){
+				case CONFIDENT:
+					GLog.p(Messages.get(this, "reach_"+level.title));
+					break;
+				case NORMAL:
+					break;
+				case NERVOUS:
+					GLog.w(Messages.get(this, "reach_"+level.title));
+					break;
+				case COLLAPSE:
+					GLog.h(Messages.get(this, "reach_"+level.title));
+					break;
+			}
+		}
 	}
 	public Level getLevel(){
 		return level;
@@ -112,11 +143,27 @@ public class Pressure extends Buff implements Hero.Doom{
 		}
 		
 		if(target.isAlive()){
-			// chance to increase
-			float pIncrease	=	(Dungeon.depth/10+1)*0.1f;
-			
-			if(Random.Float()<pIncrease){
-				upPressure((Random.Int(1, Dungeon.depth/10+1)));
+			// normal increase pressure in the dungeon
+			if(Dungeon.depth>0){
+				// chance to increase, not in the village
+				float pIncrease	=	(Dungeon.depth/10+1)*0.1f;
+
+				if(Random.Float()<pIncrease){
+					upPressure((Random.Int(1,Dungeon.depth/10+1)));
+				}
+			}
+
+			// nearly death
+			if(level==Level.COLLAPSE){
+				// take damage
+				double ed	=	Math.exp(collapseDuration-4.);
+				target.takeDamage(new Damage((int)(target.HT*(ed/(ed+1.))), 
+					this, target).addFeature(Damage.Feature.PURE));
+				
+				if(target==Dungeon.hero){
+					Dungeon.hero.interrupt();
+					GLog.h(Messages.get(this, "onhurt"));
+				}
 			}
 			
 		}else{

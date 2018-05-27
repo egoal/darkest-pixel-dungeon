@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.curses;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -38,7 +39,9 @@ public class Annoying extends Weapon.Enchantment{
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 
 		if (Random.Int(20) == 0) {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {

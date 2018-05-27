@@ -122,7 +122,8 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff,Char attacker,Char defender,int damage) {
 		//acts like blazing enchantment
-		new Blazing().proc( staff, attacker, defender, damage);
+		// new Blazing().proc( staff, attacker, defender, damage);
+		new Blazing().proc(staff, new Damage(damage, attacker, defender));
 	}
 
 	@Override

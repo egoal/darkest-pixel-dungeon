@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.curses;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -33,7 +34,9 @@ public class Displacing extends Weapon.Enchantment{
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
 	@Override
-	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
+	public Damage proc(Weapon weapon,Damage damage) {
+		Char defender	=	(Char)damage.to;
+		Char attacker	=	(Char)damage.from;
 
 		if (Random.Int(12) == 0 && !defender.properties().contains(Char.Property.IMMOVABLE)){
 			int count = 10;
@@ -55,7 +58,8 @@ public class Displacing extends Weapon.Enchantment{
 				defender.sprite.place( defender.pos );
 				defender.sprite.visible = Dungeon.visible[defender.pos];
 
-				return 0;
+				damage.value	=	0;
+				return damage;
 
 			}
 		}

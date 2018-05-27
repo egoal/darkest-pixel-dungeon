@@ -158,9 +158,9 @@ public class ExtractionFlask extends Item{
 							wpn.enchant();
 							break;
 						case 1:
+						case 2:
 							wpn.enchant(new Venomous());
 							break;
-						case 2:
 						case 3:
 							wpn.enchant(new Unstable());
 							break;
