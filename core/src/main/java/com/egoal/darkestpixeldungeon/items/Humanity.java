@@ -43,17 +43,22 @@ public class Humanity extends Item{
 		
 		if(action==AC_CONSUME){
 			//todo: add effects
+			
+			//0. detach
+			detach(hero.belongings.backpack);
+			hero.spend(TIME_TO_CONSUME);
+			hero.busy();
+			
 			//0. recover sanity
-			hero.recoverSanity((int)(Pressure.MAX_PRESSURE*0.7f));
+			hero.recoverSanity((int)(Pressure.heroPressure()*0.7f));
 			//todo: show effects
 			
 			//1. recover hp
 			hero.HP	+=	hero.HT*0.3;
 			if(hero.HP>hero.HT)
 				hero.HP	=	hero.HT;
-
-			curUser.spend(TIME_TO_CONSUME);
-			curUser.busy();
+			
+			hero.sprite.operate(hero.pos);
 			
 			GLog.i(Messages.get(this, "used"));
 		}

@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import android.util.DebugUtils;
 import android.util.Log;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -22,8 +23,8 @@ public class Pressure extends Buff implements Hero.Doom{
 	
 	private static final float STEP	=	10f; // buff update tick
 	
-	private static final float LVL_CONFIDENT	=	20f;
-	private static final float LVL_NORMAL	=	80f;
+	private static final float LVL_CONFIDENT	=	30f;
+	private static final float LVL_NORMAL	=	70f;
 	private static final float LVL_NERVOUS	=	100f;
 	private static final float LVL_COLLAPSE	=	110f;
 	
@@ -55,6 +56,13 @@ public class Pressure extends Buff implements Hero.Doom{
 		pressure	=	bundle.getFloat(PRESSURE);
 		collapseDuration	=	bundle.getInt(COLLASPE_DURATION);
 		updateLevel();
+	}
+	
+	public static float heroPressure(){
+		if(Dungeon.hero!=null && Dungeon.hero.isAlive()){
+			return Dungeon.hero.buff(Pressure.class).pressure;
+		}
+		return 0.f;
 	}
 	
 	public float upPressure(float p){
@@ -146,10 +154,8 @@ public class Pressure extends Buff implements Hero.Doom{
 			// normal increase pressure in the dungeon
 			if(Dungeon.depth>0){
 				// chance to increase, not in the village
-				float pIncrease	=	(Dungeon.depth/10+1)*0.1f;
-
-				if(Random.Float()<pIncrease){
-					upPressure((Random.Int(1,Dungeon.depth/10+1)));
+				if(Random.Int(10)==0){
+					upPressure(Random.Int(1, (Dungeon.depth/2+1)));
 				}
 			}
 

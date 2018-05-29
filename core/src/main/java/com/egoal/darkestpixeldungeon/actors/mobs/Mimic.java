@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import android.database.DatabaseUtils;
+
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.Gold;
@@ -151,6 +153,11 @@ public class Mimic extends Mob {
 		if (Dungeon.visible[m.pos]) {
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.STAR ), 10 );
 			Sample.INSTANCE.play( Assets.SND_MIMIC );
+			
+			// surprise hero
+			if(Dungeon.level.adjacent(pos, Dungeon.hero.pos)){
+				Dungeon.hero.takeDamage(new Damage(Math.min(Random.Int(Dungeon.depth), 15), m, Dungeon.hero).type(Damage.Type.MENTAL));
+			}
 		}
 
 		//generate an extra reward for killing the mimic

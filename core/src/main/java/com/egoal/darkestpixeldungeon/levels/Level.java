@@ -23,6 +23,8 @@ package com.egoal.darkestpixeldungeon.levels;
 import android.view.View;
 
 import com.egoal.darkestpixeldungeon.*;
+import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -35,6 +37,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
+import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
 import com.egoal.darkestpixeldungeon.actors.Actor;
@@ -864,6 +867,7 @@ public abstract class Level implements Bundlable {
 		return randomRespawnCell();
 	}
 	
+	// hero press
 	public void press( int cell, Char ch ) {
 
 		if (ch != null && pit[cell] && !ch.flying) {
@@ -913,7 +917,11 @@ public abstract class Level implements Bundlable {
 					Dungeon.hero.interrupt();
 
 				trap.trigger();
-
+				
+				// up pressure when trigger a trap
+				if(ch==Dungeon.hero && !(trap instanceof WornTrap))
+					ch.takeDamage(new Damage(Random.NormalIntRange(1, 10), trap, ch).type(Damage.Type.MENTAL));
+				
 			} else {
 
 				Sample.INSTANCE.play(Assets.SND_TRAP);
@@ -931,6 +939,7 @@ public abstract class Level implements Bundlable {
 		}
 	}
 	
+	// mob press
 	public void mobPress( Mob mob ) {
 
 		int cell = mob.pos;

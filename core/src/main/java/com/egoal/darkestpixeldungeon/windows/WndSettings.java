@@ -260,8 +260,8 @@ public class WndSettings extends WndTabbed {
 			RedButton btnLanguage	=	new RedButton(Messages.get(this, "language")){
 				@Override
 				protected void onClick(){
-					((WndSettings)parent.parent).hide();
 					((WndSettings)parent.parent).parent.add(new WndLangs());
+					((WndSettings)parent.parent).hide();
 					// parent.add(new WndLangs());
 				}
 			};

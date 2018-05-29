@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.armor.glyphs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
@@ -33,7 +34,9 @@ public class Affection extends Armor.Glyph{
 	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing( 0xFF4488 );
 	
 	@Override
-	public int proc(Armor armor,Char attacker,Char defender,int damage) {
+	public Damage proc(Armor armor, Damage damage){
+		Char attacker	=	(Char)damage.from;
+		Char defender	=	(Char)damage.to;
 
 		int level = Math.max(0, armor.level());
 		

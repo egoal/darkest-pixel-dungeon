@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.armor.glyphs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
@@ -29,7 +30,7 @@ public class Brimstone extends Armor.Glyph{
 	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 
 	@Override
-	public int proc(Armor armor,Char attacker,Char defender,int damage) {
+	public Damage proc(Armor armor, Damage damage){
 		//no proc effect, see Burning.act
 		return damage;
 	}

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.scrolls;
 
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -137,10 +138,15 @@ public abstract class Scroll extends Item {
 					&& hero.buff(UnstableSpellbook.bookRecharge.class).isCursed()
 					&& !(this instanceof ScrollOfRemoveCurse)) {
 				GLog.n( Messages.get(this, "cursed") );
-			} else {
-				curUser = hero;
-				curItem = detach( hero.belongings.backpack );
-				doRead();
+			}else{
+				Pressure.Level plvl	=	hero.buff(Pressure.class).getLevel();
+				if(plvl==Pressure.Level.COLLAPSE || plvl==Pressure.Level.NERVOUS){
+					GLog.n(Messages.get(this, "nervous"));
+				}else{
+					curUser	=	hero;
+					curItem	=	detach(hero.belongings.backpack);
+					doRead();
+				}
 			}
 			
 		}

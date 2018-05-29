@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.armor.glyphs;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -34,7 +35,7 @@ public class Camouflage extends Armor.Glyph {
 	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x448822 );
 
 	@Override
-	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+	public Damage proc(Armor armor, Damage damage){
 		//no proc effect, see HighGrass.trample
 		return damage;
 	}

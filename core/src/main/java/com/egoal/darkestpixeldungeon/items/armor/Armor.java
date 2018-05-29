@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.armor;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.armor.curses.Multiplicity;
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage;
@@ -256,17 +257,16 @@ public class Armor extends EquipableItem {
 		return super.upgrade();
 	}
 	
-	public int proc( Char attacker, Char defender, int damage ) {
+	// called in Hero::defenseProc
+	public Damage proc(Damage damage){
+		if(glyph!=null)
+			damage	=	glyph.proc(this, damage);
 		
-		if (glyph != null) {
-			damage = glyph.proc( this, attacker, defender, damage );
-		}
-		
-		if (!levelKnown) {
-			if (--hitsToKnow <= 0) {
-				levelKnown = true;
-				GLog.w( Messages.get(Armor.class, "identify") );
-				Badges.validateItemLevelAquired( this );
+		if(!levelKnown){
+			if(--hitsToKnow<=0){
+				levelKnown	=	true;
+				GLog.w(Messages.get(Armor.class, "identify"));
+				Badges.validateItemLevelAquired(this);
 			}
 		}
 		
@@ -433,7 +433,8 @@ public class Armor extends EquipableItem {
 				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class, Multiplicity.class, Stench.class
 		};
 			
-		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
+		public abstract Damage proc(Armor armor, Damage damage);
+		// public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
 		
 		public String name() {
 			if (!curse())

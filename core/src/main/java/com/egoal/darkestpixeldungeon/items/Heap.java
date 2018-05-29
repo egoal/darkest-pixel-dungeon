@@ -128,6 +128,7 @@ public class Heap implements Bundlable {
 			break;
 		case TOMB:
 			Wraith.spawnAround( hero.pos );
+			hero.takeDamage(new Damage(Random.Int(2, 6), this, hero).type(Damage.Type.MENTAL));
 			break;
 		case REMAINS:
 		case SKELETON:
@@ -139,6 +140,7 @@ public class Heap implements Bundlable {
 						// fixme: what does this do?
 						// hero.damage( hero.HP / 2, this );
 						hero.takeDamage(new Damage(hero.HP/2, this, hero));
+						hero.takeDamage(new Damage(Random.Int(4, 12), this, hero).type(Damage.Type.MENTAL));
 					}
 					Sample.INSTANCE.play( Assets.SND_CURSED );
 					break;

@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Splash;
 import com.egoal.darkestpixeldungeon.items.ItemStatusHandler;
@@ -143,13 +144,12 @@ public class Potion extends Item {
 
 		if (action.equals( AC_DRINK )) {
 			
-			if (isKnown() && (
-					// debuffs
-					this instanceof PotionOfLiquidFlame ||
+			if(isKnown()){
+				// warning on bad potions
+				if(this instanceof PotionOfLiquidFlame ||
 					this instanceof PotionOfToxicGas ||
 					this instanceof PotionOfParalyticGas ||
-					this instanceof PotionOfHighlyToxicGas)) {
-				
+					this instanceof PotionOfHighlyToxicGas){
 					GameScene.show(
 						new WndOptions( Messages.get(Potion.class, "harmful"),
 								Messages.get(Potion.class, "sure_drink"),
@@ -162,11 +162,17 @@ public class Potion extends Item {
 							};
 						}
 					);
-					
-				} else {
-					drink( hero );
+				}else{
+					drink(hero);
 				}
-			
+			}else{
+				// not known
+				Pressure.Level plvl	=	hero.buff(Pressure.class).getLevel();
+				if(plvl==Pressure.Level.NERVOUS || plvl==Pressure.Level.COLLAPSE)
+					GLog.n(Messages.get(this, "nervous"));
+				else
+					drink(hero);
+			}
 		}
 	}
 	

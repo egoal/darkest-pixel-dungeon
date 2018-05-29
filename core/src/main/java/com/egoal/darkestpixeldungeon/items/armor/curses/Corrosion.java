@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.armor.curses;
 
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ooze;
 import com.egoal.darkestpixeldungeon.effects.Splash;
@@ -35,7 +36,9 @@ public class Corrosion extends Armor.Glyph{
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
 	@Override
-	public int proc(Armor armor,Char attacker,Char defender,int damage) {
+	public Damage proc(Armor armor, Damage damage){
+		Char attacker	=	(Char)damage.from;
+		Char defender	=	(Char)damage.to;
 
 		if (Random.Int(10) == 0){
 			int pos = defender.pos;

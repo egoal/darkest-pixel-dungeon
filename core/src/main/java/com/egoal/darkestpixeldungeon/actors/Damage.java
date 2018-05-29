@@ -33,8 +33,9 @@ public class Damage{
 		public static final int ACCURATE	=	0x0002;
 		public static final int PURE		=	0x0004;
 		public static final int DEATH		=	0x0008;
+		public static final int RANGED		=	0x0010;
 		
-		public static final int FEATURE_COUNT	=	4;
+		public static final int FEATURE_COUNT	=	5;
 	}
 	
 	// attributes

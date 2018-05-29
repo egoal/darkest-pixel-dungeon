@@ -169,8 +169,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		DLY = (float)(0.25 + (DLY - 0.25)*Math.pow(0.8, bonus));
 
-		return
-				(encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);
+		return (encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);
 	}
 
 	@Override
@@ -180,16 +179,17 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public Damage giveDamage(Hero hero, Char target){
-		Damage dmg	=	super.giveDamage(hero, target);
+		Damage dmg	=	super.giveDamage(hero, target).addFeature(Damage.Feature.RANGED);
 		
 		// extra damage
 		int exStr	=	hero.STR()-STRReq();
-		if(exStr>0)
+		if(exStr>0){
 			dmg.value	+=	exStr;
-		
-		// huntress perk
-		if(this instanceof MissileWeapon && hero.heroClass==HeroClass.HUNTRESS)
-			dmg.value	+=	exStr;
+
+			// huntress perk
+			if(this instanceof MissileWeapon&&hero.heroClass==HeroClass.HUNTRESS)
+				dmg.value	+=	exStr;
+		}
 		
 		dmg.value	=	imbue.damageFactor(dmg.value);
 		return dmg;

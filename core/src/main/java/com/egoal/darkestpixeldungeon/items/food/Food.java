@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -91,6 +92,9 @@ public class Food extends Item {
 			case HUNTRESS:
 				break;
 			}
+			
+			// when eat, down pressure
+			hero.recoverSanity(Random.Int(2, 8));
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();

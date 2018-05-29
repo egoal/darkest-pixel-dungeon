@@ -40,10 +40,12 @@ public class Viscosity extends Armor.Glyph{
 	private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x8844CC );
 	
 	@Override
-	public int proc(Armor armor,Char attacker,Char defender,int damage ) {
+	public Damage proc(Armor armor, Damage damage){
+		Char attacker	=	(Char)damage.from;
+		Char defender	=	(Char)damage.to;
 
-		if (damage == 0) {
-			return 0;
+		if (damage.value == 0) {
+			return damage;
 		}
 		
 		int level = Math.max( 0, armor.level() );
@@ -55,11 +57,12 @@ public class Viscosity extends Armor.Glyph{
 				debuff = new DeferedDamage();
 				debuff.attachTo( defender );
 			}
-			debuff.prolong( damage );
+			debuff.prolong(damage.value);
 			
 			defender.sprite.showStatus( CharSprite.WARNING, Messages.get(this, "deferred", damage) );
 			
-			return 0;
+			damage.value	=	0;
+			return damage;
 			
 		} else {
 			return damage;

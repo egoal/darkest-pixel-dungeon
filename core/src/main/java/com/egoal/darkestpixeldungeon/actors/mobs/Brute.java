@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
@@ -59,8 +60,12 @@ public class Brute extends Mob {
 	
 	@Override
 	public Damage giveDamage(Char target){
-		return new Damage(enraged? Random.NormalIntRange( 15, 45 ) : Random.NormalIntRange( 6, 26 ), 
-			this, target);
+		Damage damage	=	new Damage(Random.NormalIntRange(8, 24), this, target);
+		if(enraged){
+			damage.value	*=	Random.Float(1.5f, 2.f);
+			damage.addFeature(Damage.Feature.CRITCIAL);
+		}
+		return damage;
 	}
 	
 	@Override

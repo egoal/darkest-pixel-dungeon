@@ -82,6 +82,7 @@ public class Goo extends Mob {
 		int min = 1;
 		int max = (HP*2 <= HT) ? 15 : 10;
 		if (pumpedUp > 0) {
+			// pumped attack
 			pumpedUp = 0;
 			PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
@@ -89,9 +90,10 @@ public class Goo extends Mob {
 					CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
 			}
 			Sample.INSTANCE.play( Assets.SND_BURNING );
-			dmg.value	-=	Random.NormalIntRange( min*3, max*3 );
+			dmg.value	=	Random.NormalIntRange( min*3, max*3 );
+			dmg.addFeature(Damage.Feature.CRITCIAL);
 		} else {
-			dmg.value	-=	Random.NormalIntRange( min, max );
+			dmg.value	=	Random.NormalIntRange( min, max );
 		}
 		
 		return dmg;

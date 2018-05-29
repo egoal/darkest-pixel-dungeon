@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import android.database.DatabaseUtils;
 import android.text.method.TimeKeyListener;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
@@ -340,6 +341,22 @@ public class Hero extends Char {
 			accuracy *= 0.5f;
 		}
 
+		// pressure
+		Pressure p	=	buff(Pressure.class);
+		switch(p.getLevel()){
+			case CONFIDENT:
+				accuracy	*=	1.2f;
+				break;
+			case NORMAL:
+				break;
+			case NERVOUS:
+				accuracy	*=	.8f;
+				break;
+			case COLLAPSE:
+				accuracy	*=	.2f;
+				break;
+		}
+		
 		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
 		if (wep != null) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
@@ -361,6 +378,21 @@ public class Hero extends Char {
 		if(heroClass==HeroClass.SORCERESS)
 			evasion *=  0.75;
 
+		// pressure
+		Pressure p	=	buff(Pressure.class);
+		switch(p.getLevel()){
+			case CONFIDENT:
+				break;
+			case NORMAL:
+				break;
+			case NERVOUS:
+				evasion	*=	.8f;
+				break;
+			case COLLAPSE:
+				evasion	*=	.0f;
+				break;
+		}
+		
 		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 10 - STR();
 		if (aEnc > 0) {
 			// wear heavy armor
@@ -421,6 +453,26 @@ public class Hero extends Char {
 				dmg.value	=	Random.NormalIntRange(1, Math.max(STR()-8, 1));
 			}
 		}
+
+		// pressure
+		Pressure p	=	buff(Pressure.class);
+		switch(p.getLevel()){
+			case CONFIDENT:
+				if(Random.Int(10)==0){
+					// critical, 
+					dmg.value	*=	1.5;
+					dmg.addFeature(Damage.Feature.CRITCIAL);
+				}else
+					dmg.value	*=	1.1;
+				break;
+			case NORMAL:
+				break;
+			case NERVOUS:
+				break;
+			case COLLAPSE:
+				dmg.value	*=	.5f;
+				break;
+		}
 		
 		if(dmg.value<0) dmg.value	=	0;
 		
@@ -430,6 +482,10 @@ public class Hero extends Char {
 
 		if(buff(Fury.class)!=null)
 			dmg.value	*=	1.5f;
+		
+		// critical damage recover pressure
+		if(dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Int(20)==0)
+			recoverSanity(Random.Int(dmg.value/10)+1);
 		
 		return dmg;
 	}
@@ -1015,7 +1071,7 @@ public class Hero extends Char {
 			health.absorb(dmg.value);
 		
 		if(belongings.armor!=null)
-			dmg.value	=	belongings.armor.proc(enemy, this, dmg.value);
+			dmg	=	belongings.armor.proc(dmg);
 		
 		return dmg;
 	}
@@ -1045,6 +1101,23 @@ public class Hero extends Char {
 		int tenacity	=	RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
 		if(tenacity!=0)
 			dmg.value	=	(int)Math.ceil((float)dmg.value*Math.pow(0.85, tenacity*((float)(HT-HP)/HT)));
+		
+		// extra deal with mental damage
+		{
+			Damage dmgMental	=	new Damage(0, dmg.from, dmg.to).type(Damage.Type.MENTAL);
+			
+			if(dmg.from instanceof Char&&!Dungeon.visible[((Char)dmg.from).pos]){
+				// when hit from nowhere
+				dmgMental.value	+=	Random.Int(dmg.value/3)+1;
+			}
+			if(dmg.isFeatured(Damage.Feature.CRITCIAL)){
+				// when take critical damage, up pressure
+				if(dmg.type!=Damage.Type.MENTAL)
+					dmgMental.value	+=	dmg.value/4;
+			}
+			
+			takeMentalDamage(dmgMental);
+		}
 		
 		// note: resistance move to resistDamage
 		
@@ -1083,9 +1156,10 @@ public class Hero extends Char {
 	}
 	
 	public void recoverSanity(int value){
-		float rv	=	buff(Pressure.class).downPressure(value);
+		int rv	=	(int)buff(Pressure.class).downPressure(value);
 		
-		sprite.showStatus(0xFFFFFF, Integer.toString((int)rv));
+		if(rv>0)
+			sprite.showStatus(0xFFFFFF, Integer.toString(rv));
 	}
 	protected void takeMentalDamage(Damage dmg){
 		// sorceress perk
@@ -1365,6 +1439,9 @@ public class Hero extends Char {
 		
 		attackSkill++;
 		defenseSkill++;
+		
+		// recover sanity
+		recoverSanity(Math.min(Random.IntRange(lvl/5+1, 10), (int)(buff(Pressure.class).pressure*0.2f)));
 	}
 	
 	public int maxExp() {
@@ -1591,6 +1668,18 @@ public class Hero extends Char {
 		if(uos!=null){
 			uos.collectSoul(mob);
 		}
+	}
+	
+	// called when killed a char by attack
+	public void onKillChar(Char ch){
+		// may recover pressure
+		if(ch.properties().contains(Property.BOSS))
+			recoverSanity(Random.IntRange(1, 10));
+		else if(!ch.properties().contains(Property.UNDEAD) && Random.Int(10)==0){
+			recoverSanity(Random.IntRange(1,4));
+		}
+		
+		GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", ch.name)));
 	}
 	
 	@Override

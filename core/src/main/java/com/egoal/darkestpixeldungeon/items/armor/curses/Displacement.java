@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.armor.curses;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -32,11 +33,13 @@ public class Displacement extends Armor.Glyph{
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
 	@Override
-	public int proc(Armor armor,Char attacker,Char defender,int damage ) {
+	public Damage proc(Armor armor, Damage damage){
+		Char attacker	=	(Char)damage.from;
+		Char defender	=	(Char)damage.to;
 
 		if (defender == Dungeon.hero && Random.Int(20) == 0){
 			ScrollOfTeleportation.teleportHero(Dungeon.hero);
-			return 0;
+			damage.value	=	0;
 		}
 
 		return damage;

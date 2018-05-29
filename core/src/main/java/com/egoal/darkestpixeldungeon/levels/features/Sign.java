@@ -33,6 +33,8 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndMessage;
 import com.watabou.noosa.audio.Sample;
 
+import java.util.HashSet;
+
 public class Sign {
 
 	private static final String[] teaser_texts = new String[]{
@@ -40,6 +42,16 @@ public class Sign {
 		"...",
 		"..."
 	};
+	
+	private static final int[] signDepth	=	new int[]{
+		0, 5, 6, 10, 11, 15, 16, 20, 21, 
+	};
+	public static boolean showInDepth(int depth){
+		for(int i: signDepth){
+			if(i==depth) return true;
+		}
+		return false;
+	}
 	
 	public static void read( int pos ) {
 		
@@ -50,7 +62,9 @@ public class Sign {
 		} else {
 
 			if (Dungeon.depth <= 21) {
-				GameScene.show( new WndMessage( Messages.get(Sign.class, "tip_"+Dungeon.depth) ) );
+				// read sign
+				if(showInDepth(Dungeon.depth))
+					GameScene.show( new WndMessage( Messages.get(Sign.class, "tip_"+Dungeon.depth) ) );
 			} else {
 
 				//if we are at depths 22-24 and in english

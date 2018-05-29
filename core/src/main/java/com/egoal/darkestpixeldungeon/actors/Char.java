@@ -173,7 +173,7 @@ public abstract class Char extends Actor {
 					GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name)));
 				}else if(this==Dungeon.hero){
 					// killed by hero
-					GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)));
+					Dungeon.hero.onKillChar(enemy);
 				}
 			}
 			
@@ -269,7 +269,10 @@ public abstract class Char extends Actor {
 		
 		// effects, show number
 		if(dmg.value>0 || dmg.from instanceof Char){
-			sprite.showStatus(HP>HT/2? CharSprite.WARNING: CharSprite.NEGATIVE, Integer.toString(dmg.value));
+			String number	=	Integer.toString(dmg.value);
+			if(dmg.isFeatured(Damage.Feature.CRITCIAL))
+				number	+=	"!";
+			sprite.showStatus(HP>HT/2? CharSprite.WARNING: CharSprite.NEGATIVE, number);
 		}
 		
 		if(!isAlive())

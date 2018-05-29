@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.armor.glyphs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
@@ -32,7 +33,9 @@ public class Repulsion extends Armor.Glyph{
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
 	
 	@Override
-	public int proc(Armor armor,Char attacker,Char defender,int damage) {
+	public Damage proc(Armor armor, Damage damage){
+		Char attacker	=	(Char)damage.from;
+		Char defender	=	(Char)damage.to;
 
 		int level = Math.max( 0, armor.level() );
 

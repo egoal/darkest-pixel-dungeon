@@ -50,6 +50,9 @@ public class SkeletonKnight extends Mob{
 	
 	@Override
 	public Damage defenseProc(Damage damage){
+		if(damage.type==Damage.Type.MAGICAL || damage.isFeatured(Damage.Feature.RANGED))
+			return super.defenseProc(damage);
+		
 		Char enemy	=	(Char)damage.from;
 		
 		if(Random.Float()<COUNTER){

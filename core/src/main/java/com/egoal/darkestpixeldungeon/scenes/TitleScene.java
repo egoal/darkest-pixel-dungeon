@@ -29,8 +29,6 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.ChangesButton;
 import com.egoal.darkestpixeldungeon.ui.ExitButton;
-import com.egoal.darkestpixeldungeon.ui.LanguageButton;
-import com.egoal.darkestpixeldungeon.ui.PrefsButton;
 import com.egoal.darkestpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -40,8 +38,6 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
-
-import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -130,7 +126,7 @@ public class TitleScene extends PixelScene {
 			new DashboardItem(Messages.get(this, "guide"), 4){
 				@Override
 				protected void onClick(){
-					
+					DarkestPixelDungeon.switchNoFade(GuideScene.class);
 				}
 			},
 			new DashboardItem(Messages.get(this, "settings"), 5){

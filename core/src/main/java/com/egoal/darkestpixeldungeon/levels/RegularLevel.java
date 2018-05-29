@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
+import com.egoal.darkestpixeldungeon.levels.features.Sign;
 import com.egoal.darkestpixeldungeon.levels.painters.ShopPainter;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
@@ -167,6 +168,9 @@ public abstract class RegularLevel extends Level {
 	}
 
 	protected void placeSign(){
+		if(!Sign.showInDepth(Dungeon.depth))
+			return;
+		
 		while (true) {
 			int pos = pointToCell(roomEntrance.random());
 			if (pos != entrance && traps.get(pos) == null && findMob(pos) == null) {
@@ -378,7 +382,6 @@ public abstract class RegularLevel extends Level {
 
 			try {
 				Trap trap = ((Trap)trapClasses[Random.chances( trapChances )].newInstance()).hide();
-				if(Random.Float()>0.9f) trap.reveal();
 				
 				setTrap( trap, trapPos );
 				//some traps will not be hidden
