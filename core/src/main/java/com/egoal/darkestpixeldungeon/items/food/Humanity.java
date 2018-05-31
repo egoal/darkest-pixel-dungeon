@@ -1,7 +1,8 @@
-package com.egoal.darkestpixeldungeon.items;
+package com.egoal.darkestpixeldungeon.items.food;
 
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -50,7 +51,7 @@ public class Humanity extends Item{
 			hero.busy();
 			
 			//0. recover sanity
-			hero.recoverSanity((int)(Pressure.heroPressure()*0.7f));
+			hero.recoverSanity((int)(Pressure.heroPressure()*0.5f));
 			//todo: show effects
 			
 			//1. recover hp

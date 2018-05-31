@@ -270,6 +270,7 @@ public class ItemSpriteSheet {
 	public static final int DPD_URN_OF_SHADOW	=	ARTIFACTS+24;
 	
 	public static final int DPD_HUMANITY		=	FOOD+8;
+	public static final int DPD_WINE			=	FOOD+9;
 	
 	public static final int DPD_BOOKS			=	xy(1, 23);
 }

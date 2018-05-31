@@ -20,23 +20,15 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
-import android.database.DatabaseUtils;
-import android.text.method.TimeKeyListener;
-
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
-import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
-import com.egoal.darkestpixeldungeon.items.Humanity;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
-import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -122,18 +114,12 @@ import com.egoal.darkestpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-
-import javax.microedition.khronos.opengles.GL;
 
 public class Hero extends Char {
 
@@ -150,6 +136,8 @@ public class Hero extends Char {
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
+	public HeroPerk heroPerk	=	new HeroPerk(0);	// no perk
+	
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
@@ -222,6 +210,7 @@ public class Hero extends Char {
 		
 		heroClass.storeInBundle( bundle );
 		subClass.storeInBundle( bundle );
+		heroPerk.storeInBundle(bundle);
 		
 		bundle.put( ATTACK, attackSkill );
 		bundle.put( DEFENSE, defenseSkill );
@@ -242,6 +231,7 @@ public class Hero extends Char {
 		
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
+		heroPerk	=	HeroPerk.restoreFromBundle(bundle);
 		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
@@ -1115,6 +1105,10 @@ public class Hero extends Char {
 				if(dmg.type!=Damage.Type.MENTAL)
 					dmgMental.value	+=	dmg.value/4;
 			}
+			if(HP<HT*0.1 && dmg.value>0){
+				// when health is low	
+				dmgMental.value	+=	Random.Int(1, 5);
+			}
 			
 			takeMentalDamage(dmgMental);
 		}
@@ -1164,7 +1158,7 @@ public class Hero extends Char {
 	protected void takeMentalDamage(Damage dmg){
 		// sorceress perk
 		if(!(dmg.from instanceof Pressure) && heroClass==HeroClass.SORCERESS){
-			if(Random.Int(5)==0){
+			if(Random.Float()<0.15f){
 				dmg.value	=	0;
 			}
 		}
@@ -1175,7 +1169,7 @@ public class Hero extends Char {
 		// final int NORMAL	=	0x361936;
 		final int WARNING	=	0x0A0A0A;
 
-		if(rv!=0){
+		if(rv>0){
 			sprite.showStatus(WARNING, Integer.toString(rv));
 		}
 	}

@@ -162,7 +162,7 @@ public class Pressure extends Buff implements Hero.Doom{
 			// nearly death
 			if(level==Level.COLLAPSE){
 				// take damage
-				double ed	=	Math.exp(collapseDuration-4.);
+				double ed	=	Math.exp(collapseDuration++-4.);
 				target.takeDamage(new Damage((int)(target.HT*(ed/(ed+1.))), 
 					this, target).addFeature(Damage.Feature.PURE));
 				

@@ -84,6 +84,7 @@ public class Brute extends Mob {
 		super.takeDamage(dmg);
 		
 		if(isAlive() && !enraged && HP<HT/4){
+			enraged	=	true;
 			if (Dungeon.visible[pos]) {
 				GLog.w( Messages.get(this, "enraged_text") );
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );

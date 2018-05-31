@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.egoal.darkestpixeldungeon.items.food.Food;
+import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
@@ -271,6 +272,10 @@ public abstract class Level implements Bundlable {
 					}
 				}
 			}
+			
+			// wine
+			if(Random.Int(5)==0)
+				addItemToSpawn(new Wine());
 		}
 		
 		boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;

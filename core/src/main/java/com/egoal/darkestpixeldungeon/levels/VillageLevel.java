@@ -11,6 +11,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
@@ -350,13 +351,13 @@ public class VillageLevel extends RegularLevel{
 		}
 		
 		// test 
-//		{
-//			SkeletonKnight sk	=	new SkeletonKnight();
-//			do{
-//				sk.pos	=	pointToCell(roomEntrance.random());
-//			}while(findMob(sk.pos)!=null || sk.pos==entrance);
-//			mobs.add(sk);
-//		}
+		{
+			Statuary sk	=	new Statuary().type(Random.Int(2)==0? Statuary.Type.ANGEL: Statuary.Type.DEVIL);
+			do{
+				sk.pos	=	pointToCell(roomEntrance.random());
+			}while(findMob(sk.pos)!=null || sk.pos==entrance);
+			mobs.add(sk);
+		}
 		
 		super.createMobs();
 	}

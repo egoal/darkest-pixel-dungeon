@@ -41,6 +41,7 @@ import com.egoal.darkestpixeldungeon.effects.SpellSprite;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -109,6 +110,9 @@ public class HornOfPlenty extends Artifact {
 						break;
 				}
 
+				// mental
+				hero.recoverSanity(Random.Int(1, chargesToUse));
+				
 				Statistics.foodEaten++;
 
 				charge -= chargesToUse;

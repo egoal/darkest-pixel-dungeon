@@ -94,7 +94,7 @@ public class Food extends Item {
 			}
 			
 			// when eat, down pressure
-			hero.recoverSanity(Random.Int(2, 8));
+			hero.recoverSanity(Random.Int(2, 6));
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();

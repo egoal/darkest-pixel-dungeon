@@ -22,23 +22,13 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
-import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
-import com.egoal.darkestpixeldungeon.actors.buffs.Venom;
-import com.egoal.darkestpixeldungeon.actors.mobs.Eye;
-import com.egoal.darkestpixeldungeon.actors.mobs.Warlock;
-import com.egoal.darkestpixeldungeon.actors.mobs.Yog;
-import com.egoal.darkestpixeldungeon.items.Amulet;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DewVial;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
-import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
-import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.food.Food;
@@ -50,14 +40,13 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.items.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
+import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.potions.*;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfRegrowth;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
@@ -66,15 +55,11 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
-import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.plants.Blindweed;
 import com.egoal.darkestpixeldungeon.plants.Firebloom;
 import com.egoal.darkestpixeldungeon.plants.Sorrowmoss;
 import com.watabou.utils.Bundle;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public enum HeroClass {
 
@@ -132,6 +117,9 @@ public enum HeroClass {
 
 		if(!Dungeon.isChallenged(Challenges.DARKNESS))
 			new Torch().identify().collect();
+		
+		// a wine
+		new Wine().collect();
 		
 		if(DarkestPixelDungeon.debug()){
 			// debug mde, give extra materials
@@ -203,6 +191,9 @@ public enum HeroClass {
 			Dungeon.quickslot.setSlot(1, darts);
 		}
 
+		// new perk
+		hero.heroPerk.addPerk(HeroPerk.Perk.DRUNKARD);
+		
 		new PotionOfHealing().setKnown();
 	}
 

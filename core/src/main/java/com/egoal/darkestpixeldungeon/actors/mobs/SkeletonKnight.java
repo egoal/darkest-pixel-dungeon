@@ -1,10 +1,8 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
-import android.app.admin.DeviceAdminInfo;
-
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.items.Humanity;
+import com.egoal.darkestpixeldungeon.items.food.Humanity;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.SkeletonKnightSprite;
@@ -19,14 +17,14 @@ public class SkeletonKnight extends Mob{
 	{
 		spriteClass	=	SkeletonKnightSprite.class;
 		
-		HP	=	HT	=	50;
+		HP	=	HT	=	60;
 		defenseSkill	=	0;	// no dodge
 		
 		EXP	=	10;
 		maxLvl	=	15;
 	
 		loot	=	Humanity.class;
-		lootChance	=	.2f;
+		lootChance	=	.15f;
 		
 		properties.add(Property.UNDEAD);
 	}
