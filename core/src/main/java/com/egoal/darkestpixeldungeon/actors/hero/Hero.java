@@ -1156,11 +1156,11 @@ public class Hero extends Char {
 			sprite.showStatus(0xFFFFFF, Integer.toString(rv));
 	}
 	protected void takeMentalDamage(Damage dmg){
-		// sorceress perk
-		if(!(dmg.from instanceof Pressure) && heroClass==HeroClass.SORCERESS){
-			if(Random.Float()<0.15f){
+		if(dmg.isFeatured(Damage.Feature.ACCURATE|Damage.Feature.PURE)){}
+		else{
+			// sorceress perk
+			if(heroClass==HeroClass.SORCERESS && Random.Float()<0.15f)
 				dmg.value	=	0;
-			}
 		}
 		
 		// keep in mind that SAN is pressure, it increases

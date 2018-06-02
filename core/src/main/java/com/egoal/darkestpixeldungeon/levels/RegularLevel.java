@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.features.Sign;
 import com.egoal.darkestpixeldungeon.levels.painters.ShopPainter;
+import com.egoal.darkestpixeldungeon.levels.painters.StatuaryPainter;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
@@ -207,7 +208,7 @@ public abstract class RegularLevel extends Level {
 		for (Room r : rooms) {
 			if (r.type == Type.NULL &&
 				r.connected.size() == 1) {
-
+				//!!! all specials in 1 connected room
 				if (specials.size() > 0 &&
 					r.width() > 3 && r.height() > 3 &&
 					Random.Int( specialRooms * (specialRooms-1) + 2 ) == 0) {
@@ -237,7 +238,8 @@ public abstract class RegularLevel extends Level {
 					} else {
 						
 						int n = specials.size();
-						r.type = specials.get( Math.min( Random.Int( n ), Random.Int( n ) ) );
+						// r.type = specials.get( Math.min( Random.Int( n ), Random.Int( n ) ) );
+						r.type	=	specials.get(Random.Int(n));
 						if (r.type == Type.WEAK_FLOOR) {
 							weakFloorCreated = true;
 						}

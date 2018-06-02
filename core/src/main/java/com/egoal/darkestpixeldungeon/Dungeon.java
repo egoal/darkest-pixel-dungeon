@@ -457,6 +457,7 @@ public class Dungeon {
 			// dpd save
 			Alchemist.Quest.storeInBundle(quests);
 			Jessica.Quest.storeInBundle(quests);
+			Statuary.save(quests);
 			bundle.put( QUESTS, quests );
 			
 			Room.storeRoomsInBundle( bundle );
@@ -570,6 +571,7 @@ public class Dungeon {
 				// restore quests
 				Alchemist.Quest.restoreFromBundle(quests);
 				Jessica.Quest.restoreFromBundle(quests);
+				Statuary.load(quests);
 			} else {
 				Ghost.Quest.reset();
 				Wandmaker.Quest.reset();

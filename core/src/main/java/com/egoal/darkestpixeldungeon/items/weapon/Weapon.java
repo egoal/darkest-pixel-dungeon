@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.weapon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling;
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
@@ -279,11 +280,11 @@ abstract public class Weapon extends KindOfWeapon {
 		private static final Class<?>[] enchants = new Class<?>[]{
 			Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
 			Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Unstable.class, Dazzling.class,
-			Grim.class, Stunning.class, Vampiric.class,};
+			Grim.class, Stunning.class, Vampiric.class, Holy.class};
 		private static final float[] chances= new float[]{
 			10, 10, 10, 10,
 			5, 5, 5, 5, 5, 5,
-			2, 2, 2 };
+			2, 2, 2, 1 };
 
 		private static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Exhausting.class, Fragile.class, Sacrificial.class, Wayward.class

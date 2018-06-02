@@ -23,11 +23,13 @@ package com.egoal.darkestpixeldungeon.items;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -85,9 +87,13 @@ public abstract class EquipableItem extends Item {
 		super.cast( user, dst );
 	}
 
+	// called when equip cursed things, 
 	public static void equipCursed( Hero hero ) {
 		hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
 		Sample.INSTANCE.play( Assets.SND_CURSED );
+		
+		//warning: a null is used here
+		hero.takeDamage(new Damage(Random.Int(4, 10), null, hero).type(Damage.Type.MENTAL));
 	}
 
 	protected float time2equip( Hero hero ) {

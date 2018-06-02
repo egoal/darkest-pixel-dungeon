@@ -68,6 +68,12 @@ public class UrnOfShadow extends Item{
 	@Override
 	public boolean isUpgradable() { return false; }
 	
+	@Override
+	public Item upgrade(){
+		Messages.get(this, "levelup");
+		return super.upgrade();
+	}
+	
 	// functions
 	@Override
 	public ArrayList<String> actions(Hero hero){
@@ -207,7 +213,7 @@ public class UrnOfShadow extends Item{
 			urnOfShadow.consume(COST_SOUL_BURN);
 			
 			Damage dmg	=	curUser.giveDamage(target);
-			dmg.value	*=	0.8;
+			dmg.value	*=	0.8*Math.pow(1.1, level()-1);
 			dmg.type(Damage.Type.MAGICAL).addFeature(Damage.Feature.ACCURATE).addElement(Damage.Element.SHADOW);
 			target.takeDamage(dmg);
 			Buff.affect(target, SoulBurning.class).reignite(target);
@@ -220,7 +226,7 @@ public class UrnOfShadow extends Item{
 		private void opSoulMark(Char target){
 			urnOfShadow.consume(COST_SOUL_MARK);
 
-			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION);
+			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION*(float)Math.pow(1.1, level()));
 			
 			curUser.sprite.attack(target.pos);
 			curUser.spend(TIME_TO_CAST);
@@ -247,7 +253,7 @@ public class UrnOfShadow extends Item{
 			}
 			
 			// corruption, refill health
-			urnOfShadow.consume(COST_DEMENTAGE);
+			urnOfShadow.consume((int)Math.ceil(COST_DEMENTAGE*Math.pow(.9, level()-1)));
 			
 			Buff.append(target, Dementage.class);
 			target.HP	=	target.HT;

@@ -168,7 +168,7 @@ public class Pressure extends Buff implements Hero.Doom{
 				
 				if(target==Dungeon.hero){
 					Dungeon.hero.interrupt();
-					GLog.h(Messages.get(this, "onhurt"));
+					GLog.n(Messages.get(this, "onhurt"));
 				}
 			}
 			

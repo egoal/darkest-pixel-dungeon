@@ -55,15 +55,17 @@ public class ChaliceOfBlood extends Artifact {
 		return actions;
 	}
 
+	int prickValue(){
+		return 3*(level()+1)*(level()+1)/2+2*level();
+	}
+	
 	@Override
 	public void execute(Hero hero, String action ) {
 		super.execute(hero, action);
 
 		if (action.equals(AC_PRICK)){
 
-			int damage = 3*(level()*level());
-
-			if (damage > hero.HP*0.75) {
+			if (prickValue() > hero.HP*0.75) {
 
 				GameScene.show(
 					new WndOptions(Messages.get(this, "name"),
@@ -85,9 +87,9 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	private void prick(Hero hero){
-		// int damage = 3*(level()*level());
-		Damage damage	=	new Damage(3*(level()*level()), this, hero);
-
+		// Damage damage	=	new Damage(3*(level()*level()), this, hero);
+		Damage damage	=	new Damage(prickValue(), this, hero);
+		
 		Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
 		if (armor != null) {
 			damage.value = armor.absorb(damage.value);

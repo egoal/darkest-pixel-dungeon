@@ -20,9 +20,10 @@ public class Damage{
 		public static final int FIRE	=	0x0001;
 		public static final int POISON	=	0x0002;
 		public static final int ICE		=	0x0004;
-		public static final int LIGHT	=	0x0008;
+		public static final int LIGHT	=	0x0008;	// this should be lightning...
 		public static final int SHADOW	=	0x0010;
 		public static final int ACID	=	0x0020;
+		public static final int HOLY	=	0x0040;	// this should use name: light
 		
 		public static final int ELEMENT_COUNT	=	6;
 	}

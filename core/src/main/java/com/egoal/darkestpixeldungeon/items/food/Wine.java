@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.food;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
@@ -58,6 +59,7 @@ public class Wine extends Item{
 				hero.recoverSanity(value);
 				// get drunk
 				Buff.prolong(hero,Vertigo.class, 10);
+				hero.takeDamage(new Damage(hero.HP/4, this, hero).addFeature(Damage.Feature.PURE));
 			}
 			
 			hero.sprite.operate(hero.pos);

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
 import com.egoal.darkestpixeldungeon.levels.painters.*;
 import com.egoal.darkestpixeldungeon.levels.painters.AltarPainter;
 import com.egoal.darkestpixeldungeon.levels.painters.ArmoryPainter;
@@ -102,7 +103,11 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		//prison quests
 		MASS_GRAVE  ( MassGravePainter.class ),
 		ROT_GARDEN  ( RotGardenPainter.class ),
-		RITUAL_SITE ( RitualSitePainter.class );
+		RITUAL_SITE ( RitualSitePainter.class ),
+		
+		// dpd
+		STATUARY	(StatuaryPainter.class)
+		;
 		
 		private Method paint;
 		
@@ -129,7 +134,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public static final ArrayList<Type> SPECIALS = new ArrayList<Type>( Arrays.asList(
 		Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
-		Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
+		Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT, Type.STATUARY
 	) );
 	
 	public Type type = Type.NULL;

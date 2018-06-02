@@ -202,7 +202,7 @@ public class Generator {
 	
 	private static HashMap<Category,Float> categoryProbs = new HashMap<Generator.Category, Float>();
 
-	private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+	private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
 	
 	static {
 		
@@ -342,9 +342,10 @@ public class Generator {
 			RingOfWealth.class};
 		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 };
 
+		// 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1
 		Category.ARTIFACT.classes = new Class<?>[]{
 			CapeOfThorns.class,
-			ChaliceOfBlood.class,
+			ChaliceOfBlood.class,	// removed from drop, by statuary
 			CloakOfShadows.class,
 			HornOfPlenty.class,
 			MasterThievesArmband.class,

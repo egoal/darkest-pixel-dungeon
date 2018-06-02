@@ -254,6 +254,8 @@ public enum HeroClass {
 		(hero.belongings.weapon =   new SorceressWand()).identify();
 		(new ExtractionFlask()).identify().collect();
 		
+		new Dart(6).identify().collect();
+		
 		new PotionOfToxicGas().identify().collect();
 
 	}

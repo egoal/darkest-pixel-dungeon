@@ -352,7 +352,7 @@ public class VillageLevel extends RegularLevel{
 		
 		// test 
 		{
-			Statuary sk	=	new Statuary().type(Random.Int(2)==0? Statuary.Type.ANGEL: Statuary.Type.DEVIL);
+			Statuary sk	=	new Statuary().random();
 			do{
 				sk.pos	=	pointToCell(roomEntrance.random());
 			}while(findMob(sk.pos)!=null || sk.pos==entrance);

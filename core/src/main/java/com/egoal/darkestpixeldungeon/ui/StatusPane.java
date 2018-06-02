@@ -208,7 +208,9 @@ public class StatusPane extends Component {
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, 0x660000, 0xCC0000, 0x660000), 0.5f );
 		}else if(p.getLevel()==Pressure.Level.NERVOUS|| p.getLevel()==Pressure.Level.COLLAPSE){
-			avatar.tint(ColorMath.interpolate(warning, 0x330000, 0x660000, 0x330000), 0.5f );
+			warning += Game.elapsed * 5f *(0.4f - (health/max));
+			warning %= 1f;
+			avatar.tint(ColorMath.interpolate(warning, 0x333333, 0x666666, 0x333333), 0.5f );
 		}else {
 			avatar.resetColor();
 		}

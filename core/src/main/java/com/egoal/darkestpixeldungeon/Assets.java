@@ -195,7 +195,8 @@ public class Assets {
 	public static final String DPD_SCHOLAR			=	"dpd/scholar.png";
 	public static final String DPD_JESSICA			=	"dpd/jessica.png";
 	public static final String DPD_NOVE				=	"dpd/nove.png";
-
+	public static final String DPD_STATUARY			=	"dpd/statuary.png";
+	
 	// level
 	public static final String DPD_TILES_VILLAGE    =   "dpd/tiles_village.png";
 	public static final String DPD_WATER_VILLAGE    =   "dpd/water_village.png";
