@@ -112,12 +112,6 @@ public class ChangesScene extends PixelScene {
 			content.setSize(panel.innerWidth(), sy+(BTN_GAP+BTN_HEIGHT)*r+BTN_HEIGHT);
 		}
 		
-//		RedButton rb	=	createChangeButton("0.1.0");
-//		rb.setRect(0, text.height()+8, BTN_WIDTH, BTN_HEIGHT);
-//		content.add(rb);
-//
-//		content.setSize( panel.innerWidth(), rb.bottom());
-		
 		list.setRect(
 				panel.x + panel.marginLeft(),
 				panel.y + panel.marginTop(),

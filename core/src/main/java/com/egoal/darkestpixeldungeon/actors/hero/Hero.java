@@ -1092,11 +1092,14 @@ public class Hero extends Char {
 		if(tenacity!=0)
 			dmg.value	=	(int)Math.ceil((float)dmg.value*Math.pow(0.85, tenacity*((float)(HT-HP)/HT)));
 		
+		// berserk
+
+		
 		// extra deal with mental damage
 		{
 			Damage dmgMental	=	new Damage(0, dmg.from, dmg.to).type(Damage.Type.MENTAL);
 			
-			if(dmg.from instanceof Char&&!Dungeon.visible[((Char)dmg.from).pos]){
+			if(dmg.from instanceof Char && !Dungeon.visible[((Char)dmg.from).pos]){
 				// when hit from nowhere
 				dmgMental.value	+=	Random.Int(dmg.value/3)+1;
 			}
@@ -1105,7 +1108,7 @@ public class Hero extends Char {
 				if(dmg.type!=Damage.Type.MENTAL)
 					dmgMental.value	+=	dmg.value/4;
 			}
-			if(HP<HT*0.1 && dmg.value>0){
+			if(HP<HT/4 && dmg.value>0){
 				// when health is low	
 				dmgMental.value	+=	Random.Int(1, 5);
 			}

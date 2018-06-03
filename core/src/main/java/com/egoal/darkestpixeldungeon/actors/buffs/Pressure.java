@@ -164,7 +164,7 @@ public class Pressure extends Buff implements Hero.Doom{
 				// take damage
 				double ed	=	Math.exp(collapseDuration++-4.);
 				target.takeDamage(new Damage((int)(target.HT*(ed/(ed+1.))), 
-					this, target).addFeature(Damage.Feature.PURE));
+					this, target).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
 				
 				if(target==Dungeon.hero){
 					Dungeon.hero.interrupt();

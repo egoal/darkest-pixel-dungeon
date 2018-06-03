@@ -25,7 +25,7 @@ public class Damage{
 		public static final int ACID	=	0x0020;
 		public static final int HOLY	=	0x0040;	// this should use name: light
 		
-		public static final int ELEMENT_COUNT	=	6;
+		public static final int ELEMENT_COUNT	=	7;
 	}
 	
 	public class Feature{

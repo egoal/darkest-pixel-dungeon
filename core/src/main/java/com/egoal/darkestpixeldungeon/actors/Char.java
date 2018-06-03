@@ -134,7 +134,7 @@ public abstract class Char extends Actor {
 			if(this instanceof Hero && ((Hero)this).rangedWeapon!=null && ((Hero)this).subClass==HeroSubClass.SNIPER){
 				// sniper's perk: ignore defence
 			}else if(!dmg.isFeatured(Damage.Feature.PURE))
-				dmg	=	defendDamage(dmg);
+				dmg	=	enemy.defendDamage(dmg);
 			
 			dmg	=	attackProc(dmg);
 			dmg	=	enemy.defenseProc(dmg);
@@ -274,6 +274,9 @@ public abstract class Char extends Actor {
 				number	+=	"!";
 			sprite.showStatus(HP>HT/2? CharSprite.WARNING: CharSprite.NEGATIVE, number);
 		}
+		
+		//note: this is a important setting
+		if(HP<0)	HP=0;
 		
 		if(!isAlive())
 			die(dmg.from);

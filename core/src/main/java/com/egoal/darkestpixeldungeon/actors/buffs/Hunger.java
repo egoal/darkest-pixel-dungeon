@@ -79,7 +79,7 @@ public class Hunger extends Buff implements Hero.Doom{
 				if (partialDamage > 1){
 					// target.damage( (int)partialDamage, this);
 					target.takeDamage(new Damage((int)partialDamage, 
-						this, target).addFeature(Damage.Feature.PURE));
+						this, target).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
 					target.takeDamage(new Damage((int)partialDamage, 
 						this, target).type(Damage.Type.MENTAL).addFeature(Damage.Feature.PURE));
 					partialDamage	-=	(int)partialDamage;
@@ -93,7 +93,7 @@ public class Hunger extends Buff implements Hero.Doom{
 
 					GLog.n( Messages.get(this, "onstarving") );
 					hero.resting = false;
-					target.takeDamage(new Damage(1, this, target).addFeature(Damage.Feature.PURE));
+					target.takeDamage(new Damage(1, this, target).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
 					statusUpdated = true;
 
 					hero.interrupt();

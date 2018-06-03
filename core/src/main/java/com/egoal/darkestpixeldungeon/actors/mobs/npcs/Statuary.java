@@ -127,7 +127,11 @@ public class Statuary extends NPC{
 				hero.recoverSanity(rp);
 				GLog.h(Messages.get(this, "holy"));
 				
-				if(Random.Int(8)==0){
+				if(rp<15){
+					hero.SHLD	+=	Random.Int(15, 25);
+				}
+				
+				if(Random.Int(4)==0){
 					KindOfWeapon kow	=	hero.belongings.weapon;
 					if(kow!=null && kow instanceof Weapon){
 						((Weapon)kow).enchant(new Holy());
@@ -155,7 +159,7 @@ public class Statuary extends NPC{
 		
 		if(agree){
 			// sacrifice
-			if(hero.HP<hero.HT/5){
+			if(hero.HP<hero.HT/2){
 				GLog.i(Messages.get(this, "lowhp"));
 				return false;
 			}
@@ -165,7 +169,7 @@ public class Statuary extends NPC{
 			hero.sprite.operate(hero.pos);
 			GLog.h(Messages.get(this, "sacrifice"));
 			
-			if(Random.Int(5)==0){
+			if(Random.Int(10)==0){
 				// nothing happened
 				GLog.i(Messages.get(this, "nothing"));
 			}else{

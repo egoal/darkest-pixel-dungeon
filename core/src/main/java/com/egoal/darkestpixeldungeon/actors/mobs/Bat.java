@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.BatSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -71,13 +72,18 @@ public class Bat extends Mob {
 	@Override
 	public Damage attackProc(Damage damage ) {
 		
+		if(Random.Int(4)==0){
+			damage.value	=	Math.max(3, damage.value/2);
+			return damage.type(Damage.Type.MENTAL);
+		}
+		
 		int reg = (int)(Math.min(damage.value, HT - HP )*.4f);
 		
 		if (reg > 0) {
 			HP += reg;
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 		}
-		
+			
 		return damage;
 	}
 
