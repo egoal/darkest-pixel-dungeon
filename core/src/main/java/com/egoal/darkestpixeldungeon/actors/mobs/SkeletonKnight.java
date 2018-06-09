@@ -31,8 +31,8 @@ public class SkeletonKnight extends Mob{
 		mapResists.put(Damage.Element.FIRE, .75f);
 	}
 	
-	private static final float COUNTER	=	.15f;
-	private static final float COMBO	=	.15f;
+	private static final float COUNTER	=	.2f;
+	private static final float COMBO	=	.2f;
 
 	@Override
 	public Damage giveDamage(Char target) {

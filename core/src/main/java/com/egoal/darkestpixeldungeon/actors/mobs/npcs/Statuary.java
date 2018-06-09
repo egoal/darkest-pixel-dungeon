@@ -87,7 +87,6 @@ public class Statuary extends NPC{
 	// now interact, 
 	private static final float TIME_TO_ANSWER	=	2f;
 	boolean isActive	=	true;
-	private static boolean chaliceDropped	=	false;
 	
 	@Override
 	public boolean interact(){
@@ -108,7 +107,7 @@ public class Statuary extends NPC{
 				isActive	=	!answerDevil(agree, Dungeon.hero);
 				break;
 		}
-		isActive	=	true;
+		// isActive	=	true;
 	}
 	
 	private boolean answerAngle(boolean agree, Hero hero){
@@ -149,7 +148,7 @@ public class Statuary extends NPC{
 			GLog.i(Messages.get(this, "blasphemy"));
 			
 			//todo: do something 
-			return false;
+			// return false;
 		}
 		
 		return true;
@@ -201,7 +200,7 @@ public class Statuary extends NPC{
 					if(requireBlood){
 						hero.HT	+=	Random.Int(5,10);
 						GLog.i(Messages.get(this, "upht"));
-						if(Random.Int(8)==0){
+						if(Random.Int(5)==0){
 							KindOfWeapon kow	=	hero.belongings.weapon;
 							if(kow!=null && kow instanceof Weapon){
 								((Weapon)kow).enchant(new Vampiric());
@@ -211,8 +210,8 @@ public class Statuary extends NPC{
 						}
 					}else{
 						// rare
-						if(!chaliceDropped && Random.Int(4)==0){
-							chaliceDropped	=	true;
+						if(Dungeon.limitedDrops.chaliceOfBlood.count==0 && Random.Int(4)==0){
+							Dungeon.limitedDrops.chaliceOfBlood.count	=	1;
 							
 							Dungeon.level.drop(new ChaliceOfBlood().identify(), hero.pos).sprite.drop();
 							hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10);
@@ -233,7 +232,7 @@ public class Statuary extends NPC{
 			GLog.i(Messages.get(this, "blasphemy"));
 			
 			//todo: do something 
-			return false;
+			// return false;
 		}
 		
 		return true;
@@ -255,14 +254,6 @@ public class Statuary extends NPC{
 		String value	=	bundle.getString(TYPE);
 		type(value.length()>0? Type.valueOf(value): Type.ANGEL);
 		isActive	=	bundle.getBoolean(ACTIVE);
-	}
-	
-	private static final String CHALICE_DROPPED	=	"CHALICE_DROPPED";
-	public static void save(Bundle bundle){
-		bundle.put(CHALICE_DROPPED, chaliceDropped);	
-	}
-	public static void load(Bundle bundle){
-		chaliceDropped	=	bundle.getBoolean(CHALICE_DROPPED);
 	}
 	
 	// sprite class

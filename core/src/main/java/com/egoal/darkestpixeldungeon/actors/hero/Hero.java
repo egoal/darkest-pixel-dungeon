@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
@@ -1043,8 +1044,9 @@ public class Hero extends Char {
 		
 		// sniper perk
 		if(subClass==HeroSubClass.SNIPER && rangedWeapon!=null){
-			Buff.prolong(this, SnipersMark.class, attackDelay()*1.1f).object	=	enemy.id();
-			Buff.prolong(enemy, ViewMark.class, attackDelay()*1.1f).observer	=	this.id();
+			Char target	=	(Char)dmg.to;
+			Buff.prolong(this, SnipersMark.class, attackDelay()*1.1f).object	=	target.id();
+			Buff.prolong(target, ViewMark.class, attackDelay()*1.1f).observer	=	this.id();
 		}
 		
 		return dmg;
@@ -1438,7 +1440,7 @@ public class Hero extends Char {
 		defenseSkill++;
 		
 		// recover sanity
-		recoverSanity(Math.min(Random.IntRange(lvl/5+1, 10), (int)(buff(Pressure.class).pressure*0.2f)));
+		recoverSanity(Math.min(Random.IntRange(1, 10), (int)(buff(Pressure.class).pressure*0.2f)));
 	}
 	
 	public int maxExp() {
@@ -1671,9 +1673,9 @@ public class Hero extends Char {
 	public void onKillChar(Char ch){
 		// may recover pressure
 		if(ch.properties().contains(Property.BOSS))
-			recoverSanity(Random.IntRange(1, 10));
+			recoverSanity(Random.IntRange(1, 12));
 		else if(!ch.properties().contains(Property.UNDEAD) && Random.Int(10)==0){
-			recoverSanity(Random.IntRange(1,4));
+			recoverSanity(Random.IntRange(1,6));
 		}
 		
 		GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", ch.name)));

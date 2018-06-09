@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import android.database.DatabaseUtils;
 import android.view.View;
 
 import com.egoal.darkestpixeldungeon.*;
@@ -223,6 +224,13 @@ public abstract class Level implements Bundlable {
 				addItemToSpawn( new Stylus() );
 				Dungeon.limitedDrops.arcaneStyli.count++;
 			}
+			if(Dungeon.wineNeeded()){
+				// extra chance to spawn wine
+				if(Random.Float()>Math.pow(0.925, bonus+1))
+					addItemToSpawn(new Wine());
+				addItemToSpawn(new Wine());
+				Dungeon.limitedDrops.wine.count++;
+			}
 
 			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
 			if (rose != null && !rose.cursed){
@@ -271,11 +279,11 @@ public abstract class Level implements Bundlable {
 						++torchCount;
 					}
 				}
+				
+				// extra wine
+				if(Random.Int(10)==0)
+					addItemToSpawn(new Wine());
 			}
-			
-			// wine
-			if(Random.Int(5)==0)
-				addItemToSpawn(new Wine());
 		}
 		
 		boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;

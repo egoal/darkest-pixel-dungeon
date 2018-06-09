@@ -351,7 +351,7 @@ public class VillageLevel extends RegularLevel{
 		}
 		
 		// test 
-		{
+		if(false){
 			Statuary sk	=	new Statuary().random();
 			do{
 				sk.pos	=	pointToCell(roomEntrance.random());

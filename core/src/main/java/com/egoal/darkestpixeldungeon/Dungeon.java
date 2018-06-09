@@ -69,6 +69,7 @@ public class Dungeon {
 		strengthPotions,
 		upgradeScrolls,
 		arcaneStyli,
+		wine, 
 
 		//all unlimited health potion sources (except guards, which are at the bottom.
 		swarmHP,
@@ -81,6 +82,7 @@ public class Dungeon {
 
 		//doesn't use Generator, so we have to enforce one armband drop here
 		armband,
+		chaliceOfBlood, // only the statuary drop this now
 
 		//containers
 		dewVial,
@@ -359,6 +361,14 @@ public class Dungeon {
 		return Random.Int(5 - floorThisSet) < asLeftThisSet;
 	}
 	
+	public static boolean wineNeeded(){
+		int wineLeftThisSet	=	1-(limitedDrops.wine.count-depth/5);
+		if(wineLeftThisSet<=0) return false;
+		
+		int floorThisSet	=	depth%5;
+		return Random.Int(5-floorThisSet)<wineLeftThisSet;
+	}
+	
 	private static final String RG_GAME_FILE	= "game.dat";
 	private static final String RG_DEPTH_FILE	= "depth%d.dat";
 	
@@ -457,7 +467,6 @@ public class Dungeon {
 			// dpd save
 			Alchemist.Quest.storeInBundle(quests);
 			Jessica.Quest.storeInBundle(quests);
-			Statuary.save(quests);
 			bundle.put( QUESTS, quests );
 			
 			Room.storeRoomsInBundle( bundle );
@@ -571,7 +580,6 @@ public class Dungeon {
 				// restore quests
 				Alchemist.Quest.restoreFromBundle(quests);
 				Jessica.Quest.restoreFromBundle(quests);
-				Statuary.load(quests);
 			} else {
 				Ghost.Quest.reset();
 				Wandmaker.Quest.reset();

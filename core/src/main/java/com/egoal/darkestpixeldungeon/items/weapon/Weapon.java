@@ -188,8 +188,8 @@ abstract public class Weapon extends KindOfWeapon {
 			dmg.value	+=	exStr;
 
 			// huntress perk
-			if(this instanceof MissileWeapon&&hero.heroClass==HeroClass.HUNTRESS)
-				dmg.value	+=	exStr;
+			if(this instanceof MissileWeapon && hero.heroClass==HeroClass.HUNTRESS)
+				dmg.value	+=	Random.Int(exStr)+1;
 		}
 		
 		dmg.value	=	imbue.damageFactor(dmg.value);

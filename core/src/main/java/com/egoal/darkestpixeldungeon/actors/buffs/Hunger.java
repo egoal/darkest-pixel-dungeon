@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Hunger extends Buff implements Hero.Doom{
 
@@ -80,7 +81,7 @@ public class Hunger extends Buff implements Hero.Doom{
 					// target.damage( (int)partialDamage, this);
 					target.takeDamage(new Damage((int)partialDamage, 
 						this, target).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
-					target.takeDamage(new Damage((int)partialDamage, 
+					target.takeDamage(new Damage(Random.Int(0, (int)partialDamage+1), 
 						this, target).type(Damage.Type.MENTAL).addFeature(Damage.Feature.PURE));
 					partialDamage	-=	(int)partialDamage;
 				}

@@ -252,9 +252,16 @@ public enum HeroClass {
 		hero.mapResists.put(Damage.Element.POISON, 2.f);
 		
 		(hero.belongings.weapon =   new SorceressWand()).identify();
-		(new ExtractionFlask()).identify().collect();
 		
-		new Dart(6).identify().collect();
+		ExtractionFlask flask	=	new ExtractionFlask();
+		flask.identify().collect();
+		
+		// ranged weapon
+		Dart darts	=	new Dart(6);
+		darts.identify().collect();
+		
+		Dungeon.quickslot.setSlot(0, flask);
+		Dungeon.quickslot.setSlot(1, darts);
 		
 		new PotionOfToxicGas().identify().collect();
 
