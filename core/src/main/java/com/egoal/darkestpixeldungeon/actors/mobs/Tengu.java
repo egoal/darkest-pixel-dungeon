@@ -232,7 +232,7 @@ public class Tengu extends Mob {
 	@Override
 	public Damage resistDamage(Damage dmg){
 		if(dmg.isFeatured(Damage.Feature.DEATH))
-			dmg.value	*=	0.8;
+			dmg.value	*=	0.5;
 		return super.resistDamage(dmg);
 	}
 	

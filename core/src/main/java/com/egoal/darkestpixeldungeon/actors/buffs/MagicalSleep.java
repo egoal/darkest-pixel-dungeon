@@ -30,7 +30,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 public class MagicalSleep extends Buff {
 
 	private static final float STEP = 1f;
-	private static final float MAX_SLEEP_TIME	=	40f;
+	private static final float MAX_SLEEP_TIME	=	30f;
 
 	private float sleeped_	=	0f;
 	
@@ -39,13 +39,7 @@ public class MagicalSleep extends Buff {
 		if (super.attachTo( target ) && !target.immunizedBuffs().contains(Sleep.class)) {
 
 			if (target instanceof Hero)
-				if (target.HP == target.HT) {
-					GLog.i(Messages.get(this, "toohealthy"));
-					detach();
-					return true;
-				} else {
-					GLog.i(Messages.get(this, "fallasleep"));
-				}
+				GLog.i(Messages.get(this, "fallasleep"));
 			else if (target instanceof Mob)
 				((Mob)target).state = ((Mob)target).SLEEPING;
 
@@ -64,7 +58,7 @@ public class MagicalSleep extends Buff {
 			((Hero) target).resting = true;
 			target.buff(Pressure.class).downPressure(.5f);
 			sleeped_	+=	STEP;
-			if (target.HP == target.HT || sleeped_>MAX_SLEEP_TIME) {
+			if (sleeped_>MAX_SLEEP_TIME) {
 				GLog.p(Messages.get(this, "wakeup"));
 				detach();
 			}

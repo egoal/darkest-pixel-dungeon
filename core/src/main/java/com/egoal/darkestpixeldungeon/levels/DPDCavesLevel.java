@@ -122,19 +122,7 @@ public class DPDCavesLevel extends Level{
 
 	protected void paintGrass() {
 		boolean[] grass = grass();
-
-//		if (feeling == Feeling.GRASS) {
-//
-//			for (Room room : rooms) {
-//				if (room.type != Room.Type.NULL && room.type != Room.Type.PASSAGE && room.type != Room.Type.TUNNEL) {
-//					grass[(room.left + 1) + (room.top + 1) * width()] = true;
-//					grass[(room.right - 1) + (room.top + 1) * width()] = true;
-//					grass[(room.left + 1) + (room.bottom - 1) * width()] = true;
-//					grass[(room.right - 1) + (room.bottom - 1) * width()] = true;
-//				}
-//			}
-//		}
-
+		
 		for (int i=width()+1; i < length()-width()-1; i++) {
 			if (map[i] == Terrain.EMPTY && grass[i]) {
 				int count = 1;

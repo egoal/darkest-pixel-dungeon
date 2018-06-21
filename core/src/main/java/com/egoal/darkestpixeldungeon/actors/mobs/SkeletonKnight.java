@@ -41,7 +41,8 @@ public class SkeletonKnight extends Mob{
 
 	@Override
 	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 5);
+		if(dmg.type==Damage.Type.NORMAL)
+			dmg.value	-=	Random.NormalIntRange(0, 5);
 		return dmg;
 	}
 	
@@ -57,7 +58,7 @@ public class SkeletonKnight extends Mob{
 		
 		if(Random.Float()<COUNTER){
 			sprite.showStatus(CharSprite.WARNING, Messages.get(this, "counter"));
-			enemy.takeDamage(damage);
+			enemy.takeDamage(giveDamage(enemy));
 			
 			damage.value	=	0;
 		}

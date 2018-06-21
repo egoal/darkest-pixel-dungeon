@@ -2,9 +2,11 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
@@ -13,6 +15,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -26,6 +29,7 @@ import com.egoal.darkestpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 /**
@@ -41,7 +45,7 @@ public class Statuary extends NPC{
 	// type things
 	//todo: moshen type is needed
 	public enum Type{
-		ANGEL("angel"), DEVIL("devil");
+		ANGEL("angel"), DEVIL("devil"), MONSTER("monster");
 		
 		public String title;
 		Type(String t){
@@ -59,12 +63,15 @@ public class Statuary extends NPC{
 		return this;
 	}
 	public Statuary random(){
-		switch(Random.Int(2)){
+		switch(Random.Int(3)){
 			case 0:
 				type(Type.ANGEL);
 				break;
 			case 1:
 				type(Type.DEVIL);
+				break;
+			case 2:
+				type(Type.MONSTER);
 				break;
 		}
 		
@@ -86,7 +93,8 @@ public class Statuary extends NPC{
 
 	// now interact, 
 	private static final float TIME_TO_ANSWER	=	2f;
-	boolean isActive	=	true;
+	private boolean isActive	=	true;
+	private int gold	=	0;
 	
 	@Override
 	public boolean interact(){
@@ -98,13 +106,16 @@ public class Statuary extends NPC{
 		return false;
 	}
 
-	public void onAnswered(boolean agree){
+	private void onAnswered(boolean agree){
 		switch(type){
 			case ANGEL:
 				isActive	=	!answerAngle(agree, Dungeon.hero);
 				break;
 			case DEVIL:
 				isActive	=	!answerDevil(agree, Dungeon.hero);
+				break;
+			case MONSTER:
+				isActive	=	!answerMonster(agree, Dungeon.hero);
 				break;
 		}
 		// isActive	=	true;
@@ -231,8 +242,39 @@ public class Statuary extends NPC{
 			hero.sprite.operate(hero.pos);
 			GLog.i(Messages.get(this, "blasphemy"));
 			
-			//todo: do something 
-			// return false;
+			// spawn ghost
+			int count	=	Random.Int(10)==0? 2: 1;
+			for(int n: PathFinder.NEIGHBOURS4){
+				int cell	=	pos+n;
+				if(Level.passable[cell] && Actor.findChar(cell)==null){
+					DevilGhost.spawnAt(cell);
+					if(--count==0)
+						break;
+				}
+			}
+		}
+		
+		return true;
+	}
+	private boolean answerMonster(boolean agree, Hero hero){
+		if(agree){
+			int supply	=	Dungeon.gold>100? 100: Dungeon.gold;
+			Dungeon.gold	-=	supply;
+			GLog.i(Messages.get(this, "supply", supply));
+			
+			gold	+=	supply;
+			if(supply<100 || Random.Int(5)==0){
+				GLog.i(Messages.get(this, "nothing", supply));
+			}else{
+				// give reward, random things
+			}
+			
+			return gold>=1000;
+		}else{
+			// blasphemy
+			hero.busy();
+			hero.sprite.operate(hero.pos);
+			GLog.i(Messages.get(this, "blasphemy"));
 		}
 		
 		return true;
@@ -241,12 +283,14 @@ public class Statuary extends NPC{
 	//
 	private static final String TYPE	=	"TYPE";
 	private static final String ACTIVE	=	"ACTIVE";
+	private static final String GOLD	=	"GOLD";
 	
 	@Override
 	public void storeInBundle(Bundle bundle){
 		super.storeInBundle(bundle);
 		bundle.put(TYPE, type.toString());
 		bundle.put(ACTIVE, isActive);
+		bundle.put(GOLD, gold);
 	}
 	@Override
 	public void restoreFromBundle(Bundle bundle){
@@ -254,6 +298,7 @@ public class Statuary extends NPC{
 		String value	=	bundle.getString(TYPE);
 		type(value.length()>0? Type.valueOf(value): Type.ANGEL);
 		isActive	=	bundle.getBoolean(ACTIVE);
+		gold	=	bundle.getInt(GOLD);
 	}
 	
 	// sprite class
@@ -261,22 +306,23 @@ public class Statuary extends NPC{
 		
 		Animation idleAngel;
 		Animation idleDevil;
+		Animation idleMonster;
 		
 		public StatuarySprite(){
 			super();
 
 			texture(Assets.DPD_STATUARY);
 
-			TextureFilm frames=new TextureFilm(texture,14,16);
+			TextureFilm frames	=	new TextureFilm(texture,14,16);
 
-			idle=new Animation(10,true);
+			idle	=	new Animation(10,true);
 			
 			idle.frames(frames,0);
 
-			run=new Animation(20,true);
+			run	=	new Animation(20,true);
 			run.frames(frames,0);
 
-			die=new Animation(20,false);
+			die	=	new Animation(20,false);
 			die.frames(frames,0);
 
 			play(idle);
@@ -287,6 +333,9 @@ public class Statuary extends NPC{
 			
 			idleDevil	=	new Animation(10, true);
 			idleDevil.frames(frames, 1);
+			
+			idleMonster	=	new Animation(10, true);
+			idleMonster.frames(frames, 2);
 		}
 		
 		public StatuarySprite setType(Type t){
@@ -296,6 +345,9 @@ public class Statuary extends NPC{
 					break;
 				case DEVIL:
 					play(idleDevil);
+					break;
+				case MONSTER:
+					play(idleMonster);
 					break;
 			}
 			

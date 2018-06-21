@@ -166,6 +166,7 @@ public class Hero extends Char {
 	public boolean weakened = false;
 	
 	public float awareness;
+	public float criticalChance_;
 	
 	public int lvl = 1;
 	public int exp = 0;
@@ -203,6 +204,7 @@ public class Hero extends Char {
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	// private static final String FOLLOWERS	=	"followers";
+	private static final String CRITICAL	=	"critical";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -220,6 +222,8 @@ public class Hero extends Char {
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
+		
+		bundle.put(CRITICAL, criticalChance_);
 
 		// bundle.put(FOLLOWERS, followers_);
 		
@@ -243,6 +247,7 @@ public class Hero extends Char {
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
 		
+		criticalChance_	=	bundle.getFloat(CRITICAL);
 //		for(Bundlable b: bundle.getCollection(FOLLOWERS)){
 //			try{
 //				followers_.add((Char)b);
@@ -445,11 +450,15 @@ public class Hero extends Char {
 			}
 		}
 
+		if(!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Float()<criticalChance_){
+			dmg.value	*=	1.5f;
+			dmg.addFeature(Damage.Feature.CRITCIAL);
+		}
 		// pressure
 		Pressure p	=	buff(Pressure.class);
 		switch(p.getLevel()){
 			case CONFIDENT:
-				if(Random.Int(10)==0){
+				if(!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Int(10)==0){
 					// critical, 
 					dmg.value	*=	1.5;
 					dmg.addFeature(Damage.Feature.CRITCIAL);
@@ -1115,6 +1124,9 @@ public class Hero extends Char {
 				dmgMental.value	+=	Random.Int(1, 5);
 			}
 			
+			// not greater than 10
+			dmgMental.value	=	dmgMental.value>10? 10: dmgMental.value;
+			
 			takeMentalDamage(dmgMental);
 		}
 		
@@ -1164,7 +1176,7 @@ public class Hero extends Char {
 		if(dmg.isFeatured(Damage.Feature.ACCURATE|Damage.Feature.PURE)){}
 		else{
 			// sorceress perk
-			if(heroClass==HeroClass.SORCERESS && Random.Float()<0.15f)
+			if(heroClass==HeroClass.SORCERESS && Random.Float()<0.1f)
 				dmg.value	=	0;
 		}
 		
@@ -1418,12 +1430,6 @@ public class Hero extends Char {
 	// called when level up
 	private void updateLevelStates(){
 		lvl++;
-		// HT += 5;
-		// holy java conversions!
-//		float flvl	=	(float)lvl;
-//		int lastHT	=	HT;
-//		HT	=	Math.round(0.003f*(flvl*flvl*flvl)-0.195f*(flvl*flvl)+8f*flvl+15f);
-//		HP += (HT-lastHT);
 		int dHT	=	0;
 		if(lvl<=5)
 			dHT	=	6;
@@ -1439,8 +1445,10 @@ public class Hero extends Char {
 		attackSkill++;
 		defenseSkill++;
 		
+		criticalChance_	+=	0.4f/100f;
+		
 		// recover sanity
-		recoverSanity(Math.min(Random.IntRange(1, 10), (int)(buff(Pressure.class).pressure*0.2f)));
+		recoverSanity(Math.min(Random.IntRange(1, lvl), (int)(buff(Pressure.class).pressure*0.3f)));
 	}
 	
 	public int maxExp() {
@@ -1448,10 +1456,9 @@ public class Hero extends Char {
 	}
 	
 	void updateAwareness() {
-		awareness = (float)(1 - Math.pow(
-			(heroClass == HeroClass.ROGUE ? 0.85 : 0.90),
-			(1 + Math.min( lvl,  9 )) * 0.5
-		));
+		double w	=	heroPerk.contain(HeroPerk.Perk.KEEN)? 0.85: 0.90;
+		
+		awareness = (float)(1 - Math.pow(w, (1 + Math.min( lvl,  9 )) * 0.5));
 	}
 	
 	public boolean isStarving() {
@@ -1673,7 +1680,7 @@ public class Hero extends Char {
 	public void onKillChar(Char ch){
 		// may recover pressure
 		if(ch.properties().contains(Property.BOSS))
-			recoverSanity(Random.IntRange(1, 12));
+			recoverSanity(Random.IntRange(6, 12));
 		else if(!ch.properties().contains(Property.UNDEAD) && Random.Int(10)==0){
 			recoverSanity(Random.IntRange(1,6));
 		}

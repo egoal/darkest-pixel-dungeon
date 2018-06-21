@@ -82,15 +82,21 @@ public class ChangesScene extends PixelScene {
 		
 		Component content = list.content();
 		content.clear();
-		RenderedTextMultiline text	=	renderMultiline(Messages.get(this, "warning")+"\n\n_"+
+		
+		//Messages.get(this, "warning")+"
+		RenderedTextMultiline text	=	renderMultiline("_"+
 			DarkestPixelDungeon.version+"_\n"+
 			Messages.get(this, "info"+DarkestPixelDungeon.version), 6 );
 		text.maxWidth((int) panel.innerWidth());
 		content.add(text);
 
 		// add versions' button
+		final String HSPLIT	=	"---";
 		String[] oldVersions	=	new String[]{
-			"0.1.3", "0.1.2", "0.1.1", "0.1.0", 
+			"0.2.0","", "",
+			HSPLIT,
+			"0.1.3", "0.1.2", "0.1.1", 
+			"0.1.0", "", ""
 		};
 		{
 			// todo: code lint
@@ -98,11 +104,19 @@ public class ChangesScene extends PixelScene {
 			float sy	=	text.height()+8;
 			int r	=	0;
 			int c	=	0;
+			int gaps	=	0;
 			for(String v: oldVersions){
-				RedButton rb	=	createChangeButton(v);
-				rb.setRect(sx+(BTN_WIDTH+BTN_GAP)*c, sy+(BTN_GAP+BTN_HEIGHT)*r, 
-						BTN_WIDTH, BTN_HEIGHT);
-				content.add(rb);
+				if(v.equals(HSPLIT)){
+					++gaps;
+					continue;
+				}
+				
+				if(v.length()>0){
+					RedButton rb	=	createChangeButton(v);
+					rb.setRect(sx+(BTN_WIDTH+BTN_GAP)*c,sy+(BTN_GAP+BTN_HEIGHT)*r+gaps*BTN_GAP,
+							BTN_WIDTH,BTN_HEIGHT);
+					content.add(rb);
+				}
 				
 				if((++c)==3){
 					++r;

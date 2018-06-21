@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.Amulet;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite;
@@ -105,7 +106,13 @@ public class StatusPane extends Component {
 		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
 		add( avatar );
 
-		compass = new Compass( Dungeon.level.exit );
+		int compassTarget	=	Dungeon.level.exit;
+		if(Dungeon.hero!=null){
+			if(Dungeon.hero.belongings.getItem(Amulet.class)!=null)
+				compassTarget	=	Dungeon.level.entrance;
+		}
+		
+		compass = new Compass(compassTarget);
 		add( compass );
 
 		// hp bar
@@ -149,7 +156,7 @@ public class StatusPane extends Component {
 
 		add( pickedUp = new Toolbar.PickedUpItem());
 	}
-
+	
 	@Override
 	protected void layout() {
 

@@ -53,8 +53,10 @@ public class Burning extends Buff implements Hero.Doom{
 	private static final float DURATION = 8f;
 	
 	private float left;
+	private boolean burnedSomething	=	false;
 	
 	private static final String LEFT	= "left";
+	private static final String BURNED	=	"burned";
 
 	{
 		type = buffType.NEGATIVE;
@@ -64,12 +66,14 @@ public class Burning extends Buff implements Hero.Doom{
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEFT, left );
+		bundle.put(BURNED, burnedSomething);
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		left = bundle.getFloat( LEFT );
+		burnedSomething	=	bundle.getBoolean(BURNED);
 	}
 
 	@Override
@@ -96,36 +100,39 @@ public class Burning extends Buff implements Hero.Doom{
 					}
 
 				} else {
+					hero.takeDamage(new Damage(damage, this, hero).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE));
+					
+					// burn something
+					if(!burnedSomething){
+						Item item	=	hero.belongings.randomUnequipped();
+						if(item instanceof Scroll
+							&&!(item instanceof ScrollOfUpgrade||item instanceof ScrollOfMagicalInfusion)){
 
-					// hero.damage( damage, this );
-					hero.takeDamage(new Damage(damage, this, hero).addElement(Damage.Element.FIRE));
-					Item item = hero.belongings.randomUnequipped();
-					if (item instanceof Scroll
-							&& !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
+							item	=	item.detach(hero.belongings.backpack);
+							GLog.w(Messages.get(this,"burnsup",Messages.capitalize(item.toString())));
 
-						item = item.detach( hero.belongings.backpack );
-						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
+							Heap.burnFX(hero.pos);
 
-						Heap.burnFX( hero.pos );
+							burnedSomething	=	true;
+						}else if(item instanceof MysteryMeat){
 
-					} else if (item instanceof MysteryMeat) {
+							item	=	item.detach(hero.belongings.backpack);
+							ChargrilledMeat steak	=	new ChargrilledMeat();
+							if(!steak.collect(hero.belongings.backpack)){
+								Dungeon.level.drop(steak,hero.pos).sprite.drop();
+							}
+							GLog.w(Messages.get(this,"burnsup",item.toString()));
 
-						item = item.detach( hero.belongings.backpack );
-						ChargrilledMeat steak = new ChargrilledMeat();
-						if (!steak.collect( hero.belongings.backpack )) {
-							Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+							Heap.burnFX(hero.pos);
+
+							burnedSomething	=	true;
 						}
-						GLog.w( Messages.get(this, "burnsup", item.toString()) );
-
-						Heap.burnFX( hero.pos );
-
 					}
-
 				}
 				
 			} else {
 				// target.damage( damage, this );
-				target.takeDamage(new Damage(damage, this, target).addElement(Damage.Element.FIRE));
+				target.takeDamage(new Damage(damage, this, target).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE));
 			}
 
 			if (target instanceof Thief) {

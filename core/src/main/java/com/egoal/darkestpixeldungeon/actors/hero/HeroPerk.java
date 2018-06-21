@@ -10,8 +10,11 @@ import com.watabou.utils.Bundle;
 public class HeroPerk{
 	
 	public enum Perk{
-		NONE("none",			0x00),
-		DRUNKARD("drunkard", 	0x01);
+		NONE(				"none",					0x00),
+		DRUNKARD(			"drunkard", 			0x01),
+		CRITICAL_STRIKE(	"critical_strike", 		0x02),
+		KEEN(				"keen", 				0x04),
+		;
 		
 		public String title;
 		public int mask;
@@ -34,11 +37,11 @@ public class HeroPerk{
 		perk	=	p;
 	}
 	
-	public HeroPerk addPerk(Perk p){
+	public HeroPerk add(Perk p){
 		perk	|=	p.mask;
 		return this;
 	}
-	public boolean hasPerk(Perk p){
+	public boolean contain(Perk p){
 		return (perk & p.mask)!=0;
 	}
 	

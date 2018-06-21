@@ -260,9 +260,8 @@ public abstract class Level implements Bundlable {
 					feeling = Feeling.GRASS;
 					break;
 				case 3:
-					feeling = Feeling.DARK;
-					// addItemToSpawn(new Torch());
-					// viewDistance = (int)Math.ceil(viewDistance/3f);
+				case 4:
+					feeling	=	Feeling.DARK;
 					viewDistance    /=  2;
 					break;
 				}

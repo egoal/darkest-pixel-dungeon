@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class WaterOfHealth extends WellWater {
 	
@@ -46,6 +47,7 @@ public class WaterOfHealth extends WellWater {
 		PotionOfHealing.heal( hero );
 		hero.belongings.uncurseEquipped();
 		((Hunger)hero.buff( Hunger.class )).satisfy( Hunger.STARVING );
+		hero.recoverSanity(Random.IntRange(8, 12));
 		
 		CellEmitter.get( pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
 
@@ -60,6 +62,7 @@ public class WaterOfHealth extends WellWater {
 	
 	@Override
 	protected Item affectItem( Item item ) {
+		// throw vial to full fill it
 		if (item instanceof DewVial && !((DewVial)item).isFull()) {
 			((DewVial)item).fill();
 			Journal.remove( Journal.Feature.WELL_OF_HEALTH );

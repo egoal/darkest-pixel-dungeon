@@ -292,7 +292,7 @@ public class Goo extends Mob {
 	@Override
 	public Damage resistDamage(Damage dmg){
 		if(dmg.isFeatured(Damage.Feature.DEATH))
-			dmg.value	*=	0.8f;
+			dmg.value	*=	0.5f;
 		
 		return super.resistDamage(dmg);
 	}

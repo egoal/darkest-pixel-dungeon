@@ -83,6 +83,7 @@ public class Dungeon {
 		//doesn't use Generator, so we have to enforce one armband drop here
 		armband,
 		chaliceOfBlood, // only the statuary drop this now
+		demonicSkull, 
 
 		//containers
 		dewVial,

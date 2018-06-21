@@ -80,9 +80,9 @@ public class HighGrass {
 				}
 
 				// Dew, scales from 1/6 to 1/3
-				if (Random.Int(24 - naturalismLevel*3) <= 3) {
-					level.drop(new Dewdrop(), pos).sprite.drop();
-				}
+				// now it's 1/5->1/3
+				if(Random.Int(10-naturalismLevel)<2)
+					level.drop(new Dewdrop(), pos);
 			}
 		}
 

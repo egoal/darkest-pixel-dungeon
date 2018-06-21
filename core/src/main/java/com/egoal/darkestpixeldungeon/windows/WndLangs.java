@@ -123,23 +123,28 @@ public class WndLangs extends Window {
 		if (currLang == Languages.ENGLISH){
 
 			RenderedTextMultiline info = PixelScene.renderMultiline(6);
-			info.text("This is the source language, written by the developer.", width - textLeft);
+			// info.text("This is the source language, written by the developer.", width - textLeft);
+			info.text("This is NOT the source language used by the developer, it's unfinished ever since.");
 			info.setPos(textLeft, title.height() + 2);
 			add(info);
 
 		} else {
-
-			RenderedTextMultiline info = PixelScene.renderMultiline(6);
-			switch (currLang.status()) {
-				case REVIEWED:
-					info.text(Messages.get(this, "completed"), width - textLeft);
-					break;
-				case UNREVIEWED:
-					info.text(Messages.get(this, "unreviewed"), width - textLeft);
-					break;
-				case INCOMPLETE:
-					info.text(Messages.get(this, "unfinished"), width - textLeft);
-					break;
+			RenderedTextMultiline info	=	PixelScene.renderMultiline(6);
+			if(currLang==Languages.CHINESE){
+				// my source language
+				info.text(Messages.get(this, "do_not_change"), width-textLeft);
+			}else{
+				switch(currLang.status()){
+					case REVIEWED:
+						info.text(Messages.get(this,"completed"),width-textLeft);
+						break;
+					case UNREVIEWED:
+						info.text(Messages.get(this,"unreviewed"),width-textLeft);
+						break;
+					case INCOMPLETE:
+						info.text(Messages.get(this,"unfinished"),width-textLeft);
+						break;
+				}
 			}
 			info.setPos(textLeft, title.height() + 2);
 			add(info);

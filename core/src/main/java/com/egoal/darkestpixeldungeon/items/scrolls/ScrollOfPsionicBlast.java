@@ -35,7 +35,8 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class ScrollOfPsionicBlast extends Scroll {
+public class 
+ScrollOfPsionicBlast extends Scroll {
 
 	{
 		initials = 5;

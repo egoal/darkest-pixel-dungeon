@@ -105,6 +105,7 @@ public enum HeroClass {
 			break;
 		}
 
+		initPerks(hero);
 		hero.updateAwareness();
 	}
 
@@ -156,7 +157,7 @@ public enum HeroClass {
 			hero.HP	=	1;
 		}
 	}
-
+	
 	public Badges.Badge masteryBadge() {
 		switch (this) {
 			case WARRIOR:
@@ -192,7 +193,7 @@ public enum HeroClass {
 		}
 
 		// new perk
-		hero.heroPerk.addPerk(HeroPerk.Perk.DRUNKARD);
+		hero.heroPerk.add(HeroPerk.Perk.DRUNKARD);
 		
 		new PotionOfHealing().setKnown();
 	}
@@ -227,6 +228,9 @@ public enum HeroClass {
 
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, darts);
+		
+		hero.heroPerk.add(HeroPerk.Perk.CRITICAL_STRIKE);
+		hero.heroPerk.add(HeroPerk.Perk.KEEN);
 
 		new ScrollOfMagicMapping().setKnown();
 	}
@@ -267,6 +271,12 @@ public enum HeroClass {
 
 	}
 
+	private static void initPerks(Hero hero){
+		if(hero.heroPerk.contain(HeroPerk.Perk.CRITICAL_STRIKE))
+			hero.criticalChance_	+=	5f/100f;
+		
+	}
+	
 	public String title() {
 		return Messages.get(HeroClass.class, title);
 	}

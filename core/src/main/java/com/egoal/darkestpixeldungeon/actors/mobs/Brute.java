@@ -51,6 +51,7 @@ public class Brute extends Mob {
 	}
 	
 	private boolean enraged = false;
+	private static final float TIME_TO_ENRAGE	=	1f;
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
@@ -89,6 +90,7 @@ public class Brute extends Mob {
 				GLog.w( Messages.get(this, "enraged_text") );
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );
 			}
+			spend(TIME_TO_ENRAGE);
 		}
 	}
 	

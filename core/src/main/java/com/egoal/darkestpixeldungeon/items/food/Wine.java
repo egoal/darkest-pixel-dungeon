@@ -52,7 +52,7 @@ public class Wine extends Item{
 			hero.busy();
 			
 			int value	=	Math.min(Random.IntRange(10, (int)(Pressure.heroPressure()*.5f)), 25);
-			if(hero.heroPerk.hasPerk(HeroPerk.Perk.DRUNKARD)){
+			if(hero.heroPerk.contain(HeroPerk.Perk.DRUNKARD)){
 				value	*=	1.2f;
 				hero.recoverSanity(value);
 			}else{

@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.windows.WndMessage;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -58,6 +59,20 @@ public class ExtractionFlask extends Item{
 	// private static final int REFINE_MIN_DEW	=	5;
 	private static final float TIME_TO_EXTRACT	=	2;
 	
+	private int refinedTimes_	=	0;
+	
+	private static final String REFINED	=	"refined";
+	@Override
+	public void storeInBundle(Bundle bundle){
+		super.storeInBundle(bundle);
+		bundle.put(REFINED, refinedTimes_);
+	}
+	@Override
+	public void restoreFromBundle(Bundle bundle){
+		super.restoreFromBundle(bundle);
+		refinedTimes_	=	bundle.getInt(REFINED);
+	}
+	
 	@Override
 	public ArrayList<String > actions(Hero hero){
 		ArrayList<String > actions	=	super.actions(hero);
@@ -82,7 +97,7 @@ public class ExtractionFlask extends Item{
 	
 	@Override
 	public String desc(){
-		String desc	=	super.desc();
+		String desc	=	Messages.get(this, "desc", refinedTimes_);
 		
 		if(!cursed){
 			desc	+=	"\n\n"+Messages.get(this, "desc_hint");
@@ -109,14 +124,15 @@ public class ExtractionFlask extends Item{
 			}
 		}else if(mode==WndExtractionFlask.MODE_STRENGTHEN){
 			// only strengthen toxic gas!
-			if(!(item2 instanceof PotionOfToxicGas))
-				return Messages.get(ExtractionFlask.class, "not_strengthen");
 			if(item2 instanceof PotionOfHighlyToxicGas)
 				return Messages.get(ExtractionFlask.class, "cannot_strengthen");
+			if(!(item2 instanceof PotionOfToxicGas))
+				return Messages.get(ExtractionFlask.class, "not_strengthen");
+
 		}
 		return null;
 	}
-	public static void refine(Item item1, Item item2){
+	public void refine(Item item1, Item item2){
 		// spend time
 		curUser.sprite.operate(curUser.pos);
 		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
@@ -151,27 +167,38 @@ public class ExtractionFlask extends Item{
 			// do inscribe
 			KindOfWeapon kow=curUser.belongings.weapon;
 			if(kow!=null&&kow instanceof Weapon){
+				// 0.2-> 0.5
+				double x	=	Math.exp(refinedTimes_/4.);
+				double ps	=	x/(x+1.)*0.5;
+				
 				Weapon wpn=(Weapon)kow;
 				if(wpn.STRReq()<curUser.STR()&&!wpn.cursed){
-					switch(Random.Int(10)){
-						case 0:
-							wpn.enchant();
-							break;
-						case 1:
-						case 2:
-							wpn.enchant(new Venomous());
-							break;
-						case 3:
-							wpn.enchant(new Unstable());
-							break;
+					if(Random.Float()<ps){
+						// succeed
+						switch(Random.Int(4)){
+							case 0:
+							case 1:
+								wpn.enchant(new Venomous());
+								break;
+							case 2:
+								wpn.enchant(new Unstable());
+								break;
+							case 3:
+								wpn.enchant();
+								break;
+						}
 					}
+					
 				}else{
 					GLog.w(Messages.get(ExtractionFlask.class,"cannot_inscribe"));
 				}
 			}
+			
+			// update times
+			++refinedTimes_;
 		}
 	}
-	public static void strengthen(Item item1, Item item2){
+	public void strengthen(Item item1, Item item2){
 		// spend time
 		Dungeon.hero.sprite.centerEmitter().start(Speck.factory(Speck.FORGE), 0.05f, 10);
 		Dungeon.hero.spend(TIME_TO_EXTRACT);
@@ -190,7 +217,7 @@ public class ExtractionFlask extends Item{
 	}
 	
 	public static int minDewRequire(){
-		return Dungeon.hero.subClass==HeroSubClass.WITCH? 3: 5;
+		return Dungeon.hero.subClass==HeroSubClass.WITCH? 2: 4;
 	}
 	
 	// todo: may lost items, no restore
@@ -210,7 +237,7 @@ public class ExtractionFlask extends Item{
 		private RedButton btnDone_;
 		private int mode_;
 		
-		public WndExtractionFlask(ExtractionFlask ef, Hero hero, int mode){
+		public WndExtractionFlask(final ExtractionFlask ef, Hero hero, int mode){
 			super();
 
 			mode_	=	mode;
@@ -249,9 +276,9 @@ public class ExtractionFlask extends Item{
 				@Override
 				protected void onClick(){
 					if(mode_==MODE_REFINE)
-						ExtractionFlask.refine(btnItem1_.item, btnItem2_.item);
+						ef.refine(btnItem1_.item, btnItem2_.item);
 					else if(mode_==MODE_STRENGTHEN)
-						ExtractionFlask.strengthen(btnItem1_.item, btnItem2_.item);
+						ef.strengthen(btnItem1_.item, btnItem2_.item);
 					
 					// kill items
 					btnItem1_.item(null);

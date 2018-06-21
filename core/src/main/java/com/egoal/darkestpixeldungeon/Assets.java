@@ -204,8 +204,11 @@ public class Assets {
 	// character
 	public static final String DPD_SORCERESS        =   "dpd/sorceress.png";
 	
+	// mobs
+	public static final String DPD_DEVIL_GHOST		=	"dpd/devil_ghost.png";
+	public static final String DPD_SKELETON_KNIGHT	=	"dpd/skeleton_knight.png";
+	
 	public static final String DPD_STATUS			=	"dpd/status_pane.png";
 	public static final String DPD_SAN_BAR			=	"dpd/san_bar.png";
 	
-	public static final String DPD_SKELETON_KNIGHT	=	"dpd/skeleton_knight.png";
 }
