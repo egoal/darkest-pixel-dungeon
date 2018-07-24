@@ -23,8 +23,11 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
+import com.egoal.darkestpixeldungeon.items.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
+import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
@@ -148,11 +151,9 @@ public enum HeroClass {
 			(new DewVial()).setVolume(20).identify().collect();
 			(new ArmorKit()).identify().collect();
 			
-			(new UrnOfShadow()).identify().collect();
-			(new Book()).collect();
-			// (new Amulet()).identify().collect();
-			(new PotionBandolier()).identify().collect();
-			(new DriedRose()).identify().collect();
+			(new UnholyBlood()).identify().collect();
+			(new MaskOfMadness()).identify().collect();
+			(new DemonicSkull()).identify().collect();
 			
 			hero.HP	=	1;
 		}

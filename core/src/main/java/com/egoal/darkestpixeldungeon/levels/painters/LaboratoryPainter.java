@@ -41,21 +41,31 @@ public class LaboratoryPainter extends Painter {
 		
 		Room.Door entrance = room.entrance();
 		
-		Point pot = null;
-		if (entrance.x == room.left) {
-			pot = new Point( room.right-1, Random.Int( 2 ) == 0 ? room.top + 1 : room.bottom - 1 );
-		} else if (entrance.x == room.right) {
-			pot = new Point( room.left+1, Random.Int( 2 ) == 0 ? room.top + 1 : room.bottom - 1 );
-		} else if (entrance.y == room.top) {
-			pot = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.bottom-1 );
-		} else if (entrance.y == room.bottom) {
-			pot = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.top+1 );
+		// set position
+		Point pA	=	null;
+		Point pE	=	null;
+		if(entrance.x==room.left){
+			pA	=	new Point(room.right-1, room.top+room.height()/2);
+			pE	=	new Point(pA.x, Random.Int(2)==0? pA.y-1: pA.y+1);
+		}else if(entrance.x==room.right){
+			pA	=	new Point(room.left+1, room.top+room.height()/2);
+			pE	=	new Point(pA.x, Random.Int(2)==0? pA.y-1: pA.y+1);
+		}else if(entrance.y==room.top){
+			pA	=	new Point(room.left+room.width()/2, room.bottom-1);
+			pE	=	new Point(Random.Int(2)==0? pA.x-1: pA.x+1, pA.y);
+		}else if(entrance.y==room.bottom){
+			pA	=	new Point(room.left+room.width()/2, room.top+1);
+			pE	=	new Point(Random.Int(2)==0? pA.x-1: pA.x+1, pA.y);
 		}
-		set( level, pot, Terrain.ALCHEMY );
 		
-		Alchemy alchemy = new Alchemy();
-		alchemy.seed( level, pot.x + level.width() * pot.y, 1 );
-		level.blobs.put( Alchemy.class, alchemy );
+		// alchemy
+		set(level, pA, Terrain.ALCHEMY);
+		Alchemy a	=	new Alchemy();
+		a.seed(level, pA.x+level.width()*pA.y, 1);
+		level.blobs.put(Alchemy.class, a);
+		
+		// enchanting station
+		set(level, pE, Terrain.ENCHANTING_STATION);
 		
 		int n = Random.IntRange( 2, 3 );
 		for (int i=0; i < n; i++) {
@@ -67,7 +77,8 @@ public class LaboratoryPainter extends Painter {
 				level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
 		}
-		
+
+		// lock the room
 		entrance.set( Room.Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}

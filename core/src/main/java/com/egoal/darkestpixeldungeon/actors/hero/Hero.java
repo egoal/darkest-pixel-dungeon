@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -450,10 +451,15 @@ public class Hero extends Char {
 			}
 		}
 
-		if(!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Float()<criticalChance_){
+		// critical
+		int bonusCritical	=	RingOfCritical.getBonus(this, RingOfCritical.Critical.class);
+		float theCriticalChance	=	criticalChance_*(float)Math.pow(1.125, bonusCritical);
+		
+		if(!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Float()<theCriticalChance){
 			dmg.value	*=	1.5f;
 			dmg.addFeature(Damage.Feature.CRITCIAL);
 		}
+		
 		// pressure
 		Pressure p	=	buff(Pressure.class);
 		switch(p.getLevel()){
@@ -485,7 +491,7 @@ public class Hero extends Char {
 		
 		// critical damage recover pressure
 		if(dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Int(20)==0)
-			recoverSanity(Random.Int(dmg.value/10)+1);
+			recoverSanity(Random.Int(dmg.value/8)+1);
 		
 		return dmg;
 	}

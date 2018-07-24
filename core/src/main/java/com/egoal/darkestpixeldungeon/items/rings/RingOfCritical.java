@@ -20,13 +20,13 @@
  */
 package com.egoal.darkestpixeldungeon.items.rings;
 
-public class RingOfMagic extends Ring {
+public class RingOfCritical extends Ring {
 	
 	@Override
 	protected RingBuff buff( ) {
-		return new Magic();
+		return new Critical();
 	}
 	
-	public class Magic extends RingBuff {
+	public class Critical extends RingBuff {
 	}
 }

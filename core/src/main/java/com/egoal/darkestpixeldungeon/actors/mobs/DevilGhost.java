@@ -27,7 +27,7 @@ public class DevilGhost extends Wraith{
 	{
 		spriteClass	=	DevilGhostSprite.class;
 		
-		HP	=	HT	=	3;
+		HP	=	HT	=	4;
 		EXP	=	5;
 		
 		loot	=	new DemonicSkull();
@@ -37,7 +37,7 @@ public class DevilGhost extends Wraith{
 	@Override
 	public Damage giveDamage(Char target){
 		if(target instanceof Hero){
-			return new Damage(Math.min(Random.Int(2, level/2), 10), 
+			return new Damage(Math.min(Random.Int(level/2)+2, 10), 
 				this, target).type(Damage.Type.MENTAL);
 		}
 		
@@ -56,7 +56,7 @@ public class DevilGhost extends Wraith{
 	@Override
 	public void adjustStats(int level){
 		this.level	=	level;
-		defenseSkill	=	10+level;
+		defenseSkill	=	10+level/2*3;
 		enemySeen	=	true;
 	}
 	

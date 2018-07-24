@@ -73,6 +73,7 @@ public class Terrain {
 
 	public static final int WALL_LIGHT_ON	=   33;
 	public static final int WALL_LIGHT_OFF	=	34;
+	public static final int ENCHANTING_STATION	=	35;
 
 	public static final int WATER_TILES	    = 48;
 	public static final int WATER		    = 63;
@@ -137,6 +138,7 @@ public class Terrain {
 		// dpd
 		flags[WALL_LIGHT_ON]	=   flags[WALL] | LUMINARY;
 		flags[WALL_LIGHT_OFF]	=	flags[WALL];
+		flags[ENCHANTING_STATION]	=	flags[ALCHEMY];
 	};
 
 	public static int discover( int terr ) {

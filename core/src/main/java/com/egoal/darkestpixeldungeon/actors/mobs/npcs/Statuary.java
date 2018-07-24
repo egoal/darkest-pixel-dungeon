@@ -7,11 +7,15 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
+import com.egoal.darkestpixeldungeon.actors.mobs.Scorpio;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
+import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
@@ -158,8 +162,7 @@ public class Statuary extends NPC{
 			hero.sprite.operate(hero.pos);
 			GLog.i(Messages.get(this, "blasphemy"));
 			
-			//todo: do something 
-			// return false;
+			
 		}
 		
 		return true;
@@ -260,18 +263,23 @@ public class Statuary extends NPC{
 		if(agree){
 			int supply	=	Dungeon.gold>100? 100: Dungeon.gold;
 			Dungeon.gold	-=	supply;
+			Sample.INSTANCE.play(Assets.SND_GOLD);
 			GLog.i(Messages.get(this, "supply", supply));
 			
 			gold	+=	supply;
-			if(supply<100 || Random.Int(5)==0){
+			if(supply<100){
 				GLog.i(Messages.get(this, "nothing", supply));
 			}else{
 				// give reward, random things
+				if(Random.Int(500)<gold){
+					Dungeon.level.drop(Generator.random(), hero.pos);
+				}
 			}
 			
-			return gold>=1000;
+			return gold>=500;
 		}else{
-			// blasphemy
+			// blasphemy, reset gold
+			gold	=	0;
 			hero.busy();
 			hero.sprite.operate(hero.pos);
 			GLog.i(Messages.get(this, "blasphemy"));

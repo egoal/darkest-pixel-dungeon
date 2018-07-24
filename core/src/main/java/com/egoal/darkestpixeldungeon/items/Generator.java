@@ -76,7 +76,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfFuror;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfHaste;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfMagic;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfMight;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfTenacity;
@@ -335,12 +335,12 @@ public class Generator {
 			RingOfForce.class,
 			RingOfFuror.class,
 			RingOfHaste.class,
-			RingOfMagic.class, //currently removed from drop tables, pending rework
+			RingOfCritical.class, //currently removed from drop tables, pending rework
 			RingOfMight.class,
 			RingOfSharpshooting.class,
 			RingOfTenacity.class,
 			RingOfWealth.class};
-		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 };
+		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 		// 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1
 		Category.ARTIFACT.classes = new Class<?>[]{
