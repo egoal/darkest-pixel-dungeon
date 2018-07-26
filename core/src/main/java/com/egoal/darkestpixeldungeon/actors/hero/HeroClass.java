@@ -25,15 +25,11 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.DewVial;
-import com.egoal.darkestpixeldungeon.items.MaskOfMadness;
+import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
-import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
-import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
-import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
-import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -141,6 +137,14 @@ public enum HeroClass {
 				(new Sorrowmoss.Seed()).identify().collect();
 				(new Firebloom.Seed()).identify().collect();
 			}
+			
+			ClothArmor c	=	new ClothArmor();
+			c.inscribe();
+			c.identify().collect();
+			
+			Dagger d	=	new Dagger();
+			d.enchant();
+			d.identify().collect();
 			
 			(new PlateArmor()).upgrade(6).identify().collect();
 			(new AssassinsBlade()).upgrade(6).identify().collect();	

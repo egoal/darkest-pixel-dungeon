@@ -1167,7 +1167,10 @@ public abstract class Level implements Bundlable {
 			return Messages.get(Level.class, "lighton_name");
 		case Terrain.WALL_LIGHT_OFF:
 			return Messages.get(Level.class, "lightoff_name");
-
+		case Terrain.ENCHANTING_STATION:
+			return Messages.get(Level.class, "enchanting_station_name");
+		
+			
 			default:
 				return Messages.get(Level.class, "default_name");
 		}
@@ -1210,7 +1213,9 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "lighton_desc");
 			case Terrain.WALL_LIGHT_OFF:
 				return Messages.get(Level.class, "lightoff_desc");
-
+			case Terrain.ENCHANTING_STATION:
+				return Messages.get(Level.class, "enchanting_station_desc");
+				
 			default:
 				if (tile >= Terrain.WATER_TILES) {
 					return tileDesc( Terrain.WATER );

@@ -82,6 +82,10 @@ public class HeroAction {
 		}
 	}
 	
+	public static class Enchant extends HeroAction{
+		public Enchant(int pos){ this.dst=pos; }
+	}
+	
 	public static class Attack extends HeroAction {
 		public Char target;
 		public Attack( Char target ) {

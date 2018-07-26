@@ -158,6 +158,8 @@ public class VillageLevel extends RegularLevel{
 
 			// place entrance
 			if(r.type==Room.Type.ENTRANCE){
+				int p	=	pointToCell(r.random(1));
+				map[p]	=	Terrain.ENCHANTING_STATION;
 				do{
 					// entrance    =   pointToCell(r.random(1));
 					entrance	=	r.bottom*width()+Random.Int(r.left+1, r.right);
@@ -353,11 +355,11 @@ public class VillageLevel extends RegularLevel{
 		
 		// test 
 		if(true){
-			DevilGhost dg	=	new DevilGhost();
-			do{
-				dg.pos	=	pointToCell(roomEntrance.random());
-			}while(findMob(dg.pos)!=null || dg.pos==entrance);
-			mobs.add(dg);
+//			DevilGhost dg	=	new DevilGhost();
+//			do{
+//				dg.pos	=	pointToCell(roomEntrance.random());
+//			}while(findMob(dg.pos)!=null || dg.pos==entrance);
+//			mobs.add(dg);
 		}
 		
 		super.createMobs();

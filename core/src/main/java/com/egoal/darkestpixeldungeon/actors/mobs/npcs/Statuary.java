@@ -8,17 +8,22 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.actors.mobs.Scorpio;
+import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
+import com.egoal.darkestpixeldungeon.items.KindofMisc;
+import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -35,6 +40,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 /**
  * Created by 93942 on 5/30/2018.
@@ -162,7 +169,45 @@ public class Statuary extends NPC{
 			hero.sprite.operate(hero.pos);
 			GLog.i(Messages.get(this, "blasphemy"));
 			
+			// curse an item
+			{
+				ArrayList<Item> itemToCurse	=	new ArrayList<>();
+				KindOfWeapon weapon	=	hero.belongings.weapon;
+				if(weapon instanceof Weapon && !(weapon instanceof Boomerang)){
+					itemToCurse.add(weapon);
+				}
+				Armor armor	=	hero.belongings.armor;
+				if(armor!=null && !armor.cursed)
+					itemToCurse.add(armor);
+
+				if(hero.belongings.misc1!=null)
+					itemToCurse.add(hero.belongings.misc1);
+				if(hero.belongings.misc2!=null)
+					itemToCurse.add(hero.belongings.misc2);
+				if(hero.belongings.misc3!=null)
+					itemToCurse.add(hero.belongings.misc3);
+				
+				Item item	=	Random.element(itemToCurse);
+				item.cursed	=	item.cursedKnown	=	true;
+				if(item instanceof Weapon){
+					Weapon w	=	(Weapon)item;
+					if(w.enchantment==null)
+						w.enchantment	=	Weapon.Enchantment.randomCurse();
+				}
+				if(item instanceof Armor){
+					Armor a	=	(Armor)item;
+					if(a.glyph==null)
+						a.glyph	=	Armor.Glyph.randomCurse();
+				}
+
+				if(Dungeon.visible[pos]){
+					CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
+					Sample.INSTANCE.play(Assets.SND_CURSED);
+				}
+			}
 			
+			//todo: reconsider the unholy blood
+			Dungeon.level.drop(new UnholyBlood(), hero.pos).sprite.drop();
 		}
 		
 		return true;
@@ -271,7 +316,7 @@ public class Statuary extends NPC{
 				GLog.i(Messages.get(this, "nothing", supply));
 			}else{
 				// give reward, random things
-				if(Random.Int(500)<gold){
+				if(Random.Int(600)<gold){
 					Dungeon.level.drop(Generator.random(), hero.pos);
 				}
 			}

@@ -2,7 +2,10 @@ package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
+import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.utils.GLog;
 
 import java.util.ArrayList;
 
@@ -38,14 +41,13 @@ public class DemonicSkull extends Item{
 		super.execute(hero, action);
 		
 		if(action==AC_SMEAR){
-			MaskOfMadness mom	=	new MaskOfMadness();
-			mom.identify();
-			if(!mom.doPickUp(hero)){
-				Dungeon.level.drop(mom, hero.pos);
-			}
-			
 			detach(hero.belongings.backpack);
 			hero.belongings.getItem(UnholyBlood.class).detach(hero.belongings.backpack);
+
+			MaskOfMadness mom	=	new MaskOfMadness();
+			mom.identify().collect();
+
+			GLog.w(Messages.get(Dungeon.hero, "you_now_have", mom.name()));
 		}
 	}
 }

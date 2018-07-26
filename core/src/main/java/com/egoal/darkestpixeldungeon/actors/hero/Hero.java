@@ -95,6 +95,7 @@ import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.features.AlchemyPot;
 import com.egoal.darkestpixeldungeon.levels.features.Chasm;
+import com.egoal.darkestpixeldungeon.levels.features.EnchantingStation;
 import com.egoal.darkestpixeldungeon.levels.features.Sign;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.plants.Earthroot;
@@ -681,6 +682,8 @@ public class Hero extends Char {
 
 				return actCook( (HeroAction.Cook)curAction );
 				
+			}else if(curAction instanceof HeroAction.Enchant){
+				return actEnchant((HeroAction.Enchant)curAction);
 			}
 		}
 		
@@ -797,6 +800,21 @@ public class Hero extends Char {
 		}
 	}
 
+	private boolean actEnchant(HeroAction.Enchant action){
+		int dst	=	action.dst;
+		if(Dungeon.level.adjacent(dst, pos)){
+			ready();
+			EnchantingStation.operate(this);
+			
+			return false;
+		}else if(getCloser(dst)){
+			return true;
+		}else{
+			ready();
+			return false;
+		}
+	}
+	
 	private boolean actPickUp( HeroAction.PickUp action ) {
 		int dst = action.dst;
 		if (pos == dst) {
@@ -1340,7 +1358,10 @@ public class Hero extends Char {
 			
 			curAction = new HeroAction.Cook( cell );
 			
-		} else if (Level.fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
+		}else if(Dungeon.level.map[cell]==Terrain.ENCHANTING_STATION && cell!=pos){
+			curAction	=	new HeroAction.Enchant(cell);
+		}
+		else if (Level.fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
 
 			if (ch instanceof NPC) {
 				curAction = new HeroAction.Interact( (NPC)ch );
