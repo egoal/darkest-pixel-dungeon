@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -158,6 +159,9 @@ public enum HeroClass {
 			(new UnholyBlood()).identify().collect();
 			(new MaskOfMadness()).identify().collect();
 			(new DemonicSkull()).identify().collect();
+			
+			(new Book().setTitle(Book.Title.COLLIES_DIARY)).collect();
+			(new Book().setTitle(Book.Title.HEADLESS_KNIGHTS_SECRETS)).collect();
 			
 			hero.HP	=	1;
 		}

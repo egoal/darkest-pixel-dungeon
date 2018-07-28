@@ -39,6 +39,7 @@ public class Jessica extends NPC{
 	/// do something
 	@Override
 	public boolean interact(){
+		//todo: solve the multiple book bug!!
 		sprite.turnTo(pos,Dungeon.hero.pos);
 		if(!Quest.completed_){
 			if(Dungeon.hero.belongings.getItem(Book.class)==null){
@@ -160,7 +161,7 @@ public class Jessica extends NPC{
 				if(room!=null){
 					Heap heap	=	new Heap();
 					heap.type	=	Heap.Type.SKELETON;
-					heap.drop(new Book());
+					heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
 					heap.drop(Generator.random(Generator.Category.RING).random());
 
 					do{

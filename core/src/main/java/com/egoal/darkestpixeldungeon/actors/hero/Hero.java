@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -480,6 +481,10 @@ public class Hero extends Char {
 				dmg.value	*=	.5f;
 				break;
 		}
+		
+		MaskOfMadness.Madness madness	=	buff(MaskOfMadness.Madness.class);
+		if(madness!=null)
+			dmg	=	madness.procOutcomingDamage(dmg);
 		
 		if(dmg.value<0) dmg.value	=	0;
 		
@@ -1122,6 +1127,10 @@ public class Hero extends Char {
 		CapeOfThorns.Thorns thorns	=	buff(CapeOfThorns.Thorns.class);
 		if(thorns!=null)
 			dmg.value	=	thorns.proc(dmg.value, (dmg.from instanceof Char? (Char)dmg.from: null), this);
+
+		MaskOfMadness.Madness madness	=	buff(MaskOfMadness.Madness.class);
+		if(madness!=null)
+			dmg	=	madness.procIncomingDamage(dmg);
 		
 		int tenacity	=	RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
 		if(tenacity!=0)
@@ -1711,6 +1720,10 @@ public class Hero extends Char {
 		else if(!ch.properties().contains(Property.UNDEAD) && Random.Int(10)==0){
 			recoverSanity(Random.IntRange(1,6));
 		}
+
+		MaskOfMadness.Madness madness	=	buff(MaskOfMadness.Madness.class);
+		if(madness!=null)
+			madness.onEmenySlayed(ch);
 		
 		GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", ch.name)));
 	}

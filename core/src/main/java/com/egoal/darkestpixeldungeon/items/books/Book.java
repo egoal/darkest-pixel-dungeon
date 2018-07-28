@@ -8,7 +8,6 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndBook;
-import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -32,7 +31,9 @@ public class Book extends Item{
 	// all text books
 	public enum Title{
 		UNKNOWN("unknown"),
-		COLLIES_DIARY("callies_diary");
+		COLLIES_DIARY("callies_diary"),
+		HEADLESS_KNIGHTS_SECRETS("headless_knights_secrets");
+		
 		
 		Title(final String title){
 			this.titile_	=	title;
@@ -51,13 +52,32 @@ public class Book extends Item{
 		}
 	}
 	
-	Title title	=	Title.COLLIES_DIARY;
+	private Title title	=	Title.UNKNOWN;
 	
 	{
 		stackable	=	true;
 		defaultAction	=	AC_READ;
 		image	=	ItemSpriteSheet.DPD_BOOKS;
 
+	}
+	
+	public Book setTitle(Title t){
+		title	=	t;
+		return this;
+	}
+	public Title getTitle(){ return title; }
+	
+	@Override
+	public boolean isSimilar(Item item){
+		if(getClass()!=item.getClass()) return false;
+		
+		if(!this.isIdentified() && !item.isIdentified()) return true;
+		
+		if(this.isIdentified() && item.isIdentified()){
+			if(((Book)item).getTitle()==getTitle()) return true;
+		}
+		
+		return false;
 	}
 	
 	@Override
