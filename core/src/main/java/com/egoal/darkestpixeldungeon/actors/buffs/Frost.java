@@ -39,7 +39,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 
 public class Frost extends FlavourBuff {
 
-	private static final float DURATION	= 5f;
+	public static final float DURATION	= 5f;
 
 	{
 		type = buffType.NEGATIVE;

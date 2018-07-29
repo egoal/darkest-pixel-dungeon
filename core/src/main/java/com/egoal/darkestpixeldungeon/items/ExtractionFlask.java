@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
+import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHighlyToxicGas;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
@@ -123,12 +124,16 @@ public class ExtractionFlask extends Item{
 				return Messages.get(ExtractionFlask.class, "no_water", minDewRequire());
 			}
 		}else if(mode==WndExtractionFlask.MODE_STRENGTHEN){
-			// only strengthen toxic gas!
-			if(item2 instanceof PotionOfHighlyToxicGas)
-				return Messages.get(ExtractionFlask.class, "cannot_strengthen");
-			if(!(item2 instanceof PotionOfToxicGas))
-				return Messages.get(ExtractionFlask.class, "not_strengthen");
-
+			if(!item2.isIdentified()){
+				return Messages.get(ExtractionFlask.class, "not_identified");
+			}
+			Potion p	=	(Potion)item2;
+			
+			if(p.reinforced)
+				return Messages.get(ExtractionFlask.class, "reinforced");
+			else if(!p.canBeReinforced()){
+				return Messages.get(ExtractionFlask.class, "cannot_reinforce");
+			}
 		}
 		return null;
 	}
@@ -206,13 +211,12 @@ public class ExtractionFlask extends Item{
 
 		// cast items
 		item1.detach(Dungeon.hero.belongings.backpack);
-		item2.detach(Dungeon.hero.belongings.backpack);
+		Item p	=	item2.detach(Dungeon.hero.belongings.backpack);
 		
-		Item potion	=	(new PotionOfHighlyToxicGas()).identify();
-		if(potion.doPickUp(Dungeon.hero)){
-			GLog.i(Messages.get(ExtractionFlask.class, "strengthen", item1.name, item2.name));
-		}else{
-			Dungeon.level.drop(potion, Dungeon.hero.pos).sprite.drop();
+		((Potion)p).reinforce();
+		GLog.i(Messages.get(ExtractionFlask.class, "strengthen", item1.name, item2.name));
+		if(!p.doPickUp(Dungeon.hero)){
+			Dungeon.level.drop(p, Dungeon.hero.pos).sprite.drop();
 		}
 	}
 	

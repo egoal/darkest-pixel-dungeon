@@ -130,22 +130,22 @@ public enum HeroClass {
 				
 				(new PotionOfHealing()).identify().collect();
 				(new PotionOfStrength()).identify().collect();
-				(new PotionOfToxicGas()).identify().collect();
 				(new PotionOfExperience()).identify().collect();
-				(new PotionOfMindVision()).identify().collect();
 				
 				(new Blindweed.Seed()).identify().collect();
 				(new Sorrowmoss.Seed()).identify().collect();
 				(new Firebloom.Seed()).identify().collect();
 			}
 			
-			ClothArmor c	=	new ClothArmor();
-			c.inscribe();
-			c.identify().collect();
-			
-			Dagger d	=	new Dagger();
-			d.enchant();
-			d.identify().collect();
+			// test reinforced potion
+			for(int i=0; i<2; ++i){
+				(new PotionOfFrost()).reinforce().identify().collect();
+				(new PotionOfHealing()).reinforce().identify().collect();
+				(new PotionOfLiquidFlame()).reinforce().identify().collect();
+				(new PotionOfMindVision()).reinforce().identify().collect();
+				(new PotionOfPurity()).reinforce().identify().collect();
+				(new PotionOfToxicGas()).reinforce().identify().collect();
+			}
 			
 			(new PlateArmor()).upgrade(6).identify().collect();
 			(new AssassinsBlade()).upgrade(6).identify().collect();	
@@ -157,7 +157,6 @@ public enum HeroClass {
 			(new ArmorKit()).identify().collect();
 			
 			(new UnholyBlood()).identify().collect();
-			(new MaskOfMadness()).identify().collect();
 			(new DemonicSkull()).identify().collect();
 			
 			(new Book().setTitle(Book.Title.COLLIES_DIARY)).collect();

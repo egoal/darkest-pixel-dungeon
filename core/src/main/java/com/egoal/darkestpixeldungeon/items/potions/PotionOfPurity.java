@@ -49,6 +49,9 @@ public class PotionOfPurity extends Potion {
 	}
 
 	@Override
+	public boolean canBeReinforced(){ return !reinforced; }
+	
+	@Override
 	public void shatter( int cell ) {
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Level.losBlocking, null ), DISTANCE );
@@ -119,7 +122,7 @@ public class PotionOfPurity extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		GLog.w( Messages.get(this, "no_smell") );
-		Buff.prolong( hero, GasesImmunity.class, GasesImmunity.DURATION );
+		Buff.prolong( hero, GasesImmunity.class, GasesImmunity.DURATION *(reinforced?2: 1));
 		setKnown();
 	}
 	

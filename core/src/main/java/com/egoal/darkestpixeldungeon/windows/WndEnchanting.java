@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
+import com.egoal.darkestpixeldungeon.items.EquipableItem;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
@@ -12,9 +13,11 @@ import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.features.EnchantingStation;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.egoal.darkestpixeldungeon.ui.Icons;
 import com.egoal.darkestpixeldungeon.ui.ItemSlot;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.Window;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
@@ -28,7 +31,7 @@ public class WndEnchanting extends Window{
 	private static final int WIDTH	=	116;
 	private static final float GAP	=	2;
 	private static final int BTN_SIZE	=	36;
-	private static final float BTN_GAP	=	10;
+	private static final float BTN_GAP	=	30;
 	
 	private ItemButton btnItemSrc_;
 	private ItemButton btnItemTgt_;
@@ -54,6 +57,11 @@ public class WndEnchanting extends Window{
 		};
 		btnItemSrc_.setRect((WIDTH-BTN_GAP)/2-BTN_SIZE, titlebar.bottom()+BTN_GAP, BTN_SIZE, BTN_SIZE);
 		add(btnItemSrc_);
+		
+		Image arrow	=	Icons.get(Icons.RESUME);
+		add(arrow);
+		arrow.x	=	WIDTH/2-arrow.width()/2;
+		arrow.y	=	btnItemSrc_.centerY()-arrow.height()/2;
 		
 		btnItemTgt_	=	new ItemButton(){
 			@Override
@@ -112,15 +120,12 @@ public class WndEnchanting extends Window{
 				}
 
 				// take from the backpack
-				if(item instanceof Weapon){
-					Weapon w	=	(Weapon)item;
-					if(w.isEquipped(Dungeon.hero))
-						w.doUnequip(Dungeon.hero, true);
-				}else if(item instanceof Armor){
-					Armor a	=	(Armor)item;
-					if(a.isEquipped(Dungeon.hero))
-						a.doUnequip(Dungeon.hero, true);
+				// the equipped item showed be take off, in case lack of room space
+				if(item instanceof EquipableItem && item.isEquipped(Dungeon.hero)){
+					GameScene.show(new WndMessage(Messages.get(WndEnchanting.class, "first_unequip")));
+					return;
 				}
+				
 				btnPressed_.item(item.detach(Dungeon.hero.belongings.backpack));
 
 				if(btnItemSrc_.item!=null && btnItemTgt_.item!=null){

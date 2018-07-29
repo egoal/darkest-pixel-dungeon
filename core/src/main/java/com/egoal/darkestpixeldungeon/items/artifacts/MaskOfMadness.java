@@ -37,14 +37,14 @@ public class MaskOfMadness extends Artifact{
 	public class Madness extends ArtifactBuff{
 		
 		public Damage procIncomingDamage(Damage dmg){
-			float ratio	=	1.6f-1f/((float)Math.exp(level()/3)+1f);
+			float ratio	=	1.8f-1.5f/((float)Math.exp(level()/3f)+1f)+ 0.05f*level();
 			dmg.value	*=	ratio;
 			
 			return dmg;
 		}
 		
 		public Damage procOutcomingDamage(Damage dmg){
-			float ratio	=	1.6f-1f/((float)Math.exp(level()/3)+1f);
+			float ratio	=	1.8f-1.5f/((float)Math.exp(level()/3f)+1f);
 			dmg.value	*=	ratio;
 
 			return dmg;

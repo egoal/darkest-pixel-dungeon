@@ -21,6 +21,9 @@
 package com.egoal.darkestpixeldungeon.items.potions;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
@@ -38,9 +41,24 @@ public class PotionOfFrost extends Potion {
 	}
 	
 	@Override
+	public boolean canBeReinforced(){ return !reinforced; }
+	
+	@Override
 	public void shatter( int cell ) {
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Level.losBlocking, null ), DISTANCE );
+		
+		if(reinforced){
+			for(int offset: PathFinder.NEIGHBOURS9){
+				Mob mob	=	Dungeon.level.findMob(cell+offset);
+				if(mob!=null){
+					Buff.prolong(mob, Frost.class, Frost.DURATION);
+				}
+				if(Dungeon.level.distance(curUser.pos, cell)<=1){
+					Buff.prolong(curUser, Frost.class, Frost.DURATION);
+				}
+			}
+		}
 		
 		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
 

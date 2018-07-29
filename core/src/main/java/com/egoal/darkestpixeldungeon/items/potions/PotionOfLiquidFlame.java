@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.potions;
 
+import com.egoal.darkestpixeldungeon.actors.blobs.RoaringFire;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -37,6 +38,9 @@ public class PotionOfLiquidFlame extends Potion {
 	{
 		initials = 5;
 	}
+	
+	@Override
+	public boolean canBeReinforced(){ return !reinforced; }
 
 	@Override
 	public void shatter( int cell ) {
@@ -53,7 +57,7 @@ public class PotionOfLiquidFlame extends Potion {
 					|| Actor.findChar(cell+offset) != null
 					|| Dungeon.level.heaps.get(cell+offset) != null) {
 
-				GameScene.add(Blob.seed(cell + offset, 2, Fire.class));
+				GameScene.add(Blob.seed(cell + offset, 2, reinforced?RoaringFire.class: Fire.class));
 
 			} else {
 

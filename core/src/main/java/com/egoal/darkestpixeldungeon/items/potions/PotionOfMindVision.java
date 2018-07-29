@@ -34,9 +34,12 @@ public class PotionOfMindVision extends Potion {
 	}
 
 	@Override
+	public boolean canBeReinforced(){ return !reinforced; }
+	
+	@Override
 	public void apply( Hero hero ) {
 		setKnown();
-		Buff.affect( hero, MindVision.class, MindVision.DURATION );
+		Buff.affect( hero, MindVision.class, MindVision.DURATION*(reinforced? 2: 1) );
 		Dungeon.observe();
 		
 		if (Dungeon.level.mobs.size() > 0) {

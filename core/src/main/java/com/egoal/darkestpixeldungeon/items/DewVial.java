@@ -139,7 +139,7 @@ public class DewVial extends Item {
 	}
 
 	private void consume(int drink, Hero hero){
-		int hppv	=	(int)(hero.HT*(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
+		int hppv	=	(int)(hero.HT*(hero.heroClass==HeroClass.HUNTRESS?0.05:0.03)+1);
 		int effect	=	Math.min(hero.HT-hero.HP,drink*hppv);
 
 		hero.HP	+=	effect;

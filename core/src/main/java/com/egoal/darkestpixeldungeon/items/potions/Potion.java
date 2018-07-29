@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.items.potions;
 
+import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -94,6 +96,41 @@ public class Potion extends Item {
 	protected String color;
 
 	public boolean ownedByFruit = false;
+	public boolean reinforced	=	false;
+	
+	public boolean canBeReinforced(){ return false; }
+	public Potion reinforce(){ 
+		if(canBeReinforced())
+			reinforced=true;
+		else
+			Log.e("DPD", "try to reinforce a potion cannot be.");
+		return this; 
+	}
+	
+	@Override
+	public String desc(){
+		String desc	=	super.desc();
+		if(reinforced)
+			desc	+=	"\n\n"+Messages.get(this, "reinforced_desc");
+		return desc;
+	}
+	
+	@Override
+	public boolean isSimilar(Item item){
+		return getClass()==item.getClass() && reinforced==((Potion)item).reinforced;
+	}
+	
+	static private final String REINFORCED	=	"reinforced";
+	@Override
+	public void storeInBundle(Bundle bundle){
+		super.storeInBundle(bundle);
+		bundle.put(REINFORCED, reinforced);
+	}
+	@Override
+	public void restoreFromBundle(Bundle bundle){
+		super.restoreFromBundle(bundle);
+		reinforced	=	bundle.getBoolean(REINFORCED);
+	}
 	
 	{
 		stackable = true;
@@ -271,7 +308,11 @@ public class Potion extends Item {
 	
 	@Override
 	public String name() {
-		return isKnown() ? super.name() : Messages.get(Potion.class, color);
+		if(isKnown()){
+			if(reinforced) return super.name()+"+";
+			else return super.name();
+		}else
+			return Messages.get(Potion.class, color);
 	}
 	
 	@Override
@@ -322,6 +363,6 @@ public class Potion extends Item {
 	
 	@Override
 	public int price() {
-		return 30 * quantity;
+		return (int)(30 * quantity* (reinforced? 1.5: 1.));
 	}
 }

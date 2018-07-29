@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.potions;
 
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -40,14 +41,31 @@ public class PotionOfHealing extends Potion {
 	}
 	
 	@Override
+	public boolean canBeReinforced(){ return !reinforced; }
+	
+	@Override
 	public void apply( Hero hero ) {
 		setKnown();
-		heal( Dungeon.hero );
+		cure( Dungeon.hero );
 		GLog.p( Messages.get(this, "heal") );
 	}
 	
+	private void cure(Hero hero){
+		hero.HP	=	hero.HT;
+		Buff.detach( hero, Bleeding.class );
+
+		if(reinforced){
+			Buff.detach( hero, Poison.class );
+			Buff.detach( hero, Cripple.class );
+			Buff.detach( hero, Weakness.class );
+			Buff.detach(hero, Burning.class);
+		}
+
+		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
+	}
+	
 	public static void heal( Hero hero ) {
-		
+		// called in water of healing, so kept
 		hero.HP = hero.HT;
 		Buff.detach( hero, Poison.class );
 		Buff.detach( hero, Cripple.class );

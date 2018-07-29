@@ -71,11 +71,8 @@ public class Book extends Item{
 	public boolean isSimilar(Item item){
 		if(getClass()!=item.getClass()) return false;
 		
-		if(!this.isIdentified() && !item.isIdentified()) return true;
-		
-		if(this.isIdentified() && item.isIdentified()){
-			if(((Book)item).getTitle()==getTitle()) return true;
-		}
+		if(this.isIdentified() && item.isIdentified() && (this.getTitle()==((Book)item).getTitle()))
+			return true;
 		
 		return false;
 	}

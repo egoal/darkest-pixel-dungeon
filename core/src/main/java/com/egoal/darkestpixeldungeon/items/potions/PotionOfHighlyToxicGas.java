@@ -42,7 +42,7 @@ public class PotionOfHighlyToxicGas extends Potion{
 				affectChar(mob);
 			}
 		}
-		if(Dungeon.level.adjacent(curUser.pos, cell)){
+		if(Dungeon.level.distance(curUser.pos, cell)<=1){
 			affectChar(curUser);
 		}
 		// longer, sharper
