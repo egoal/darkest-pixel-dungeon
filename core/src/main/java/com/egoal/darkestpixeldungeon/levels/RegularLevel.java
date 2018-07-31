@@ -477,7 +477,7 @@ public abstract class RegularLevel extends Level {
 			}
 			else if(rm.type!=Type.NULL){
 				// random place lights
-				if(Random.Float()<(feeling==Feeling.DARK?0.35f:0.5f)){
+				if(Random.Float()<(feeling==Feeling.DARK?0.4f:0.5f)){
 					// have lights
 					// int maxLights	=	(rm.type==Type.PASSAGE||rm.type==Type.TUNNEL)? 3: 2;
 					int maxLights	=	2;

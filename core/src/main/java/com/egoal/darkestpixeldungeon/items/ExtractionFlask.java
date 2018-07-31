@@ -163,7 +163,7 @@ public class ExtractionFlask extends Item{
 		}
 		
 		if(potion!=null){
-			GLog.i(Messages.get(ExtractionFlask.class,"refine",potion.name()));
+			GLog.p(Messages.get(ExtractionFlask.class,"refine",potion.name()));
 			if(potion.doPickUp(Dungeon.hero)){
 			}else{
 				Dungeon.level.drop(potion,Dungeon.hero.pos).sprite.drop();
@@ -265,7 +265,8 @@ public class ExtractionFlask extends Item{
 			
 			// second one is seed or potion
 			final WndBag.Mode wm	=	mode_==MODE_REFINE? WndBag.Mode.SEED: WndBag.Mode.POTION;
-			final String tip	=	Messages.get(WndExtractionFlask.class, "select_potion");
+			final String tip	=	Messages.get(WndExtractionFlask.class, 
+				mode_==MODE_REFINE? "select_seed": "select_potion");
 			btnItem2_	=	new ItemButton(){
 				@Override
 				protected void onClick(){

@@ -449,7 +449,7 @@ public class DarkestPixelDungeon extends Game {
 
 	public static void quickSlots( int value ){ Preferences.INSTANCE.put( Preferences.KEY_QUICKSLOTS, value ); }
 
-	public static int quickSlots(){ return Preferences.INSTANCE.getInt( Preferences.KEY_QUICKSLOTS, 4, 0, 4); }
+	public static int quickSlots(){ return Preferences.INSTANCE.getInt( Preferences.KEY_QUICKSLOTS, 6, 0, 6); }
 
 	public static void flipToolbar( boolean value) {
 		Preferences.INSTANCE.put(Preferences.KEY_FLIPTOOLBAR, value );

@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.scenes.CellSelector;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
+import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
 import com.egoal.darkestpixeldungeon.windows.WndCatalogs;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -51,6 +52,8 @@ public class Toolbar extends Component {
 
 	private static Toolbar instance;
 
+	private static final int NUM_QUICK_SLOTS	=	6;
+	
 	public enum Mode {
 		SPLIT,
 		GROUP,
@@ -68,7 +71,7 @@ public class Toolbar extends Component {
 	@Override
 	protected void createChildren() {
 		
-		add(btnWait = new Tool(24, 0, 20, 26) {
+		add(btnWait = new Tool(24, 0, 20, 24) {
 			@Override
 			protected void onClick() {
 				examining = false;
@@ -84,7 +87,7 @@ public class Toolbar extends Component {
 			;
 		});
 		
-		add(btnSearch = new Tool(44, 0, 20, 26) {
+		add(btnSearch = new Tool(44, 0, 20, 24) {
 			@Override
 			protected void onClick() {
 				if (!examining) {
@@ -103,15 +106,20 @@ public class Toolbar extends Component {
 			}
 		});
 
-		btnQuick = new QuickslotTool[4];
-
-		add( btnQuick[3] = new QuickslotTool( 64, 0, 22, 24, 3) );
-
-		add( btnQuick[2] = new QuickslotTool( 64, 0, 22, 24, 2) );
-
-		add(btnQuick[1] = new QuickslotTool(64, 0, 22, 24, 1));
-
-		add(btnQuick[0] = new QuickslotTool(64, 0, 22, 24, 0));
+		btnQuick	=	new QuickslotTool[NUM_QUICK_SLOTS];
+		for(int i=0; i<NUM_QUICK_SLOTS; ++i){
+			add(btnQuick[NUM_QUICK_SLOTS-1-i]	=	new QuickslotTool(64, 0, 22, 24, NUM_QUICK_SLOTS-1-i));
+		}
+		
+//		btnQuick = new QuickslotTool[4];
+//		
+//		add( btnQuick[3] = new QuickslotTool( 64, 0, 22, 24, 3) );
+//
+//		add( btnQuick[2] = new QuickslotTool( 64, 0, 22, 24, 2) );
+//
+//		add(btnQuick[1] = new QuickslotTool(64, 0, 22, 24, 1));
+//
+//		add(btnQuick[0] = new QuickslotTool(64, 0, 22, 24, 0));
 		
 		add(btnInventory = new Tool(0, 0, 24, 26) {
 			private GoldIndicator gold;
@@ -151,59 +159,72 @@ public class Toolbar extends Component {
 	
 	@Override
 	protected void layout() {
+		// the ys for slots: extra slots is put outside the screen
+		int[] visible	=	new int[NUM_QUICK_SLOTS];
+		int slots	=	DarkestPixelDungeon.quickSlots();
+		for(int i=0; i<NUM_QUICK_SLOTS; ++i)
+			visible[i]	=	(int)(slots>i? y+2: y+26);
 
-		int[] visible = new int[4];
-		int slots = DarkestPixelDungeon.quickSlots();
-
-		for(int i = 0; i <= 3; i++)
-			visible[i] = (int)((slots > i) ? y+2 : y+25);
-
-		for(int i = 0; i <= 3; i++) {
-			btnQuick[i].visible = btnQuick[i].active = slots > i;
-			//decides on quickslot layout, depending on available screen size.
-			if (slots == 4 && width < 150){
-				if (width < 139){
-					if ((DarkestPixelDungeon.flipToolbar() && i == 3) ||
-							(!DarkestPixelDungeon.flipToolbar() && i == 0)) {
-						btnQuick[i].border(0, 0);
-						btnQuick[i].frame(88, 0, 17, 24);
-					} else {
-						btnQuick[i].border(0, 1);
-						btnQuick[i].frame(88, 0, 18, 24);
-					}
-				} else {
-					if (i == 0 && !DarkestPixelDungeon.flipToolbar() ||
-						i == 3 && DarkestPixelDungeon.flipToolbar()){
-						btnQuick[i].border(0, 2);
-						btnQuick[i].frame(106, 0, 19, 24);
-					} else if (i == 0 && DarkestPixelDungeon.flipToolbar() ||
-							i == 3 && !DarkestPixelDungeon.flipToolbar()){
-						btnQuick[i].border(2, 1);
-						btnQuick[i].frame(86, 0, 20, 24);
-					} else {
-						btnQuick[i].border(0, 1);
-						btnQuick[i].frame(88, 0, 18, 24);
-					}
-				}
-			} else {
-				btnQuick[i].border(2, 2);
-				btnQuick[i].frame(64, 0, 22, 24);
+		for(int i=0; i<NUM_QUICK_SLOTS; ++i){
+			btnQuick[i].border(0, 0);
+			btnQuick[i].frame(88, 0, 18, 24);
+			if(i==slots-1){
+				btnQuick[i].border(0, 0);
+				btnQuick[i].frame(86, 0, 20, 24);
 			}
-
 		}
+			
+//		for(int i = 0; i <= 3; i++) {
+//			btnQuick[i].visible = btnQuick[i].active = slots > i;
+//			//decides on quickslot layout, depending on available screen size.
+//			// chose the frame
+//			if (slots == 4 && width < 150){
+//				if (width < 139){
+//					if ((DarkestPixelDungeon.flipToolbar() && i == 3) ||
+//							(!DarkestPixelDungeon.flipToolbar() && i == 0)) {
+//						btnQuick[i].border(0, 0);
+//						btnQuick[i].frame(88, 0, 17, 24);
+//					} else {
+//						btnQuick[i].border(0, 1);
+//						btnQuick[i].frame(88, 0, 18, 24);
+//					}
+//				} else {
+//					if (i == 0 && !DarkestPixelDungeon.flipToolbar() ||
+//						i == 3 && DarkestPixelDungeon.flipToolbar()){
+//						btnQuick[i].border(0, 2);
+//						btnQuick[i].frame(106, 0, 19, 24);
+//					} else if (i == 0 && DarkestPixelDungeon.flipToolbar() ||
+//							i == 3 && !DarkestPixelDungeon.flipToolbar()){
+//						btnQuick[i].border(2, 1);
+//						btnQuick[i].frame(86, 0, 20, 24);
+//					} else {
+//						btnQuick[i].border(0, 1);
+//						btnQuick[i].frame(88, 0, 18, 24);
+//					}
+//				}
+//			} else {
+//				btnQuick[i].border(2, 2);
+//				btnQuick[i].frame(64, 0, 22, 24);
+//			}
+//
+//		}
 
 		float right = width;
 		switch(Mode.valueOf(DarkestPixelDungeon.toolbarMode())){
 			case SPLIT:
-				btnWait.setPos(x, y);
-				btnSearch.setPos(btnWait.right(), y);
+				// 4 lines, text height is 6
+				btnSearch.setPos(x, y-btnQuick[0].height()-6*5);
+				btnWait.setPos(x, btnSearch.top()-btnSearch.height());
 
 				btnInventory.setPos(right - btnInventory.width(), y);
-
+				
+				// layout the quick slots
 				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), visible[0]);
 				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(), visible[1]);
 				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(), visible[2]);
 				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(), visible[3]);
+				btnQuick[4].setPos(btnQuick[3].left()- btnQuick[4].width(), visible[4]);
+				btnQuick[5].setPos(btnQuick[4].left()- btnQuick[5].width(), visible[5]);
 				break;
 
 			//center = group but.. well.. centered, so all we need to do is pre-emptively set the right side further in.

@@ -31,7 +31,7 @@ public class DevilGhost extends Wraith{
 		EXP	=	5;
 		
 		loot	=	new DemonicSkull();
-		lootChance	=	0.5f;
+		lootChance	=	1.f;
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class DevilGhost extends Wraith{
 			Dungeon.limitedDrops.demonicSkull.drop();
 			return super.createLoot();
 		}else
-			return new Gold(Random.NormalIntRange(100, 300));
+			return new Gold(Random.NormalIntRange(100, 200));
 	}
 	
 	public static DevilGhost spawnAt(int pos){

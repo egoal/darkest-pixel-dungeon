@@ -51,15 +51,15 @@ public class Wine extends Item{
 			hero.spend(TIME_TO_DRINK);
 			hero.busy();
 			
-			int value	=	Math.min(Random.IntRange(10, (int)(Pressure.heroPressure()*.5f)), 25);
+			int value	=	Math.min(Random.IntRange(15, (int)(Pressure.heroPressure()*.5f)), 30);
 			if(hero.heroPerk.contain(HeroPerk.Perk.DRUNKARD)){
 				value	*=	1.2f;
 				hero.recoverSanity(value);
 			}else{
 				hero.recoverSanity(value);
 				// get drunk
-				Buff.prolong(hero,Vertigo.class, Math.min(18, value));
-				hero.takeDamage(new Damage(hero.HP/5, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
+				Buff.prolong(hero,Vertigo.class, Math.min(20, value));
+				hero.takeDamage(new Damage(hero.HP/4, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
 			}
 			
 			hero.sprite.operate(hero.pos);

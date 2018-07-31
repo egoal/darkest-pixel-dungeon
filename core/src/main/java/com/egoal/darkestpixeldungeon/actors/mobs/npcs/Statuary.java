@@ -7,19 +7,15 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
-import com.egoal.darkestpixeldungeon.actors.mobs.Scorpio;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
-import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
-import com.egoal.darkestpixeldungeon.items.KindofMisc;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
-import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
@@ -32,6 +28,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.MobSprite;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
+import com.egoal.darkestpixeldungeon.ui.ScrollPane;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.IconTitle;
@@ -73,8 +70,30 @@ public class Statuary extends NPC{
 		
 		return this;
 	}
+	
+	private static int[] spawnChance	=	{ 1, 1, 1 };
+	private static final String NODE	=	"statuary";
+	private static final String SPAWN_CHANCE	=	"spawnchance";
+	public static void save(Bundle bundle){
+		Bundle node	=	new Bundle();
+		// bundle.put(SPAWN_CHANCE, spawnChance);
+		node.put(SPAWN_CHANCE, spawnChance);
+		
+		bundle.put(NODE, node);
+	}
+	public static void load(Bundle bundle){
+		Bundle node	=	bundle.getBundle(NODE);
+		if(!node.isNull()){
+			spawnChance	=	node.getIntArray(SPAWN_CHANCE);
+		}
+	}
+	
 	public Statuary random(){
-		switch(Random.Int(3)){
+		float[] chances	=	new float[3];
+		for(int i=0; i<3; ++i) chances[i]	=	spawnChance[i];
+		int c	=	Random.chances(chances);
+		
+		switch(c){
 			case 0:
 				type(Type.ANGEL);
 				break;
@@ -84,6 +103,11 @@ public class Statuary extends NPC{
 			case 2:
 				type(Type.MONSTER);
 				break;
+		}
+		// adjust chances, 
+		for(int i=0; i<3; ++i){
+			if(i!=c)
+				spawnChance[i]	*=	3;
 		}
 		
 		return this;

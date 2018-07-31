@@ -108,6 +108,15 @@ public class Potion extends Item {
 	}
 	
 	@Override
+	public String status(){
+		String status	=	super.status();
+		if(status==null) status	=	"";
+		if(reinforced)
+			status	+=	"*";
+		return status;
+	}
+	
+	@Override
 	public String desc(){
 		String desc	=	super.desc();
 		if(reinforced)

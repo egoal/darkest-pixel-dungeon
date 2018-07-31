@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.items;
+package com.egoal.darkestpixeldungeon.items.artifacts;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -14,6 +14,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.CellSelector;
@@ -24,7 +25,6 @@ import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.IconTitle;
-import com.egoal.darkestpixeldungeon.windows.WndMessage;
 import com.egoal.darkestpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -32,13 +32,11 @@ import com.watabou.utils.Point;
 
 import java.util.ArrayList;
 
-import javax.microedition.khronos.opengles.GL;
-
 /**
  * Created by 93942 on 5/5/2018.
  */
 
-public class UrnOfShadow extends Item{
+public class UrnOfShadow extends Artifact{
 	
 	{
 		image	=	ItemSpriteSheet.DPD_URN_OF_SHADOW;
@@ -78,7 +76,7 @@ public class UrnOfShadow extends Item{
 	@Override
 	public ArrayList<String> actions(Hero hero){
 		ArrayList<String> actions	=	super.actions(hero);
-		if(volume>0)
+		if(isEquipped(hero) && volume>0)
 			actions.add(AC_CONSUME);
 		
 		return actions;
@@ -88,7 +86,10 @@ public class UrnOfShadow extends Item{
 	public void execute(final Hero hero, String action){
 		super.execute(hero, action);
 		if(action.equals(AC_CONSUME)){
-			GameScene.show(new WndUrnOfShadow(this));
+			if (!isEquipped(hero)) 
+				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+			else 
+				GameScene.show(new WndUrnOfShadow(this));
 		}
 		
 	}
@@ -136,6 +137,11 @@ public class UrnOfShadow extends Item{
 		desc	+=	"\n\n"+Messages.get(this, "desc_hint");
 		return desc;
 	}
+	
+	@Override
+	protected ArtifactBuff passiveBuff(){ return new Urn(); }
+	
+	public class Urn extends ArtifactBuff{}
 	
 	// the casts 
 	public class WndUrnOfShadow extends Window{

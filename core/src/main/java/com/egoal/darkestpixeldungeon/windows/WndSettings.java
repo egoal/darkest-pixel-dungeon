@@ -222,6 +222,7 @@ public class WndSettings extends WndTabbed {
 			};
 			btnGrouped.setRect( btnSplit.right()+1, barDesc.y + barDesc.baseLine()+GAP_TINY, 36, 16);
 			add(btnGrouped);
+			btnGrouped.enable(false);
 
 			RedButton btnCentered = new RedButton(Messages.get(this, "center")){
 				@Override
@@ -232,6 +233,7 @@ public class WndSettings extends WndTabbed {
 			};
 			btnCentered.setRect(btnGrouped.right()+1, barDesc.y + barDesc.baseLine()+GAP_TINY, 36, 16);
 			add(btnCentered);
+			btnCentered.enable(false);
 
 			CheckBox chkFlipToolbar = new CheckBox(Messages.get(this, "flip_toolbar")){
 				@Override
@@ -244,6 +246,7 @@ public class WndSettings extends WndTabbed {
 			chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, WIDTH/2-1, BTN_HEIGHT);
 			chkFlipToolbar.checked(DarkestPixelDungeon.flipToolbar());
 			add(chkFlipToolbar);
+			chkFlipToolbar.enable(false);
 
 			final CheckBox chkFlipTags = new CheckBox(Messages.get(this, "flip_indicators")){
 				@Override
@@ -256,6 +259,7 @@ public class WndSettings extends WndTabbed {
 			chkFlipTags.setRect(WIDTH/2+1, chkFlipToolbar.top(), WIDTH/2-1, BTN_HEIGHT);
 			chkFlipTags.checked(DarkestPixelDungeon.flipTags());
 			add(chkFlipTags);
+			chkFlipTags.enable(false);
 
 			RedButton btnLanguage	=	new RedButton(Messages.get(this, "language")){
 				@Override
@@ -268,7 +272,7 @@ public class WndSettings extends WndTabbed {
 			btnLanguage.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
 			add(btnLanguage);
 			
-			OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"), "0", "4", 0, 4) {
+			OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"), "0", "6", 0, 6) {
 				@Override
 				protected void onChange() {
 					DarkestPixelDungeon.quickSlots(getSelectedValue());

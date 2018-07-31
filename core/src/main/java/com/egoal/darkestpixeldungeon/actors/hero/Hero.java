@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
-import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
@@ -29,7 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
-import com.egoal.darkestpixeldungeon.items.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
@@ -1209,7 +1208,8 @@ public class Hero extends Char {
 		if(dmg.isFeatured(Damage.Feature.ACCURATE|Damage.Feature.PURE)){}
 		else{
 			// sorceress perk
-			if(heroClass==HeroClass.SORCERESS && Random.Float()<0.1f)
+			if(heroClass==HeroClass.SORCERESS && 
+				Random.Float()<(subClass==HeroSubClass.STARGAZER? .2f: .1f))
 				dmg.value	=	0;
 		}
 		

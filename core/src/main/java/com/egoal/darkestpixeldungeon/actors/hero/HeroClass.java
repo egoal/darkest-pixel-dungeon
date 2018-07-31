@@ -25,11 +25,13 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
@@ -138,14 +140,14 @@ public enum HeroClass {
 			}
 			
 			// test reinforced potion
-			for(int i=0; i<2; ++i){
-				(new PotionOfFrost()).reinforce().identify().collect();
-				(new PotionOfHealing()).reinforce().identify().collect();
-				(new PotionOfLiquidFlame()).reinforce().identify().collect();
-				(new PotionOfMindVision()).reinforce().identify().collect();
-				(new PotionOfPurity()).reinforce().identify().collect();
-				(new PotionOfToxicGas()).reinforce().identify().collect();
-			}
+//			for(int i=0; i<2; ++i){
+//				(new PotionOfFrost()).reinforce().identify().collect();
+//				(new PotionOfHealing()).reinforce().identify().collect();
+//				(new PotionOfLiquidFlame()).reinforce().identify().collect();
+//				(new PotionOfMindVision()).reinforce().identify().collect();
+//				(new PotionOfPurity()).reinforce().identify().collect();
+//				(new PotionOfToxicGas()).reinforce().identify().collect();
+//			}
 			
 			(new PlateArmor()).upgrade(6).identify().collect();
 			(new AssassinsBlade()).upgrade(6).identify().collect();	
@@ -155,6 +157,9 @@ public enum HeroClass {
 			(new TomeOfMastery()).identify().collect();
 			(new DewVial()).setVolume(20).identify().collect();
 			(new ArmorKit()).identify().collect();
+
+			(new UrnOfShadow()).identify().collect();
+			(new Astrolabe()).identify().collect();
 			
 			(new UnholyBlood()).identify().collect();
 			(new DemonicSkull()).identify().collect();

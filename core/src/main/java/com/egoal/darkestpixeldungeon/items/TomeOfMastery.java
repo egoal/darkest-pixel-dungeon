@@ -26,9 +26,10 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
+import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -138,6 +139,13 @@ public class TomeOfMastery extends Item {
 				GLog.w(Messages.get(Dungeon.hero, "you_now_have", uos.name()));
 			}else
 				Dungeon.level.drop(uos, curUser.pos).sprite.drop();
+		}
+		if(way==HeroSubClass.STARGAZER){
+			Item a	=	new Astrolabe().identify();
+			if(a.doPickUp(curUser))
+				GLog.w(Messages.get(Dungeon.hero, "you_now_have", a.name()));
+			else
+				Dungeon.level.drop(a, curUser.pos).sprite.drop();
 		}
 	}
 }
