@@ -173,41 +173,6 @@ public class Toolbar extends Component {
 				btnQuick[i].frame(86, 0, 20, 24);
 			}
 		}
-			
-//		for(int i = 0; i <= 3; i++) {
-//			btnQuick[i].visible = btnQuick[i].active = slots > i;
-//			//decides on quickslot layout, depending on available screen size.
-//			// chose the frame
-//			if (slots == 4 && width < 150){
-//				if (width < 139){
-//					if ((DarkestPixelDungeon.flipToolbar() && i == 3) ||
-//							(!DarkestPixelDungeon.flipToolbar() && i == 0)) {
-//						btnQuick[i].border(0, 0);
-//						btnQuick[i].frame(88, 0, 17, 24);
-//					} else {
-//						btnQuick[i].border(0, 1);
-//						btnQuick[i].frame(88, 0, 18, 24);
-//					}
-//				} else {
-//					if (i == 0 && !DarkestPixelDungeon.flipToolbar() ||
-//						i == 3 && DarkestPixelDungeon.flipToolbar()){
-//						btnQuick[i].border(0, 2);
-//						btnQuick[i].frame(106, 0, 19, 24);
-//					} else if (i == 0 && DarkestPixelDungeon.flipToolbar() ||
-//							i == 3 && !DarkestPixelDungeon.flipToolbar()){
-//						btnQuick[i].border(2, 1);
-//						btnQuick[i].frame(86, 0, 20, 24);
-//					} else {
-//						btnQuick[i].border(0, 1);
-//						btnQuick[i].frame(88, 0, 18, 24);
-//					}
-//				}
-//			} else {
-//				btnQuick[i].border(2, 2);
-//				btnQuick[i].frame(64, 0, 22, 24);
-//			}
-//
-//		}
 
 		float right = width;
 		switch(Mode.valueOf(DarkestPixelDungeon.toolbarMode())){

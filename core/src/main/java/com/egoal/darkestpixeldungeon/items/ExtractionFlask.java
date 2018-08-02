@@ -221,7 +221,7 @@ public class ExtractionFlask extends Item{
 	}
 	
 	public static int minDewRequire(){
-		return Dungeon.hero.subClass==HeroSubClass.WITCH? 2: 4;
+		return Dungeon.hero.subClass==HeroSubClass.WITCH? 3: 4;
 	}
 	
 	// todo: may lost items, no restore

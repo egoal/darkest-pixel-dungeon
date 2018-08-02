@@ -1205,7 +1205,7 @@ public class Hero extends Char {
 			sprite.showStatus(0xFFFFFF, Integer.toString(rv));
 	}
 	protected void takeMentalDamage(Damage dmg){
-		if(dmg.isFeatured(Damage.Feature.ACCURATE|Damage.Feature.PURE)){}
+		if(dmg.isFeatured(Damage.Feature.ACCURATE)){}
 		else{
 			// sorceress perk
 			if(heroClass==HeroClass.SORCERESS && 

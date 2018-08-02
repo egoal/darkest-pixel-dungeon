@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
+import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
 import com.egoal.darkestpixeldungeon.actors.mobs.SkeletonKnight;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
@@ -158,8 +159,8 @@ public class VillageLevel extends RegularLevel{
 
 			// place entrance
 			if(r.type==Room.Type.ENTRANCE){
-				int p	=	pointToCell(r.random(1));
-				map[p]	=	Terrain.ENCHANTING_STATION;
+//				int p	=	pointToCell(r.random(1));
+//				map[p]	=	Terrain.ENCHANTING_STATION;
 				do{
 					// entrance    =   pointToCell(r.random(1));
 					entrance	=	r.bottom*width()+Random.Int(r.left+1, r.right);
@@ -355,11 +356,11 @@ public class VillageLevel extends RegularLevel{
 		
 		// test 
 		if(true){
-//			DevilGhost dg	=	new DevilGhost();
-//			do{
-//				dg.pos	=	pointToCell(roomEntrance.random());
-//			}while(findMob(dg.pos)!=null || dg.pos==entrance);
-//			mobs.add(dg);
+			Rat dg	=	new Rat();
+			do{
+				dg.pos	=	pointToCell(roomEntrance.random());
+			}while(findMob(dg.pos)!=null || dg.pos==entrance);
+			mobs.add(dg);
 		}
 		
 		super.createMobs();

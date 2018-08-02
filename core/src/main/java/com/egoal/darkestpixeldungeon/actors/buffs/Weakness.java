@@ -28,7 +28,7 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
 public class Weakness extends FlavourBuff {
 
-	private static final float DURATION = 40f;
+	private static final float DURATION = 20f;
 
 	{
 		type = buffType.NEGATIVE;

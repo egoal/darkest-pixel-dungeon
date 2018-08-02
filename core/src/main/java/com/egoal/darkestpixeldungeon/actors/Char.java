@@ -23,6 +23,8 @@ package com.egoal.darkestpixeldungeon.actors;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
+import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
+import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -203,6 +205,10 @@ public abstract class Char extends Actor {
 	public boolean checkHit(Damage dmg){
 		if(dmg.isFeatured(Damage.Feature.ACCURATE))
 			return true;
+
+		MustDodge md	=	buff(MustDodge.class);
+		if(md!=null && md.canDodge(dmg))
+			return false;
 		
 		Char attacker	=	(Char)dmg.from;
 		Char defender	=	(Char)dmg.to;
@@ -227,6 +233,17 @@ public abstract class Char extends Actor {
 	}
 	
 	public void takeDamage(Damage dmg){
+		LifeLink ll	=	buff(LifeLink.class);
+		if(ll!=null){
+			Actor a	=	Actor.findById(ll.linker);
+			if(a!=null && (a instanceof Char)){
+				((Char)a).takeDamage(dmg);
+				((Char)a).sprite.showStatus(0x000000, Messages.get(LifeLink.class, "transform"));
+				
+				return;
+			}
+		}
+		
 		// currently, only hero suffer from mental damage
 		if(!isAlive() || dmg.value<0 || (dmg.type==Damage.Type.MENTAL && !(this instanceof Hero)))
 			return;

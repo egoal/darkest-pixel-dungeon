@@ -37,6 +37,7 @@ import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
@@ -231,7 +232,13 @@ public abstract class Level implements Bundlable {
 				addItemToSpawn(new Wine());
 				Dungeon.limitedDrops.wine.count++;
 			}
-
+			if(Dungeon.scrollOfLullabyNeed()){
+				if(Random.Float()>Math.pow(0.925, bonus))
+					addItemToSpawn(new ScrollOfLullaby());
+				addItemToSpawn(new ScrollOfLullaby());
+				Dungeon.limitedDrops.lullabyScrolls.count++;
+			}
+			
 			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
 			if (rose != null && !rose.cursed){
 				//this way if a rose is dropped later in the game, player still has a chance to max it out.
@@ -932,7 +939,7 @@ public abstract class Level implements Bundlable {
 				
 				// up pressure when trigger a trap
 				if(ch==Dungeon.hero && !(trap instanceof WornTrap))
-					ch.takeDamage(new Damage(Random.NormalIntRange(1, 10), trap, ch).type(Damage.Type.MENTAL));
+					ch.takeDamage(new Damage(Random.NormalIntRange(1, 8), trap, ch).type(Damage.Type.MENTAL));
 				
 			} else {
 

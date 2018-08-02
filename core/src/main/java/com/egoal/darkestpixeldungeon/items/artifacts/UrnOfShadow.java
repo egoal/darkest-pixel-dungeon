@@ -95,6 +95,9 @@ public class UrnOfShadow extends Artifact{
 	}
 	
 	public void collectSoul(Mob mob){
+		if(!isEquipped(curUser)){
+			return;
+		}
 		// check range
 		Point mp	=	Dungeon.level.cellToPoint(mob.pos);
 		Point cp	=	Dungeon.level.cellToPoint(curUser.pos);

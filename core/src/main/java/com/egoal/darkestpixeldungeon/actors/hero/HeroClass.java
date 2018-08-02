@@ -159,7 +159,6 @@ public enum HeroClass {
 			(new ArmorKit()).identify().collect();
 
 			(new UrnOfShadow()).identify().collect();
-			(new Astrolabe()).identify().collect();
 			
 			(new UnholyBlood()).identify().collect();
 			(new DemonicSkull()).identify().collect();
@@ -169,6 +168,9 @@ public enum HeroClass {
 			
 			hero.HP	=	1;
 		}
+		
+		(new Astrolabe()).identify().collect();
+
 	}
 	
 	public Badges.Badge masteryBadge() {
@@ -355,7 +357,7 @@ public enum HeroClass {
 				Messages.get(HeroClass.class, "sorceress_perk3"),
 				Messages.get(HeroClass.class, "sorceress_perk4"),
 				Messages.get(HeroClass.class, "sorceress_perk5"),
-				Messages.get(HeroClass.class, "sorceress_perk6"),
+				// Messages.get(HeroClass.class, "sorceress_perk6"),
 			};
 		}
 		

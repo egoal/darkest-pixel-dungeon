@@ -68,6 +68,7 @@ public class Dungeon {
 		//limited world drops
 		strengthPotions,
 		upgradeScrolls,
+		lullabyScrolls,
 		arcaneStyli,
 		wine, 
 
@@ -368,6 +369,13 @@ public class Dungeon {
 		
 		int floorThisSet	=	depth%5;
 		return Random.Int(5-floorThisSet)<wineLeftThisSet;
+	}
+	
+	public static boolean scrollOfLullabyNeed(){
+		// 1 per 10 floors
+		int slLeft	=	(depth/10+1)- limitedDrops.lullabyScrolls.count;
+		
+		return slLeft>0 && Random.Int(10-depth%10)< slLeft;
 	}
 	
 	private static final String RG_GAME_FILE	= "game.dat";
