@@ -80,7 +80,7 @@ public class Astrolabe extends Artifact{
 	private void invokeMagic(){
 		Sample.INSTANCE.play(Assets.SND_ASTROLABE);
 
-		boolean invokePositive	=	Random.Float()< (cursed? .5f: .9f);
+		boolean invokePositive	=	Random.Float()< (cursed? .5f: .85f);
 		
 		if(!invokePositive && blockNextNegative){
 			blockNextNegative	=	false;

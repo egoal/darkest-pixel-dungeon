@@ -159,6 +159,7 @@ public enum HeroClass {
 			(new ArmorKit()).identify().collect();
 
 			(new UrnOfShadow()).identify().collect();
+			(new Astrolabe()).identify().collect();
 			
 			(new UnholyBlood()).identify().collect();
 			(new DemonicSkull()).identify().collect();
@@ -168,8 +169,6 @@ public enum HeroClass {
 			
 			hero.HP	=	1;
 		}
-		
-		(new Astrolabe()).identify().collect();
 
 	}
 	

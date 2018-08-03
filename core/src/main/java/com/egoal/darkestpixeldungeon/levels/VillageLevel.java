@@ -355,7 +355,7 @@ public class VillageLevel extends RegularLevel{
 		}
 		
 		// test 
-		if(true){
+		if(false){
 			Rat dg	=	new Rat();
 			do{
 				dg.pos	=	pointToCell(roomEntrance.random());

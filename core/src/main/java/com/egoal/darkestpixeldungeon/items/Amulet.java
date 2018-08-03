@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.scenes.AmuletScene;
@@ -63,6 +64,8 @@ public class Amulet extends Item {
 	@Override
 	public boolean doPickUp( Hero hero ) {
 		if (super.doPickUp( hero )) {
+			// recover all sanity
+			hero.recoverSanity((int)Pressure.MAX_PRESSURE);
 			
 			if (!Statistics.amuletObtained) {
 				Statistics.amuletObtained = true;
