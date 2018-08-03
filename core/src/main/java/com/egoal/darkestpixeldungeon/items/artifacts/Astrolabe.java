@@ -1,21 +1,21 @@
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
-import android.util.Log;
-
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.blobs.ConfusionGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
+import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
+import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.CellSelector;
@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class Astrolabe extends Artifact{
 	}
 	
 	private static float TIME_TO_INVOKE	=	1f;
-	private static int NORMAL_COOLDOWN	=	10;
+	private static int NORMAL_COOLDOWN	=	8;
 	
 	private static final String AC_INVOKE	=	"INVOKE";
 	
@@ -66,6 +67,8 @@ public class Astrolabe extends Artifact{
 			else if(cooldown>0) GLog.i(Messages.get(this, "cooldown", cooldown));
 			else{
 				invokeMagic();
+				
+				updateQuickslot();
 			}
 		}
 	}
@@ -77,7 +80,7 @@ public class Astrolabe extends Artifact{
 	private void invokeMagic(){
 		Sample.INSTANCE.play(Assets.SND_ASTROLABE);
 
-		boolean invokePositive	=	Random.Float()< (cursed? .3f: .7f);
+		boolean invokePositive	=	Random.Float()< (cursed? .5f: .9f);
 		
 		if(!invokePositive && blockNextNegative){
 			blockNextNegative	=	false;
@@ -95,20 +98,19 @@ public class Astrolabe extends Artifact{
 			
 		}
 		
-		final int color	=	invokePositive? 0x420000: 0x000026;
+		final int color	=	invokePositive? 0xCC5252: 0x000026;
 
 		curUser.sprite.showStatus(color, ivk.status());
 		ivk.invoke(curUser, this);
-
-		updateQuickslot();
 	}
 	
 	private static Class<?>[] positiveInvokers	=	new Class<?>[]{
-		prophesy.class, purgation.class, life_link.class, 
+		foresight.class, purgation.class, life_link.class, 
 		extremely_lucky.class, pardon.class, faith.class, 
+		overload.class, guide.class, prophesy.class
 	};
 	private static float[] positiveProbs	=	new float[]{
-		10, 10, 10, 10, 10, 10, 
+		10, 10, 10, 5, 10, 5, 10, 10, 10, 
 	};
 	private static Class<?>[] negativeInvokers	=	new Class<?>[]{
 		punish.class, vain.class, feedback.class, imprison.class, 
@@ -234,14 +236,14 @@ public class Astrolabe extends Artifact{
 	}
 	
 	// positive
-	public static class prophesy extends Invoker{
+	public static class foresight extends Invoker{
 		{
-			name_	=	"prophesy";
+			name_	=	"foresight";
 		}
 		
 		@Override
 		protected void invoke_directly(Hero user, Astrolabe a){
-			Buff.prolong(user, MustDodge.class, 1f).addDodgeTypeAll();
+			Buff.prolong(user, MustDodge.class, 3f).addDodgeTypeAll();
 		}
 	}
 	public static class purgation extends Invoker{
@@ -255,7 +257,7 @@ public class Astrolabe extends Artifact{
 			if(check_is_other(c)){
 				int dmg	=	(int)((c.HT-c.HP)*.6f)+1;
 				//todo: add effect
-				c.takeDamage(new Damage(dmg,user,c).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
+				c.takeDamage(new Damage(dmg,user,c).addFeature(Damage.Feature.PURE| Damage.Feature.ACCURATE));
 			}
 		}
 	}
@@ -280,22 +282,30 @@ public class Astrolabe extends Artifact{
 		
 		@Override
 		protected void invoke_directly(Hero user, Astrolabe a){
+			// recover hp
+			int heal	=	(user.HT-user.HP)/10+1;
+			user.HP	=	heal>(user.HT-user.HP)? user.HT: (user.HP+heal);
+			user.sprite.showStatus(CharSprite.POSITIVE, Integer.toString(heal));
+			
 			a.blockNextNegative	=	true;
 		}
 	}
 	public static class pardon extends Invoker{
 		{
 			name_	=	"pardon";
+			needTarget_	=	true;
 		}
-
+		
 		@Override
-		protected void invoke_directly(Hero user, Astrolabe a){
-			// recover hp
-			int heal	=	(user.HT-user.HP)/10+1;
-			user.HP	=	heal>(user.HT-user.HP)? user.HT: (user.HP+heal);
-			user.sprite.showStatus(CharSprite.POSITIVE, Integer.toString(heal));
-			
-			a.nextNegativeIsImprison	=	true;
+		protected void invoke_on_target(Hero user, Astrolabe a, Char c){
+			if(check_is_other(c)){
+				int dhp	=	c.HP/4+1;
+				c.HP	+=	dhp;
+				if(c.HP>c.HT)
+					c.HT	=	c.HP;
+				c.sprite.showStatus(CharSprite.POSITIVE, Integer.toString(dhp));
+				Buff.prolong(c, Vulnerable.class, Vulnerable.DURATION).ratio	=	1.5f;
+			}
 		}
 	}
 	public static class faith extends Invoker{
@@ -307,6 +317,55 @@ public class Astrolabe extends Artifact{
 		@Override
 		protected void invoke_directly(Hero user, Astrolabe a){
 			user.recoverSanity(Random.Int(1, 4));
+		}
+	}
+	public static class overload extends Invoker{
+		{
+			name_	=	"overload";
+			needTarget_	=	true;
+		}
+
+		@Override
+		protected void invoke_on_target(Hero user, Astrolabe a, Char c){
+			if(check_is_other(c)){
+				int cost	=	user.HT/10;
+				if(cost>=user.HP) cost	=	user.HP-1;
+				int dmg	=	cost*2;
+				
+				c.takeDamage(new Damage(dmg, user, c).type(Damage.Type.MAGICAL));
+				user.takeDamage(new Damage(cost, a, c).addFeature(Damage.Feature.PURE| Damage.Feature.ACCURATE));
+			}
+		}
+	}
+	public static class guide extends Invoker{
+		{
+			name_	=	"guide";
+			needTarget_	=	true;
+		}
+		@Override
+		protected void invoke_on_target(Hero user, Astrolabe a, Char c){
+			if(check_is_other(c)){
+				Ballistica shot	=	new Ballistica(curUser.pos, c.pos, Ballistica.MAGIC_BOLT);
+				if(shot.path.size()> shot.dist+1)
+					WandOfBlastWave.throwChar(c, 
+						new Ballistica(c.pos, shot.path.get(shot.dist+1), Ballistica.MAGIC_BOLT), 3);
+			}
+		}
+	}
+	public static class prophesy extends Invoker{
+		{
+			name_="prophesy";
+		}
+
+		@Override
+		protected void invoke_directly(Hero user, Astrolabe a){
+			for(int i: PathFinder.NEIGHBOURS8){
+				Char ch	=	Actor.findChar(user.pos+i);
+				if(ch!=null){
+					Buff.prolong(ch, Paralysis.class, 3f);
+					ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12);
+				}
+			}
 		}
 	}
 	

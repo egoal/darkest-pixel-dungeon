@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
+import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -233,6 +234,7 @@ public abstract class Char extends Actor {
 	}
 	
 	public void takeDamage(Damage dmg){
+		// life link
 		LifeLink ll	=	buff(LifeLink.class);
 		if(ll!=null){
 			Actor a	=	Actor.findById(ll.linker);
@@ -247,6 +249,12 @@ public abstract class Char extends Actor {
 		// currently, only hero suffer from mental damage
 		if(!isAlive() || dmg.value<0 || (dmg.type==Damage.Type.MENTAL && !(this instanceof Hero)))
 			return;
+
+		// vulnerable
+		Vulnerable v	=	buff(Vulnerable.class);
+		if(v!=null){
+			dmg.value	*=	v.ratio;
+		}
 		
 		// buffs shall remove when take damage
 		if(this.buff(Frost.class)!=null)

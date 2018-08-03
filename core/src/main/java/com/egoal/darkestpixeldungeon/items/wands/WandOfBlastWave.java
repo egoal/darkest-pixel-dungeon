@@ -139,7 +139,7 @@ public class WandOfBlastWave extends DamageWand {
 					ch.takeDamage(new Damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), 
 						this, ch).type(Damage.Type.MAGICAL));
 
-					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
+					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist)+1);
 				}
 				Dungeon.level.press(ch.pos, ch);
 			}

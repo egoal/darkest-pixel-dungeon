@@ -48,6 +48,9 @@ public class Statue extends Mob {
 		state = PASSIVE;
 		
 		mapResists.put(Damage.Element.POISON, 1.25f);
+		mapResists.put(Damage.Element.FIRE, 1.25f);
+		mapResists.put(Damage.Element.LIGHT, 1.25f);
+		mapResists.put(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	protected Weapon weapon;

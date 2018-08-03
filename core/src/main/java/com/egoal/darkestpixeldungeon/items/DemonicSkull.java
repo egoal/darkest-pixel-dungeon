@@ -19,6 +19,8 @@ public class DemonicSkull extends Item{
 	
 	{
 		image	=	ItemSpriteSheet.DPD_DEMONIC_SKULL;
+		
+		cursedKnown	=	levelKnown	=	true;
 		unique	=	true;
 	}
 	

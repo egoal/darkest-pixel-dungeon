@@ -61,6 +61,7 @@ public class Dreamfoil extends Plant {
 				Buff.detach( ch, Drowsy.class );
 				Buff.detach( ch, Slow.class );
 				Buff.detach( ch, Vertigo.class);
+				Buff.detach(ch, Vulnerable.class);
 			}
 		}
 	}

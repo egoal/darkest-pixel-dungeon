@@ -126,7 +126,7 @@ public class BrokenSeal extends Item {
 		}
 
 		public int maxShield() {
-			return 1 + armor.tier + armor.level();
+			return 3 + armor.tier + armor.level();
 		}
 	}
 }

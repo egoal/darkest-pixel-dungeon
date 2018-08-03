@@ -3,6 +3,8 @@ package com.egoal.darkestpixeldungeon.actors.buffs;
 import android.util.Log;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 import javax.microedition.khronos.opengles.GL;
@@ -53,4 +55,13 @@ public class MustDodge extends FlavourBuff{
 	public boolean canDodge(Damage dmg){
 		return (dodgeType& type2int(dmg.type))!=0;
 	}
+	
+	@Override
+	public int icon(){ return BuffIndicator.MUST_DODGE; }
+	
+	@Override
+	public String toString(){ return Messages.get(this, "name"); }
+	
+	@Override
+	public String desc(){ return Messages.get(this, "desc", dodgeType, dispTurns()); }
 }

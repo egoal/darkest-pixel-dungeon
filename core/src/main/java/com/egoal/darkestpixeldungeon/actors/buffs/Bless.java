@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
+//* check in Char::checkHit
 public class Bless extends FlavourBuff {
 
 	{

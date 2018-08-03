@@ -15,7 +15,7 @@ public class Damage{
 		MENTAL, 
 	}
 	
-	public class Element{
+	public static class Element{
 		public static final int NONE	=	0x0000;
 		public static final int FIRE	=	0x0001;
 		public static final int POISON	=	0x0002;
@@ -26,9 +26,16 @@ public class Damage{
 		public static final int HOLY	=	0x0040;	// this should use name: light
 		
 		public static final int ELEMENT_COUNT	=	7;
+		
+		public static int all(){
+			int a	=	0;
+			for(int i=0; i<ELEMENT_COUNT; ++i)
+				a |= 0x01<< i;
+			return a;
+		}
 	}
 	
-	public class Feature{
+	public static class Feature{
 		public static final int NONE		=	0x0000;
 		public static final int CRITCIAL	=	0x0001;
 		public static final int ACCURATE	=	0x0002;
@@ -37,6 +44,13 @@ public class Damage{
 		public static final int RANGED		=	0x0010;
 		
 		public static final int FEATURE_COUNT	=	5;
+
+		public static int all(){
+			int a	=	0;
+			for(int i=0; i<FEATURE_COUNT; ++i)
+				a |= 0x01<< i;
+			return a;
+		}
 	}
 	
 	// attributes

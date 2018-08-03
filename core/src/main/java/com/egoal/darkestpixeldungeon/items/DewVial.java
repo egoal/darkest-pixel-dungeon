@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
+import com.egoal.darkestpixeldungeon.actors.buffs.FireImbue;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ooze;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
@@ -94,12 +95,8 @@ public class DewVial extends Item {
 		if (action.equals( AC_DRINK )){
 
 			if(volume>0){
-
-				int hppv	=	(int)(hero.HT*
-						(hero.heroClass==HeroClass.HUNTRESS?0.12:0.08));
-
-				int needToFill=(hero.HT-hero.HP)/hppv;
-				int drink=volume<needToFill?volume:needToFill;
+				int needToFill	=	(hero.HT-hero.HP)/dhp(hero);
+				int drink=volume<needToFill? volume: needToFill;
 
 				consume(drink, hero);
 			}else{
@@ -109,10 +106,7 @@ public class DewVial extends Item {
 		}
 		if(action.equals(AC_SIP)){
 			if(volume>0){
-				int hppv	=	(int)(hero.HT*
-						(hero.heroClass==HeroClass.HUNTRESS?0.075:0.05)+1);
-
-				int needToFill	=	(hero.HT-hero.HP)/hppv;
+				int needToFill	=	(hero.HT-hero.HP)/dhp(hero);
 				if(needToFill>5) needToFill	=	5;
 
 				int drink	=	volume<needToFill?volume:needToFill;
@@ -138,9 +132,13 @@ public class DewVial extends Item {
 		}
 	}
 
+	// recover per 1
+	private int dhp(Hero hero){
+		return (int)(hero.HT*(hero.heroClass==HeroClass.HUNTRESS? 0.05: 0.03)+ 1);
+	}
+	
 	private void consume(int drink, Hero hero){
-		int hppv	=	(int)(hero.HT*(hero.heroClass==HeroClass.HUNTRESS?0.05:0.03)+1);
-		int effect	=	Math.min(hero.HT-hero.HP,drink*hppv);
+		int effect	=	Math.min(hero.HT-hero.HP,drink*dhp(hero));
 
 		hero.HP	+=	effect;
 		hero.sprite.emitter().burst(Speck.factory(Speck.HEALING),volume>5?2:1);
