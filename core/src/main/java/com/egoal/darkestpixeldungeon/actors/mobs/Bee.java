@@ -24,8 +24,6 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.BeeSprite;
 import com.watabou.utils.Bundle;
@@ -45,7 +43,7 @@ public class Bee extends Mob {
 		flying = true;
 		state = WANDERING;
 		
-		mapResists.put(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.POISON, 1.25f);
 	}
 
 	private int level;

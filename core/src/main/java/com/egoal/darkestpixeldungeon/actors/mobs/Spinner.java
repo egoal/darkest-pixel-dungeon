@@ -51,7 +51,7 @@ public class Spinner extends Mob {
 
 		FLEEING = new Fleeing();
 
-		mapResists.put(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.POISON, 1.25f);
 	}
 
 	@Override

@@ -26,7 +26,6 @@ import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.DewVial;
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
-import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
@@ -46,6 +45,8 @@ import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
@@ -125,21 +126,26 @@ public enum HeroClass {
 		new Wine().collect();
 		
 		if(DarkestPixelDungeon.debug()){
-			// debug mde, give extra materials
-			for(int i=0; i<9; ++i){
-				(new ScrollOfMagicMapping()).identify().collect();
-				(new ScrollOfPsionicBlast()).identify().collect();
-				
-				(new PotionOfHealing()).identify().collect();
-				(new PotionOfStrength()).identify().collect();
-				(new PotionOfExperience()).identify().collect();
-				
-				(new Blindweed.Seed()).identify().collect();
-				(new Sorrowmoss.Seed()).identify().collect();
-				(new Firebloom.Seed()).identify().collect();
-			}
-			
-			// test reinforced potion
+			initDebug(hero);
+		}
+
+	}
+	
+	private static void initDebug(Hero hero){
+		for(int i=0; i<9; ++i){
+			(new ScrollOfMagicMapping()).identify().collect();
+			(new ScrollOfPsionicBlast()).identify().collect();
+
+			(new PotionOfHealing()).identify().collect();
+			(new PotionOfStrength()).identify().collect();
+			(new PotionOfExperience()).identify().collect();
+
+			(new Blindweed.Seed()).identify().collect();
+			(new Sorrowmoss.Seed()).identify().collect();
+			(new Firebloom.Seed()).identify().collect();
+		}
+
+		// test reinforced potion
 //			for(int i=0; i<2; ++i){
 //				(new PotionOfFrost()).reinforce().identify().collect();
 //				(new PotionOfHealing()).reinforce().identify().collect();
@@ -148,28 +154,28 @@ public enum HeroClass {
 //				(new PotionOfPurity()).reinforce().identify().collect();
 //				(new PotionOfToxicGas()).reinforce().identify().collect();
 //			}
-			
-			(new PlateArmor()).upgrade(6).identify().collect();
-			(new AssassinsBlade()).upgrade(6).identify().collect();	
-			
-			(new WandOfPrismaticLight()).identify().collect();
-			
-			(new TomeOfMastery()).identify().collect();
-			(new DewVial()).setVolume(20).identify().collect();
-			(new ArmorKit()).identify().collect();
 
-			(new UrnOfShadow()).identify().collect();
-			(new Astrolabe()).identify().collect();
-			
-			(new UnholyBlood()).identify().collect();
-			(new DemonicSkull()).identify().collect();
-			
-			(new Book().setTitle(Book.Title.COLLIES_DIARY)).collect();
-			(new Book().setTitle(Book.Title.HEADLESS_KNIGHTS_SECRETS)).collect();
-			
-			hero.HP	=	1;
-		}
+		(new PlateArmor()).upgrade(6).identify().collect();
+		(new AssassinsBlade()).upgrade(6).identify().collect();
 
+		(new WandOfPrismaticLight()).identify().collect();
+
+		(new TomeOfMastery()).identify().collect();
+		(new DewVial()).setVolume(20).identify().collect();
+		(new ArmorKit()).identify().collect();
+
+		(new UrnOfShadow()).identify().collect();
+		(new Astrolabe()).identify().collect();
+
+		(new UnholyBlood()).identify().collect();
+		(new DemonicSkull()).identify().collect();
+
+		(new ScrollOfTerror()).identify().collect();
+		
+		(new Book().setTitle(Book.Title.COLLIES_DIARY)).collect();
+		(new Book().setTitle(Book.Title.HEADLESS_KNIGHTS_SECRETS)).collect();
+
+		hero.HP	=	1;
 	}
 	
 	public Badges.Badge masteryBadge() {
@@ -265,9 +271,9 @@ public enum HeroClass {
 		// perks
 		// resists and extra resists to poison
 		for(int i=0; i<Damage.Element.ELEMENT_COUNT; ++i){
-			hero.mapResists.put(1<<i, 1.25f);
+			hero.addResistances(1<<i, 1.25f);
 		}
-		hero.mapResists.put(Damage.Element.POISON, 2.f);
+		hero.addResistances(Damage.Element.POISON, 2.f);
 		
 		(hero.belongings.weapon =   new SorceressWand()).identify();
 		

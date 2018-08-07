@@ -27,7 +27,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -37,8 +36,6 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
-
-import java.util.HashSet;
 
 public class Warlock extends Mob implements Callback {
 	
@@ -58,7 +55,7 @@ public class Warlock extends Mob implements Callback {
 
 		properties.add(Property.UNDEAD);
 
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
 	}
 
 	@Override

@@ -23,10 +23,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
@@ -35,13 +33,11 @@ import com.egoal.darkestpixeldungeon.sprites.TenguSprite;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.levels.traps.SpearTrap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -49,8 +45,6 @@ import com.egoal.darkestpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-
-import java.util.HashSet;
 
 public class Tengu extends Mob {
 	
@@ -67,7 +61,7 @@ public class Tengu extends Mob {
 
 		properties.add(Property.BOSS);
 
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	@Override

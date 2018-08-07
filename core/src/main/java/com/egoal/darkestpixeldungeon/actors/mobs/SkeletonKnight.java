@@ -27,8 +27,9 @@ public class SkeletonKnight extends Mob{
 		lootChance	=	.15f;
 		
 		properties.add(Property.UNDEAD);
-		
-		mapResists.put(Damage.Element.FIRE, .75f);
+
+		addResistances(Damage.Element.FIRE, .75f);
+		addResistances(Damage.Element.SHADOW, 1.5f);
 	}
 	
 	private static final float COUNTER	=	.4f;

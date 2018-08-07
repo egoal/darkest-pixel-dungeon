@@ -75,8 +75,8 @@ public class Yog extends Mob {
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.DEMONIC);
 
-		mapResists.put(Damage.Element.POISON, 1.25f);
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	public Yog() {
@@ -310,8 +310,8 @@ public class Yog extends Mob {
 			properties.add(Property.BOSS);
 			properties.add(Property.DEMONIC);
 
-			mapResists.put(Damage.Element.POISON, 1.25f);
-			mapResists.put(Damage.Element.SHADOW, 1.25f);
+			addResistances(Damage.Element.POISON, 1.25f);
+			addResistances(Damage.Element.SHADOW, 1.25f);
 		}
 		
 		@Override

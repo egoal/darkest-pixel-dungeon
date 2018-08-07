@@ -38,15 +38,21 @@ public class Astrolabe extends Artifact{
 	{
 		image	=	ItemSpriteSheet.DPD_ASTROLABE;
 		unique	=	true;
+		bones	=	false;
 		defaultAction	=	AC_INVOKE;
 		
 		exp	=	0;
 		levelCap	=	10;
-		cooldown	=	0;
+		// cooldown	=	0;
+		
+		charge	=	3;
+		partialCharge	=	0;
+		chargeCap	=	4;
 	}
 	
-	private static float TIME_TO_INVOKE	=	1f;
-	private static int NORMAL_COOLDOWN	=	8;
+	private static float TIME_TO_INVOKE	=	.5f;
+	// private static int NORMAL_COOLDOWN	=	8;
+	private static final float NORMAL_CHARGE_SPEED	=	1f/20f;
 	
 	private static final String AC_INVOKE	=	"INVOKE";
 	
@@ -64,7 +70,8 @@ public class Astrolabe extends Artifact{
 		super.execute(hero, action);
 		if(action.equals(AC_INVOKE)){
 			if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if(cooldown>0) GLog.i(Messages.get(this, "cooldown", cooldown));
+			// else if(cooldown>0) GLog.i(Messages.get(this, "cooldown", cooldown));
+			else if (charge <= 0)  GLog.i( Messages.get(this, "no_charge") );
 			else{
 				invokeMagic();
 				
@@ -75,16 +82,18 @@ public class Astrolabe extends Artifact{
 	
 	private boolean blockNextNegative	=	false;
 	private boolean nextNegativeIsImprison	=	false;
+	private float chargeSpeed	=	NORMAL_CHARGE_SPEED;
 	
 	// invoke logic
 	private void invokeMagic(){
+		--charge;
 		Sample.INSTANCE.play(Assets.SND_ASTROLABE);
 
 		boolean invokePositive	=	Random.Float()< (cursed? .5f: .85f);
 		
 		if(!invokePositive && blockNextNegative){
 			blockNextNegative	=	false;
-			cooldown	=	NORMAL_COOLDOWN;
+			// cooldown	=	NORMAL_COOLDOWN;
 
 			curUser.sprite.showStatus(0x420000,Messages.get(Invoker.class,"extremely_lucky_block"));
 			return;
@@ -135,24 +144,27 @@ public class Astrolabe extends Artifact{
 		}
 	}
 	
-	private static final String COOLDOWN	=	"cooldown";
+	// private static final String COOLDOWN	=	"cooldown";
 	private static final String BLOCK_NEXT_NEGATIVE	=	"block_next_negative";
 	private static final String NEXT_IS_IMPRISON	=	"next_negative_is_imprison";
+	private static final String CHARGE_SPEED	=	"charge_speed";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put( COOLDOWN, cooldown );
+		// bundle.put( COOLDOWN, cooldown );
 		bundle.put(BLOCK_NEXT_NEGATIVE, blockNextNegative);
 		bundle.put(NEXT_IS_IMPRISON, nextNegativeIsImprison);
+		bundle.put(CHARGE_SPEED, chargeSpeed);
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		cooldown	=	bundle.getInt( COOLDOWN );
+		// cooldown	=	bundle.getInt( COOLDOWN );
 		blockNextNegative	=	bundle.getBoolean(BLOCK_NEXT_NEGATIVE);
 		nextNegativeIsImprison	=	bundle.getBoolean(NEXT_IS_IMPRISON);
+		chargeSpeed	=	bundle.getFloat(CHARGE_SPEED);
 	}
 	@Override
 	public int price() {
@@ -164,8 +176,21 @@ public class Astrolabe extends Artifact{
 	
 	public class AstrolabeRecharge extends ArtifactBuff{
 		public boolean act(){
-			if(cooldown>0)
-				cooldown--;
+			if(charge<chargeCap){
+				partialCharge	+=	chargeSpeed;
+
+				if(partialCharge>=1){
+					++charge;
+					--partialCharge;
+					chargeSpeed	=	NORMAL_CHARGE_SPEED;
+					if(charge==chargeCap)
+						partialCharge	=	0f;
+				}
+			}else{
+				partialCharge	=	0f;
+			}
+			
+			// --cooldown;
 			
 			updateQuickslot();
 			spend(TICK);
@@ -178,9 +203,10 @@ public class Astrolabe extends Artifact{
 	public static class Invoker{
 		protected String name_	=	"invoker";
 		protected boolean needTarget_	=	false;
-		protected int cooldown_	=	NORMAL_COOLDOWN;
+		// protected int cooldown_	=	NORMAL_COOLDOWN;
 		private Hero user_	=	null;
 		private Astrolabe a_	=	null;
+		protected float chargeSpeed_	=	NORMAL_CHARGE_SPEED;
 		
 		public String status(){
 			return Messages.get(Invoker.class, name_);
@@ -189,7 +215,8 @@ public class Astrolabe extends Artifact{
 		public final void invoke(Hero user, Astrolabe a){
 			user_	=	user;
 			a_	=	a;
-			a.cooldown	=	cooldown_;
+			a.chargeSpeed	=	chargeSpeed_;
+			// a.cooldown	=	cooldown_;
 			if(needTarget_){
 				GameScene.selectCell(caster);
 			}else{
@@ -311,7 +338,8 @@ public class Astrolabe extends Artifact{
 	public static class faith extends Invoker{
 		{
 			name_	=	"faith";
-			cooldown_	=	NORMAL_COOLDOWN*3/5;
+			// cooldown_	=	NORMAL_COOLDOWN*3/5;
+			chargeSpeed_	=	NORMAL_CHARGE_SPEED*2f;
 		}
 		
 		@Override
@@ -406,7 +434,8 @@ public class Astrolabe extends Artifact{
 	public static class imprison extends Invoker{
 		{
 			name_	=	"imprison";
-			cooldown_	=	NORMAL_COOLDOWN*2;
+			// cooldown_	=	NORMAL_COOLDOWN*2;
+			chargeSpeed_	=	NORMAL_CHARGE_SPEED*.6f;
 		}
 		
 		@Override

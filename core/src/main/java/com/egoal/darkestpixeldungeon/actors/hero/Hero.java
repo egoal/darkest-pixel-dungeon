@@ -454,7 +454,7 @@ public class Hero extends Char {
 
 		// critical
 		int bonusCritical	=	RingOfCritical.getBonus(this, RingOfCritical.Critical.class);
-		float theCriticalChance	=	criticalChance_*(float)Math.pow(1.125, bonusCritical);
+		float theCriticalChance	=	criticalChance_*(float)Math.pow(1.15, bonusCritical);
 		
 		if(!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Float()<theCriticalChance){
 			dmg.value	*=	1.5f;

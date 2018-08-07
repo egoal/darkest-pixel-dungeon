@@ -22,7 +22,6 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.sprites.ScorpioSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -31,11 +30,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.watabou.utils.Random;
-
-import java.util.HashSet;
 
 public class Scorpio extends Mob {
 	
@@ -53,9 +49,9 @@ public class Scorpio extends Mob {
 		lootChance = 0.2f;
 
 		properties.add(Property.DEMONIC);
-		
-		mapResists.put(Damage.Element.POISON, 1.25f);
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+
+		addResistances(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	@Override

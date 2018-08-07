@@ -110,17 +110,7 @@ public class Toolbar extends Component {
 		for(int i=0; i<NUM_QUICK_SLOTS; ++i){
 			add(btnQuick[NUM_QUICK_SLOTS-1-i]	=	new QuickslotTool(64, 0, 22, 24, NUM_QUICK_SLOTS-1-i));
 		}
-		
-//		btnQuick = new QuickslotTool[4];
-//		
-//		add( btnQuick[3] = new QuickslotTool( 64, 0, 22, 24, 3) );
-//
-//		add( btnQuick[2] = new QuickslotTool( 64, 0, 22, 24, 2) );
-//
-//		add(btnQuick[1] = new QuickslotTool(64, 0, 22, 24, 1));
-//
-//		add(btnQuick[0] = new QuickslotTool(64, 0, 22, 24, 0));
-		
+
 		add(btnInventory = new Tool(0, 0, 24, 26) {
 			private GoldIndicator gold;
 

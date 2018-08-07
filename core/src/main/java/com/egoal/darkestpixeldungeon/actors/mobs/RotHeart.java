@@ -48,6 +48,8 @@ public class RotHeart extends Mob {
 
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
+
+		addResistances(Damage.Element.POISON, 100f, 1.5f);
 	}
 
 	@Override

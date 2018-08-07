@@ -3,7 +3,9 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
@@ -231,7 +233,7 @@ public class Statuary extends NPC{
 			}
 			
 			//todo: reconsider the unholy blood
-			Dungeon.level.drop(new UnholyBlood(), hero.pos).sprite.drop();
+			Dungeon.level.drop(new UnholyBlood().identify(), hero.pos).sprite.drop();
 		}
 		
 		return true;
@@ -348,13 +350,14 @@ public class Statuary extends NPC{
 			return gold>=500;
 		}else{
 			// blasphemy, reset gold
-			gold	=	0;
+			gold	=	gold>=100? 100: 0;
 			hero.busy();
 			hero.sprite.operate(hero.pos);
 			GLog.i(Messages.get(this, "blasphemy"));
+			GLog.w(Messages.get(this, "greedy"));
+			
+			return false;
 		}
-		
-		return true;
 	}
 	
 	//
@@ -376,6 +379,20 @@ public class Statuary extends NPC{
 		type(value.length()>0? Type.valueOf(value): Type.ANGEL);
 		isActive	=	bundle.getBoolean(ACTIVE);
 		gold	=	bundle.getInt(GOLD);
+	}
+	
+	// make it as a static npc
+	@Override
+	public int defenseSkill( Char enemy ) {
+		return 1000;
+	}
+
+	@Override
+	public void takeDamage(Damage dmg){
+	}
+
+	@Override
+	public void add( Buff buff ) {
 	}
 	
 	// sprite class

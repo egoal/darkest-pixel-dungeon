@@ -385,7 +385,7 @@ public class GameScene extends PixelScene {
 				default:
 			}
 			if (Dungeon.level instanceof RegularLevel &&
-					((RegularLevel) Dungeon.level).secretDoors > Random.IntRange(3, 4)) {
+					((RegularLevel) Dungeon.level).secretDoors > 3) {
 				GLog.w(Messages.get(this, "secrets"));
 			}
 

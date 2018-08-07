@@ -24,15 +24,12 @@ import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.StatueSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -46,11 +43,11 @@ public class Statue extends Mob {
 
 		EXP = 0;
 		state = PASSIVE;
-		
-		mapResists.put(Damage.Element.POISON, 1.25f);
-		mapResists.put(Damage.Element.FIRE, 1.25f);
-		mapResists.put(Damage.Element.LIGHT, 1.25f);
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+
+		addResistances(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.FIRE, 1.25f);
+		addResistances(Damage.Element.LIGHT, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
 	}
 	
 	protected Weapon weapon;

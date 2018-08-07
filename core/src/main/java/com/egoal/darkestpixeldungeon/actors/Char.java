@@ -308,14 +308,31 @@ public abstract class Char extends Actor {
 		
 	}
 
-	public HashMap<Integer, Float > mapResists	=	new HashMap<>();
+	// resistances
+	private HashMap<Integer, Float > mapMagicalResistances	=	new HashMap<>();
+	private HashMap<Integer, Float > mapNormalResistances	=	new HashMap<>();
+	public void addResistances(int element, float magical, float normal){
+		mapMagicalResistances.put(element, magical);
+		mapNormalResistances.put(element, normal);
+	}
+	public void addResistances(int ele, float r){
+		addResistances(ele, r, r);
+	}
 	protected Damage resistDamage(Damage dmg){
-		for(int of=0; of<Damage.Element.ELEMENT_COUNT; ++of){
-			int ele	=	1<<of;
-			if(dmg.hasElement(ele) && mapResists.containsKey(ele))
-				dmg.value	/=	mapResists.get(ele);
-		}
+		HashMap<Integer, Float > mr	=	null;
+		if(dmg.type==Damage.Type.NORMAL)
+			mr	=mapNormalResistances;
+		else if(dmg.type==Damage.Type.MAGICAL)
+			mr	=mapMagicalResistances;
 		
+		if(mr!=null){
+			for(int of=0;of<Damage.Element.ELEMENT_COUNT;++of){
+				int ele=1<<of;
+				if(dmg.hasElement(ele) && mr.containsKey(ele)){
+					dmg.value/=mr.get(ele);
+				}
+			}
+		}
 		return dmg;
 	}
 	

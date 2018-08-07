@@ -29,8 +29,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
 import com.egoal.darkestpixeldungeon.items.Dewdrop;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -38,7 +36,6 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.EyeSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfDisintegration;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -65,7 +62,7 @@ public class Eye extends Mob {
 
 		properties.add(Property.DEMONIC);
 
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
 	}
 
 	@Override

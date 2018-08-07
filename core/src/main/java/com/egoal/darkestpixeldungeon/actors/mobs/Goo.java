@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -30,15 +29,12 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.GooWarn;
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ooze;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -52,8 +48,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
-import java.util.HashSet;
 
 public class Goo extends Mob {
 
@@ -69,8 +63,8 @@ public class Goo extends Mob {
 		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
 
-		mapResists.put(Damage.Element.FIRE, 0.667f);
-		mapResists.put(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.FIRE, 0.667f);
+		addResistances(Damage.Element.POISON, 1.25f);
 	}
 
 	private int pumpedUp = 0;

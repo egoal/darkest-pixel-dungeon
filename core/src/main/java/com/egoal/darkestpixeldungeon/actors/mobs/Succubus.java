@@ -35,7 +35,6 @@ import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.sprites.SuccubusSprite;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -63,8 +62,8 @@ public class Succubus extends Mob {
 		lootChance = 0.05f;
 
 		properties.add(Property.DEMONIC);
-		
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+
+		addResistances(Damage.Element.SHADOW, 1.25f);
 	}
 
 	@Override

@@ -557,7 +557,8 @@ public abstract class RegularLevel extends Level {
 				if (Dungeon.depth <= 1) {
 					map[door] = Terrain.DOOR;
 				} else {
-					boolean secret = (Dungeon.depth < 6 ? Random.Int( 12 - Dungeon.depth ) : Random.Int( 6 )) == 0;
+					boolean secret	=	(Dungeon.depth < 6 ? 
+						Random.Int(14 - Dungeon.depth) : Random.Int(8)) == 0;
 					map[door] = secret ? Terrain.SECRET_DOOR : Terrain.DOOR;
 					if (secret) {
 						secretDoors++;

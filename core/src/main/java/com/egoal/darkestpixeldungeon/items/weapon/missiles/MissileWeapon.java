@@ -80,6 +80,7 @@ abstract public class MissileWeapon extends Weapon{
 
 				int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
 
+				//* huntress bonus
 				if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
 					bonus += 3;
 

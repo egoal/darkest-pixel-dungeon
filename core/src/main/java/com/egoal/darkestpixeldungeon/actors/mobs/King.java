@@ -30,7 +30,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.levels.CityBossLevel;
@@ -42,7 +41,6 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfDisintegration;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.KingSprite;
@@ -70,7 +68,8 @@ public class King extends Mob {
 		properties.add(Property.BOSS);
 		properties.add(Property.UNDEAD);
 
-		mapResists.put(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 	
 	private boolean nextPedestal = true;

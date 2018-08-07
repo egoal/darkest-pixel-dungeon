@@ -21,9 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.effects.particles.SparkParticle;
@@ -36,9 +34,6 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
-
-import java.util.EventListener;
-import java.util.HashSet;
 
 public class Shaman extends Mob implements Callback {
 
@@ -56,7 +51,7 @@ public class Shaman extends Mob implements Callback {
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.33f;
 
-		mapResists.put(Damage.Element.LIGHT, 1.25f);
+		addResistances(Damage.Element.LIGHT, 1.25f);
 	}
 
 	@Override

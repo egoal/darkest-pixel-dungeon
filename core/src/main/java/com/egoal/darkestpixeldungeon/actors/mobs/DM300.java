@@ -36,8 +36,6 @@ import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -52,6 +50,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.sql.DatabaseMetaData;
 import java.util.HashSet;
 
 public class DM300 extends Mob {
@@ -68,7 +67,8 @@ public class DM300 extends Mob {
 
 		properties.add(Property.BOSS);
 		
-		mapResists.put(Damage.Element.POISON, 100.f);
+		addResistances(Damage.Element.ICE, .8f);
+		addResistances(Damage.Element.POISON, 100.f, 1.5f);
 	}
 	
 	@Override
