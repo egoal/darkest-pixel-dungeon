@@ -32,8 +32,8 @@ public class SkeletonKnight extends Mob{
 		addResistances(Damage.Element.SHADOW, 1.5f);
 	}
 	
-	private static final float COUNTER	=	.4f;
-	private static final float COMBO	=	.3f;
+	private static final float COUNTER	=	.3f;
+	private static final float COMBO	=	.25f;
 
 	@Override
 	public Damage giveDamage(Char target) {
@@ -67,13 +67,12 @@ public class SkeletonKnight extends Mob{
 	}
 	
 	@Override
-	public Damage attackProc(Damage damage){
+	public boolean attack(Char enemy){
 		if(Random.Float()<COMBO){
-			// almost, no time cost
-			spend(-cooldown()*0.99f);
+			spend(-cooldown()*.99f);
 			sprite.showStatus(CharSprite.WARNING, Messages.get(this, "combo"));
 		}
 		
-		return damage;
+		return super.attack(enemy);
 	}
 }

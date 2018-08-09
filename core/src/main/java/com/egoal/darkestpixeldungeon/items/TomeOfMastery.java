@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
@@ -132,6 +133,7 @@ public class TomeOfMastery extends Item {
 		// when choose
 		if (way == HeroSubClass.BERSERKER) {
 			Buff.affect( curUser, Berserk.class );
+			curUser.heroPerk.add(HeroPerk.Perk.FEARLESS);
 		}
 		if(way==HeroSubClass.WARLOCK){
 			Item uos	=	new UrnOfShadow().identify();

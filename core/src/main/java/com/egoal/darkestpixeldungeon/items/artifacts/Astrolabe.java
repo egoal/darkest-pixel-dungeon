@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
+import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
@@ -440,8 +441,8 @@ public class Astrolabe extends Artifact{
 		
 		@Override
 		protected void invoke_directly(Hero user, Astrolabe a){
-			Buff.prolong(user, Cripple.class, Cripple.DURATION/2);
-			
+			// Buff.prolong(user, Cripple.class, Cripple.DURATION/2);
+			Buff.prolong(user, Roots.class, 3f);
 		}
 	}
 }

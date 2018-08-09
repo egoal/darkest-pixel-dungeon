@@ -14,6 +14,7 @@ public class HeroPerk{
 		DRUNKARD(			"drunkard", 			0x01),
 		CRITICAL_STRIKE(	"critical_strike", 		0x02),
 		KEEN(				"keen", 				0x04),
+		FEARLESS(			"fearless", 			0x08),
 		;
 		
 		public String title;

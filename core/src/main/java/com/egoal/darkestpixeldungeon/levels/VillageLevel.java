@@ -357,7 +357,8 @@ public class VillageLevel extends RegularLevel{
 		// test 
 		if(true){
 			// Rat dg	=	new Rat();
-			Statuary dg	=	new Statuary().type(Statuary.Type.DEVIL);
+			// Statuary dg	=	new Statuary().type(Statuary.Type.DEVIL);
+			SkeletonKnight dg	=	new SkeletonKnight();
 			do{
 				dg.pos	=	pointToCell(roomEntrance.random());
 			}while(findMob(dg.pos)!=null || dg.pos==entrance);

@@ -1151,7 +1151,7 @@ public class Hero extends Char {
 				if(dmg.type!=Damage.Type.MENTAL)
 					dmgMental.value	+=	dmg.value/4;
 			}
-			if(HP<HT/4 && dmg.value>0){
+			if(!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP<HT/4 && dmg.value>0){
 				// when health is low	
 				dmgMental.value	+=	Random.Int(1, 5);
 			}
@@ -1208,6 +1208,9 @@ public class Hero extends Char {
 		if(dmg.isFeatured(Damage.Feature.ACCURATE)){}
 		else{
 			// sorceress perk
+			if(heroClass==HeroClass.WARRIOR)
+				dmg.value	+=	Random.Int(0, 1);
+			
 			if(heroClass==HeroClass.SORCERESS && 
 				Random.Float()<(subClass==HeroSubClass.STARGAZER? .2f: .1f))
 				dmg.value	=	0;
