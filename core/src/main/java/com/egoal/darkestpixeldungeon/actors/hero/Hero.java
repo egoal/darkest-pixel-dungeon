@@ -89,6 +89,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -442,7 +443,11 @@ public class Hero extends Char {
 		KindOfWeapon wep	=	rangedWeapon!=null? rangedWeapon: belongings.weapon;
 		if(wep!=null){
 			dmg	=	wep.giveDamage(this, enemy);
-			dmg.value	+=	bonus;
+			// battle gloves
+			if(wep instanceof BattleGloves){
+				dmg.value	+=	RingOfForce.damageRoll(this);
+			}else
+				dmg.value	+=	bonus;
 		}else{
 			// bare hand
 			if(bonus!=0){

@@ -51,6 +51,8 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.CrystalsSwords;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
@@ -124,6 +126,9 @@ public enum HeroClass {
 		
 		// a wine
 		new Wine().collect();
+		
+		new CrystalsSwords().identify().collect();
+		new BattleGloves().identify().collect();
 		
 		if(DarkestPixelDungeon.debug()){
 			initDebug(hero);

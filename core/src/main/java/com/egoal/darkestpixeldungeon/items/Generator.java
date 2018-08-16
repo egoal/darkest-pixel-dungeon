@@ -24,6 +24,8 @@ import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfVenom;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.CrystalsSwords;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Whip;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Tamahawk;
@@ -192,12 +194,20 @@ public class Generator {
 		}
 	}
 
-	private static final float[][] floorSetTierProbs = new float[][] {
+	private static final float[][] floorSetArmorTierProbs= new float[][] {
 			{0, 70, 20,  8,  2},
 			{0, 25, 50, 20,  5},
 			{0, 10, 40, 40, 10},
 			{0,  5, 20, 50, 25},
 			{0,  2,  8, 20, 70}
+	};
+	
+	private static final float[][] floorSetWeaponTierProbs	=	new float[][]{
+			{20, 60, 10, 5, 5}, 
+			{10, 25, 50, 15, 5}, 
+			{0, 10, 40, 40, 10},
+			{0, 5, 20, 50, 25},
+			{0, 2, 8, 20, 70}
 	};
 	
 	private static HashMap<Category,Float> categoryProbs = new HashMap<Generator.Category, Float>();
@@ -267,9 +277,10 @@ public class Generator {
 			Dagger.class,
 			MagesStaff.class,
 			Boomerang.class,
-			Dart.class
+			Dart.class,
+			BattleGloves.class, 
 		};
-		Category.WEP_T1.probs = new float[]{ 1, 1, 1, 0, 0, 1 };
+		Category.WEP_T1.probs = new float[]{ 0, 1, 1, 0, 0, 1, 1 };
 
 		Category.WEP_T2.classes = new Class<?>[]{
 			NewShortsword.class,
@@ -289,9 +300,10 @@ public class Generator {
 			Sai.class,
 			Whip.class,
 			Shuriken.class,
-			CurareDart.class
+			CurareDart.class,
+			CrystalsSwords.class,
 		};
-		Category.WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4, 6, 6 };
+		Category.WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4, 6, 6, 4};
 
 		Category.WEP_T4.classes = new Class<?>[]{
 			Longsword.class,
@@ -431,10 +443,10 @@ public class Generator {
 	
 	public static Armor randomArmor(int floorSet) {
 
-		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
+		floorSet = (int)GameMath.gate(0, floorSet, floorSetArmorTierProbs.length-1);
 
 		try {
-			Armor a = (Armor)Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])].newInstance();
+			Armor a = (Armor)Category.ARMOR.classes[Random.chances(floorSetArmorTierProbs[floorSet])].newInstance();
 			a.random();
 			return a;
 		} catch (Exception e) {
@@ -452,15 +464,17 @@ public class Generator {
 	};
 
 	public static Weapon randomWeapon(){
+		
+		
 		return randomWeapon(Dungeon.depth / 5);
 	}
 	
 	public static Weapon randomWeapon(int floorSet) {
 
-		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
+		floorSet = (int)GameMath.gate(0, floorSet, floorSetWeaponTierProbs.length-1);
 
 		try {
-			Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
+			Category c = wepTiers[Random.chances(floorSetWeaponTierProbs[floorSet])];
 			Weapon w = (Weapon)c.classes[Random.chances(c.probs)].newInstance();
 			w.random();
 			return w;

@@ -49,7 +49,7 @@ import java.util.Locale;
 public class WndRanking extends WndTabbed {
 	
 	private static final int WIDTH			= 91;
-	private static final int HEIGHT			= 137;
+	private static final int HEIGHT			= 160;
 	
 	private Thread thread;
 	private String error = null;
@@ -138,7 +138,7 @@ public class WndRanking extends WndTabbed {
 	
 	private class StatsTab extends Group {
 
-		private int GAP	= 4;
+		private int GAP	= 6;
 		
 		public StatsTab() {
 			super();
@@ -233,21 +233,23 @@ public class WndRanking extends WndTabbed {
 
 			// quickslots
 			pos = 0;
-			for (int i = 0; i < 4; i++){
+			for (int i = 0; i < 6; i++){
+				float posx	=	i%4*(22+1);
+				float posy	=	i/4*(22+1)+116;
 				if (Dungeon.quickslot.getItem(i) != null){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
-					slot.setRect( pos, 116, 22, 22 );
+					slot.setRect( posx, posy, 22, 22 );
 
 					add(slot);
 
 				} else {
 					ColorBlock bg = new ColorBlock( 22, 22, 0x9953564D );
-					bg.x = pos;
-					bg.y = 116;
+					bg.x = posx;
+					bg.y = posy;
 					add(bg);
 				}
-				pos += 22+1;
+				// pos += 22+1;
 			}
 		}
 		
