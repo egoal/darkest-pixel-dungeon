@@ -1509,7 +1509,16 @@ public class Hero extends Char {
 
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
 			return;
-
+		
+		//* check buff immunities
+		// immunities
+		for(Buff b: buffs()){
+			for(Class<?> im: b.immunities){
+				if(buff.getClass()==im)
+					return;
+			}
+		}
+		
 		super.add( buff );
 
 		if (sprite != null) {

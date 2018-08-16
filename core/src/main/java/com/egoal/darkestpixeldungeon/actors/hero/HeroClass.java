@@ -263,6 +263,9 @@ public enum HeroClass {
 
 		Dungeon.quickslot.setSlot(0, boomerang);
 
+		hero.heroPerk.add(HeroPerk.Perk.NIGHT_VISION);
+		hero.heroPerk.add(HeroPerk.Perk.SHOOTER);
+		
 		new PotionOfMindVision().setKnown();
 	}
 

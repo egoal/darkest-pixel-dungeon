@@ -355,7 +355,7 @@ public class VillageLevel extends RegularLevel{
 		}
 		
 		// test 
-		if(true){
+		if(false){
 			// Rat dg	=	new Rat();
 			// Statuary dg	=	new Statuary().type(Statuary.Type.DEVIL);
 			SkeletonKnight dg	=	new SkeletonKnight();

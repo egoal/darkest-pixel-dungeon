@@ -21,6 +21,8 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -48,7 +50,12 @@ public class Light extends FlavourBuff {
 	
 	@Override
 	public void detach() {
-		target.viewDistance = Dungeon.level.viewDistance;
+		target.viewDistance	=	Dungeon.level.viewDistance;
+		if(target instanceof Hero){
+			if(((Hero)target).heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
+				target.viewDistance	+=	1;
+		}
+		
 		Dungeon.observe(DISTANCE+1);
 		super.detach();
 	}

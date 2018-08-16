@@ -36,8 +36,6 @@ import com.watabou.noosa.audio.Sample;
 import java.util.ArrayList;
 
 public class ArmorKit extends Item {
-
-	private static final String TXT_UPGRADED		= "you applied the armor kit to upgrade your %s";
 	
 	private static final float TIME_TO_UPGRADE = 2;
 	

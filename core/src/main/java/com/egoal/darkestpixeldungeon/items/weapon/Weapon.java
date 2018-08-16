@@ -180,16 +180,12 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public Damage giveDamage(Hero hero, Char target){
-		Damage dmg	=	super.giveDamage(hero, target).addFeature(Damage.Feature.RANGED);
+		Damage dmg	=	super.giveDamage(hero, target); 
 		
 		// extra damage
 		int exStr	=	hero.STR()-STRReq();
 		if(exStr>0){
-			dmg.value	+=	exStr;
-
-			// huntress perk
-			if(this instanceof MissileWeapon && hero.heroClass==HeroClass.HUNTRESS)
-				dmg.value	+=	Random.Int(exStr)+1;
+			dmg.value	+=	Random.Int(1, exStr);
 		}
 		
 		dmg.value	=	imbue.damageFactor(dmg.value);

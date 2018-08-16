@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.PinCushion;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting;
@@ -115,6 +116,18 @@ abstract public class MissileWeapon extends Weapon{
 		}
 		
 		return super.proc(dmg);
+	}
+	
+	@Override
+	public Damage giveDamage(Hero hero, Char target){
+		Damage dmg	=	super.giveDamage(hero, target).addFeature(Damage.Feature.RANGED);
+		
+		// huntress perk
+		int exstr	=	hero.STR()-	STRReq();
+		if(hero.heroPerk.contain(HeroPerk.Perk.SHOOTER))
+			dmg.value	+=	Random.Int(1, exstr);
+		
+		return dmg;
 	}
 	
 	@Override

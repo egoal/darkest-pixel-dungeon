@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*;
 import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -299,11 +300,12 @@ public class Dungeon {
 
 		hero.pos	=	pos;
 		
+		// initial vision
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		hero.seeDistance    =   level.seeDistance;
 		// huntress perk
-		if(hero.heroClass==HeroClass.HUNTRESS){
+		if(hero.heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)){
 			hero.viewDistance	+=	1;
 			hero.seeDistance	+=	1;
 		}
