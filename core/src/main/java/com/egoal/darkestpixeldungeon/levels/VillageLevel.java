@@ -4,6 +4,8 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
+import com.egoal.darkestpixeldungeon.actors.blobs.Fog;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.actors.mobs.MadMan;
@@ -18,6 +20,9 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
@@ -356,22 +361,36 @@ public class VillageLevel extends RegularLevel{
 			mobs.add(s);
 		}
 		
-		// test 
-		if(true){
-			// Rat dg	=	new Rat();
-			// Statuary dg	=	new Statuary().type(Statuary.Type.DEVIL);
-			// SkeletonKnight dg	=	new SkeletonKnight();
-			MadMan dg	=	new MadMan();
-			do{
-				dg.pos	=	pointToCell(roomEntrance.random());
-			}while(findMob(dg.pos)!=null || dg.pos==entrance);
-			mobs.add(dg);
-
+		// shopkeeper
+		{
 			DPDShopKeeper dsk	=	new DPDShopKeeper();
 			do{
 				dsk.pos	=	pointToCell(roomExit.random(1));
 			}while(findMob(dsk.pos)!=null || !passable[dsk.pos] || map[dsk.pos]==Terrain.SIGN);
 			mobs.add(dsk);
+			
+			dsk.addItemToSell(new PotionOfHealing());
+			dsk.addItemToSell(new PotionOfHealing());
+			dsk.addItemToSell(new AssassinsBlade());
+			dsk.addItemToSell(new ScrollOfUpgrade());
+		}
+		
+		// test 
+		if(true){
+			// Rat dg	=	new Rat();
+			// Statuary dg	=	new Statuary().type(Statuary.Type.DEVIL);
+			// SkeletonKnight dg	=	new SkeletonKnight();
+//			MadMan dg	=	new MadMan();
+//			do{
+//				dg.pos	=	pointToCell(roomEntrance.random());
+//			}while(findMob(dg.pos)!=null || dg.pos==entrance);
+//			mobs.add(dg);
+			
+			int pos;
+			do{
+				pos	=	pointToCell(roomEntrance.random());
+			}while(findMob(pos)!=null || pos==entrance);
+			Blob.seed(pos, 1000, Fog.class);
 		}
 		
 		super.createMobs();

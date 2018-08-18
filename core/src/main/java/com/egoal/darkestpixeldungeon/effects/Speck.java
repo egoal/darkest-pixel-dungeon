@@ -65,6 +65,7 @@ public class Speck extends Image {
 	public static final int RED_LIGHT   = 114;
 	
 	public static final int DPD_HIGHLY_TOXIC	=	115;
+	public static final int DPD_FOG		=	116;
 	
 	private static final int SIZE = 7;
 	
@@ -108,6 +109,7 @@ public class Speck extends Image {
 		case JET:
 		case TOXIC:
 		case DPD_HIGHLY_TOXIC:
+		case DPD_FOG:
 		case VENOM:
 		case PARALYSIS:
 		case STENCH:
@@ -328,6 +330,13 @@ public class Speck extends Image {
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
 			break;
+			
+		case DPD_FOG:
+			hardlight(0x010101);
+			angularSpeed	=	45;
+			angle	=	Random.Float(360);
+			lifespan	=	Random.Float(1f, 3f);
+			break;
 		}
 		
 		
@@ -425,6 +434,7 @@ public class Speck extends Image {
 			case STEAM:
 			case TOXIC:
 			case DPD_HIGHLY_TOXIC:
+			case DPD_FOG:
 			case PARALYSIS:
 			case CONFUSION:
 			case DUST:

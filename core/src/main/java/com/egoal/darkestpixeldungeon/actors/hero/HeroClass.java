@@ -25,12 +25,14 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
@@ -150,23 +152,12 @@ public enum HeroClass {
 			(new Firebloom.Seed()).identify().collect();
 		}
 
-		// test reinforced potion
-//			for(int i=0; i<2; ++i){
-//				(new PotionOfFrost()).reinforce().identify().collect();
-//				(new PotionOfHealing()).reinforce().identify().collect();
-//				(new PotionOfLiquidFlame()).reinforce().identify().collect();
-//				(new PotionOfMindVision()).reinforce().identify().collect();
-//				(new PotionOfPurity()).reinforce().identify().collect();
-//				(new PotionOfToxicGas()).reinforce().identify().collect();
-//			}
-
 		(new PlateArmor()).upgrade(6).identify().collect();
 		(new AssassinsBlade()).upgrade(6).identify().collect();
 
 		(new WandOfPrismaticLight()).identify().collect();
 
 		(new TomeOfMastery()).identify().collect();
-		(new DewVial()).setVolume(20).identify().collect();
 		(new ArmorKit()).identify().collect();
 
 		(new UrnOfShadow()).identify().collect();
@@ -176,10 +167,11 @@ public enum HeroClass {
 		(new DemonicSkull()).identify().collect();
 
 		(new ScrollOfTerror()).identify().collect();
-		
-		(new Book().setTitle(Book.Title.COLLIES_DIARY)).collect();
-		(new Book().setTitle(Book.Title.HEADLESS_KNIGHTS_SECRETS)).collect();
 
+		(new Gold(10000)).collect();
+		
+		(new SeedPouch()).identify().collect();
+		
 		hero.HP	=	1;
 	}
 	

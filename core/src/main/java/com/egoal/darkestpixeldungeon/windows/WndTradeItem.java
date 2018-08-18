@@ -116,7 +116,7 @@ public class WndTradeItem extends Window {
 
 		// sorceress perk1
 		final int price	=	(int)(price(item)*
-				(Dungeon.hero.heroClass==HeroClass.SORCERESS? 0.75: 1.));
+			(Dungeon.hero.heroClass==HeroClass.SORCERESS? 0.75: 1.));
 		
 		if (canBuy) {
 			
