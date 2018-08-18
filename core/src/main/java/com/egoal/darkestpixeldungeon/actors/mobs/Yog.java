@@ -77,6 +77,7 @@ public class Yog extends Mob {
 
 		addResistances(Damage.Element.POISON, 1.25f);
 		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 	
 	public Yog() {
@@ -226,6 +227,8 @@ public class Yog extends Mob {
 
 			properties.add(Property.BOSS);
 			properties.add(Property.DEMONIC);
+			addResistances(Damage.Element.POISON, 1.25f);
+			addResistances(Damage.Element.HOLY, .667f);
 		}
 		
 		@Override
@@ -312,6 +315,7 @@ public class Yog extends Mob {
 
 			addResistances(Damage.Element.POISON, 1.25f);
 			addResistances(Damage.Element.SHADOW, 1.25f);
+			addResistances(Damage.Element.HOLY, .667f);
 		}
 		
 		@Override
@@ -418,6 +422,8 @@ public class Yog extends Mob {
 			state = HUNTING;
 
 			properties.add(Property.DEMONIC);
+			addResistances(Damage.Element.POISON, 1.25f);
+			addResistances(Damage.Element.HOLY, .667f);
 		}
 		
 		@Override

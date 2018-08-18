@@ -264,6 +264,8 @@ public class King extends Mob {
 			state = WANDERING;
 
 			properties.add(Property.UNDEAD);
+			addResistances(Damage.Element.SHADOW, 1.25f);
+			addResistances(Damage.Element.HOLY, .667f);
 		}
 		
 		@Override

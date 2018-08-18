@@ -65,6 +65,7 @@ public class Goo extends Mob {
 
 		addResistances(Damage.Element.FIRE, 0.667f);
 		addResistances(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 
 	private int pumpedUp = 0;

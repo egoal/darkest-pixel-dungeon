@@ -25,12 +25,13 @@ public class SkeletonKnight extends Mob{
 		maxLvl	=	15;
 	
 		loot	=	Wine.class;
-		lootChance	=	.15f;
+		lootChance	=	.1f;
 		
 		properties.add(Property.UNDEAD);
 
 		addResistances(Damage.Element.FIRE, .75f);
 		addResistances(Damage.Element.SHADOW, 1.5f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 	
 	private static final float COUNTER	=	.3f;
@@ -38,7 +39,7 @@ public class SkeletonKnight extends Mob{
 
 	@Override
 	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange(4, 12), this, target);
+		return new Damage(Random.NormalIntRange(8, 16), this, target);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class SkeletonKnight extends Mob{
 	}
 	
 	@Override
-	public int attackSkill(Char target){ return 12; }
+	public int attackSkill(Char target){ return 18; }
 	
 	@Override
 	public Damage defenseProc(Damage damage){

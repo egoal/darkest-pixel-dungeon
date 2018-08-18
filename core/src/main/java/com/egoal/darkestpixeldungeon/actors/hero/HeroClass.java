@@ -279,7 +279,7 @@ public enum HeroClass {
 		// perks
 		// resists and extra resists to poison
 		for(int i=0; i<Damage.Element.ELEMENT_COUNT; ++i){
-			hero.addResistances(1<<i, 1.25f);
+			hero.addResistances(1<<i, 1.25f, 1f);
 		}
 		hero.addResistances(Damage.Element.POISON, 2.f);
 		

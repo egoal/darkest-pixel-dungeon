@@ -321,9 +321,9 @@ public abstract class Char extends Actor {
 	protected Damage resistDamage(Damage dmg){
 		HashMap<Integer, Float > mr	=	null;
 		if(dmg.type==Damage.Type.NORMAL)
-			mr	=mapNormalResistances;
+			mr	=	mapNormalResistances;
 		else if(dmg.type==Damage.Type.MAGICAL)
-			mr	=mapMagicalResistances;
+			mr	=	mapMagicalResistances;
 		
 		if(mr!=null){
 			for(int of=0;of<Damage.Element.ELEMENT_COUNT;++of){

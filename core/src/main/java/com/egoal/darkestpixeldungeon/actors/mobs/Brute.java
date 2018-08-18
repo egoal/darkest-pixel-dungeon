@@ -48,6 +48,8 @@ public class Brute extends Mob {
 		
 		loot = Gold.class;
 		lootChance = 0.5f;
+		
+		addResistances(Damage.Element.SHADOW, .75f);
 	}
 	
 	private boolean enraged = false;

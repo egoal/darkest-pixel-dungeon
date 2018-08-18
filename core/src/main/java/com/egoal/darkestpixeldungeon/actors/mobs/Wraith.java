@@ -52,6 +52,8 @@ public class Wraith extends Mob {
 		flying = true;
 
 		properties.add(Property.UNDEAD);
+		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 	
 	private static final String LEVEL = "level";

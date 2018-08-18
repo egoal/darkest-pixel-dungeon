@@ -47,6 +47,10 @@ public class FetidRat extends Rat {
 
 		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
+
+		addResistances(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 
 	@Override

@@ -69,6 +69,7 @@ public class DM300 extends Mob {
 		
 		addResistances(Damage.Element.ICE, .8f);
 		addResistances(Damage.Element.POISON, 100.f, 1.5f);
+		addResistances(Damage.Element.LIGHT, .667f);
 	}
 	
 	@Override
@@ -174,6 +175,8 @@ public class DM300 extends Mob {
 	public Damage resistDamage(Damage dmg){
 		if(dmg.isFeatured(Damage.Feature.DEATH))
 			dmg.value	*=	0.5;
+		if(dmg.type==Damage.Type.NORMAL)
+			dmg.value	*=	0.8;
 		return super.resistDamage(dmg);
 	}
 	

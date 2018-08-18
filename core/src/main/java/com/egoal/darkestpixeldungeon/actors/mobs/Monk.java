@@ -53,6 +53,8 @@ public class Monk extends Mob {
 		lootChance = 0.083f;
 
 		properties.add(Property.UNDEAD);
+		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 
 	@Override

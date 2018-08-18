@@ -64,6 +64,7 @@ public class Succubus extends Mob {
 		properties.add(Property.DEMONIC);
 
 		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 
 	@Override

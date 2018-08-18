@@ -56,6 +56,7 @@ public class Warlock extends Mob implements Callback {
 		properties.add(Property.UNDEAD);
 
 		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 
 	@Override

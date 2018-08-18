@@ -52,6 +52,7 @@ public class Scorpio extends Mob {
 
 		addResistances(Damage.Element.POISON, 1.25f);
 		addResistances(Damage.Element.SHADOW, 1.25f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 	
 	@Override

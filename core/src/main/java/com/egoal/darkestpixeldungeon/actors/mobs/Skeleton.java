@@ -53,6 +53,7 @@ public class Skeleton extends Mob {
 		properties.add(Property.UNDEAD);
 
 		addResistances(Damage.Element.FIRE, .75f);
+		addResistances(Damage.Element.HOLY, .667f);
 	}
 
 	@Override
