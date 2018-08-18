@@ -55,7 +55,7 @@ public class Humanity extends Item{
 			//todo: show effects
 			
 			//1. recover hp
-			hero.HP	+=	hero.HT*0.3;
+			hero.HP	+=	hero.HT*0.25;
 			if(hero.HP>hero.HT)
 				hero.HP	=	hero.HT;
 			

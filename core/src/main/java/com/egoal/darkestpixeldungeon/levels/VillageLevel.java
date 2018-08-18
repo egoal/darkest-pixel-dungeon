@@ -6,10 +6,12 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
+import com.egoal.darkestpixeldungeon.actors.mobs.MadMan;
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
 import com.egoal.darkestpixeldungeon.actors.mobs.SkeletonKnight;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
@@ -355,14 +357,21 @@ public class VillageLevel extends RegularLevel{
 		}
 		
 		// test 
-		if(false){
+		if(true){
 			// Rat dg	=	new Rat();
 			// Statuary dg	=	new Statuary().type(Statuary.Type.DEVIL);
-			SkeletonKnight dg	=	new SkeletonKnight();
+			// SkeletonKnight dg	=	new SkeletonKnight();
+			MadMan dg	=	new MadMan();
 			do{
 				dg.pos	=	pointToCell(roomEntrance.random());
 			}while(findMob(dg.pos)!=null || dg.pos==entrance);
 			mobs.add(dg);
+
+			DPDShopKeeper dsk	=	new DPDShopKeeper();
+			do{
+				dsk.pos	=	pointToCell(roomExit.random(1));
+			}while(findMob(dsk.pos)!=null || !passable[dsk.pos] || map[dsk.pos]==Terrain.SIGN);
+			mobs.add(dsk);
 		}
 		
 		super.createMobs();

@@ -37,6 +37,7 @@ public abstract class NPC extends Mob{
 		state = PASSIVE;
 	}
 
+	// never overlap with an item
 	protected void throwItem() {
 		Heap heap = Dungeon.level.heaps.get( pos );
 		if (heap != null) {

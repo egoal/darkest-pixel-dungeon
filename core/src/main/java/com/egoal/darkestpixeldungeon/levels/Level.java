@@ -226,8 +226,7 @@ public abstract class Level implements Bundlable {
 				Dungeon.limitedDrops.arcaneStyli.count++;
 			}
 			if(Dungeon.wineNeeded()){
-				// extra chance to spawn wine
-				if(Random.Float()>Math.pow(0.925, bonus+1))
+				if(Random.Float()>Math.pow(0.925, bonus))
 					addItemToSpawn(new Wine());
 				addItemToSpawn(new Wine());
 				Dungeon.limitedDrops.wine.count++;
@@ -365,11 +364,6 @@ public abstract class Level implements Bundlable {
 		locked      = bundle.getBoolean( LOCKED );
 		
 		weakFloorCreated = false;
-
-		//for pre-0.3.0c saves
-//		if (version < 44){
-//			map = Terrain.convertTrapsFrom43( map, traps );
-//		}
 		
 		Collection<Bundlable> collection = bundle.getCollection( HEAPS );
 		for (Bundlable h : collection) {

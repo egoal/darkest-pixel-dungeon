@@ -101,7 +101,7 @@ public class Potion extends Item {
 	public boolean canBeReinforced(){ return false; }
 	public Potion reinforce(){ 
 		if(canBeReinforced())
-			reinforced=true;
+			reinforced	=	true;
 		else
 			Log.e("DPD", "try to reinforce a potion cannot be.");
 		return this; 

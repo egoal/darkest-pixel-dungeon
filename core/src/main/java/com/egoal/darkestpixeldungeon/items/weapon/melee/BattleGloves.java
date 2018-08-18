@@ -12,7 +12,7 @@ public class BattleGloves extends MeleeWeapon{
 		image	=	ItemSpriteSheet.DPD_BATTLE_GLOVES;
 		
 		tier	=	1;
-		DLY		=	.667f;	// 150% speed
+		DLY		=	.75f;	// faster speed
 		// ACC		=	1.2f;	// 20% boost to accuracy
 	}
 	

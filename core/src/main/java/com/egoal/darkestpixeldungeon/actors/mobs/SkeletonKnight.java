@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.food.Humanity;
+import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.SkeletonKnightSprite;
@@ -23,7 +24,7 @@ public class SkeletonKnight extends Mob{
 		EXP	=	10;
 		maxLvl	=	15;
 	
-		loot	=	Humanity.class;
+		loot	=	Wine.class;
 		lootChance	=	.15f;
 		
 		properties.add(Property.UNDEAD);

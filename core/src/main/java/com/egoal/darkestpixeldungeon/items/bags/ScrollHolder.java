@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.bags;
 
+import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -29,7 +30,7 @@ public class ScrollHolder extends Bag {
 	{
 		image = ItemSpriteSheet.HOLDER;
 		
-		size = 16;
+		size =	Belongings.BACKPACK_SIZE;
 	}
 	
 	@Override

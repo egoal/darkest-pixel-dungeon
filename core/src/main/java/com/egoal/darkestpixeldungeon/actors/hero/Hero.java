@@ -444,7 +444,7 @@ public class Hero extends Char {
 		if(wep!=null){
 			dmg	=	wep.giveDamage(this, enemy);
 			// battle gloves
-			if(wep instanceof BattleGloves){
+			if(wep instanceof BattleGloves && bonus>0){
 				dmg.value	+=	RingOfForce.damageRoll(this);
 			}else
 				dmg.value	+=	bonus;

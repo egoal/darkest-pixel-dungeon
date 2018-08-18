@@ -33,11 +33,15 @@ public class PotionOfExperience extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();
-		hero.earnExp( hero.maxExp() );
+		hero.earnExp( reinforced? hero.maxExp()*3/2: hero.maxExp() );
 	}
 	
 	@Override
 	public int price() {
 		return isKnown() ? 50 * quantity : super.price();
 	}
+	
+	@Override
+	public boolean canBeReinforced(){ return true; }
+	
 }

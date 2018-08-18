@@ -50,6 +50,8 @@ public class Statuary extends NPC{
 	
 	{
 		spriteClass	=	StatuarySprite.class;
+		
+		properties.add(Property.IMMOVABLE);
 	}
 
 	// type things
@@ -382,6 +384,12 @@ public class Statuary extends NPC{
 	}
 	
 	// make it as a static npc
+	@Override
+	protected boolean act() {
+		throwItem();
+		return super.act();
+	}
+	
 	@Override
 	public int defenseSkill( Char enemy ) {
 		return 1000;

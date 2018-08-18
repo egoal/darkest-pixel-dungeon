@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.bags;
 
+import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -29,7 +30,7 @@ public class PotionBandolier extends Bag {
 	{
 		image = ItemSpriteSheet.BANDOLIER;
 
-		size = 16;
+		size = Belongings.BACKPACK_SIZE;
 	}
 
 	@Override
