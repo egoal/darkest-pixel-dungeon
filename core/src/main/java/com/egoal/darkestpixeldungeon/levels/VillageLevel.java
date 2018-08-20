@@ -18,12 +18,17 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
+import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
+import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
 
@@ -373,6 +378,9 @@ public class VillageLevel extends RegularLevel{
 			dsk.addItemToSell(new PotionOfHealing());
 			dsk.addItemToSell(new AssassinsBlade());
 			dsk.addItemToSell(new ScrollOfUpgrade());
+			dsk.addItemToSell(new Torch().quantity(3));
+			dsk.addItemToSell(new Knuckles());
+			dsk.addItemToSell(new BattleGloves());
 		}
 		
 		// test 
@@ -386,11 +394,20 @@ public class VillageLevel extends RegularLevel{
 //			}while(findMob(dg.pos)!=null || dg.pos==entrance);
 //			mobs.add(dg);
 			
+			drop(new Gold(1000), entrance);
+			
 			int pos;
 			do{
 				pos	=	pointToCell(roomEntrance.random());
 			}while(findMob(pos)!=null || pos==entrance);
-			Blob.seed(pos, 1000, Fog.class);
+			// the game scene is interval, not initialized.
+			// GameScene.add(Blob.seed(pos, 1000, Fog.class));
+			Fog f	=	(Fog)blobs.get(Fog.class);
+			if(f==null){
+				f	=	new Fog();
+				blobs.put(Fog.class, f);
+			}
+			f.seed(this, pos, 1000);
 		}
 		
 		super.createMobs();

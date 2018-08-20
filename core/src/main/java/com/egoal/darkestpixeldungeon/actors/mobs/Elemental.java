@@ -53,7 +53,7 @@ public class Elemental extends Mob {
 		lootChance = 0.1f;
 
 		properties.add(Property.DEMONIC);
-		addResistances(Damage.Element.POISON, 1.25f);
+		addResistances(Damage.Element.FIRE, 2f);
 		addResistances(Damage.Element.HOLY, .667f);
 	}
 	

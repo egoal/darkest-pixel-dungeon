@@ -167,8 +167,6 @@ public enum HeroClass {
 		(new DemonicSkull()).identify().collect();
 
 		(new ScrollOfTerror()).identify().collect();
-
-		(new Gold(10000)).collect();
 		
 		(new SeedPouch()).identify().collect();
 		
@@ -274,6 +272,9 @@ public enum HeroClass {
 			hero.addResistances(1<<i, 1.25f, 1f);
 		}
 		hero.addResistances(Damage.Element.POISON, 2.f);
+		
+		hero.heroPerk.add(HeroPerk.Perk.SHREWD);
+		hero.heroPerk.add(HeroPerk.Perk.POSITIVE);
 		
 		(hero.belongings.weapon =   new SorceressWand()).identify();
 		

@@ -25,7 +25,7 @@ public class SkeletonKnight extends Mob{
 		maxLvl	=	15;
 	
 		loot	=	Wine.class;
-		lootChance	=	.1f;
+		lootChance	=	.15f;
 		
 		properties.add(Property.UNDEAD);
 
@@ -34,8 +34,8 @@ public class SkeletonKnight extends Mob{
 		addResistances(Damage.Element.HOLY, .667f);
 	}
 	
-	private static final float COUNTER	=	.3f;
-	private static final float COMBO	=	.25f;
+	private static final float COUNTER	=	.2f;
+	private static final float COMBO	=	.15f;
 
 	@Override
 	public Damage giveDamage(Char target) {

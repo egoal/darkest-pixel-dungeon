@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -115,8 +116,8 @@ public class WndTradeItem extends Window {
 		float pos = createDescription( item, true );
 
 		// sorceress perk1
-		final int price	=	(int)(price(item)*
-			(Dungeon.hero.heroClass==HeroClass.SORCERESS? 0.75: 1.));
+		final int price	=	(int)(item.sellPrice()*
+			(Dungeon.hero.heroPerk.contain(HeroPerk.Perk.SHREWD)? .75: 1));
 		
 		if (canBuy) {
 			
@@ -199,7 +200,7 @@ public class WndTradeItem extends Window {
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( item ) );
 		titlebar.label( forSale ?
-			Messages.get(this, "sale", item.toString(), price( item ) ) :
+			Messages.get(this, "sale", item.toString(), item.sellPrice() ) :
 			Messages.titleCase( item.toString() ) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
@@ -222,7 +223,8 @@ public class WndTradeItem extends Window {
 		return info.bottom();
 	}
 	
-	private void sell( Item item ) {
+	// called when sold
+	protected void sell( Item item ) {
 		
 		Hero hero = Dungeon.hero;
 		
@@ -236,7 +238,7 @@ public class WndTradeItem extends Window {
 		new Gold( price ).doPickUp( hero );
 	}
 	
-	private void sellOne( Item item ) {
+	protected void sellOne( Item item ) {
 		
 		if (item.quantity() <= 1) {
 			sell( item );
@@ -249,11 +251,6 @@ public class WndTradeItem extends Window {
 			
 			new Gold( price ).doPickUp( hero );
 		}
-	}
-	
-	private int price( Item item ) {
-		int price = item.price() * 5 * (Dungeon.depth / 5 + 1);
-		return price;
 	}
 	
 	private void buy( Heap heap, int price ) {

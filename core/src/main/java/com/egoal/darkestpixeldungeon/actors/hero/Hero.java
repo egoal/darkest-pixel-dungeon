@@ -1210,15 +1210,21 @@ public class Hero extends Char {
 			sprite.showStatus(0xFFFFFF, Integer.toString(rv));
 	}
 	protected void takeMentalDamage(Damage dmg){
+		if(dmg.value<=0) return;
+		
 		if(dmg.isFeatured(Damage.Feature.ACCURATE)){}
 		else{
-			// sorceress perk
+			// warrior
 			if(heroClass==HeroClass.WARRIOR)
 				dmg.value	+=	Random.Int(0, 1);
 			
-			if(heroClass==HeroClass.SORCERESS && 
-				Random.Float()<(subClass==HeroSubClass.STARGAZER? .2f: .1f))
+			if(heroPerk.contain(HeroPerk.Perk.POSITIVE) && Random.Float()<.1f){
 				dmg.value	=	0;
+				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"));
+			}else if(subClass==HeroSubClass.STARGAZER && Random.Float()<.1f){
+				dmg.value	=	0;
+				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"));
+			}
 		}
 		
 		// keep in mind that SAN is pressure, it increases

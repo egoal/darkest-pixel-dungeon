@@ -33,19 +33,20 @@ public class MadMan extends Mob implements Callback{
 		maxLvl	=	Dungeon.depth+2;
 		
 		loot	=	Humanity.class;
-		lootChance	=	0.15f;
+		lootChance	=	0.1f;
 		
 		addResistances(Damage.Element.SHADOW, 2f);
 		addResistances(Damage.Element.HOLY, .5f);
 	}
 	
 	private static final float TIME_TO_SHOUT	=	1f;
+	private static final int SHOUT_RANGE	=	3;
 	
 	@Override
 	public Damage giveDamage(Char target){
 		if(target instanceof Hero){
 			int dis	=	Dungeon.level.distance(pos, enemy.pos);
-			return new Damage(Random.Int(1, 8-dis), this, target).type(Damage.Type.MENTAL);
+			return new Damage(Random.Int(4-dis, 6-dis), this, target).type(Damage.Type.MENTAL);
 		}else
 			return new Damage(1, this, target).addFeature(Damage.Feature.PURE).addFeature(Damage.Feature.ACCURATE);
 	}
@@ -68,7 +69,7 @@ public class MadMan extends Mob implements Callback{
 	@Override
 	protected boolean canAttack(Char enemy){
 		if(enemy instanceof Hero)
-			return Dungeon.level.distance(pos, enemy.pos)<=4 &&
+			return Dungeon.level.distance(pos, enemy.pos)<=SHOUT_RANGE &&
 				new Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos==enemy.pos;
 		
 		return super.canAttack(enemy);

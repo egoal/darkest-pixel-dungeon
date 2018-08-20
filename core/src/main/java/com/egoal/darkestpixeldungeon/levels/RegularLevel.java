@@ -480,11 +480,9 @@ public abstract class RegularLevel extends Level {
 				if(Random.Float()<(feeling==Feeling.DARK?0.4f:0.5f)){
 					// have lights
 					// int maxLights	=	(rm.type==Type.PASSAGE||rm.type==Type.TUNNEL)? 3: 2;
-					int maxLights	=	2;
-					if(Dungeon.depth<10)
-						maxLights	+=	1;
+					int maxLights	=	Dungeon.depth<10? 3: 2;
 					
-					placeLuminary(rm, Random.Int(0, maxLights)+1);
+					placeLuminary(rm, Random.Int(1, maxLights));
 				}
 			}
 		}
@@ -511,7 +509,7 @@ public abstract class RegularLevel extends Level {
 		lights	=	Math.min(lights, alCells.size());
 		Collections.shuffle(alCells);
 		for(int i=0; i<lights; ++i)
-			map[alCells.get(i)] =   Random.Int(4)==0? Terrain.WALL_LIGHT_OFF: Terrain.WALL_LIGHT_ON;
+			map[alCells.get(i)] =   Random.Int(5)==0? Terrain.WALL_LIGHT_OFF: Terrain.WALL_LIGHT_ON;
 	}
 	
 	protected void placeDoors( Room r ) {
@@ -730,12 +728,12 @@ public abstract class RegularLevel extends Level {
 	@Override
 	protected void createItems() {
 		
-		int nItems = 3;
+		int nItems = 4;
 		int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
 
 		//just in case someone gets a ridiculous ring, cap this at 80%
 		bonus = Math.min(bonus, 10);
-		while (Random.Float() < (0.3f + bonus*0.05f)) {
+		while (Random.Float() < (0.4f + bonus*0.04f)) {
 			nItems++;
 		}
 		

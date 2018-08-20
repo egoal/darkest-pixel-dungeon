@@ -16,7 +16,9 @@ public class HeroPerk{
 		KEEN(				"keen", 				0x04),	// 敏锐：更容易发现隐藏
 		FEARLESS(			"fearless", 			0x08),	// 无畏：不会在血量低的时候因受伤加压
 		NIGHT_VISION(		"night_vision", 		0x10),	// 夜视：额外的视野
-		SHOOTER(			"shooter",				0x20),	// 射手：远程武器额外的攻击
+		SHOOTER(			"shooter",				0x20),	// 射手：
+		SHREWD(				"shrewd", 				0x40),	// 精打细算：商店打折
+		POSITIVE(			"positive", 			0x80), 	// 乐观：一定几率抵挡精神伤害
 		;
 		
 		public String title;
