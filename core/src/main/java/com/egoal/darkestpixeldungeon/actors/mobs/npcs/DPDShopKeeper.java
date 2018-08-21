@@ -10,10 +10,12 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
+import com.egoal.darkestpixeldungeon.effects.particles.WindParticle;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ShopkeeperSprite;
 import com.egoal.darkestpixeldungeon.ui.ItemSlot;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
@@ -46,22 +48,14 @@ public class DPDShopKeeper extends NPC{
 		properties.add(Property.IMMOVABLE);
 	}
 	
-	private static final int MAX_ITEMS	=	20;
+	// currently not support roll, so max items is required
+	public static final int MAX_ITEMS	=	25;
 	
 	protected ArrayList<Item> items_	=	new ArrayList<>();
 	
 	public boolean addItemToSell(Item item){
 		if(items_.contains(item))
 			return true;
-		
-//		if(item.stackable){
-//			for(Item i: items_){
-//				if(i.isSimilar(item)){
-//					i.quantity(i.quantity()+item.quantity());
-//					return true;
-//				}
-//			}
-//		}
 		
 		if(items_.size()<MAX_ITEMS){
 			items_.add(item);
@@ -113,7 +107,7 @@ public class DPDShopKeeper extends NPC{
 	public String greeting(){ return Messages.get(this, "greeting"); }
 	
 	// actions
-	private void flee(){
+	protected void flee(){
 		destroy();
 		sprite.killAndErase();
 		CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
@@ -223,7 +217,10 @@ public class DPDShopKeeper extends NPC{
 		private static final int WIDTH	=	(SLOT_SIZE+SLOT_MARGIN)*SLOT_COLS;
 
 		private DPDShopKeeper sk_;
-
+		
+		private ColorBlock line;
+		private ArrayList<ItemButton> itemButtons_	=	new ArrayList<>();
+		
 		public WndSellItems(DPDShopKeeper sk){
 			super();
 
@@ -235,8 +232,14 @@ public class DPDShopKeeper extends NPC{
 			it.setRect(0, 0, WIDTH, 0);
 			add(it);
 			
+			final int MARGIN	=	2;
+			line	=	new ColorBlock(WIDTH-MARGIN*2, 1, 0xFF222222);
+			add(line);
+			line.x	=	MARGIN;
+			line.y	=	it.bottom()+GAP;
+			
 			// add items
-			int btm	=	placeItems(sk, it.bottom()+GAP);
+			int btm	=	placeItems(sk, line.y+line.height()+GAP);
 			
 			resize(WIDTH, btm);
 		}
@@ -250,12 +253,12 @@ public class DPDShopKeeper extends NPC{
 				ItemButton ib	=	new ItemButton(item){
 					@Override
 					protected void onClick(){
-						if(onPlayerWantBuy(item))
-							enable(false);
+						onPlayerWantBuy(item);
 					}
 				};
 				ib.setPos(c*(SLOT_SIZE+SLOT_MARGIN), top+r*(SLOT_SIZE+PRICE_HEIGHT+SLOT_MARGIN));
 				add(ib);
+				itemButtons_.add(ib);
 				
 				BitmapText bt	=	new BitmapText(PixelScene.pixelFont);				
 				bt.text(Integer.toString(buyPrice(item)));
@@ -271,23 +274,30 @@ public class DPDShopKeeper extends NPC{
 			return (int)top+((i-1)/SLOT_COLS+1)*(SLOT_SIZE+PRICE_HEIGHT+SLOT_MARGIN);
 		}
 		
-		private boolean onPlayerWantBuy(Item item){
-			int price	=	buyPrice(item);
+		private void onPlayerWantBuy(final Item item){
+			final int price	=	buyPrice(item);
 			
-			if(price>Dungeon.gold){
-				GLog.w(Messages.get(sk_, "no_enough_gold"));
-				return false;
-			}else{
-				Hero hero	=	Dungeon.hero;
-				Dungeon.gold	-=	price;
-				
-				sk_.removeItemFromSell(item);
-				
-				if(!item.doPickUp(hero))
-					Dungeon.level.drop(item, hero.pos).sprite.drop();
-				
-				return true;
-			}
+			boolean canBuy	=	price<=Dungeon.gold;
+			add(new WndConfirmBuy(item, Messages.get(DPDShopKeeper.class, "buy"), canBuy){
+				@Override
+				protected void onConfirmed(){
+					Hero hero	=	Dungeon.hero;
+					Dungeon.gold	-=	price;
+					sk_.removeItemFromSell(item);
+					
+					if(!item.doPickUp(hero))
+						Dungeon.level.drop(item, hero.pos).sprite.drop();
+					
+					// update button states
+					for(ItemButton ib: itemButtons_)
+						if(ib.item()==item){
+							ib.enable(false);
+							break;
+						}
+						
+					hide();
+				}
+			});
 		}
 		
 		private int buyPrice(Item item){
@@ -306,6 +316,8 @@ public class DPDShopKeeper extends NPC{
 				width	=	SLOT_SIZE;
 				height	=	SLOT_SIZE;
 			}
+			
+			public Item item(){ return item; }
 			
 			//! create children is called in super constructor.
 			@Override
@@ -334,7 +346,48 @@ public class DPDShopKeeper extends NPC{
 			protected void onTouchUp() {
 				bg.brightness( 1.0f );
 			};
+		}
+		
+		private static class WndConfirmBuy extends Window{
+			private static final float GAP		= 2;
+			private static final int WIDTH		= 120;
+			private static final int BTN_HEIGHT	= 16;
 			
+			public WndConfirmBuy(Item item, String btnText, boolean canbuy){
+				super();
+				
+				float pos	=	createDescription(item);
+				
+				RedButton btnBuy	=	new RedButton(btnText){
+					@Override
+					protected void onClick(){
+						onConfirmed();
+					}
+				};
+				btnBuy.setRect(0, pos+GAP, WIDTH, BTN_HEIGHT);
+				add(btnBuy);
+				btnBuy.enable(canbuy);
+				
+				resize(WIDTH, (int)btnBuy.bottom());
+			}
+			
+			private float createDescription(Item item){
+				IconTitle it	=	new IconTitle();
+				it.icon(new ItemSprite(item));
+				it.label(item.toString());
+				it.setRect(0, 0, WIDTH, 0);
+				add(it);
+
+				// Description
+				RenderedTextMultiline info = PixelScene.renderMultiline( item.info(), 6 );
+				info.maxWidth(WIDTH);
+				info.setPos(it.left(), it.bottom() + GAP);
+				add( info );
+
+				return info.bottom();
+			}
+			
+			protected void onConfirmed(){}
 		}
 	}
 	

@@ -20,8 +20,12 @@
  */
 package com.egoal.darkestpixeldungeon.levels.painters;
 
+import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDImpShopkeeper;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
 import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Bomb;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -70,12 +74,15 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Shuriken;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Tamahawk;
 import com.egoal.darkestpixeldungeon.levels.Room;
+import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.microedition.khronos.opengles.GL;
 
 public class ShopPainter extends Painter {
 
@@ -95,25 +102,31 @@ public class ShopPainter extends Painter {
 		
 		if (itemsToSpawn == null)
 			generateItems();
-		
-		int pos = xy2p( room, room.entrance() ) + (per - itemsToSpawn.size()) / 2;
-		for (Item item : itemsToSpawn) {
-			
-			Point xy = p2xy( room, (pos + per) % per );
-			int cell = xy.x + xy.y * level.width();
-			
-			if (level.heaps.get( cell ) != null) {
-				do {
-					cell = level.pointToCell(room.random());
-				} while (level.heaps.get( cell ) != null);
-			}
-			
-			level.drop( item, cell ).type = Heap.Type.FOR_SALE;
-			
-			pos++;
+
+		DPDShopKeeper sk	=	placeDPDShopKeeper(level, room);
+		for(Item item: itemsToSpawn){
+			sk.addItemToSell(item);
 		}
-		
-		placeShopkeeper( level, room );
+
+		// old style painter
+//		int pos = xy2p( room, room.entrance() ) + (per - itemsToSpawn.size()) / 2;
+//		for (Item item : itemsToSpawn) {
+//			
+//			Point xy = p2xy( room, (pos + per) % per );
+//			int cell = xy.x + xy.y * level.width();
+//			
+//			if (level.heaps.get( cell ) != null) {
+//				do {
+//					cell = level.pointToCell(room.random());
+//				} while (level.heaps.get( cell ) != null);
+//			}
+//			
+//			level.drop( item, cell ).type = Heap.Type.FOR_SALE;
+//			
+//			pos++;
+//		}
+//		
+//		placeShopkeeper( level, room );
 		
 		for (Room.Door door : room.connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
@@ -259,9 +272,10 @@ public class ShopPainter extends Painter {
 		}
 		rare.cursed = rare.cursedKnown = false;
 		itemsToSpawn.add( rare );
-
+		
+		Log.d("dpd", Integer.toString(itemsToSpawn.size())+" items spawned.");
 		//this is a hard limit, level gen allows for at most an 8x5 room, can't fit more than 39 items + 1 shopkeeper.
-		if (itemsToSpawn.size() > 39)
+		if (itemsToSpawn.size() > DPDShopKeeper.MAX_ITEMS)
 			throw new RuntimeException("Shop attempted to carry more than 39 items!");
 
 		Collections.shuffle(itemsToSpawn);
@@ -304,11 +318,33 @@ public class ShopPainter extends Painter {
 	}
 
 	public static int spaceNeeded(){
-		if (itemsToSpawn == null)
-			generateItems();
-
-		//plus one for the shopkeeper
-		return itemsToSpawn.size() + 1;
+		return 4;
+	}
+	
+//	public static int spaceNeeded(){
+//		if (itemsToSpawn == null)
+//			generateItems();
+//
+//		//plus one for the shopkeeper
+//		return itemsToSpawn.size() + 1;
+//	}
+	
+	private static DPDShopKeeper placeDPDShopKeeper(Level level, Room room){
+		DPDShopKeeper sk	=	level instanceof LastShopLevel? new DPDImpShopkeeper(): new DPDShopKeeper();
+		do{
+			sk.pos	=	level.pointToCell(room.center());
+		}while(level.heaps.get(sk.pos)!=null);
+		
+		level.mobs.add(sk);
+		if(level instanceof LastShopLevel){
+			for(int i: PathFinder.NEIGHBOURS9){
+				int p	=	sk.pos+ i;
+				if(level.map[p]==Terrain.EMPTY_SP)
+					level.map[p]	=	Terrain.WATER;
+			}
+		}
+		
+		return sk;
 	}
 	
 	private static void placeShopkeeper( Level level, Room room ) {

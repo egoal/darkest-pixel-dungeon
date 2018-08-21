@@ -394,7 +394,7 @@ public class VillageLevel extends RegularLevel{
 //			}while(findMob(dg.pos)!=null || dg.pos==entrance);
 //			mobs.add(dg);
 			
-			drop(new Gold(1000), entrance);
+			// drop(new Gold(1000), entrance);
 			
 			int pos;
 			do{
