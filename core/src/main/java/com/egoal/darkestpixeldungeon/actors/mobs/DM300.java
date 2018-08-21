@@ -139,11 +139,14 @@ public class DM300 extends Mob {
 	}
 
 	@Override
-	public void takeDamage(Damage dmg){
-		super.takeDamage(dmg);
+	public int takeDamage(Damage dmg){
+		int val	=	super.takeDamage(dmg);
+		
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !immunizedBuffs().contains(dmg.from.getClass())) 
 			lock.addTime(dmg.value*1.5f);
+		
+		return val;
 	}
 
 	@Override

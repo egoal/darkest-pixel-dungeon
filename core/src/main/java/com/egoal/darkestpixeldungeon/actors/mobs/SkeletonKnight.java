@@ -1,9 +1,13 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import android.database.DatabaseUtils;
+
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.food.Humanity;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
+import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.SkeletonKnightSprite;
@@ -25,7 +29,7 @@ public class SkeletonKnight extends Mob{
 		maxLvl	=	15;
 	
 		loot	=	Wine.class;
-		lootChance	=	.15f;
+		lootChance	=	.1f;
 		
 		properties.add(Property.UNDEAD);
 
@@ -34,7 +38,7 @@ public class SkeletonKnight extends Mob{
 		addResistances(Damage.Element.HOLY, .667f);
 	}
 	
-	private static final float COUNTER	=	.2f;
+	private static final float COUNTER	=	.15f;
 	private static final float COMBO	=	.15f;
 
 	@Override
@@ -54,10 +58,11 @@ public class SkeletonKnight extends Mob{
 	
 	@Override
 	public Damage defenseProc(Damage damage){
-		if(damage.type==Damage.Type.MAGICAL || damage.isFeatured(Damage.Feature.RANGED))
+		Char enemy	=	(Char)damage.from;
+		if(damage.type==Damage.Type.MAGICAL || damage.isFeatured(Damage.Feature.RANGED) ||
+			enemy==null || !Dungeon.level.adjacent(pos, enemy.pos))
 			return super.defenseProc(damage);
 		
-		Char enemy	=	(Char)damage.from;
 		
 		if(Random.Float()<COUNTER){
 			sprite.showStatus(CharSprite.WARNING, Messages.get(this, "counter"));

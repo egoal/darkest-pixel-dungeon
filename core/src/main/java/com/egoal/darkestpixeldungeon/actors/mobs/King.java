@@ -142,10 +142,12 @@ public class King extends Mob {
 	}
 
 	@Override
-	public void takeDamage(Damage dmg) {
-		super.takeDamage(dmg);
+	public int takeDamage(Damage dmg) {
+		int val	=	super.takeDamage(dmg);
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) lock.addTime(dmg.value);
+		
+		return val;
 	}
 	
 	@Override
@@ -300,11 +302,13 @@ public class King extends Mob {
 		}
 		
 		@Override
-		public void takeDamage(Damage dmg){
-			super.takeDamage(dmg);
+		public int takeDamage(Damage dmg){
+			int val	=	super.takeDamage(dmg);
 			if (dmg.from instanceof ToxicGas) {
 				((ToxicGas)dmg.from).clear( pos );
 			}
+			
+			return val;
 		}
 		
 		@Override

@@ -33,7 +33,7 @@ public class MadMan extends Mob implements Callback{
 		maxLvl	=	Dungeon.depth+2;
 		
 		loot	=	Humanity.class;
-		lootChance	=	0.1f;
+		lootChance	=	0.2f;
 		
 		addResistances(Damage.Element.SHADOW, 2f);
 		addResistances(Damage.Element.HOLY, .5f);

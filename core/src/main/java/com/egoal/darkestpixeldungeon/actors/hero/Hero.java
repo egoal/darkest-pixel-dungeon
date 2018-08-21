@@ -124,6 +124,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class Hero extends Char {
 
@@ -1111,10 +1112,10 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
 		// freeze self
 		if(buff(TimekeepersHourglass.timeStasis.class)!=null)
-			return;
+			return 0;
 		
 		// interrupt action or resting
 		if(!(dmg.from instanceof Hunger|| dmg.from instanceof Viscosity.DeferedDamage) && damageInterrupt){
@@ -1142,49 +1143,46 @@ public class Hero extends Char {
 		
 		// berserk
 
-		
-		// extra deal with mental damage
-		{
-			Damage dmgMental	=	new Damage(0, dmg.from, dmg.to).type(Damage.Type.MENTAL);
-			
-			if(dmg.from instanceof Char && !Dungeon.visible[((Char)dmg.from).pos]){
-				// when hit from nowhere
-				dmgMental.value	+=	Random.Int(dmg.value/3)+1;
-			}
-			if(dmg.isFeatured(Damage.Feature.CRITCIAL)){
-				// when take critical damage, up pressure
-				if(dmg.type!=Damage.Type.MENTAL)
-					dmgMental.value	+=	dmg.value/4;
-			}
-			if(!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP<HT/4 && dmg.value>0){
-				// when health is low	
-				dmgMental.value	+=	Random.Int(1, 5);
-			}
-			
-			// not greater than 10
-			dmgMental.value	=	dmgMental.value>10? 10: dmgMental.value;
-			
-			takeMentalDamage(dmgMental);
-		}
-		
+
 		// note: resistance move to resistDamage
-		
+
 		if(dmg.type==Damage.Type.MENTAL)
-			takeMentalDamage(dmg);
-		else
-			super.takeDamage(dmg);
+			return takeMentalDamage(dmg);
+		else{
+			// not mental damage
+			int dmgtoken	=	super.takeDamage(dmg);
+			
+			// extra deal with mental damage
+			if(dmgtoken>0){
+				Damage dmgMental	=	new Damage(0, dmg.from, dmg.to).type(Damage.Type.MENTAL);
+
+				if(dmg.from instanceof Char && !Dungeon.visible[((Char)dmg.from).pos]){
+					// when hit from nowhere
+					dmgMental.value	+=	Random.Int(dmg.value/3)+1;
+				}
+				if(dmg.isFeatured(Damage.Feature.CRITCIAL)){
+					// when take critical damage, up pressure
+					if(dmg.type!=Damage.Type.MENTAL)
+						dmgMental.value	+=	dmg.value/4;
+				}
+				if(!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP<HT/4 && dmg.value>0){
+					// when health is low	
+					dmgMental.value	+=	Random.Int(1, 5);
+				}
+
+				// not greater than 10
+				dmgMental.value	=	dmgMental.value>10? 10: dmgMental.value;
+
+				takeMentalDamage(dmgMental);
+			}
+			
+			return dmgtoken;
+		}
 	}
 
 	@Override
 	public Damage resistDamage(Damage dmg){
-		// immunities
-		for(Buff buff: buffs()){
-			for(Class<?> im: buff.immunities)
-				if(dmg.from.getClass()==im){
-					dmg.value	=	0;
-					return dmg;
-				}
-		}
+		// note: immunities is processed in super
 		
 		// resistance
 		if(dmg.type==Damage.Type.MAGICAL){
@@ -1203,14 +1201,24 @@ public class Hero extends Char {
 		return super.resistDamage(dmg);
 	}
 	
+	@Override
+	public HashSet<Class<?> > immunizedBuffs(){
+		HashSet<Class<?> > hs	=	new HashSet<>();
+		for(Buff buff: buffs()){
+			hs.addAll(buff.immunities);
+		}
+		
+		return hs;
+	}
+	
 	public void recoverSanity(int value){
 		int rv	=	(int)buff(Pressure.class).downPressure(value);
 		
 		if(rv>0)
 			sprite.showStatus(0xFFFFFF, Integer.toString(rv));
 	}
-	protected void takeMentalDamage(Damage dmg){
-		if(dmg.value<=0) return;
+	protected int takeMentalDamage(Damage dmg){
+		if(dmg.value<=0) return 0;
 		
 		if(dmg.isFeatured(Damage.Feature.ACCURATE)){}
 		else{
@@ -1218,7 +1226,7 @@ public class Hero extends Char {
 			if(heroClass==HeroClass.WARRIOR)
 				dmg.value	+=	Random.Int(0, 1);
 			
-			if(heroPerk.contain(HeroPerk.Perk.POSITIVE) && Random.Float()<.1f){
+			if(heroPerk.contain(HeroPerk.Perk.POSITIVE) && Random.Float()<.15f){
 				dmg.value	=	0;
 				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"));
 			}else if(subClass==HeroSubClass.STARGAZER && Random.Float()<.1f){
@@ -1236,6 +1244,8 @@ public class Hero extends Char {
 		if(rv>0){
 			sprite.showStatus(WARNING, Integer.toString(rv));
 		}
+		
+		return rv;
 	}
 	
 	private void checkVisibleMobs() {

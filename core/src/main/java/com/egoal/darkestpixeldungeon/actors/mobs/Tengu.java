@@ -88,7 +88,7 @@ public class Tengu extends Mob {
 	}
 
 	@Override
-	public void takeDamage(Damage damage) {
+	public int takeDamage(Damage damage) {
 
 		int beforeHitHP = HP;
 		super.takeDamage(damage);
@@ -103,7 +103,7 @@ public class Tengu extends Mob {
 		//phase 2 of the fight is over
 		if (HP <= 0 && beforeHitHP <= HT/2) {
 			((PrisonBossLevel)Dungeon.level).progress();
-			return;
+			return dmg;
 		}
 
 		int hpBracket = beforeHitHP > HT/2 ? 12 : 20;
@@ -119,6 +119,8 @@ public class Tengu extends Mob {
 		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
 			jump();
 		}
+		
+		return dmg;
 	}
 
 	@Override

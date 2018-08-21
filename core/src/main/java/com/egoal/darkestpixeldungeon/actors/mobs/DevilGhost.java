@@ -45,12 +45,12 @@ public class DevilGhost extends Wraith{
 	}
 	
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
 		if(dmg.value>0){
 			dmg.value	=	1;
 		}
 		
-		super.takeDamage(dmg);
+		return super.takeDamage(dmg);
 	}
 	
 	@Override

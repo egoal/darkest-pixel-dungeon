@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.items.food.Humanity;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -55,13 +56,15 @@ public class CatLix extends NPC{
 		// prepare rewards
 		gift.identify();
 
-		gift.addItem(new Humanity());
-
+		// gift.addItem(new Humanity());
+		gift.addItem(new Food());
+		
 		ArrayList<Item > alItems    =   new ArrayList<>();
 		if(isPraised_){
 			alItems.add(new ScrollOfIdentify());
 			alItems.add(new ScrollOfMagicMapping());
 			alItems.add(new ScrollOfRemoveCurse());
+			alItems.add(new ScrollOfLullaby());
 		}else{
 			alItems.add(new PotionOfHealing());
 			alItems.add(new PotionOfExperience());
@@ -114,7 +117,7 @@ public class CatLix extends NPC{
 	}
 
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){ return 0;
 	}
 
 	@Override

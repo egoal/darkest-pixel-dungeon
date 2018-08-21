@@ -733,7 +733,7 @@ public abstract class RegularLevel extends Level {
 
 		//just in case someone gets a ridiculous ring, cap this at 80%
 		bonus = Math.min(bonus, 10);
-		while (Random.Float() < (0.4f + bonus*0.04f)) {
+		while (Random.Float() < (0.3f + bonus*0.05f)) {
 			nItems++;
 		}
 		

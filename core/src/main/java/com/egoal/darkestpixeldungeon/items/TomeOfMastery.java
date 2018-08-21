@@ -135,6 +135,10 @@ public class TomeOfMastery extends Item {
 			Buff.affect( curUser, Berserk.class );
 			curUser.heroPerk.add(HeroPerk.Perk.FEARLESS);
 		}
+		
+		if(way==HeroSubClass.ASSASSIN)
+			curUser.heroPerk.add(HeroPerk.Perk.ASSASSIN);
+		
 		if(way==HeroSubClass.WARLOCK){
 			Item uos	=	new UrnOfShadow().identify();
 			if(uos.doPickUp(curUser)){
@@ -142,6 +146,7 @@ public class TomeOfMastery extends Item {
 			}else
 				Dungeon.level.drop(uos, curUser.pos).sprite.drop();
 		}
+		
 		if(way==HeroSubClass.STARGAZER){
 			Item a	=	new Astrolabe().identify();
 			if(a.doPickUp(curUser))

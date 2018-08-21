@@ -141,15 +141,14 @@ public enum HeroClass {
 	private static void initDebug(Hero hero){
 		for(int i=0; i<9; ++i){
 			(new ScrollOfMagicMapping()).identify().collect();
-			(new ScrollOfPsionicBlast()).identify().collect();
 
 			(new PotionOfHealing()).identify().collect();
 			(new PotionOfStrength()).identify().collect();
 			(new PotionOfExperience()).identify().collect();
 
-			(new Blindweed.Seed()).identify().collect();
-			(new Sorrowmoss.Seed()).identify().collect();
-			(new Firebloom.Seed()).identify().collect();
+			(new PotionOfToxicGas()).identify().collect();
+			(new PotionOfPurity()).identify().collect();
+			(new PotionOfParalyticGas()).identify().collect();
 		}
 
 		(new PlateArmor()).upgrade(6).identify().collect();
@@ -159,12 +158,6 @@ public enum HeroClass {
 
 		(new TomeOfMastery()).identify().collect();
 		(new ArmorKit()).identify().collect();
-
-		(new UrnOfShadow()).identify().collect();
-		(new Astrolabe()).identify().collect();
-
-		(new UnholyBlood()).identify().collect();
-		(new DemonicSkull()).identify().collect();
 
 		(new ScrollOfTerror()).identify().collect();
 		

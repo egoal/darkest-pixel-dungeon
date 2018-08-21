@@ -233,7 +233,7 @@ public abstract class Char extends Actor {
 		return dmg;
 	}
 	
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
 		// life link
 		LifeLink ll	=	buff(LifeLink.class);
 		if(ll!=null){
@@ -242,13 +242,13 @@ public abstract class Char extends Actor {
 				((Char)a).takeDamage(dmg);
 				((Char)a).sprite.showStatus(0x000000, Messages.get(LifeLink.class, "transform"));
 				
-				return;
+				return 0;
 			}
 		}
 		
 		// currently, only hero suffer from mental damage
 		if(!isAlive() || dmg.value<0 || (dmg.type==Damage.Type.MENTAL && !(this instanceof Hero)))
-			return;
+			return 0;
 
 		// vulnerable
 		Vulnerable v	=	buff(Vulnerable.class);
@@ -306,6 +306,7 @@ public abstract class Char extends Actor {
 		if(!isAlive())
 			die(dmg.from);
 		
+		return dmg.value;
 	}
 
 	// resistances
@@ -319,6 +320,12 @@ public abstract class Char extends Actor {
 		addResistances(ele, r, r);
 	}
 	protected Damage resistDamage(Damage dmg){
+		for(Class<?> im: immunizedBuffs())
+			if(dmg.from.getClass()==im){
+				dmg.value	=	0;
+				return dmg;
+			}
+		
 		HashMap<Integer, Float > mr	=	null;
 		if(dmg.type==Damage.Type.NORMAL)
 			mr	=	mapNormalResistances;

@@ -115,13 +115,13 @@ public class Statue extends Mob {
 	}
 	
 	@Override
-	public void takeDamage(Damage dmg) {
+	public int takeDamage(Damage dmg) {
 
 		if (state == PASSIVE) {
 			state = HUNTING;
 		}
 		
-		super.takeDamage(dmg);
+		return super.takeDamage(dmg);
 	}
 	
 	@Override

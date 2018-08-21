@@ -226,10 +226,10 @@ public class Goo extends Mob {
 	}
 
 	@Override
-	public void takeDamage(Damage dmg) {
+	public int takeDamage(Damage dmg) {
 		boolean bleeding = (HP*2 <= HT);
 		
-		super.takeDamage(dmg);
+		int val	=	super.takeDamage(dmg);
 		if ((HP*2 <= HT) && !bleeding){
 			BossHealthBar.bleed(true);
 			GLog.w( Messages.get(this, "enraged_text") );
@@ -239,6 +239,8 @@ public class Goo extends Mob {
 		}
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) lock.addTime(dmg.value*2);
+		
+		return val;
 	}
 
 	@Override

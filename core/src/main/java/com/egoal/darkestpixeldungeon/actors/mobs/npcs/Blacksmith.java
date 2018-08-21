@@ -212,7 +212,8 @@ public class Blacksmith extends NPC {
 	}
 	
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
+		return 0;
 	}
 	
 	@Override

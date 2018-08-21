@@ -158,12 +158,12 @@ public class ExtractionFlask extends Item{
 			if(Random.Int(15)==0)
 				GLog.w(Messages.get(ExtractionFlask.class, "refine_failed"));
 			else
-				potion=Random.Int(2)==0?new PotionOfToxicGas():
+				potion=Random.Int(4)==0?new PotionOfToxicGas():
 					Generator.random(Generator.Category.POTION);
 		}
 		
 		if(potion!=null){
-			GLog.p(Messages.get(ExtractionFlask.class,"refine",potion.name()));
+			GLog.p(Messages.get(ExtractionFlask.class, "refine", potion.name()));
 			if(potion.doPickUp(Dungeon.hero)){
 			}else{
 				Dungeon.level.drop(potion,Dungeon.hero.pos).sprite.drop();
@@ -180,15 +180,14 @@ public class ExtractionFlask extends Item{
 				if(wpn.STRReq()<curUser.STR()&&!wpn.cursed){
 					if(Random.Float()<ps){
 						// succeed
-						switch(Random.Int(4)){
+						switch(Random.Int(3)){
 							case 0:
-							case 1:
 								wpn.enchant(new Venomous());
 								break;
-							case 2:
+							case 1:
 								wpn.enchant(new Unstable());
 								break;
-							case 3:
+							case 2:
 								wpn.enchant();
 								break;
 						}

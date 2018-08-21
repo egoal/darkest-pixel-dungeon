@@ -83,8 +83,8 @@ public class Brute extends Mob {
 	}
 	
 	@Override
-	public void takeDamage(Damage dmg){
-		super.takeDamage(dmg);
+	public int takeDamage(Damage dmg){
+		int val	=	super.takeDamage(dmg);
 		
 		if(isAlive() && !enraged && HP<HT/4){
 			enraged	=	true;
@@ -94,6 +94,8 @@ public class Brute extends Mob {
 			}
 			spend(TIME_TO_ENRAGE);
 		}
+		
+		return val;
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

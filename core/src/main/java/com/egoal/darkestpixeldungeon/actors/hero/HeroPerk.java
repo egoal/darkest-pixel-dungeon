@@ -10,15 +10,16 @@ import com.watabou.utils.Bundle;
 public class HeroPerk{
 	
 	public enum Perk{
-		NONE(				"none",					0x00),
-		DRUNKARD(			"drunkard", 			0x01),	// 酒徒：喝酒不会受伤，也不会醉
-		CRITICAL_STRIKE(	"critical_strike", 		0x02),	// 致命一击：额外的暴击率
-		KEEN(				"keen", 				0x04),	// 敏锐：更容易发现隐藏
-		FEARLESS(			"fearless", 			0x08),	// 无畏：不会在血量低的时候因受伤加压
-		NIGHT_VISION(		"night_vision", 		0x10),	// 夜视：额外的视野
-		SHOOTER(			"shooter",				0x20),	// 射手：
-		SHREWD(				"shrewd", 				0x40),	// 精打细算：商店打折
-		POSITIVE(			"positive", 			0x80), 	// 乐观：一定几率抵挡精神伤害
+		NONE(				"none",					0x0000),
+		DRUNKARD(			"drunkard", 			0x0001),	// 酒徒：喝酒不会受伤，也不会醉
+		CRITICAL_STRIKE(	"critical_strike", 		0x0002),	// 致命一击：额外的暴击率
+		KEEN(				"keen", 				0x0004),	// 敏锐：更容易发现隐藏
+		FEARLESS(			"fearless", 			0x0008),	// 无畏：不会在血量低的时候因受伤加压
+		NIGHT_VISION(		"night_vision", 		0x0010),	// 夜视：额外的视野
+		SHOOTER(			"shooter",				0x0020),	// 射手：
+		SHREWD(				"shrewd", 				0x0040),	// 精打细算：商店打折
+		POSITIVE(			"positive", 			0x0080), 	// 乐观：一定几率抵挡精神伤害
+		ASSASSIN(			"assassin", 			0x0100),	// 刺客：偷袭加成
 		;
 		
 		public String title;

@@ -53,14 +53,17 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
 		
 		if(dmg.hasElement(Damage.Element.FIRE)){
 			destroy();
 			sprite.die();
+			
+			return HP;
 		} else {
-			super.takeDamage(dmg);
+			return super.takeDamage(dmg);
 		}
+		
 	}
 
 	@Override

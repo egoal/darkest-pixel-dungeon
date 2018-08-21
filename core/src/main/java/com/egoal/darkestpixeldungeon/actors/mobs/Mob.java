@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.effects.Wound;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
@@ -451,8 +452,8 @@ public abstract class Mob extends Char{
 		Char enemy	=	(Char)dmg.from;
 		if(!enemySeen && enemy==Dungeon.hero && Dungeon.hero.canSurpriseAttack()){
 			// surprise attack!
-			if(((Hero)enemy).subClass==HeroSubClass.ASSASSIN){
-				// assassin perl
+			if(((Hero)enemy).heroPerk.contain(HeroPerk.Perk.ASSASSIN)){
+				// assassin perk
 				dmg.value	*=	1.25f;
 				Wound.hit(this);
 			}else
@@ -490,14 +491,14 @@ public abstract class Mob extends Char{
 	}
 
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
 		Terror.recover(this);
 		
 		if(state==SLEEPING)
 			state	=	WANDERING;
 		alerted	=	true;
 		
-		super.takeDamage(dmg);
+		return super.takeDamage(dmg);
 	}
 	
 	@Override

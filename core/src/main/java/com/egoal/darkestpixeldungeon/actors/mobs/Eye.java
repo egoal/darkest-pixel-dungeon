@@ -147,10 +147,10 @@ public class Eye extends Mob {
 	}
 
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
 		if (beamCharged) dmg.value /= 4;
 		
-		super.takeDamage(dmg);
+		return super.takeDamage(dmg);
 	}
 
 	public void deathGaze(){

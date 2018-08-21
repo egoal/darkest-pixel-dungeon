@@ -28,7 +28,6 @@ import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PointF;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,8 +89,9 @@ public class DPDShopKeeper extends NPC{
 	}
 
 	@Override
-	public void takeDamage(Damage dmg){
+	public int takeDamage(Damage dmg){
 		flee();
+		return 0;
 	}
 
 	@Override
