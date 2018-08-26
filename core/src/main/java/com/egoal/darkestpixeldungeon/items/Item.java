@@ -398,7 +398,8 @@ public class Item implements Bundlable {
 		return 0;
 	}
 	public int sellPrice(){
-		return price()*5*(Dungeon.depth+1)*quantity();
+		//! the quantity affect the price() function
+		return price()*5*(Dungeon.depth/5+1);
 	}
 	
 	public static Item virtual( Class<? extends Item> cl ) {

@@ -11,6 +11,7 @@ import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.SkeletonKnightSprite;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 /**
@@ -41,6 +42,15 @@ public class SkeletonKnight extends Mob{
 	private static final float COUNTER	=	.15f;
 	private static final float COMBO	=	.15f;
 
+	private static final int COMBO_COOLDOWN	=	2;
+	private int cdCombo_	=	COMBO_COOLDOWN;
+	
+	@Override
+	protected boolean act(){
+		cdCombo_	-=	1;
+		return super.act();
+	}
+	
 	@Override
 	public Damage giveDamage(Char target) {
 		return new Damage(Random.NormalIntRange(8, 16), this, target);
@@ -49,7 +59,7 @@ public class SkeletonKnight extends Mob{
 	@Override
 	public Damage defendDamage(Damage dmg) {
 		if(dmg.type==Damage.Type.NORMAL)
-			dmg.value	-=	Random.NormalIntRange(1, 6);
+			dmg.value	-=	Random.NormalIntRange(0, 6);
 		return dmg;
 	}
 	
@@ -75,11 +85,26 @@ public class SkeletonKnight extends Mob{
 	
 	@Override
 	public boolean attack(Char enemy){
-		if(Random.Float()<COMBO){
+		if(cdCombo_<=0 && Random.Float()<COMBO){
+			cdCombo_	=	COMBO_COOLDOWN;
+			
 			spend(-cooldown()*.99f);
 			sprite.showStatus(CharSprite.WARNING, Messages.get(this, "combo"));
 		}
 		
 		return super.attack(enemy);
+	}
+	
+	private static final String COOLDOWN_COMBO	=	"cooldown_combo";
+	@Override
+	public void storeInBundle(Bundle bundle){
+		super.storeInBundle(bundle);
+		bundle.put(COOLDOWN_COMBO, cdCombo_);
+	}
+	
+	@Override
+	public void restoreFromBundle(Bundle bundle){
+		super.restoreFromBundle(bundle);
+		cdCombo_	=	bundle.getInt(COOLDOWN_COMBO);
 	}
 }

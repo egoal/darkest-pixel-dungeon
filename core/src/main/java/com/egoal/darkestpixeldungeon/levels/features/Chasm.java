@@ -104,7 +104,7 @@ public class Chasm {
 		Camera.main.shake( 4, 0.2f );
 		
 		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
-		Buff.affect( hero, Bleeding.class).set( hero.HT / 6 );
+		Buff.affect( hero, Bleeding.class).set( hero.HT / 8 );
 		hero.takeDamage(new Damage(Random.NormalIntRange(hero.HP/4, hero.HT/4), new Hero.Doom(){
 			@Override
 			public void onDeath(){

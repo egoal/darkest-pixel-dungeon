@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.items.Amulet;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.DisheartenedBuddySprite;
@@ -39,12 +40,17 @@ public class DisheartenedBuddy extends NPC{
 	public boolean interact(){
 		sprite.turnTo(pos, Dungeon.hero.pos);
 
-		float[] chances=new float[]{1,2,2,2};
-		if(meetTimes_++==0){
-			chances[0]	=	10;
+		if(Dungeon.hero.belongings.getItem(Amulet.class)==null){
+			float[] chances	=	new float[]{1,2,2,2};
+			if(meetTimes_++==0){
+				chances[0]	=	10;
+			}
+
+			tell(Messages.get(this, "discourage"+Random.chances(chances)));
+		}else{
+			// with amulet
+			tell(Messages.get(this, "amazed"));
 		}
-		
-		tell(Messages.get(this,"discourage"+Random.chances(chances)));
 		
 		return false;
 	}

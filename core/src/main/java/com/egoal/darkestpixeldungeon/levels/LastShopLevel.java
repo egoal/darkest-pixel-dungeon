@@ -55,7 +55,7 @@ public class LastShopLevel extends RegularLevel {
 	protected boolean build() {
 
 		feeling = Feeling.CHASM;
-		viewDistance = 3;
+		viewDistance = 4;
 		
 		initRooms();
 		

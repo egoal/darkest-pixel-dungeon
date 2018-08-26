@@ -264,7 +264,7 @@ public class Statuary extends NPC{
 				int requireValue	=	0;
 				if(requireBlood){
 					// more blood
-					requireValue	=	(int)(hero.HT*Random.Float(.4f,.7f));
+					requireValue	=	(int)(hero.HT*Random.Float(.3f,.6f));
 					if(requireValue>=hero.HP)
 						requireValue	=	hero.HP-1;
 

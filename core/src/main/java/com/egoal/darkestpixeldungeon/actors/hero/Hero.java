@@ -415,17 +415,21 @@ public class Hero extends Char {
 		if(dmg.type==Damage.Type.MENTAL){
 			// do nothing, todo: mental defense
 		}else{
-			// barkskin buff
-			Barkskin bark	=	buff(Barkskin.class);
+			int dr	=	0;
 			
-			int dr	=	Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax());
-			if(STR()< belongings.armor.STRReq()){
-				// ware heavy armor
-				dr	-=	2*(belongings.armor.STRReq()-STR());
-				dr	=	Math.max(dr, 0);
+			if(belongings.armor!=null){
+				dr	=	Random.NormalIntRange(belongings.armor.DRMin(),belongings.armor.DRMax());
+				if(STR()<belongings.armor.STRReq()){
+					// ware heavy armor
+					dr	-=	2*(belongings.armor.STRReq()-STR());
+					dr	=	Math.max(dr,0);
+				}
 			}
 			
 			if(belongings.weapon!=null) dr	+=	Random.NormalIntRange(0, belongings.weapon.defenseFactor(this));
+
+			// barkskin buff
+			Barkskin bark	=	buff(Barkskin.class);
 			if(bark!=null) dr	+=	Random.NormalIntRange(0, bark.level());
 			
 			dmg.value	-=	dr;
@@ -1151,6 +1155,8 @@ public class Hero extends Char {
 		else{
 			// not mental damage
 			int dmgtoken	=	super.takeDamage(dmg);
+			
+			if(!isAlive()) return dmgtoken;
 			
 			// extra deal with mental damage
 			if(dmgtoken>0){

@@ -32,7 +32,7 @@ import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.SparseArray;
 
 public class Terrain {
-
+	// tiles
 	public static final int CHASM			= 0;
 	public static final int EMPTY			= 1;
 	public static final int GRASS			= 2;
@@ -74,10 +74,12 @@ public class Terrain {
 	public static final int WALL_LIGHT_ON	=   33;
 	public static final int WALL_LIGHT_OFF	=	34;
 	public static final int ENCHANTING_STATION	=	35;
+	public static final int HIGH_GRASS_COLLECTED	=	36;
 
 	public static final int WATER_TILES	    = 48;
 	public static final int WATER		    = 63;
-
+	
+	// flags helper
 	public static final int PASSABLE		= 0x01;
 	public static final int LOS_BLOCKING	= 0x02;
 	public static final int FLAMABLE		= 0x04;
@@ -139,6 +141,7 @@ public class Terrain {
 		flags[WALL_LIGHT_ON]	=   flags[WALL] | LUMINARY;
 		flags[WALL_LIGHT_OFF]	=	flags[WALL];
 		flags[ENCHANTING_STATION]	=	flags[ALCHEMY];
+		flags[HIGH_GRASS_COLLECTED]	=	flags[HIGH_GRASS];
 	};
 
 	public static int discover( int terr ) {

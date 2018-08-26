@@ -146,9 +146,7 @@ public enum HeroClass {
 			(new PotionOfStrength()).identify().collect();
 			(new PotionOfExperience()).identify().collect();
 
-			(new PotionOfToxicGas()).identify().collect();
-			(new PotionOfPurity()).identify().collect();
-			(new PotionOfParalyticGas()).identify().collect();
+			(new PotionOfMindVision()).identify().collect();
 		}
 
 		(new PlateArmor()).upgrade(6).identify().collect();
