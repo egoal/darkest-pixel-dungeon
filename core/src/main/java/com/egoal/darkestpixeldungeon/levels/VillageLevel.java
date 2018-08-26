@@ -16,7 +16,9 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Torch;
@@ -368,12 +370,7 @@ public class VillageLevel extends RegularLevel{
 		
 		// shopkeeper
 		{
-			DPDShopKeeper dsk	=	new DPDShopKeeper();
-			do{
-				dsk.pos	=	pointToCell(roomExit.random(1));
-			}while(findMob(dsk.pos)!=null || !passable[dsk.pos] || map[dsk.pos]==Terrain.SIGN);
-			mobs.add(dsk);
-			
+			DPDShopKeeper dsk	=	new DPDShopKeeper().initSellItems();
 			dsk.addItemToSell(new PotionOfHealing());
 			dsk.addItemToSell(new PotionOfHealing());
 			dsk.addItemToSell(new AssassinsBlade());
@@ -381,6 +378,25 @@ public class VillageLevel extends RegularLevel{
 			dsk.addItemToSell(new Torch().quantity(3));
 			dsk.addItemToSell(new Knuckles());
 			dsk.addItemToSell(new BattleGloves());
+			do{
+				dsk.pos	=	pointToCell(roomExit.random(1));
+			}while(findMob(dsk.pos)!=null || !passable[dsk.pos] || map[dsk.pos]==Terrain.SIGN);
+			mobs.add(dsk);
+
+			{
+				DPDShopKeeper ps	=	new PotionSeller().initSellItems();
+				do{
+					ps.pos	=	pointToCell(roomExit.random(1));
+				}while(findMob(ps.pos)!=null|| !passable[ps.pos]|| map[ps.pos]==Terrain.SIGN);
+				mobs.add(ps);
+			}
+			{
+				DPDShopKeeper ps	=	new ScrollSeller().initSellItems();
+				do{
+					ps.pos	=	pointToCell(roomExit.random(1));
+				}while(findMob(ps.pos)!=null || !passable[ps.pos] || map[ps.pos]==Terrain.SIGN);
+				mobs.add(ps);
+			}
 		}
 		
 		// test 
@@ -395,19 +411,6 @@ public class VillageLevel extends RegularLevel{
 //			mobs.add(dg);
 			
 			// drop(new Gold(1000), entrance);
-			
-			int pos;
-			do{
-				pos	=	pointToCell(roomEntrance.random());
-			}while(findMob(pos)!=null || pos==entrance);
-			// the game scene is interval, not initialized.
-			// GameScene.add(Blob.seed(pos, 1000, Fog.class));
-			Fog f	=	(Fog)blobs.get(Fog.class);
-			if(f==null){
-				f	=	new Fog();
-				blobs.put(Fog.class, f);
-			}
-			f.seed(this, pos, 1000);
 		}
 		
 		super.createMobs();
@@ -431,7 +434,5 @@ public class VillageLevel extends RegularLevel{
 	@Override
 	public void restoreFromBundle(Bundle bundle){
 		super.restoreFromBundle(bundle);
-
-
 	}
 }

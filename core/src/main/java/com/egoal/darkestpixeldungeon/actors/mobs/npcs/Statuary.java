@@ -165,7 +165,7 @@ public class Statuary extends NPC{
 		
 		if(agree){
 			// pray
-			if(Random.Int(5)==0){
+			if(Random.Int(10)==0){
 				// unholy
 				hero.takeDamage(new Damage(Random.Int(5, 15), 
 					this, hero).type(Damage.Type.MENTAL).addFeature(Damage.Feature.ACCURATE));
@@ -255,7 +255,7 @@ public class Statuary extends NPC{
 			hero.sprite.operate(hero.pos);
 			GLog.h(Messages.get(this, "sacrifice"));
 			
-			if(Random.Int(10)==0){
+			if(Random.Int(20)==0){
 				// nothing happened
 				GLog.i(Messages.get(this, "nothing"));
 			}else{

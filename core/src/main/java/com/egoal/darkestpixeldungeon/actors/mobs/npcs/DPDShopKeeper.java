@@ -53,9 +53,18 @@ public class DPDShopKeeper extends NPC{
 	
 	protected ArrayList<Item> items_	=	new ArrayList<>();
 	
-	public boolean addItemToSell(Item item){
+	public boolean addItemToSell(Item item, boolean checkSimilar){
 		if(items_.contains(item))
 			return true;
+
+		if(checkSimilar){
+			for(Item i: items_){
+				if(i.isSimilar(item)){
+					i.quantity(i.quantity()+item.quantity());
+					return true;
+				}
+			}
+		}
 		
 		if(items_.size()<MAX_ITEMS){
 			items_.add(item);
@@ -64,13 +73,22 @@ public class DPDShopKeeper extends NPC{
 			Log.e("dpd", "cannot add to shopper.");
 			return false;
 		}
-		
+
 		return false;
+	}
+
+	public boolean addItemToSell(Item item){
+		return addItemToSell(item, false);
 	}
 	
 	// called when sold
 	public boolean removeItemFromSell(Item item){
 		return items_.remove(item);
+	}
+	
+	public DPDShopKeeper initSellItems(){
+		//todo: move painter here
+		return this;
 	}
 	
 	@Override

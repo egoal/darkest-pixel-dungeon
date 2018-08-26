@@ -42,6 +42,8 @@ public class UrnOfShadow extends Artifact{
 		image	=	ItemSpriteSheet.DPD_URN_OF_SHADOW;
 		unique	=	true;
 		defaultAction	=	AC_CONSUME;
+		
+		levelCap	=	10;
 	}
 	
 	private static final int MAX_VOLUME	=	10;
@@ -68,7 +70,7 @@ public class UrnOfShadow extends Artifact{
 	
 	@Override
 	public Item upgrade(){
-		Messages.get(this, "levelup");
+		GLog.p(Messages.get(this, "levelup"));
 		return super.upgrade();
 	}
 	

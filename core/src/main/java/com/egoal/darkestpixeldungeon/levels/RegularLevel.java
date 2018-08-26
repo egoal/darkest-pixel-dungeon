@@ -25,6 +25,9 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
@@ -655,6 +658,28 @@ public abstract class RegularLevel extends Level {
 		}
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
+		// random spawn seller
+		if(Dungeon.depth>0 && !(this instanceof LastShopLevel)){
+			float psratio	=	Dungeon.shopOnLevel()? .1f: .35f;
+			if(Random.Float()<psratio){
+				DPDShopKeeper ps	=	new PotionSeller().initSellItems();
+				Room r	=	Random.element(stdRooms);
+				do{
+					ps.pos	=	pointToCell(r.random());
+				}while(findMob(ps.pos)!=null|| !passable[ps.pos]);
+				mobs.add(ps);
+			}
+			float ssratio	=	Dungeon.shopOnLevel()? .1f: .25f;
+			if(Random.Float()<ssratio){
+				DPDShopKeeper ps	=	new ScrollSeller().initSellItems();
+				Room r	=	Random.element(stdRooms);
+				do{
+					ps.pos	=	pointToCell(r.random());
+				}while(findMob(ps.pos)!=null|| !passable[ps.pos]);
+				mobs.add(ps);
+			}
+		}
+		
 		while (mobsToSpawn > 0) {
 			if (!stdRoomIter.hasNext())
 				stdRoomIter = stdRooms.iterator();

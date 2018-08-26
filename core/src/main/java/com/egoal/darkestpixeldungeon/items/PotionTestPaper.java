@@ -71,6 +71,11 @@ public class PotionTestPaper extends Item{
 		return true;
 	}
 
+	@Override
+	public int price(){
+		return 30*quantity;
+	}
+	
 	private void test(Item item){
 		if(item.isIdentified()){
 			GLog.i(Messages.get(this, "tip"));

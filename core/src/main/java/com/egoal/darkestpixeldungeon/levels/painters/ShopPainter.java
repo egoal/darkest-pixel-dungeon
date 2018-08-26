@@ -103,7 +103,7 @@ public class ShopPainter extends Painter {
 		if (itemsToSpawn == null)
 			generateItems();
 
-		DPDShopKeeper sk	=	placeDPDShopKeeper(level, room);
+		DPDShopKeeper sk	=	placeDPDShopKeeper(level, room).initSellItems();
 		for(Item item: itemsToSpawn){
 			sk.addItemToSell(item);
 		}
@@ -139,6 +139,7 @@ public class ShopPainter extends Painter {
 
 		itemsToSpawn = new ArrayList<Item>();
 		
+		// armors and weapons 
 		switch (Dungeon.depth) {
 		case 6:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new NewShortsword().identify() : new HandAxe()).identify() );
@@ -190,21 +191,26 @@ public class ShopPainter extends Painter {
 
 		ChooseBag(Dungeon.hero.belongings);
 
-
-		itemsToSpawn.add( new PotionOfHealing() );
-		for (int i=0; i < 3; i++)
-			itemsToSpawn.add( Generator.random( Generator.Category.POTION ) );
-
-		itemsToSpawn.add( new ScrollOfIdentify() );
-		itemsToSpawn.add( new ScrollOfRemoveCurse() );
-		itemsToSpawn.add( new ScrollOfMagicMapping() );
-		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
-
-		for (int i=0; i < 2; i++)
-			itemsToSpawn.add( Random.Int(2) == 0 ?
-					Generator.random( Generator.Category.POTION ) :
-					Generator.random( Generator.Category.SCROLL ) );
-
+		// potions
+//		itemsToSpawn.add( new PotionOfHealing(){
+//			@Override
+//			public int sellPrice(){
+//				return super.sellPrice()*3/2;
+//			}
+//		});
+//		
+//		for (int i=0; i < 3; i++)
+//			itemsToSpawn.add( Generator.random( Generator.Category.POTION ) );
+//
+//		itemsToSpawn.add( new ScrollOfIdentify() );
+//		itemsToSpawn.add( new ScrollOfRemoveCurse() );
+//		itemsToSpawn.add( new ScrollOfMagicMapping() );
+//		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
+//
+//		for (int i=0; i < 2; i++)
+//			itemsToSpawn.add( Random.Int(2) == 0 ?
+//					Generator.random( Generator.Category.POTION ) :
+//					Generator.random( Generator.Category.SCROLL ) );
 
 		itemsToSpawn.add( new OverpricedRation() );
 		itemsToSpawn.add( new OverpricedRation() );
@@ -278,7 +284,7 @@ public class ShopPainter extends Painter {
 		if (itemsToSpawn.size() > DPDShopKeeper.MAX_ITEMS)
 			throw new RuntimeException("Shop attempted to carry more than 39 items!");
 
-		Collections.shuffle(itemsToSpawn);
+		// Collections.shuffle(itemsToSpawn);
 	}
 
 	private static void ChooseBag(Belongings pack){

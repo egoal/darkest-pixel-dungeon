@@ -49,6 +49,6 @@ public class PotionOfMight extends Potion {
 	
 	@Override
 	public int price() {
-		return isKnown() ? 100 * quantity : super.price();
+		return isKnown() ? (int)(100 * quantity*(reinforced? 1.5: 1)): super.price();
 	}
 }
