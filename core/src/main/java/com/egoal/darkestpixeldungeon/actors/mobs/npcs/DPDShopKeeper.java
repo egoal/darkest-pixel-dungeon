@@ -207,7 +207,7 @@ public class DPDShopKeeper extends NPC {
       add(rtmMessage);
 
       // action buttons
-      RedButton btnBuy = new RedButton(Messages.get(DPDShopKeeper.class, 
+      RedButton btnBuy = new RedButton(Messages.get(DPDShopKeeper.class,
               "buy")) {
         @Override
         protected void onClick() {
@@ -218,7 +218,7 @@ public class DPDShopKeeper extends NPC {
       btnBuy.setRect(0, rtmMessage.bottom() + GAP, WIDTH, BTN_HEIGHT);
       add(btnBuy);
 
-      RedButton btnSell = new RedButton(Messages.get(DPDShopKeeper.class, 
+      RedButton btnSell = new RedButton(Messages.get(DPDShopKeeper.class,
               "sell")) {
         @Override
         protected void onClick() {
@@ -247,6 +247,7 @@ public class DPDShopKeeper extends NPC {
 
     private ColorBlock line;
     private ArrayList<ItemButton> itemButtons_ = new ArrayList<>();
+    private ArrayList<BitmapText> itemPrices_ = new ArrayList<>();
 
     public WndSellItems(DPDShopKeeper sk) {
       super();
@@ -267,7 +268,8 @@ public class DPDShopKeeper extends NPC {
 
       // add items
       int btm = placeItems(sk, line.y + line.height() + GAP);
-
+      updateButtons();
+      
       resize(WIDTH, btm);
     }
 
@@ -283,7 +285,7 @@ public class DPDShopKeeper extends NPC {
             onPlayerWantBuy(item);
           }
         };
-        ib.setPos(c * (SLOT_SIZE + SLOT_MARGIN), top + r * (SLOT_SIZE + 
+        ib.setPos(c * (SLOT_SIZE + SLOT_MARGIN), top + r * (SLOT_SIZE +
                 PRICE_HEIGHT + SLOT_MARGIN));
         add(ib);
         itemButtons_.add(ib);
@@ -295,19 +297,32 @@ public class DPDShopKeeper extends NPC {
         bt.x = ib.centerX() - bt.width() / 2;
         bt.y = ib.bottom() + GAP;
         add(bt);
+        itemPrices_.add(bt);
 
         ++i;
       }
 
-      return (int) top + ((i - 1) / SLOT_COLS + 1) * (SLOT_SIZE + 
+      return (int) top + ((i - 1) / SLOT_COLS + 1) * (SLOT_SIZE +
               PRICE_HEIGHT + SLOT_MARGIN);
+    }
+
+    private void updateButtons() {
+      for (int i = 0; i < itemButtons_.size(); ++i) {
+        if (buyPrice(itemButtons_.get(i).item()) > Dungeon.gold) {
+          // cannot afford
+          itemPrices_.get(i).hardlight(0xFF0000);
+        } else {
+          itemPrices_.get(i).hardlight(0xFFFF00);
+        }
+      }
+      
     }
 
     private void onPlayerWantBuy(final Item item) {
       final int price = buyPrice(item);
 
       boolean canBuy = price <= Dungeon.gold;
-      add(new WndConfirmBuy(item, Messages.get(DPDShopKeeper.class, "buy"), 
+      add(new WndConfirmBuy(item, Messages.get(DPDShopKeeper.class, "buy"),
               canBuy) {
         @Override
         protected void onConfirmed() {
@@ -324,6 +339,7 @@ public class DPDShopKeeper extends NPC {
               ib.enable(false);
               break;
             }
+          updateButtons();
 
           hide();
         }

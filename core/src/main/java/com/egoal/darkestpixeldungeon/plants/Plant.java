@@ -197,11 +197,6 @@ public abstract class Plant implements Bundlable {
     }
 
     @Override
-    public int sellPrice() {
-      return super.sellPrice() * 2;
-    }
-
-    @Override
     public String desc() {
       return Messages.get(plantClass, "desc");
     }

@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.PotionTestPaper;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
+import com.egoal.darkestpixeldungeon.sprites.PotionSellerSprite;
 import com.watabou.utils.Random;
 
 /**
@@ -14,7 +15,7 @@ import com.watabou.utils.Random;
 public class PotionSeller extends DPDShopKeeper {
 
   {
-    //todo: sprite class
+    spriteClass = PotionSellerSprite.class;
   }
 
   @Override

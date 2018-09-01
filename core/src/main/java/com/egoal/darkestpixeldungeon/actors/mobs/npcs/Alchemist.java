@@ -97,15 +97,12 @@ public class Alchemist extends NPC {
     dv.empty();
 
     // give reward
-    (new Gold(Random.Int(0, vol * 15) + 20)).doPickUp(Dungeon.hero);
+    (new Gold(Random.Int(5, 15)*vol + 20)).doPickUp(Dungeon.hero);
 
     if (vol >= 5) {
       // give test papers
-      for (int i = 0; i < vol / 5 && i < 3; ++i) {
+      for (int i = 0; i < vol / 5 && i < 2; ++i) {
         PotionTestPaper ptp = new PotionTestPaper();
-        // ptp.setTargetPotion(alItems.get(Random.Int(alItems.size())));
-        // ptp.setTarget((Class<Potion>)potionList.get(Random.Int(potionList
-        // .size())));
         if (ptp.doPickUp(Dungeon.hero)) {
         } else {
           Dungeon.level.drop(ptp, Dungeon.hero.pos).sprite.drop();

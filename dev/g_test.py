@@ -1,126 +1,74 @@
 import sys, os
 import random
 
-import numpy as np
-import matplotlib.pyplot as plt
+TNONE, TWALL, TFLOOR, TDOOR = 0, 1, 2, 3
+TILE_CHARS = { TNONE: ' ', TWALL: '#', TFLOOR: '.', TDOOR: 'D', }
 
-MAP_WIDTH, MAP_HEIGHT = 64, 64, 
+class Rect:
+    def __init__(self, x1, x2, y1, y2):
+        self.x1, self.x2, self.y1, self.y2 = x1, x2, y1, y2
 
-class Room:
-    def __init__(self, x1, y1, x2, y2):
-        self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
+    def size(self):
+        return (self.x2-self.x1+1, self.y2-self.y1+1)
+
+    def inner(self, i):
+        return Rect(self.x1+i, self.x2-i, self.y1+i, self.y2-i)
+
+class Map:
+    def __init__(self, w, h):
+        self.width, self.height = w, h
+        self.tiles = [[TNONE for x in range(w)] for y in range(h)]
+
+    def print(self):
+        for y in range(self.height):
+            print(''.join([TILE_CHARS[t] for t in self.tiles[y]]))
+
+    def set_rect(self, rect, tile):
+        for y in range(rect.y1, rect.y2+1):
+            for x in range(rect.x1, rect.x2+1):
+                self.tiles[y][x] = tile
     
-    def setAttributes(self, connecters, locked=False):
-        self.connecters = connecters
-        self.locked = locked
+    def at(self, x, y):
+        if x<0 or x>=self.width or y<0 or y>=self.height:
+            return None
+        return self.tiles[y][x]
 
-    def moveTo(self, x1, y1):
-        dx, dy = x1-self.x1, y1-self.y1
-        self.x1 += dx
-        self.x2 += dx
-        self.y1 += dy
-        self.y2 += dy
+    def NEIGHBOR_8(self, x, y):
+        return [(x-1, y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), 
+            (x-1, y+1), (x, y+1), (x+1, y+1), ]
 
-    def isValid(self):
-        return self.x1<self.x2 and self.y1<self.y2
-
-    def random(self, inner=1):
-        return (random.randint(self.x1+inner, self.x2-inner), 
-            random.randint(self.y1+inner, self.y2-inner))
-
-    def intersect(self, other, ):
-        return not (self.x1>other.x2 or self.x2<other.x1 or self.y1>other.y2 or self.y2<other.y1)
-
-    def w(self):
-        return self.x2-self.x1+1
-    def h(self):
-        return self.y2-self.y1+1
-
-    def p(self):
-        return 'room[{}, {}, {}, {}] with {} connectors is {}'.format(
-            self.x1, self.y1, self.x2, self.y2, self.connecters, 'locked' if self.locked else 'not locked')
-
-class MG:
-    def __init__(self):
-        self.map = np.zeros((MAP_HEIGHT, MAP_WIDTH, ), dtype=np.int)
-
+class LocalMapRect(Map):
     def generate(self):
-        self._initRooms()
-        if not self._placeRooms():
-            print('room placement failed.')
-            return False
-    
-        return True
+        r = Rect(0, self.width-1, 0, self.height-1)
+        self.set_rect(r, TWALL)
+        self.set_rect(r.inner(1), TFLOOR)
 
-    def show(self):
-        plt.imshow(self.map, cmap='gray')
-        plt.show()
+class LocalMapCave(Map):
+    def generate(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                self.tiles[y][x] = TFLOOR if random.random()<.3 else TWALL
 
-    def _initRooms(self):
-        self.rooms = []
+        for i in range(3):
+            newtiles = [[TNONE for x in range(self.width)] for y in range(self.height)]
+            for y in range(self.height):
+                for x in range(self.width):
+                    nw = 0
+                    for pt in self.NEIGHBOR_8(x, y):
+                        if self.at(pt[0], pt[1])==TWALL:
+                            nw += 1
 
-        # init types
-        cntRooms = random.randint(8, 12)
-        cntLocked = random.randint(1, 3)
-        
-        print('{} rooms with {} locked is going to spawned.'.format(cntRooms, cntLocked))
-        
-        for i in range(cntRooms):
-            locked = i<cntLocked
-            connects = 1 if locked else random.randint(1, 4)
+                    newtiles[y][x] = TWALL if nw>=5 else TFLOOR
+            
+            self.tiles = newtiles
 
-            w, h = random.randint(4, 8), random.randint(4, 8)
-            r = Room(0, 0, w, h)
-            r.setAttributes(connects, locked)
+class DungeonMap(Map):
+    def generate(self):
+        place_first_room()
 
-            self.rooms.append(r)
-            print(r.p())
+    def place_first_room(self):
+        pass        
 
-    def _placeRooms(self):
-        MAX_TRY = 10
-        for __i in range(MAX_TRY):
-            print('{} attempt to place rooms...'.format(__i))
-            self.map[:, :] = 0
-            roomsRest = self.rooms
-            roomsAdded = self.rooms
-
-            while len(roomsRest)>0:
-                print('placing... {}/{} rooms rest/added'.format(len(roomsRest), len(roomsAdded)))
-                i = random.randint(0, len(roomsRest)-1)
-                r = roomsRest[i]
-                del roomsRest[i]
-
-                # random place
-                placed = False
-                for __j in range(MAX_TRY):
-                    x, y = random.randint(0, MAP_WIDTH-r.w()), random.randint(0, MAP_HEIGHT-r.h())
-                    r.moveTo(x, y)
-                    canPlace = True
-                    for rm in roomsAdded:
-                        if rm.intersect(r):
-                            canPlace = False
-                            break
-
-                    if canPlace:
-                        # place a room
-                        self.map[r.y1: r.y2+1, r.x1: r.x2+1] = 1
-                        placed = True
-                        break
-
-                if not placed:
-                    print('room place failed after {} rooms added.'.format(len(roomsAdded)))
-                    print(self.map)
-                    break
-                roomsAdded.append(r)
-
-            if len(roomsRest)==0:
-                return True
-
-        return False
-
-if __name__=='__main__':
-    mg = MG()
-    if mg.generate():
-        mg.show()
-    else:
-        print('map generation failed.')
+m = LocalMapCave(16, 16)
+m.generate()
+m.print()

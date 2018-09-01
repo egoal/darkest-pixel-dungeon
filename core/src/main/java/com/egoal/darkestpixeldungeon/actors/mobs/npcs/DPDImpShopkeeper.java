@@ -29,7 +29,6 @@ public class DPDImpShopkeeper extends DPDShopKeeper {
     // devil would be place by painter, here, add extra items
     addItemToSell(new PotionOfHealing());
 
-
     for (int i = 0; i < 3; i++)
       addItemToSell(Generator.random(Generator.Category.POTION));
 

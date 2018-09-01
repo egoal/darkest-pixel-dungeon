@@ -29,8 +29,10 @@ public class CrystalsSwords extends MeleeWeapon {
     Damage dmg = super.giveDamage(hero, target);
 
     // 20% chance to deal 2 times damage
-    if (Random.Float() < .2f) {
-      dmg.value *= 2.f;
+    float c = .15f+ .35f*(1f- (float)Math.pow(.7, level()/3));
+    
+    if (Random.Float() < c) {
+      dmg.value *= 1.75f;
       dmg.addFeature(Damage.Feature.CRITCIAL);
     }
 

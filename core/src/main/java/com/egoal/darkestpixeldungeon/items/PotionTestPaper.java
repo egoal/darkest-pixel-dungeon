@@ -74,7 +74,7 @@ public class PotionTestPaper extends Item {
 
   @Override
   public int price() {
-    return 30 * quantity;
+    return 15 * quantity;
   }
 
   private void test(Item item) {

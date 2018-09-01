@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
@@ -40,7 +41,9 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by 93942 on 5/30/2018.
@@ -357,16 +360,36 @@ public class Statuary extends NPC {
       } else {
         // give reward, random things
         if (Random.Int(600) < gold) {
-          Dungeon.level.drop(Generator.random(), hero.pos);
+          Generator.Category gc = Random.Float() < .4 ? Generator.Category
+                  .WEAPON : Generator.Category.ARMOR;
+          Dungeon.level.drop(Generator.random(gc), hero.pos);
         }
       }
 
       return gold >= 500;
     } else {
-      // blasphemy, reset gold
-      gold = gold >= 100 ? 100 : 0;
-      hero.busy();
-      hero.sprite.operate(hero.pos);
+      // blasphemy, lost memory, give a cursed armor or weapo
+      // lost memory
+      Arrays.fill(Dungeon.level.mapped, false);
+      Arrays.fill(Dungeon.level.visited, false);
+      GameScene.updateFog();
+
+      // reward
+      Generator.Category gc = Random.Float() < .4 ? Generator.Category
+              .WEAPON : Generator.Category.ARMOR;
+      Item item = Generator.random(gc);
+      item.upgrade(1);
+      if (item instanceof Armor) {
+        ((Armor) item).inscribe(Armor.Glyph.randomCurse());
+      } else if (item instanceof Weapon) {
+        ((Weapon) item).enchant(Weapon.Enchantment.randomCurse());
+      }
+      Dungeon.level.drop(item, hero.pos);
+
+      // effects
+      GameScene.flash(0x5A7878);
+      Sample.INSTANCE.play(Assets.SND_BLAST);
+
       GLog.i(Messages.get(this, "blasphemy"));
       GLog.w(Messages.get(this, "greedy"));
 
@@ -490,13 +513,15 @@ public class Statuary extends NPC {
       titleBar.setRect(0, 0, WIDTH, 0);
       add(titleBar);
 
-      RenderedTextMultiline rtmMessage = PixelScene.renderMultiline(s.description(), 6);
+      RenderedTextMultiline rtmMessage = PixelScene.renderMultiline(s
+              .description(), 6);
       rtmMessage.maxWidth(WIDTH);
       rtmMessage.setPos(0f, titleBar.bottom() + GAP);
       add(rtmMessage);
 
       // buttons
-      RedButton btnAgree = new RedButton(Messages.get(Statuary.class, TXT_AGREE + s.type().title)) {
+      RedButton btnAgree = new RedButton(Messages.get(Statuary.class,
+              TXT_AGREE + s.type().title)) {
         @Override
         protected void onClick() {
           hide();
@@ -506,7 +531,8 @@ public class Statuary extends NPC {
       btnAgree.setRect(0, rtmMessage.bottom() + GAP, WIDTH, BTN_HEIGHT);
       add(btnAgree);
 
-      RedButton btnDisagree = new RedButton(Messages.get(Statuary.class, TXT_DISAGREE + s.type().title)) {
+      RedButton btnDisagree = new RedButton(Messages.get(Statuary.class,
+              TXT_DISAGREE + s.type().title)) {
         @Override
         protected void onClick() {
           hide();

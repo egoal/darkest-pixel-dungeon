@@ -684,7 +684,7 @@ public abstract class RegularLevel extends Level {
         } while (findMob(ps.pos) != null || !passable[ps.pos]);
         mobs.add(ps);
       }
-      float ssratio = Dungeon.shopOnLevel() ? .08f : .15f;
+      float ssratio = Dungeon.shopOnLevel() ? .08f : .2f;
       if (Random.Float() < ssratio) {
         DPDShopKeeper ps = new ScrollSeller().initSellItems();
         Room r = Random.element(stdRooms);

@@ -55,6 +55,11 @@ public class MadMan extends Mob implements Callback {
   }
 
   @Override
+  protected float attackDelay(){
+    return 1.25f;
+  }
+  
+  @Override
   public int attackSkill(Char target) {
     return 10 + Dungeon.depth;
   }

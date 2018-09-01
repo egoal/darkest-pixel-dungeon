@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.egoal.darkestpixeldungeon.sprites.ScrollSellerSprite;
 import com.watabou.utils.Random;
 
 /**
@@ -16,7 +17,7 @@ import com.watabou.utils.Random;
 
 public class ScrollSeller extends DPDShopKeeper {
   {
-
+    spriteClass = ScrollSellerSprite.class;
   }
 
   @Override
