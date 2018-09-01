@@ -32,7 +32,7 @@ public class CrystalsSwords extends MeleeWeapon {
     float c = .15f+ .35f*(1f- (float)Math.pow(.7, level()/3));
     
     if (Random.Float() < c) {
-      dmg.value *= 1.75f;
+      dmg.value *= 2.f;
       dmg.addFeature(Damage.Feature.CRITCIAL);
     }
 

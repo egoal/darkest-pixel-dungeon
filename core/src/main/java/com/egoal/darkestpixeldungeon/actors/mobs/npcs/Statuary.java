@@ -384,6 +384,7 @@ public class Statuary extends NPC {
       } else if (item instanceof Weapon) {
         ((Weapon) item).enchant(Weapon.Enchantment.randomCurse());
       }
+      item.cursed = true;
       Dungeon.level.drop(item, hero.pos);
 
       // effects

@@ -376,8 +376,8 @@ public class VillageLevel extends RegularLevel {
       mobs.add(s);
     }
 
-    // shopkeeper
-    {
+    // shopkeepers
+    if (false) {
       DPDShopKeeper dsk = new DPDShopKeeper().initSellItems();
       dsk.addItemToSell(new PotionOfHealing());
       dsk.addItemToSell(new PotionOfHealing());
@@ -414,17 +414,17 @@ public class VillageLevel extends RegularLevel {
     }
 
     // test 
-    if (true) {
+    if (false) {
       // Rat dg	=	new Rat();
-      Statuary dg	=	new Statuary().type(Statuary.Type.MONSTER);
+      Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
       // SkeletonKnight dg	=	new SkeletonKnight();
 //			MadMan dg	=	new MadMan();
-			do{
-				dg.pos	=	pointToCell(roomEntrance.random());
-			}while(findMob(dg.pos)!=null || dg.pos==entrance);
-			mobs.add(dg);
+      do {
+        dg.pos = pointToCell(roomEntrance.random());
+      } while (findMob(dg.pos) != null || dg.pos == entrance);
+      mobs.add(dg);
 
-       drop(new Gold(1000), entrance);
+      drop(new Gold(1000), entrance);
     }
 
     super.createMobs();

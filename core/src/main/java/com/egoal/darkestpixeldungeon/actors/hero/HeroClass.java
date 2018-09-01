@@ -129,9 +129,6 @@ public enum HeroClass {
     // a wine
     new Wine().collect();
 
-    new CrystalsSwords().identify().collect();
-    new BattleGloves().identify().collect();
-
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
