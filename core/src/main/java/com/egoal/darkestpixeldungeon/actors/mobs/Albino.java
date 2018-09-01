@@ -30,25 +30,25 @@ import com.watabou.utils.Random;
 
 public class Albino extends Rat {
 
-	{
-		spriteClass = AlbinoSprite.class;
-		
-		HP = HT = 15;
-	}
-	
-	@Override
-	public void die( Object cause ) {
-		super.die( cause );
-		Badges.validateRare( this );
-	}
-	
-	@Override
-	public Damage attackProc(Damage dmg){
-		
-		if (Random.Int( 2 ) == 0) {
-			Buff.affect(enemy, Bleeding.class).set(dmg.value);
-		}
-		
-		return dmg;
-	}
+  {
+    spriteClass = AlbinoSprite.class;
+
+    HP = HT = 15;
+  }
+
+  @Override
+  public void die(Object cause) {
+    super.die(cause);
+    Badges.validateRare(this);
+  }
+
+  @Override
+  public Damage attackProc(Damage dmg) {
+
+    if (Random.Int(2) == 0) {
+      Buff.affect(enemy, Bleeding.class).set(dmg.value);
+    }
+
+    return dmg;
+  }
 }

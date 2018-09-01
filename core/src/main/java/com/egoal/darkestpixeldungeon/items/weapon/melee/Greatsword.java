@@ -24,10 +24,10 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Greatsword extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.GREATSWORD;
+  {
+    image = ItemSpriteSheet.GREATSWORD;
 
-		tier=5;
-	}
+    tier = 5;
+  }
 
 }

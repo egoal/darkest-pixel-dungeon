@@ -31,31 +31,32 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
-public class Venomous extends Weapon.Enchantment{
+public class Venomous extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x4400AA );
-	
-	@Override
-	public Damage proc(Weapon weapon,Damage damage) {
-		Char defender	=	(Char)damage.to;
-		Char attacker	=	(Char)damage.from;
-		// lvl 0 - 33%
-		// lvl 1 - 50%
-		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level() );
-		
-		if (Random.Int( level + 3 ) >= 2) {
-			
-			Buff.affect( defender, Poison.class ).extend( Poison.durationFactor( defender ) * ((level/2) + 1) );
-			CellEmitter.center(defender.pos).burst( PoisonParticle.SPLASH, 5 );
+  private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing(0x4400AA);
 
-		}
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    Char attacker = (Char) damage.from;
+    // lvl 0 - 33%
+    // lvl 1 - 50%
+    // lvl 2 - 60%
+    int level = Math.max(0, weapon.level());
 
-		return damage.addElement(Damage.Element.POISON);
-	}
-	
-	@Override
-	public Glowing glowing() {
-		return PURPLE;
-	}
+    if (Random.Int(level + 3) >= 2) {
+
+      Buff.affect(defender, Poison.class).extend(Poison.durationFactor
+              (defender) * ((level / 2) + 1));
+      CellEmitter.center(defender.pos).burst(PoisonParticle.SPLASH, 5);
+
+    }
+
+    return damage.addElement(Damage.Element.POISON);
+  }
+
+  @Override
+  public Glowing glowing() {
+    return PURPLE;
+  }
 }

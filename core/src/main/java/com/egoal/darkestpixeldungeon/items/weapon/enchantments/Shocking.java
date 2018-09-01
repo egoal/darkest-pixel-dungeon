@@ -35,66 +35,68 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Shocking extends Weapon.Enchantment{
+public class Shocking extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.6f );
+  private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF, 
+          0.6f);
 
-	@Override
-	public Damage proc(Weapon weapon, Damage damage) {
-		Char defender	=	(Char)damage.to;
-		Char attacker	=	(Char)damage.from;
-		// lvl 0 - 33%
-		// lvl 1 - 50%
-		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level() );
-		
-		if (Random.Int( level + 3 ) >= 2) {
-			
-			affected.clear();
-			affected.add(attacker);
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    Char attacker = (Char) damage.from;
+    // lvl 0 - 33%
+    // lvl 1 - 50%
+    // lvl 2 - 60%
+    int level = Math.max(0, weapon.level());
 
-			arcs.clear();
-			arcs.add(new Lightning.Arc(attacker.pos, defender.pos));
-			hit(defender, Random.Int(1, damage.value / 3));
+    if (Random.Int(level + 3) >= 2) {
 
-			attacker.sprite.parent.add( new Lightning( arcs, null ) );
-			
-		}
+      affected.clear();
+      affected.add(attacker);
 
-		return damage.addElement(Damage.Element.LIGHT);
+      arcs.clear();
+      arcs.add(new Lightning.Arc(attacker.pos, defender.pos));
+      hit(defender, Random.Int(1, damage.value / 3));
 
-	}
+      attacker.sprite.parent.add(new Lightning(arcs, null));
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return WHITE;
-	}
+    }
 
-	private ArrayList<Char> affected = new ArrayList<>();
+    return damage.addElement(Damage.Element.LIGHT);
 
-	private ArrayList<Lightning.Arc> arcs = new ArrayList<>();
-	
-	private void hit( Char ch, int damage ) {
-		
-		if (damage < 1) {
-			return;
-		}
-		
-		affected.add(ch);
-		
-		ch.takeDamage(new Damage(Level.water[ch.pos] && !ch.flying ? (int) (damage * 2) : damage, 
-			this, ch).addElement(Damage.Element.LIGHT));
-		
-		ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
-		ch.sprite.flash();
-		
-		HashSet<Char> ns = new HashSet<Char>();
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			Char n = Actor.findChar( ch.pos + PathFinder.NEIGHBOURS8[i] );
-			if (n != null && !affected.contains( n )) {
-				arcs.add(new Lightning.Arc(ch.pos, n.pos));
-				hit(n, Random.Int(damage / 2, damage));
-			}
-		}
-	}
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return WHITE;
+  }
+
+  private ArrayList<Char> affected = new ArrayList<>();
+
+  private ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+
+  private void hit(Char ch, int damage) {
+
+    if (damage < 1) {
+      return;
+    }
+
+    affected.add(ch);
+
+    ch.takeDamage(new Damage(Level.water[ch.pos] && !ch.flying ? (int) 
+            (damage * 2) : damage,
+            this, ch).addElement(Damage.Element.LIGHT));
+
+    ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
+    ch.sprite.flash();
+
+    HashSet<Char> ns = new HashSet<Char>();
+    for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+      Char n = Actor.findChar(ch.pos + PathFinder.NEIGHBOURS8[i]);
+      if (n != null && !affected.contains(n)) {
+        arcs.add(new Lightning.Arc(ch.pos, n.pos));
+        hit(n, Random.Int(damage / 2, damage));
+      }
+    }
+  }
 }

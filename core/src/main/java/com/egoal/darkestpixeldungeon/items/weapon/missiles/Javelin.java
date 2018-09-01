@@ -30,48 +30,48 @@ import com.watabou.utils.Random;
 
 public class Javelin extends MissileWeapon {
 
-	{
-		image = ItemSpriteSheet.JAVELIN;
-	}
+  {
+    image = ItemSpriteSheet.JAVELIN;
+  }
 
-	@Override
-	public int min(int lvl) {
-		return 2;
-	}
+  @Override
+  public int min(int lvl) {
+    return 2;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return 15;
-	}
+  @Override
+  public int max(int lvl) {
+    return 15;
+  }
 
-	@Override
-	public int STRReq(int lvl) {
-		return 15;
-	}
+  @Override
+  public int STRReq(int lvl) {
+    return 15;
+  }
 
-	public Javelin() {
-		this( 1 );
-	}
-	
-	public Javelin( int number ) {
-		super();
-		quantity = number;
-	}
-	
-	@Override
-	public Damage proc(Damage damage){
-		Buff.prolong( (Char)damage.to, Cripple.class, Cripple.DURATION );
-		return super.proc(damage);
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.Int( 5, 15 );
-		return this;
-	}
-	
-	@Override
-	public int price() {
-		return 12 * quantity;
-	}
+  public Javelin() {
+    this(1);
+  }
+
+  public Javelin(int number) {
+    super();
+    quantity = number;
+  }
+
+  @Override
+  public Damage proc(Damage damage) {
+    Buff.prolong((Char) damage.to, Cripple.class, Cripple.DURATION);
+    return super.proc(damage);
+  }
+
+  @Override
+  public Item random() {
+    quantity = Random.Int(5, 15);
+    return this;
+  }
+
+  @Override
+  public int price() {
+    return 12 * quantity;
+  }
 }

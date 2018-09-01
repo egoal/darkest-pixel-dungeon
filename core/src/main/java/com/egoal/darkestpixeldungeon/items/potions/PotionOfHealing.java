@@ -34,49 +34,51 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 
 public class PotionOfHealing extends Potion {
 
-	{
-		initials = 2;
+  {
+    initials = 2;
 
-		bones = true;
-	}
-	
-	@Override
-	public boolean canBeReinforced(){ return !reinforced; }
-	
-	@Override
-	public void apply( Hero hero ) {
-		setKnown();
-		cure( Dungeon.hero );
-		GLog.p( Messages.get(this, "heal") );
-	}
-	
-	private void cure(Hero hero){
-		hero.HP	=	hero.HT;
-		Buff.detach( hero, Bleeding.class );
+    bones = true;
+  }
 
-		if(reinforced){
-			Buff.detach( hero, Poison.class );
-			Buff.detach( hero, Cripple.class );
-			Buff.detach( hero, Weakness.class );
-			Buff.detach(hero, Burning.class);
-		}
+  @Override
+  public boolean canBeReinforced() {
+    return !reinforced;
+  }
 
-		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
-	}
-	
-	public static void heal( Hero hero ) {
-		// called in water of healing, so kept
-		hero.HP = hero.HT;
-		Buff.detach( hero, Poison.class );
-		Buff.detach( hero, Cripple.class );
-		Buff.detach( hero, Weakness.class );
-		Buff.detach( hero, Bleeding.class );
-		
-		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
-	}
+  @Override
+  public void apply(Hero hero) {
+    setKnown();
+    cure(Dungeon.hero);
+    GLog.p(Messages.get(this, "heal"));
+  }
 
-	@Override
-	public int price() {
-		return isKnown() ? (int)(30 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+  private void cure(Hero hero) {
+    hero.HP = hero.HT;
+    Buff.detach(hero, Bleeding.class);
+
+    if (reinforced) {
+      Buff.detach(hero, Poison.class);
+      Buff.detach(hero, Cripple.class);
+      Buff.detach(hero, Weakness.class);
+      Buff.detach(hero, Burning.class);
+    }
+
+    hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4);
+  }
+
+  public static void heal(Hero hero) {
+    // called in water of healing, so kept
+    hero.HP = hero.HT;
+    Buff.detach(hero, Poison.class);
+    Buff.detach(hero, Cripple.class);
+    Buff.detach(hero, Weakness.class);
+    Buff.detach(hero, Bleeding.class);
+
+    hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4);
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

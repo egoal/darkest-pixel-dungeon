@@ -43,195 +43,195 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.watabou.utils.Random;
 
 public class WaterOfTransmutation extends WellWater {
-	
-	@Override
-	protected Item affectItem( Item item ) {
-		
-		if (item instanceof MagesStaff) {
-			item = changeStaff( (MagesStaff)item );
-		} else if (item instanceof MeleeWeapon) {
-			item = changeWeapon( (MeleeWeapon)item );
-		} else if (item instanceof Scroll) {
-			item = changeScroll( (Scroll)item );
-		} else if (item instanceof Potion) {
-			item = changePotion( (Potion)item );
-		} else if (item instanceof Ring) {
-			item = changeRing( (Ring)item );
-		} else if (item instanceof Wand) {
-			item = changeWand( (Wand)item );
-		} else if (item instanceof Plant.Seed) {
-			item = changeSeed( (Plant.Seed)item );
-		} else if (item instanceof Artifact) {
-			item = changeArtifact( (Artifact)item );
-		} else {
-			item = null;
-		}
 
-		if (item != null) {
-			Journal.remove( Journal.Feature.WELL_OF_TRANSMUTATION );
-		}
+  @Override
+  protected Item affectItem(Item item) {
 
-		return item;
+    if (item instanceof MagesStaff) {
+      item = changeStaff((MagesStaff) item);
+    } else if (item instanceof MeleeWeapon) {
+      item = changeWeapon((MeleeWeapon) item);
+    } else if (item instanceof Scroll) {
+      item = changeScroll((Scroll) item);
+    } else if (item instanceof Potion) {
+      item = changePotion((Potion) item);
+    } else if (item instanceof Ring) {
+      item = changeRing((Ring) item);
+    } else if (item instanceof Wand) {
+      item = changeWand((Wand) item);
+    } else if (item instanceof Plant.Seed) {
+      item = changeSeed((Plant.Seed) item);
+    } else if (item instanceof Artifact) {
+      item = changeArtifact((Artifact) item);
+    } else {
+      item = null;
+    }
 
-	}
-	
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		emitter.start( Speck.factory( Speck.CHANGE ), 0.2f, 0 );
-	}
+    if (item != null) {
+      Journal.remove(Journal.Feature.WELL_OF_TRANSMUTATION);
+    }
 
-	private MagesStaff changeStaff( MagesStaff staff ){
-		Class<?extends Wand> wandClass = staff.wandClass();
+    return item;
 
-		if (wandClass == null){
-			return null;
-		} else {
-			Wand n;
-			do {
-				n = (Wand)Generator.random(Generator.Category.WAND);
-			} while (n.getClass() == wandClass);
-			n.level(0);
-			staff.imbueWand(n, null);
-		}
+  }
 
-		return staff;
-	}
-	
-	private Weapon changeWeapon(MeleeWeapon w ) {
-		
-		Weapon n;
-		Generator.Category c = Generator.wepTiers[w.tier-1];
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
+    emitter.start(Speck.factory(Speck.CHANGE), 0.2f, 0);
+  }
 
-		do {
-			try {
-				n = (Weapon)c.classes[Random.chances(c.probs)].newInstance();
-			} catch (Exception e) {
-				DarkestPixelDungeon.reportException(e);
-				return null;
-			}
-		} while (!(n instanceof MeleeWeapon) || n.getClass() == w.getClass());
+  private MagesStaff changeStaff(MagesStaff staff) {
+    Class<? extends Wand> wandClass = staff.wandClass();
 
-		int level = w.level();
-		if (level > 0) {
-			n.upgrade( level );
-		} else if (level < 0) {
-			n.degrade( -level );
-		}
+    if (wandClass == null) {
+      return null;
+    } else {
+      Wand n;
+      do {
+        n = (Wand) Generator.random(Generator.Category.WAND);
+      } while (n.getClass() == wandClass);
+      n.level(0);
+      staff.imbueWand(n, null);
+    }
 
-		n.enchantment = w.enchantment;
-		n.levelKnown = w.levelKnown;
-		n.cursedKnown = w.cursedKnown;
-		n.cursed = w.cursed;
-		n.imbue = w.imbue;
+    return staff;
+  }
 
-		return n;
+  private Weapon changeWeapon(MeleeWeapon w) {
 
-	}
-	
-	private Ring changeRing( Ring r ) {
-		Ring n;
-		do {
-			n = (Ring)Generator.random( Generator.Category.RING );
-		} while (n.getClass() == r.getClass());
-		
-		n.level(0);
-		
-		int level = r.level();
-		if (level > 0) {
-			n.upgrade( level );
-		} else if (level < 0) {
-			n.degrade( -level );
-		}
-		
-		n.levelKnown = r.levelKnown;
-		n.cursedKnown = r.cursedKnown;
-		n.cursed = r.cursed;
-		
-		return n;
-	}
+    Weapon n;
+    Generator.Category c = Generator.wepTiers[w.tier - 1];
 
-	private Artifact changeArtifact( Artifact a ) {
-		Artifact n = Generator.randomArtifact();
+    do {
+      try {
+        n = (Weapon) c.classes[Random.chances(c.probs)].newInstance();
+      } catch (Exception e) {
+        DarkestPixelDungeon.reportException(e);
+        return null;
+      }
+    } while (!(n instanceof MeleeWeapon) || n.getClass() == w.getClass());
 
-		if (n != null){
-			n.cursedKnown = a.cursedKnown;
-			n.cursed = a.cursed;
-			n.levelKnown = a.levelKnown;
-			n.transferUpgrade(a.visiblyUpgraded());
-		}
+    int level = w.level();
+    if (level > 0) {
+      n.upgrade(level);
+    } else if (level < 0) {
+      n.degrade(-level);
+    }
 
-		return n;
-	}
-	
-	private Wand changeWand( Wand w ) {
-		
-		Wand n;
-		do {
-			n = (Wand)Generator.random( Generator.Category.WAND );
-		} while (n.getClass() == w.getClass());
-		
-		n.level( 0 );
-		n.upgrade( w.level() );
-		
-		n.levelKnown = w.levelKnown;
-		n.cursedKnown = w.cursedKnown;
-		n.cursed = w.cursed;
-		
-		return n;
-	}
-	
-	private Plant.Seed changeSeed( Plant.Seed s ) {
-		
-		Plant.Seed n;
-		
-		do {
-			n = (Plant.Seed)Generator.random( Generator.Category.SEED );
-		} while (n.getClass() == s.getClass());
-		
-		return n;
-	}
-	
-	private Scroll changeScroll( Scroll s ) {
-		if (s instanceof ScrollOfUpgrade) {
-			
-			return new ScrollOfMagicalInfusion();
-			
-		} else if (s instanceof ScrollOfMagicalInfusion) {
-			
-			return new ScrollOfUpgrade();
-			
-		} else {
-			
-			Scroll n;
-			do {
-				n = (Scroll)Generator.random( Generator.Category.SCROLL );
-			} while (n.getClass() == s.getClass());
-			return n;
-		}
-	}
-	
-	private Potion changePotion( Potion p ) {
-		if (p instanceof PotionOfStrength) {
-			
-			return new PotionOfMight();
-			
-		} else if (p instanceof PotionOfMight) {
-			
-			return new PotionOfStrength();
-			
-		} else {
-			
-			Potion n;
-			do {
-				n = (Potion)Generator.random( Generator.Category.POTION );
-			} while (n.getClass() == p.getClass());
-			return n;
-		}
-	}
-	
-	@Override
-	public String tileDesc() {
-		return Messages.get(this, "desc");
-	}
+    n.enchantment = w.enchantment;
+    n.levelKnown = w.levelKnown;
+    n.cursedKnown = w.cursedKnown;
+    n.cursed = w.cursed;
+    n.imbue = w.imbue;
+
+    return n;
+
+  }
+
+  private Ring changeRing(Ring r) {
+    Ring n;
+    do {
+      n = (Ring) Generator.random(Generator.Category.RING);
+    } while (n.getClass() == r.getClass());
+
+    n.level(0);
+
+    int level = r.level();
+    if (level > 0) {
+      n.upgrade(level);
+    } else if (level < 0) {
+      n.degrade(-level);
+    }
+
+    n.levelKnown = r.levelKnown;
+    n.cursedKnown = r.cursedKnown;
+    n.cursed = r.cursed;
+
+    return n;
+  }
+
+  private Artifact changeArtifact(Artifact a) {
+    Artifact n = Generator.randomArtifact();
+
+    if (n != null) {
+      n.cursedKnown = a.cursedKnown;
+      n.cursed = a.cursed;
+      n.levelKnown = a.levelKnown;
+      n.transferUpgrade(a.visiblyUpgraded());
+    }
+
+    return n;
+  }
+
+  private Wand changeWand(Wand w) {
+
+    Wand n;
+    do {
+      n = (Wand) Generator.random(Generator.Category.WAND);
+    } while (n.getClass() == w.getClass());
+
+    n.level(0);
+    n.upgrade(w.level());
+
+    n.levelKnown = w.levelKnown;
+    n.cursedKnown = w.cursedKnown;
+    n.cursed = w.cursed;
+
+    return n;
+  }
+
+  private Plant.Seed changeSeed(Plant.Seed s) {
+
+    Plant.Seed n;
+
+    do {
+      n = (Plant.Seed) Generator.random(Generator.Category.SEED);
+    } while (n.getClass() == s.getClass());
+
+    return n;
+  }
+
+  private Scroll changeScroll(Scroll s) {
+    if (s instanceof ScrollOfUpgrade) {
+
+      return new ScrollOfMagicalInfusion();
+
+    } else if (s instanceof ScrollOfMagicalInfusion) {
+
+      return new ScrollOfUpgrade();
+
+    } else {
+
+      Scroll n;
+      do {
+        n = (Scroll) Generator.random(Generator.Category.SCROLL);
+      } while (n.getClass() == s.getClass());
+      return n;
+    }
+  }
+
+  private Potion changePotion(Potion p) {
+    if (p instanceof PotionOfStrength) {
+
+      return new PotionOfMight();
+
+    } else if (p instanceof PotionOfMight) {
+
+      return new PotionOfStrength();
+
+    } else {
+
+      Potion n;
+      do {
+        n = (Potion) Generator.random(Generator.Category.POTION);
+      } while (n.getClass() == p.getClass());
+      return n;
+    }
+  }
+
+  @Override
+  public String tileDesc() {
+    return Messages.get(this, "desc");
+  }
 }

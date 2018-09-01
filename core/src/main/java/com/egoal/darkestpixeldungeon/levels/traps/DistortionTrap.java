@@ -28,24 +28,25 @@ import com.egoal.darkestpixeldungeon.scenes.InterlevelScene;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.Game;
 
-public class DistortionTrap extends Trap{
+public class DistortionTrap extends Trap {
 
-	{
-		color = TrapSprite.TEAL;
-		shape = TrapSprite.LARGE_DOT;
-	}
+  {
+    color = TrapSprite.TEAL;
+    shape = TrapSprite.LARGE_DOT;
+  }
 
-	@Override
-	public void activate() {
-		InterlevelScene.returnDepth = Dungeon.depth;
-		Belongings belongings = Dungeon.hero.belongings;
-		belongings.ironKeys[Dungeon.depth] = 0;
-		belongings.specialKeys[Dungeon.depth] = 0;
-		for (Item i : belongings){
-			if (i instanceof LloydsBeacon && ((LloydsBeacon) i).returnDepth == Dungeon.depth)
-					((LloydsBeacon) i).returnDepth = -1;
-		}
-		InterlevelScene.mode = InterlevelScene.Mode.RESET;
-		Game.switchScene(InterlevelScene.class);
-	}
+  @Override
+  public void activate() {
+    InterlevelScene.returnDepth = Dungeon.depth;
+    Belongings belongings = Dungeon.hero.belongings;
+    belongings.ironKeys[Dungeon.depth] = 0;
+    belongings.specialKeys[Dungeon.depth] = 0;
+    for (Item i : belongings) {
+      if (i instanceof LloydsBeacon && ((LloydsBeacon) i).returnDepth == 
+              Dungeon.depth)
+        ((LloydsBeacon) i).returnDepth = -1;
+    }
+    InterlevelScene.mode = InterlevelScene.Mode.RESET;
+    Game.switchScene(InterlevelScene.class);
+  }
 }

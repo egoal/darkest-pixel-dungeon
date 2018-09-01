@@ -28,42 +28,43 @@ import com.watabou.utils.Random;
 
 public class Sheep extends NPC {
 
-	private static final String[] LINE_KEYS = {"Baa!", "Baa?", "Baa.", "Baa..."};
+  private static final String[] LINE_KEYS = {"Baa!", "Baa?", "Baa.", "Baa..."};
 
-	{
-		spriteClass = SheepSprite.class;
-	}
+  {
+    spriteClass = SheepSprite.class;
+  }
 
-	public float lifespan;
+  public float lifespan;
 
-	private boolean initialized = false;
+  private boolean initialized = false;
 
-	@Override
-	protected boolean act() {
-		if (initialized) {
-			HP = 0;
+  @Override
+  protected boolean act() {
+    if (initialized) {
+      HP = 0;
 
-			destroy();
-			sprite.die();
+      destroy();
+      sprite.die();
 
-		} else {
-			initialized = true;
-			spend( lifespan + Random.Float(2) );
-		}
-		return true;
-	}
+    } else {
+      initialized = true;
+      spend(lifespan + Random.Float(2));
+    }
+    return true;
+  }
 
-	@Override
-	public int takeDamage(Damage dmg){ return 0;
-	}
+  @Override
+  public int takeDamage(Damage dmg) {
+    return 0;
+  }
 
-	@Override
-	public void add( Buff buff ) {
-	}
+  @Override
+  public void add(Buff buff) {
+  }
 
-	@Override
-	public boolean interact() {
-		yell( Messages.get(this, Random.element( LINE_KEYS )) );
-		return false;
-	}
+  @Override
+  public boolean interact() {
+    yell(Messages.get(this, Random.element(LINE_KEYS)));
+    return false;
+  }
 }

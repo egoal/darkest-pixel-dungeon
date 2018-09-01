@@ -36,57 +36,57 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
-public class DisarmingTrap extends Trap{
+public class DisarmingTrap extends Trap {
 
-	{
-		color = TrapSprite.RED;
-		shape = TrapSprite.LARGE_DOT;
-	}
+  {
+    color = TrapSprite.RED;
+    shape = TrapSprite.LARGE_DOT;
+  }
 
-	@Override
-	public void activate() {
-		Heap heap = Dungeon.level.heaps.get( pos );
+  @Override
+  public void activate() {
+    Heap heap = Dungeon.level.heaps.get(pos);
 
-		if (heap != null){
-			int cell = Dungeon.level.randomRespawnCell();
+    if (heap != null) {
+      int cell = Dungeon.level.randomRespawnCell();
 
-			if (cell != -1) {
-				Item item = heap.pickUp();
-				Dungeon.level.drop( item, cell ).seen = true;
-				for (int i : PathFinder.NEIGHBOURS9)
-					Dungeon.level.visited[cell+i] = true;
-				GameScene.updateFog();
+      if (cell != -1) {
+        Item item = heap.pickUp();
+        Dungeon.level.drop(item, cell).seen = true;
+        for (int i : PathFinder.NEIGHBOURS9)
+          Dungeon.level.visited[cell + i] = true;
+        GameScene.updateFog();
 
-				Sample.INSTANCE.play(Assets.SND_TELEPORT);
-				CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
-			}
-		}
+        Sample.INSTANCE.play(Assets.SND_TELEPORT);
+        CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
+      }
+    }
 
-		if (Dungeon.hero.pos == pos){
-			Hero hero = Dungeon.hero;
-			KindOfWeapon weapon = hero.belongings.weapon;
+    if (Dungeon.hero.pos == pos) {
+      Hero hero = Dungeon.hero;
+      KindOfWeapon weapon = hero.belongings.weapon;
 
-			if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
+      if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
 
-				int cell = Dungeon.level.randomRespawnCell();
-				if (cell != -1) {
-					hero.belongings.weapon = null;
-					Dungeon.quickslot.clearItem(weapon);
-					weapon.updateQuickslot();
+        int cell = Dungeon.level.randomRespawnCell();
+        if (cell != -1) {
+          hero.belongings.weapon = null;
+          Dungeon.quickslot.clearItem(weapon);
+          weapon.updateQuickslot();
 
-					Dungeon.level.drop(weapon, cell).seen = true;
-					for (int i : PathFinder.NEIGHBOURS9)
-						Dungeon.level.visited[cell+i] = true;
-					GameScene.updateFog();
+          Dungeon.level.drop(weapon, cell).seen = true;
+          for (int i : PathFinder.NEIGHBOURS9)
+            Dungeon.level.visited[cell + i] = true;
+          GameScene.updateFog();
 
-					GLog.w( Messages.get(this, "disarm") );
+          GLog.w(Messages.get(this, "disarm"));
 
-					Sample.INSTANCE.play(Assets.SND_TELEPORT);
-					CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
+          Sample.INSTANCE.play(Assets.SND_TELEPORT);
+          CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
 
-				}
+        }
 
-			}
-		}
-	}
+      }
+    }
+  }
 }

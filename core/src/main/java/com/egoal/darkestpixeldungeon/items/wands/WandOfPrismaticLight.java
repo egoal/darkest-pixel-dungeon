@@ -51,109 +51,114 @@ import com.watabou.utils.Random;
 
 public class WandOfPrismaticLight extends DamageWand {
 
-	{
-		image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
+  {
+    image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
 
-		collisionProperties = Ballistica.MAGIC_BOLT;
-	}
+    collisionProperties = Ballistica.MAGIC_BOLT;
+  }
 
-	public int min(int lvl){
-		return 1+lvl;
-	}
+  public int min(int lvl) {
+    return 1 + lvl;
+  }
 
-	public int max(int lvl){
-		return 5+3*lvl;
-	}
+  public int max(int lvl) {
+    return 5 + 3 * lvl;
+  }
 
-	@Override
-	protected void onZap(Ballistica beam) {
-		Char ch = Actor.findChar(beam.collisionPos);
-		if (ch != null){
-			processSoulMark(ch, chargesPerCast());
-			affectTarget(ch);
-		}
-		affectMap(beam);
+  @Override
+  protected void onZap(Ballistica beam) {
+    Char ch = Actor.findChar(beam.collisionPos);
+    if (ch != null) {
+      processSoulMark(ch, chargesPerCast());
+      affectTarget(ch);
+    }
+    affectMap(beam);
 
-		if (Dungeon.level.viewDistance < 4)
-			Buff.prolong( curUser, Light.class, 4f+level()*4);
-	}
+    if (Dungeon.level.viewDistance < 4)
+      Buff.prolong(curUser, Light.class, 4f + level() * 4);
+  }
 
-	private void affectTarget(Char ch){
-		int dmg = damageRoll();
+  private void affectTarget(Char ch) {
+    int dmg = damageRoll();
 
-		// view mark
-		Buff.prolong(ch, ViewMark.class, 4f+level()).observer	=	curUser.id();
-		
-		//three in (5+lvl) chance of failing
-		if (Random.Int(5+level()) >= 3) {
-			Buff.prolong(ch, Blindness.class, 2f + (level() * 0.333f));
-			ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
-		}
+    // view mark
+    Buff.prolong(ch, ViewMark.class, 4f + level()).observer = curUser.id();
 
-		if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)){
-			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level() );
-			Sample.INSTANCE.play(Assets.SND_BURNING);
+    //three in (5+lvl) chance of failing
+    if (Random.Int(5 + level()) >= 3) {
+      Buff.prolong(ch, Blindness.class, 2f + (level() * 0.333f));
+      ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6);
+    }
 
-			// ch.damage(Math.round(dmg*1.333f), this);
-			ch.takeDamage(new Damage(Math.round(dmg*1.333f), this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
-		} else {
-			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+level() );
+    if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties()
+            .contains(Char.Property.UNDEAD)) {
+      ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
+      Sample.INSTANCE.play(Assets.SND_BURNING);
 
-			ch.takeDamage(new Damage(dmg, this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
-		}
+      // ch.damage(Math.round(dmg*1.333f), this);
+      ch.takeDamage(new Damage(Math.round(dmg * 1.333f), this, ch).type
+              (Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
+    } else {
+      ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level());
 
-	}
+      ch.takeDamage(new Damage(dmg, this, ch).type(Damage.Type.MAGICAL)
+              .addElement(Damage.Element.LIGHT));
+    }
 
-	private void affectMap(Ballistica beam){
-		boolean noticed = false;
-		for (int c: beam.subPath(0, beam.dist)){
-			for (int n : PathFinder.NEIGHBOURS9){
-				int cell = c+n;
+  }
 
-				if (Level.discoverable[cell])
-					Dungeon.level.mapped[cell] = true;
+  private void affectMap(Ballistica beam) {
+    boolean noticed = false;
+    for (int c : beam.subPath(0, beam.dist)) {
+      for (int n : PathFinder.NEIGHBOURS9) {
+        int cell = c + n;
 
-				int terr = Dungeon.level.map[cell];
-				if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
+        if (Level.discoverable[cell])
+          Dungeon.level.mapped[cell] = true;
 
-					Dungeon.level.discover( cell );
+        int terr = Dungeon.level.map[cell];
+        if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-					GameScene.discoverTile( cell, terr );
-					ScrollOfMagicMapping.discover(cell);
+          Dungeon.level.discover(cell);
 
-					noticed = true;
-				}
-			}
+          GameScene.discoverTile(cell, terr);
+          ScrollOfMagicMapping.discover(cell);
 
-			CellEmitter.center(c).burst( RainbowParticle.BURST, Random.IntRange( 1, 2 ) );
-		}
-		if (noticed)
-			Sample.INSTANCE.play( Assets.SND_SECRET );
+          noticed = true;
+        }
+      }
 
-		GameScene.updateFog();
-	}
+      CellEmitter.center(c).burst(RainbowParticle.BURST, Random.IntRange(1, 2));
+    }
+    if (noticed)
+      Sample.INSTANCE.play(Assets.SND_SECRET);
 
-	@Override
-	protected void fx( Ballistica beam, Callback callback ) {
-		curUser.sprite.parent.add(
-				new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
-		callback.call();
-	}
+    GameScene.updateFog();
+  }
 
-	@Override
-	public void onHit(MagesStaff staff,Char attacker,Char defender,int damage) {
-		//cripples enemy
-		Buff.prolong( defender, Cripple.class, 1f+staff.level());
-	}
+  @Override
+  protected void fx(Ballistica beam, Callback callback) {
+    curUser.sprite.parent.add(
+            new Beam.LightRay(curUser.sprite.center(), DungeonTilemap
+                    .tileCenterToWorld(beam.collisionPos)));
+    callback.call();
+  }
 
-	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
-		particle.color( Random.Int( 0x1000000 ) );
-		particle.am = 0.3f;
-		particle.setLifespan(1f);
-		particle.speed.polar(Random.Float(PointF.PI2), 2f);
-		particle.setSize( 1f, 2.5f);
-		particle.radiateXY(1f);
-	}
+  @Override
+  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
+          damage) {
+    //cripples enemy
+    Buff.prolong(defender, Cripple.class, 1f + staff.level());
+  }
+
+  @Override
+  public void staffFx(MagesStaff.StaffParticle particle) {
+    particle.color(Random.Int(0x1000000));
+    particle.am = 0.3f;
+    particle.setLifespan(1f);
+    particle.speed.polar(Random.Float(PointF.PI2), 2f);
+    particle.setSize(1f, 2.5f);
+    particle.radiateXY(1f);
+  }
 
 }

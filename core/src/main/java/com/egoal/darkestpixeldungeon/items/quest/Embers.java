@@ -26,24 +26,24 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Embers extends Item {
 
-	{
-		image = ItemSpriteSheet.EMBER;
+  {
+    image = ItemSpriteSheet.EMBER;
 
-		unique = true;
-	}
+    unique = true;
+  }
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
 
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return new ItemSprite.Glowing(0x660000, 3f);
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return new ItemSprite.Glowing(0x660000, 3f);
+  }
 }

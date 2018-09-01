@@ -32,53 +32,53 @@ import com.watabou.utils.Bundle;
 
 public class Light extends FlavourBuff {
 
-	public static final float DURATION	= 200f;
-	public static final int DISTANCE	=	6;
-	
-	@Override
-	public boolean attachTo( Char target ) {
-		if (super.attachTo( target )) {
-			if (Dungeon.level != null) {
-				target.viewDistance = Math.max(Dungeon.level.viewDistance, DISTANCE);
-				Dungeon.observe();
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public void detach() {
-		target.viewDistance	=	Dungeon.level.viewDistance;
-		if(target instanceof Hero){
-			if(((Hero)target).heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
-				target.viewDistance	+=	1;
-		}
-		
-		Dungeon.observe(DISTANCE+1);
-		super.detach();
-	}
+  public static final float DURATION = 200f;
+  public static final int DISTANCE = 6;
 
-	@Override
-	public int icon() {
-		return BuffIndicator.LIGHT;
-	}
+  @Override
+  public boolean attachTo(Char target) {
+    if (super.attachTo(target)) {
+      if (Dungeon.level != null) {
+        target.viewDistance = Math.max(Dungeon.level.viewDistance, DISTANCE);
+        Dungeon.observe();
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
-		else target.sprite.remove(CharSprite.State.ILLUMINATED);
-	}
+  @Override
+  public void detach() {
+    target.viewDistance = Dungeon.level.viewDistance;
+    if (target instanceof Hero) {
+      if (((Hero) target).heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
+        target.viewDistance += 1;
+    }
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
+    Dungeon.observe(DISTANCE + 1);
+    super.detach();
+  }
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
-	
+  @Override
+  public int icon() {
+    return BuffIndicator.LIGHT;
+  }
+
+  @Override
+  public void fx(boolean on) {
+    if (on) target.sprite.add(CharSprite.State.ILLUMINATED);
+    else target.sprite.remove(CharSprite.State.ILLUMINATED);
+  }
+
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dispTurns());
+  }
+
 }

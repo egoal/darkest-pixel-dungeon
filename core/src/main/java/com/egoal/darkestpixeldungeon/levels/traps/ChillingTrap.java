@@ -34,31 +34,32 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class ChillingTrap extends Trap{
+public class ChillingTrap extends Trap {
 
-	{
-		color = TrapSprite.WHITE;
-		shape = TrapSprite.DOTS;
-	}
+  {
+    color = TrapSprite.WHITE;
+    shape = TrapSprite.DOTS;
+  }
 
-	@Override
-	public void activate() {
-		if (Dungeon.visible[ pos ]){
-			Splash.at( sprite.center(), 0xFFB2D6FF, 5);
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-		}
+  @Override
+  public void activate() {
+    if (Dungeon.visible[pos]) {
+      Splash.at(sprite.center(), 0xFFB2D6FF, 5);
+      Sample.INSTANCE.play(Assets.SND_SHATTER);
+    }
 
-		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null) heap.freeze();
+    Heap heap = Dungeon.level.heaps.get(pos);
+    if (heap != null) heap.freeze();
 
-		Char ch = Actor.findChar( pos );
-		if (ch != null){
-			Chill.prolong(ch, Chill.class, 5f + Random.Int(Dungeon.depth));
-			ch.takeDamage(new Damage(Random.NormalIntRange(1 , Dungeon.depth), this, ch).addElement(Damage.Element.ICE));
-			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(this, "ondeath") );
-			}
-		}
-	}
+    Char ch = Actor.findChar(pos);
+    if (ch != null) {
+      Chill.prolong(ch, Chill.class, 5f + Random.Int(Dungeon.depth));
+      ch.takeDamage(new Damage(Random.NormalIntRange(1, Dungeon.depth), this,
+              ch).addElement(Damage.Element.ICE));
+      if (!ch.isAlive() && ch == Dungeon.hero) {
+        Dungeon.fail(getClass());
+        GLog.n(Messages.get(this, "ondeath"));
+      }
+    }
+  }
 }

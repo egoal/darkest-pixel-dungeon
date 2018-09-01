@@ -37,108 +37,108 @@ import java.util.List;
 
 public class Lightning extends Group {
 
-	private static final float DURATION = 0.3f;
-	
-	private float life;
+  private static final float DURATION = 0.3f;
 
-	private List<Arc> arcs;
-	
-	private Callback callback;
+  private float life;
 
-	public Lightning(int from, int to, Callback callback){
-		this(Arrays.asList(new Arc(from, to)), callback);
-	}
-	
-	public Lightning( List<Arc> arcs, Callback callback ) {
-		
-		super();
+  private List<Arc> arcs;
 
-		this.arcs = arcs;
-		for (Arc arc : this.arcs)
-			add(arc);
+  private Callback callback;
 
-		this.callback = callback;
-		
-		life = DURATION;
-		
-		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
-	}
-	
-	private static final double A = 180 / Math.PI;
-	
-	@Override
-	public void update() {
-		if ((life -= Game.elapsed) < 0) {
-			
-			killAndErase();
-			if (callback != null) {
-				callback.call();
-			}
-			
-		} else {
-			
-			float alpha = life / DURATION;
-			
-			for (Arc arc : arcs) {
-				arc.alpha(alpha);
-			}
+  public Lightning(int from, int to, Callback callback) {
+    this(Arrays.asList(new Arc(from, to)), callback);
+  }
 
-			super.update();
-		}
-	}
-	
-	@Override
-	public void draw() {
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
-		super.draw();
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
-	}
+  public Lightning(List<Arc> arcs, Callback callback) {
 
-	//A lightning object is meant to be loaded up with arcs.
-	//these act as a means of easily expressing lighting between two points.
-	public static class Arc extends Group {
+    super();
 
-		private Image arc1, arc2;
+    this.arcs = arcs;
+    for (Arc arc : this.arcs)
+      add(arc);
 
-		//starting and ending x/y values
-		private PointF start, end;
+    this.callback = callback;
 
-		public Arc(int from, int to){
-			start = DungeonTilemap.tileCenterToWorld(from);
-			end = DungeonTilemap.tileCenterToWorld(to);
+    life = DURATION;
 
-			arc1 = new Image(Effects.get(Effects.Type.LIGHTNING));
-			arc1.x = start.x - arc1.origin.x;
-			arc1.y = start.y - arc1.origin.y;
-			arc1.origin.set( 0, arc1.height()/2 );
-			add( arc1 );
+    Sample.INSTANCE.play(Assets.SND_LIGHTNING);
+  }
 
-			arc2 = new Image(Effects.get(Effects.Type.LIGHTNING));
-			arc2.origin.set( 0, arc2.height()/2 );
-			add( arc2 );
+  private static final double A = 180 / Math.PI;
 
-		}
+  @Override
+  public void update() {
+    if ((life -= Game.elapsed) < 0) {
 
-		public void alpha(float alpha) {
-			arc1.am = arc2.am = alpha;
-		}
+      killAndErase();
+      if (callback != null) {
+        callback.call();
+      }
 
-		@Override
-		public void update() {
-			float x2 = (start.x + end.x) / 2 + Random.Float( -4, +4 );
-			float y2 = (start.y + end.y) / 2 + Random.Float( -4, +4 );
+    } else {
 
-			float dx = x2 - start.x;
-			float dy = y2 - start.y;
-			arc1.angle = (float)(Math.atan2( dy, dx ) * A);
-			arc1.scale.x = (float)Math.sqrt( dx * dx + dy * dy ) / arc1.width;
+      float alpha = life / DURATION;
 
-			dx = end.x - x2;
-			dy = end.y - y2;
-			arc2.angle = (float)(Math.atan2( dy, dx ) * A);
-			arc2.scale.x = (float)Math.sqrt( dx * dx + dy * dy ) / arc2.width;
-			arc2.x = x2 - arc2.origin.x;
-			arc2.y = y2 - arc2.origin.x;
-		}
-	}
+      for (Arc arc : arcs) {
+        arc.alpha(alpha);
+      }
+
+      super.update();
+    }
+  }
+
+  @Override
+  public void draw() {
+    GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+    super.draw();
+    GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+  }
+
+  //A lightning object is meant to be loaded up with arcs.
+  //these act as a means of easily expressing lighting between two points.
+  public static class Arc extends Group {
+
+    private Image arc1, arc2;
+
+    //starting and ending x/y values
+    private PointF start, end;
+
+    public Arc(int from, int to) {
+      start = DungeonTilemap.tileCenterToWorld(from);
+      end = DungeonTilemap.tileCenterToWorld(to);
+
+      arc1 = new Image(Effects.get(Effects.Type.LIGHTNING));
+      arc1.x = start.x - arc1.origin.x;
+      arc1.y = start.y - arc1.origin.y;
+      arc1.origin.set(0, arc1.height() / 2);
+      add(arc1);
+
+      arc2 = new Image(Effects.get(Effects.Type.LIGHTNING));
+      arc2.origin.set(0, arc2.height() / 2);
+      add(arc2);
+
+    }
+
+    public void alpha(float alpha) {
+      arc1.am = arc2.am = alpha;
+    }
+
+    @Override
+    public void update() {
+      float x2 = (start.x + end.x) / 2 + Random.Float(-4, +4);
+      float y2 = (start.y + end.y) / 2 + Random.Float(-4, +4);
+
+      float dx = x2 - start.x;
+      float dy = y2 - start.y;
+      arc1.angle = (float) (Math.atan2(dy, dx) * A);
+      arc1.scale.x = (float) Math.sqrt(dx * dx + dy * dy) / arc1.width;
+
+      dx = end.x - x2;
+      dy = end.y - y2;
+      arc2.angle = (float) (Math.atan2(dy, dx) * A);
+      arc2.scale.x = (float) Math.sqrt(dx * dx + dy * dy) / arc2.width;
+      arc2.x = x2 - arc2.origin.x;
+      arc2.y = y2 - arc2.origin.x;
+    }
+  }
 }

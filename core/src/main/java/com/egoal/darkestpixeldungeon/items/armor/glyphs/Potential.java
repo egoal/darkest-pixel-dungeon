@@ -31,40 +31,43 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Random;
 
-public class Potential extends Armor.Glyph{
-	
-	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.6f );
-	
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+public class Potential extends Armor.Glyph {
 
-		int level = Math.max( 0, armor.level() );
+  private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF, 
+          0.6f);
 
-		if (Random.Int( level + 20 ) >= 18) {
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-			int shockDmg = Random.NormalIntRange( defender.HT/20, defender.HT/10 );
+    int level = Math.max(0, armor.level());
 
-			shockDmg *= Math.pow(0.9, level);
+    if (Random.Int(level + 20) >= 18) {
 
-			defender.takeDamage(new Damage(shockDmg, this, defender).addElement(Damage.Element.LIGHT));
-			
-			checkOwner( defender );
-			if (defender == Dungeon.hero) {
-				Dungeon.hero.belongings.charge(1f);
-				Camera.main.shake( 2, 0.3f );
-			}
+      int shockDmg = Random.NormalIntRange(defender.HT / 20, defender.HT / 10);
 
-			attacker.sprite.parent.add( new Lightning( attacker.pos, defender.pos, null ) );
+      shockDmg *= Math.pow(0.9, level);
 
-		}
-		
-		return damage;
-	}
+      defender.takeDamage(new Damage(shockDmg, this, defender).addElement
+              (Damage.Element.LIGHT));
 
-	@Override
-	public Glowing glowing() {
-		return WHITE;
-	}
+      checkOwner(defender);
+      if (defender == Dungeon.hero) {
+        Dungeon.hero.belongings.charge(1f);
+        Camera.main.shake(2, 0.3f);
+      }
+
+      attacker.sprite.parent.add(new Lightning(attacker.pos, defender.pos, 
+              null));
+
+    }
+
+    return damage;
+  }
+
+  @Override
+  public Glowing glowing() {
+    return WHITE;
+  }
 }

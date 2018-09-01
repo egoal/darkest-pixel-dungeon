@@ -30,51 +30,51 @@ import com.watabou.utils.Bundle;
 
 public abstract class Key extends Item {
 
-	public static final float TIME_TO_UNLOCK = 1f;
-	
-	{
-		stackable = true;
-		unique = true;
-	}
-	
-	public int depth;
-	
-	@Override
-	public boolean isSimilar( Item item ) {
-		return item.getClass() == getClass() && ((Key)item).depth == depth;
-	}
+  public static final float TIME_TO_UNLOCK = 1f;
 
-	@Override
-	public boolean doPickUp(Hero hero) {
-		GameScene.pickUpJournal(this);
-		Sample.INSTANCE.play( Assets.SND_ITEM );
-		hero.spendAndNext( TIME_TO_PICK_UP );
-		StatusPane.needsKeyUpdate = true;
-		return true;
-	}
+  {
+    stackable = true;
+    unique = true;
+  }
 
-	private static final String DEPTH = "depth";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( DEPTH, depth );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		depth = bundle.getInt( DEPTH );
-	}
-	
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+  public int depth;
+
+  @Override
+  public boolean isSimilar(Item item) {
+    return item.getClass() == getClass() && ((Key) item).depth == depth;
+  }
+
+  @Override
+  public boolean doPickUp(Hero hero) {
+    GameScene.pickUpJournal(this);
+    Sample.INSTANCE.play(Assets.SND_ITEM);
+    hero.spendAndNext(TIME_TO_PICK_UP);
+    StatusPane.needsKeyUpdate = true;
+    return true;
+  }
+
+  private static final String DEPTH = "depth";
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(DEPTH, depth);
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    depth = bundle.getInt(DEPTH);
+  }
+
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
+
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
 
 }

@@ -25,20 +25,20 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Greatshield extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.GREATSHIELD;
+  {
+    image = ItemSpriteSheet.GREATSHIELD;
 
-		tier = 5;
-	}
+    tier = 5;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return  2*(tier+1) +    //12 base, down from 30
-				lvl*(tier-2);   //+3 per level, down from +6
-	}
+  @Override
+  public int max(int lvl) {
+    return 2 * (tier + 1) +    //12 base, down from 30
+            lvl * (tier - 2);   //+3 per level, down from +6
+  }
 
-	@Override
-	public int defenseFactor(Hero hero) {
-		return 10+3*level();    //10 extra defence, plus 3 per level;
-	}
+  @Override
+  public int defenseFactor(Hero hero) {
+    return 10 + 3 * level();    //10 extra defence, plus 3 per level;
+  }
 }

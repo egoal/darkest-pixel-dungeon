@@ -31,69 +31,69 @@ import com.watabou.utils.Random;
 
 public class Bat extends Mob {
 
-	{
-		spriteClass = BatSprite.class;
-		
-		HP = HT = 30;
-		defenseSkill = 15;
-		baseSpeed = 2f;
-		
-		EXP = 7;
-		maxLvl = 15;
-		
-		flying = true;
-		
-		loot = new PotionOfHealing();
-		lootChance = 0.1667f; //by default, see die()
+  {
+    spriteClass = BatSprite.class;
 
-		addResistances(Damage.Element.SHADOW, 1.25f);
-	}
-	
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange( 5, 18), this, target);
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 16;
-	}
-	
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 4);
-		return dmg;
-	}
-	
-	@Override
-	public Damage attackProc(Damage damage ) {
-		
-		if(Random.Int(4)==0){
-			damage.value	=	Math.max(3, damage.value/2);
-			return damage.type(Damage.Type.MENTAL);
-		}
-		
-		int reg = (int)(Math.min(damage.value, HT - HP )*.4f);
-		
-		if (reg > 0) {
-			HP += reg;
-			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-		}
-			
-		return damage;
-	}
+    HP = HT = 30;
+    defenseSkill = 15;
+    baseSpeed = 2f;
 
-	@Override
-	public void die( Object cause ){
-		//sets drop chance
-		lootChance = 1f/((6 + Dungeon.limitedDrops.batHP.count ));
-		super.die( cause );
-	}
+    EXP = 7;
+    maxLvl = 15;
 
-	@Override
-	protected Item createLoot(){
-		Dungeon.limitedDrops.batHP.count++;
-		return super.createLoot();
-	}
-	
+    flying = true;
+
+    loot = new PotionOfHealing();
+    lootChance = 0.1667f; //by default, see die()
+
+    addResistances(Damage.Element.SHADOW, 1.25f);
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(5, 18), this, target);
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 16;
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 4);
+    return dmg;
+  }
+
+  @Override
+  public Damage attackProc(Damage damage) {
+
+    if (Random.Int(4) == 0) {
+      damage.value = Math.max(3, damage.value / 2);
+      return damage.type(Damage.Type.MENTAL);
+    }
+
+    int reg = (int) (Math.min(damage.value, HT - HP) * .4f);
+
+    if (reg > 0) {
+      HP += reg;
+      sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+    }
+
+    return damage;
+  }
+
+  @Override
+  public void die(Object cause) {
+    //sets drop chance
+    lootChance = 1f / ((6 + Dungeon.limitedDrops.batHP.count));
+    super.die(cause);
+  }
+
+  @Override
+  protected Item createLoot() {
+    Dungeon.limitedDrops.batHP.count++;
+    return super.createLoot();
+  }
+
 }

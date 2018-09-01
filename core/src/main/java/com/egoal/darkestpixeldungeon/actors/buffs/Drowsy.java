@@ -27,39 +27,40 @@ import com.watabou.utils.Random;
 
 public class Drowsy extends Buff {
 
-	{
-		type = buffType.NEUTRAL;
-	}
+  {
+    type = buffType.NEUTRAL;
+  }
 
-	@Override
-	public int icon() {
-		return BuffIndicator.DROWSY;
-	}
+  @Override
+  public int icon() {
+    return BuffIndicator.DROWSY;
+  }
 
-	public boolean attachTo( Char target ) {
-		if (!target.immunizedBuffs().contains(Sleep.class) && super.attachTo(target)) {
-			if (cooldown() == 0)
-				spend(Random.Int(3, 6));
-			return true;
-		}
-		return false;
-	}
+  public boolean attachTo(Char target) {
+    if (!target.immunizedBuffs().contains(Sleep.class) && super.attachTo
+            (target)) {
+      if (cooldown() == 0)
+        spend(Random.Int(3, 6));
+      return true;
+    }
+    return false;
+  }
 
-	@Override
-	public boolean act(){
-			affect(target, MagicalSleep.class);
+  @Override
+  public boolean act() {
+    affect(target, MagicalSleep.class);
 
-			detach();
-			return true;
-	}
+    detach();
+    return true;
+  }
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns(cooldown()+1));
-	}
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dispTurns(cooldown() + 1));
+  }
 }

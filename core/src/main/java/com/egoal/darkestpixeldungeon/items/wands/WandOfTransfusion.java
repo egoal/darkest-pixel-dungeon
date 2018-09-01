@@ -57,178 +57,189 @@ import com.watabou.utils.Random;
 
 public class WandOfTransfusion extends Wand {
 
-	{
-		image = ItemSpriteSheet.WAND_TRANSFUSION;
+  {
+    image = ItemSpriteSheet.WAND_TRANSFUSION;
 
-		collisionProperties = Ballistica.PROJECTILE;
-	}
+    collisionProperties = Ballistica.PROJECTILE;
+  }
 
-	private boolean freeCharge = false;
+  private boolean freeCharge = false;
 
-	@Override
-	protected void onZap(Ballistica beam) {
+  @Override
+  protected void onZap(Ballistica beam) {
 
-		for (int c : beam.subPath(0, beam.dist))
-			CellEmitter.center(c).burst( BloodParticle.BURST, 1 );
+    for (int c : beam.subPath(0, beam.dist))
+      CellEmitter.center(c).burst(BloodParticle.BURST, 1);
 
-		int cell = beam.collisionPos;
+    int cell = beam.collisionPos;
 
-		Char ch = Actor.findChar(cell);
-		Heap heap = Dungeon.level.heaps.get(cell);
+    Char ch = Actor.findChar(cell);
+    Heap heap = Dungeon.level.heaps.get(cell);
 
-		//this wand does a bunch of different things depending on what it targets.
+    //this wand does a bunch of different things depending on what it targets.
 
-		//if we find a character..
-		if (ch != null && ch instanceof Mob){
+    //if we find a character..
+    if (ch != null && ch instanceof Mob) {
 
-			processSoulMark(ch, chargesPerCast());
+      processSoulMark(ch, chargesPerCast());
 
-			//heals an ally, or charmed/corrupted enemy
-			if (((Mob) ch).ally || ch.buff(Charm.class) != null || ch.buff(Corruption.class) != null){
+      //heals an ally, or charmed/corrupted enemy
+      if (((Mob) ch).ally || ch.buff(Charm.class) != null || ch.buff
+              (Corruption.class) != null) {
 
-				int missingHP = ch.HT - ch.HP;
-				//heals 30%+3%*lvl missing HP.
-				int healing = (int)Math.ceil((missingHP * (0.30f+(0.03f*level()))));
-				ch.HP += healing;
-				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1 + level() / 2);
-				ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+        int missingHP = ch.HT - ch.HP;
+        //heals 30%+3%*lvl missing HP.
+        int healing = (int) Math.ceil((missingHP * (0.30f + (0.03f * level())
+        )));
+        ch.HP += healing;
+        ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1 + level() /
+                2);
+        ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
 
-			//harms the undead
-			} else if (ch.properties().contains(Char.Property.UNDEAD)){
+        //harms the undead
+      } else if (ch.properties().contains(Char.Property.UNDEAD)) {
 
-				//deals 30%+5%*lvl total HP.
-				int damage = (int) Math.ceil(ch.HT*(0.3f+(0.05f*level())));
-				// ch.damage(damage, this);
-				ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL));
-				ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
-				Sample.INSTANCE.play(Assets.SND_BURNING);
+        //deals 30%+5%*lvl total HP.
+        int damage = (int) Math.ceil(ch.HT * (0.3f + (0.05f * level())));
+        // ch.damage(damage, this);
+        ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL));
+        ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
+        Sample.INSTANCE.play(Assets.SND_BURNING);
 
-			//charms an enemy
-			} else {
+        //charms an enemy
+      } else {
 
-				float duration = 5+level();
-				Buff.affect(ch, Charm.class, Charm.durationFactor(ch) * duration).object = curUser.id();
+        float duration = 5 + level();
+        Buff.affect(ch, Charm.class, Charm.durationFactor(ch) * duration)
+                .object = curUser.id();
 
-				duration *= Random.Float(0.75f, 1f);
-				Buff.affect(curUser, Charm.class, Charm.durationFactor(ch) * duration).object = ch.id();
+        duration *= Random.Float(0.75f, 1f);
+        Buff.affect(curUser, Charm.class, Charm.durationFactor(ch) * 
+                duration).object = ch.id();
 
-				ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-				curUser.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
+        ch.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
+        curUser.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 
+                0.2f, 5);
 
-			}
+      }
 
 
-		//if we find an item...
-		} else if (heap != null && heap.type == Heap.Type.HEAP){
-			Item item = heap.peek();
+      //if we find an item...
+    } else if (heap != null && heap.type == Heap.Type.HEAP) {
+      Item item = heap.peek();
 
-			//30% + 10%*lvl chance to uncurse the item and reset it to base level if degraded.
-			if (item != null && Random.Float() <= 0.3f+level()*0.1f){
-				if (item.cursed){
-					item.cursed = false;
-					CellEmitter.get(cell).start( ShadowParticle.UP, 0.05f, 10 );
-					Sample.INSTANCE.play(Assets.SND_BURNING);
-				}
+      //30% + 10%*lvl chance to uncurse the item and reset it to base level 
+      // if degraded.
+      if (item != null && Random.Float() <= 0.3f + level() * 0.1f) {
+        if (item.cursed) {
+          item.cursed = false;
+          CellEmitter.get(cell).start(ShadowParticle.UP, 0.05f, 10);
+          Sample.INSTANCE.play(Assets.SND_BURNING);
+        }
 
-				int lvldiffFromBase = item.level() - (item instanceof Ring ? 1 : 0);
-				if (lvldiffFromBase < 0){
-					item.upgrade(-lvldiffFromBase);
-					CellEmitter.get(cell).start(Speck.factory(Speck.UP), 0.2f, 3);
-					Sample.INSTANCE.play(Assets.SND_BURNING);
-				}
-			}
+        int lvldiffFromBase = item.level() - (item instanceof Ring ? 1 : 0);
+        if (lvldiffFromBase < 0) {
+          item.upgrade(-lvldiffFromBase);
+          CellEmitter.get(cell).start(Speck.factory(Speck.UP), 0.2f, 3);
+          Sample.INSTANCE.play(Assets.SND_BURNING);
+        }
+      }
 
-		//if we find some trampled grass...
-		} else if (Dungeon.level.map[cell] == Terrain.GRASS) {
+      //if we find some trampled grass...
+    } else if (Dungeon.level.map[cell] == Terrain.GRASS) {
 
-			//regrow one grass tile, suuuuuper useful...
-			Dungeon.level.set(cell, Terrain.HIGH_GRASS);
-			GameScene.updateMap(cell);
-			CellEmitter.get( cell ).burst(LeafParticle.LEVEL_SPECIFIC, 4);
+      //regrow one grass tile, suuuuuper useful...
+      Dungeon.level.set(cell, Terrain.HIGH_GRASS);
+      GameScene.updateMap(cell);
+      CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
 
-		//If we find embers...
-		} else if (Dungeon.level.map[cell] == Terrain.EMBERS) {
+      //If we find embers...
+    } else if (Dungeon.level.map[cell] == Terrain.EMBERS) {
 
-			//30% + 3%*lvl chance to grow a random plant, or just regrow grass.
-			if (Random.Float() <= 0.3f+level()*0.03f) {
-				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), cell);
-				CellEmitter.get( cell ).burst(LeafParticle.LEVEL_SPECIFIC, 8);
-				GameScene.updateMap(cell);
-			} else{
-				Dungeon.level.set(cell, Terrain.HIGH_GRASS);
-				GameScene.updateMap(cell);
-				CellEmitter.get( cell ).burst(LeafParticle.LEVEL_SPECIFIC, 4);
-			}
+      //30% + 3%*lvl chance to grow a random plant, or just regrow grass.
+      if (Random.Float() <= 0.3f + level() * 0.03f) {
+        Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category
+                .SEED), cell);
+        CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 8);
+        GameScene.updateMap(cell);
+      } else {
+        Dungeon.level.set(cell, Terrain.HIGH_GRASS);
+        GameScene.updateMap(cell);
+        CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
+      }
 
-		} else
-			return; //don't damage the hero if we can't find a target;
+    } else
+      return; //don't damage the hero if we can't find a target;
 
-		if (!freeCharge) {
-			damageHero();
-		} else {
-			freeCharge = false;
-		}
-	}
+    if (!freeCharge) {
+      damageHero();
+    } else {
+      freeCharge = false;
+    }
+  }
 
-	//this wand costs health too
-	private void damageHero(){
-		// 15% of max hp
-		int damage = (int)Math.ceil(curUser.HT*0.15f);
-		curUser.takeDamage(new Damage(damage, this, curUser).type(Damage.Type.MAGICAL));
+  //this wand costs health too
+  private void damageHero() {
+    // 15% of max hp
+    int damage = (int) Math.ceil(curUser.HT * 0.15f);
+    curUser.takeDamage(new Damage(damage, this, curUser).type(Damage.Type
+            .MAGICAL));
 
-		if (!curUser.isAlive()){
-			Dungeon.fail( getClass() );
-			GLog.n( Messages.get(this, "ondeath") );
-		}
-	}
+    if (!curUser.isAlive()) {
+      Dungeon.fail(getClass());
+      GLog.n(Messages.get(this, "ondeath"));
+    }
+  }
 
-	@Override
-	protected int initialCharges() {
-		return 1;
-	}
+  @Override
+  protected int initialCharges() {
+    return 1;
+  }
 
-	@Override
-	public void onHit(MagesStaff staff,Char attacker,Char defender,int damage) {
-		// lvl 0 - 10%
-		// lvl 1 - 18%
-		// lvl 2 - 25%
-		if (Random.Int( level() + 10 ) >= 9){
-			//grants a free use of the staff
-			freeCharge = true;
-			GLog.p( Messages.get(this, "charged") );
-			attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
-		}
-	}
+  @Override
+  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
+          damage) {
+    // lvl 0 - 10%
+    // lvl 1 - 18%
+    // lvl 2 - 25%
+    if (Random.Int(level() + 10) >= 9) {
+      //grants a free use of the staff
+      freeCharge = true;
+      GLog.p(Messages.get(this, "charged"));
+      attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
+    }
+  }
 
-	@Override
-	protected void fx(Ballistica beam, Callback callback) {
-		curUser.sprite.parent.add(
-				new Beam.HealthRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
-		callback.call();
-	}
+  @Override
+  protected void fx(Ballistica beam, Callback callback) {
+    curUser.sprite.parent.add(
+            new Beam.HealthRay(curUser.sprite.center(), DungeonTilemap
+                    .tileCenterToWorld(beam.collisionPos)));
+    callback.call();
+  }
 
-	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
-		particle.color( 0xCC0000 );
-		particle.am = 0.6f;
-		particle.setLifespan(0.8f);
-		particle.speed.polar( Random.Float(PointF.PI2), 2f );
-		particle.setSize( 1f, 2.5f);
-		particle.radiateXY(1f);
-	}
+  @Override
+  public void staffFx(MagesStaff.StaffParticle particle) {
+    particle.color(0xCC0000);
+    particle.am = 0.6f;
+    particle.setLifespan(0.8f);
+    particle.speed.polar(Random.Float(PointF.PI2), 2f);
+    particle.setSize(1f, 2.5f);
+    particle.radiateXY(1f);
+  }
 
-	private static final String FREECHARGE = "freecharge";
+  private static final String FREECHARGE = "freecharge";
 
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		freeCharge = bundle.getBoolean( FREECHARGE );
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    freeCharge = bundle.getBoolean(FREECHARGE);
+  }
 
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put( FREECHARGE, freeCharge );
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(FREECHARGE, freeCharge);
+  }
 
 }

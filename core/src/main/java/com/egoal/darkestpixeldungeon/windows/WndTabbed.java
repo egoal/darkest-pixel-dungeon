@@ -34,198 +34,199 @@ import java.util.ArrayList;
 
 public class WndTabbed extends Window {
 
-	protected ArrayList<Tab> tabs = new ArrayList<WndTabbed.Tab>();
-	protected Tab selected;
-	
-	public WndTabbed() {
-		super( 0, 0, Chrome.get( Chrome.Type.TAB_SET ) );
-	}
-	
-	protected Tab add( Tab tab ) {
+  protected ArrayList<Tab> tabs = new ArrayList<WndTabbed.Tab>();
+  protected Tab selected;
 
-		tab.setPos( tabs.size() == 0 ?
-			-chrome.marginLeft() + 1 :
-			tabs.get( tabs.size() - 1 ).right(), height );
-		tab.select( false );
-		super.add( tab );
-		
-		tabs.add( tab );
-		
-		return tab;
-	}
-	
-	public void select( int index ) {
-		select( tabs.get( index ) );
-	}
-	
-	public void select( Tab tab ) {
-		if (tab != selected) {
-			for (Tab t : tabs) {
-				if (t == selected) {
-					t.select( false );
-				} else if (t == tab) {
-					t.select( true );
-				}
-			}
-			
-			selected = tab;
-		}
-	}
-	
-	@Override
-	public void resize( int w, int h ) {
-		// -> super.resize(...)
-		this.width = w;
-		this.height = h;
-		
-		chrome.size(
-			width + chrome.marginHor(),
-			height + chrome.marginVer() );
-		
-		camera.resize( (int)chrome.width, (int)(chrome.marginTop() + height + tabHeight()) );
-		camera.x = (int)(Game.width - camera.screenWidth()) / 2;
-		camera.y = (int)(Game.height - camera.screenHeight()) / 2;
+  public WndTabbed() {
+    super(0, 0, Chrome.get(Chrome.Type.TAB_SET));
+  }
 
-		shadow.boxRect(
-				camera.x / camera.zoom,
-				camera.y / camera.zoom,
-				chrome.width(), chrome.height );
-		// <- super.resize(...)
-		
-		for (Tab tab : tabs) {
-			remove( tab );
-		}
-		
-		ArrayList<Tab> tabs = new ArrayList<WndTabbed.Tab>( this.tabs );
-		this.tabs.clear();
-		
-		for (Tab tab : tabs) {
-			add( tab );
-		}
-	}
+  protected Tab add(Tab tab) {
 
-	public void layoutTabs(){
-		//subract two as there's extra horizontal space for those nobs on the top.
-		int fullWidth = width+chrome.marginHor()-2;
-		int numTabs = tabs.size();
+    tab.setPos(tabs.size() == 0 ?
+            -chrome.marginLeft() + 1 :
+            tabs.get(tabs.size() - 1).right(), height);
+    tab.select(false);
+    super.add(tab);
 
-		if (numTabs == 0)
-			return;
-		if (numTabs == 1) {
-			tabs.get(0).setSize(fullWidth, tabHeight());
-			return;
-		}
+    tabs.add(tab);
 
-		int spaces = numTabs-1;
-		int spacing = -1;
+    return tab;
+  }
 
-		while (spacing == -1) {
-			for (int i = 0; i <= 3; i++){
-				if ((fullWidth - i*(spaces)) % numTabs == 0) {
-					spacing = i;
-					break;
-				}
-			}
-			if (spacing == -1) fullWidth--;
-		}
+  public void select(int index) {
+    select(tabs.get(index));
+  }
 
-		int tabWidth = (fullWidth - spacing*(numTabs-1)) / numTabs;
+  public void select(Tab tab) {
+    if (tab != selected) {
+      for (Tab t : tabs) {
+        if (t == selected) {
+          t.select(false);
+        } else if (t == tab) {
+          t.select(true);
+        }
+      }
 
-		for (int i = 0; i < tabs.size(); i++){
-			tabs.get(i).setSize(tabWidth, tabHeight());
-			tabs.get(i).setPos( i == 0 ?
-					-chrome.marginLeft() + 1 :
-					tabs.get( i - 1 ).right() + spacing, height );
-		}
+      selected = tab;
+    }
+  }
 
-	}
-	
-	protected int tabHeight() {
-		return 25;
-	}
-	
-	protected void onClick( Tab tab ) {
-		select( tab );
-	}
-	
-	protected class Tab extends Button {
-		
-		protected final int CUT = 5;
-		
-		protected boolean selected;
-		
-		protected NinePatch bg;
-		
-		@Override
-		protected void layout() {
-			super.layout();
-			
-			if (bg != null) {
-				bg.x = x;
-				bg.y = y;
-				bg.size( width, height );
-			}
-		}
-		
-		protected void select( boolean value ) {
-			
-			active = !(selected = value);
-			
-			if (bg != null) {
-				remove( bg );
-			}
-			
-			bg = Chrome.get( selected ?
-				Chrome.Type.TAB_SELECTED :
-				Chrome.Type.TAB_UNSELECTED );
-			addToBack( bg );
-			
-			layout();
-		}
-		
-		@Override
-		protected void onClick() {
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-			WndTabbed.this.onClick( this );
-		}
-	}
-	
-	protected class LabeledTab extends Tab {
-		
-		private RenderedText btLabel;
-		
-		public LabeledTab( String label ) {
-			
-			super();
-			
-			btLabel.text( label );
-		}
-		
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-			
-			btLabel = PixelScene.renderText( 9 );
-			add( btLabel );
-		}
-		
-		@Override
-		protected void layout() {
-			super.layout();
-			
-			btLabel.x = x + (width - btLabel.width()) / 2;
-			btLabel.y = y + (height - btLabel.baseLine()) / 2 - 1;
-			if (!selected) {
-				btLabel.y -= 2;
-			}
-			PixelScene.align(btLabel);
-		}
-		
-		@Override
-		protected void select( boolean value ) {
-			super.select( value );
-			btLabel.am = selected ? 1.0f : 0.6f;
-		}
-	}
+  @Override
+  public void resize(int w, int h) {
+    // -> super.resize(...)
+    this.width = w;
+    this.height = h;
+
+    chrome.size(
+            width + chrome.marginHor(),
+            height + chrome.marginVer());
+
+    camera.resize((int) chrome.width, (int) (chrome.marginTop() + height + 
+            tabHeight()));
+    camera.x = (int) (Game.width - camera.screenWidth()) / 2;
+    camera.y = (int) (Game.height - camera.screenHeight()) / 2;
+
+    shadow.boxRect(
+            camera.x / camera.zoom,
+            camera.y / camera.zoom,
+            chrome.width(), chrome.height);
+    // <- super.resize(...)
+
+    for (Tab tab : tabs) {
+      remove(tab);
+    }
+
+    ArrayList<Tab> tabs = new ArrayList<WndTabbed.Tab>(this.tabs);
+    this.tabs.clear();
+
+    for (Tab tab : tabs) {
+      add(tab);
+    }
+  }
+
+  public void layoutTabs() {
+    //subract two as there's extra horizontal space for those nobs on the top.
+    int fullWidth = width + chrome.marginHor() - 2;
+    int numTabs = tabs.size();
+
+    if (numTabs == 0)
+      return;
+    if (numTabs == 1) {
+      tabs.get(0).setSize(fullWidth, tabHeight());
+      return;
+    }
+
+    int spaces = numTabs - 1;
+    int spacing = -1;
+
+    while (spacing == -1) {
+      for (int i = 0; i <= 3; i++) {
+        if ((fullWidth - i * (spaces)) % numTabs == 0) {
+          spacing = i;
+          break;
+        }
+      }
+      if (spacing == -1) fullWidth--;
+    }
+
+    int tabWidth = (fullWidth - spacing * (numTabs - 1)) / numTabs;
+
+    for (int i = 0; i < tabs.size(); i++) {
+      tabs.get(i).setSize(tabWidth, tabHeight());
+      tabs.get(i).setPos(i == 0 ?
+              -chrome.marginLeft() + 1 :
+              tabs.get(i - 1).right() + spacing, height);
+    }
+
+  }
+
+  protected int tabHeight() {
+    return 25;
+  }
+
+  protected void onClick(Tab tab) {
+    select(tab);
+  }
+
+  protected class Tab extends Button {
+
+    protected final int CUT = 5;
+
+    protected boolean selected;
+
+    protected NinePatch bg;
+
+    @Override
+    protected void layout() {
+      super.layout();
+
+      if (bg != null) {
+        bg.x = x;
+        bg.y = y;
+        bg.size(width, height);
+      }
+    }
+
+    protected void select(boolean value) {
+
+      active = !(selected = value);
+
+      if (bg != null) {
+        remove(bg);
+      }
+
+      bg = Chrome.get(selected ?
+              Chrome.Type.TAB_SELECTED :
+              Chrome.Type.TAB_UNSELECTED);
+      addToBack(bg);
+
+      layout();
+    }
+
+    @Override
+    protected void onClick() {
+      Sample.INSTANCE.play(Assets.SND_CLICK, 0.7f, 0.7f, 1.2f);
+      WndTabbed.this.onClick(this);
+    }
+  }
+
+  protected class LabeledTab extends Tab {
+
+    private RenderedText btLabel;
+
+    public LabeledTab(String label) {
+
+      super();
+
+      btLabel.text(label);
+    }
+
+    @Override
+    protected void createChildren() {
+      super.createChildren();
+
+      btLabel = PixelScene.renderText(9);
+      add(btLabel);
+    }
+
+    @Override
+    protected void layout() {
+      super.layout();
+
+      btLabel.x = x + (width - btLabel.width()) / 2;
+      btLabel.y = y + (height - btLabel.baseLine()) / 2 - 1;
+      if (!selected) {
+        btLabel.y -= 2;
+      }
+      PixelScene.align(btLabel);
+    }
+
+    @Override
+    protected void select(boolean value) {
+      super.select(value);
+      btLabel.am = selected ? 1.0f : 0.6f;
+    }
+  }
 
 }

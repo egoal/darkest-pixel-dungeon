@@ -38,171 +38,182 @@ import java.util.Locale;
 
 public class WndLangs extends Window {
 
-	private int WIDTH_P = 120;
-	private int WIDTH_L = 171;
+  private int WIDTH_P = 120;
+  private int WIDTH_L = 171;
 
-	private int MIN_HEIGHT = 110;
+  private int MIN_HEIGHT = 110;
 
-	private int BTN_WIDTH = 50;
-	private int BTN_HEIGHT = 14;
+  private int BTN_WIDTH = 50;
+  private int BTN_HEIGHT = 14;
 
-	public WndLangs(){
-		super();
+  public WndLangs() {
+    super();
 
-		final ArrayList<Languages> langs = new ArrayList<>(Arrays.asList(Languages.values()));
+    final ArrayList<Languages> langs = new ArrayList<>(Arrays.asList
+            (Languages.values()));
 
-		Languages nativeLang = Languages.matchLocale(Locale.getDefault());
-		langs.remove(nativeLang);
-		//move the native language to the top.
-		langs.add(0, nativeLang);
+    Languages nativeLang = Languages.matchLocale(Locale.getDefault());
+    langs.remove(nativeLang);
+    //move the native language to the top.
+    langs.add(0, nativeLang);
 
-		final Languages currLang = Messages.lang();
+    final Languages currLang = Messages.lang();
 
-		//language buttons layout
-		int y = 0;
-		for (int i = 0; i < langs.size(); i++){
-			final int langIndex = i;
-			RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName())){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					Messages.setup(langs.get(langIndex));
-					DarkestPixelDungeon.switchNoFade(TitleScene.class, new Game.SceneChangeCallback() {
-						@Override
-						public void beforeCreate() {
-							DarkestPixelDungeon.language(langs.get(langIndex));
-							RenderedText.clearCache();
-						}
-						@Override
-						public void afterCreate() {
-							Game.scene().add(new WndLangs());
-						}
-					});
-				}
-			};
-			if (currLang == langs.get(i)){
-				btn.textColor(TITLE_COLOR);
-			} else {
-				switch (langs.get(i).status()) {
-					case INCOMPLETE:
-						btn.textColor(0x999999);
-						break;
-					case UNREVIEWED:
-						btn.textColor(0xCCCCCC);
-						break;
-				}
-			}
-			btn.setSize(BTN_WIDTH, BTN_HEIGHT);
-			if (DarkestPixelDungeon.landscape() && i % 2 == 1){
-				btn.setPos(BTN_WIDTH+1, y-15);
-			} else {
-				btn.setPos(0, y);
-				y += 15;
-			}
+    //language buttons layout
+    int y = 0;
+    for (int i = 0; i < langs.size(); i++) {
+      final int langIndex = i;
+      RedButton btn = new RedButton(Messages.titleCase(langs.get(i)
+              .nativeName())) {
+        @Override
+        protected void onClick() {
+          super.onClick();
+          Messages.setup(langs.get(langIndex));
+          DarkestPixelDungeon.switchNoFade(TitleScene.class, new Game
+                  .SceneChangeCallback() {
+            @Override
+            public void beforeCreate() {
+              DarkestPixelDungeon.language(langs.get(langIndex));
+              RenderedText.clearCache();
+            }
 
-			add(btn);
-		}
-		y = Math.max(MIN_HEIGHT, y+1);
-		resize(DarkestPixelDungeon.landscape() ? WIDTH_L : WIDTH_P, y);
+            @Override
+            public void afterCreate() {
+              Game.scene().add(new WndLangs());
+            }
+          });
+        }
+      };
+      if (currLang == langs.get(i)) {
+        btn.textColor(TITLE_COLOR);
+      } else {
+        switch (langs.get(i).status()) {
+          case INCOMPLETE:
+            btn.textColor(0x999999);
+            break;
+          case UNREVIEWED:
+            btn.textColor(0xCCCCCC);
+            break;
+        }
+      }
+      btn.setSize(BTN_WIDTH, BTN_HEIGHT);
+      if (DarkestPixelDungeon.landscape() && i % 2 == 1) {
+        btn.setPos(BTN_WIDTH + 1, y - 15);
+      } else {
+        btn.setPos(0, y);
+        y += 15;
+      }
 
-		int textLeft = width - 65;
-		int textWidth = width - textLeft;
+      add(btn);
+    }
+    y = Math.max(MIN_HEIGHT, y + 1);
+    resize(DarkestPixelDungeon.landscape() ? WIDTH_L : WIDTH_P, y);
 
-		ColorBlock separator = new ColorBlock(1, y, 0xFF000000);
-		separator.x = textLeft - 2.5f;
-		add(separator);
+    int textLeft = width - 65;
+    int textWidth = width - textLeft;
 
-		//language info layout.
-		RenderedText title = PixelScene.renderText( Messages.titleCase(currLang.nativeName()) , 9 );
-		title.x = textLeft + (textWidth - title.width())/2f;
-		title.y = 0;
-		title.hardlight(TITLE_COLOR);
-		PixelScene.align(title);
-		add(title);
+    ColorBlock separator = new ColorBlock(1, y, 0xFF000000);
+    separator.x = textLeft - 2.5f;
+    add(separator);
 
-		if (currLang == Languages.ENGLISH){
+    //language info layout.
+    RenderedText title = PixelScene.renderText(Messages.titleCase(currLang
+            .nativeName()), 9);
+    title.x = textLeft + (textWidth - title.width()) / 2f;
+    title.y = 0;
+    title.hardlight(TITLE_COLOR);
+    PixelScene.align(title);
+    add(title);
 
-			RenderedTextMultiline info = PixelScene.renderMultiline(6);
-			// info.text("This is the source language, written by the developer.", width - textLeft);
-			info.text("This is NOT the source language used by the developer, it's unfinished ever since.");
-			info.setPos(textLeft, title.height() + 2);
-			add(info);
+    if (currLang == Languages.ENGLISH) {
 
-		} else {
-			RenderedTextMultiline info	=	PixelScene.renderMultiline(6);
-			if(currLang==Languages.CHINESE){
-				// my source language
-				info.text(Messages.get(this, "do_not_change"), width-textLeft);
-			}else{
-				switch(currLang.status()){
-					case REVIEWED:
-						info.text(Messages.get(this,"completed"),width-textLeft);
-						break;
-					case UNREVIEWED:
-						info.text(Messages.get(this,"unreviewed"),width-textLeft);
-						break;
-					case INCOMPLETE:
-						info.text(Messages.get(this,"unfinished"),width-textLeft);
-						break;
-				}
-			}
-			info.setPos(textLeft, title.height() + 2);
-			add(info);
+      RenderedTextMultiline info = PixelScene.renderMultiline(6);
+      // info.text("This is the source language, written by the developer.", 
+      // width - textLeft);
+      info.text("This is NOT the source language used by the developer, it's " +
+              "unfinished ever since.");
+      info.setPos(textLeft, title.height() + 2);
+      add(info);
 
-			RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get(this, "credits"))){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					String creds = "";
-					String[] reviewers = currLang.reviewers();
-					String[] translators = currLang.translators();
-					if (reviewers.length > 0){
-						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "reviewers")) + "_\n";
-						for (String reviewer : reviewers){
-							creds += "-" + reviewer + "\n";
-						}
-						creds += "\n";
-					}
+    } else {
+      RenderedTextMultiline info = PixelScene.renderMultiline(6);
+      if (currLang == Languages.CHINESE) {
+        // my source language
+        info.text(Messages.get(this, "do_not_change"), width - textLeft);
+      } else {
+        switch (currLang.status()) {
+          case REVIEWED:
+            info.text(Messages.get(this, "completed"), width - textLeft);
+            break;
+          case UNREVIEWED:
+            info.text(Messages.get(this, "unreviewed"), width - textLeft);
+            break;
+          case INCOMPLETE:
+            info.text(Messages.get(this, "unfinished"), width - textLeft);
+            break;
+        }
+      }
+      info.setPos(textLeft, title.height() + 2);
+      add(info);
 
-					if (reviewers.length > 0 || translators.length > 0){
-						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "translators")) + "_";
-						//reviewers are also translators
-						for (String reviewer : reviewers){
-							creds += "\n-" + reviewer;
-						}
-						for (String translator : translators){
-							creds += "\n-" + translator;
-						}
-					}
+      RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get
+              (this, "credits"))) {
+        @Override
+        protected void onClick() {
+          super.onClick();
+          String creds = "";
+          String[] reviewers = currLang.reviewers();
+          String[] translators = currLang.translators();
+          if (reviewers.length > 0) {
+            creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, 
+                    "reviewers")) + "_\n";
+            for (String reviewer : reviewers) {
+              creds += "-" + reviewer + "\n";
+            }
+            creds += "\n";
+          }
 
-					Window credits = new Window();
+          if (reviewers.length > 0 || translators.length > 0) {
+            creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, 
+                    "translators")) + "_";
+            //reviewers are also translators
+            for (String reviewer : reviewers) {
+              creds += "\n-" + reviewer;
+            }
+            for (String translator : translators) {
+              creds += "\n-" + translator;
+            }
+          }
 
-					RenderedTextMultiline title = PixelScene.renderMultiline(9);
-					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , 65);
-					title.hardlight(SHPX_COLOR);
-					title.setPos((65 - title.width())/2, 0);
-					credits.add(title);
+          Window credits = new Window();
 
-					RenderedTextMultiline text = PixelScene.renderMultiline(6);
-					text.text(creds, 65);
-					text.setPos(0, title.bottom() + 2);
-					credits.add(text);
+          RenderedTextMultiline title = PixelScene.renderMultiline(9);
+          title.text(Messages.titleCase(Messages.get(WndLangs.class, 
+                  "credits")), 65);
+          title.hardlight(SHPX_COLOR);
+          title.setPos((65 - title.width()) / 2, 0);
+          credits.add(title);
 
-					credits.resize(65, (int)text.bottom());
-					parent.add(credits);
-				}
-			};
-			creditsBtn.setSize(creditsBtn.reqWidth() + 2, 16);
-			creditsBtn.setPos(textLeft + (textWidth - creditsBtn.width()) / 2f, y - 18);
-			add(creditsBtn);
+          RenderedTextMultiline text = PixelScene.renderMultiline(6);
+          text.text(creds, 65);
+          text.setPos(0, title.bottom() + 2);
+          credits.add(text);
 
-			RenderedTextMultiline transifex_text = PixelScene.renderMultiline(6);
-			transifex_text.text(Messages.get(this, "transifex"), width - textLeft);
-			transifex_text.setPos(textLeft, creditsBtn.top() - 2 - transifex_text.height());
-			add(transifex_text);
+          credits.resize(65, (int) text.bottom());
+          parent.add(credits);
+        }
+      };
+      creditsBtn.setSize(creditsBtn.reqWidth() + 2, 16);
+      creditsBtn.setPos(textLeft + (textWidth - creditsBtn.width()) / 2f, y - 18);
+      add(creditsBtn);
 
-		}
+      RenderedTextMultiline transifex_text = PixelScene.renderMultiline(6);
+      transifex_text.text(Messages.get(this, "transifex"), width - textLeft);
+      transifex_text.setPos(textLeft, creditsBtn.top() - 2 - transifex_text.height());
+      add(transifex_text);
 
-	}
+    }
+
+  }
 
 }

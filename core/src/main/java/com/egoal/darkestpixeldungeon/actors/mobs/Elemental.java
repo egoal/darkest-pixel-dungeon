@@ -38,77 +38,81 @@ import java.util.HashSet;
 
 public class Elemental extends Mob {
 
-	{
-		spriteClass = ElementalSprite.class;
-		
-		HP = HT = 65;
-		defenseSkill = 20;
-		
-		EXP = 10;
-		maxLvl = 20;
-		
-		flying = true;
-		
-		loot = new PotionOfLiquidFlame();
-		lootChance = 0.1f;
+  {
+    spriteClass = ElementalSprite.class;
 
-		properties.add(Property.DEMONIC);
-		addResistances(Damage.Element.FIRE, 2f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
-	
-	@Override
-	public Damage giveDamage(Char target){
-		return new Damage(Random.NormalIntRange( 16, 26 ), this, target).addElement(Damage.Element.FIRE);
-	}
-	
-	@Override
-	public Damage defendDamage(Damage dmg){
-		dmg.value	-=	Random.NormalIntRange(0, 5);
-		return dmg;
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 25;
-	}
-	
-	@Override
-	public Damage attackProc(Damage damage ) {
-		Char enemy	=	(Char)damage.to;
-		if (Random.Int( 2 ) == 0) {
-			Buff.affect( enemy, Burning.class ).reignite( enemy );
-		}
-		
-		return damage;
-	}
-	
-	@Override
-	public void add( Buff buff ) {
-		if (buff instanceof Burning) {
-			if (HP < HT) {
-				HP++;
-				sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-			}
-		} else if (buff instanceof Frost || buff instanceof Chill) {
-				if (Level.water[this.pos])
-					takeDamage(new Damage(Random.NormalIntRange( HT / 2, HT ), buff, this).addElement(Damage.Element.ICE));
-				else
-					takeDamage(new Damage(Random.NormalIntRange(1, HT*2/3), buff, this).addElement(Damage.Element.ICE));
-		} else {
-			super.add( buff );
-		}
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Burning.class );
-		IMMUNITIES.add( Blazing.class );
-		IMMUNITIES.add( WandOfFireblast.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
+    HP = HT = 65;
+    defenseSkill = 20;
+
+    EXP = 10;
+    maxLvl = 20;
+
+    flying = true;
+
+    loot = new PotionOfLiquidFlame();
+    lootChance = 0.1f;
+
+    properties.add(Property.DEMONIC);
+    addResistances(Damage.Element.FIRE, 2f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(16, 26), this, target).addElement
+            (Damage.Element.FIRE);
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 5);
+    return dmg;
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 25;
+  }
+
+  @Override
+  public Damage attackProc(Damage damage) {
+    Char enemy = (Char) damage.to;
+    if (Random.Int(2) == 0) {
+      Buff.affect(enemy, Burning.class).reignite(enemy);
+    }
+
+    return damage;
+  }
+
+  @Override
+  public void add(Buff buff) {
+    if (buff instanceof Burning) {
+      if (HP < HT) {
+        HP++;
+        sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+      }
+    } else if (buff instanceof Frost || buff instanceof Chill) {
+      if (Level.water[this.pos])
+        takeDamage(new Damage(Random.NormalIntRange(HT / 2, HT), buff, this)
+                .addElement(Damage.Element.ICE));
+      else
+        takeDamage(new Damage(Random.NormalIntRange(1, HT * 2 / 3), buff, 
+                this).addElement(Damage.Element.ICE));
+    } else {
+      super.add(buff);
+    }
+  }
+
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+  static {
+    IMMUNITIES.add(Burning.class);
+    IMMUNITIES.add(Blazing.class);
+    IMMUNITIES.add(WandOfFireblast.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
 }

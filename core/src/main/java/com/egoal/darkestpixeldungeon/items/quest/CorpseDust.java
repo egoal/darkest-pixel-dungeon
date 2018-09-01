@@ -38,101 +38,103 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class CorpseDust extends Item {
-	
-	{
-		image = ItemSpriteSheet.DUST;
-		
-		cursed = true;
-		cursedKnown = true;
-		
-		unique = true;
-	}
 
-	@Override
-	public ArrayList<String> actions(Hero hero) {
-		return new ArrayList<>(); //yup, no dropping this one
-	}
+  {
+    image = ItemSpriteSheet.DUST;
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+    cursed = true;
+    cursedKnown = true;
 
-	@Override
-	public boolean doPickUp(Hero hero) {
-		if (super.doPickUp(hero)){
-			GLog.n("You feel a shiver run down your spine.");
-			Buff.affect(hero, DustGhostSpawner.class);
-			return true;
-		}
-		return false;
-	}
+    unique = true;
+  }
 
-	@Override
-	protected void onDetach() {
-		DustGhostSpawner spawner = Dungeon.hero.buff(DustGhostSpawner.class);
-		if (spawner != null){
-			spawner.dispel();
-		}
-	}
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    return new ArrayList<>(); //yup, no dropping this one
+  }
 
-	public static class DustGhostSpawner extends Buff {
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
 
-		int spawnPower = 0;
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
 
-		@Override
-		public boolean act() {
-			spawnPower++;
-			int wraiths = 1; //we include the wraith we're trying to spawn
-			for (Mob mob : Dungeon.level.mobs){
-				if (mob instanceof Wraith){
-					wraiths++;
-				}
-			}
+  @Override
+  public boolean doPickUp(Hero hero) {
+    if (super.doPickUp(hero)) {
+      GLog.n("You feel a shiver run down your spine.");
+      Buff.affect(hero, DustGhostSpawner.class);
+      return true;
+    }
+    return false;
+  }
 
-			int powerNeeded = Math.min(25, wraiths*wraiths);
+  @Override
+  protected void onDetach() {
+    DustGhostSpawner spawner = Dungeon.hero.buff(DustGhostSpawner.class);
+    if (spawner != null) {
+      spawner.dispel();
+    }
+  }
 
-			if (powerNeeded <= spawnPower){
-				spawnPower -= powerNeeded;
-				int pos = 0;
-				do{
-					pos = Random.Int(Dungeon.level.length());
-				} while (!Dungeon.visible[pos] || !Level.passable[pos] || Actor.findChar( pos ) != null);
-				Wraith.spawnAt(pos);
-				Sample.INSTANCE.play(Assets.SND_CURSED);
-			}
+  public static class DustGhostSpawner extends Buff {
 
-			spend(TICK);
-			return true;
-		}
+    int spawnPower = 0;
 
-		public void dispel(){
-			detach();
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
-				if (mob instanceof Wraith){
-					mob.die(null);
-				}
-			}
-		}
+    @Override
+    public boolean act() {
+      spawnPower++;
+      int wraiths = 1; //we include the wraith we're trying to spawn
+      for (Mob mob : Dungeon.level.mobs) {
+        if (mob instanceof Wraith) {
+          wraiths++;
+        }
+      }
 
-		private static String SPAWNPOWER = "spawnpower";
+      int powerNeeded = Math.min(25, wraiths * wraiths);
 
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put( SPAWNPOWER, spawnPower );
-		}
+      if (powerNeeded <= spawnPower) {
+        spawnPower -= powerNeeded;
+        int pos = 0;
+        do {
+          pos = Random.Int(Dungeon.level.length());
+        }
+        while (!Dungeon.visible[pos] || !Level.passable[pos] || Actor
+                .findChar(pos) != null);
+        Wraith.spawnAt(pos);
+        Sample.INSTANCE.play(Assets.SND_CURSED);
+      }
 
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			spawnPower = bundle.getInt( SPAWNPOWER );
-		}
-	}
+      spend(TICK);
+      return true;
+    }
+
+    public void dispel() {
+      detach();
+      for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+        if (mob instanceof Wraith) {
+          mob.die(null);
+        }
+      }
+    }
+
+    private static String SPAWNPOWER = "spawnpower";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+      super.storeInBundle(bundle);
+      bundle.put(SPAWNPOWER, spawnPower);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+      super.restoreFromBundle(bundle);
+      spawnPower = bundle.getInt(SPAWNPOWER);
+    }
+  }
 
 }

@@ -29,25 +29,25 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Stormvine extends Plant {
 
-	{
-		image = 9;
-	}
+  {
+    image = 9;
+  }
 
-	@Override
-	public void activate() {
-		Char ch = Actor.findChar(pos);
+  @Override
+  public void activate() {
+    Char ch = Actor.findChar(pos);
 
-		if (ch != null) {
-			Buff.affect(ch, Vertigo.class, Vertigo.duration( ch ) );
-		}
-	}
+    if (ch != null) {
+      Buff.affect(ch, Vertigo.class, Vertigo.duration(ch));
+    }
+  }
 
-	public static class Seed extends Plant.Seed {
-		{
-			image = ItemSpriteSheet.SEED_STORMVINE;
+  public static class Seed extends Plant.Seed {
+    {
+      image = ItemSpriteSheet.SEED_STORMVINE;
 
-			plantClass = Stormvine.class;
-			alchemyClass = PotionOfLevitation.class;
-		}
-	}
+      plantClass = Stormvine.class;
+      alchemyClass = PotionOfLevitation.class;
+    }
+  }
 }

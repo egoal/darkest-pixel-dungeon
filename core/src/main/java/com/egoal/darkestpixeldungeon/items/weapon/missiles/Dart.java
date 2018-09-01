@@ -26,44 +26,45 @@ import com.watabou.utils.Random;
 
 public class Dart extends MissileWeapon {
 
-	{
-		image = ItemSpriteSheet.DART;
+  {
+    image = ItemSpriteSheet.DART;
 
-		bones = false; //Finding them in bones would be semi-frequent and disappointing.
-	}
+    bones = false; //Finding them in bones would be semi-frequent and 
+    // disappointing.
+  }
 
-	@Override
-	public int min(int lvl) {
-		return 1;
-	}
+  @Override
+  public int min(int lvl) {
+    return 1;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return 4;
-	}
+  @Override
+  public int max(int lvl) {
+    return 4;
+  }
 
-	@Override
-	public int STRReq(int lvl) {
-		return 10;
-	}
+  @Override
+  public int STRReq(int lvl) {
+    return 10;
+  }
 
-	public Dart() {
-		this( 1 );
-	}
-	
-	public Dart( int number ) {
-		super();
-		quantity = number;
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.Int( 5, 15 );
-		return this;
-	}
-	
-	@Override
-	public int price() {
-		return quantity * 2;
-	}
+  public Dart() {
+    this(1);
+  }
+
+  public Dart(int number) {
+    super();
+    quantity = number;
+  }
+
+  @Override
+  public Item random() {
+    quantity = Random.Int(5, 15);
+    return this;
+  }
+
+  @Override
+  public int price() {
+    return quantity * 2;
+  }
 }

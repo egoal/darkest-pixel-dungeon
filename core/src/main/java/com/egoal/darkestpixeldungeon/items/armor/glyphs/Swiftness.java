@@ -25,29 +25,29 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
-public class Swiftness extends Armor.Glyph{
+public class Swiftness extends Armor.Glyph {
 
-	private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xFFFF00 );
+  private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing(0xFFFF00);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		//no proc effect, see hero.defenseskill and hero.speed for effect.
-		return damage;
-	}
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    //no proc effect, see hero.defenseskill and hero.speed for effect.
+    return damage;
+  }
 
-	@Override
-	public int tierDRAdjust() {
-		return -2;
-	}
+  @Override
+  public int tierDRAdjust() {
+    return -2;
+  }
 
-	@Override
-	public float tierSTRAdjust() {
-		return -1;
-	}
+  @Override
+  public float tierSTRAdjust() {
+    return -1;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return YELLOW;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return YELLOW;
+  }
 
 }

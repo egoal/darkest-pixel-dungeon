@@ -29,73 +29,73 @@ import com.watabou.utils.PointF;
 
 public class Chains extends Group {
 
-	private static final double A = 180 / Math.PI;
+  private static final double A = 180 / Math.PI;
 
-	private float spent = 0f;
-	private float duration;
+  private float spent = 0f;
+  private float duration;
 
-	private Callback callback;
+  private Callback callback;
 
-	private Image[] chains;
-	private int numChains;
-	private float distance;
-	private float rotation = 0;
+  private Image[] chains;
+  private int numChains;
+  private float distance;
+  private float rotation = 0;
 
-	private PointF from, to;
+  private PointF from, to;
 
-	public Chains(int from, int to, Callback callback){
-		this(DungeonTilemap.tileCenterToWorld(from),
-				DungeonTilemap.tileCenterToWorld(to),
-				callback);
-	}
+  public Chains(int from, int to, Callback callback) {
+    this(DungeonTilemap.tileCenterToWorld(from),
+            DungeonTilemap.tileCenterToWorld(to),
+            callback);
+  }
 
-	public Chains(PointF from, PointF to, Callback callback){
-		super();
+  public Chains(PointF from, PointF to, Callback callback) {
+    super();
 
-		this.callback = callback;
+    this.callback = callback;
 
-		this.from = from;
-		this.to = to;
+    this.from = from;
+    this.to = to;
 
-		float dx = to.x - from.x;
-		float dy = to.y - from.y;
-		distance = (float)Math.hypot(dx, dy);
+    float dx = to.x - from.x;
+    float dy = to.y - from.y;
+    distance = (float) Math.hypot(dx, dy);
 
 
-		duration = distance/300f + 0.1f;
+    duration = distance / 300f + 0.1f;
 
-		rotation = (float)(Math.atan2( dy, dx ) * A) + 90f;
+    rotation = (float) (Math.atan2(dy, dx) * A) + 90f;
 
-		numChains = Math.round(distance/6f)+1;
+    numChains = Math.round(distance / 6f) + 1;
 
-		chains = new Image[numChains];
-		for (int i = 0; i < chains.length; i++){
-			chains[i] = new Image(Effects.get(Effects.Type.CHAIN));
-			chains[i].angle = rotation;
-			chains[i].origin.set( chains[i].width()/ 2, chains[i].height() );
-			add(chains[i]);
-		}
-	}
+    chains = new Image[numChains];
+    for (int i = 0; i < chains.length; i++) {
+      chains[i] = new Image(Effects.get(Effects.Type.CHAIN));
+      chains[i].angle = rotation;
+      chains[i].origin.set(chains[i].width() / 2, chains[i].height());
+      add(chains[i]);
+    }
+  }
 
-	@Override
-	public void update() {
-		if ((spent += Game.elapsed) > duration) {
+  @Override
+  public void update() {
+    if ((spent += Game.elapsed) > duration) {
 
-			killAndErase();
-			if (callback != null) {
-				callback.call();
-			}
+      killAndErase();
+      if (callback != null) {
+        callback.call();
+      }
 
-		} else {
-			float dx = to.x - from.x;
-			float dy = to.y - from.y;
-			for (int i = 0; i < chains.length; i++) {
-				chains[i].center(new PointF(
-						from.x + ((dx * (i / (float)chains.length)) * (spent/duration)),
-						from.y + ((dy * (i / (float)chains.length)) * (spent/duration))
-				));
-			}
-		}
-	}
+    } else {
+      float dx = to.x - from.x;
+      float dy = to.y - from.y;
+      for (int i = 0; i < chains.length; i++) {
+        chains[i].center(new PointF(
+                from.x + ((dx * (i / (float) chains.length)) * (spent / duration)),
+                from.y + ((dy * (i / (float) chains.length)) * (spent / duration))
+        ));
+      }
+    }
+  }
 
 }

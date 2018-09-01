@@ -29,23 +29,24 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.effects.particles.PoisonParticle;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
-public class PoisonTrap extends Trap{
+public class PoisonTrap extends Trap {
 
-	{
-		color = TrapSprite.VIOLET;
-		shape = TrapSprite.CROSSHAIR;
-	}
+  {
+    color = TrapSprite.VIOLET;
+    shape = TrapSprite.CROSSHAIR;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		Char ch = Actor.findChar( pos );
+    Char ch = Actor.findChar(pos);
 
-		if (ch != null) {
-			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (4 + Dungeon.depth / 2) );
-		}
+    if (ch != null) {
+      Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + 
+              Dungeon.depth / 2));
+    }
 
-		CellEmitter.center( pos ).burst( PoisonParticle.SPLASH, 3 );
+    CellEmitter.center(pos).burst(PoisonParticle.SPLASH, 3);
 
-	}
+  }
 }

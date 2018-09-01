@@ -28,27 +28,27 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 
 public class PotionOfMight extends Potion {
 
-	{
-		initials = 6;
+  {
+    initials = 6;
 
-		bones = true;
-	}
-	
-	@Override
-	public void apply( Hero hero ) {
-		setKnown();
-		
-		hero.STR++;
-		hero.HT += 6;
-		hero.HP += 6;
-		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
-		GLog.p( Messages.get(this, "msg_2") );
+    bones = true;
+  }
 
-		Badges.validateStrengthAttained();
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? (int)(100 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+  @Override
+  public void apply(Hero hero) {
+    setKnown();
+
+    hero.STR++;
+    hero.HT += 6;
+    hero.HP += 6;
+    hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "msg_1"));
+    GLog.p(Messages.get(this, "msg_2"));
+
+    Badges.validateStrengthAttained();
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (100 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

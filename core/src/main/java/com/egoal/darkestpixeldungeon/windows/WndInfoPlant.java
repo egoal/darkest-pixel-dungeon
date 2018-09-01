@@ -24,10 +24,10 @@ import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.sprites.PlantSprite;
 
 public class WndInfoPlant extends WndTitledMessage {
-	
-	public WndInfoPlant( Plant plant ) {
-		
-		super(new PlantSprite( plant.image ), plant.plantName, plant.desc());
 
-	}
+  public WndInfoPlant(Plant plant) {
+
+    super(new PlantSprite(plant.image), plant.plantName, plant.desc());
+
+  }
 }

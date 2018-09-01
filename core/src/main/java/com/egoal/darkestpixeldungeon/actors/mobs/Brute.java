@@ -36,75 +36,76 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public class Brute extends Mob {
-	
-	{
-		spriteClass = BruteSprite.class;
-		
-		HP = HT = 40;
-		defenseSkill = 15;
-		
-		EXP = 8;
-		maxLvl = 15;
-		
-		loot = Gold.class;
-		lootChance = 0.5f;
-		
-		addResistances(Damage.Element.SHADOW, .75f);
-	}
-	
-	private boolean enraged = false;
-	private static final float TIME_TO_ENRAGE	=	1f;
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		enraged = HP < HT / 4;
-	}
-	
-	@Override
-	public Damage giveDamage(Char target){
-		Damage damage	=	new Damage(Random.NormalIntRange(8, 24), this, target);
-		if(enraged){
-			damage.value	*=	Random.Float(1.5f, 2.f);
-			damage.addFeature(Damage.Feature.CRITCIAL);
-		}
-		return damage;
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 20;
-	}
-	
-	@Override
-	public Damage defendDamage(Damage dmg){
-		dmg.value	-=	Random.NormalIntRange(0, 8);
-		return dmg;
-	}
-	
-	@Override
-	public int takeDamage(Damage dmg){
-		int val	=	super.takeDamage(dmg);
-		
-		if(isAlive() && !enraged && HP<HT/4){
-			enraged	=	true;
-			if (Dungeon.visible[pos]) {
-				GLog.w( Messages.get(this, "enraged_text") );
-				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );
-			}
-			spend(TIME_TO_ENRAGE);
-		}
-		
-		return val;
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
+
+  {
+    spriteClass = BruteSprite.class;
+
+    HP = HT = 40;
+    defenseSkill = 15;
+
+    EXP = 8;
+    maxLvl = 15;
+
+    loot = Gold.class;
+    lootChance = 0.5f;
+
+    addResistances(Damage.Element.SHADOW, .75f);
+  }
+
+  private boolean enraged = false;
+  private static final float TIME_TO_ENRAGE = 1f;
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    enraged = HP < HT / 4;
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    Damage damage = new Damage(Random.NormalIntRange(8, 24), this, target);
+    if (enraged) {
+      damage.value *= Random.Float(1.5f, 2.f);
+      damage.addFeature(Damage.Feature.CRITCIAL);
+    }
+    return damage;
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 20;
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 8);
+    return dmg;
+  }
+
+  @Override
+  public int takeDamage(Damage dmg) {
+    int val = super.takeDamage(dmg);
+
+    if (isAlive() && !enraged && HP < HT / 4) {
+      enraged = true;
+      if (Dungeon.visible[pos]) {
+        GLog.w(Messages.get(this, "enraged_text"));
+        sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
+      }
+      spend(TIME_TO_ENRAGE);
+    }
+
+    return val;
+  }
+
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+  static {
+    IMMUNITIES.add(Terror.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
 }

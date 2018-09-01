@@ -29,28 +29,31 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 
 public class PotionOfMindVision extends Potion {
 
-	{
-		initials = 7;
-	}
+  {
+    initials = 7;
+  }
 
-	@Override
-	public boolean canBeReinforced(){ return !reinforced; }
-	
-	@Override
-	public void apply( Hero hero ) {
-		setKnown();
-		Buff.affect( hero, MindVision.class, MindVision.DURATION*(reinforced? 2: 1) );
-		Dungeon.observe();
-		
-		if (Dungeon.level.mobs.size() > 0) {
-			GLog.i( Messages.get(this, "see_mobs") );
-		} else {
-			GLog.i( Messages.get(this, "see_none") );
-		}
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? (int)(30 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+  @Override
+  public boolean canBeReinforced() {
+    return !reinforced;
+  }
+
+  @Override
+  public void apply(Hero hero) {
+    setKnown();
+    Buff.affect(hero, MindVision.class, MindVision.DURATION * (reinforced ? 2
+            : 1));
+    Dungeon.observe();
+
+    if (Dungeon.level.mobs.size() > 0) {
+      GLog.i(Messages.get(this, "see_mobs"));
+    } else {
+      GLog.i(Messages.get(this, "see_none"));
+    }
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

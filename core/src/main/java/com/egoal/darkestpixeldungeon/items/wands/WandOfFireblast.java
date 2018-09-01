@@ -47,148 +47,157 @@ import java.util.HashSet;
 
 public class WandOfFireblast extends DamageWand {
 
-	{
-		image = ItemSpriteSheet.WAND_FIREBOLT;
+  {
+    image = ItemSpriteSheet.WAND_FIREBOLT;
 
-		collisionProperties = Ballistica.STOP_TERRAIN;
-	}
+    collisionProperties = Ballistica.STOP_TERRAIN;
+  }
 
-	//1x/1.5x/2.25x damage
-	public int min(int lvl){
-		return (int)Math.round((1+lvl) * Math.pow(1.5f, chargesPerCast()-1));
-	}
+  //1x/1.5x/2.25x damage
+  public int min(int lvl) {
+    return (int) Math.round((1 + lvl) * Math.pow(1.5f, chargesPerCast() - 1));
+  }
 
-	//1x/1.5x/2.25x damage
-	public int max(int lvl){
-		return (int)Math.round((5+3*lvl) * Math.pow(1.5f, chargesPerCast()-1));
-	}
+  //1x/1.5x/2.25x damage
+  public int max(int lvl) {
+    return (int) Math.round((5 + 3 * lvl) * Math.pow(1.5f, chargesPerCast() -
+            1));
+  }
 
-	//the actual affected cells
-	private HashSet<Integer> affectedCells;
-	//the cells to trace fire shots to, for visual effects.
-	private HashSet<Integer> visualCells;
-	private int direction = 0;
-	
-	@Override
-	protected void onZap( Ballistica bolt ) {
+  //the actual affected cells
+  private HashSet<Integer> affectedCells;
+  //the cells to trace fire shots to, for visual effects.
+  private HashSet<Integer> visualCells;
+  private int direction = 0;
 
-		for( int cell : affectedCells){
+  @Override
+  protected void onZap(Ballistica bolt) {
 
-			if (Level.flamable[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
-				GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
-			Char ch = Actor.findChar( cell );
-			if (ch != null) {
+    for (int cell : affectedCells) {
 
-				int damage = damageRoll();
+      if (Level.flamable[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
+        GameScene.add(Blob.seed(cell, 1 + chargesPerCast(), Fire.class));
+      Char ch = Actor.findChar(cell);
+      if (ch != null) {
 
-				ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE));
-				Buff.affect( ch, Burning.class ).reignite( ch );
-				switch(chargesPerCast()){
-					case 1:
-						break; //no effects
-					case 2:
-						Buff.affect(ch, Cripple.class, 4f); break;
-					case 3:
-						Buff.affect(ch, Paralysis.class, 4f); break;
-				}
-			}
-		}
-	}
+        int damage = damageRoll();
 
-	//burn... BURNNNNN!.....
-	private void spreadFlames(int cell, float strength){
-		if (strength >= 0 && Level.passable[cell]){
-			affectedCells.add(cell);
-			if (strength >= 1.5f) {
-				visualCells.remove(cell);
-				spreadFlames(cell + PathFinder.CIRCLE[left(direction)], strength - 1.5f);
-				spreadFlames(cell + PathFinder.CIRCLE[direction], strength - 1.5f);
-				spreadFlames(cell + PathFinder.CIRCLE[right(direction)], strength - 1.5f);
-			} else {
-				visualCells.add(cell);
-			}
-		} else if (!Level.passable[cell])
-			visualCells.add(cell);
-	}
+        ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL)
+                .addElement(Damage.Element.FIRE));
+        Buff.affect(ch, Burning.class).reignite(ch);
+        switch (chargesPerCast()) {
+          case 1:
+            break; //no effects
+          case 2:
+            Buff.affect(ch, Cripple.class, 4f);
+            break;
+          case 3:
+            Buff.affect(ch, Paralysis.class, 4f);
+            break;
+        }
+      }
+    }
+  }
 
-	private int left(int direction){
-		return direction == 0 ? 7 : direction-1;
-	}
+  //burn... BURNNNNN!.....
+  private void spreadFlames(int cell, float strength) {
+    if (strength >= 0 && Level.passable[cell]) {
+      affectedCells.add(cell);
+      if (strength >= 1.5f) {
+        visualCells.remove(cell);
+        spreadFlames(cell + PathFinder.CIRCLE[left(direction)], strength - 
+                1.5f);
+        spreadFlames(cell + PathFinder.CIRCLE[direction], strength - 1.5f);
+        spreadFlames(cell + PathFinder.CIRCLE[right(direction)], strength - 
+                1.5f);
+      } else {
+        visualCells.add(cell);
+      }
+    } else if (!Level.passable[cell])
+      visualCells.add(cell);
+  }
 
-	private int right(int direction){
-		return direction == 7 ? 0 : direction+1;
-	}
+  private int left(int direction) {
+    return direction == 0 ? 7 : direction - 1;
+  }
 
-	@Override
-	public void onHit(MagesStaff staff,Char attacker,Char defender,int damage) {
-		//acts like blazing enchantment
-		// new Blazing().proc( staff, attacker, defender, damage);
-		new Blazing().proc(staff, new Damage(damage, attacker, defender));
-	}
+  private int right(int direction) {
+    return direction == 7 ? 0 : direction + 1;
+  }
 
-	@Override
-	protected void fx( Ballistica bolt, Callback callback ) {
-		//need to perform flame spread logic here so we can determine what cells to put flames in.
-		affectedCells = new HashSet<>();
-		visualCells = new HashSet<>();
+  @Override
+  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
+          damage) {
+    //acts like blazing enchantment
+    // new Blazing().proc( staff, attacker, defender, damage);
+    new Blazing().proc(staff, new Damage(damage, attacker, defender));
+  }
 
-		// 4/6/9 distance
-		int maxDist = (int)(4 * Math.pow(1.5,(chargesPerCast()-1)));
-		int dist = Math.min(bolt.dist, maxDist);
+  @Override
+  protected void fx(Ballistica bolt, Callback callback) {
+    //need to perform flame spread logic here so we can determine what cells 
+    // to put flames in.
+    affectedCells = new HashSet<>();
+    visualCells = new HashSet<>();
 
-		for (int i = 0; i < PathFinder.CIRCLE.length; i++){
-			if (bolt.sourcePos+PathFinder.CIRCLE[i] == bolt.path.get(1)){
-				direction = i;
-				break;
-			}
-		}
+    // 4/6/9 distance
+    int maxDist = (int) (4 * Math.pow(1.5, (chargesPerCast() - 1)));
+    int dist = Math.min(bolt.dist, maxDist);
 
-		float strength = maxDist;
-		for (int c : bolt.subPath(1, dist)) {
-			strength--; //as we start at dist 1, not 0.
-			affectedCells.add(c);
-			if (strength > 1) {
-				spreadFlames(c + PathFinder.CIRCLE[left(direction)], strength - 1);
-				spreadFlames(c + PathFinder.CIRCLE[direction], strength - 1);
-				spreadFlames(c + PathFinder.CIRCLE[right(direction)], strength - 1);
-			} else {
-				visualCells.add(c);
-			}
-		}
+    for (int i = 0; i < PathFinder.CIRCLE.length; i++) {
+      if (bolt.sourcePos + PathFinder.CIRCLE[i] == bolt.path.get(1)) {
+        direction = i;
+        break;
+      }
+    }
 
-		//going to call this one manually
-		visualCells.remove(bolt.path.get(dist));
+    float strength = maxDist;
+    for (int c : bolt.subPath(1, dist)) {
+      strength--; //as we start at dist 1, not 0.
+      affectedCells.add(c);
+      if (strength > 1) {
+        spreadFlames(c + PathFinder.CIRCLE[left(direction)], strength - 1);
+        spreadFlames(c + PathFinder.CIRCLE[direction], strength - 1);
+        spreadFlames(c + PathFinder.CIRCLE[right(direction)], strength - 1);
+      } else {
+        visualCells.add(c);
+      }
+    }
 
-		for (int cell : visualCells){
-			//this way we only get the cells at the tip, much better performance.
-			MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, cell, null);
-		}
-		MagicMissile.fire( curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
-	}
+    //going to call this one manually
+    visualCells.remove(bolt.path.get(dist));
 
-	@Override
-	protected int chargesPerCast() {
-		//consumes 30% of current charges, rounded up, with a minimum of one.
-		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
-	}
+    for (int cell : visualCells) {
+      //this way we only get the cells at the tip, much better performance.
+      MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, cell, null);
+    }
+    MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, bolt.path.get
+            (dist), callback);
+    Sample.INSTANCE.play(Assets.SND_ZAP);
+  }
 
-	@Override
-	public String statsDesc() {
-		if (levelKnown)
-			return Messages.get(this, "stats_desc", chargesPerCast(), min(), max());
-		else
-			return Messages.get(this, "stats_desc", chargesPerCast(), min(0), max(0));
-	}
+  @Override
+  protected int chargesPerCast() {
+    //consumes 30% of current charges, rounded up, with a minimum of one.
+    return Math.max(1, (int) Math.ceil(curCharges * 0.3f));
+  }
 
-	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
-		particle.color( 0xEE7722 );
-		particle.am = 0.5f;
-		particle.setLifespan(0.6f);
-		particle.acc.set(0, -40);
-		particle.setSize( 0f, 3f);
-		particle.shuffleXY(2f);
-	}
+  @Override
+  public String statsDesc() {
+    if (levelKnown)
+      return Messages.get(this, "stats_desc", chargesPerCast(), min(), max());
+    else
+      return Messages.get(this, "stats_desc", chargesPerCast(), min(0), max(0));
+  }
+
+  @Override
+  public void staffFx(MagesStaff.StaffParticle particle) {
+    particle.color(0xEE7722);
+    particle.am = 0.5f;
+    particle.setLifespan(0.6f);
+    particle.acc.set(0, -40);
+    particle.setSize(0f, 3f);
+    particle.shuffleXY(2f);
+  }
 
 }

@@ -26,44 +26,44 @@ import com.watabou.utils.Random;
 
 public class Shuriken extends MissileWeapon {
 
-	{
-		image = ItemSpriteSheet.SHURIKEN;
+  {
+    image = ItemSpriteSheet.SHURIKEN;
 
-		DLY = 0.5f;
-	}
+    DLY = 0.5f;
+  }
 
-	@Override
-	public int min(int lvl) {
-		return 2;
-	}
+  @Override
+  public int min(int lvl) {
+    return 2;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return 6;
-	}
+  @Override
+  public int max(int lvl) {
+    return 6;
+  }
 
-	@Override
-	public int STRReq(int lvl) {
-		return 13;
-	}
+  @Override
+  public int STRReq(int lvl) {
+    return 13;
+  }
 
-	public Shuriken() {
-		this( 1 );
-	}
-	
-	public Shuriken( int number ) {
-		super();
-		quantity = number;
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.Int( 5, 15 );
-		return this;
-	}
-	
-	@Override
-	public int price() {
-		return 6 * quantity;
-	}
+  public Shuriken() {
+    this(1);
+  }
+
+  public Shuriken(int number) {
+    super();
+    quantity = number;
+  }
+
+  @Override
+  public Item random() {
+    quantity = Random.Int(5, 15);
+    return this;
+  }
+
+  @Override
+  public int price() {
+    return 6 * quantity;
+  }
 }

@@ -7,20 +7,21 @@ import com.watabou.utils.Bundle;
  */
 
 //* check in Char::takeDamage
-public class LifeLink extends FlavourBuff{
-	public int linker	=	0;
-	
-	private static final String LINKER	=	"linker";
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LINKER, linker );
+public class LifeLink extends FlavourBuff {
+  public int linker = 0;
 
-	}
+  private static final String LINKER = "linker";
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		linker	=	bundle.getInt( LINKER );
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(LINKER, linker);
+
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    linker = bundle.getInt(LINKER);
+  }
 }

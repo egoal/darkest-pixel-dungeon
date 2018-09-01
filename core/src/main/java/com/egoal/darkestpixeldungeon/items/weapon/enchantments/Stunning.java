@@ -29,31 +29,31 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Stunning extends Weapon.Enchantment{
-	
-	private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xCCAA44 );
-	
-	@Override
-	public Damage proc(Weapon weapon,Damage damage) {
-		Char defender	=	(Char)damage.to;
-		Char attacker	=	(Char)damage.from;
-		// lvl 0 - 13%
-		// lvl 1 - 22%
-		// lvl 2 - 30%
-		int level = Math.max( 0, weapon.level() );
-		
-		if (Random.Int( level + 8 ) >= 7) {
-			
-			Buff.prolong( defender, Paralysis.class, Random.Float( 1, 1.5f + level ) );
-			defender.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12 );
+public class Stunning extends Weapon.Enchantment {
 
-		}
+  private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing(0xCCAA44);
 
-		return damage;
-	}
-	
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return YELLOW;
-	}
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    Char attacker = (Char) damage.from;
+    // lvl 0 - 13%
+    // lvl 1 - 22%
+    // lvl 2 - 30%
+    int level = Math.max(0, weapon.level());
+
+    if (Random.Int(level + 8) >= 7) {
+
+      Buff.prolong(defender, Paralysis.class, Random.Float(1, 1.5f + level));
+      defender.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12);
+
+    }
+
+    return damage;
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return YELLOW;
+  }
 }

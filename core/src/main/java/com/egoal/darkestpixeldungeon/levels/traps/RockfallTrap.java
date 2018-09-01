@@ -40,44 +40,46 @@ import com.watabou.utils.Random;
 
 public class RockfallTrap extends Trap {
 
-	{
-		color = TrapSprite.GREY;
-		shape = TrapSprite.DIAMOND;
-	}
+  {
+    color = TrapSprite.GREY;
+    shape = TrapSprite.DIAMOND;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		boolean seen = false;
+    boolean seen = false;
 
-		for (int i : PathFinder.NEIGHBOURS9){
+    for (int i : PathFinder.NEIGHBOURS9) {
 
-			if (Level.solid[pos+i])
-				continue;
+      if (Level.solid[pos + i])
+        continue;
 
-			if (Dungeon.visible[ pos+i ]){
-				CellEmitter.get( pos + i - Dungeon.level.width() ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
-				if (!seen) {
-					Camera.main.shake(3, 0.7f);
-					Sample.INSTANCE.play(Assets.SND_ROCKS);
-					seen = true;
-				}
-			}
+      if (Dungeon.visible[pos + i]) {
+        CellEmitter.get(pos + i - Dungeon.level.width()).start(Speck.factory
+                (Speck.ROCK), 0.07f, 10);
+        if (!seen) {
+          Camera.main.shake(3, 0.7f);
+          Sample.INSTANCE.play(Assets.SND_ROCKS);
+          seen = true;
+        }
+      }
 
-			Char ch = Actor.findChar( pos+i );
+      Char ch = Actor.findChar(pos + i);
 
-			if (ch != null){
-				int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth*2);
-				ch.takeDamage(ch.defendDamage(new Damage(Math.max(0, damage), this, ch)));
+      if (ch != null) {
+        int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth * 2);
+        ch.takeDamage(ch.defendDamage(new Damage(Math.max(0, damage), this, 
+                ch)));
 
-				Buff.prolong( ch, Paralysis.class, Paralysis.duration(ch)/2);
+        Buff.prolong(ch, Paralysis.class, Paralysis.duration(ch) / 2);
 
-				if (!ch.isAlive() && ch == Dungeon.hero){
-					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(this, "ondeath") );
-				}
-			}
-		}
+        if (!ch.isAlive() && ch == Dungeon.hero) {
+          Dungeon.fail(getClass());
+          GLog.n(Messages.get(this, "ondeath"));
+        }
+      }
+    }
 
-	}
+  }
 }

@@ -70,305 +70,305 @@ import com.watabou.utils.Bundle;
 
 public enum HeroClass {
 
-	WARRIOR( "warrior" ),
-	MAGE( "mage" ),
-	ROGUE( "rogue" ),
-	HUNTRESS( "huntress" ),
+  WARRIOR("warrior"),
+  MAGE("mage"),
+  ROGUE("rogue"),
+  HUNTRESS("huntress"),
 
-	SORCERESS("sorceress");
-	
-	private String title;
+  SORCERESS("sorceress");
 
-	HeroClass( String title ) {
-		this.title = title;
-	}
+  private String title;
 
-	public void initHero( Hero hero ) {
+  HeroClass(String title) {
+    this.title = title;
+  }
 
-		hero.heroClass = this;
+  public void initHero(Hero hero) {
 
-		initCommon( hero );
+    hero.heroClass = this;
 
-		switch (this) {
-			case WARRIOR:
-				initWarrior( hero );
-				break;
+    initCommon(hero);
 
-			case MAGE:
-				initMage( hero );
-				break;
+    switch (this) {
+      case WARRIOR:
+        initWarrior(hero);
+        break;
 
-			case ROGUE:
-				initRogue( hero );
-				break;
+      case MAGE:
+        initMage(hero);
+        break;
 
-			case HUNTRESS:
-				initHuntress( hero );
-				break;
+      case ROGUE:
+        initRogue(hero);
+        break;
 
-			//
-		case SORCERESS:
-			initSorceress(hero);
-			break;
-		}
+      case HUNTRESS:
+        initHuntress(hero);
+        break;
 
-		initPerks(hero);
-		hero.updateAwareness();
-	}
+      //
+      case SORCERESS:
+        initSorceress(hero);
+        break;
+    }
 
-	private static void initCommon( Hero hero ) {
-		if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-			(hero.belongings.armor = new ClothArmor()).identify();
+    initPerks(hero);
+    hero.updateAwareness();
+  }
 
-		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
-			new Food().identify().collect();
+  private static void initCommon(Hero hero) {
+    if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+      (hero.belongings.armor = new ClothArmor()).identify();
 
-		if(!Dungeon.isChallenged(Challenges.DARKNESS))
-			new Torch().identify().collect();
-		
-		// a wine
-		new Wine().collect();
-		
-		new CrystalsSwords().identify().collect();
-		new BattleGloves().identify().collect();
-		
-		if(DarkestPixelDungeon.debug()){
-			initDebug(hero);
-		}
+    if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+      new Food().identify().collect();
 
-	}
-	
-	private static void initDebug(Hero hero){
-		for(int i=0; i<9; ++i){
-			(new ScrollOfMagicMapping()).identify().collect();
+    if (!Dungeon.isChallenged(Challenges.DARKNESS))
+      new Torch().identify().collect();
 
-			(new PotionOfHealing()).identify().collect();
-			(new PotionOfStrength()).identify().collect();
-			(new PotionOfExperience()).identify().collect();
+    // a wine
+    new Wine().collect();
 
-			(new PotionOfMindVision()).identify().collect();
-		}
+    new CrystalsSwords().identify().collect();
+    new BattleGloves().identify().collect();
 
-		(new PlateArmor()).upgrade(6).identify().collect();
-		(new AssassinsBlade()).upgrade(6).identify().collect();
+    if (DarkestPixelDungeon.debug()) {
+      initDebug(hero);
+    }
 
-		(new WandOfPrismaticLight()).identify().collect();
+  }
 
-		(new TomeOfMastery()).identify().collect();
-		(new ArmorKit()).identify().collect();
+  private static void initDebug(Hero hero) {
+    for (int i = 0; i < 9; ++i) {
+      (new ScrollOfMagicMapping()).identify().collect();
 
-		(new ScrollOfTerror()).identify().collect();
-		
-		(new SeedPouch()).identify().collect();
-		
-		hero.HP	=	1;
-	}
-	
-	public Badges.Badge masteryBadge() {
-		switch (this) {
-			case WARRIOR:
-				return Badges.Badge.MASTERY_WARRIOR;
-			case MAGE:
-				return Badges.Badge.MASTERY_MAGE;
-			case ROGUE:
-				return Badges.Badge.MASTERY_ROGUE;
-			case HUNTRESS:
-				return Badges.Badge.MASTERY_HUNTRESS;
-		case SORCERESS:
-			return Badges.Badge.MASTERY_SORCERESS;
-		}
-		return null;
-	}
+      (new PotionOfHealing()).identify().collect();
+      (new PotionOfStrength()).identify().collect();
+      (new PotionOfExperience()).identify().collect();
 
-	private static void initWarrior( Hero hero ) {
-		(hero.belongings.weapon = new WornShortsword()).identify();
-		Dart darts = new Dart( 8 );
-		darts.identify().collect();
+      (new PotionOfMindVision()).identify().collect();
+    }
 
-		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR) ){
-			if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-				hero.belongings.armor.affixSeal(new BrokenSeal());
-			Dungeon.quickslot.setSlot(0, darts);
-		} else {
-			if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
-				BrokenSeal seal = new BrokenSeal();
-				seal.collect();
-				Dungeon.quickslot.setSlot(0, seal);
-			}
-			Dungeon.quickslot.setSlot(1, darts);
-		}
+    (new PlateArmor()).upgrade(6).identify().collect();
+    (new AssassinsBlade()).upgrade(6).identify().collect();
 
-		// new perk
-		hero.heroPerk.add(HeroPerk.Perk.DRUNKARD);
-		
-		new PotionOfHealing().setKnown();
-	}
+    (new WandOfPrismaticLight()).identify().collect();
 
-	private static void initMage( Hero hero ) {
-		MagesStaff staff;
+    (new TomeOfMastery()).identify().collect();
+    (new ArmorKit()).identify().collect();
 
-		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_MAGE) ){
-			staff = new MagesStaff(new WandOfMagicMissile());
-		} else {
-			staff = new MagesStaff();
-			new WandOfMagicMissile().identify().collect();
-		}
+    (new ScrollOfTerror()).identify().collect();
 
-		(hero.belongings.weapon = staff).identify();
-		hero.belongings.weapon.activate(hero);
+    (new SeedPouch()).identify().collect();
 
-		Dungeon.quickslot.setSlot(0, staff);
+    hero.HP = 1;
+  }
 
-		new ScrollOfUpgrade().setKnown();
-	}
+  public Badges.Badge masteryBadge() {
+    switch (this) {
+      case WARRIOR:
+        return Badges.Badge.MASTERY_WARRIOR;
+      case MAGE:
+        return Badges.Badge.MASTERY_MAGE;
+      case ROGUE:
+        return Badges.Badge.MASTERY_ROGUE;
+      case HUNTRESS:
+        return Badges.Badge.MASTERY_HUNTRESS;
+      case SORCERESS:
+        return Badges.Badge.MASTERY_SORCERESS;
+    }
+    return null;
+  }
 
-	private static void initRogue( Hero hero ) {
-		(hero.belongings.weapon = new Dagger()).identify();
+  private static void initWarrior(Hero hero) {
+    (hero.belongings.weapon = new WornShortsword()).identify();
+    Dart darts = new Dart(8);
+    darts.identify().collect();
 
-		CloakOfShadows cloak = new CloakOfShadows();
-		(hero.belongings.misc1 = cloak).identify();
-		hero.belongings.misc1.activate( hero );
+    if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
+      if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+        hero.belongings.armor.affixSeal(new BrokenSeal());
+      Dungeon.quickslot.setSlot(0, darts);
+    } else {
+      if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
+        BrokenSeal seal = new BrokenSeal();
+        seal.collect();
+        Dungeon.quickslot.setSlot(0, seal);
+      }
+      Dungeon.quickslot.setSlot(1, darts);
+    }
 
-		Dart darts = new Dart( 8 );
-		darts.identify().collect();
+    // new perk
+    hero.heroPerk.add(HeroPerk.Perk.DRUNKARD);
 
-		Dungeon.quickslot.setSlot(0, cloak);
-		Dungeon.quickslot.setSlot(1, darts);
-		
-		hero.heroPerk.add(HeroPerk.Perk.CRITICAL_STRIKE);
-		hero.heroPerk.add(HeroPerk.Perk.KEEN);
+    new PotionOfHealing().setKnown();
+  }
 
-		new ScrollOfMagicMapping().setKnown();
-	}
+  private static void initMage(Hero hero) {
+    MagesStaff staff;
 
-	private static void initHuntress( Hero hero ) {
+    if (Badges.isUnlocked(Badges.Badge.TUTORIAL_MAGE)) {
+      staff = new MagesStaff(new WandOfMagicMissile());
+    } else {
+      staff = new MagesStaff();
+      new WandOfMagicMissile().identify().collect();
+    }
 
-		(hero.belongings.weapon = new Knuckles()).identify();
-		Boomerang boomerang = new Boomerang();
-		boomerang.identify().collect();
+    (hero.belongings.weapon = staff).identify();
+    hero.belongings.weapon.activate(hero);
 
-		Dungeon.quickslot.setSlot(0, boomerang);
+    Dungeon.quickslot.setSlot(0, staff);
 
-		hero.heroPerk.add(HeroPerk.Perk.NIGHT_VISION);
-		hero.heroPerk.add(HeroPerk.Perk.SHOOTER);
-		
-		new PotionOfMindVision().setKnown();
-	}
+    new ScrollOfUpgrade().setKnown();
+  }
 
-	// extra classes
-	private static void initSorceress(Hero hero){
-		// perks
-		// resists and extra resists to poison
-		for(int i=0; i<Damage.Element.ELEMENT_COUNT; ++i){
-			hero.addResistances(1<<i, 1.25f, 1f);
-		}
-		hero.addResistances(Damage.Element.POISON, 2.f);
-		
-		hero.heroPerk.add(HeroPerk.Perk.SHREWD);
-		hero.heroPerk.add(HeroPerk.Perk.POSITIVE);
-		
-		(hero.belongings.weapon =   new SorceressWand()).identify();
-		
-		ExtractionFlask flask	=	new ExtractionFlask();
-		flask.identify().collect();
-		
-		// ranged weapon
-		Dart darts	=	new Dart(6);
-		darts.identify().collect();
-		
-		Dungeon.quickslot.setSlot(0, flask);
-		Dungeon.quickslot.setSlot(1, darts);
-		
-		new PotionOfToxicGas().identify().collect();
+  private static void initRogue(Hero hero) {
+    (hero.belongings.weapon = new Dagger()).identify();
 
-	}
+    CloakOfShadows cloak = new CloakOfShadows();
+    (hero.belongings.misc1 = cloak).identify();
+    hero.belongings.misc1.activate(hero);
 
-	private static void initPerks(Hero hero){
-		if(hero.heroPerk.contain(HeroPerk.Perk.CRITICAL_STRIKE))
-			hero.criticalChance_	+=	5f/100f;
-		
-	}
-	
-	public String title() {
-		return Messages.get(HeroClass.class, title);
-	}
-	
-	public String spritesheet() {
-		
-		switch (this) {
-		case WARRIOR:
-			return Assets.WARRIOR;
-		case MAGE:
-			return Assets.MAGE;
-		case ROGUE:
-			return Assets.ROGUE;
-		case HUNTRESS:
-			return Assets.HUNTRESS;
-		case SORCERESS:
-			return Assets.DPD_SORCERESS;
-		}
-		
-		return null;
-	}
-	
-	public String[] perks() {
-		
-		switch (this) {
-		case WARRIOR:
-			return new String[]{
-					Messages.get(HeroClass.class, "warrior_perk1"),
-					Messages.get(HeroClass.class, "warrior_perk2"),
-					Messages.get(HeroClass.class, "warrior_perk3"),
-					Messages.get(HeroClass.class, "warrior_perk4"),
-					Messages.get(HeroClass.class, "warrior_perk5"),
-			};
-		case MAGE:
-			return new String[]{
-					Messages.get(HeroClass.class, "mage_perk1"),
-					Messages.get(HeroClass.class, "mage_perk2"),
-					Messages.get(HeroClass.class, "mage_perk3"),
-					Messages.get(HeroClass.class, "mage_perk4"),
-					Messages.get(HeroClass.class, "mage_perk5"),
-			};
-		case ROGUE:
-			return new String[]{
-					Messages.get(HeroClass.class, "rogue_perk1"),
-					Messages.get(HeroClass.class, "rogue_perk2"),
-					Messages.get(HeroClass.class, "rogue_perk3"),
-					Messages.get(HeroClass.class, "rogue_perk4"),
-					Messages.get(HeroClass.class, "rogue_perk5"),
-					Messages.get(HeroClass.class, "rogue_perk6"),
-			};
-		case HUNTRESS:
-			return new String[]{
-					Messages.get(HeroClass.class, "huntress_perk1"),
-					Messages.get(HeroClass.class, "huntress_perk2"),
-					Messages.get(HeroClass.class, "huntress_perk3"),
-					Messages.get(HeroClass.class, "huntress_perk4"),
-					Messages.get(HeroClass.class, "huntress_perk5"),
-			};
-		case SORCERESS:
-			return new String[]{
-				Messages.get(HeroClass.class, "sorceress_perk1"),
-				Messages.get(HeroClass.class, "sorceress_perk2"),
-				Messages.get(HeroClass.class, "sorceress_perk3"),
-				Messages.get(HeroClass.class, "sorceress_perk4"),
-				Messages.get(HeroClass.class, "sorceress_perk5"),
-				// Messages.get(HeroClass.class, "sorceress_perk6"),
-			};
-		}
-		
-		return null;
-	}
+    Dart darts = new Dart(8);
+    darts.identify().collect();
 
-	private static final String CLASS	= "class";
-	
-	public void storeInBundle( Bundle bundle ) {
-		bundle.put( CLASS, toString() );
-	}
-	
-	public static HeroClass restoreInBundle( Bundle bundle ) {
-		String value = bundle.getString( CLASS );
-		return value.length() > 0 ? valueOf( value ) : ROGUE;
-	}
+    Dungeon.quickslot.setSlot(0, cloak);
+    Dungeon.quickslot.setSlot(1, darts);
+
+    hero.heroPerk.add(HeroPerk.Perk.CRITICAL_STRIKE);
+    hero.heroPerk.add(HeroPerk.Perk.KEEN);
+
+    new ScrollOfMagicMapping().setKnown();
+  }
+
+  private static void initHuntress(Hero hero) {
+
+    (hero.belongings.weapon = new Knuckles()).identify();
+    Boomerang boomerang = new Boomerang();
+    boomerang.identify().collect();
+
+    Dungeon.quickslot.setSlot(0, boomerang);
+
+    hero.heroPerk.add(HeroPerk.Perk.NIGHT_VISION);
+    hero.heroPerk.add(HeroPerk.Perk.SHOOTER);
+
+    new PotionOfMindVision().setKnown();
+  }
+
+  // extra classes
+  private static void initSorceress(Hero hero) {
+    // perks
+    // resists and extra resists to poison
+    for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
+      hero.addResistances(1 << i, 1.25f, 1f);
+    }
+    hero.addResistances(Damage.Element.POISON, 2.f);
+
+    hero.heroPerk.add(HeroPerk.Perk.SHREWD);
+    hero.heroPerk.add(HeroPerk.Perk.POSITIVE);
+
+    (hero.belongings.weapon = new SorceressWand()).identify();
+
+    ExtractionFlask flask = new ExtractionFlask();
+    flask.identify().collect();
+
+    // ranged weapon
+    Dart darts = new Dart(6);
+    darts.identify().collect();
+
+    Dungeon.quickslot.setSlot(0, flask);
+    Dungeon.quickslot.setSlot(1, darts);
+
+    new PotionOfToxicGas().identify().collect();
+
+  }
+
+  private static void initPerks(Hero hero) {
+    if (hero.heroPerk.contain(HeroPerk.Perk.CRITICAL_STRIKE))
+      hero.criticalChance_ += 5f / 100f;
+
+  }
+
+  public String title() {
+    return Messages.get(HeroClass.class, title);
+  }
+
+  public String spritesheet() {
+
+    switch (this) {
+      case WARRIOR:
+        return Assets.WARRIOR;
+      case MAGE:
+        return Assets.MAGE;
+      case ROGUE:
+        return Assets.ROGUE;
+      case HUNTRESS:
+        return Assets.HUNTRESS;
+      case SORCERESS:
+        return Assets.DPD_SORCERESS;
+    }
+
+    return null;
+  }
+
+  public String[] perks() {
+
+    switch (this) {
+      case WARRIOR:
+        return new String[]{
+                Messages.get(HeroClass.class, "warrior_perk1"),
+                Messages.get(HeroClass.class, "warrior_perk2"),
+                Messages.get(HeroClass.class, "warrior_perk3"),
+                Messages.get(HeroClass.class, "warrior_perk4"),
+                Messages.get(HeroClass.class, "warrior_perk5"),
+        };
+      case MAGE:
+        return new String[]{
+                Messages.get(HeroClass.class, "mage_perk1"),
+                Messages.get(HeroClass.class, "mage_perk2"),
+                Messages.get(HeroClass.class, "mage_perk3"),
+                Messages.get(HeroClass.class, "mage_perk4"),
+                Messages.get(HeroClass.class, "mage_perk5"),
+        };
+      case ROGUE:
+        return new String[]{
+                Messages.get(HeroClass.class, "rogue_perk1"),
+                Messages.get(HeroClass.class, "rogue_perk2"),
+                Messages.get(HeroClass.class, "rogue_perk3"),
+                Messages.get(HeroClass.class, "rogue_perk4"),
+                Messages.get(HeroClass.class, "rogue_perk5"),
+                Messages.get(HeroClass.class, "rogue_perk6"),
+        };
+      case HUNTRESS:
+        return new String[]{
+                Messages.get(HeroClass.class, "huntress_perk1"),
+                Messages.get(HeroClass.class, "huntress_perk2"),
+                Messages.get(HeroClass.class, "huntress_perk3"),
+                Messages.get(HeroClass.class, "huntress_perk4"),
+                Messages.get(HeroClass.class, "huntress_perk5"),
+        };
+      case SORCERESS:
+        return new String[]{
+                Messages.get(HeroClass.class, "sorceress_perk1"),
+                Messages.get(HeroClass.class, "sorceress_perk2"),
+                Messages.get(HeroClass.class, "sorceress_perk3"),
+                Messages.get(HeroClass.class, "sorceress_perk4"),
+                Messages.get(HeroClass.class, "sorceress_perk5"),
+                // Messages.get(HeroClass.class, "sorceress_perk6"),
+        };
+    }
+
+    return null;
+  }
+
+  private static final String CLASS = "class";
+
+  public void storeInBundle(Bundle bundle) {
+    bundle.put(CLASS, toString());
+  }
+
+  public static HeroClass restoreInBundle(Bundle bundle) {
+    String value = bundle.getString(CLASS);
+    return value.length() > 0 ? valueOf(value) : ROGUE;
+  }
 }

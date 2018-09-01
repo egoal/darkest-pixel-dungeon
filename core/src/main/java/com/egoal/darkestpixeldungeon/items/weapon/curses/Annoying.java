@@ -34,36 +34,37 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class Annoying extends Weapon.Enchantment{
+public class Annoying extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-	@Override
-	public Damage proc(Weapon weapon,Damage damage) {
-		Char defender	=	(Char)damage.to;
-		Char attacker	=	(Char)damage.from;
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    Char attacker = (Char) damage.from;
 
-		if (Random.Int(20) == 0) {
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-				mob.beckon(attacker.pos);
-			}
-			attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);
-			Sample.INSTANCE.play(Assets.SND_MIMIC);
-			Invisibility.dispel();
-			GLog.n(Messages.get(this, "msg_" + (Random.Int(5)+1)));
-		}
+    if (Random.Int(20) == 0) {
+      for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+        mob.beckon(attacker.pos);
+      }
+      attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 
+              0.3f, 3);
+      Sample.INSTANCE.play(Assets.SND_MIMIC);
+      Invisibility.dispel();
+      GLog.n(Messages.get(this, "msg_" + (Random.Int(5) + 1)));
+    }
 
-		return damage;
-	}
+    return damage;
+  }
 
-	@Override
-	public boolean curse() {
-		return true;
-	}
+  @Override
+  public boolean curse() {
+    return true;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
 
 }

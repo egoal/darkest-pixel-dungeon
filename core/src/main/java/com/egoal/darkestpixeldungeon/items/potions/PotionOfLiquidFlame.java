@@ -35,40 +35,43 @@ import com.watabou.utils.PathFinder;
 
 public class PotionOfLiquidFlame extends Potion {
 
-	{
-		initials = 5;
-	}
-	
-	@Override
-	public boolean canBeReinforced(){ return !reinforced; }
+  {
+    initials = 5;
+  }
 
-	@Override
-	public void shatter( int cell ) {
+  @Override
+  public boolean canBeReinforced() {
+    return !reinforced;
+  }
 
-		if (Dungeon.visible[cell]) {
-			setKnown();
+  @Override
+  public void shatter(int cell) {
 
-			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-		}
+    if (Dungeon.visible[cell]) {
+      setKnown();
 
-		for (int offset : PathFinder.NEIGHBOURS9){
-			if (Level.flamable[cell+offset]
-					|| Actor.findChar(cell+offset) != null
-					|| Dungeon.level.heaps.get(cell+offset) != null) {
+      splash(cell);
+      Sample.INSTANCE.play(Assets.SND_SHATTER);
+    }
 
-				GameScene.add(Blob.seed(cell + offset, 2, reinforced?RoaringFire.class: Fire.class));
+    for (int offset : PathFinder.NEIGHBOURS9) {
+      if (Level.flamable[cell + offset]
+              || Actor.findChar(cell + offset) != null
+              || Dungeon.level.heaps.get(cell + offset) != null) {
 
-			} else {
+        GameScene.add(Blob.seed(cell + offset, 2, reinforced ? RoaringFire
+                .class : Fire.class));
 
-				CellEmitter.get(cell+offset).burst(FlameParticle.FACTORY, 2);
+      } else {
 
-			}
-		}
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? (int)(30 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+        CellEmitter.get(cell + offset).burst(FlameParticle.FACTORY, 2);
+
+      }
+    }
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

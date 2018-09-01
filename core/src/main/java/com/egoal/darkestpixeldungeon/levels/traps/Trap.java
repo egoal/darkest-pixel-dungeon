@@ -31,84 +31,84 @@ import com.watabou.utils.Bundle;
 
 public abstract class Trap implements Bundlable {
 
-	public String name = Messages.get(this, "name");
+  public String name = Messages.get(this, "name");
 
-	public int color;
-	public int shape;
+  public int color;
+  public int shape;
 
-	public int pos;
+  public int pos;
 
-	public TrapSprite sprite;
-	public boolean visible;
-	public boolean active = true;
+  public TrapSprite sprite;
+  public boolean visible;
+  public boolean active = true;
 
-	public Trap set(int pos){
-		this.pos = pos;
-		return this;
-	}
+  public Trap set(int pos) {
+    this.pos = pos;
+    return this;
+  }
 
-	public Trap reveal() {
-		visible = true;
-		if (sprite != null && sprite.visible == false) {
-			sprite.visible = true;
-			sprite.alpha( 0 );
-			sprite.parent.add( new AlphaTweener( sprite, 1, 0.6f));
-		}
-		return this;
-	}
+  public Trap reveal() {
+    visible = true;
+    if (sprite != null && sprite.visible == false) {
+      sprite.visible = true;
+      sprite.alpha(0);
+      sprite.parent.add(new AlphaTweener(sprite, 1, 0.6f));
+    }
+    return this;
+  }
 
-	public Trap hide() {
-		visible = false;
-		if (sprite != null)
-			sprite.visible = false;
-		return this;
-	}
+  public Trap hide() {
+    visible = false;
+    if (sprite != null)
+      sprite.visible = false;
+    return this;
+  }
 
-	public void trigger() {
-		if (active) {
-			if (Dungeon.visible[pos]) {
-				Sample.INSTANCE.play(Assets.SND_TRAP);
-			}
-			
-			// when trigger, 
-			
-			disarm();
-			reveal();
-			activate();
-		}
-	}
+  public void trigger() {
+    if (active) {
+      if (Dungeon.visible[pos]) {
+        Sample.INSTANCE.play(Assets.SND_TRAP);
+      }
 
-	public abstract void activate();
+      // when trigger, 
 
-	protected void disarm(){
-		Dungeon.level.disarmTrap(pos);
-		active = false;
-		if (sprite != null) {
-			sprite.reset( this );
-		}
-	}
+      disarm();
+      reveal();
+      activate();
+    }
+  }
 
-	private static final String POS	= "pos";
-	private static final String VISIBLE	= "visible";
-	private static final String ACTIVE = "active";
+  public abstract void activate();
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		pos = bundle.getInt( POS );
-		visible = bundle.getBoolean( VISIBLE );
-		if (bundle.contains(ACTIVE)){
-			active = bundle.getBoolean(ACTIVE);
-		}
-	}
+  protected void disarm() {
+    Dungeon.level.disarmTrap(pos);
+    active = false;
+    if (sprite != null) {
+      sprite.reset(this);
+    }
+  }
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		bundle.put( POS, pos );
-		bundle.put( VISIBLE, visible );
-		bundle.put( ACTIVE, active );
-	}
+  private static final String POS = "pos";
+  private static final String VISIBLE = "visible";
+  private static final String ACTIVE = "active";
 
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    pos = bundle.getInt(POS);
+    visible = bundle.getBoolean(VISIBLE);
+    if (bundle.contains(ACTIVE)) {
+      active = bundle.getBoolean(ACTIVE);
+    }
+  }
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    bundle.put(POS, pos);
+    bundle.put(VISIBLE, visible);
+    bundle.put(ACTIVE, active);
+  }
+
+  public String desc() {
+    return Messages.get(this, "desc");
+  }
 }

@@ -37,51 +37,53 @@ import java.util.HashSet;
 
 public class Sign {
 
-	private static final String[] teaser_texts = new String[]{
-		"...",
-		"...",
-		"..."
-	};
-	
-	private static final int[] signDepth	=	new int[]{
-		0, 5, 6, 10, 11, 15, 16, 20, 21, 
-	};
-	public static boolean showInDepth(int depth){
-		for(int i: signDepth){
-			if(i==depth) return true;
-		}
-		return false;
-	}
-	
-	public static void read( int pos ) {
-		
-		if (Dungeon.level instanceof DeadEndLevel) {
-			
-			GameScene.show( new WndMessage( Messages.get(Sign.class, "dead_end") ) );
-			
-		} else {
+  private static final String[] teaser_texts = new String[]{
+          "...",
+          "...",
+          "..."
+  };
 
-			if (Dungeon.depth <= 21) {
-				// read sign
-				if(showInDepth(Dungeon.depth))
-					GameScene.show( new WndMessage( Messages.get(Sign.class, "tip_"+Dungeon.depth) ) );
-			} else {
+  private static final int[] signDepth = new int[]{
+          0, 5, 6, 10, 11, 15, 16, 20, 21,
+  };
 
-				//if we are at depths 22-24 and in english
-				if (Dungeon.depth-21 <= 3 && Messages.lang() == Languages.ENGLISH){
-					GameScene.show( new WndMessage(teaser_texts[Dungeon.depth-22]));
-				}
+  public static boolean showInDepth(int depth) {
+    for (int i : signDepth) {
+      if (i == depth) return true;
+    }
+    return false;
+  }
 
-				Dungeon.level.destroy( pos );
-				GameScene.updateMap( pos );
-				GameScene.discoverTile( pos, Terrain.SIGN );
+  public static void read(int pos) {
 
-				GLog.w( Messages.get(Sign.class, "burn") );
+    if (Dungeon.level instanceof DeadEndLevel) {
 
-				CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
-				Sample.INSTANCE.play( Assets.SND_BURNING );
-			}
+      GameScene.show(new WndMessage(Messages.get(Sign.class, "dead_end")));
 
-		}
-	}
+    } else {
+
+      if (Dungeon.depth <= 21) {
+        // read sign
+        if (showInDepth(Dungeon.depth))
+          GameScene.show(new WndMessage(Messages.get(Sign.class, "tip_" + 
+                  Dungeon.depth)));
+      } else {
+
+        //if we are at depths 22-24 and in english
+        if (Dungeon.depth - 21 <= 3 && Messages.lang() == Languages.ENGLISH) {
+          GameScene.show(new WndMessage(teaser_texts[Dungeon.depth - 22]));
+        }
+
+        Dungeon.level.destroy(pos);
+        GameScene.updateMap(pos);
+        GameScene.discoverTile(pos, Terrain.SIGN);
+
+        GLog.w(Messages.get(Sign.class, "burn"));
+
+        CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
+        Sample.INSTANCE.play(Assets.SND_BURNING);
+      }
+
+    }
+  }
 }

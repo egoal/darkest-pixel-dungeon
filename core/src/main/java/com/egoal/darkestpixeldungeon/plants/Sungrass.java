@@ -35,127 +35,128 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 public class Sungrass extends Plant {
-	
-	{
-		image = 4;
-	}
-	
-	@Override
-	public void activate() {
-		Char ch = Actor.findChar(pos);
-		
-		if (ch == Dungeon.hero) {
-			Buff.affect( ch, Health.class ).boost(ch.HT);
-		}
-		
-		if (Dungeon.visible[pos]) {
-			CellEmitter.get( pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
-		}
-	}
-	
-	public static class Seed extends Plant.Seed {
-		{
-			image = ItemSpriteSheet.SEED_SUNGRASS;
 
-			plantClass = Sungrass.class;
-			alchemyClass = PotionOfHealing.class;
+  {
+    image = 4;
+  }
 
-			bones = true;
-		}
-	}
-	
-	public static class Health extends Buff {
-		
-		private static final float STEP = 1f;
-		
-		private int pos;
-		private int healCurr = 1;
-		private int count = 0;
-		private int level;
+  @Override
+  public void activate() {
+    Char ch = Actor.findChar(pos);
 
-		{
-			type = buffType.POSITIVE;
-		}
-		
-		@Override
-		public boolean act() {
-			if (target.pos != pos) {
-				detach();
-			}
-			if (count == 5) {
-				if (level <= healCurr*.025*target.HT) {
-					target.HP = Math.min(target.HT, target.HP + level);
-					target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-					detach();
-				} else {
-					target.HP = Math.min(target.HT, target.HP+(int)(healCurr*.025*target.HT));
-					level -= (healCurr*.025*target.HT);
-					if (healCurr < 6)
-						healCurr ++;
-					target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-				}
-				if (target.HP == target.HT && target instanceof Hero){
-					((Hero)target).resting = false;
-				}
-				count = 1;
-			} else {
-				count++;
-			}
-			if (level <= 0)
-				detach();
-			spend( STEP );
-			return true;
-		}
+    if (ch == Dungeon.hero) {
+      Buff.affect(ch, Health.class).boost(ch.HT);
+    }
 
-		public int absorb( int damage ) {
-			level -= damage;
-			if (level <= 0)
-				detach();
-			return damage;
-		}
+    if (Dungeon.visible[pos]) {
+      CellEmitter.get(pos).start(ShaftParticle.FACTORY, 0.2f, 3);
+    }
+  }
 
-		public void boost( int amount ){
-			level += amount;
-			pos = target.pos;
-		}
-		
-		@Override
-		public int icon() {
-			return BuffIndicator.HEALING;
-		}
-		
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
+  public static class Seed extends Plant.Seed {
+    {
+      image = ItemSpriteSheet.SEED_SUNGRASS;
 
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc", level);
-		}
+      plantClass = Sungrass.class;
+      alchemyClass = PotionOfHealing.class;
 
-		private static final String POS	= "pos";
-		private static final String HEALCURR = "healCurr";
-		private static final String COUNT = "count";
-		private static final String LEVEL = "level";
+      bones = true;
+    }
+  }
 
-		@Override
-		public void storeInBundle( Bundle bundle ) {
-			super.storeInBundle( bundle );
-			bundle.put( POS, pos );
-			bundle.put( HEALCURR, healCurr);
-			bundle.put( COUNT, count);
-			bundle.put( LEVEL, level);
-		}
-		
-		@Override
-		public void restoreFromBundle( Bundle bundle ) {
-			super.restoreFromBundle( bundle );
-			pos = bundle.getInt( POS );
-			healCurr = bundle.getInt( HEALCURR );
-			count = bundle.getInt( COUNT );
-			level = bundle.getInt( LEVEL );
+  public static class Health extends Buff {
 
-		}
-	}
+    private static final float STEP = 1f;
+
+    private int pos;
+    private int healCurr = 1;
+    private int count = 0;
+    private int level;
+
+    {
+      type = buffType.POSITIVE;
+    }
+
+    @Override
+    public boolean act() {
+      if (target.pos != pos) {
+        detach();
+      }
+      if (count == 5) {
+        if (level <= healCurr * .025 * target.HT) {
+          target.HP = Math.min(target.HT, target.HP + level);
+          target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+          detach();
+        } else {
+          target.HP = Math.min(target.HT, target.HP + (int) (healCurr * .025 
+                  * target.HT));
+          level -= (healCurr * .025 * target.HT);
+          if (healCurr < 6)
+            healCurr++;
+          target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+        }
+        if (target.HP == target.HT && target instanceof Hero) {
+          ((Hero) target).resting = false;
+        }
+        count = 1;
+      } else {
+        count++;
+      }
+      if (level <= 0)
+        detach();
+      spend(STEP);
+      return true;
+    }
+
+    public int absorb(int damage) {
+      level -= damage;
+      if (level <= 0)
+        detach();
+      return damage;
+    }
+
+    public void boost(int amount) {
+      level += amount;
+      pos = target.pos;
+    }
+
+    @Override
+    public int icon() {
+      return BuffIndicator.HEALING;
+    }
+
+    @Override
+    public String toString() {
+      return Messages.get(this, "name");
+    }
+
+    @Override
+    public String desc() {
+      return Messages.get(this, "desc", level);
+    }
+
+    private static final String POS = "pos";
+    private static final String HEALCURR = "healCurr";
+    private static final String COUNT = "count";
+    private static final String LEVEL = "level";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+      super.storeInBundle(bundle);
+      bundle.put(POS, pos);
+      bundle.put(HEALCURR, healCurr);
+      bundle.put(COUNT, count);
+      bundle.put(LEVEL, level);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+      super.restoreFromBundle(bundle);
+      pos = bundle.getInt(POS);
+      healCurr = bundle.getInt(HEALCURR);
+      count = bundle.getInt(COUNT);
+      level = bundle.getInt(LEVEL);
+
+    }
+  }
 }

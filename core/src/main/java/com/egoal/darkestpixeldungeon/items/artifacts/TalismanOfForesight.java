@@ -39,182 +39,185 @@ import java.util.ArrayList;
 
 public class TalismanOfForesight extends Artifact {
 
-	{
-		image = ItemSpriteSheet.ARTIFACT_TALISMAN;
+  {
+    image = ItemSpriteSheet.ARTIFACT_TALISMAN;
 
-		exp = 0;
-		levelCap = 10;
+    exp = 0;
+    levelCap = 10;
 
-		charge = 0;
-		partialCharge = 0;
-		chargeCap = 100;
+    charge = 0;
+    partialCharge = 0;
+    chargeCap = 100;
 
-		defaultAction = AC_SCRY;
-	}
+    defaultAction = AC_SCRY;
+  }
 
-	public static final String AC_SCRY = "SCRY";
+  public static final String AC_SCRY = "SCRY";
 
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && charge == chargeCap && !cursed)
-			actions.add(AC_SCRY);
-		return actions;
-	}
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    ArrayList<String> actions = super.actions(hero);
+    if (isEquipped(hero) && charge == chargeCap && !cursed)
+      actions.add(AC_SCRY);
+    return actions;
+  }
 
-	@Override
-	public void execute( Hero hero, String action ) {
-		super.execute(hero, action);
+  @Override
+  public void execute(Hero hero, String action) {
+    super.execute(hero, action);
 
-		if (action.equals(AC_SCRY)){
+    if (action.equals(AC_SCRY)) {
 
-			if (!isEquipped(hero))        GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if (charge != chargeCap) GLog.i( Messages.get(this, "no_charge") );
-			else {
-				hero.sprite.operate(hero.pos);
-				hero.busy();
-				Sample.INSTANCE.play(Assets.SND_BEACON);
-				charge = 0;
-				for (int i = 0; i < Dungeon.level.length(); i++) {
+      if (!isEquipped(hero))
+        GLog.i(Messages.get(Artifact.class, "need_to_equip"));
+      else if (charge != chargeCap) GLog.i(Messages.get(this, "no_charge"));
+      else {
+        hero.sprite.operate(hero.pos);
+        hero.busy();
+        Sample.INSTANCE.play(Assets.SND_BEACON);
+        charge = 0;
+        for (int i = 0; i < Dungeon.level.length(); i++) {
 
-					int terr = Dungeon.level.map[i];
-					if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
+          int terr = Dungeon.level.map[i];
+          if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-						GameScene.updateMap(i);
+            GameScene.updateMap(i);
 
-						if (Dungeon.visible[i]) {
-							GameScene.discoverTile(i, terr);
-						}
-					}
-				}
+            if (Dungeon.visible[i]) {
+              GameScene.discoverTile(i, terr);
+            }
+          }
+        }
 
-				GLog.p( Messages.get(this, "scry") );
+        GLog.p(Messages.get(this, "scry"));
 
-				updateQuickslot();
+        updateQuickslot();
 
-				Buff.affect(hero, Awareness.class, Awareness.DURATION);
-				Dungeon.observe();
-			}
-		}
-	}
+        Buff.affect(hero, Awareness.class, Awareness.DURATION);
+        Dungeon.observe();
+      }
+    }
+  }
 
-	@Override
-	protected ArtifactBuff passiveBuff() {
-		return new Foresight();
-	}
+  @Override
+  protected ArtifactBuff passiveBuff() {
+    return new Foresight();
+  }
 
-	@Override
-	public String desc() {
-		String desc = super.desc();
+  @Override
+  public String desc() {
+    String desc = super.desc();
 
-		if ( isEquipped( Dungeon.hero ) ){
-			if (!cursed) {
-				desc += "\n\n" + Messages.get(this, "desc_worn");
+    if (isEquipped(Dungeon.hero)) {
+      if (!cursed) {
+        desc += "\n\n" + Messages.get(this, "desc_worn");
 
-			} else {
-				desc += "\n\n" + Messages.get(this, "desc_cursed");
-			}
-		}
+      } else {
+        desc += "\n\n" + Messages.get(this, "desc_cursed");
+      }
+    }
 
-		return desc;
-	}
+    return desc;
+  }
 
-	public class Foresight extends ArtifactBuff{
-		private int warn = 0;
+  public class Foresight extends ArtifactBuff {
+    private int warn = 0;
 
-		@Override
-		public boolean act() {
-			spend( TICK );
+    @Override
+    public boolean act() {
+      spend(TICK);
 
-			boolean smthFound = false;
+      boolean smthFound = false;
 
-			int distance = 3;
+      int distance = 3;
 
-			int cx = target.pos % Dungeon.level.width();
-			int cy = target.pos / Dungeon.level.width();
-			int ax = cx - distance;
-			if (ax < 0) {
-				ax = 0;
-			}
-			int bx = cx + distance;
-			if (bx >= Dungeon.level.width()) {
-				bx = Dungeon.level.width() - 1;
-			}
-			int ay = cy - distance;
-			if (ay < 0) {
-				ay = 0;
-			}
-			int by = cy + distance;
-			if (by >= Dungeon.level.height()) {
-				by = Dungeon.level.height() - 1;
-			}
+      int cx = target.pos % Dungeon.level.width();
+      int cy = target.pos / Dungeon.level.width();
+      int ax = cx - distance;
+      if (ax < 0) {
+        ax = 0;
+      }
+      int bx = cx + distance;
+      if (bx >= Dungeon.level.width()) {
+        bx = Dungeon.level.width() - 1;
+      }
+      int ay = cy - distance;
+      if (ay < 0) {
+        ay = 0;
+      }
+      int by = cy + distance;
+      if (by >= Dungeon.level.height()) {
+        by = Dungeon.level.height() - 1;
+      }
 
-			for (int y = ay; y <= by; y++) {
-				for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
+      for (int y = ay; y <= by; y++) {
+        for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, 
+                p++) {
 
-					if (Dungeon.visible[p] && Level.secret[p] && Dungeon.level.map[p] != Terrain.SECRET_DOOR)
-							smthFound = true;
-				}
-			}
+          if (Dungeon.visible[p] && Level.secret[p] && Dungeon.level.map[p] 
+                  != Terrain.SECRET_DOOR)
+            smthFound = true;
+        }
+      }
 
-			if (smthFound && !cursed){
-				if (warn == 0){
-					GLog.w( Messages.get(this, "uneasy") );
-					if (target instanceof Hero){
-						((Hero)target).interrupt();
-					}
-				}
-				warn = 3;
-			} else {
-				if (warn > 0){
-					warn --;
-				}
-			}
-			BuffIndicator.refreshHero();
+      if (smthFound && !cursed) {
+        if (warn == 0) {
+          GLog.w(Messages.get(this, "uneasy"));
+          if (target instanceof Hero) {
+            ((Hero) target).interrupt();
+          }
+        }
+        warn = 3;
+      } else {
+        if (warn > 0) {
+          warn--;
+        }
+      }
+      BuffIndicator.refreshHero();
 
-			//fully charges in 2500 turns at lvl=0, scaling to 1000 turns at lvl = 10.
-			LockedFloor lock = target.buff(LockedFloor.class);
-			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 0.04+(level()*0.006);
+      //fully charges in 2500 turns at lvl=0, scaling to 1000 turns at lvl = 10.
+      LockedFloor lock = target.buff(LockedFloor.class);
+      if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+        partialCharge += 0.04 + (level() * 0.006);
 
-				if (partialCharge > 1 && charge < chargeCap) {
-					partialCharge--;
-					charge++;
-				} else if (charge >= chargeCap) {
-					partialCharge = 0;
-					GLog.p( Messages.get(this, "full_charge") );
-				}
-			}
+        if (partialCharge > 1 && charge < chargeCap) {
+          partialCharge--;
+          charge++;
+        } else if (charge >= chargeCap) {
+          partialCharge = 0;
+          GLog.p(Messages.get(this, "full_charge"));
+        }
+      }
 
-			return true;
-		}
+      return true;
+    }
 
-		public void charge(){
-			charge = Math.min(charge+(2+(level()/3)), chargeCap);
-			exp++;
-			if (exp >= 4 && level() < levelCap) {
-				upgrade();
-				GLog.p( Messages.get(this, "levelup") );
-				exp -= 4;
-			}
-		}
+    public void charge() {
+      charge = Math.min(charge + (2 + (level() / 3)), chargeCap);
+      exp++;
+      if (exp >= 4 && level() < levelCap) {
+        upgrade();
+        GLog.p(Messages.get(this, "levelup"));
+        exp -= 4;
+      }
+    }
 
-		@Override
-		public String toString() {
-			return  Messages.get(this, "name");
-		}
+    @Override
+    public String toString() {
+      return Messages.get(this, "name");
+    }
 
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
+    @Override
+    public String desc() {
+      return Messages.get(this, "desc");
+    }
 
-		@Override
-		public int icon() {
-			if (warn == 0)
-				return BuffIndicator.NONE;
-			else
-				return BuffIndicator.FORESIGHT;
-		}
-	}
+    @Override
+    public int icon() {
+      if (warn == 0)
+        return BuffIndicator.NONE;
+      else
+        return BuffIndicator.FORESIGHT;
+    }
+  }
 }

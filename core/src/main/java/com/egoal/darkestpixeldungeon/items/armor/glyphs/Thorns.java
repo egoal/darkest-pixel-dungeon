@@ -28,28 +28,29 @@ import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Thorns extends Armor.Glyph{
+public class Thorns extends Armor.Glyph {
 
-	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0x660022 );
+  private static ItemSprite.Glowing RED = new ItemSprite.Glowing(0x660022);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-		int level = Math.max(0, armor.level());
+    int level = Math.max(0, armor.level());
 
-		if ( Random.Int( level/2 + 5) >= 4) {
+    if (Random.Int(level / 2 + 5) >= 4) {
 
-			Buff.affect( attacker, Bleeding.class).set( Math.max( level/2, damage.value));
+      Buff.affect(attacker, Bleeding.class).set(Math.max(level / 2, damage
+              .value));
 
-		}
+    }
 
-		return damage;
-	}
+    return damage;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return RED;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return RED;
+  }
 }

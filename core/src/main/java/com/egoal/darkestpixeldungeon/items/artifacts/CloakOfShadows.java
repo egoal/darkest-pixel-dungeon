@@ -39,249 +39,251 @@ import java.util.ArrayList;
 
 public class CloakOfShadows extends Artifact {
 
-	{
-		image = ItemSpriteSheet.ARTIFACT_CLOAK;
+  {
+    image = ItemSpriteSheet.ARTIFACT_CLOAK;
 
-		exp = 0;
-		levelCap = 14;
+    exp = 0;
+    levelCap = 14;
 
-		charge = level()+6;
-		partialCharge = 0;
-		chargeCap = level()+6;
+    charge = level() + 6;
+    partialCharge = 0;
+    chargeCap = level() + 6;
 
-		cooldown = 0;
+    cooldown = 0;
 
-		defaultAction = AC_STEALTH;
+    defaultAction = AC_STEALTH;
 
-		unique = true;
-		bones = false;
-	}
+    unique = true;
+    bones = false;
+  }
 
-	private boolean stealthed = false;
+  private boolean stealthed = false;
 
-	public static final String AC_STEALTH = "STEALTH";
+  public static final String AC_STEALTH = "STEALTH";
 
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && charge > 1)
-			actions.add(AC_STEALTH);
-		return actions;
-	}
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    ArrayList<String> actions = super.actions(hero);
+    if (isEquipped(hero) && charge > 1)
+      actions.add(AC_STEALTH);
+    return actions;
+  }
 
-	@Override
-	public void execute( Hero hero, String action ) {
+  @Override
+  public void execute(Hero hero, String action) {
 
-		super.execute(hero, action);
+    super.execute(hero, action);
 
-		if (action.equals( AC_STEALTH )) {
+    if (action.equals(AC_STEALTH)) {
 
-			if (!stealthed){
-				if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-				else if (cooldown > 0) GLog.i( Messages.get(this, "cooldown", cooldown) );
-				else if (charge <= 1)  GLog.i( Messages.get(this, "no_charge") );
-				else {
-					stealthed = true;
-					hero.spend( 1f );
-					hero.busy();
-					Sample.INSTANCE.play(Assets.SND_MELD);
-					activeBuff = activeBuff();
-					activeBuff.attachTo(hero);
-					if (hero.sprite.parent != null) {
-						hero.sprite.parent.add(new AlphaTweener(hero.sprite, 0.4f, 0.4f));
-					} else {
-						hero.sprite.alpha(0.4f);
-					}
-					hero.sprite.operate(hero.pos);
-				}
-			} else {
-				stealthed = false;
-				activeBuff.detach();
-				activeBuff = null;
-				hero.spend( 1f );
-				hero.sprite.operate( hero.pos );
-			}
+      if (!stealthed) {
+        if (!isEquipped(hero))
+          GLog.i(Messages.get(Artifact.class, "need_to_equip"));
+        else if (cooldown > 0) GLog.i(Messages.get(this, "cooldown", cooldown));
+        else if (charge <= 1) GLog.i(Messages.get(this, "no_charge"));
+        else {
+          stealthed = true;
+          hero.spend(1f);
+          hero.busy();
+          Sample.INSTANCE.play(Assets.SND_MELD);
+          activeBuff = activeBuff();
+          activeBuff.attachTo(hero);
+          if (hero.sprite.parent != null) {
+            hero.sprite.parent.add(new AlphaTweener(hero.sprite, 0.4f, 0.4f));
+          } else {
+            hero.sprite.alpha(0.4f);
+          }
+          hero.sprite.operate(hero.pos);
+        }
+      } else {
+        stealthed = false;
+        activeBuff.detach();
+        activeBuff = null;
+        hero.spend(1f);
+        hero.sprite.operate(hero.pos);
+      }
 
-		}
-	}
+    }
+  }
 
-	@Override
-	public void activate(Char ch){
-		super.activate(ch);
-		if (stealthed){
-			activeBuff = activeBuff();
-			activeBuff.attachTo(ch);
-		}
-	}
+  @Override
+  public void activate(Char ch) {
+    super.activate(ch);
+    if (stealthed) {
+      activeBuff = activeBuff();
+      activeBuff.attachTo(ch);
+    }
+  }
 
-	@Override
-	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
-		if (super.doUnequip(hero, collect, single)){
-			stealthed = false;
-			return true;
-		} else
-			return false;
-	}
+  @Override
+  public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+    if (super.doUnequip(hero, collect, single)) {
+      stealthed = false;
+      return true;
+    } else
+      return false;
+  }
 
-	@Override
-	protected ArtifactBuff passiveBuff() {
-		return new cloakRecharge();
-	}
+  @Override
+  protected ArtifactBuff passiveBuff() {
+    return new cloakRecharge();
+  }
 
-	@Override
-	protected ArtifactBuff activeBuff( ) {
-		return new cloakStealth();
-	}
+  @Override
+  protected ArtifactBuff activeBuff() {
+    return new cloakStealth();
+  }
 
-	@Override
-	public Item upgrade() {
-		chargeCap++;
-		return super.upgrade();
-	}
+  @Override
+  public Item upgrade() {
+    chargeCap++;
+    return super.upgrade();
+  }
 
-	private static final String STEALTHED = "stealthed";
-	private static final String COOLDOWN = "cooldown";
+  private static final String STEALTHED = "stealthed";
+  private static final String COOLDOWN = "cooldown";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle(bundle);
-		bundle.put( STEALTHED, stealthed );
-		bundle.put( COOLDOWN, cooldown );
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(STEALTHED, stealthed);
+    bundle.put(COOLDOWN, cooldown);
+  }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle(bundle);
-		stealthed = bundle.getBoolean( STEALTHED );
-		cooldown = bundle.getInt( COOLDOWN );
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    stealthed = bundle.getBoolean(STEALTHED);
+    cooldown = bundle.getInt(COOLDOWN);
 
-		//for pre-0.4.1 saves which may have over-levelled cloaks
-		if (level() == 15){
-			level(14);
-			chargeCap = 20;
-		}
-	}
+    //for pre-0.4.1 saves which may have over-levelled cloaks
+    if (level() == 15) {
+      level(14);
+      chargeCap = 20;
+    }
+  }
 
-	@Override
-	public int price() {
-		return 0;
-	}
+  @Override
+  public int price() {
+    return 0;
+  }
 
-	public class cloakRecharge extends ArtifactBuff{
-		@Override
-		public boolean act() {
-			if (charge < chargeCap) {
-				LockedFloor lock = target.buff(LockedFloor.class);
-				if (!stealthed && (lock == null || lock.regenOn()))
-					partialCharge += (1f / (50 - (chargeCap-charge)));
+  public class cloakRecharge extends ArtifactBuff {
+    @Override
+    public boolean act() {
+      if (charge < chargeCap) {
+        LockedFloor lock = target.buff(LockedFloor.class);
+        if (!stealthed && (lock == null || lock.regenOn()))
+          partialCharge += (1f / (50 - (chargeCap - charge)));
 
-				if (partialCharge >= 1) {
-					charge++;
-					partialCharge -= 1;
-					if (charge == chargeCap){
-						partialCharge = 0;
-					}
+        if (partialCharge >= 1) {
+          charge++;
+          partialCharge -= 1;
+          if (charge == chargeCap) {
+            partialCharge = 0;
+          }
 
-				}
-			} else
-				partialCharge = 0;
+        }
+      } else
+        partialCharge = 0;
 
-			if (cooldown > 0)
-				cooldown --;
+      if (cooldown > 0)
+        cooldown--;
 
-			updateQuickslot();
+      updateQuickslot();
 
-			spend( TICK );
+      spend(TICK);
 
-			return true;
-		}
+      return true;
+    }
 
-	}
+  }
 
-	public class cloakStealth extends ArtifactBuff{
-		int turnsToCost = 0;
+  public class cloakStealth extends ArtifactBuff {
+    int turnsToCost = 0;
 
-		@Override
-		public int icon() {
-			return BuffIndicator.INVISIBLE;
-		}
+    @Override
+    public int icon() {
+      return BuffIndicator.INVISIBLE;
+    }
 
-		@Override
-		public boolean attachTo( Char target ) {
-			if (super.attachTo( target )) {
-				target.invisible++;
-				return true;
-			} else {
-				return false;
-			}
-		}
+    @Override
+    public boolean attachTo(Char target) {
+      if (super.attachTo(target)) {
+        target.invisible++;
+        return true;
+      } else {
+        return false;
+      }
+    }
 
-		@Override
-		public boolean act(){
-			if (turnsToCost == 0) charge--;
-			if (charge <= 0) {
-				detach();
-				GLog.w( Messages.get(this, "no_charge") );
-				((Hero)target).interrupt();
-			}
+    @Override
+    public boolean act() {
+      if (turnsToCost == 0) charge--;
+      if (charge <= 0) {
+        detach();
+        GLog.w(Messages.get(this, "no_charge"));
+        ((Hero) target).interrupt();
+      }
 
-			if (turnsToCost == 0) exp += 10 + ((Hero)target).lvl;
+      if (turnsToCost == 0) exp += 10 + ((Hero) target).lvl;
 
-			if (exp >= (level()+1)*40 && level() < levelCap) {
-				upgrade();
-				exp -= level()*40;
-				GLog.p( Messages.get(this, "levelup") );
-			}
+      if (exp >= (level() + 1) * 40 && level() < levelCap) {
+        upgrade();
+        exp -= level() * 40;
+        GLog.p(Messages.get(this, "levelup"));
+      }
 
-			if (turnsToCost == 0) turnsToCost = 2;
-			else    turnsToCost--;
-			updateQuickslot();
+      if (turnsToCost == 0) turnsToCost = 2;
+      else turnsToCost--;
+      updateQuickslot();
 
-			spend( TICK );
+      spend(TICK);
 
-			return true;
-		}
+      return true;
+    }
 
-		public void dispel(){
-			charge --;
+    public void dispel() {
+      charge--;
 
-			exp += 10 + ((Hero)target).lvl;
+      exp += 10 + ((Hero) target).lvl;
 
-			if (exp >= (level()+1)*40 && level() < levelCap) {
-				upgrade();
-				exp -= level()*40;
-				GLog.p( Messages.get(this, "levelup") );
-			}
+      if (exp >= (level() + 1) * 40 && level() < levelCap) {
+        upgrade();
+        exp -= level() * 40;
+        GLog.p(Messages.get(this, "levelup"));
+      }
 
-			updateQuickslot();
-			detach();
-		}
+      updateQuickslot();
+      detach();
+    }
 
-		@Override
-		public void fx(boolean on) {
-			if (on) target.sprite.add( CharSprite.State.INVISIBLE );
-			else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
-		}
+    @Override
+    public void fx(boolean on) {
+      if (on) target.sprite.add(CharSprite.State.INVISIBLE);
+      else if (target.invisible == 0)
+        target.sprite.remove(CharSprite.State.INVISIBLE);
+    }
 
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
-		}
+    @Override
+    public String toString() {
+      return Messages.get(this, "name");
+    }
 
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
+    @Override
+    public String desc() {
+      return Messages.get(this, "desc");
+    }
 
-		@Override
-		public void detach() {
-			if (target.invisible > 0)
-				target.invisible--;
-			stealthed = false;
-			cooldown = 6 - (level() / 4);
+    @Override
+    public void detach() {
+      if (target.invisible > 0)
+        target.invisible--;
+      stealthed = false;
+      cooldown = 6 - (level() / 4);
 
-			updateQuickslot();
-			super.detach();
-		}
-	}
+      updateQuickslot();
+      super.detach();
+    }
+  }
 }

@@ -26,19 +26,19 @@ import com.egoal.darkestpixeldungeon.levels.Terrain;
 
 public class EntrancePainter extends Painter {
 
-	public static void paint( Level level, Room room ) {
-		
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
-		
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
-		}
+  public static void paint(Level level, Room room) {
 
-		do {
-			level.entrance = level.pointToCell(room.random(1));
-		} while (level.findMob(level.entrance) != null);
-		set( level, level.entrance, Terrain.ENTRANCE );
-	}
-	
+    fill(level, room, Terrain.WALL);
+    fill(level, room, 1, Terrain.EMPTY);
+
+    for (Room.Door door : room.connected.values()) {
+      door.set(Room.Door.Type.REGULAR);
+    }
+
+    do {
+      level.entrance = level.pointToCell(room.random(1));
+    } while (level.findMob(level.entrance) != null);
+    set(level, level.entrance, Terrain.ENTRANCE);
+  }
+
 }

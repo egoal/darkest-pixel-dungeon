@@ -29,102 +29,102 @@ import com.egoal.darkestpixeldungeon.windows.WndOptions;
 
 public abstract class KindofMisc extends EquipableItem {
 
-	private static final float TIME_TO_EQUIP = 1f;
+  private static final float TIME_TO_EQUIP = 1f;
 
-	@Override
-	public boolean doEquip(final Hero hero) {
+  @Override
+  public boolean doEquip(final Hero hero) {
 
-		if (hero.belongings.misc1 != null && hero.belongings.misc2 != null && 
-			hero.belongings.misc3!=null){
+    if (hero.belongings.misc1 != null && hero.belongings.misc2 != null &&
+            hero.belongings.misc3 != null) {
 
-			final KindofMisc m1 = hero.belongings.misc1;
-			final KindofMisc m2 = hero.belongings.misc2;
-			final KindofMisc m3	=	hero.belongings.misc3;
+      final KindofMisc m1 = hero.belongings.misc1;
+      final KindofMisc m2 = hero.belongings.misc2;
+      final KindofMisc m3 = hero.belongings.misc3;
 
-			GameScene.show(
-					new WndOptions(Messages.get(KindofMisc.class, "unequip_title"),
-							Messages.get(KindofMisc.class, "unequip_message"),
-							Messages.titleCase(m1.toString()),
-							Messages.titleCase(m2.toString()), 
-							Messages.titleCase(m3.toString())) {
+      GameScene.show(
+              new WndOptions(Messages.get(KindofMisc.class, "unequip_title"),
+                      Messages.get(KindofMisc.class, "unequip_message"),
+                      Messages.titleCase(m1.toString()),
+                      Messages.titleCase(m2.toString()),
+                      Messages.titleCase(m3.toString())) {
 
-						@Override
-						protected void onSelect(int index) {
-							KindofMisc equipped	=	null;
-							switch(index){
-							case 0:
-								equipped	=	m1;
-								break;
-							case 1:
-								equipped	=	m2;
-								break;
-							case 2:
-								equipped	=	m3;
-								break;
-							}
-							detach( hero.belongings.backpack );
-							if (equipped.doUnequip(hero, true, false)) {
-								execute(hero, AC_EQUIP);
-							} else {
-								collect( hero.belongings.backpack );
-							}
-						}
-					});
+                @Override
+                protected void onSelect(int index) {
+                  KindofMisc equipped = null;
+                  switch (index) {
+                    case 0:
+                      equipped = m1;
+                      break;
+                    case 1:
+                      equipped = m2;
+                      break;
+                    case 2:
+                      equipped = m3;
+                      break;
+                  }
+                  detach(hero.belongings.backpack);
+                  if (equipped.doUnequip(hero, true, false)) {
+                    execute(hero, AC_EQUIP);
+                  } else {
+                    collect(hero.belongings.backpack);
+                  }
+                }
+              });
 
-			return false;
+      return false;
 
-		} else {
+    } else {
 
-			if (hero.belongings.misc1 == null) {
-				hero.belongings.misc1 = this;
-			} else if(hero.belongings.misc2==null){
-				hero.belongings.misc2 = this;
-			}else{
-				hero.belongings.misc3	=	this;
-			}
+      if (hero.belongings.misc1 == null) {
+        hero.belongings.misc1 = this;
+      } else if (hero.belongings.misc2 == null) {
+        hero.belongings.misc2 = this;
+      } else {
+        hero.belongings.misc3 = this;
+      }
 
-			detach( hero.belongings.backpack );
+      detach(hero.belongings.backpack);
 
-			activate( hero );
+      activate(hero);
 
-			cursedKnown = true;
-			if (cursed) {
-				equipCursed( hero );
-				GLog.n( Messages.get(this, "cursed", this) );
-			}
+      cursedKnown = true;
+      if (cursed) {
+        equipCursed(hero);
+        GLog.n(Messages.get(this, "cursed", this));
+      }
 
-			hero.spendAndNext( TIME_TO_EQUIP );
-			return true;
+      hero.spendAndNext(TIME_TO_EQUIP);
+      return true;
 
-		}
+    }
 
-	}
+  }
 
-	@Override
-	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
-		if (super.doUnequip(hero, collect, single)){
+  @Override
+  public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+    if (super.doUnequip(hero, collect, single)) {
 
-			if (hero.belongings.misc1 == this) {
-				hero.belongings.misc1 = null;
-			} else if(hero.belongings.misc2==this){
-				hero.belongings.misc2 = null;
-			}else{
-				hero.belongings.misc3	=	null;
-			}
+      if (hero.belongings.misc1 == this) {
+        hero.belongings.misc1 = null;
+      } else if (hero.belongings.misc2 == this) {
+        hero.belongings.misc2 = null;
+      } else {
+        hero.belongings.misc3 = null;
+      }
 
-			return true;
+      return true;
 
-		} else {
+    } else {
 
-			return false;
+      return false;
 
-		}
-	}
+    }
+  }
 
-	@Override
-	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.misc1 == this || hero.belongings.misc2 == this
-			|| hero.belongings.misc3==this;
-	}
+  @Override
+  public boolean isEquipped(Hero hero) {
+    return hero.belongings.misc1 == this || hero.belongings.misc2 == this
+            || hero.belongings.misc3 == this;
+  }
 
 }

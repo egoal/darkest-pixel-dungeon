@@ -32,54 +32,54 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 
 public class Foliage extends Blob {
-	
-	@Override
-	protected void evolve() {
 
-		int[] map = Dungeon.level.map;
-		
-		boolean visible = false;
+  @Override
+  protected void evolve() {
 
-		int cell;
-		for (int i = area.left; i < area.right; i++) {
-			for (int j = area.top; j < area.bottom; j++) {
-				cell = i + j*Dungeon.level.width();
-				if (cur[cell] > 0) {
+    int[] map = Dungeon.level.map;
 
-					off[cell] = cur[cell];
-					volume += off[cell];
+    boolean visible = false;
 
-					if (map[cell] == Terrain.EMBERS) {
-						map[cell] = Terrain.GRASS;
-						GameScene.updateMap(cell);
-					}
+    int cell;
+    for (int i = area.left; i < area.right; i++) {
+      for (int j = area.top; j < area.bottom; j++) {
+        cell = i + j * Dungeon.level.width();
+        if (cur[cell] > 0) {
 
-					visible = visible || Dungeon.visible[cell];
+          off[cell] = cur[cell];
+          volume += off[cell];
 
-				} else {
-					off[cell] = 0;
-				}
-			}
-		}
-		
-		Hero hero = Dungeon.hero;
-		if (hero.isAlive() && hero.visibleEnemies() == 0 && cur[hero.pos] > 0) {
-			Buff.affect( hero, Shadows.class ).prolong();
-		}
+          if (map[cell] == Terrain.EMBERS) {
+            map[cell] = Terrain.GRASS;
+            GameScene.updateMap(cell);
+          }
 
-		if (visible) {
-			Journal.add( Journal.Feature.GARDEN );
-		}
-	}
-	
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		emitter.start( ShaftParticle.FACTORY, 0.9f, 0 );
-	}
-	
-	@Override
-	public String tileDesc() {
-		return Messages.get(this, "desc");
-	}
+          visible = visible || Dungeon.visible[cell];
+
+        } else {
+          off[cell] = 0;
+        }
+      }
+    }
+
+    Hero hero = Dungeon.hero;
+    if (hero.isAlive() && hero.visibleEnemies() == 0 && cur[hero.pos] > 0) {
+      Buff.affect(hero, Shadows.class).prolong();
+    }
+
+    if (visible) {
+      Journal.add(Journal.Feature.GARDEN);
+    }
+  }
+
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
+    emitter.start(ShaftParticle.FACTORY, 0.9f, 0);
+  }
+
+  @Override
+  public String tileDesc() {
+    return Messages.get(this, "desc");
+  }
 }

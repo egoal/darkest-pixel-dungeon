@@ -27,31 +27,31 @@ import com.egoal.darkestpixeldungeon.items.Heap;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public abstract class NPC extends Mob{
+public abstract class NPC extends Mob {
 
-	{
-		HP = HT = 1;
-		EXP = 0;
+  {
+    HP = HT = 1;
+    EXP = 0;
 
-		hostile = false;
-		state = PASSIVE;
-	}
+    hostile = false;
+    state = PASSIVE;
+  }
 
-	// never overlap with an item
-	protected void throwItem() {
-		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null) {
-			int n;
-			do {
-				n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
-			} while (!Level.passable[n] && !Level.avoid[n]);
-			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
-		}
-	}
+  // never overlap with an item
+  protected void throwItem() {
+    Heap heap = Dungeon.level.heaps.get(pos);
+    if (heap != null) {
+      int n;
+      do {
+        n = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+      } while (!Level.passable[n] && !Level.avoid[n]);
+      Dungeon.level.drop(heap.pickUp(), n).sprite.drop(pos);
+    }
+  }
 
-	@Override
-	public void beckon( int cell ) {
-	}
+  @Override
+  public void beckon(int cell) {
+  }
 
-	abstract public boolean interact();
+  abstract public boolean interact();
 }

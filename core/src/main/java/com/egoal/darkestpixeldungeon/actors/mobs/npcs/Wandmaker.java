@@ -48,285 +48,298 @@ import java.util.Collection;
 
 public class Wandmaker extends NPC {
 
-	{
-		spriteClass = WandmakerSprite.class;
+  {
+    spriteClass = WandmakerSprite.class;
 
-		properties.add(Property.IMMOVABLE);
-	}
-	
-	@Override
-	protected boolean act() {
-		throwItem();
-		return super.act();
-	}
-	
-	@Override
-	public int defenseSkill( Char enemy ) {
-		return 1000;
-	}
-	
-	@Override
-	public int takeDamage(Damage dmg){ return 0;
-	}
-	
-	@Override
-	public void add( Buff buff ) {
-	}
-	
-	@Override
-	public boolean reset() {
-		return true;
-	}
-	
-	@Override
-	public boolean interact() {
-		
-		sprite.turnTo( pos, Dungeon.hero.pos );
-		if (Quest.given) {
-			
-			Item item;
-			switch (Quest.type) {
-				case 1:
-				default:
-					item = Dungeon.hero.belongings.getItem(CorpseDust.class);
-					break;
-				case 2:
-					item = Dungeon.hero.belongings.getItem(Embers.class);
-					break;
-				case 3:
-					item = Dungeon.hero.belongings.getItem(Rotberry.Seed.class);
-					break;
-			}
+    properties.add(Property.IMMOVABLE);
+  }
 
-			if (item != null) {
-				GameScene.show( new WndWandmaker( this, item ) );
-			} else {
-				String msg = "";
-				switch(Quest.type){
-					case 1:
-						msg = Messages.get(this, "reminder_dust", Dungeon.hero.givenName());
-						break;
-					case 2:
-						msg = Messages.get(this, "reminder_ember", Dungeon.hero.givenName());
-						break;
-					case 3:
-						msg = Messages.get(this, "reminder_berry", Dungeon.hero.givenName());
-						break;
-				}
-				GameScene.show(new WndQuest(this, msg));
-			}
-			
-		} else {
+  @Override
+  protected boolean act() {
+    throwItem();
+    return super.act();
+  }
 
-			String msg1 = "";
-			String msg2 = "";
-			switch(Dungeon.hero.heroClass){
-				case WARRIOR:
-					msg1 += Messages.get(this, "intro_warrior");
-					break;
-				case ROGUE:
-					msg1 += Messages.get(this, "intro_rogue");
-					break;
-				case MAGE:
-					msg1 += Messages.get(this, "intro_mage", Dungeon.hero.givenName());
-					break;
-				case HUNTRESS:
-					msg1 += Messages.get(this, "intro_huntress");
-					break;
-				case SORCERESS:
-					msg1	+=	Messages.get(this, "intro_sorceress");
-			}
+  @Override
+  public int defenseSkill(Char enemy) {
+    return 1000;
+  }
 
-			msg1 += Messages.get(this, "intro_1");
+  @Override
+  public int takeDamage(Damage dmg) {
+    return 0;
+  }
 
-			switch (Quest.type){
-				case 1:
-					msg2 += Messages.get(this, "intro_dust");
-					break;
-				case 2:
-					msg2 += Messages.get(this, "intro_ember");
-					break;
-				case 3:
-					msg2 += Messages.get(this, "intro_berry");
-					break;
-			}
+  @Override
+  public void add(Buff buff) {
+  }
 
-			msg2 += Messages.get(this, "intro_2");
-			final String msg2final = msg2;
-			final NPC wandmaker = this;
+  @Override
+  public boolean reset() {
+    return true;
+  }
 
-			GameScene.show(new WndQuest(wandmaker, msg1){
-				@Override
-				public void hide() {
-					super.hide();
-					GameScene.show(new WndQuest(wandmaker, msg2final));
-				}
-			});
+  @Override
+  public boolean interact() {
 
-			Journal.add( Journal.Feature.WANDMAKER );
-			Quest.given = true;
-		}
+    sprite.turnTo(pos, Dungeon.hero.pos);
+    if (Quest.given) {
 
-		return false;
-	}
-	
-	public static class Quest {
+      Item item;
+      switch (Quest.type) {
+        case 1:
+        default:
+          item = Dungeon.hero.belongings.getItem(CorpseDust.class);
+          break;
+        case 2:
+          item = Dungeon.hero.belongings.getItem(Embers.class);
+          break;
+        case 3:
+          item = Dungeon.hero.belongings.getItem(Rotberry.Seed.class);
+          break;
+      }
 
-		private static int type;
-		// 1 = corpse dust quest
-		// 2 = elemental embers quest
-		// 3 = rotberry quest
-		
-		private static boolean spawned;
-		
-		private static boolean given;
-		
-		public static Wand wand1;
-		public static Wand wand2;
-		
-		public static void reset() {
-			spawned = false;
-			type = 0;
+      if (item != null) {
+        GameScene.show(new WndWandmaker(this, item));
+      } else {
+        String msg = "";
+        switch (Quest.type) {
+          case 1:
+            msg = Messages.get(this, "reminder_dust", Dungeon.hero.givenName());
+            break;
+          case 2:
+            msg = Messages.get(this, "reminder_ember", Dungeon.hero.givenName
+                    ());
+            break;
+          case 3:
+            msg = Messages.get(this, "reminder_berry", Dungeon.hero.givenName
+                    ());
+            break;
+        }
+        GameScene.show(new WndQuest(this, msg));
+      }
 
-			wand1 = null;
-			wand2 = null;
-		}
-		
-		private static final String NODE		= "wandmaker";
-		
-		private static final String SPAWNED		= "spawned";
-		private static final String TYPE		= "type";
-		private static final String GIVEN		= "given";
-		private static final String WAND1		= "wand1";
-		private static final String WAND2		= "wand2";
+    } else {
 
-		private static final String RITUALPOS	= "ritualpos";
-		
-		public static void storeInBundle( Bundle bundle ) {
-			
-			Bundle node = new Bundle();
-			
-			node.put( SPAWNED, spawned );
-			
-			if (spawned) {
-				
-				node.put( TYPE, type );
-				
-				node.put( GIVEN, given );
-				
-				node.put( WAND1, wand1 );
-				node.put( WAND2, wand2 );
+      String msg1 = "";
+      String msg2 = "";
+      switch (Dungeon.hero.heroClass) {
+        case WARRIOR:
+          msg1 += Messages.get(this, "intro_warrior");
+          break;
+        case ROGUE:
+          msg1 += Messages.get(this, "intro_rogue");
+          break;
+        case MAGE:
+          msg1 += Messages.get(this, "intro_mage", Dungeon.hero.givenName());
+          break;
+        case HUNTRESS:
+          msg1 += Messages.get(this, "intro_huntress");
+          break;
+        case SORCERESS:
+          msg1 += Messages.get(this, "intro_sorceress");
+      }
 
-				if (type == 2){
-					node.put( RITUALPOS, CeremonialCandle.ritualPos );
-				}
+      msg1 += Messages.get(this, "intro_1");
 
-			}
-			
-			bundle.put( NODE, node );
-		}
-		
-		public static void restoreFromBundle( Bundle bundle ) {
+      switch (Quest.type) {
+        case 1:
+          msg2 += Messages.get(this, "intro_dust");
+          break;
+        case 2:
+          msg2 += Messages.get(this, "intro_ember");
+          break;
+        case 3:
+          msg2 += Messages.get(this, "intro_berry");
+          break;
+      }
 
-			Bundle node = bundle.getBundle( NODE );
-			
-			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
+      msg2 += Messages.get(this, "intro_2");
+      final String msg2final = msg2;
+      final NPC wandmaker = this;
 
-				//TODO remove when pre-0.3.2 saves are no longer supported
-				if (node.contains(TYPE)) {
-					type = node.getInt(TYPE);
-				} else {
-					type = node.getBoolean("alternative")? 1 : 3;
-				}
-				
-				given = node.getBoolean( GIVEN );
-				
-				wand1 = (Wand)node.get( WAND1 );
-				wand2 = (Wand)node.get( WAND2 );
+      GameScene.show(new WndQuest(wandmaker, msg1) {
+        @Override
+        public void hide() {
+          super.hide();
+          GameScene.show(new WndQuest(wandmaker, msg2final));
+        }
+      });
 
-				if (type == 2){
-					CeremonialCandle.ritualPos = node.getInt( RITUALPOS );
-				}
+      Journal.add(Journal.Feature.WANDMAKER);
+      Quest.given = true;
+    }
 
-			} else {
-				reset();
-			}
-		}
-		
-		public static boolean spawn(PrisonLevel level,Room room,Collection<Room> rooms ) {
-			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
-				// decide between 1,2, or 3 for quest type.
-				// but if the no herbalism challenge is enabled, only pick 1 or 2, no rotberry.
-				if (type == 0) type = Random.Int(Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3)+1;
+    return false;
+  }
 
-				//note that we set the type but can fail here. This ensures that if a level needs to be re-generated
-				//we don't re-roll the quest, it will try to assign itself to that new level with the same type.
-				if (setRoom( rooms )){
-					Wandmaker npc = new Wandmaker();
-					do {
-						npc.pos = level.pointToCell(room.random());
-					} while (level.map[npc.pos] == Terrain.ENTRANCE || level.map[npc.pos] == Terrain.SIGN);
-					level.mobs.add( npc );
+  public static class Quest {
 
-					spawned = true;
+    private static int type;
+    // 1 = corpse dust quest
+    // 2 = elemental embers quest
+    // 3 = rotberry quest
 
-					given = false;
-					wand1 = (Wand) Generator.random(Generator.Category.WAND);
-					wand1.cursed = false;
-					wand1.identify();
-					wand1.upgrade();
+    private static boolean spawned;
 
-					do {
-						wand2 = (Wand) Generator.random(Generator.Category.WAND);
-					} while (wand2.getClass().equals(wand1.getClass()));
-					wand2.cursed = false;
-					wand2.identify();
-					wand2.upgrade();
+    private static boolean given;
 
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return true;
-			}
-		}
-		
-		private static boolean setRoom( Collection<Room> rooms) {
-			Room questRoom = null;
-			for (Room r : rooms){
-				if (r.type == Room.Type.STANDARD && r.width() > 5 && r.height() > 5){
-					if (type == 2 || r.connected.size() == 1){
-						questRoom = r;
-						break;
-					}
-				}
-			}
+    public static Wand wand1;
+    public static Wand wand2;
 
-			if (questRoom == null){
-				return false;
-			}
+    public static void reset() {
+      spawned = false;
+      type = 0;
 
-			switch (type){
-				case 1: default:
-					questRoom.type = Room.Type.MASS_GRAVE;
-					break;
-				case 2:
-					questRoom.type = Room.Type.RITUAL_SITE;
-					break;
-				case 3:
-					questRoom.type = Room.Type.ROT_GARDEN;
-					break;
-			}
+      wand1 = null;
+      wand2 = null;
+    }
 
-			return true;
-		}
-		
-		public static void complete() {
-			wand1 = null;
-			wand2 = null;
-			
-			Journal.remove( Journal.Feature.WANDMAKER );
-		}
-	}
+    private static final String NODE = "wandmaker";
+
+    private static final String SPAWNED = "spawned";
+    private static final String TYPE = "type";
+    private static final String GIVEN = "given";
+    private static final String WAND1 = "wand1";
+    private static final String WAND2 = "wand2";
+
+    private static final String RITUALPOS = "ritualpos";
+
+    public static void storeInBundle(Bundle bundle) {
+
+      Bundle node = new Bundle();
+
+      node.put(SPAWNED, spawned);
+
+      if (spawned) {
+
+        node.put(TYPE, type);
+
+        node.put(GIVEN, given);
+
+        node.put(WAND1, wand1);
+        node.put(WAND2, wand2);
+
+        if (type == 2) {
+          node.put(RITUALPOS, CeremonialCandle.ritualPos);
+        }
+
+      }
+
+      bundle.put(NODE, node);
+    }
+
+    public static void restoreFromBundle(Bundle bundle) {
+
+      Bundle node = bundle.getBundle(NODE);
+
+      if (!node.isNull() && (spawned = node.getBoolean(SPAWNED))) {
+
+        //TODO remove when pre-0.3.2 saves are no longer supported
+        if (node.contains(TYPE)) {
+          type = node.getInt(TYPE);
+        } else {
+          type = node.getBoolean("alternative") ? 1 : 3;
+        }
+
+        given = node.getBoolean(GIVEN);
+
+        wand1 = (Wand) node.get(WAND1);
+        wand2 = (Wand) node.get(WAND2);
+
+        if (type == 2) {
+          CeremonialCandle.ritualPos = node.getInt(RITUALPOS);
+        }
+
+      } else {
+        reset();
+      }
+    }
+
+    public static boolean spawn(PrisonLevel level, Room room, 
+                                Collection<Room> rooms) {
+      if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int(10 - 
+              Dungeon.depth) == 0))) {
+        // decide between 1,2, or 3 for quest type.
+        // but if the no herbalism challenge is enabled, only pick 1 or 2, no
+        // rotberry.
+        if (type == 0)
+          type = Random.Int(Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2
+                  : 3) + 1;
+
+        //note that we set the type but can fail here. This ensures that if a
+        // level needs to be re-generated
+        //we don't re-roll the quest, it will try to assign itself to that 
+        // new level with the same type.
+        if (setRoom(rooms)) {
+          Wandmaker npc = new Wandmaker();
+          do {
+            npc.pos = level.pointToCell(room.random());
+          }
+          while (level.map[npc.pos] == Terrain.ENTRANCE || level.map[npc.pos]
+                  == Terrain.SIGN);
+          level.mobs.add(npc);
+
+          spawned = true;
+
+          given = false;
+          wand1 = (Wand) Generator.random(Generator.Category.WAND);
+          wand1.cursed = false;
+          wand1.identify();
+          wand1.upgrade();
+
+          do {
+            wand2 = (Wand) Generator.random(Generator.Category.WAND);
+          } while (wand2.getClass().equals(wand1.getClass()));
+          wand2.cursed = false;
+          wand2.identify();
+          wand2.upgrade();
+
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+    }
+
+    private static boolean setRoom(Collection<Room> rooms) {
+      Room questRoom = null;
+      for (Room r : rooms) {
+        if (r.type == Room.Type.STANDARD && r.width() > 5 && r.height() > 5) {
+          if (type == 2 || r.connected.size() == 1) {
+            questRoom = r;
+            break;
+          }
+        }
+      }
+
+      if (questRoom == null) {
+        return false;
+      }
+
+      switch (type) {
+        case 1:
+        default:
+          questRoom.type = Room.Type.MASS_GRAVE;
+          break;
+        case 2:
+          questRoom.type = Room.Type.RITUAL_SITE;
+          break;
+        case 3:
+          questRoom.type = Room.Type.ROT_GARDEN;
+          break;
+      }
+
+      return true;
+    }
+
+    public static void complete() {
+      wand1 = null;
+      wand2 = null;
+
+      Journal.remove(Journal.Feature.WANDMAKER);
+    }
+  }
 }

@@ -22,12 +22,12 @@ package com.egoal.darkestpixeldungeon.items.rings;
 
 public class RingOfTenacity extends Ring {
 
-	@Override
-	protected RingBuff buff( ) {
-		return new Tenacity();
-	}
+  @Override
+  protected RingBuff buff() {
+    return new Tenacity();
+  }
 
-	public class Tenacity extends RingBuff {
-	}
+  public class Tenacity extends RingBuff {
+  }
 }
 

@@ -31,78 +31,81 @@ import com.watabou.utils.PointF;
 
 public class DungeonTilemap extends Tilemap {
 
-	public static final int SIZE = 16;
-	
-	private static DungeonTilemap instance;
-	
-	public DungeonTilemap() {
-		super(
-			Dungeon.level.tilesTex(),
-			new TextureFilm( Dungeon.level.tilesTex(), SIZE, SIZE ) );
-		map( Dungeon.level.map, Dungeon.level.width() );
-		
-		instance = this;
-	}
-	
-	public int screenToTile( int x, int y ) {
-		Point p = camera().screenToCamera( x, y ).
-			offset( this.point().negate() ).
-			invScale( SIZE ).
-			floor();
-		return p.x >= 0
-				&& p.x < Dungeon.level.width()
-				&& p.y >= 0
-				&& p.y < Dungeon.level.height() ?
-					p.x + p.y * Dungeon.level.width()
-					: -1;
-	}
-	
-	@Override
-	public boolean overlapsPoint( float x, float y ) {
-		return true;
-	}
-	
-	public void discover( int pos, int oldValue ) {
-		
-		final Image tile = tile( oldValue );
-		tile.point( tileToWorld( pos ) );
+  public static final int SIZE = 16;
 
-		// For bright mode
-		tile.rm = tile.gm = tile.bm = rm;
-		tile.ra = tile.ga = tile.ba = ra;
-		parent.add( tile );
-		
-		parent.add( new AlphaTweener( tile, 0, 0.6f ) {
-			protected void onComplete() {
-				tile.killAndErase();
-				killAndErase();
-			};
-		} );
-	}
-	
-	public static PointF tileToWorld( int pos ) {
-		return new PointF( pos % Dungeon.level.width(), pos / Dungeon.level.width()  ).scale( SIZE );
-	}
-	
-	public static PointF tileCenterToWorld( int pos ) {
-		return new PointF(
-			(pos % Dungeon.level.width() + 0.5f) * SIZE,
-			(pos / Dungeon.level.width() + 0.5f) * SIZE );
-	}
-	
-	public static Image tile( int index ) {
-		Image img = new Image( instance.texture );
-		img.frame( instance.tileset.get( index ) );
-		return img;
-	}
-	
-	@Override
-	public boolean overlapsScreenPoint( int x, int y ) {
-		return true;
-	}
+  private static DungeonTilemap instance;
 
-	@Override
-	protected boolean needsRender(int pos) {
-		return (Level.discoverable[pos] || Dungeon.level.map[pos] == Terrain.CHASM) && Dungeon.level.map[pos] != Terrain.WATER;
-	}
+  public DungeonTilemap() {
+    super(
+            Dungeon.level.tilesTex(),
+            new TextureFilm(Dungeon.level.tilesTex(), SIZE, SIZE));
+    map(Dungeon.level.map, Dungeon.level.width());
+
+    instance = this;
+  }
+
+  public int screenToTile(int x, int y) {
+    Point p = camera().screenToCamera(x, y).
+            offset(this.point().negate()).
+            invScale(SIZE).
+            floor();
+    return p.x >= 0
+            && p.x < Dungeon.level.width()
+            && p.y >= 0
+            && p.y < Dungeon.level.height() ?
+            p.x + p.y * Dungeon.level.width()
+            : -1;
+  }
+
+  @Override
+  public boolean overlapsPoint(float x, float y) {
+    return true;
+  }
+
+  public void discover(int pos, int oldValue) {
+
+    final Image tile = tile(oldValue);
+    tile.point(tileToWorld(pos));
+
+    // For bright mode
+    tile.rm = tile.gm = tile.bm = rm;
+    tile.ra = tile.ga = tile.ba = ra;
+    parent.add(tile);
+
+    parent.add(new AlphaTweener(tile, 0, 0.6f) {
+      protected void onComplete() {
+        tile.killAndErase();
+        killAndErase();
+      }
+
+      ;
+    });
+  }
+
+  public static PointF tileToWorld(int pos) {
+    return new PointF(pos % Dungeon.level.width(), pos / Dungeon.level.width
+            ()).scale(SIZE);
+  }
+
+  public static PointF tileCenterToWorld(int pos) {
+    return new PointF(
+            (pos % Dungeon.level.width() + 0.5f) * SIZE,
+            (pos / Dungeon.level.width() + 0.5f) * SIZE);
+  }
+
+  public static Image tile(int index) {
+    Image img = new Image(instance.texture);
+    img.frame(instance.tileset.get(index));
+    return img;
+  }
+
+  @Override
+  public boolean overlapsScreenPoint(int x, int y) {
+    return true;
+  }
+
+  @Override
+  protected boolean needsRender(int pos) {
+    return (Level.discoverable[pos] || Dungeon.level.map[pos] == Terrain.CHASM) && Dungeon.level.map[pos] != Terrain.WATER;
+  }
 }

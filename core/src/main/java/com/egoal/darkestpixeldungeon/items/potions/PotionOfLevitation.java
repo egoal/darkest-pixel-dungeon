@@ -34,32 +34,32 @@ import com.watabou.noosa.audio.Sample;
 
 public class PotionOfLevitation extends Potion {
 
-	{
-		initials = 4;
-	}
+  {
+    initials = 4;
+  }
 
-	@Override
-	public void shatter( int cell ) {
+  @Override
+  public void shatter(int cell) {
 
-		if (Dungeon.visible[cell]) {
-			setKnown();
+    if (Dungeon.visible[cell]) {
+      setKnown();
 
-			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-		}
+      splash(cell);
+      Sample.INSTANCE.play(Assets.SND_SHATTER);
+    }
 
-		GameScene.add( Blob.seed( cell, 1000, ConfusionGas.class ) );
-	}
-	
-	@Override
-	public void apply( Hero hero ) {
-		setKnown();
-		Buff.affect( hero, Levitation.class, Levitation.DURATION );
-		GLog.i( Messages.get(this, "float") );
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? (int)(30 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+    GameScene.add(Blob.seed(cell, 1000, ConfusionGas.class));
+  }
+
+  @Override
+  public void apply(Hero hero) {
+    setKnown();
+    Buff.affect(hero, Levitation.class, Levitation.DURATION);
+    GLog.i(Messages.get(this, "float"));
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

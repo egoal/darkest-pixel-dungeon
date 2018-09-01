@@ -30,26 +30,26 @@ import com.watabou.noosa.audio.Sample;
 
 public class Door {
 
-	public static void enter( int pos, Char ch ) {
-		Level.set( pos, Terrain.OPEN_DOOR );
-		GameScene.updateMap( pos );
+  public static void enter(int pos, Char ch) {
+    Level.set(pos, Terrain.OPEN_DOOR);
+    GameScene.updateMap(pos);
 
-		if (ch == Dungeon.hero){
-			//don't obsserve here as that already happens on hero move
-			Sample.INSTANCE.play( Assets.SND_OPEN );
-		} else if (Dungeon.visible[pos]) {
-			Sample.INSTANCE.play( Assets.SND_OPEN );
-			Dungeon.observe();
-		}
-	}
-	
-	public static void leave( int pos, Char ch ) {
-		if (Dungeon.level.heaps.get( pos ) == null) {
-			Level.set( pos, Terrain.DOOR );
-			GameScene.updateMap( pos );
+    if (ch == Dungeon.hero) {
+      //don't obsserve here as that already happens on hero move
+      Sample.INSTANCE.play(Assets.SND_OPEN);
+    } else if (Dungeon.visible[pos]) {
+      Sample.INSTANCE.play(Assets.SND_OPEN);
+      Dungeon.observe();
+    }
+  }
 
-			if (ch != Dungeon.hero && Dungeon.visible[pos])
-				Dungeon.observe();
-		}
-	}
+  public static void leave(int pos, Char ch) {
+    if (Dungeon.level.heaps.get(pos) == null) {
+      Level.set(pos, Terrain.DOOR);
+      GameScene.updateMap(pos);
+
+      if (ch != Dungeon.hero && Dungeon.visible[pos])
+        Dungeon.observe();
+    }
+  }
 }

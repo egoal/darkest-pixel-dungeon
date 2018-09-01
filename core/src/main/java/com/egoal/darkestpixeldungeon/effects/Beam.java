@@ -30,66 +30,66 @@ import com.watabou.utils.PointF;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Beam extends Image {
-	
-	private static final double A = 180 / Math.PI;
-	
-	private  float duration;
-	
-	private float timeLeft;
 
-	private Beam(PointF s, PointF e, Effects.Type asset, float duration) {
-		super( Effects.get( asset ) );
-		
-		origin.set( 0, height / 2 );
-		
-		x = s.x - origin.x;
-		y = s.y - origin.y;
-		
-		float dx = e.x - s.x;
-		float dy = e.y - s.y;
-		angle = (float)(Math.atan2( dy, dx ) * A);
-		scale.x = (float)Math.sqrt( dx * dx + dy * dy ) / width;
-		
-		Sample.INSTANCE.play( Assets.SND_RAY );
-		
-		timeLeft = this.duration = duration;
-	}
+  private static final double A = 180 / Math.PI;
 
-	public static class DeathRay extends Beam{
-		public DeathRay(PointF s, PointF e){
-			super(s, e, Effects.Type.DEATH_RAY, 0.5f);
-		}
-	}
+  private float duration;
 
-	public static class LightRay extends Beam{
-		public LightRay(PointF s, PointF e){
-			super(s, e, Effects.Type.LIGHT_RAY, 1f);
-		}
-	}
+  private float timeLeft;
 
-	public static class HealthRay extends Beam{
-		public HealthRay(PointF s, PointF e){
-			super(s, e, Effects.Type.HEALTH_RAY, 0.75f);
-		}
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		
-		float p = timeLeft / duration;
-		alpha( p );
-		scale.set( scale.x, p );
-		
-		if ((timeLeft -= Game.elapsed) <= 0) {
-			killAndErase();
-		}
-	}
-	
-	@Override
-	public void draw() {
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
-		super.draw();
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
-	}
+  private Beam(PointF s, PointF e, Effects.Type asset, float duration) {
+    super(Effects.get(asset));
+
+    origin.set(0, height / 2);
+
+    x = s.x - origin.x;
+    y = s.y - origin.y;
+
+    float dx = e.x - s.x;
+    float dy = e.y - s.y;
+    angle = (float) (Math.atan2(dy, dx) * A);
+    scale.x = (float) Math.sqrt(dx * dx + dy * dy) / width;
+
+    Sample.INSTANCE.play(Assets.SND_RAY);
+
+    timeLeft = this.duration = duration;
+  }
+
+  public static class DeathRay extends Beam {
+    public DeathRay(PointF s, PointF e) {
+      super(s, e, Effects.Type.DEATH_RAY, 0.5f);
+    }
+  }
+
+  public static class LightRay extends Beam {
+    public LightRay(PointF s, PointF e) {
+      super(s, e, Effects.Type.LIGHT_RAY, 1f);
+    }
+  }
+
+  public static class HealthRay extends Beam {
+    public HealthRay(PointF s, PointF e) {
+      super(s, e, Effects.Type.HEALTH_RAY, 0.75f);
+    }
+  }
+
+  @Override
+  public void update() {
+    super.update();
+
+    float p = timeLeft / duration;
+    alpha(p);
+    scale.set(scale.x, p);
+
+    if ((timeLeft -= Game.elapsed) <= 0) {
+      killAndErase();
+    }
+  }
+
+  @Override
+  public void draw() {
+    GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+    super.draw();
+    GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+  }
 }

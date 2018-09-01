@@ -33,26 +33,26 @@ import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class GrippingTrap extends Trap {
 
-	{
-		color = TrapSprite.GREY;
-		shape = TrapSprite.CROSSHAIR;
-	}
+  {
+    color = TrapSprite.GREY;
+    shape = TrapSprite.CROSSHAIR;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		Char c = Actor.findChar( pos );
+    Char c = Actor.findChar(pos);
 
-		if (c != null) {
-			int damage	=	c.defendDamage(new Damage(Dungeon.depth, this, c)).value;
-			if(damage<0) damage	=	0;
-			Buff.affect( c, Bleeding.class ).set( damage );
-			Buff.prolong( c, Cripple.class, 15f);
-			Buff.prolong( c, Roots.class, 5f);
-			Wound.hit( c );
-		} else {
-			Wound.hit( pos );
-		}
+    if (c != null) {
+      int damage = c.defendDamage(new Damage(Dungeon.depth, this, c)).value;
+      if (damage < 0) damage = 0;
+      Buff.affect(c, Bleeding.class).set(damage);
+      Buff.prolong(c, Cripple.class, 15f);
+      Buff.prolong(c, Roots.class, 5f);
+      Wound.hit(c);
+    } else {
+      Wound.hit(pos);
+    }
 
-	}
+  }
 }

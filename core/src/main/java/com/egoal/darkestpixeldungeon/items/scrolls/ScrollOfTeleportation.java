@@ -34,67 +34,67 @@ import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class ScrollOfTeleportation extends Scroll {
 
-	{
-		initials = 9;
-	}
+  {
+    initials = 9;
+  }
 
-	@Override
-	protected void doRead() {
+  @Override
+  protected void doRead() {
 
-		Sample.INSTANCE.play( Assets.SND_READ );
-		Invisibility.dispel();
-		
-		teleportHero( curUser );
-		setKnown();
+    Sample.INSTANCE.play(Assets.SND_READ);
+    Invisibility.dispel();
 
-		readAnimation();
-	}
-	
-	public static void teleportHero( Hero hero ) {
+    teleportHero(curUser);
+    setKnown();
 
-		int count = 10;
-		int pos;
-		do {
-			pos = Dungeon.level.randomRespawnCell();
-			if (count-- <= 0) {
-				break;
-			}
-		} while (pos == -1);
-		
-		if (pos == -1 || Dungeon.bossLevel()) {
-			
-			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
-			
-		} else {
+    readAnimation();
+  }
 
-			appear( hero, pos );
-			Dungeon.level.press( pos, hero );
-			Dungeon.observe();
-			GameScene.updateFog();
-			
-			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
-			
-		}
-	}
+  public static void teleportHero(Hero hero) {
 
-	public static void appear( Char ch, int pos ) {
+    int count = 10;
+    int pos;
+    do {
+      pos = Dungeon.level.randomRespawnCell();
+      if (count-- <= 0) {
+        break;
+      }
+    } while (pos == -1);
 
-		ch.sprite.interruptMotion();
+    if (pos == -1 || Dungeon.bossLevel()) {
 
-		ch.move( pos );
-		ch.sprite.place( pos );
+      GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
 
-		if (ch.invisible == 0) {
-			ch.sprite.alpha( 0 );
-			ch.sprite.parent.add( new AlphaTweener( ch.sprite, 1, 0.4f ) );
-		}
+    } else {
 
-		ch.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
-	}
+      appear(hero, pos);
+      Dungeon.level.press(pos, hero);
+      Dungeon.observe();
+      GameScene.updateFog();
+
+      GLog.i(Messages.get(ScrollOfTeleportation.class, "tele"));
+
+    }
+  }
+
+  public static void appear(Char ch, int pos) {
+
+    ch.sprite.interruptMotion();
+
+    ch.move(pos);
+    ch.sprite.place(pos);
+
+    if (ch.invisible == 0) {
+      ch.sprite.alpha(0);
+      ch.sprite.parent.add(new AlphaTweener(ch.sprite, 1, 0.4f));
+    }
+
+    ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+    Sample.INSTANCE.play(Assets.SND_TELEPORT);
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? 30 * quantity : super.price();
+  }
 }

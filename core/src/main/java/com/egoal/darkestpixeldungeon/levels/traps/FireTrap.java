@@ -29,16 +29,16 @@ import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class FireTrap extends Trap {
 
-	{
-		color = TrapSprite.ORANGE;
-		shape = TrapSprite.DOTS;
-	}
+  {
+    color = TrapSprite.ORANGE;
+    shape = TrapSprite.DOTS;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		GameScene.add( Blob.seed( pos, 2, Fire.class ) );
-		CellEmitter.get( pos ).burst( FlameParticle.FACTORY, 5 );
+    GameScene.add(Blob.seed(pos, 2, Fire.class));
+    CellEmitter.get(pos).burst(FlameParticle.FACTORY, 5);
 
-	}
+  }
 }

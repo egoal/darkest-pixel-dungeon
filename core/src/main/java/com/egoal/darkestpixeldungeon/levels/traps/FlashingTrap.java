@@ -37,32 +37,33 @@ import com.watabou.utils.Random;
 
 public class FlashingTrap extends Trap {
 
-	{
-		color = TrapSprite.YELLOW;
-		shape = TrapSprite.STARS;
-	}
+  {
+    color = TrapSprite.YELLOW;
+    shape = TrapSprite.STARS;
+  }
 
-	@Override
-	public void activate() {
-		Char ch = Actor.findChar(pos);
+  @Override
+  public void activate() {
+    Char ch = Actor.findChar(pos);
 
-		if (ch != null) {
-			int len = Random.Int(5, 10)+Dungeon.depth;
-			Buff.prolong( ch, Blindness.class, len );
-			Buff.prolong( ch, Cripple.class, len );
-			if (ch instanceof Mob) {
-				if (((Mob)ch).state == ((Mob)ch).HUNTING) ((Mob)ch).state = ((Mob)ch).WANDERING;
-				((Mob)ch).beckon( Dungeon.level.randomDestination() );
-			}
-			if (ch == Dungeon.hero){
-				Sample.INSTANCE.play( Assets.SND_BLAST );
-			}
-		}
+    if (ch != null) {
+      int len = Random.Int(5, 10) + Dungeon.depth;
+      Buff.prolong(ch, Blindness.class, len);
+      Buff.prolong(ch, Cripple.class, len);
+      if (ch instanceof Mob) {
+        if (((Mob) ch).state == ((Mob) ch).HUNTING)
+          ((Mob) ch).state = ((Mob) ch).WANDERING;
+        ((Mob) ch).beckon(Dungeon.level.randomDestination());
+      }
+      if (ch == Dungeon.hero) {
+        Sample.INSTANCE.play(Assets.SND_BLAST);
+      }
+    }
 
-		if (Dungeon.visible[pos]) {
-			GameScene.flash(0xFFFFFF);
-			CellEmitter.get(pos).burst( Speck.factory(Speck.LIGHT), 4 );
-		}
-	}
+    if (Dungeon.visible[pos]) {
+      GameScene.flash(0xFFFFFF);
+      CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
+    }
+  }
 
 }

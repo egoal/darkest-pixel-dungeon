@@ -43,126 +43,128 @@ import java.util.List;
 
 public class BadgesScene extends PixelScene {
 
-	@Override
-	public void create() {
+  @Override
+  public void create() {
 
-		super.create();
+    super.create();
 
-		Music.INSTANCE.play( Assets.THEME, true );
-		Music.INSTANCE.volume( DarkestPixelDungeon.musicVol() / 10f  );
+    Music.INSTANCE.play(Assets.THEME, true);
+    Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
 
-		uiCamera.visible = false;
+    uiCamera.visible = false;
 
-		int w = Camera.main.width;
-		int h = Camera.main.height;
+    int w = Camera.main.width;
+    int h = Camera.main.height;
 
-		Archs archs = new Archs();
-		archs.setSize( w, h );
-		add( archs );
+    Archs archs = new Archs();
+    archs.setSize(w, h);
+    add(archs);
 
-		float pw = Math.min( w, (DarkestPixelDungeon.landscape() ? MIN_WIDTH_L : MIN_WIDTH_P) * 3 ) - 16;
-		float ph = Math.min( h, (DarkestPixelDungeon.landscape() ? MIN_HEIGHT_L : MIN_HEIGHT_P) * 3 ) - 32;
+    float pw = Math.min(w, (DarkestPixelDungeon.landscape() ? MIN_WIDTH_L : 
+            MIN_WIDTH_P) * 3) - 16;
+    float ph = Math.min(h, (DarkestPixelDungeon.landscape() ? MIN_HEIGHT_L : 
+            MIN_HEIGHT_P) * 3) - 32;
 
-		float size = (float)Math.sqrt( pw * ph / 27f );
-		int nCols = (int)Math.ceil( pw / size );
-		int nRows = (int)Math.ceil( ph / size );
-		size = Math.min( pw / nCols, ph / nRows );
+    float size = (float) Math.sqrt(pw * ph / 27f);
+    int nCols = (int) Math.ceil(pw / size);
+    int nRows = (int) Math.ceil(ph / size);
+    size = Math.min(pw / nCols, ph / nRows);
 
-		float left = (w - size * nCols) / 2;
-		float top = (h - size * nRows) / 2;
+    float left = (w - size * nCols) / 2;
+    float top = (h - size * nRows) / 2;
 
-		RenderedText title = renderText( Messages.get(this, "title"), 9 );
-		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2 ;
-		title.y = (top - title.baseLine()) / 2 ;
-		align(title);
-		add(title);
+    RenderedText title = renderText(Messages.get(this, "title"), 9);
+    title.hardlight(Window.TITLE_COLOR);
+    title.x = (w - title.width()) / 2;
+    title.y = (top - title.baseLine()) / 2;
+    align(title);
+    add(title);
 
-		Badges.loadGlobal();
+    Badges.loadGlobal();
 
-		List<Badges.Badge> badges = Badges.filtered( true );
-		for (int i=0; i < nRows; i++) {
-			for (int j=0; j < nCols; j++) {
-				int index = i * nCols + j;
-				Badges.Badge b = index < badges.size() ? badges.get( index ) : null;
-				BadgeButton button = new BadgeButton( b );
-				button.setPos(
-						left + j * size + (size - button.width()) / 2,
-						top + i * size + (size - button.height()) / 2);
-				align(button);
-				add( button );
-			}
-		}
+    List<Badges.Badge> badges = Badges.filtered(true);
+    for (int i = 0; i < nRows; i++) {
+      for (int j = 0; j < nCols; j++) {
+        int index = i * nCols + j;
+        Badges.Badge b = index < badges.size() ? badges.get(index) : null;
+        BadgeButton button = new BadgeButton(b);
+        button.setPos(
+                left + j * size + (size - button.width()) / 2,
+                top + i * size + (size - button.height()) / 2);
+        align(button);
+        add(button);
+      }
+    }
 
-		ExitButton btnExit = new ExitButton();
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		add( btnExit );
+    ExitButton btnExit = new ExitButton();
+    btnExit.setPos(Camera.main.width - btnExit.width(), 0);
+    add(btnExit);
 
-		fadeIn();
+    fadeIn();
 
-		Badges.loadingListener = new Callback() {
-			@Override
-			public void call() {
-				if (Game.scene() == BadgesScene.this) {
-					DarkestPixelDungeon.switchNoFade( BadgesScene.class );
-				}
-			}
-		};
-	}
+    Badges.loadingListener = new Callback() {
+      @Override
+      public void call() {
+        if (Game.scene() == BadgesScene.this) {
+          DarkestPixelDungeon.switchNoFade(BadgesScene.class);
+        }
+      }
+    };
+  }
 
-	@Override
-	public void destroy() {
+  @Override
+  public void destroy() {
 
-		Badges.saveGlobal();
-		Badges.loadingListener = null;
+    Badges.saveGlobal();
+    Badges.loadingListener = null;
 
-		super.destroy();
-	}
+    super.destroy();
+  }
 
-	@Override
-	protected void onBackPressed() {
-		DarkestPixelDungeon.switchNoFade( TitleScene.class );
-	}
+  @Override
+  protected void onBackPressed() {
+    DarkestPixelDungeon.switchNoFade(TitleScene.class);
+  }
 
-	private static class BadgeButton extends Button {
+  private static class BadgeButton extends Button {
 
-		private Badges.Badge badge;
+    private Badges.Badge badge;
 
-		private Image icon;
+    private Image icon;
 
-		public BadgeButton( Badges.Badge badge ) {
-			super();
+    public BadgeButton(Badges.Badge badge) {
+      super();
 
-			this.badge = badge;
-			active = (badge != null);
+      this.badge = badge;
+      active = (badge != null);
 
-			icon = active ? BadgeBanner.image(badge.image) : new Image( Assets.LOCKED );
-			add(icon);
+      icon = active ? BadgeBanner.image(badge.image) : new Image(Assets.LOCKED);
+      add(icon);
 
-			setSize( icon.width(), icon.height() );
-		}
+      setSize(icon.width(), icon.height());
+    }
 
-		@Override
-		protected void layout() {
-			super.layout();
+    @Override
+    protected void layout() {
+      super.layout();
 
-			icon.x = x + (width - icon.width()) / 2;
-			icon.y = y + (height - icon.height()) / 2;
-		}
+      icon.x = x + (width - icon.width()) / 2;
+      icon.y = y + (height - icon.height()) / 2;
+    }
 
-		@Override
-		public void update() {
-			super.update();
+    @Override
+    public void update() {
+      super.update();
 
-			if (Random.Float() < Game.elapsed * 0.1) {
-				BadgeBanner.highlight( icon, badge.image );
-			}
-		}
+      if (Random.Float() < Game.elapsed * 0.1) {
+        BadgeBanner.highlight(icon, badge.image);
+      }
+    }
 
-		@Override
-		protected void onClick() {
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-			Game.scene().add( new WndBadge( badge ) );
-		}
-	}
+    @Override
+    protected void onClick() {
+      Sample.INSTANCE.play(Assets.SND_CLICK, 0.7f, 0.7f, 1.2f);
+      Game.scene().add(new WndBadge(badge));
+    }
+  }
 }

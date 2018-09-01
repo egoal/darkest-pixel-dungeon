@@ -38,113 +38,115 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 public class Warlock extends Mob implements Callback {
-	
-	private static final float TIME_TO_ZAP	= 1f;
-	
-	{
-		spriteClass = WarlockSprite.class;
-		
-		HP = HT = 70;
-		defenseSkill = 18;
-		
-		EXP = 11;
-		maxLvl = 21;
-		
-		loot = Generator.Category.POTION;
-		lootChance = 0.83f;
 
-		properties.add(Property.UNDEAD);
+  private static final float TIME_TO_ZAP = 1f;
 
-		addResistances(Damage.Element.SHADOW, 1.25f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
+  {
+    spriteClass = WarlockSprite.class;
 
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange(16, 22), this, target);
-	}
+    HP = HT = 70;
+    defenseSkill = 18;
 
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 8);
-		return dmg;
-	}
+    EXP = 11;
+    maxLvl = 21;
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 25;
-	}
-	
-	@Override
-	protected boolean canAttack( Char enemy ) {
-		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
-	}
-	
-	protected boolean doAttack( Char enemy ) {
+    loot = Generator.Category.POTION;
+    lootChance = 0.83f;
 
-		if (Dungeon.level.adjacent( pos, enemy.pos )) {
-			
-			return super.doAttack( enemy );
-			
-		} else {
-			
-			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
-			if (visible) {
-				sprite.zap( enemy.pos );
-			} else {
-				zap();
-			}
-			
-			return !visible;
-		}
-	}
-	
-	private void zap() {
-		spend( TIME_TO_ZAP );
-		
-		Damage dmg	=	new Damage(Random.Int( 12, 18 ), 
-				this, enemy).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
-		
-		if (enemy.checkHit(dmg)) {
-			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
-				Buff.prolong( enemy, Weakness.class, Weakness.duration( enemy ) );
-			}
-			
-			enemy.takeDamage(dmg);
-			
-			if (!enemy.isAlive() && enemy == Dungeon.hero) {
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(this, "bolt_kill") );
-			}
-		} else {
-			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
-		}
-	}
-	
-	public void onZapComplete() {
-		zap();
-		next();
-	}
-	
-	@Override
-	public void call() {
-		next();
-	}
+    properties.add(Property.UNDEAD);
 
-	@Override
-	public Item createLoot(){
-		Item loot = super.createLoot();
+    addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
 
-		if (loot instanceof PotionOfHealing){
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(16, 22), this, target);
+  }
 
-			//count/10 chance of not dropping potion
-			if (Random.Int(10)-Dungeon.limitedDrops.warlockHP.count < 0){
-				return null;
-			} else
-				Dungeon.limitedDrops.warlockHP.count++;
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 8);
+    return dmg;
+  }
 
-		}
+  @Override
+  public int attackSkill(Char target) {
+    return 25;
+  }
 
-		return loot;
-	}
+  @Override
+  protected boolean canAttack(Char enemy) {
+    return new Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos
+            == enemy.pos;
+  }
+
+  protected boolean doAttack(Char enemy) {
+
+    if (Dungeon.level.adjacent(pos, enemy.pos)) {
+
+      return super.doAttack(enemy);
+
+    } else {
+
+      boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
+      if (visible) {
+        sprite.zap(enemy.pos);
+      } else {
+        zap();
+      }
+
+      return !visible;
+    }
+  }
+
+  private void zap() {
+    spend(TIME_TO_ZAP);
+
+    Damage dmg = new Damage(Random.Int(12, 18),
+            this, enemy).type(Damage.Type.MAGICAL).addElement(Damage.Element
+            .SHADOW);
+
+    if (enemy.checkHit(dmg)) {
+      if (enemy == Dungeon.hero && Random.Int(2) == 0) {
+        Buff.prolong(enemy, Weakness.class, Weakness.duration(enemy));
+      }
+
+      enemy.takeDamage(dmg);
+
+      if (!enemy.isAlive() && enemy == Dungeon.hero) {
+        Dungeon.fail(getClass());
+        GLog.n(Messages.get(this, "bolt_kill"));
+      }
+    } else {
+      enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+    }
+  }
+
+  public void onZapComplete() {
+    zap();
+    next();
+  }
+
+  @Override
+  public void call() {
+    next();
+  }
+
+  @Override
+  public Item createLoot() {
+    Item loot = super.createLoot();
+
+    if (loot instanceof PotionOfHealing) {
+
+      //count/10 chance of not dropping potion
+      if (Random.Int(10) - Dungeon.limitedDrops.warlockHP.count < 0) {
+        return null;
+      } else
+        Dungeon.limitedDrops.warlockHP.count++;
+
+    }
+
+    return loot;
+  }
 }

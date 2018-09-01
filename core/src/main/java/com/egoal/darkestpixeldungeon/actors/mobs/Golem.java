@@ -32,54 +32,55 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public class Golem extends Mob {
-	
-	{
-		spriteClass = GolemSprite.class;
-		
-		HP = HT = 85;
-		defenseSkill = 18;
-		
-		EXP = 12;
-		maxLvl = 22;
-	}
-	
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange( 25, 40), this, target);
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 28;
-	}
-	
-	@Override
-	protected float attackDelay() {
-		return 1.5f;
-	}
-	
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 12);
-		return dmg;
-	}
 
-	@Override
-	public void die( Object cause ) {
-		Imp.Quest.process( this );
-		
-		super.die( cause );
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Amok.class );
-		IMMUNITIES.add( Terror.class );
-		IMMUNITIES.add( Sleep.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
+  {
+    spriteClass = GolemSprite.class;
+
+    HP = HT = 85;
+    defenseSkill = 18;
+
+    EXP = 12;
+    maxLvl = 22;
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(25, 40), this, target);
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 28;
+  }
+
+  @Override
+  protected float attackDelay() {
+    return 1.5f;
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 12);
+    return dmg;
+  }
+
+  @Override
+  public void die(Object cause) {
+    Imp.Quest.process(this);
+
+    super.die(cause);
+  }
+
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+  static {
+    IMMUNITIES.add(Amok.class);
+    IMMUNITIES.add(Terror.class);
+    IMMUNITIES.add(Sleep.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
 }

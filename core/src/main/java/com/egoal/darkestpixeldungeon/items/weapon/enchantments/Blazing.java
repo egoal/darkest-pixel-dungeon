@@ -29,34 +29,35 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Blazing extends Weapon.Enchantment{
+public class Blazing extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
-	
-	@Override
-	public Damage proc(Weapon weapon, Damage damage){
-		Char defender	=	(Char)damage.to;
-		// lvl 0 - 33%
-		// lvl 1 - 50%
-		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level() );
+  private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing(0xFF4400);
 
-		if (Random.Int( level + 3 ) >= 2) {
-			if (Random.Int( 2 ) == 0) {
-				Buff.affect( defender, Burning.class ).reignite( defender );
-			}
-			// defender.damage( Random.Int( 1, level + 2 ), this );
-			defender.takeDamage(new Damage(Random.Int( 1, level + 2 ), 
-				this, defender).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE));
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    // lvl 0 - 33%
+    // lvl 1 - 50%
+    // lvl 2 - 60%
+    int level = Math.max(0, weapon.level());
 
-			defender.sprite.emitter().burst( FlameParticle.FACTORY, level + 1 );
-		}
+    if (Random.Int(level + 3) >= 2) {
+      if (Random.Int(2) == 0) {
+        Buff.affect(defender, Burning.class).reignite(defender);
+      }
+      // defender.damage( Random.Int( 1, level + 2 ), this );
+      defender.takeDamage(new Damage(Random.Int(1, level + 2),
+              this, defender).type(Damage.Type.MAGICAL).addElement(Damage
+              .Element.FIRE));
 
-		return damage.addElement(Damage.Element.FIRE);
-	}
-	
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return ORANGE;
-	}
+      defender.sprite.emitter().burst(FlameParticle.FACTORY, level + 1);
+    }
+
+    return damage.addElement(Damage.Element.FIRE);
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return ORANGE;
+  }
 }

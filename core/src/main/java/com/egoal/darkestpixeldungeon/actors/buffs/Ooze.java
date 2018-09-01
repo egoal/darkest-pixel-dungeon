@@ -30,47 +30,49 @@ import com.watabou.utils.Random;
 
 public class Ooze extends Buff {
 
-	{
-		type = buffType.NEGATIVE;
-	}
-	
-	@Override
-	public int icon() {
-		return BuffIndicator.OOZE;
-	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
+  {
+    type = buffType.NEGATIVE;
+  }
 
-	@Override
-	public String heroMessage() {
-		return Messages.get(this, "heromsg");
-	}
+  @Override
+  public int icon() {
+    return BuffIndicator.OOZE;
+  }
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
 
-	@Override
-	public boolean act() {
-		if (target.isAlive()) {
-			if (Dungeon.depth > 4)
-				// target.damage( Dungeon.depth/5, this );
-				target.takeDamage(new Damage(Dungeon.depth/5, this, target).addFeature(Damage.Feature.PURE));
-			else if (Random.Int(2) == 0)
-				target.takeDamage(new Damage(1, this, target).addFeature(Damage.Feature.PURE));
-			if (!target.isAlive() && target == Dungeon.hero) {
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(this, "ondeath") );
-			}
-			spend( TICK );
-		}
-		if (Level.water[target.pos]) {
-			detach();
-		}
-		return true;
-	}
+  @Override
+  public String heroMessage() {
+    return Messages.get(this, "heromsg");
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc");
+  }
+
+  @Override
+  public boolean act() {
+    if (target.isAlive()) {
+      if (Dungeon.depth > 4)
+        // target.damage( Dungeon.depth/5, this );
+        target.takeDamage(new Damage(Dungeon.depth / 5, this, target)
+                .addFeature(Damage.Feature.PURE));
+      else if (Random.Int(2) == 0)
+        target.takeDamage(new Damage(1, this, target).addFeature(Damage
+                .Feature.PURE));
+      if (!target.isAlive() && target == Dungeon.hero) {
+        Dungeon.fail(getClass());
+        GLog.n(Messages.get(this, "ondeath"));
+      }
+      spend(TICK);
+    }
+    if (Level.water[target.pos]) {
+      detach();
+    }
+    return true;
+  }
 }

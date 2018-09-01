@@ -26,19 +26,19 @@ import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class WornTrap extends Trap {
 
-	{
-		color = TrapSprite.BLACK;
-		shape = TrapSprite.DOTS;
-	}
+  {
+    color = TrapSprite.BLACK;
+    shape = TrapSprite.DOTS;
+  }
 
-	@Override
-	public Trap hide() {
-		//this one can't be hidden
-		return reveal();
-	}
+  @Override
+  public Trap hide() {
+    //this one can't be hidden
+    return reveal();
+  }
 
-	@Override
-	public void activate() {
-		GLog.i( Messages.get(this, "nothing") );
-	}
+  @Override
+  public void activate() {
+    GLog.i(Messages.get(this, "nothing"));
+  }
 }

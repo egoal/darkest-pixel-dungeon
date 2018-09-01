@@ -25,19 +25,19 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
-public class AntiMagic extends Armor.Glyph{
+public class AntiMagic extends Armor.Glyph {
 
-	private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x88EEFF );
+  private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing(0x88EEFF);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		//no proc effect, see Hero.damage
-		return damage;
-	}
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    //no proc effect, see Hero.damage
+    return damage;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return TEAL;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return TEAL;
+  }
 
 }

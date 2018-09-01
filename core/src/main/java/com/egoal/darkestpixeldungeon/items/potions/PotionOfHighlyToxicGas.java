@@ -22,51 +22,55 @@ import com.watabou.utils.Random;
  * Created by 93942 on 4/25/2018.
  */
 
-public class PotionOfHighlyToxicGas extends Potion{
-	{
-		initials	=	12;
-	}
+public class PotionOfHighlyToxicGas extends Potion {
+  {
+    initials = 12;
+  }
 
-	@Override
-	public void shatter(int cell){
-		if (Dungeon.visible[cell]) {
-			setKnown();
+  @Override
+  public void shatter(int cell) {
+    if (Dungeon.visible[cell]) {
+      setKnown();
 
-			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-		}
+      splash(cell);
+      Sample.INSTANCE.play(Assets.SND_SHATTER);
+    }
 
-		for(int offset: PathFinder.NEIGHBOURS9){
-			Mob mob	=	Dungeon.level.findMob(cell+offset);
-			if(mob!=null){
-				affectChar(mob);
-			}
-		}
-		if(Dungeon.level.distance(curUser.pos, cell)<=1){
-			affectChar(curUser);
-		}
-		// longer, sharper
-		// GameScene.add( Blob.seed( cell, 1200, HighlyToxicGas.class));
-	}
-	
-	private void affectChar(Char c){
-		Poison p	=	Buff.affect(c, Poison.class);
-		p.set(Random.Int(6, 10));
-		p.addDamage(Dungeon.depth/2+Random.Int(1, 4));
-	}
-	
-	@Override
-	public void reset(){
-		image	=	ItemSpriteSheet.DPD_HIGHLY_TOXIC_POTION;
-		color	=	"drakgreen";
-	}
-	
-	@Override
-	protected void drink(Hero hero){
-		super.drink(hero);
-		affectChar(hero);
-	}
-	
-	public boolean isKnown(){ return true; }
-	public void setKnown(){}
+    for (int offset : PathFinder.NEIGHBOURS9) {
+      Mob mob = Dungeon.level.findMob(cell + offset);
+      if (mob != null) {
+        affectChar(mob);
+      }
+    }
+    if (Dungeon.level.distance(curUser.pos, cell) <= 1) {
+      affectChar(curUser);
+    }
+    // longer, sharper
+    // GameScene.add( Blob.seed( cell, 1200, HighlyToxicGas.class));
+  }
+
+  private void affectChar(Char c) {
+    Poison p = Buff.affect(c, Poison.class);
+    p.set(Random.Int(6, 10));
+    p.addDamage(Dungeon.depth / 2 + Random.Int(1, 4));
+  }
+
+  @Override
+  public void reset() {
+    image = ItemSpriteSheet.DPD_HIGHLY_TOXIC_POTION;
+    color = "drakgreen";
+  }
+
+  @Override
+  protected void drink(Hero hero) {
+    super.drink(hero);
+    affectChar(hero);
+  }
+
+  public boolean isKnown() {
+    return true;
+  }
+
+  public void setKnown() {
+  }
 }

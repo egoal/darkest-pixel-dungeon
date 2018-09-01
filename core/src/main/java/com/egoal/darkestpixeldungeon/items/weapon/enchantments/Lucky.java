@@ -31,38 +31,41 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
-public class Lucky extends Weapon.Enchantment{
+public class Lucky extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x00FF00 );
-	
-	@Override
-	public Damage proc(Weapon weapon, Damage damage) {
-		Char defender	=	(Char)damage.to;
-		Char attacker	=	(Char)damage.from;
-		
-		int level = Math.max( 0, weapon.level() );
+  private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing(0x00FF00);
 
-		if (Random.Int(100) < (55 + level)){
-			int exStr = 0;
-			if (attacker == Dungeon.hero) exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
-			damage.value = weapon.imbue.damageFactor(weapon.max()) + exStr;
-			damage	=	defender.defendDamage(damage);
-		} else {
-			damage.value = weapon.imbue.damageFactor(weapon.min());
-			damage	=	defender.defendDamage(damage);
-		}
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    Char attacker = (Char) damage.from;
 
-		// berserker perk
-		if (attacker == Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.BERSERKER ){
-			damage.value = Buff.affect(Dungeon.hero, Berserk.class).damageFactor(damage.value);
-		}
+    int level = Math.max(0, weapon.level());
 
-		damage.value	=	Math.max(0, damage.value);
-		return damage;
-	}
+    if (Random.Int(100) < (55 + level)) {
+      int exStr = 0;
+      if (attacker == Dungeon.hero)
+        exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
+      damage.value = weapon.imbue.damageFactor(weapon.max()) + exStr;
+      damage = defender.defendDamage(damage);
+    } else {
+      damage.value = weapon.imbue.damageFactor(weapon.min());
+      damage = defender.defendDamage(damage);
+    }
 
-	@Override
-	public Glowing glowing() {
-		return GREEN;
-	}
+    // berserker perk
+    if (attacker == Dungeon.hero && Dungeon.hero.subClass == HeroSubClass
+            .BERSERKER) {
+      damage.value = Buff.affect(Dungeon.hero, Berserk.class).damageFactor
+              (damage.value);
+    }
+
+    damage.value = Math.max(0, damage.value);
+    return damage;
+  }
+
+  @Override
+  public Glowing glowing() {
+    return GREEN;
+  }
 }

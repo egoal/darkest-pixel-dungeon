@@ -31,41 +31,41 @@ import com.watabou.utils.Random;
 
 public class RatKingPainter extends Painter {
 
-	public static void paint(Level level,Room room ) {
+  public static void paint(Level level, Room room) {
 
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY_SP );
-		
-		Room.Door entrance = room.entrance();
-		entrance.set( Room.Door.Type.HIDDEN );
-		int door = entrance.x + entrance.y * level.width();
-		
-		for (int i=room.left + 1; i < room.right; i++) {
-			addChest( level, (room.top + 1) * level.width() + i, door );
-			addChest( level, (room.bottom - 1) * level.width() + i, door );
-		}
-		
-		for (int i=room.top + 2; i < room.bottom - 1; i++) {
-			addChest( level, i * level.width() + room.left + 1, door );
-			addChest( level, i * level.width() + room.right - 1, door );
-		}
+    fill(level, room, Terrain.WALL);
+    fill(level, room, 1, Terrain.EMPTY_SP);
 
-		RatKing king = new RatKing();
-		king.pos = level.pointToCell(room.random( 1 ));
-		level.mobs.add( king );
-	}
-	
-	private static void addChest( Level level, int pos, int door ) {
-		
-		if (pos == door - 1 ||
-			pos == door + 1 ||
-			pos == door - level.width() ||
-			pos == door + level.width()) {
-			return;
-		}
-		
-		Item prize = new Gold( Random.IntRange( 1, 25 ) );
-		
-		level.drop( prize, pos ).type = Heap.Type.CHEST;
-	}
+    Room.Door entrance = room.entrance();
+    entrance.set(Room.Door.Type.HIDDEN);
+    int door = entrance.x + entrance.y * level.width();
+
+    for (int i = room.left + 1; i < room.right; i++) {
+      addChest(level, (room.top + 1) * level.width() + i, door);
+      addChest(level, (room.bottom - 1) * level.width() + i, door);
+    }
+
+    for (int i = room.top + 2; i < room.bottom - 1; i++) {
+      addChest(level, i * level.width() + room.left + 1, door);
+      addChest(level, i * level.width() + room.right - 1, door);
+    }
+
+    RatKing king = new RatKing();
+    king.pos = level.pointToCell(room.random(1));
+    level.mobs.add(king);
+  }
+
+  private static void addChest(Level level, int pos, int door) {
+
+    if (pos == door - 1 ||
+            pos == door + 1 ||
+            pos == door - level.width() ||
+            pos == door + level.width()) {
+      return;
+    }
+
+    Item prize = new Gold(Random.IntRange(1, 25));
+
+    level.drop(prize, pos).type = Heap.Type.CHEST;
+  }
 }

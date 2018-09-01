@@ -34,35 +34,35 @@ import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfLullaby extends Scroll {
 
-	{
-		initials = 1;
-	}
+  {
+    initials = 1;
+  }
 
-	@Override
-	protected void doRead() {
-		
-		curUser.sprite.centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
-		Sample.INSTANCE.play( Assets.SND_LULLABY );
-		Invisibility.dispel();
+  @Override
+  protected void doRead() {
 
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Level.fieldOfView[mob.pos]) {
-				Buff.affect( mob, Drowsy.class );
-				mob.sprite.centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
-			}
-		}
+    curUser.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5);
+    Sample.INSTANCE.play(Assets.SND_LULLABY);
+    Invisibility.dispel();
 
-		Buff.affect( curUser, Drowsy.class );
+    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+      if (Level.fieldOfView[mob.pos]) {
+        Buff.affect(mob, Drowsy.class);
+        mob.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5);
+      }
+    }
 
-		GLog.i( Messages.get(this, "sooth") );
+    Buff.affect(curUser, Drowsy.class);
 
-		setKnown();
+    GLog.i(Messages.get(this, "sooth"));
 
-		readAnimation();
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
-	}
+    setKnown();
+
+    readAnimation();
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? 40 * quantity : super.price();
+  }
 }

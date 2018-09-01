@@ -28,31 +28,32 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
 public class Dagger extends MeleeWeapon {
-	
-	{
-		image = ItemSpriteSheet.DAGGER;
 
-		tier = 1;
-	}
+  {
+    image = ItemSpriteSheet.DAGGER;
 
-	@Override
-	public int max(int lvl) {
-		return  4*(tier+1) +    //8 base, down from 10
-				lvl*(tier+1);   //scaling unchanged
-	}
+    tier = 1;
+  }
 
-	// check AssassinsBlade
-	@Override
-	public Damage giveDamage(Hero hero, Char target){
-		if(target instanceof Mob && ((Mob)target).surprisedBy(hero)){
-			// assassin, deals avg damage to max on surprise, instead of min to max.
-			Damage dmg	=	new Damage(imbue.damageFactor(Random.NormalIntRange((min() + max()) / 2, max())),
-					hero, target);
-			int exStr	=	hero.STR()-STRReq();
-			if(exStr>0)
-				dmg.value	+=	exStr;
-			return dmg;
-		}else
-			return super.giveDamage(hero, target);
-	}
+  @Override
+  public int max(int lvl) {
+    return 4 * (tier + 1) +    //8 base, down from 10
+            lvl * (tier + 1);   //scaling unchanged
+  }
+
+  // check AssassinsBlade
+  @Override
+  public Damage giveDamage(Hero hero, Char target) {
+    if (target instanceof Mob && ((Mob) target).surprisedBy(hero)) {
+      // assassin, deals avg damage to max on surprise, instead of min to max.
+      Damage dmg = new Damage(imbue.damageFactor(Random.NormalIntRange((min()
+              + max()) / 2, max())),
+              hero, target);
+      int exStr = hero.STR() - STRReq();
+      if (exStr > 0)
+        dmg.value += exStr;
+      return dmg;
+    } else
+      return super.giveDamage(hero, target);
+  }
 }

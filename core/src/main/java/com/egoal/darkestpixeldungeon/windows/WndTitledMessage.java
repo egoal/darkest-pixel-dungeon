@@ -29,30 +29,30 @@ import com.watabou.noosa.ui.Component;
 
 public class WndTitledMessage extends Window {
 
-	protected static final int WIDTH_P    = 120;
-	protected static final int WIDTH_L    = 144;
-	protected static final int GAP	= 2;
+  protected static final int WIDTH_P = 120;
+  protected static final int WIDTH_L = 144;
+  protected static final int GAP = 2;
 
-	public WndTitledMessage( Image icon, String title, String message ) {
-		
-		this( new IconTitle( icon, title ), message );
+  public WndTitledMessage(Image icon, String title, String message) {
 
-	}
-	
-	public WndTitledMessage( Component titlebar, String message ) {
+    this(new IconTitle(icon, title), message);
 
-		super();
+  }
 
-		int width = DarkestPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
+  public WndTitledMessage(Component titlebar, String message) {
 
-		titlebar.setRect( 0, 0, width, 0 );
-		add(titlebar);
+    super();
 
-		RenderedTextMultiline text = PixelScene.renderMultiline( 6 );
-		text.text( message, width );
-		text.setPos( titlebar.left(), titlebar.bottom() + GAP );
-		add( text );
+    int width = DarkestPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
 
-		resize( width, (int)text.bottom() );
-	}
+    titlebar.setRect(0, 0, width, 0);
+    add(titlebar);
+
+    RenderedTextMultiline text = PixelScene.renderMultiline(6);
+    text.text(message, width);
+    text.setPos(titlebar.left(), titlebar.bottom() + GAP);
+    add(text);
+
+    resize(width, (int) text.bottom());
+  }
 }

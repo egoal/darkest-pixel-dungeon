@@ -22,37 +22,38 @@ import com.watabou.noosa.audio.Sample;
  * Created by 93942 on 4/24/2018.
  */
 
-public class SorceressArmor extends ClassArmor{
-	
-	{
-		image	=	ItemSpriteSheet.DPD_ARMOR_SORCERESS;
-	}
-	
-	@Override
-	public void doSpecial(){
-		
-		// cost
-		curUser.HP	-=	curUser.HP/3;
-		
-		// effects
-		new Flare(8, 48).color(0xFF0000, true).show(curUser.sprite, 3f);
-		Sample.INSTANCE.play(Assets.SND_DEGRADE);
-		Invisibility.dispel();
-		
-		// do
-		for(Mob mob: Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])){
-			if(Level.fieldOfView[mob.pos]){
-				// terrified & venom 
-				Buff.affect(mob, Terror.class, 3).object	=	curUser.id();
-				
-				Venom v	=	new Venom();
-				// fixme: null danger
-				v.set(5f, (curUser.giveDamage(null).value/5+2));
-				v.attachTo(mob);
-			}
-		}
-		
-		curUser.spendAndNext(Actor.TICK);
-	}
-	
+public class SorceressArmor extends ClassArmor {
+
+  {
+    image = ItemSpriteSheet.DPD_ARMOR_SORCERESS;
+  }
+
+  @Override
+  public void doSpecial() {
+
+    // cost
+    curUser.HP -= curUser.HP / 3;
+
+    // effects
+    new Flare(8, 48).color(0xFF0000, true).show(curUser.sprite, 3f);
+    Sample.INSTANCE.play(Assets.SND_DEGRADE);
+    Invisibility.dispel();
+
+    // do
+    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size
+            ()])) {
+      if (Level.fieldOfView[mob.pos]) {
+        // terrified & venom 
+        Buff.affect(mob, Terror.class, 3).object = curUser.id();
+
+        Venom v = new Venom();
+        // fixme: null danger
+        v.set(5f, (curUser.giveDamage(null).value / 5 + 2));
+        v.attachTo(mob);
+      }
+    }
+
+    curUser.spendAndNext(Actor.TICK);
+  }
+
 }

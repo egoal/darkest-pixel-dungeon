@@ -29,29 +29,29 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
 public class GasesImmunity extends FlavourBuff {
-	
-	public static final float DURATION	= 15f;
-	
-	@Override
-	public int icon() {
-		return BuffIndicator.IMMUNITY;
-	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
 
-	{
-		immunities.add( ParalyticGas.class );
-		immunities.add( ToxicGas.class );
-		immunities.add( ConfusionGas.class );
-		immunities.add( StenchGas.class );
-		immunities.add( VenomGas.class );
-	}
+  public static final float DURATION = 15f;
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
+  @Override
+  public int icon() {
+    return BuffIndicator.IMMUNITY;
+  }
+
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
+
+  {
+    immunities.add(ParalyticGas.class);
+    immunities.add(ToxicGas.class);
+    immunities.add(ConfusionGas.class);
+    immunities.add(StenchGas.class);
+    immunities.add(VenomGas.class);
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dispTurns());
+  }
 }

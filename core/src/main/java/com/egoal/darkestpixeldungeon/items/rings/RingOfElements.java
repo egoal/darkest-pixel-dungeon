@@ -33,38 +33,39 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public class RingOfElements extends Ring {
-	
-	@Override
-	protected RingBuff buff( ) {
-		return new Resistance();
-	}
 
-	private static final HashSet<Class<?>> EMPTY = new HashSet<Class<?>>();
-	public static final HashSet<Class<?>> FULL;
-	static {
-		FULL = new HashSet<Class<?>>();
-		FULL.add( Burning.class );
-		FULL.add( ToxicGas.class );
-		FULL.add( Poison.class );
-		FULL.add( Venom.class );
-		FULL.add( LightningTrap.Electricity.class );
-		FULL.add( Warlock.class );
-		FULL.add( Eye.class );
-		FULL.add( Yog.BurningFist.class );
-	}
-	
-	public class Resistance extends RingBuff {
-		
-		public HashSet<Class<?>> resistances() {
-			if (Random.Int( level() + 2 ) >= 2) {
-				return FULL;
-			} else {
-				return EMPTY;
-			}
-		}
-		
-		public float durationFactor() {
-			return level() < 0 ? 1 : (1 + 0.5f * level()) / (1 + level());
-		}
-	}
+  @Override
+  protected RingBuff buff() {
+    return new Resistance();
+  }
+
+  private static final HashSet<Class<?>> EMPTY = new HashSet<Class<?>>();
+  public static final HashSet<Class<?>> FULL;
+
+  static {
+    FULL = new HashSet<Class<?>>();
+    FULL.add(Burning.class);
+    FULL.add(ToxicGas.class);
+    FULL.add(Poison.class);
+    FULL.add(Venom.class);
+    FULL.add(LightningTrap.Electricity.class);
+    FULL.add(Warlock.class);
+    FULL.add(Eye.class);
+    FULL.add(Yog.BurningFist.class);
+  }
+
+  public class Resistance extends RingBuff {
+
+    public HashSet<Class<?>> resistances() {
+      if (Random.Int(level() + 2) >= 2) {
+        return FULL;
+      } else {
+        return EMPTY;
+      }
+    }
+
+    public float durationFactor() {
+      return level() < 0 ? 1 : (1 + 0.5f * level()) / (1 + level());
+    }
+  }
 }

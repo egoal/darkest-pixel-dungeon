@@ -25,24 +25,24 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
-public class Wayward extends Weapon.Enchantment{
+public class Wayward extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-	@Override
-	public Damage proc(Weapon weapon,Damage damage) {
-		//no proc effect, see weapon.accuracyFactor for effect
-		return damage;
-	}
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    //no proc effect, see weapon.accuracyFactor for effect
+    return damage;
+  }
 
-	@Override
-	public boolean curse() {
-		return true;
-	}
+  @Override
+  public boolean curse() {
+    return true;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
 
 }

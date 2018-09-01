@@ -21,12 +21,12 @@
 package com.egoal.darkestpixeldungeon.items.rings;
 
 public class RingOfCritical extends Ring {
-	
-	@Override
-	protected RingBuff buff( ) {
-		return new Critical();
-	}
-	
-	public class Critical extends RingBuff {
-	}
+
+  @Override
+  protected RingBuff buff() {
+    return new Critical();
+  }
+
+  public class Critical extends RingBuff {
+  }
 }

@@ -32,67 +32,69 @@ import com.watabou.utils.Random;
 
 public class FireImbue extends Buff {
 
-	public static final float DURATION	= 30f;
+  public static final float DURATION = 30f;
 
-	protected float left;
+  protected float left;
 
-	private static final String LEFT	= "left";
+  private static final String LEFT = "left";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEFT, left );
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(LEFT, left);
 
-	}
+  }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		left = bundle.getFloat( LEFT );
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    left = bundle.getFloat(LEFT);
+  }
 
-	public void set( float duration ) {
-		this.left = duration;
-	};
+  public void set(float duration) {
+    this.left = duration;
+  }
 
-	@Override
-	public boolean act() {
-		if (Dungeon.level.map[target.pos] == Terrain.GRASS) {
-			Dungeon.level.set(target.pos, Terrain.EMBERS);
-			GameScene.updateMap(target.pos);
-		}
+  ;
 
-		spend(TICK);
-		left -= TICK;
-		if (left <= 0)
-			detach();
+  @Override
+  public boolean act() {
+    if (Dungeon.level.map[target.pos] == Terrain.GRASS) {
+      Dungeon.level.set(target.pos, Terrain.EMBERS);
+      GameScene.updateMap(target.pos);
+    }
 
-		return true;
-	}
+    spend(TICK);
+    left -= TICK;
+    if (left <= 0)
+      detach();
 
-	public void proc(Char enemy){
-		if (Random.Int(2) == 0)
-			affect( enemy, Burning.class ).reignite( enemy );
+    return true;
+  }
 
-		enemy.sprite.emitter().burst( FlameParticle.FACTORY, 2 );
-	}
+  public void proc(Char enemy) {
+    if (Random.Int(2) == 0)
+      affect(enemy, Burning.class).reignite(enemy);
 
-	@Override
-	public int icon() {
-		return BuffIndicator.FIRE;
-	}
+    enemy.sprite.emitter().burst(FlameParticle.FACTORY, 2);
+  }
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
+  @Override
+  public int icon() {
+    return BuffIndicator.FIRE;
+  }
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns(left));
-	}
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
 
-	{
-		immunities.add( Burning.class );
-	}
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dispTurns(left));
+  }
+
+  {
+    immunities.add(Burning.class);
+  }
 }

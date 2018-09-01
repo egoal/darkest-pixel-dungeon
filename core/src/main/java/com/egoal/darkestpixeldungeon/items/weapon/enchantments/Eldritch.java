@@ -30,33 +30,34 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Eldritch extends Weapon.Enchantment{
+public class Eldritch extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x222222 );
-	
-	@Override
-	public Damage proc(Weapon weapon,Damage damage) {
-		Char defender	=	(Char)damage.to;
-		// lvl 0 - 20%
-		// lvl 1 - 33%
-		// lvl 2 - 43%
-		int level = Math.max( 0, weapon.level() );
-		
-		if (Random.Int( level + 5 ) >= 4) {
+  private static ItemSprite.Glowing GREY = new ItemSprite.Glowing(0x222222);
 
-			if (defender == Dungeon.hero) {
-				Buff.affect( defender, Vertigo.class, Vertigo.duration(defender) );
-			} else {
-				Buff.affect( defender, Terror.class, Terror.DURATION ).object = ((Char)damage.from).id();
-			}
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    // lvl 0 - 20%
+    // lvl 1 - 33%
+    // lvl 2 - 43%
+    int level = Math.max(0, weapon.level());
 
-		}
+    if (Random.Int(level + 5) >= 4) {
 
-		return damage.addElement(Damage.Element.SHADOW);
-	}
-	
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return GREY;
-	}
+      if (defender == Dungeon.hero) {
+        Buff.affect(defender, Vertigo.class, Vertigo.duration(defender));
+      } else {
+        Buff.affect(defender, Terror.class, Terror.DURATION).object = ((Char)
+                damage.from).id();
+      }
+
+    }
+
+    return damage.addElement(Damage.Element.SHADOW);
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return GREY;
+  }
 }

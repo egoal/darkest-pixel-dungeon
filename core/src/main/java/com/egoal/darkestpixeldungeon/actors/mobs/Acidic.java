@@ -28,22 +28,23 @@ import com.watabou.utils.Random;
 
 public class Acidic extends Scorpio {
 
-	{
-		spriteClass = AcidicSprite.class;
-	}
-	
-	@Override
-	public Damage defenseProc(Damage dmg){
-		int feadback	=	Random.IntRange(0, dmg.value);
-		if(feadback>0)
-			((Char)dmg.from).takeDamage(new Damage(feadback, this, dmg.from).addElement(Damage.Element.ACID));
-		
-		return super.defenseProc(dmg);
-	}
-	
-	@Override
-	public void die( Object cause ) {
-		super.die( cause );
-		Badges.validateRare( this );
-	}
+  {
+    spriteClass = AcidicSprite.class;
+  }
+
+  @Override
+  public Damage defenseProc(Damage dmg) {
+    int feadback = Random.IntRange(0, dmg.value);
+    if (feadback > 0)
+      ((Char) dmg.from).takeDamage(new Damage(feadback, this, dmg.from)
+              .addElement(Damage.Element.ACID));
+
+    return super.defenseProc(dmg);
+  }
+
+  @Override
+  public void die(Object cause) {
+    super.die(cause);
+    Badges.validateRare(this);
+  }
 }

@@ -32,58 +32,58 @@ import com.watabou.utils.Bundle;
 
 public class VenomGas extends Blob {
 
-	private int strength = 0;
+  private int strength = 0;
 
-	@Override
-	protected void evolve() {
-		super.evolve();
+  @Override
+  protected void evolve() {
+    super.evolve();
 
-		if (volume == 0){
-			strength = 0;
-		} else {
-			Char ch;
-			int cell;
+    if (volume == 0) {
+      strength = 0;
+    } else {
+      Char ch;
+      int cell;
 
-			for (int i = area.left; i < area.right; i++){
-				for (int j = area.top; j < area.bottom; j++){
-					cell = i + j*Dungeon.level.width();
-					if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
-						if (!ch.immunizedBuffs().contains(this.getClass()))
-							Buff.affect(ch, Venom.class).set(2f, strength);
-					}
-				}
-			}
-		}
-	}
+      for (int i = area.left; i < area.right; i++) {
+        for (int j = area.top; j < area.bottom; j++) {
+          cell = i + j * Dungeon.level.width();
+          if (cur[cell] > 0 && (ch = Actor.findChar(cell)) != null) {
+            if (!ch.immunizedBuffs().contains(this.getClass()))
+              Buff.affect(ch, Venom.class).set(2f, strength);
+          }
+        }
+      }
+    }
+  }
 
-	public void setStrength(int str){
-		if (str > strength)
-			strength = str;
-	}
+  public void setStrength(int str) {
+    if (str > strength)
+      strength = str;
+  }
 
-	private static final String STRENGTH = "strength";
+  private static final String STRENGTH = "strength";
 
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		strength = bundle.getInt( STRENGTH );
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    strength = bundle.getInt(STRENGTH);
+  }
 
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put( STRENGTH, strength );
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(STRENGTH, strength);
+  }
 
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
 
-		emitter.pour( Speck.factory(Speck.VENOM), 0.4f );
-	}
+    emitter.pour(Speck.factory(Speck.VENOM), 0.4f);
+  }
 
-	@Override
-	public String tileDesc() {
-		return Messages.get(this, "desc");
-	}
+  @Override
+  public String tileDesc() {
+    return Messages.get(this, "desc");
+  }
 }

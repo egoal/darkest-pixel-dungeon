@@ -25,24 +25,24 @@ import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
-public class Obfuscation extends Armor.Glyph{
+public class Obfuscation extends Armor.Glyph {
 
-	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x888888 );
+  private static ItemSprite.Glowing GREY = new ItemSprite.Glowing(0x888888);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		//no proc effect, see hero.stealth for effect.
-		return damage;
-	}
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    //no proc effect, see hero.stealth for effect.
+    return damage;
+  }
 
-	@Override
-	public int tierDRAdjust() {
-		return -1;
-	}
+  @Override
+  public int tierDRAdjust() {
+    return -1;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return GREY;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return GREY;
+  }
 
 }

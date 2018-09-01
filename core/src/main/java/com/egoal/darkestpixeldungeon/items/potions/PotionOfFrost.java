@@ -33,52 +33,55 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
 public class PotionOfFrost extends Potion {
-	
-	private static final int DISTANCE	= 2;
 
-	{
-		initials = 1;
-	}
-	
-	@Override
-	public boolean canBeReinforced(){ return !reinforced; }
-	
-	@Override
-	public void shatter( int cell ) {
-		
-		PathFinder.buildDistanceMap( cell, BArray.not( Level.losBlocking, null ), DISTANCE );
-		
-		if(reinforced){
-			for(int offset: PathFinder.NEIGHBOURS9){
-				Mob mob	=	Dungeon.level.findMob(cell+offset);
-				if(mob!=null){
-					Buff.prolong(mob, Frost.class, Frost.DURATION);
-				}
-				if(Dungeon.level.distance(curUser.pos, cell)<=1){
-					Buff.prolong(curUser, Frost.class, Frost.DURATION);
-				}
-			}
-		}
-		
-		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
+  private static final int DISTANCE = 2;
 
-		boolean visible = false;
-		for (int i=0; i < Dungeon.level.length(); i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				visible = Freezing.affect( i, fire ) || visible;
-			}
-		}
+  {
+    initials = 1;
+  }
 
-		if (visible) {
-			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+  @Override
+  public boolean canBeReinforced() {
+    return !reinforced;
+  }
 
-			setKnown();
-		}
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ?(int)(30 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+  @Override
+  public void shatter(int cell) {
+
+    PathFinder.buildDistanceMap(cell, BArray.not(Level.losBlocking, null), 
+            DISTANCE);
+
+    if (reinforced) {
+      for (int offset : PathFinder.NEIGHBOURS9) {
+        Mob mob = Dungeon.level.findMob(cell + offset);
+        if (mob != null) {
+          Buff.prolong(mob, Frost.class, Frost.DURATION);
+        }
+        if (Dungeon.level.distance(curUser.pos, cell) <= 1) {
+          Buff.prolong(curUser, Frost.class, Frost.DURATION);
+        }
+      }
+    }
+
+    Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
+
+    boolean visible = false;
+    for (int i = 0; i < Dungeon.level.length(); i++) {
+      if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+        visible = Freezing.affect(i, fire) || visible;
+      }
+    }
+
+    if (visible) {
+      splash(cell);
+      Sample.INSTANCE.play(Assets.SND_SHATTER);
+
+      setKnown();
+    }
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

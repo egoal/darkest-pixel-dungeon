@@ -53,288 +53,294 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public class King extends Mob {
-	
-	private static final int MAX_ARMY_SIZE	= 5;
-	
-	{
-		spriteClass = KingSprite.class;
-		
-		HP = HT = 300;
-		EXP = 40;
-		defenseSkill = 25;
-		
-		Undead.count = 0;
 
-		properties.add(Property.BOSS);
-		properties.add(Property.UNDEAD);
+  private static final int MAX_ARMY_SIZE = 5;
 
-		addResistances(Damage.Element.SHADOW, 1.25f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
-	
-	private boolean nextPedestal = true;
-	
-	private static final String PEDESTAL = "pedestal";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( PEDESTAL, nextPedestal );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		nextPedestal = bundle.getBoolean( PEDESTAL );
-		BossHealthBar.assignBoss(this);
-	}
-	
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange( 25, 40 ), this, target);
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 32;
-	}
+  {
+    spriteClass = KingSprite.class;
 
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 14);
-		return dmg;
-	}
-	
-	@Override
-	protected boolean getCloser( int target ) {
-		return canTryToSummon() ?
-			super.getCloser( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) ) :
-			super.getCloser( target );
-	}
-	
-	@Override
-	protected boolean canAttack( Char enemy ) {
-		return canTryToSummon() ?
-			pos == ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) :
-			Dungeon.level.adjacent( pos, enemy.pos );
-	}
-	
-	private boolean canTryToSummon() {
-		if (Undead.count < maxArmySize()) {
-			Char ch = Actor.findChar( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) );
-			return ch == this || ch == null;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public boolean attack( Char enemy ) {
-		if (canTryToSummon() && pos == ((CityBossLevel)Dungeon.level).pedestal( nextPedestal )) {
-			summon();
-			return true;
-		} else {
-			if (Actor.findChar( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) ) == enemy) {
-				nextPedestal = !nextPedestal;
-			}
-			return super.attack(enemy);
-		}
-	}
+    HP = HT = 300;
+    EXP = 40;
+    defenseSkill = 25;
 
-	@Override
-	public int takeDamage(Damage dmg) {
-		int val	=	super.takeDamage(dmg);
-		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null) lock.addTime(dmg.value);
-		
-		return val;
-	}
-	
-	@Override
-	public void die( Object cause ) {
+    Undead.count = 0;
 
-		GameScene.bossSlain();
-		Dungeon.level.drop( new ArmorKit(), pos ).sprite.drop();
-		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
-		
-		super.die( cause );
-		
-		Badges.validateBossSlain();
+    properties.add(Property.BOSS);
+    properties.add(Property.UNDEAD);
 
-		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
-		if (beacon != null) {
-			beacon.upgrade();
-		}
-		
-		yell( Messages.get(this, "defeated", Dungeon.hero.givenName()) );
-	}
+    addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
 
-	@Override
-	public void aggro(Char ch) {
-		super.aggro(ch);
-		for (Mob mob : Dungeon.level.mobs){
-			if (mob instanceof Undead){
-				mob.aggro(ch);
-			}
-		}
-	}
+  private boolean nextPedestal = true;
 
-	private int maxArmySize() {
-		return 1 + MAX_ARMY_SIZE * (HT - HP) / HT;
-	}
-	
-	private void summon() {
+  private static final String PEDESTAL = "pedestal";
 
-		nextPedestal = !nextPedestal;
-		
-		sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
-		
-		boolean[] passable = Level.passable.clone();
-		for (Char c : Actor.chars()) {
-			passable[c.pos] = false;
-		}
-		
-		int undeadsToSummon = maxArmySize() - Undead.count;
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(PEDESTAL, nextPedestal);
+  }
 
-		PathFinder.buildDistanceMap( pos, passable, undeadsToSummon );
-		PathFinder.distance[pos] = Integer.MAX_VALUE;
-		int dist = 1;
-		
-	undeadLabel:
-		for (int i=0; i < undeadsToSummon; i++) {
-			do {
-				for (int j=0; j < Dungeon.level.length(); j++) {
-					if (PathFinder.distance[j] == dist) {
-						
-						Undead undead = new Undead();
-						undead.pos = j;
-						GameScene.add( undead );
-						
-						ScrollOfTeleportation.appear( undead, j );
-						new Flare( 3, 32 ).color( 0x000000, false ).show( undead.sprite, 2f ) ;
-						
-						PathFinder.distance[j] = Integer.MAX_VALUE;
-						
-						continue undeadLabel;
-					}
-				}
-				dist++;
-			} while (dist < undeadsToSummon);
-		}
-		
-		yell( Messages.get(this, "arise") );
-	}
-	
-	@Override
-	public void notice() {
-		super.notice();
-		BossHealthBar.assignBoss(this);
-		yell( Messages.get(this, "notice") );
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    nextPedestal = bundle.getBoolean(PEDESTAL);
+    BossHealthBar.assignBoss(this);
+  }
 
-	@Override
-	public Damage resistDamage(Damage dmg){
-		if(dmg.isFeatured(Damage.Feature.DEATH))
-			dmg.value	*=	0.5;
-		return super.resistDamage(dmg);
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Paralysis.class );
-		IMMUNITIES.add( Vertigo.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
-	
-	public static class Undead extends Mob {
-		
-		public static int count = 0;
-		
-		{
-			spriteClass = UndeadSprite.class;
-			
-			HP = HT = 28;
-			defenseSkill = 15;
-			
-			EXP = 0;
-			
-			state = WANDERING;
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(25, 40), this, target);
+  }
 
-			properties.add(Property.UNDEAD);
-			addResistances(Damage.Element.SHADOW, 1.25f);
-			addResistances(Damage.Element.HOLY, .667f);
-		}
-		
-		@Override
-		protected void onAdd() {
-			count++;
-			super.onAdd();
-		}
-		
-		@Override
-		protected void onRemove() {
-			count--;
-			super.onRemove();
-		}
+  @Override
+  public int attackSkill(Char target) {
+    return 32;
+  }
 
-		@Override
-		public Damage giveDamage(Char target) {
-			return new Damage(Random.NormalIntRange(15, 25), this, target);
-		}
-		
-		@Override
-		public int attackSkill( Char target ) {
-			return 16;
-		}
-		
-		@Override
-		public Damage attackProc(Damage damage ) {
-			if (Random.Int( MAX_ARMY_SIZE ) == 0) {
-				Buff.prolong((Char)damage.to, Paralysis.class, 1 );
-			}
-			
-			return damage;
-		}
-		
-		@Override
-		public int takeDamage(Damage dmg){
-			int val	=	super.takeDamage(dmg);
-			if (dmg.from instanceof ToxicGas) {
-				((ToxicGas)dmg.from).clear( pos );
-			}
-			
-			return val;
-		}
-		
-		@Override
-		public void die( Object cause ) {
-			super.die( cause );
-			
-			if (Dungeon.visible[pos]) {
-				Sample.INSTANCE.play( Assets.SND_BONES );
-			}
-		}
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 14);
+    return dmg;
+  }
 
-		@Override
-		public Damage defendDamage(Damage dmg) {
-			dmg.value	-=	Random.NormalIntRange(0, 5);
-			return dmg;
-		}
+  @Override
+  protected boolean getCloser(int target) {
+    return canTryToSummon() ?
+            super.getCloser(((CityBossLevel) Dungeon.level).pedestal
+                    (nextPedestal)) :
+            super.getCloser(target);
+  }
 
-		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-		static {
-			IMMUNITIES.add( Grim.class );
-			IMMUNITIES.add( Paralysis.class );
-		}
-		
-		@Override
-		public HashSet<Class<?>> immunizedBuffs() {
-			return IMMUNITIES;
-		}
-	}
+  @Override
+  protected boolean canAttack(Char enemy) {
+    return canTryToSummon() ?
+            pos == ((CityBossLevel) Dungeon.level).pedestal(nextPedestal) :
+            Dungeon.level.adjacent(pos, enemy.pos);
+  }
+
+  private boolean canTryToSummon() {
+    if (Undead.count < maxArmySize()) {
+      Char ch = Actor.findChar(((CityBossLevel) Dungeon.level).pedestal
+              (nextPedestal));
+      return ch == this || ch == null;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public boolean attack(Char enemy) {
+    if (canTryToSummon() && pos == ((CityBossLevel) Dungeon.level).pedestal
+            (nextPedestal)) {
+      summon();
+      return true;
+    } else {
+      if (Actor.findChar(((CityBossLevel) Dungeon.level).pedestal
+              (nextPedestal)) == enemy) {
+        nextPedestal = !nextPedestal;
+      }
+      return super.attack(enemy);
+    }
+  }
+
+  @Override
+  public int takeDamage(Damage dmg) {
+    int val = super.takeDamage(dmg);
+    LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+    if (lock != null) lock.addTime(dmg.value);
+
+    return val;
+  }
+
+  @Override
+  public void die(Object cause) {
+
+    GameScene.bossSlain();
+    Dungeon.level.drop(new ArmorKit(), pos).sprite.drop();
+    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+
+    super.die(cause);
+
+    Badges.validateBossSlain();
+
+    LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+    if (beacon != null) {
+      beacon.upgrade();
+    }
+
+    yell(Messages.get(this, "defeated", Dungeon.hero.givenName()));
+  }
+
+  @Override
+  public void aggro(Char ch) {
+    super.aggro(ch);
+    for (Mob mob : Dungeon.level.mobs) {
+      if (mob instanceof Undead) {
+        mob.aggro(ch);
+      }
+    }
+  }
+
+  private int maxArmySize() {
+    return 1 + MAX_ARMY_SIZE * (HT - HP) / HT;
+  }
+
+  private void summon() {
+
+    nextPedestal = !nextPedestal;
+
+    sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
+    Sample.INSTANCE.play(Assets.SND_CHALLENGE);
+
+    boolean[] passable = Level.passable.clone();
+    for (Char c : Actor.chars()) {
+      passable[c.pos] = false;
+    }
+
+    int undeadsToSummon = maxArmySize() - Undead.count;
+
+    PathFinder.buildDistanceMap(pos, passable, undeadsToSummon);
+    PathFinder.distance[pos] = Integer.MAX_VALUE;
+    int dist = 1;
+
+    undeadLabel:
+    for (int i = 0; i < undeadsToSummon; i++) {
+      do {
+        for (int j = 0; j < Dungeon.level.length(); j++) {
+          if (PathFinder.distance[j] == dist) {
+
+            Undead undead = new Undead();
+            undead.pos = j;
+            GameScene.add(undead);
+
+            ScrollOfTeleportation.appear(undead, j);
+            new Flare(3, 32).color(0x000000, false).show(undead.sprite, 2f);
+
+            PathFinder.distance[j] = Integer.MAX_VALUE;
+
+            continue undeadLabel;
+          }
+        }
+        dist++;
+      } while (dist < undeadsToSummon);
+    }
+
+    yell(Messages.get(this, "arise"));
+  }
+
+  @Override
+  public void notice() {
+    super.notice();
+    BossHealthBar.assignBoss(this);
+    yell(Messages.get(this, "notice"));
+  }
+
+  @Override
+  public Damage resistDamage(Damage dmg) {
+    if (dmg.isFeatured(Damage.Feature.DEATH))
+      dmg.value *= 0.5;
+    return super.resistDamage(dmg);
+  }
+
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+  static {
+    IMMUNITIES.add(Paralysis.class);
+    IMMUNITIES.add(Vertigo.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
+
+  public static class Undead extends Mob {
+
+    public static int count = 0;
+
+    {
+      spriteClass = UndeadSprite.class;
+
+      HP = HT = 28;
+      defenseSkill = 15;
+
+      EXP = 0;
+
+      state = WANDERING;
+
+      properties.add(Property.UNDEAD);
+      addResistances(Damage.Element.SHADOW, 1.25f);
+      addResistances(Damage.Element.HOLY, .667f);
+    }
+
+    @Override
+    protected void onAdd() {
+      count++;
+      super.onAdd();
+    }
+
+    @Override
+    protected void onRemove() {
+      count--;
+      super.onRemove();
+    }
+
+    @Override
+    public Damage giveDamage(Char target) {
+      return new Damage(Random.NormalIntRange(15, 25), this, target);
+    }
+
+    @Override
+    public int attackSkill(Char target) {
+      return 16;
+    }
+
+    @Override
+    public Damage attackProc(Damage damage) {
+      if (Random.Int(MAX_ARMY_SIZE) == 0) {
+        Buff.prolong((Char) damage.to, Paralysis.class, 1);
+      }
+
+      return damage;
+    }
+
+    @Override
+    public int takeDamage(Damage dmg) {
+      int val = super.takeDamage(dmg);
+      if (dmg.from instanceof ToxicGas) {
+        ((ToxicGas) dmg.from).clear(pos);
+      }
+
+      return val;
+    }
+
+    @Override
+    public void die(Object cause) {
+      super.die(cause);
+
+      if (Dungeon.visible[pos]) {
+        Sample.INSTANCE.play(Assets.SND_BONES);
+      }
+    }
+
+    @Override
+    public Damage defendDamage(Damage dmg) {
+      dmg.value -= Random.NormalIntRange(0, 5);
+      return dmg;
+    }
+
+    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+    static {
+      IMMUNITIES.add(Grim.class);
+      IMMUNITIES.add(Paralysis.class);
+    }
+
+    @Override
+    public HashSet<Class<?>> immunizedBuffs() {
+      return IMMUNITIES;
+    }
+  }
 }

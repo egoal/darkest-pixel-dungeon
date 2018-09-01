@@ -38,167 +38,177 @@ import com.watabou.noosa.TouchArea;
 
 public class AboutScene extends PixelScene {
 
-	private static final String TTL_DPD =   "Darkest Pixel Dungeon";
+  private static final String TTL_DPD = "Darkest Pixel Dungeon";
 
-	private static final String TXT_DPD =   "Design, Code, & Graphics: Lix";
+  private static final String TXT_DPD = "Design, Code, & Graphics: Lix";
 
-	private static final String LNK_DPD =   "github.com/egoal";
+  private static final String LNK_DPD = "github.com/egoal";
 
-	private static final String TTL_SHPX = "Shattered Pixel Dungeon";
+  private static final String TTL_SHPX = "Shattered Pixel Dungeon";
 
-	private static final String TXT_SHPX =
-			"Design, Code, & Graphics: Evan";
+  private static final String TXT_SHPX =
+          "Design, Code, & Graphics: Evan";
 
-	private static final String LNK_SHPX = "ShatteredPixel.com";
+  private static final String LNK_SHPX = "ShatteredPixel.com";
 
-	private static final String TTL_WATA = "Pixel Dungeon";
+  private static final String TTL_WATA = "Pixel Dungeon";
 
-	private static final String TXT_WATA =
-			"Code & Graphics: Watabou\n" +
-			"Music: Cube_Code";
-	
-	private static final String LNK_WATA = "pixeldungeon.watabou.ru";
-	
-	@Override
-	public void create() {
-		super.create();
+  private static final String TXT_WATA =
+          "Code & Graphics: Watabou\n" +
+                  "Music: Cube_Code";
 
-		final float colWidth = Camera.main.width / (DarkestPixelDungeon.landscape() ? 2 : 1);
-		final float colTop = (Camera.main.height / 2) - (DarkestPixelDungeon.landscape() ? 36 : 84);
-		final float wataOffset = DarkestPixelDungeon.landscape() ? colWidth : 0;
+  private static final String LNK_WATA = "pixeldungeon.watabou.ru";
 
-		// add dpd sign
-		Image lix   =   Icons.DPD_LIX.get();
-		lix.x   =   (colWidth - lix.width()) / 2;
-		lix.y   =   colTop;
-		align(lix);
-		add(lix);
+  @Override
+  public void create() {
+    super.create();
 
-		new Flare(7, 64.f).color(Window.DPD_COLOR, true).show(lix, 0).angularSpeed  =   +30;
+    final float colWidth = Camera.main.width / (DarkestPixelDungeon.landscape
+            () ? 2 : 1);
+    final float colTop = (Camera.main.height / 2) - (DarkestPixelDungeon
+            .landscape() ? 36 : 84);
+    final float wataOffset = DarkestPixelDungeon.landscape() ? colWidth : 0;
 
-		RenderedText dpdTitle   =   renderText(TTL_DPD, 8);
-		dpdTitle.hardlight(Window.DPD_COLOR);    // set the font color
-		add(dpdTitle);
-		dpdTitle.x  =   (colWidth-dpdTitle.width())/2;
-		dpdTitle.y  =   lix.y+lix.height+5;
-		align(dpdTitle);
+    // add dpd sign
+    Image lix = Icons.DPD_LIX.get();
+    lix.x = (colWidth - lix.width()) / 2;
+    lix.y = colTop;
+    align(lix);
+    add(lix);
 
-		RenderedTextMultiline dpdText   =   renderMultiline(TXT_DPD, 8);
-		dpdText.maxWidth((int)Math.min(colWidth, 120));
-		add(dpdText);
-		dpdText.setPos((colWidth-dpdText.width())/2, dpdTitle.y+dpdTitle.height()+12);
-		dpdText.hardlight(Window.DPD_COLOR);
-		align(dpdText);
+    new Flare(7, 64.f).color(Window.DPD_COLOR, true).show(lix, 0)
+            .angularSpeed = +30;
 
-		RenderedTextMultiline dpdlink   =   renderMultiline(LNK_DPD, 8 );
-		dpdlink.maxWidth(dpdText.maxWidth());
-		dpdlink.hardlight(Window.DPD_COLOR);
-		add(dpdlink);
-		dpdlink.setPos((DarkestPixelDungeon.landscape()?colWidth:0)+
-			(colWidth - dpdlink.width()) / 2, dpdText.bottom()+6);
-		align(dpdlink);
+    RenderedText dpdTitle = renderText(TTL_DPD, 8);
+    dpdTitle.hardlight(Window.DPD_COLOR);    // set the font color
+    add(dpdTitle);
+    dpdTitle.x = (colWidth - dpdTitle.width()) / 2;
+    dpdTitle.y = lix.y + lix.height + 5;
+    align(dpdTitle);
 
-		TouchArea dpdhotArea    =   new TouchArea(dpdlink.left(), dpdlink.top(),
-			dpdlink.width(), dpdlink.height()){
-			@Override
-			protected void onClick(Touch touch ){
-				Intent intent   =   new Intent( Intent.ACTION_VIEW,
-					Uri.parse("https://"+LNK_DPD));
-				Game.instance.startActivity(intent);
-			}
-		};
-		add(dpdhotArea);
+    RenderedTextMultiline dpdText = renderMultiline(TXT_DPD, 8);
+    dpdText.maxWidth((int) Math.min(colWidth, 120));
+    add(dpdText);
+    dpdText.setPos((colWidth - dpdText.width()) / 2, dpdTitle.y + dpdTitle
+            .height() + 12);
+    dpdText.hardlight(Window.DPD_COLOR);
+    align(dpdText);
 
-		// shattered pixel dungeon
-		Image shpx = Icons.SHPX.get();
-		if(DarkestPixelDungeon.landscape()){
-			shpx.y  =   colTop;
-			shpx.x  =   lix.x+colWidth;
-		}else{
-			shpx.x=(colWidth-shpx.width())/2;
-			shpx.y  =   dpdhotArea.y+dpdhotArea.height()+30;
-		}
-		align(shpx);
-		add( shpx );
+    RenderedTextMultiline dpdlink = renderMultiline(LNK_DPD, 8);
+    dpdlink.maxWidth(dpdText.maxWidth());
+    dpdlink.hardlight(Window.DPD_COLOR);
+    add(dpdlink);
+    dpdlink.setPos((DarkestPixelDungeon.landscape() ? colWidth : 0) +
+            (colWidth - dpdlink.width()) / 2, dpdText.bottom() + 6);
+    align(dpdlink);
 
-		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +10;
+    TouchArea dpdhotArea = new TouchArea(dpdlink.left(), dpdlink.top(),
+            dpdlink.width(), dpdlink.height()) {
+      @Override
+      protected void onClick(Touch touch) {
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://" + LNK_DPD));
+        Game.instance.startActivity(intent);
+      }
+    };
+    add(dpdhotArea);
 
-		RenderedText shpxtitle = renderText( TTL_SHPX, 8 );
-		shpxtitle.hardlight( Window.SHPX_COLOR );
-		add( shpxtitle );
+    // shattered pixel dungeon
+    Image shpx = Icons.SHPX.get();
+    if (DarkestPixelDungeon.landscape()) {
+      shpx.y = colTop;
+      shpx.x = lix.x + colWidth;
+    } else {
+      shpx.x = (colWidth - shpx.width()) / 2;
+      shpx.y = dpdhotArea.y + dpdhotArea.height() + 30;
+    }
+    align(shpx);
+    add(shpx);
 
-		shpxtitle.x = (colWidth - shpxtitle.width()) / 2;
-		if(DarkestPixelDungeon.landscape())
-			shpxtitle.x +=  colWidth;
-		shpxtitle.y = shpx.y + shpx.height + 5;
-		align(shpxtitle);
+    new Flare(7, 64).color(0x225511, true).show(shpx, 0).angularSpeed = +10;
 
-		RenderedTextMultiline shpxlink = renderMultiline( LNK_SHPX, 8 );
-		shpxlink.maxWidth(dpdText.maxWidth());
-		shpxlink.hardlight( Window.SHPX_COLOR );
-		add( shpxlink );
+    RenderedText shpxtitle = renderText(TTL_SHPX, 8);
+    shpxtitle.hardlight(Window.SHPX_COLOR);
+    add(shpxtitle);
 
-		shpxlink.setPos((DarkestPixelDungeon.landscape()?colWidth:0)+
-			(colWidth - shpxlink.width()) / 2, shpxtitle.y+shpxtitle.height()+ 6);
-		align(shpxlink);
+    shpxtitle.x = (colWidth - shpxtitle.width()) / 2;
+    if (DarkestPixelDungeon.landscape())
+      shpxtitle.x += colWidth;
+    shpxtitle.y = shpx.y + shpx.height + 5;
+    align(shpxtitle);
 
-		TouchArea shpxhotArea = new TouchArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {
-			@Override
-			protected void onClick( Touch touch ) {
-				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_SHPX ) );
-				Game.instance.startActivity( intent );
-			}
-		};
-		add( shpxhotArea );
+    RenderedTextMultiline shpxlink = renderMultiline(LNK_SHPX, 8);
+    shpxlink.maxWidth(dpdText.maxWidth());
+    shpxlink.hardlight(Window.SHPX_COLOR);
+    add(shpxlink);
 
-		// pixel dungeon
-		Image wata = Icons.WATA.get();
-		wata.x = wataOffset + (colWidth - wata.width()) / 2;
-		wata.y =    shpxlink.bottom()+8;
-		align(wata);
-		add( wata );
+    shpxlink.setPos((DarkestPixelDungeon.landscape() ? colWidth : 0) +
+            (colWidth - shpxlink.width()) / 2, shpxtitle.y + shpxtitle.height
+            () + 6);
+    align(shpxlink);
 
-		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +10;
+    TouchArea shpxhotArea = new TouchArea(shpxlink.left(), shpxlink.top(), 
+            shpxlink.width(), shpxlink.height()) {
+      @Override
+      protected void onClick(Touch touch) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + 
+                LNK_SHPX));
+        Game.instance.startActivity(intent);
+      }
+    };
+    add(shpxhotArea);
 
-		RenderedText wataTitle = renderText( TTL_WATA, 8 );
-		wataTitle.hardlight(Window.TITLE_COLOR);
-		add( wataTitle );
+    // pixel dungeon
+    Image wata = Icons.WATA.get();
+    wata.x = wataOffset + (colWidth - wata.width()) / 2;
+    wata.y = shpxlink.bottom() + 8;
+    align(wata);
+    add(wata);
 
-		wataTitle.x = wataOffset + (colWidth - wataTitle.width()) / 2;
-		wataTitle.y = wata.y + wata.height + 8;
-		align(wataTitle);
-		
-		RenderedTextMultiline wataLink = renderMultiline( LNK_WATA, 8 );
-		wataLink.maxWidth((int)Math.min(colWidth, 120));
-		wataLink.hardlight(Window.TITLE_COLOR);
-		add(wataLink);
-		
-		wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2 , wataTitle.y+wataTitle.height()+ 6);
-		align(wataLink);
-		
-		TouchArea hotArea = new TouchArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {
-			@Override
-			protected void onClick( Touch touch ) {
-				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_WATA ) );
-				Game.instance.startActivity( intent );
-			}
-		};
-		add( hotArea );
+    new Flare(7, 64).color(0x112233, true).show(wata, 0).angularSpeed = +10;
 
-		
-		Archs archs = new Archs();
-		archs.setSize( Camera.main.width, Camera.main.height );
-		addToBack( archs );
+    RenderedText wataTitle = renderText(TTL_WATA, 8);
+    wataTitle.hardlight(Window.TITLE_COLOR);
+    add(wataTitle);
 
-		ExitButton btnExit = new ExitButton();
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		add( btnExit );
+    wataTitle.x = wataOffset + (colWidth - wataTitle.width()) / 2;
+    wataTitle.y = wata.y + wata.height + 8;
+    align(wataTitle);
 
-		fadeIn();
-	}
-	
-	@Override
-	protected void onBackPressed() {
-		DarkestPixelDungeon.switchNoFade(TitleScene.class);
-	}
+    RenderedTextMultiline wataLink = renderMultiline(LNK_WATA, 8);
+    wataLink.maxWidth((int) Math.min(colWidth, 120));
+    wataLink.hardlight(Window.TITLE_COLOR);
+    add(wataLink);
+
+    wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2, wataTitle
+            .y + wataTitle.height() + 6);
+    align(wataLink);
+
+    TouchArea hotArea = new TouchArea(wataLink.left(), wataLink.top(), 
+            wataLink.width(), wataLink.height()) {
+      @Override
+      protected void onClick(Touch touch) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + 
+                LNK_WATA));
+        Game.instance.startActivity(intent);
+      }
+    };
+    add(hotArea);
+
+
+    Archs archs = new Archs();
+    archs.setSize(Camera.main.width, Camera.main.height);
+    addToBack(archs);
+
+    ExitButton btnExit = new ExitButton();
+    btnExit.setPos(Camera.main.width - btnExit.width(), 0);
+    add(btnExit);
+
+    fadeIn();
+  }
+
+  @Override
+  protected void onBackPressed() {
+    DarkestPixelDungeon.switchNoFade(TitleScene.class);
+  }
 }

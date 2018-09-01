@@ -27,20 +27,20 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionBandolier extends Bag {
 
-	{
-		image = ItemSpriteSheet.BANDOLIER;
+  {
+    image = ItemSpriteSheet.BANDOLIER;
 
-		size = Belongings.BACKPACK_SIZE;
-	}
+    size = Belongings.BACKPACK_SIZE;
+  }
 
-	@Override
-	public boolean grab( Item item ) {
-		return item instanceof Potion;
-	}
+  @Override
+  public boolean grab(Item item) {
+    return item instanceof Potion;
+  }
 
-	@Override
-	public int price() {
-		return 40;
-	}
+  @Override
+  public int price() {
+    return 40;
+  }
 
 }

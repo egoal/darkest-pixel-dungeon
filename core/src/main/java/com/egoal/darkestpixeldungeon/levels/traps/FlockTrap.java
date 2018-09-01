@@ -36,37 +36,41 @@ import com.watabou.utils.Random;
 
 public class FlockTrap extends Trap {
 
-	{
-		color = TrapSprite.WHITE;
-		shape = TrapSprite.WAVES;
-	}
+  {
+    color = TrapSprite.WHITE;
+    shape = TrapSprite.WAVES;
+  }
 
 
-	@Override
-	public void activate() {
-		//use an actor as we want to put this on a slight delay so all chars get a chance to act this turn first.
-		Actor.add(new Actor() {
+  @Override
+  public void activate() {
+    //use an actor as we want to put this on a slight delay so all chars get 
+    // a chance to act this turn first.
+    Actor.add(new Actor() {
 
-			{ actPriority = 3; }
+      {
+        actPriority = 3;
+      }
 
-			protected boolean act() {
-				PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
-				for (int i = 0; i < PathFinder.distance.length; i++) {
-					if (PathFinder.distance[i] < Integer.MAX_VALUE)
-						if (Dungeon.level.insideMap(i) && Actor.findChar(i) == null && !(Level.pit[i])) {
-						Sheep sheep = new Sheep();
-						sheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
-						sheep.pos = i;
-						GameScene.add(sheep);
-						CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
-					}
-				}
-				Sample.INSTANCE.play(Assets.SND_PUFF);
-				Actor.remove(this);
-				return true;
-			}
-		});
+      protected boolean act() {
+        PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), 2);
+        for (int i = 0; i < PathFinder.distance.length; i++) {
+          if (PathFinder.distance[i] < Integer.MAX_VALUE)
+            if (Dungeon.level.insideMap(i) && Actor.findChar(i) == null && !
+                    (Level.pit[i])) {
+              Sheep sheep = new Sheep();
+              sheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
+              sheep.pos = i;
+              GameScene.add(sheep);
+              CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
+            }
+        }
+        Sample.INSTANCE.play(Assets.SND_PUFF);
+        Actor.remove(this);
+        return true;
+      }
+    });
 
-	}
+  }
 
 }

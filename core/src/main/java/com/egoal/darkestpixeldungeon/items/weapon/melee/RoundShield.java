@@ -25,20 +25,20 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class RoundShield extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.ROUND_SHIELD;
+  {
+    image = ItemSpriteSheet.ROUND_SHIELD;
 
-		tier = 3;
-	}
+    tier = 3;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return  3*(tier+1) +    //12 base, down from 20
-				lvl*(tier-1);   //+2 per level, down from +4
-	}
+  @Override
+  public int max(int lvl) {
+    return 3 * (tier + 1) +    //12 base, down from 20
+            lvl * (tier - 1);   //+2 per level, down from +4
+  }
 
-	@Override
-	public int defenseFactor(Hero hero) {
-		return 5+2*level();     //5 extra defence, plus 2 per level;
-	}
+  @Override
+  public int defenseFactor(Hero hero) {
+    return 5 + 2 * level();     //5 extra defence, plus 2 per level;
+  }
 }

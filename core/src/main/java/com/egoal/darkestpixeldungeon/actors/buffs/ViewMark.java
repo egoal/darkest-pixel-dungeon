@@ -8,36 +8,38 @@ import com.watabou.utils.Bundle;
  * Created by 93942 on 5/12/2018.
  */
 
-public class ViewMark extends FlavourBuff{
-	
-	public int observer	=	0;
+public class ViewMark extends FlavourBuff {
 
-	private static final String OBSERVER    = "observer";
+  public int observer = 0;
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( OBSERVER, observer );
+  private static final String OBSERVER = "observer";
 
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(OBSERVER, observer);
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		observer	=	bundle.getInt( OBSERVER );
-	}
-	
-	@Override
-	public int icon(){ return BuffIndicator.STARE; }
+  }
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    observer = bundle.getInt(OBSERVER);
+  }
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc");
-	}
-	
+  @Override
+  public int icon() {
+    return BuffIndicator.STARE;
+  }
+
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc");
+  }
+
 }

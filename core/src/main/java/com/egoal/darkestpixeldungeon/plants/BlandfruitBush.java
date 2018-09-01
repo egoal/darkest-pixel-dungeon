@@ -26,22 +26,22 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class BlandfruitBush extends Plant {
 
-	{
-		image = 8;
-	}
+  {
+    image = 8;
+  }
 
-	@Override
-	public void activate() {
-		Dungeon.level.drop( new Blandfruit(), pos ).sprite.drop();
-	}
+  @Override
+  public void activate() {
+    Dungeon.level.drop(new Blandfruit(), pos).sprite.drop();
+  }
 
-	public static class Seed extends Plant.Seed {
-		{
-			image = ItemSpriteSheet.SEED_BLANDFRUIT;
+  public static class Seed extends Plant.Seed {
+    {
+      image = ItemSpriteSheet.SEED_BLANDFRUIT;
 
-			plantClass = BlandfruitBush.class;
-			alchemyClass = null;
-		}
+      plantClass = BlandfruitBush.class;
+      alchemyClass = null;
+    }
 
-	}
+  }
 }

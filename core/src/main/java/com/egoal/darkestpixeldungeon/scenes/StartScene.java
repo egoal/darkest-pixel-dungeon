@@ -54,472 +54,477 @@ import java.util.HashMap;
 
 public class StartScene extends PixelScene {
 
-	private static final float BUTTON_HEIGHT	= 24;
-	private static final float GAP				= 2;
-
-	private static final float WIDTH_P    = 116;
-	private static final float HEIGHT_P    = 220;
-
-	private static final float WIDTH_L    = 224;
-	private static final float HEIGHT_L    = 124;
-
-	private static HashMap<HeroClass, ClassShield> shields = new HashMap<>();
-
-	private float buttonX;
-	private float buttonY;
-
-	private GameButton btnLoad;
-	private GameButton btnNewGame;
-
-	private boolean huntressUnlocked;
-	private Group unlock;
-
-	public static HeroClass curClass;
-
-	@Override
-	public void create() {
-
-		super.create();
-
-		Badges.loadGlobal();
-
-		uiCamera.visible = false;
-
-		int w = Camera.main.width;
-		int h = Camera.main.height;
-
-		float width, height;
-		if (DarkestPixelDungeon.landscape()) {
-			width = WIDTH_L;
-			height = HEIGHT_L;
-		} else {
-			width = WIDTH_P;
-			height = HEIGHT_P;
-		}
-
-		float left = (w - width) / 2;
-		float top = (h - height) / 2;
-		float bottom = h - top;
-
-		Archs archs = new Archs();
-		archs.setSize( w, h );
-		add( archs );
-
-		Image title = BannerSprites.get( Type.SELECT_YOUR_HERO );
-		title.x = (w - title.width()) / 2;
-		title.y = top;
-		align( title );
-		add( title );
-
-		buttonX = left;
-		buttonY = bottom - BUTTON_HEIGHT;
-
-		btnNewGame = new GameButton( Messages.get(this, "new") ) {
-			@Override
-			protected void onClick() {
-				if (GamesInProgress.check( curClass ) != null) {
-					StartScene.this.add( new WndOptions(
-							Messages.get(StartScene.class, "really"),
-							Messages.get(StartScene.class, "warning"),
-							Messages.get(StartScene.class, "yes"),
-							Messages.get(StartScene.class, "no") ) {
-						@Override
-						protected void onSelect( int index ) {
-							if (index == 0) {
-								startNewGame();
-							}
-						}
-					} );
-
-				} else {
-					startNewGame();
-				}
-			}
-		};
-		add( btnNewGame );
-
-		btnLoad = new GameButton( Messages.get(this, "load") ) {
-			@Override
-			protected void onClick() {
-				InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
-				Game.switchScene( InterlevelScene.class );
-			}
-		};
-		add( btnLoad );
-
-		float centralHeight = buttonY - title.y - title.height();
-
-		HeroClass[] classes = {
-				HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS,
-
-			HeroClass.SORCERESS,
-		};
-		for (HeroClass cl : classes) {
-			ClassShield shield = new ClassShield( cl );
-			shields.put( cl, shield );
-			add( shield );
-		}
-
-		// layout
-		if (DarkestPixelDungeon.landscape()) {
-			float shieldW = width / 5;
-			float shieldH = Math.min( centralHeight, shieldW );
-			top = title.y + title.height + (centralHeight - shieldH) / 2;
-			for (int i=0; i < classes.length; i++) {
-				ClassShield shield = shields.get( classes[i] );
-				shield.setRect( left + i * shieldW, top, shieldW, shieldH );
-				align(shield);
-			}
-
-			ChallengeButton challenge = new ChallengeButton();
-			challenge.setPos(
-					w/2 - challenge.width()/2,
-					top + shieldH/2 - challenge.height()/2 );
-			add( challenge );
-
-		} else {
-			float shieldW = width / 3;
-			float shieldH = Math.min( centralHeight / 2, shieldW * 1.2f );
-			top =   title.y+title.height+shieldH*.25f;
-			// top = title.y + title.height() + centralHeight / 2 - shieldH;
-			for (int i=0; i < classes.length; i++) {
-				ClassShield shield = shields.get( classes[i] );
-				shield.setRect(
-						left + (i % 3) * shieldW,
-						top + (i / 3) * shieldH,
-						shieldW, shieldH );
-				align(shield);
-			}
-
-			ChallengeButton challenge = new ChallengeButton();
-			challenge.setPos(w/2-challenge.width()/2,
-				buttonY-challenge.height()-6);
-			align(challenge);
-			add( challenge );
-
-		}
-
-		unlock = new Group();
-		add( unlock );
-
-		if (!(huntressUnlocked = Badges.isUnlocked( Badges.Badge.BOSS_SLAIN_3 ))) {
-
-			RenderedTextMultiline text = renderMultiline( Messages.get(this, "unlock"), 9 );
-			text.maxWidth((int)width);
-			text.hardlight( 0xFFFF00 );
-			text.setPos(w / 2 - text.width() / 2, (bottom - BUTTON_HEIGHT) + (BUTTON_HEIGHT - text.height()) / 2);
-			align(text);
-			unlock.add(text);
-
-		}
-
-		ExitButton btnExit = new ExitButton();
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		add( btnExit );
-
-		curClass = null;
-		updateClass( HeroClass.values()[DarkestPixelDungeon.lastClass()] );
-
-		fadeIn();
-
-		Badges.loadingListener = new Callback() {
-			@Override
-			public void call() {
-				if (Game.scene() == StartScene.this) {
-					DarkestPixelDungeon.switchNoFade( StartScene.class );
-				}
-			}
-		};
-	}
-
-	@Override
-	public void destroy() {
-
-		Badges.saveGlobal();
-		Badges.loadingListener = null;
-
-		super.destroy();
-
-	}
-
-	private void updateClass( HeroClass cl ) {
-
-		if (curClass == cl) {
-			add( new WndClass( cl ) );
-			return;
-		}
-
-		if (curClass != null) {
-			shields.get( curClass ).highlight( false );
-		}
-		shields.get( curClass = cl ).highlight( true );
-
-		if (cl != HeroClass.HUNTRESS || huntressUnlocked) {
-
-			unlock.visible = false;
-
-			GamesInProgress.Info info = GamesInProgress.check( curClass );
-			if (info != null) {
-
-				btnLoad.visible = true;
-				btnLoad.secondary( Messages.format( Messages.get(this, "depth_level"), info.depth, info.level ), info.challenges );
-				btnNewGame.visible = true;
-				btnNewGame.secondary( Messages.get(this, "erase"), false );
-
-				float w = (Camera.main.width - GAP) / 2 - buttonX;
-
-				btnLoad.setRect(
-						buttonX, buttonY, w, BUTTON_HEIGHT );
-				btnNewGame.setRect(
-						btnLoad.right() + GAP, buttonY, w, BUTTON_HEIGHT );
-
-			} else {
-				btnLoad.visible = false;
+  private static final float BUTTON_HEIGHT = 24;
+  private static final float GAP = 2;
+
+  private static final float WIDTH_P = 116;
+  private static final float HEIGHT_P = 220;
+
+  private static final float WIDTH_L = 224;
+  private static final float HEIGHT_L = 124;
+
+  private static HashMap<HeroClass, ClassShield> shields = new HashMap<>();
+
+  private float buttonX;
+  private float buttonY;
+
+  private GameButton btnLoad;
+  private GameButton btnNewGame;
+
+  private boolean huntressUnlocked;
+  private Group unlock;
+
+  public static HeroClass curClass;
+
+  @Override
+  public void create() {
+
+    super.create();
+
+    Badges.loadGlobal();
+
+    uiCamera.visible = false;
+
+    int w = Camera.main.width;
+    int h = Camera.main.height;
+
+    float width, height;
+    if (DarkestPixelDungeon.landscape()) {
+      width = WIDTH_L;
+      height = HEIGHT_L;
+    } else {
+      width = WIDTH_P;
+      height = HEIGHT_P;
+    }
+
+    float left = (w - width) / 2;
+    float top = (h - height) / 2;
+    float bottom = h - top;
+
+    Archs archs = new Archs();
+    archs.setSize(w, h);
+    add(archs);
+
+    Image title = BannerSprites.get(Type.SELECT_YOUR_HERO);
+    title.x = (w - title.width()) / 2;
+    title.y = top;
+    align(title);
+    add(title);
+
+    buttonX = left;
+    buttonY = bottom - BUTTON_HEIGHT;
+
+    btnNewGame = new GameButton(Messages.get(this, "new")) {
+      @Override
+      protected void onClick() {
+        if (GamesInProgress.check(curClass) != null) {
+          StartScene.this.add(new WndOptions(
+                  Messages.get(StartScene.class, "really"),
+                  Messages.get(StartScene.class, "warning"),
+                  Messages.get(StartScene.class, "yes"),
+                  Messages.get(StartScene.class, "no")) {
+            @Override
+            protected void onSelect(int index) {
+              if (index == 0) {
+                startNewGame();
+              }
+            }
+          });
+
+        } else {
+          startNewGame();
+        }
+      }
+    };
+    add(btnNewGame);
+
+    btnLoad = new GameButton(Messages.get(this, "load")) {
+      @Override
+      protected void onClick() {
+        InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
+        Game.switchScene(InterlevelScene.class);
+      }
+    };
+    add(btnLoad);
+
+    float centralHeight = buttonY - title.y - title.height();
+
+    HeroClass[] classes = {
+            HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass
+            .HUNTRESS,
+
+            HeroClass.SORCERESS,
+    };
+    for (HeroClass cl : classes) {
+      ClassShield shield = new ClassShield(cl);
+      shields.put(cl, shield);
+      add(shield);
+    }
+
+    // layout
+    if (DarkestPixelDungeon.landscape()) {
+      float shieldW = width / 5;
+      float shieldH = Math.min(centralHeight, shieldW);
+      top = title.y + title.height + (centralHeight - shieldH) / 2;
+      for (int i = 0; i < classes.length; i++) {
+        ClassShield shield = shields.get(classes[i]);
+        shield.setRect(left + i * shieldW, top, shieldW, shieldH);
+        align(shield);
+      }
+
+      ChallengeButton challenge = new ChallengeButton();
+      challenge.setPos(
+              w / 2 - challenge.width() / 2,
+              top + shieldH / 2 - challenge.height() / 2);
+      add(challenge);
+
+    } else {
+      float shieldW = width / 3;
+      float shieldH = Math.min(centralHeight / 2, shieldW * 1.2f);
+      top = title.y + title.height + shieldH * .25f;
+      // top = title.y + title.height() + centralHeight / 2 - shieldH;
+      for (int i = 0; i < classes.length; i++) {
+        ClassShield shield = shields.get(classes[i]);
+        shield.setRect(
+                left + (i % 3) * shieldW,
+                top + (i / 3) * shieldH,
+                shieldW, shieldH);
+        align(shield);
+      }
+
+      ChallengeButton challenge = new ChallengeButton();
+      challenge.setPos(w / 2 - challenge.width() / 2,
+              buttonY - challenge.height() - 6);
+      align(challenge);
+      add(challenge);
+
+    }
+
+    unlock = new Group();
+    add(unlock);
+
+    if (!(huntressUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3))) {
+
+      RenderedTextMultiline text = renderMultiline(Messages.get(this, 
+              "unlock"), 9);
+      text.maxWidth((int) width);
+      text.hardlight(0xFFFF00);
+      text.setPos(w / 2 - text.width() / 2, (bottom - BUTTON_HEIGHT) + 
+              (BUTTON_HEIGHT - text.height()) / 2);
+      align(text);
+      unlock.add(text);
+
+    }
+
+    ExitButton btnExit = new ExitButton();
+    btnExit.setPos(Camera.main.width - btnExit.width(), 0);
+    add(btnExit);
+
+    curClass = null;
+    updateClass(HeroClass.values()[DarkestPixelDungeon.lastClass()]);
+
+    fadeIn();
+
+    Badges.loadingListener = new Callback() {
+      @Override
+      public void call() {
+        if (Game.scene() == StartScene.this) {
+          DarkestPixelDungeon.switchNoFade(StartScene.class);
+        }
+      }
+    };
+  }
+
+  @Override
+  public void destroy() {
+
+    Badges.saveGlobal();
+    Badges.loadingListener = null;
+
+    super.destroy();
+
+  }
+
+  private void updateClass(HeroClass cl) {
+
+    if (curClass == cl) {
+      add(new WndClass(cl));
+      return;
+    }
+
+    if (curClass != null) {
+      shields.get(curClass).highlight(false);
+    }
+    shields.get(curClass = cl).highlight(true);
+
+    if (cl != HeroClass.HUNTRESS || huntressUnlocked) {
+
+      unlock.visible = false;
+
+      GamesInProgress.Info info = GamesInProgress.check(curClass);
+      if (info != null) {
+
+        btnLoad.visible = true;
+        btnLoad.secondary(Messages.format(Messages.get(this, "depth_level"), 
+                info.depth, info.level), info.challenges);
+        btnNewGame.visible = true;
+        btnNewGame.secondary(Messages.get(this, "erase"), false);
+
+        float w = (Camera.main.width - GAP) / 2 - buttonX;
+
+        btnLoad.setRect(
+                buttonX, buttonY, w, BUTTON_HEIGHT);
+        btnNewGame.setRect(
+                btnLoad.right() + GAP, buttonY, w, BUTTON_HEIGHT);
+
+      } else {
+        btnLoad.visible = false;
+
+        btnNewGame.visible = true;
+        btnNewGame.secondary(null, false);
+        btnNewGame.setRect(buttonX, buttonY, Camera.main.width - buttonX * 2,
+                BUTTON_HEIGHT);
+      }
+
+    } else {
+
+      unlock.visible = true;
+      btnLoad.visible = false;
+      btnNewGame.visible = false;
 
-				btnNewGame.visible = true;
-				btnNewGame.secondary( null, false );
-				btnNewGame.setRect( buttonX, buttonY, Camera.main.width - buttonX * 2, BUTTON_HEIGHT );
-			}
+    }
+  }
 
-		} else {
+  private void startNewGame() {
+
+    Dungeon.hero = null;
+    InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+
+    if (DarkestPixelDungeon.intro()) {
+      DarkestPixelDungeon.intro(false);
+      Game.switchScene(IntroScene.class);
+    } else {
+      Game.switchScene(InterlevelScene.class);
+    }
+  }
+
+  @Override
+  protected void onBackPressed() {
+    DarkestPixelDungeon.switchNoFade(TitleScene.class);
+  }
 
-			unlock.visible = true;
-			btnLoad.visible = false;
-			btnNewGame.visible = false;
+  private static class GameButton extends RedButton {
 
-		}
-	}
+    private static final int SECONDARY_COLOR_N = 0xCACFC2;
+    private static final int SECONDARY_COLOR_H = 0xFFFF88;
 
-	private void startNewGame() {
+    private RenderedText secondary;
 
-		Dungeon.hero = null;
-		InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+    public GameButton(String primary) {
+      super(primary);
 
-		if (DarkestPixelDungeon.intro()) {
-			DarkestPixelDungeon.intro( false );
-			Game.switchScene( IntroScene.class );
-		} else {
-			Game.switchScene( InterlevelScene.class );
-		}
-	}
+      this.secondary.text(null);
+    }
 
-	@Override
-	protected void onBackPressed() {
-		DarkestPixelDungeon.switchNoFade( TitleScene.class );
-	}
+    @Override
+    protected void createChildren() {
+      super.createChildren();
 
-	private static class GameButton extends RedButton{
+      secondary = renderText(6);
+      add(secondary);
+    }
 
-		private static final int SECONDARY_COLOR_N    = 0xCACFC2;
-		private static final int SECONDARY_COLOR_H    = 0xFFFF88;
+    @Override
+    protected void layout() {
+      super.layout();
 
-		private RenderedText secondary;
+      if (secondary.text().length() > 0) {
+        text.y = y + (height - text.height() - secondary.baseLine()) / 2;
 
-		public GameButton( String primary ) {
-			super( primary );
+        secondary.x = x + (width - secondary.width()) / 2;
+        secondary.y = text.y + text.height();
+      } else {
+        text.y = y + (height - text.baseLine()) / 2;
+      }
+      align(text);
+      align(secondary);
+    }
 
-			this.secondary.text( null );
-		}
+    public void secondary(String text, boolean highlighted) {
+      secondary.text(text);
 
-		@Override
-		protected void createChildren() {
-			super.createChildren();
+      secondary.hardlight(highlighted ? SECONDARY_COLOR_H : SECONDARY_COLOR_N);
+    }
+  }
 
-			secondary = renderText( 6 );
-			add( secondary );
-		}
+  private class ClassShield extends Button {
 
-		@Override
-		protected void layout() {
-			super.layout();
+    private static final float MIN_BRIGHTNESS = 0.6f;
 
-			if (secondary.text().length() > 0) {
-				text.y = y + (height - text.height() - secondary.baseLine()) / 2;
+    private static final int BASIC_NORMAL = 0x444444;
+    private static final int BASIC_HIGHLIGHTED = 0xCACFC2;
 
-				secondary.x = x + (width - secondary.width()) / 2;
-				secondary.y = text.y + text.height();
-			} else {
-				text.y = y + (height - text.baseLine()) / 2;
-			}
-			align(text);
-			align(secondary);
-		}
+    private static final int MASTERY_NORMAL = 0x666644;
+    private static final int MASTERY_HIGHLIGHTED = 0xFFFF88;
 
-		public void secondary( String text, boolean highlighted ) {
-			secondary.text( text );
+    private static final int WIDTH = 24;
+    private static final int HEIGHT = 32;
+    // private static final float SCALE	= 1.75f;
+    private static final float SCALE = 1.f;
 
-			secondary.hardlight( highlighted ? SECONDARY_COLOR_H : SECONDARY_COLOR_N );
-		}
-	}
+    private HeroClass cl;
 
-	private class ClassShield extends Button {
+    private Image avatar;
+    private RenderedText name;
+    private Emitter emitter;
 
-		private static final float MIN_BRIGHTNESS	= 0.6f;
+    private float brightness;
 
-		private static final int BASIC_NORMAL        = 0x444444;
-		private static final int BASIC_HIGHLIGHTED    = 0xCACFC2;
+    private int normal;
+    private int highlighted;
 
-		private static final int MASTERY_NORMAL        = 0x666644;
-		private static final int MASTERY_HIGHLIGHTED= 0xFFFF88;
+    public ClassShield(HeroClass cl) {
+      super();
 
-		private static final int WIDTH	= 24;
-		private static final int HEIGHT	= 32;
-		// private static final float SCALE	= 1.75f;
-		private static final float SCALE    =   1.f;
+      this.cl = cl;
 
-		private HeroClass cl;
+      avatar.frame(cl.ordinal() * WIDTH, 0, WIDTH, HEIGHT);
+      avatar.scale.set(SCALE);
 
-		private Image avatar;
-		private RenderedText name;
-		private Emitter emitter;
+      if (Badges.isUnlocked(cl.masteryBadge())) {
+        normal = MASTERY_NORMAL;
+        highlighted = MASTERY_HIGHLIGHTED;
+      } else {
+        normal = BASIC_NORMAL;
+        highlighted = BASIC_HIGHLIGHTED;
+      }
 
-		private float brightness;
+      name.text(cl.title().toUpperCase());
+      name.hardlight(normal);
 
-		private int normal;
-		private int highlighted;
+      brightness = MIN_BRIGHTNESS;
+      updateBrightness();
+    }
 
-		public ClassShield( HeroClass cl ) {
-			super();
+    @Override
+    protected void createChildren() {
 
-			this.cl = cl;
+      super.createChildren();
 
-			avatar.frame( cl.ordinal() * WIDTH, 0, WIDTH, HEIGHT );
-			avatar.scale.set( SCALE );
+      // avatar = new Image( Assets.AVATARS );
+      avatar = new Image(Assets.DPD_AVATARS);
+      add(avatar);
 
-			if (Badges.isUnlocked( cl.masteryBadge() )) {
-				normal = MASTERY_NORMAL;
-				highlighted = MASTERY_HIGHLIGHTED;
-			} else {
-				normal = BASIC_NORMAL;
-				highlighted = BASIC_HIGHLIGHTED;
-			}
+      name = renderText(9);
+      add(name);
 
-			name.text( cl.title().toUpperCase() );
-			name.hardlight( normal );
+      emitter = new BitmaskEmitter(avatar);
+      add(emitter);
+    }
 
-			brightness = MIN_BRIGHTNESS;
-			updateBrightness();
-		}
+    @Override
+    protected void layout() {
 
-		@Override
-		protected void createChildren() {
+      super.layout();
 
-			super.createChildren();
-
-			// avatar = new Image( Assets.AVATARS );
-			avatar  =   new Image(Assets.DPD_AVATARS);
-			add( avatar );
-
-			name = renderText( 9 );
-			add( name );
-
-			emitter = new BitmaskEmitter( avatar );
-			add( emitter );
-		}
-
-		@Override
-		protected void layout() {
-
-			super.layout();
-
-			avatar.x = x + (width - avatar.width()) / 2;
-			avatar.y = y + (height - avatar.height() - name.height()) / 2;
-			align(avatar);
-
-			name.x = x + (width - name.width()) / 2;
-			name.y = avatar.y + avatar.height() + SCALE;
-			align(name);
-
-		}
-
-		@Override
-		protected void onTouchDown() {
-
-			emitter.revive();
-			emitter.start( Speck.factory( Speck.LIGHT ), 0.05f, 7 );
-
-			Sample.INSTANCE.play( Assets.SND_CLICK, 1, 1, 1.2f );
-			updateClass( cl );
-		}
-
-		@Override
-		public void update() {
-			super.update();
-
-			if (brightness < 1.0f && brightness > MIN_BRIGHTNESS) {
-				if ((brightness -= Game.elapsed) <= MIN_BRIGHTNESS) {
-					brightness = MIN_BRIGHTNESS;
-				}
-				updateBrightness();
-			}
-		}
-
-		public void highlight( boolean value ) {
-			if (value) {
-				brightness = 1.0f;
-				name.hardlight( highlighted );
-			} else {
-				brightness = 0.999f;
-				name.hardlight( normal );
-			}
-
-			updateBrightness();
-		}
-
-		private void updateBrightness() {
-			avatar.gm = avatar.bm = avatar.rm = avatar.am = brightness;
-		}
-	}
-
-	private class ChallengeButton extends Button {
-
-		private Image image;
-
-		public ChallengeButton() {
-			super();
-
-			width = image.width;
-			height = image.height;
-
-			image.am = Badges.isUnlocked( Badges.Badge.VICTORY ) ? 1.0f : 0.5f;
-		}
-
-		@Override
-		protected void createChildren() {
-
-			super.createChildren();
-
-			image = Icons.get( DarkestPixelDungeon.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF );
-			add( image );
-		}
-
-		@Override
-		protected void layout() {
-
-			super.layout();
-
-			image.x = x;
-			image.y = y;
-		}
-
-		@Override
-		protected void onClick() {
-			if (Badges.isUnlocked( Badges.Badge.VICTORY )) {
-				StartScene.this.add(new WndChallenges(DarkestPixelDungeon.challenges(), true) {
-					public void onBackPressed() {
-						super.onBackPressed();
-						image.copy( Icons.get( DarkestPixelDungeon.challenges() > 0 ?
-								Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF ) );
-					}
-				} );
-			} else {
-				StartScene.this.add( new WndMessage( Messages.get(StartScene.class, "need_to_win") ) );
-			}
-		}
-
-		@Override
-		protected void onTouchDown() {
-			Sample.INSTANCE.play( Assets.SND_CLICK );
-		}
-	}
+      avatar.x = x + (width - avatar.width()) / 2;
+      avatar.y = y + (height - avatar.height() - name.height()) / 2;
+      align(avatar);
+
+      name.x = x + (width - name.width()) / 2;
+      name.y = avatar.y + avatar.height() + SCALE;
+      align(name);
+
+    }
+
+    @Override
+    protected void onTouchDown() {
+
+      emitter.revive();
+      emitter.start(Speck.factory(Speck.LIGHT), 0.05f, 7);
+
+      Sample.INSTANCE.play(Assets.SND_CLICK, 1, 1, 1.2f);
+      updateClass(cl);
+    }
+
+    @Override
+    public void update() {
+      super.update();
+
+      if (brightness < 1.0f && brightness > MIN_BRIGHTNESS) {
+        if ((brightness -= Game.elapsed) <= MIN_BRIGHTNESS) {
+          brightness = MIN_BRIGHTNESS;
+        }
+        updateBrightness();
+      }
+    }
+
+    public void highlight(boolean value) {
+      if (value) {
+        brightness = 1.0f;
+        name.hardlight(highlighted);
+      } else {
+        brightness = 0.999f;
+        name.hardlight(normal);
+      }
+
+      updateBrightness();
+    }
+
+    private void updateBrightness() {
+      avatar.gm = avatar.bm = avatar.rm = avatar.am = brightness;
+    }
+  }
+
+  private class ChallengeButton extends Button {
+
+    private Image image;
+
+    public ChallengeButton() {
+      super();
+
+      width = image.width;
+      height = image.height;
+
+      image.am = Badges.isUnlocked(Badges.Badge.VICTORY) ? 1.0f : 0.5f;
+    }
+
+    @Override
+    protected void createChildren() {
+
+      super.createChildren();
+
+      image = Icons.get(DarkestPixelDungeon.challenges() > 0 ? Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF);
+      add(image);
+    }
+
+    @Override
+    protected void layout() {
+
+      super.layout();
+
+      image.x = x;
+      image.y = y;
+    }
+
+    @Override
+    protected void onClick() {
+      if (Badges.isUnlocked(Badges.Badge.VICTORY)) {
+        StartScene.this.add(new WndChallenges(DarkestPixelDungeon.challenges(), true) {
+          public void onBackPressed() {
+            super.onBackPressed();
+            image.copy(Icons.get(DarkestPixelDungeon.challenges() > 0 ?
+                    Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
+          }
+        });
+      } else {
+        StartScene.this.add(new WndMessage(Messages.get(StartScene.class, "need_to_win")));
+      }
+    }
+
+    @Override
+    protected void onTouchDown() {
+      Sample.INSTANCE.play(Assets.SND_CLICK);
+    }
+  }
 }

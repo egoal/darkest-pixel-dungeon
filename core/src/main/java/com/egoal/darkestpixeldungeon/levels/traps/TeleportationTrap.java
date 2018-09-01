@@ -37,53 +37,53 @@ import com.watabou.noosa.audio.Sample;
 
 public class TeleportationTrap extends Trap {
 
-	{
-		color = TrapSprite.TEAL;
-		shape = TrapSprite.DOTS;
-	}
+  {
+    color = TrapSprite.TEAL;
+    shape = TrapSprite.DOTS;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+    CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+    Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
-		Char ch = Actor.findChar( pos);
-		if (ch instanceof Hero){
-			ScrollOfTeleportation.teleportHero( (Hero)ch);
-		} else if (ch != null){
-			int count = 10;
-			int pos;
-			do {
-				pos = Dungeon.level.randomRespawnCell();
-				if (count-- <= 0) {
-					break;
-				}
-			} while (pos == -1);
+    Char ch = Actor.findChar(pos);
+    if (ch instanceof Hero) {
+      ScrollOfTeleportation.teleportHero((Hero) ch);
+    } else if (ch != null) {
+      int count = 10;
+      int pos;
+      do {
+        pos = Dungeon.level.randomRespawnCell();
+        if (count-- <= 0) {
+          break;
+        }
+      } while (pos == -1);
 
-			if (pos == -1 || Dungeon.bossLevel()) {
+      if (pos == -1 || Dungeon.bossLevel()) {
 
-				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+        GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
 
-			} else {
+      } else {
 
-				ch.pos = pos;
-				ch.sprite.place(ch.pos);
-				ch.sprite.visible = Dungeon.visible[pos];
+        ch.pos = pos;
+        ch.sprite.place(ch.pos);
+        ch.sprite.visible = Dungeon.visible[pos];
 
-			}
-		}
+      }
+    }
 
-		Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.heaps.get(pos);
 
-		if (heap != null){
-			int cell = Dungeon.level.randomRespawnCell();
+    if (heap != null) {
+      int cell = Dungeon.level.randomRespawnCell();
 
-			Item item = heap.pickUp();
+      Item item = heap.pickUp();
 
-			if (cell != -1) {
-				Dungeon.level.drop( item, cell );
-			}
-		}
-	}
+      if (cell != -1) {
+        Dungeon.level.drop(item, cell);
+      }
+    }
+  }
 }

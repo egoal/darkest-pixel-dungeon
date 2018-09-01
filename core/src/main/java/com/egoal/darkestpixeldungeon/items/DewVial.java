@@ -40,165 +40,175 @@ import java.util.ArrayList;
 
 public class DewVial extends Item {
 
-	private static final int MAX_VOLUME	= 30;
+  private static final int MAX_VOLUME = 30;
 
-	private static final String AC_DRINK	= "DRINK";
-	private static final String AC_SIP	=	"SIP";
-	private static final String AC_WASH	=	"WASH";
+  private static final String AC_DRINK = "DRINK";
+  private static final String AC_SIP = "SIP";
+  private static final String AC_WASH = "WASH";
 
-	private static final float TIME_TO_DRINK = 1f;
-	private static final float TIME_TO_WASH	=	1f;
+  private static final float TIME_TO_DRINK = 1f;
+  private static final float TIME_TO_WASH = 1f;
 
-	private static final String TXT_STATUS	= "%d/%d";
+  private static final String TXT_STATUS = "%d/%d";
 
-	{
-		image = ItemSpriteSheet.VIAL;
+  {
+    image = ItemSpriteSheet.VIAL;
 
-		defaultAction = AC_DRINK;
+    defaultAction = AC_DRINK;
 
-		unique = true;
-	}
+    unique = true;
+  }
 
-	private int volume = 0;
+  private int volume = 0;
 
-	private static final String VOLUME	= "volume";
+  private static final String VOLUME = "volume";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( VOLUME, volume );
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(VOLUME, volume);
+  }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		volume	= bundle.getInt( VOLUME );
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    volume = bundle.getInt(VOLUME);
+  }
 
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		if (volume > 0) {
-			actions.add( AC_DRINK );
-			actions.add(AC_SIP);
-			if(volume>=5)
-				actions.add(AC_WASH);
-		}
-		return actions;
-	}
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    ArrayList<String> actions = super.actions(hero);
+    if (volume > 0) {
+      actions.add(AC_DRINK);
+      actions.add(AC_SIP);
+      if (volume >= 5)
+        actions.add(AC_WASH);
+    }
+    return actions;
+  }
 
-	@Override
-	public void execute( final Hero hero, String action ) {
+  @Override
+  public void execute(final Hero hero, String action) {
 
-		super.execute( hero, action );
+    super.execute(hero, action);
 
-		if (action.equals( AC_DRINK )){
+    if (action.equals(AC_DRINK)) {
 
-			if(volume>0){
-				int needToFill	=	(hero.HT-hero.HP)/dhp(hero);
-				int drink=volume<needToFill? volume: needToFill;
+      if (volume > 0) {
+        int needToFill = (hero.HT - hero.HP) / dhp(hero);
+        int drink = volume < needToFill ? volume : needToFill;
 
-				consume(drink, hero);
-			}else{
-				GLog.w(Messages.get(this,"empty"));
-			}
+        consume(drink, hero);
+      } else {
+        GLog.w(Messages.get(this, "empty"));
+      }
 
-		}
-		if(action.equals(AC_SIP)){
-			if(volume>0){
-				int needToFill	=	(hero.HT-hero.HP)/dhp(hero);
-				if(needToFill>5) needToFill	=	5;
+    }
+    if (action.equals(AC_SIP)) {
+      if (volume > 0) {
+        int needToFill = (hero.HT - hero.HP) / dhp(hero);
+        if (needToFill > 5) needToFill = 5;
 
-				int drink	=	volume<needToFill?volume:needToFill;
-				consume(drink, hero);
-			}else{
-				GLog.w(Messages.get(this,"empty"));
-			}
-		}
-		if(action.equals(AC_WASH)){
-			if(volume>=5){
-				Buff.detach(curUser, Ooze.class);
-				Buff.detach(curUser, Burning.class);
-				
-				volume	-=	5;
-				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "ac_wash"));
-				curUser.spend(TIME_TO_WASH);
-				curUser.busy();
+        int drink = volume < needToFill ? volume : needToFill;
+        consume(drink, hero);
+      } else {
+        GLog.w(Messages.get(this, "empty"));
+      }
+    }
+    if (action.equals(AC_WASH)) {
+      if (volume >= 5) {
+        Buff.detach(curUser, Ooze.class);
+        Buff.detach(curUser, Burning.class);
 
-				curUser.sprite.operate(curUser.pos);
-				
-				updateQuickslot();
-			}
-		}
-	}
+        volume -= 5;
+        curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, 
+                "ac_wash"));
+        curUser.spend(TIME_TO_WASH);
+        curUser.busy();
 
-	// recover per 1
-	private int dhp(Hero hero){
-		return (int)(hero.HT*(hero.heroClass==HeroClass.HUNTRESS? 0.05: 0.03)+ 1);
-	}
-	
-	private void consume(int drink, Hero hero){
-		int effect	=	Math.min(hero.HT-hero.HP,drink*dhp(hero));
+        curUser.sprite.operate(curUser.pos);
 
-		hero.HP	+=	effect;
-		hero.sprite.emitter().burst(Speck.factory(Speck.HEALING),volume>5?2:1);
-		hero.sprite.showStatus(CharSprite.POSITIVE,Messages.get(this,"value",effect));
+        updateQuickslot();
+      }
+    }
+  }
 
-		volume	-=	drink;
+  // recover per 1
+  private int dhp(Hero hero) {
+    return (int) (hero.HT * (hero.heroClass == HeroClass.HUNTRESS ? 0.05 : 
+            0.03) + 1);
+  }
 
-		hero.spend(TIME_TO_DRINK);
-		hero.busy();
+  private void consume(int drink, Hero hero) {
+    int effect = Math.min(hero.HT - hero.HP, drink * dhp(hero));
 
-		Sample.INSTANCE.play(Assets.SND_DRINK);
-		hero.sprite.operate(hero.pos);
+    hero.HP += effect;
+    hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), volume > 5 ? 2 
+            : 1);
+    hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "value", 
+            effect));
 
-		updateQuickslot();
-	}
-	
-	public int getVolume(){ return volume; }
-	public DewVial setVolume(int v){
-		v	=	v<0? 0: v;
-		v	=	v>MAX_VOLUME? MAX_VOLUME: v;
-		volume	=	v;
-		return this;
-	}
-	
-	public void empty() {volume = 0; updateQuickslot();}
+    volume -= drink;
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
+    hero.spend(TIME_TO_DRINK);
+    hero.busy();
 
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+    Sample.INSTANCE.play(Assets.SND_DRINK);
+    hero.sprite.operate(hero.pos);
 
-	public boolean isFull() {
-		return volume >= MAX_VOLUME;
-	}
+    updateQuickslot();
+  }
 
-	public void collectDew( Dewdrop dew ) {
+  public int getVolume() {
+    return volume;
+  }
 
-		GLog.i( Messages.get(this, "collected") );
-		volume += dew.quantity;
-		if (volume >= MAX_VOLUME) {
-			volume = MAX_VOLUME;
-			GLog.p( Messages.get(this, "full") );
-		}
+  public DewVial setVolume(int v) {
+    v = v < 0 ? 0 : v;
+    v = v > MAX_VOLUME ? MAX_VOLUME : v;
+    volume = v;
+    return this;
+  }
 
-		updateQuickslot();
-	}
+  public void empty() {
+    volume = 0;
+    updateQuickslot();
+  }
 
-	public void fill() {
-		volume = MAX_VOLUME;
-		updateQuickslot();
-	}
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
 
-	@Override
-	public String status() {
-		return Messages.format( TXT_STATUS, volume, MAX_VOLUME );
-	}
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
+
+  public boolean isFull() {
+    return volume >= MAX_VOLUME;
+  }
+
+  public void collectDew(Dewdrop dew) {
+
+    GLog.i(Messages.get(this, "collected"));
+    volume += dew.quantity;
+    if (volume >= MAX_VOLUME) {
+      volume = MAX_VOLUME;
+      GLog.p(Messages.get(this, "full"));
+    }
+
+    updateQuickslot();
+  }
+
+  public void fill() {
+    volume = MAX_VOLUME;
+    updateQuickslot();
+  }
+
+  @Override
+  public String status() {
+    return Messages.format(TXT_STATUS, volume, MAX_VOLUME);
+  }
 
 }

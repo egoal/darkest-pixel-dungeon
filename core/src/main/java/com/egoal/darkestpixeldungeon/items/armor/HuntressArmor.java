@@ -35,48 +35,48 @@ import java.util.HashMap;
 
 public class HuntressArmor extends ClassArmor {
 
-	
-	{
-		image = ItemSpriteSheet.ARMOR_HUNTRESS;
-	}
-	
-	private HashMap<Callback,Mob> targets = new HashMap<Callback, Mob>();
-	
-	@Override
-	public void doSpecial() {
-		
-		Item proto = new Shuriken();
-		
-		for (Mob mob : Dungeon.level.mobs) {
-			if (Level.fieldOfView[mob.pos]) {
-				
-				Callback callback = new Callback() {
-					@Override
-					public void call() {
-						curUser.attack( targets.get( this ) );
-						targets.remove( this );
-						if (targets.isEmpty()) {
-							curUser.spendAndNext( curUser.attackDelay() );
-						}
-					}
-				};
-				
-				((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
-					reset( curUser.pos, mob.pos, proto, callback );
-				
-				targets.put( callback, mob );
-			}
-		}
-		
-		if (targets.size() == 0) {
-			GLog.w( Messages.get(this, "no_enemies") );
-			return;
-		}
-		
-		curUser.HP -= (curUser.HP / 3);
-		
-		curUser.sprite.zap( curUser.pos );
-		curUser.busy();
-	}
+
+  {
+    image = ItemSpriteSheet.ARMOR_HUNTRESS;
+  }
+
+  private HashMap<Callback, Mob> targets = new HashMap<Callback, Mob>();
+
+  @Override
+  public void doSpecial() {
+
+    Item proto = new Shuriken();
+
+    for (Mob mob : Dungeon.level.mobs) {
+      if (Level.fieldOfView[mob.pos]) {
+
+        Callback callback = new Callback() {
+          @Override
+          public void call() {
+            curUser.attack(targets.get(this));
+            targets.remove(this);
+            if (targets.isEmpty()) {
+              curUser.spendAndNext(curUser.attackDelay());
+            }
+          }
+        };
+
+        ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
+                reset(curUser.pos, mob.pos, proto, callback);
+
+        targets.put(callback, mob);
+      }
+    }
+
+    if (targets.size() == 0) {
+      GLog.w(Messages.get(this, "no_enemies"));
+      return;
+    }
+
+    curUser.HP -= (curUser.HP / 3);
+
+    curUser.sprite.zap(curUser.pos);
+    curUser.busy();
+  }
 
 }

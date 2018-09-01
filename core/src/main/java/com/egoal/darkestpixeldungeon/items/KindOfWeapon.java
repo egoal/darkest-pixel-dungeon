@@ -28,90 +28,92 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 abstract public class KindOfWeapon extends EquipableItem {
-	
-	protected static final float TIME_TO_EQUIP = 1f;
-	
-	@Override
-	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.weapon == this;
-	}
-	
-	@Override
-	public boolean doEquip( Hero hero ) {
 
-		detachAll( hero.belongings.backpack );
-		
-		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
-			
-			hero.belongings.weapon = this;
-			activate( hero );
+  protected static final float TIME_TO_EQUIP = 1f;
 
-			updateQuickslot();
-			
-			cursedKnown = true;
-			if (cursed) {
-				equipCursed( hero );
-				GLog.n( Messages.get(KindOfWeapon.class, "cursed") );
-			}
-			
-			hero.spendAndNext( TIME_TO_EQUIP );
-			return true;
-			
-		} else {
-			
-			collect( hero.belongings.backpack );
-			return false;
-		}
-	}
+  @Override
+  public boolean isEquipped(Hero hero) {
+    return hero.belongings.weapon == this;
+  }
 
-	@Override
-	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
-		if (super.doUnequip( hero, collect, single )) {
+  @Override
+  public boolean doEquip(Hero hero) {
 
-			hero.belongings.weapon = null;
-			return true;
+    detachAll(hero.belongings.backpack);
 
-		} else {
+    if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip
+            (hero, true)) {
 
-			return false;
+      hero.belongings.weapon = this;
+      activate(hero);
 
-		}
-	}
+      updateQuickslot();
 
-	public int min(){
-		return min(level());
-	}
+      cursedKnown = true;
+      if (cursed) {
+        equipCursed(hero);
+        GLog.n(Messages.get(KindOfWeapon.class, "cursed"));
+      }
 
-	public int max(){
-		return max(level());
-	}
+      hero.spendAndNext(TIME_TO_EQUIP);
+      return true;
 
-	abstract public int min(int lvl);
-	abstract public int max(int lvl);
+    } else {
 
-	// damage attach to normal attack, called in give damage
-	public Damage giveDamage(Hero owner, Char target){
-		return new Damage(Random.NormalIntRange(min(), max()), owner, target);
-	}
-	
-	public float accuracyFactor(Hero hero ) {
-		return 1f;
-	}
-	
-	public float speedFactor( Hero hero ) {
-		return 1f;
-	}
+      collect(hero.belongings.backpack);
+      return false;
+    }
+  }
 
-	public int reachFactor( Hero hero ){
-		return 1;
-	}
+  @Override
+  public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+    if (super.doUnequip(hero, collect, single)) {
 
-	public int defenseFactor(Hero hero ) {
-		return 0;
-	}
-	
-	// process, called in attackProc
-	public Damage proc(Damage dmg){
-		return dmg;
-	}
+      hero.belongings.weapon = null;
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+  }
+
+  public int min() {
+    return min(level());
+  }
+
+  public int max() {
+    return max(level());
+  }
+
+  abstract public int min(int lvl);
+
+  abstract public int max(int lvl);
+
+  // damage attach to normal attack, called in give damage
+  public Damage giveDamage(Hero owner, Char target) {
+    return new Damage(Random.NormalIntRange(min(), max()), owner, target);
+  }
+
+  public float accuracyFactor(Hero hero) {
+    return 1f;
+  }
+
+  public float speedFactor(Hero hero) {
+    return 1f;
+  }
+
+  public int reachFactor(Hero hero) {
+    return 1;
+  }
+
+  public int defenseFactor(Hero hero) {
+    return 0;
+  }
+
+  // process, called in attackProc
+  public Damage proc(Damage dmg) {
+    return dmg;
+  }
 }

@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.blobs;
 
 
-
 import com.egoal.darkestpixeldungeon.effects.BlobEmitter;
 import com.egoal.darkestpixeldungeon.sprites.GooSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -29,42 +28,43 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 
 public class GooWarn extends Blob {
 
-	//cosmetic blob, used to warn noobs that goo's pump up should, infact, be avoided.
+  //cosmetic blob, used to warn noobs that goo's pump up should, infact, be 
+  // avoided.
 
-	{
-		//this one needs to act after the Goo
-		actPriority = 3;
-	}
+  {
+    //this one needs to act after the Goo
+    actPriority = 3;
+  }
 
-	protected int pos;
+  protected int pos;
 
-	@Override
-	protected void evolve() {
+  @Override
+  protected void evolve() {
 
-		int cell;
+    int cell;
 
-		for (int i = area.left; i < area.right; i++){
-			for (int j = area.top; j < area.bottom; j++){
-				cell = i + j*Dungeon.level.width();
-				off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
+    for (int i = area.left; i < area.right; i++) {
+      for (int j = area.top; j < area.bottom; j++) {
+        cell = i + j * Dungeon.level.width();
+        off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
 
-				if (off[cell] > 0) {
-					volume += off[cell];
-				}
-			}
-		}
+        if (off[cell] > 0) {
+          volume += off[cell];
+        }
+      }
+    }
 
-	}
+  }
 
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		emitter.pour(GooSprite.GooParticle.FACTORY, 0.03f );
-	}
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
+    emitter.pour(GooSprite.GooParticle.FACTORY, 0.03f);
+  }
 
-	@Override
-	public String tileDesc() {
-		return Messages.get(this, "desc");
-	}
+  @Override
+  public String tileDesc() {
+    return Messages.get(this, "desc");
+  }
 }
 

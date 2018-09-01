@@ -32,119 +32,124 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public class Bee extends Mob {
-	
-	{
-		spriteClass = BeeSprite.class;
-		
-		viewDistance = 4;
 
-		EXP = 0;
-		
-		flying = true;
-		state = WANDERING;
-		
-		addResistances(Damage.Element.POISON, 1.25f);
-	}
+  {
+    spriteClass = BeeSprite.class;
 
-	private int level;
+    viewDistance = 4;
 
-	//-1 refers to a pot that has gone missing.
-	private int potPos;
-	//-1 for no owner
-	private int potHolder;
-	
-	private static final String LEVEL	    = "level";
-	private static final String POTPOS	    = "potpos";
-	private static final String POTHOLDER	= "potholder";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEVEL, level );
-		bundle.put( POTPOS, potPos );
-		bundle.put( POTHOLDER, potHolder );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		spawn( bundle.getInt( LEVEL ) );
-		potPos = bundle.getInt( POTPOS );
-		potHolder = bundle.getInt( POTHOLDER );
-	}
-	
-	public void spawn( int level ) {
-		this.level = level;
-		
-		HT = (2 + level) * 4;
-		defenseSkill = 9 + level;
-	}
+    EXP = 0;
 
-	public void setPotInfo(int potPos, Char potHolder){
-		this.potPos = potPos;
-		if (potHolder == null)
-			this.potHolder = -1;
-		else
-			this.potHolder = potHolder.id();
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return defenseSkill;
-	}
-	
-	@Override
-	public Damage giveDamage(Char target){
-		return new Damage(Random.NormalIntRange( HT / 10, HT / 4 ), this, target);
-	}
-	
-	@Override
-	public Damage attackProc(Damage damage ) {
-		Char enemy	=	(Char)damage.to;
-		if (enemy instanceof Mob) {
-			((Mob)enemy).aggro( this );
-		}
-		return damage;
-	}
+    flying = true;
+    state = WANDERING;
 
-	@Override
-	protected Char chooseEnemy() {
-		//if the pot is no longer present, target the hero
-		if (potHolder == -1 && potPos == -1)
-			return Dungeon.hero;
+    addResistances(Damage.Element.POISON, 1.25f);
+  }
 
-		//if something is holding the pot, target that
-		else if (Actor.findById(potHolder) != null)
-			return (Char)Actor.findById(potHolder);
+  private int level;
 
-		//if the pot is on the ground
-		else {
+  //-1 refers to a pot that has gone missing.
+  private int potPos;
+  //-1 for no owner
+  private int potHolder;
 
-			//if already targeting something, and that thing is still alive and near the pot, keeping targeting it.
-			if (enemy != null && enemy.isAlive() && Dungeon.level.mobs.contains(enemy)
-					&& Level.fieldOfView[enemy.pos] && enemy.invisible == 0
-					&& Dungeon.level.distance(enemy.pos, potPos) <= 3)
-				return enemy;
+  private static final String LEVEL = "level";
+  private static final String POTPOS = "potpos";
+  private static final String POTHOLDER = "potholder";
 
-			//find all mobs near the pot
-			HashSet<Char> enemies = new HashSet<>();
-			for (Mob mob : Dungeon.level.mobs)
-				if (!(mob instanceof Bee) && Dungeon.level.distance(mob.pos, potPos) <= 3 && (mob.hostile || mob.ally))
-					enemies.add(mob);
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(LEVEL, level);
+    bundle.put(POTPOS, potPos);
+    bundle.put(POTHOLDER, potHolder);
+  }
 
-			//pick one, if there are none, check if the hero is near the pot, go for them, otherwise go for nothing.
-			if (enemies.size() > 0) return Random.element(enemies);
-			else return (Dungeon.level.distance(Dungeon.hero.pos, potPos) <= 3) ? Dungeon.hero : null ;
-		}
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    spawn(bundle.getInt(LEVEL));
+    potPos = bundle.getInt(POTPOS);
+    potHolder = bundle.getInt(POTHOLDER);
+  }
 
-	@Override
-	protected boolean getCloser(int target) {
-		if (enemy != null && Actor.findById(potHolder) == enemy) {
-			target = enemy.pos;
-		} else if (potPos != -1 && (state == WANDERING || Dungeon.level.distance(target, potPos) > 3))
-			this.target = target = potPos;
-		return super.getCloser( target );
-	}
-	
+  public void spawn(int level) {
+    this.level = level;
+
+    HT = (2 + level) * 4;
+    defenseSkill = 9 + level;
+  }
+
+  public void setPotInfo(int potPos, Char potHolder) {
+    this.potPos = potPos;
+    if (potHolder == null)
+      this.potHolder = -1;
+    else
+      this.potHolder = potHolder.id();
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return defenseSkill;
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(HT / 10, HT / 4), this, target);
+  }
+
+  @Override
+  public Damage attackProc(Damage damage) {
+    Char enemy = (Char) damage.to;
+    if (enemy instanceof Mob) {
+      ((Mob) enemy).aggro(this);
+    }
+    return damage;
+  }
+
+  @Override
+  protected Char chooseEnemy() {
+    //if the pot is no longer present, target the hero
+    if (potHolder == -1 && potPos == -1)
+      return Dungeon.hero;
+
+      //if something is holding the pot, target that
+    else if (Actor.findById(potHolder) != null)
+      return (Char) Actor.findById(potHolder);
+
+      //if the pot is on the ground
+    else {
+
+      //if already targeting something, and that thing is still alive and 
+      // near the pot, keeping targeting it.
+      if (enemy != null && enemy.isAlive() && Dungeon.level.mobs.contains(enemy)
+              && Level.fieldOfView[enemy.pos] && enemy.invisible == 0
+              && Dungeon.level.distance(enemy.pos, potPos) <= 3)
+        return enemy;
+
+      //find all mobs near the pot
+      HashSet<Char> enemies = new HashSet<>();
+      for (Mob mob : Dungeon.level.mobs)
+        if (!(mob instanceof Bee) && Dungeon.level.distance(mob.pos, potPos) 
+                <= 3 && (mob.hostile || mob.ally))
+          enemies.add(mob);
+
+      //pick one, if there are none, check if the hero is near the pot, go 
+      // for them, otherwise go for nothing.
+      if (enemies.size() > 0) return Random.element(enemies);
+      else
+        return (Dungeon.level.distance(Dungeon.hero.pos, potPos) <= 3) ? 
+                Dungeon.hero : null;
+    }
+  }
+
+  @Override
+  protected boolean getCloser(int target) {
+    if (enemy != null && Actor.findById(potHolder) == enemy) {
+      target = enemy.pos;
+    } else if (potPos != -1 && (state == WANDERING || Dungeon.level.distance(target, potPos) > 3))
+      this.target = target = potPos;
+    return super.getCloser(target);
+  }
+
 }

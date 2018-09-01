@@ -31,56 +31,56 @@ import com.watabou.utils.Bundle;
 
 public class Alchemy extends Blob {
 
-	protected int pos;
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
+  protected int pos;
 
-		for (int i=0; i < cur.length; i++) {
-			if (cur[i] > 0) {
-				pos = i;
-				break;
-			}
-		}
-	}
-	
-	@Override
-	protected void evolve() {
-		volume = off[pos] = cur[pos];
-		area.union(pos%Dungeon.level.width(), pos/Dungeon.level.width());
-		
-		if (Dungeon.visible[pos]) {
-			Journal.add( Journal.Feature.ALCHEMY );
-		}
-	}
-	
-	@Override
-	public void seed(Level level,int cell,int amount ) {
-		super.seed(level, cell, amount);
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
 
-		cur[pos] = 0;
-		pos = cell;
-		volume = cur[pos] = amount;
+    for (int i = 0; i < cur.length; i++) {
+      if (cur[i] > 0) {
+        pos = i;
+        break;
+      }
+    }
+  }
 
-		area.setEmpty();
-		area.union(cell%level.width(), cell/level.width());
-	}
-	
-	public static void transmute( int cell ) {
-		Heap heap = Dungeon.level.heaps.get( cell );
-		if (heap != null) {
-			
-			Item result = heap.transmute();
-			if (result != null) {
-				Dungeon.level.drop( result, cell ).sprite.drop( cell );
-			}
-		}
-	}
-	
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		emitter.start( Speck.factory( Speck.BUBBLE ), 0.4f, 0 );
-	}
+  @Override
+  protected void evolve() {
+    volume = off[pos] = cur[pos];
+    area.union(pos % Dungeon.level.width(), pos / Dungeon.level.width());
+
+    if (Dungeon.visible[pos]) {
+      Journal.add(Journal.Feature.ALCHEMY);
+    }
+  }
+
+  @Override
+  public void seed(Level level, int cell, int amount) {
+    super.seed(level, cell, amount);
+
+    cur[pos] = 0;
+    pos = cell;
+    volume = cur[pos] = amount;
+
+    area.setEmpty();
+    area.union(cell % level.width(), cell / level.width());
+  }
+
+  public static void transmute(int cell) {
+    Heap heap = Dungeon.level.heaps.get(cell);
+    if (heap != null) {
+
+      Item result = heap.transmute();
+      if (result != null) {
+        Dungeon.level.drop(result, cell).sprite.drop(cell);
+      }
+    }
+  }
+
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
+    emitter.start(Speck.factory(Speck.BUBBLE), 0.4f, 0);
+  }
 }

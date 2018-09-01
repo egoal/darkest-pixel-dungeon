@@ -36,200 +36,201 @@ import java.nio.IntBuffer;
 
 public class FogOfWar extends Image {
 
-	private static final int VISIBLE[]	= new int[]{0xAA000000, 0x55000000, //-2 and -1 brightness
-													0x00000000, //0 brightness
-													0x00000000, 0x00000000}; //1 and 2 brightness
+  private static final int VISIBLE[] = new int[]{0xAA000000, 0x55000000, //-2
+          // and -1 brightness
+          0x00000000, //0 brightness
+          0x00000000, 0x00000000}; //1 and 2 brightness
 
-	private static final int VISITED[]	= new int[]{0xEE000000, 0xDD000000,
-													0xCC000000,
-													0x99000000, 0x66000000};
+  private static final int VISITED[] = new int[]{0xEE000000, 0xDD000000,
+          0xCC000000,
+          0x99000000, 0x66000000};
 
-	private static final int MAPPED[]   = new int[]{0xEE442211, 0xDD442211,
-													0xCC442211,
-													0x99442211, 0x66442211};
+  private static final int MAPPED[] = new int[]{0xEE442211, 0xDD442211,
+          0xCC442211,
+          0x99442211, 0x66442211};
 
-	private static final int INVISIBLE[]= new int[]{0xFF000000, 0xFF000000,
-													0xFF000000,
-													0xFF000000, 0xFF000000};
-	
-	private int pWidth;
-	private int pHeight;
-	
-	private int width2;
-	private int height2;
+  private static final int INVISIBLE[] = new int[]{0xFF000000, 0xFF000000,
+          0xFF000000,
+          0xFF000000, 0xFF000000};
 
-	private volatile Rect updated;
-	private Rect updating;
-	
-	public FogOfWar( int mapWidth, int mapHeight ) {
-		
-		super();
-		
-		pWidth = mapWidth + 1;
-		pHeight = mapHeight + 1;
-		
-		width2 = 1;
-		while (width2 < pWidth) {
-			width2 <<= 1;
-		}
-		
-		height2 = 1;
-		while (height2 < pHeight) {
-			height2 <<= 1;
-		}
-		
-		float size = DungeonTilemap.SIZE;
-		width = width2 * size;
-		height = height2 * size;
-		
-		texture( new FogTexture(width2, height2) );
-		
-		scale.set(
-			DungeonTilemap.SIZE,
-			DungeonTilemap.SIZE );
-		
-		x = y = -size / 2;
+  private int pWidth;
+  private int pHeight;
 
-		updated = new Rect(0, 0, pWidth, pHeight);
-	}
+  private int width2;
+  private int height2;
 
-	public synchronized void updateFog(){
-		updated.set( 0, 0, pWidth, pWidth );
-	}
+  private volatile Rect updated;
+  private Rect updating;
 
-	public synchronized void updateFogArea(int x, int y, int w, int h){
-		updated.union(x, y);
-		updated.union(x + w, y + h);
-	}
+  public FogOfWar(int mapWidth, int mapHeight) {
 
-	public synchronized void moveToUpdating(){
-		updating = new Rect(updated);
-		updated.setEmpty();
-	}
-	
-	private void updateTexture( boolean[] visible, boolean[] visited, boolean[] mapped ) {
+    super();
 
-		moveToUpdating();
+    pWidth = mapWidth + 1;
+    pHeight = mapHeight + 1;
 
-		FogTexture fog = (FogTexture)texture;
+    width2 = 1;
+    while (width2 < pWidth) {
+      width2 <<= 1;
+    }
 
-		int brightness = DarkestPixelDungeon.brightness() + 2;
+    height2 = 1;
+    while (height2 < pHeight) {
+      height2 <<= 1;
+    }
 
-		for (int i=updating.top; i < updating.bottom; i++) {
-			int cell = (pWidth - 1) * i + updating.left;
-			fog.pixels.position((width2) * i + updating.left);
-			for (int j=updating.left; j < updating.right; j++) {
-				if (cell < pWidth || cell >= Dungeon.level.length() || j == 0 || j == pWidth-1) {
-					fog.pixels.put(INVISIBLE[brightness]);
-				} else
-				if (visible[cell] && visible[cell - (pWidth - 1)] &&
-					visible[cell - 1] && visible[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(VISIBLE[brightness]);
-				} else
-				if (visited[cell] && visited[cell - (pWidth - 1)] &&
-					visited[cell - 1] && visited[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(VISITED[brightness]);
-				}
-				else
-				if (mapped[cell] && mapped[cell - (pWidth - 1)] &&
-					mapped[cell - 1] && mapped[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(MAPPED[brightness]);
-				} else {
-					fog.pixels.put(INVISIBLE[brightness]);
-				}
-				cell++;
-			}
-		}
+    float size = DungeonTilemap.SIZE;
+    width = width2 * size;
+    height = height2 * size;
 
-		if (updating.width() == pWidth && updating.height() == pHeight)
-			fog.update();
-		else
-			fog.update(updating.top, updating.bottom);
+    texture(new FogTexture(width2, height2));
 
-	}
+    scale.set(
+            DungeonTilemap.SIZE,
+            DungeonTilemap.SIZE);
 
-	//provides a native intbuffer implementation because android.graphics.bitmap is too slow
-	//TODO perhaps should spin this off into something like FastEditTexture in SPD-classes
-	private class FogTexture extends SmartTexture {
+    x = y = -size / 2;
 
-		private IntBuffer pixels;
-		
-		public FogTexture(int w, int h) {
-			super();
-			width = w;
-			height = h;
-			pixels = ByteBuffer.
-					allocateDirect( w * h * 4 ).
-					order( ByteOrder.nativeOrder() ).
-					asIntBuffer();
+    updated = new Rect(0, 0, pWidth, pHeight);
+  }
 
-			TextureCache.add( FogOfWar.class, this );
-		}
+  public synchronized void updateFog() {
+    updated.set(0, 0, pWidth, pWidth);
+  }
 
-		@Override
-		protected void generate() {
-			int[] ids = new int[1];
-			GLES20.glGenTextures( 1, ids, 0 );
-			id = ids[0];
-		}
+  public synchronized void updateFogArea(int x, int y, int w, int h) {
+    updated.union(x, y);
+    updated.union(x + w, y + h);
+  }
 
-		@Override
-		public void reload() {
-			generate();
-			update();
-		}
+  public synchronized void moveToUpdating() {
+    updating = new Rect(updated);
+    updated.setEmpty();
+  }
 
-		public void update(){
-			bind();
-			filter( Texture.LINEAR, Texture.LINEAR );
-			pixels.position(0);
-			GLES20.glTexImage2D(
-					GLES20.GL_TEXTURE_2D,
-					0,
-					GLES20.GL_RGBA,
-					width,
-					height,
-					0,
-					GLES20.GL_RGBA,
-					GLES20.GL_UNSIGNED_BYTE,
-					pixels );
-		}
+  private void updateTexture(boolean[] visible, boolean[] visited, boolean[] 
+          mapped) {
 
-		//allows partially updating the texture
-		public void update(int top, int bottom){
-			bind();
-			filter( Texture.LINEAR, Texture.LINEAR );
-			pixels.position(top*width);
-			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
-					0,
-					0,
-					top,
-					width,
-					bottom - top,
-					GLES20.GL_RGBA,
-					GLES20.GL_UNSIGNED_BYTE,
-					pixels);
-		}
+    moveToUpdating();
 
-		@Override
-		public void delete() {
-			super.delete();
-		}
-	}
+    FogTexture fog = (FogTexture) texture;
 
-	@Override
-	protected NoosaScript script() {
-		return NoosaScriptNoLighting.get();
-	}
+    int brightness = DarkestPixelDungeon.brightness() + 2;
 
-	@Override
-	public void draw() {
+    for (int i = updating.top; i < updating.bottom; i++) {
+      int cell = (pWidth - 1) * i + updating.left;
+      fog.pixels.position((width2) * i + updating.left);
+      for (int j = updating.left; j < updating.right; j++) {
+        if (cell < pWidth || cell >= Dungeon.level.length() || j == 0 || j ==
+                pWidth - 1) {
+          fog.pixels.put(INVISIBLE[brightness]);
+        } else if (visible[cell] && visible[cell - (pWidth - 1)] &&
+                visible[cell - 1] && visible[cell - (pWidth - 1) - 1]) {
+          fog.pixels.put(VISIBLE[brightness]);
+        } else if (visited[cell] && visited[cell - (pWidth - 1)] &&
+                visited[cell - 1] && visited[cell - (pWidth - 1) - 1]) {
+          fog.pixels.put(VISITED[brightness]);
+        } else if (mapped[cell] && mapped[cell - (pWidth - 1)] &&
+                mapped[cell - 1] && mapped[cell - (pWidth - 1) - 1]) {
+          fog.pixels.put(MAPPED[brightness]);
+        } else {
+          fog.pixels.put(INVISIBLE[brightness]);
+        }
+        cell++;
+      }
+    }
 
-		if (!updated.isEmpty()){
-			updateTexture(Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped);
-			updating.setEmpty();
-		}
+    if (updating.width() == pWidth && updating.height() == pHeight)
+      fog.update();
+    else
+      fog.update(updating.top, updating.bottom);
 
-		super.draw();
-	}
+  }
+
+  //provides a native intbuffer implementation because android.graphics
+  // .bitmap is too slow
+  //TODO perhaps should spin this off into something like FastEditTexture in 
+  // SPD-classes
+  private class FogTexture extends SmartTexture {
+
+    private IntBuffer pixels;
+
+    public FogTexture(int w, int h) {
+      super();
+      width = w;
+      height = h;
+      pixels = ByteBuffer.
+              allocateDirect(w * h * 4).
+              order(ByteOrder.nativeOrder()).
+              asIntBuffer();
+
+      TextureCache.add(FogOfWar.class, this);
+    }
+
+    @Override
+    protected void generate() {
+      int[] ids = new int[1];
+      GLES20.glGenTextures(1, ids, 0);
+      id = ids[0];
+    }
+
+    @Override
+    public void reload() {
+      generate();
+      update();
+    }
+
+    public void update() {
+      bind();
+      filter(Texture.LINEAR, Texture.LINEAR);
+      pixels.position(0);
+      GLES20.glTexImage2D(
+              GLES20.GL_TEXTURE_2D,
+              0,
+              GLES20.GL_RGBA,
+              width,
+              height,
+              0,
+              GLES20.GL_RGBA,
+              GLES20.GL_UNSIGNED_BYTE,
+              pixels);
+    }
+
+    //allows partially updating the texture
+    public void update(int top, int bottom) {
+      bind();
+      filter(Texture.LINEAR, Texture.LINEAR);
+      pixels.position(top * width);
+      GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
+              0,
+              0,
+              top,
+              width,
+              bottom - top,
+              GLES20.GL_RGBA,
+              GLES20.GL_UNSIGNED_BYTE,
+              pixels);
+    }
+
+    @Override
+    public void delete() {
+      super.delete();
+    }
+  }
+
+  @Override
+  protected NoosaScript script() {
+    return NoosaScriptNoLighting.get();
+  }
+
+  @Override
+  public void draw() {
+
+    if (!updated.isEmpty()) {
+      updateTexture(Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped);
+      updating.setEmpty();
+    }
+
+    super.draw();
+  }
 }

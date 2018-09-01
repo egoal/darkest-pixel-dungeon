@@ -45,144 +45,146 @@ import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
-public class Pickaxe extends Weapon{
-	
-	public static final String AC_MINE	= "MINE";
-	
-	public static final float TIME_TO_MINE = 2;
-	
-	private static final ItemSprite.Glowing BLOODY = new ItemSprite.Glowing( 0x550000 );
-	
-	{
-		image = ItemSpriteSheet.PICKAXE;
-		
-		unique = true;
-		
-		defaultAction = AC_MINE;
+public class Pickaxe extends Weapon {
 
-	}
-	
-	public boolean bloodStained = false;
+  public static final String AC_MINE = "MINE";
 
-	@Override
-	public int min(int lvl) {
-		return 2;   //tier 2
-	}
+  public static final float TIME_TO_MINE = 2;
 
-	@Override
-	public int max(int lvl) {
-		return 15;  //tier 2
-	}
+  private static final ItemSprite.Glowing BLOODY = new ItemSprite.Glowing
+          (0x550000);
 
-	@Override
-	public int STRReq(int lvl) {
-		return 14;  //tier 3
-	}
+  {
+    image = ItemSpriteSheet.PICKAXE;
 
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_MINE );
-		return actions;
-	}
-	
-	@Override
-	public void execute( final Hero hero, String action ) {
+    unique = true;
 
-		super.execute( hero, action );
-		
-		if (action.equals(AC_MINE)) {
-			
-			if (Dungeon.depth < 11 || Dungeon.depth > 15) {
-				GLog.w( Messages.get(this, "no_vein") );
-				return;
-			}
-			
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				
-				final int pos = hero.pos + PathFinder.NEIGHBOURS8[i];
-				if (Dungeon.level.map[pos] == Terrain.WALL_DECO) {
-				
-					hero.spend( TIME_TO_MINE );
-					hero.busy();
-					
-					hero.sprite.attack( pos, new Callback() {
-						
-						@Override
-						public void call() {
+    defaultAction = AC_MINE;
 
-							CellEmitter.center( pos ).burst( Speck.factory( Speck.STAR ), 7 );
-							Sample.INSTANCE.play( Assets.SND_EVOKE );
-							
-							Level.set( pos, Terrain.WALL );
-							GameScene.updateMap( pos );
-							
-							DarkGold gold = new DarkGold();
-							if (gold.doPickUp( Dungeon.hero )) {
-								GLog.i( Messages.get(Dungeon.hero, "you_now_have", gold.name()) );
-							} else {
-								Dungeon.level.drop( gold, hero.pos ).sprite.drop();
-							}
-							
-							Hunger hunger = hero.buff( Hunger.class );
-							if (hunger != null && !hunger.isStarving()) {
-								hunger.reduceHunger( -Hunger.STARVING / 10 );
-								BuffIndicator.refreshHero();
-							}
-							
-							hero.onOperateComplete();
-						}
-					} );
-					
-					return;
-				}
-			}
-			
-			GLog.w( Messages.get(this, "no_vein") );
-			
-		}
-	}
-	
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
-	
-	@Override
-	public Damage proc(Damage dmg){
-		if(!bloodStained && dmg.to instanceof Bat && ((Char)dmg.to).HP<=dmg.value){
-			//fixme: may not die, since we use damage resistance
-			bloodStained=true;
-			updateQuickslot();
-		}
-		
-		return dmg;
-	}
-	
-	private static final String BLOODSTAINED = "bloodStained";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		
-		bundle.put( BLOODSTAINED, bloodStained );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		
-		bloodStained = bundle.getBoolean( BLOODSTAINED );
-	}
-	
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return bloodStained ? BLOODY : null;
-	}
+  }
+
+  public boolean bloodStained = false;
+
+  @Override
+  public int min(int lvl) {
+    return 2;   //tier 2
+  }
+
+  @Override
+  public int max(int lvl) {
+    return 15;  //tier 2
+  }
+
+  @Override
+  public int STRReq(int lvl) {
+    return 14;  //tier 3
+  }
+
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    ArrayList<String> actions = super.actions(hero);
+    actions.add(AC_MINE);
+    return actions;
+  }
+
+  @Override
+  public void execute(final Hero hero, String action) {
+
+    super.execute(hero, action);
+
+    if (action.equals(AC_MINE)) {
+
+      if (Dungeon.depth < 11 || Dungeon.depth > 15) {
+        GLog.w(Messages.get(this, "no_vein"));
+        return;
+      }
+
+      for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+
+        final int pos = hero.pos + PathFinder.NEIGHBOURS8[i];
+        if (Dungeon.level.map[pos] == Terrain.WALL_DECO) {
+
+          hero.spend(TIME_TO_MINE);
+          hero.busy();
+
+          hero.sprite.attack(pos, new Callback() {
+
+            @Override
+            public void call() {
+
+              CellEmitter.center(pos).burst(Speck.factory(Speck.STAR), 7);
+              Sample.INSTANCE.play(Assets.SND_EVOKE);
+
+              Level.set(pos, Terrain.WALL);
+              GameScene.updateMap(pos);
+
+              DarkGold gold = new DarkGold();
+              if (gold.doPickUp(Dungeon.hero)) {
+                GLog.i(Messages.get(Dungeon.hero, "you_now_have", gold.name()));
+              } else {
+                Dungeon.level.drop(gold, hero.pos).sprite.drop();
+              }
+
+              Hunger hunger = hero.buff(Hunger.class);
+              if (hunger != null && !hunger.isStarving()) {
+                hunger.reduceHunger(-Hunger.STARVING / 10);
+                BuffIndicator.refreshHero();
+              }
+
+              hero.onOperateComplete();
+            }
+          });
+
+          return;
+        }
+      }
+
+      GLog.w(Messages.get(this, "no_vein"));
+
+    }
+  }
+
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
+
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
+
+  @Override
+  public Damage proc(Damage dmg) {
+    if (!bloodStained && dmg.to instanceof Bat && ((Char) dmg.to).HP <= dmg
+            .value) {
+      //fixme: may not die, since we use damage resistance
+      bloodStained = true;
+      updateQuickslot();
+    }
+
+    return dmg;
+  }
+
+  private static final String BLOODSTAINED = "bloodStained";
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+
+    bundle.put(BLOODSTAINED, bloodStained);
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+
+    bloodStained = bundle.getBoolean(BLOODSTAINED);
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return bloodStained ? BLOODY : null;
+  }
 
 }

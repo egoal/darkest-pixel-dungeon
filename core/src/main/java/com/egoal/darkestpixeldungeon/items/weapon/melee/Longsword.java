@@ -23,11 +23,11 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Longsword extends MeleeWeapon {
-	
-	{
-		image = ItemSpriteSheet.LONGSWORD;
 
-		tier = 4;
-	}
+  {
+    image = ItemSpriteSheet.LONGSWORD;
+
+    tier = 4;
+  }
 
 }

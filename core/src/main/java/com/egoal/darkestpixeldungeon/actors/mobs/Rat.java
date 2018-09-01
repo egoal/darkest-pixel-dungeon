@@ -27,28 +27,28 @@ import com.watabou.utils.Random;
 
 public class Rat extends Mob {
 
-	{
-		spriteClass = RatSprite.class;
-		
-		HP = HT = 8;
-		defenseSkill = 2;
-		
-		maxLvl = 5;
-	}
-	
-	@Override
-	public Damage giveDamage(Char target){
-		return new Damage(Random.NormalIntRange( 1, 4 ), this, target);
-	}
-	
-	@Override
-	public Damage defendDamage(Damage dmg){
-		dmg.value	-=	Random.NormalIntRange(0, 1);
-		return dmg;
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 8;
-	}
+  {
+    spriteClass = RatSprite.class;
+
+    HP = HT = 8;
+    defenseSkill = 2;
+
+    maxLvl = 5;
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(1, 4), this, target);
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 1);
+    return dmg;
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 8;
+  }
 }

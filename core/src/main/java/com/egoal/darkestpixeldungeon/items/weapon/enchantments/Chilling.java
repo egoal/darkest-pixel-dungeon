@@ -29,30 +29,30 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Chilling extends Weapon.Enchantment{
+public class Chilling extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x00FFFF );
-	
-	@Override
-	public Damage proc(Weapon weapon, Damage damage){
-		Char defender	=	(Char)damage.to;
-		// lvl 0 - 20%
-		// lvl 1 - 33%
-		// lvl 2 - 43%
-		int level = Math.max( 0, weapon.level() );
+  private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing(0x00FFFF);
 
-		if (Random.Int( level + 5 ) >= 4) {
-			Buff.prolong( defender, Chill.class, Random.Float( 2f, 3f ) );
-			Splash.at( defender.sprite.center(), 0xFFB2D6FF, 5);
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    // lvl 0 - 20%
+    // lvl 1 - 33%
+    // lvl 2 - 43%
+    int level = Math.max(0, weapon.level());
 
-		}
+    if (Random.Int(level + 5) >= 4) {
+      Buff.prolong(defender, Chill.class, Random.Float(2f, 3f));
+      Splash.at(defender.sprite.center(), 0xFFB2D6FF, 5);
 
-		return damage.addElement(Damage.Element.ICE);
-	}
-	
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return TEAL;
-	}
+    }
+
+    return damage.addElement(Damage.Element.ICE);
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return TEAL;
+  }
 
 }

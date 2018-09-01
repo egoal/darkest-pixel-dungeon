@@ -34,24 +34,24 @@ import com.watabou.utils.PathFinder;
 
 public class BlazingTrap extends Trap {
 
-	{
-		color = TrapSprite.ORANGE;
-		shape = TrapSprite.STARS;
-	}
+  {
+    color = TrapSprite.ORANGE;
+    shape = TrapSprite.STARS;
+  }
 
 
-	@Override
-	public void activate() {
-		PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				if (Level.pit[i] || Level.water[i])
-					GameScene.add(Blob.seed(i, 1, Fire.class));
-				else
-					GameScene.add(Blob.seed(i, 5, Fire.class));
-				CellEmitter.get(i).burst(FlameParticle.FACTORY, 5);
-			}
-		}
-		Sample.INSTANCE.play(Assets.SND_BURNING);
-	}
+  @Override
+  public void activate() {
+    PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), 2);
+    for (int i = 0; i < PathFinder.distance.length; i++) {
+      if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+        if (Level.pit[i] || Level.water[i])
+          GameScene.add(Blob.seed(i, 1, Fire.class));
+        else
+          GameScene.add(Blob.seed(i, 5, Fire.class));
+        CellEmitter.get(i).burst(FlameParticle.FACTORY, 5);
+      }
+    }
+    Sample.INSTANCE.play(Assets.SND_BURNING);
+  }
 }

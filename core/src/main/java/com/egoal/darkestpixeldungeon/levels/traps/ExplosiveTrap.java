@@ -25,14 +25,14 @@ import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class ExplosiveTrap extends Trap {
 
-	{
-		color = TrapSprite.ORANGE;
-		shape = TrapSprite.DIAMOND;
-	}
+  {
+    color = TrapSprite.ORANGE;
+    shape = TrapSprite.DIAMOND;
+  }
 
-	@Override
-	public void activate() {
-		new Bomb().explode(pos);
-	}
+  @Override
+  public void activate() {
+    new Bomb().explode(pos);
+  }
 
 }

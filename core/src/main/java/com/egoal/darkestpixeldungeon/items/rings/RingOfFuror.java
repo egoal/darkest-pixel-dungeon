@@ -22,11 +22,11 @@ package com.egoal.darkestpixeldungeon.items.rings;
 
 public class RingOfFuror extends Ring {
 
-	@Override
-	protected RingBuff buff( ) {
-		return new Furor();
-	}
+  @Override
+  protected RingBuff buff() {
+    return new Furor();
+  }
 
-	public class Furor extends RingBuff {
-	}
+  public class Furor extends RingBuff {
+  }
 }

@@ -32,84 +32,85 @@ import com.watabou.noosa.particles.Emitter;
 
 public class EyeSprite extends MobSprite {
 
-	private int zapPos;
+  private int zapPos;
 
-	private Animation charging;
-	private Emitter chargeParticles;
-	
-	public EyeSprite() {
-		super();
-		
-		texture( Assets.EYE );
-		
-		TextureFilm frames = new TextureFilm( texture, 16, 18 );
-		
-		idle = new Animation( 8, true );
-		idle.frames( frames, 0, 1, 2 );
+  private Animation charging;
+  private Emitter chargeParticles;
 
-		charging = new Animation( 12, true);
-		charging.frames( frames, 3, 4 );
+  public EyeSprite() {
+    super();
 
-		chargeParticles = centerEmitter();
-		chargeParticles.autoKill = false;
-		chargeParticles.pour(MagicMissile.MagicParticle.ATTRACTING, 0.05f);
-		chargeParticles.on = false;
-		
-		run = new Animation( 12, true );
-		run.frames( frames, 5, 6 );
-		
-		attack = new Animation( 8, false );
-		attack.frames( frames, 4, 3 );
-		zap = attack.clone();
-		
-		die = new Animation( 8, false );
-		die.frames( frames, 7, 8, 9 );
-		
-		play( idle );
-	}
+    texture(Assets.EYE);
 
-	@Override
-	public void link(Char ch) {
-		super.link(ch);
-		if (((Eye)ch).beamCharged) play(charging);
-	}
+    TextureFilm frames = new TextureFilm(texture, 16, 18);
 
-	@Override
-	public void update() {
-		super.update();
-		chargeParticles.pos(center());
-		chargeParticles.visible = visible;
-	}
+    idle = new Animation(8, true);
+    idle.frames(frames, 0, 1, 2);
 
-	public void charge( int pos ){
-		turnTo(ch.pos, pos);
-		play(charging);
-	}
+    charging = new Animation(12, true);
+    charging.frames(frames, 3, 4);
 
-	@Override
-	public void play(Animation anim) {
-		chargeParticles.on = anim == charging;
-		super.play(anim);
-	}
+    chargeParticles = centerEmitter();
+    chargeParticles.autoKill = false;
+    chargeParticles.pour(MagicMissile.MagicParticle.ATTRACTING, 0.05f);
+    chargeParticles.on = false;
 
-	@Override
-	public void zap( int pos ) {
-		zapPos = pos;
-		super.zap( pos );
-	}
-	
-	@Override
-	public void onComplete( Animation anim ) {
-		super.onComplete( anim );
-		
-		if (anim == zap) {
-			if (Dungeon.visible[ch.pos] || Dungeon.visible[zapPos]) {
-				parent.add( new Beam.DeathRay( center(), DungeonTilemap.tileCenterToWorld( zapPos ) ) );
-			}
-			((Eye)ch).deathGaze();
-			ch.next();
-		} else if (anim == die){
-			chargeParticles.killAndErase();
-		}
-	}
+    run = new Animation(12, true);
+    run.frames(frames, 5, 6);
+
+    attack = new Animation(8, false);
+    attack.frames(frames, 4, 3);
+    zap = attack.clone();
+
+    die = new Animation(8, false);
+    die.frames(frames, 7, 8, 9);
+
+    play(idle);
+  }
+
+  @Override
+  public void link(Char ch) {
+    super.link(ch);
+    if (((Eye) ch).beamCharged) play(charging);
+  }
+
+  @Override
+  public void update() {
+    super.update();
+    chargeParticles.pos(center());
+    chargeParticles.visible = visible;
+  }
+
+  public void charge(int pos) {
+    turnTo(ch.pos, pos);
+    play(charging);
+  }
+
+  @Override
+  public void play(Animation anim) {
+    chargeParticles.on = anim == charging;
+    super.play(anim);
+  }
+
+  @Override
+  public void zap(int pos) {
+    zapPos = pos;
+    super.zap(pos);
+  }
+
+  @Override
+  public void onComplete(Animation anim) {
+    super.onComplete(anim);
+
+    if (anim == zap) {
+      if (Dungeon.visible[ch.pos] || Dungeon.visible[zapPos]) {
+        parent.add(new Beam.DeathRay(center(), DungeonTilemap
+                .tileCenterToWorld(zapPos)));
+      }
+      ((Eye) ch).deathGaze();
+      ch.next();
+    } else if (anim == die) {
+      chargeParticles.killAndErase();
+    }
+  }
 }

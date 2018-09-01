@@ -22,13 +22,14 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee;
 
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
-//this class is named as such to avoid conflicts with the ShortSword class, from pre-0.4.0
+//this class is named as such to avoid conflicts with the ShortSword class, 
+// from pre-0.4.0
 public class NewShortsword extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.SHORTSWORD;
+  {
+    image = ItemSpriteSheet.SHORTSWORD;
 
-		tier = 2;
-	}
+    tier = 2;
+  }
 
 }

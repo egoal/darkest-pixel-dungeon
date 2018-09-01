@@ -31,28 +31,28 @@ import com.watabou.utils.Random;
 
 public class Starflower extends Plant {
 
-	{
-		image = 11;
-	}
+  {
+    image = 11;
+  }
 
-	@Override
-	public void activate() {
-		Char ch = Actor.findChar(pos);
+  @Override
+  public void activate() {
+    Char ch = Actor.findChar(pos);
 
-		if (ch != null) Buff.prolong(ch, Bless.class, 30f);
+    if (ch != null) Buff.prolong(ch, Bless.class, 30f);
 
-		if (Random.Int(5) == 0){
-			Dungeon.level.drop(new Seed(), pos).sprite.drop();
-		}
-	}
+    if (Random.Int(5) == 0) {
+      Dungeon.level.drop(new Seed(), pos).sprite.drop();
+    }
+  }
 
-	public static class Seed extends Plant.Seed{
+  public static class Seed extends Plant.Seed {
 
-		{
-			image = ItemSpriteSheet.SEED_STARFLOWER;
+    {
+      image = ItemSpriteSheet.SEED_STARFLOWER;
 
-			plantClass = Starflower.class;
-			alchemyClass = PotionOfExperience.class;
-		}
-	}
+      plantClass = Starflower.class;
+      alchemyClass = PotionOfExperience.class;
+    }
+  }
 }

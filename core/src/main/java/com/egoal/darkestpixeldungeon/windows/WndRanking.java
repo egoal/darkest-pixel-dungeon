@@ -47,357 +47,381 @@ import com.watabou.noosa.ui.Button;
 import java.util.Locale;
 
 public class WndRanking extends WndTabbed {
-	
-	private static final int WIDTH			= 91;
-	private static final int HEIGHT			= 160;
-	
-	private Thread thread;
-	private String error = null;
-	
-	private Image busy;
 
-	public WndRanking( final Rankings.Record rec ) {
-		
-		super();
-		resize( WIDTH, HEIGHT );
-		
-		thread = new Thread() {
-			@Override
-			public void run() {
-				try {
-					Badges.loadGlobal();
-					Rankings.INSTANCE.loadGameData( rec );
-				} catch ( Exception e ) {
-					error = Messages.get(WndRanking.class, "error");
-				}
-			}
-		};
-		thread.start();
+  private static final int WIDTH = 91;
+  private static final int HEIGHT = 160;
 
-		busy = Icons.BUSY.get();
-		busy.origin.set( busy.width / 2, busy.height / 2 );
-		busy.angularSpeed = 720;
-		busy.x = (WIDTH - busy.width) / 2;
-		busy.y = (HEIGHT - busy.height) / 2;
-		add( busy );
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		
-		if (thread != null && !thread.isAlive()) {
-			thread = null;
-			if (error == null) {
-				remove( busy );
-				createControls();
-			} else {
-				hide();
-				Game.scene().add( new WndError( error ) );
-			}
-		}
-	}
-	
-	private void createControls() {
-		
-		String[] labels =
-			{Messages.get(this, "stats"), Messages.get(this, "items"), Messages.get(this, "badges")};
-		Group[] pages =
-			{new StatsTab(), new ItemsTab(), new BadgesTab()};
-		
-		for (int i=0; i < pages.length; i++) {
-			
-			add( pages[i] );
-			
-			Tab tab = new RankingTab( labels[i], pages[i] );
-			add( tab );
-		}
+  private Thread thread;
+  private String error = null;
 
-		layoutTabs();
-		
-		select( 0 );
-	}
+  private Image busy;
 
-	private class RankingTab extends LabeledTab {
-		
-		private Group page;
-		
-		public RankingTab( String label, Group page ) {
-			super( label );
-			this.page = page;
-		}
-		
-		@Override
-		protected void select( boolean value ) {
-			super.select( value );
-			if (page != null) {
-				page.visible = page.active = selected;
-			}
-		}
-	}
-	
-	private class StatsTab extends Group {
+  public WndRanking(final Rankings.Record rec) {
 
-		private int GAP	= 6;
-		
-		public StatsTab() {
-			super();
+    super();
+    resize(WIDTH, HEIGHT);
 
-			if (Dungeon.challenges > 0) GAP--;
-			
-			String heroClass = Dungeon.hero.className();
-			
-			IconTitle title = new IconTitle();
-			title.icon( HeroSprite.avatar( Dungeon.hero.heroClass, Dungeon.hero.tier() ) );
-			title.label( Messages.get(this, "title", Dungeon.hero.lvl, heroClass ).toUpperCase( Locale.ENGLISH ) );
-			title.color(Window.SHPX_COLOR);
-			title.setRect( 0, 0, WIDTH, 0 );
-			add( title );
-			
-			float pos = title.bottom();
+    thread = new Thread() {
+      @Override
+      public void run() {
+        try {
+          Badges.loadGlobal();
+          Rankings.INSTANCE.loadGameData(rec);
+        } catch (Exception e) {
+          error = Messages.get(WndRanking.class, "error");
+        }
+      }
+    };
+    thread.start();
 
-			if (Dungeon.challenges > 0) {
-				RedButton btnCatalogus = new RedButton( Messages.get(this, "challenges") ) {
-					@Override
-					protected void onClick() {
-						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
-					}
-				};
-				btnCatalogus.setRect( 0, pos, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
-				add( btnCatalogus );
+    busy = Icons.BUSY.get();
+    busy.origin.set(busy.width / 2, busy.height / 2);
+    busy.angularSpeed = 720;
+    busy.x = (WIDTH - busy.width) / 2;
+    busy.y = (HEIGHT - busy.height) / 2;
+    add(busy);
+  }
 
-				pos = btnCatalogus.bottom();
-			}
+  @Override
+  public void update() {
+    super.update();
 
-			pos += GAP + GAP;
-			
-			pos = statSlot( this, Messages.get(this, "str"), Integer.toString( Dungeon.hero.STR ), pos );
-			pos = statSlot( this, Messages.get(this, "health"), Integer.toString( Dungeon.hero.HT ), pos );
-			
-			pos += GAP;
-			
-			pos = statSlot( this, Messages.get(this, "duration"), Integer.toString( (int)Statistics.duration ), pos );
-			
-			pos += GAP;
-			
-			pos = statSlot( this, Messages.get(this, "depth"), Integer.toString( Statistics.deepestFloor ), pos );
-			pos = statSlot( this, Messages.get(this, "enemies"), Integer.toString( Statistics.enemiesSlain ), pos );
-			pos = statSlot( this, Messages.get(this, "gold"), Integer.toString( Statistics.goldCollected ), pos );
-			
-			pos += GAP;
-			
-			pos = statSlot( this, Messages.get(this, "food"), Integer.toString( Statistics.foodEaten ), pos );
-			pos = statSlot( this, Messages.get(this, "alchemy"), Integer.toString( Statistics.potionsCooked ), pos );
-			pos = statSlot( this, Messages.get(this, "ankhs"), Integer.toString( Statistics.ankhsUsed ), pos );
-		}
-		
-		private float statSlot( Group parent, String label, String value, float pos ) {
-			
-			RenderedText txt = PixelScene.renderText( label, 7 );
-			txt.y = pos;
-			parent.add( txt );
-			
-			txt = PixelScene.renderText( value, 7 );
-			txt.x = WIDTH * 0.65f;
-			txt.y = pos;
-			PixelScene.align(txt);
-			parent.add( txt );
-			
-			return pos + GAP + txt.baseLine();
-		}
-	}
-	
-	private class ItemsTab extends Group {
-		
-		private float pos;
-		
-		public ItemsTab() {
-			super();
-			
-			Belongings stuff = Dungeon.hero.belongings;
-			if (stuff.weapon != null) {
-				addItem( stuff.weapon );
-			}
-			if (stuff.armor != null) {
-				addItem( stuff.armor );
-			}
-			if (stuff.misc1 != null) {
-				addItem( stuff.misc1);
-			}
-			if (stuff.misc2 != null) {
-				addItem( stuff.misc2);
-			}
-			if(stuff.misc3!=null){
-				addItem(stuff.misc3);
-			}
+    if (thread != null && !thread.isAlive()) {
+      thread = null;
+      if (error == null) {
+        remove(busy);
+        createControls();
+      } else {
+        hide();
+        Game.scene().add(new WndError(error));
+      }
+    }
+  }
 
-			// quickslots
-			pos = 0;
-			for (int i = 0; i < 6; i++){
-				float posx	=	i%4*(22+1);
-				float posy	=	i/4*(22+1)+116;
-				if (Dungeon.quickslot.getItem(i) != null){
-					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
+  private void createControls() {
 
-					slot.setRect( posx, posy, 22, 22 );
+    String[] labels =
+            {Messages.get(this, "stats"), Messages.get(this, "items"), 
+                    Messages.get(this, "badges")};
+    Group[] pages =
+            {new StatsTab(), new ItemsTab(), new BadgesTab()};
 
-					add(slot);
+    for (int i = 0; i < pages.length; i++) {
 
-				} else {
-					ColorBlock bg = new ColorBlock( 22, 22, 0x9953564D );
-					bg.x = posx;
-					bg.y = posy;
-					add(bg);
-				}
-				// pos += 22+1;
-			}
-		}
-		
-		private void addItem( Item item ) {
-			ItemButton slot = new ItemButton( item );
-			slot.setRect( 0, pos, width, ItemButton.HEIGHT );
-			add( slot );
-			
-			pos += slot.height() + 1;
-		}
-	}
-	
-	private class BadgesTab extends Group {
-		
-		public BadgesTab() {
-			super();
-			
-			camera = WndRanking.this.camera;
-			
-			ScrollPane list = new BadgesList( false );
-			add( list );
-			
-			list.setSize( WIDTH, HEIGHT );
-		}
-	}
-	
-	private class ItemButton extends Button {
-		
-		public static final int HEIGHT	= 22;	// same as bag
-		
-		private Item item;
-		
-		private ItemSlot slot;
-		private ColorBlock bg;
-		private RenderedText name;
-		
-		public ItemButton( Item item ) {
-			
-			super();
+      add(pages[i]);
 
-			this.item = item;
-			
-			slot.item( item );
-			if (item.cursed && item.cursedKnown) {
-				bg.ra = +0.2f;
-				bg.ga = -0.1f;
-			} else if (!item.isIdentified()) {
-				bg.ra = 0.1f;
-				bg.ba = 0.1f;
-			}
-		}
-		
-		@Override
-		protected void createChildren() {
-			
-			bg = new ColorBlock( HEIGHT, HEIGHT, 0x9953564D );
-			add( bg );
-			
-			slot = new ItemSlot();
-			add( slot );
-			
-			name = PixelScene.renderText( "?", 7 );
-			add( name );
-			
-			super.createChildren();
-		}
-		
-		@Override
-		protected void layout() {
-			bg.x = x;
-			bg.y = y;
-			
-			slot.setRect( x, y, HEIGHT, HEIGHT );
-			PixelScene.align(slot);
-			
-			name.x = slot.right() + 2;
-			name.y = y + (height - name.baseLine()) / 2;
-			PixelScene.align(name);
-			
-			String str = Messages.titleCase( item.name() );
-			name.text( str );
-			if (name.width() > width - name.x) {
-				do {
-					str = str.substring( 0, str.length() - 1 );
-					name.text( str + "..." );
-				} while (name.width() > width - name.x);
-			}
-			
-			super.layout();
-		}
-		
-		@Override
-		protected void onTouchDown() {
-			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-		};
-		
-		protected void onTouchUp() {
-			bg.brightness( 1.0f );
-		};
-		
-		@Override
-		protected void onClick() {
-			Game.scene().add( new WndItem( null, item ) );
-		}
-	}
+      Tab tab = new RankingTab(labels[i], pages[i]);
+      add(tab);
+    }
 
-	private class QuickSlotButton extends ItemSlot{
+    layoutTabs();
 
-		public static final int HEIGHT	= 22;
+    select(0);
+  }
 
-		private Item item;
-		private ColorBlock bg;
+  private class RankingTab extends LabeledTab {
 
-		QuickSlotButton(Item item){
-			super(item);
-			this.item = item;
-		}
+    private Group page;
 
-		@Override
-		protected void createChildren() {
-			bg = new ColorBlock( HEIGHT, HEIGHT, 0x9953564D );
-			add( bg );
+    public RankingTab(String label, Group page) {
+      super(label);
+      this.page = page;
+    }
 
-			super.createChildren();
-		}
+    @Override
+    protected void select(boolean value) {
+      super.select(value);
+      if (page != null) {
+        page.visible = page.active = selected;
+      }
+    }
+  }
 
-		@Override
-		protected void layout() {
-			bg.x = x;
-			bg.y = y;
+  private class StatsTab extends Group {
 
-			super.layout();
-		}
+    private int GAP = 6;
 
-		@Override
-		protected void onTouchDown() {
-			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-		};
+    public StatsTab() {
+      super();
 
-		protected void onTouchUp() {
-			bg.brightness( 1.0f );
-		};
+      if (Dungeon.challenges > 0) GAP--;
 
-		@Override
-		protected void onClick() {
-			Game.scene().add(new WndItem(null, item));
-		}
-	}
+      String heroClass = Dungeon.hero.className();
+
+      IconTitle title = new IconTitle();
+      title.icon(HeroSprite.avatar(Dungeon.hero.heroClass, Dungeon.hero.tier
+              ()));
+      title.label(Messages.get(this, "title", Dungeon.hero.lvl, heroClass)
+              .toUpperCase(Locale.ENGLISH));
+      title.color(Window.SHPX_COLOR);
+      title.setRect(0, 0, WIDTH, 0);
+      add(title);
+
+      float pos = title.bottom();
+
+      if (Dungeon.challenges > 0) {
+        RedButton btnCatalogus = new RedButton(Messages.get(this, 
+                "challenges")) {
+          @Override
+          protected void onClick() {
+            Game.scene().add(new WndChallenges(Dungeon.challenges, false));
+          }
+        };
+        btnCatalogus.setRect(0, pos, btnCatalogus.reqWidth() + 2, 
+                btnCatalogus.reqHeight() + 2);
+        add(btnCatalogus);
+
+        pos = btnCatalogus.bottom();
+      }
+
+      pos += GAP + GAP;
+
+      pos = statSlot(this, Messages.get(this, "str"), Integer.toString
+              (Dungeon.hero.STR), pos);
+      pos = statSlot(this, Messages.get(this, "health"), Integer.toString
+              (Dungeon.hero.HT), pos);
+
+      pos += GAP;
+
+      pos = statSlot(this, Messages.get(this, "duration"), Integer.toString(
+              (int) Statistics.duration), pos);
+
+      pos += GAP;
+
+      pos = statSlot(this, Messages.get(this, "depth"), Integer.toString
+              (Statistics.deepestFloor), pos);
+      pos = statSlot(this, Messages.get(this, "enemies"), Integer.toString
+              (Statistics.enemiesSlain), pos);
+      pos = statSlot(this, Messages.get(this, "gold"), Integer.toString
+              (Statistics.goldCollected), pos);
+
+      pos += GAP;
+
+      pos = statSlot(this, Messages.get(this, "food"), Integer.toString
+              (Statistics.foodEaten), pos);
+      pos = statSlot(this, Messages.get(this, "alchemy"), Integer.toString
+              (Statistics.potionsCooked), pos);
+      pos = statSlot(this, Messages.get(this, "ankhs"), Integer.toString
+              (Statistics.ankhsUsed), pos);
+    }
+
+    private float statSlot(Group parent, String label, String value, float 
+            pos) {
+
+      RenderedText txt = PixelScene.renderText(label, 7);
+      txt.y = pos;
+      parent.add(txt);
+
+      txt = PixelScene.renderText(value, 7);
+      txt.x = WIDTH * 0.65f;
+      txt.y = pos;
+      PixelScene.align(txt);
+      parent.add(txt);
+
+      return pos + GAP + txt.baseLine();
+    }
+  }
+
+  private class ItemsTab extends Group {
+
+    private float pos;
+
+    public ItemsTab() {
+      super();
+
+      Belongings stuff = Dungeon.hero.belongings;
+      if (stuff.weapon != null) {
+        addItem(stuff.weapon);
+      }
+      if (stuff.armor != null) {
+        addItem(stuff.armor);
+      }
+      if (stuff.misc1 != null) {
+        addItem(stuff.misc1);
+      }
+      if (stuff.misc2 != null) {
+        addItem(stuff.misc2);
+      }
+      if (stuff.misc3 != null) {
+        addItem(stuff.misc3);
+      }
+
+      // quickslots
+      pos = 0;
+      for (int i = 0; i < 6; i++) {
+        float posx = i % 4 * (22 + 1);
+        float posy = i / 4 * (22 + 1) + 116;
+        if (Dungeon.quickslot.getItem(i) != null) {
+          QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot
+                  .getItem(i));
+
+          slot.setRect(posx, posy, 22, 22);
+
+          add(slot);
+
+        } else {
+          ColorBlock bg = new ColorBlock(22, 22, 0x9953564D);
+          bg.x = posx;
+          bg.y = posy;
+          add(bg);
+        }
+        // pos += 22+1;
+      }
+    }
+
+    private void addItem(Item item) {
+      ItemButton slot = new ItemButton(item);
+      slot.setRect(0, pos, width, ItemButton.HEIGHT);
+      add(slot);
+
+      pos += slot.height() + 1;
+    }
+  }
+
+  private class BadgesTab extends Group {
+
+    public BadgesTab() {
+      super();
+
+      camera = WndRanking.this.camera;
+
+      ScrollPane list = new BadgesList(false);
+      add(list);
+
+      list.setSize(WIDTH, HEIGHT);
+    }
+  }
+
+  private class ItemButton extends Button {
+
+    public static final int HEIGHT = 22;  // same as bag
+
+    private Item item;
+
+    private ItemSlot slot;
+    private ColorBlock bg;
+    private RenderedText name;
+
+    public ItemButton(Item item) {
+
+      super();
+
+      this.item = item;
+
+      slot.item(item);
+      if (item.cursed && item.cursedKnown) {
+        bg.ra = +0.2f;
+        bg.ga = -0.1f;
+      } else if (!item.isIdentified()) {
+        bg.ra = 0.1f;
+        bg.ba = 0.1f;
+      }
+    }
+
+    @Override
+    protected void createChildren() {
+
+      bg = new ColorBlock(HEIGHT, HEIGHT, 0x9953564D);
+      add(bg);
+
+      slot = new ItemSlot();
+      add(slot);
+
+      name = PixelScene.renderText("?", 7);
+      add(name);
+
+      super.createChildren();
+    }
+
+    @Override
+    protected void layout() {
+      bg.x = x;
+      bg.y = y;
+
+      slot.setRect(x, y, HEIGHT, HEIGHT);
+      PixelScene.align(slot);
+
+      name.x = slot.right() + 2;
+      name.y = y + (height - name.baseLine()) / 2;
+      PixelScene.align(name);
+
+      String str = Messages.titleCase(item.name());
+      name.text(str);
+      if (name.width() > width - name.x) {
+        do {
+          str = str.substring(0, str.length() - 1);
+          name.text(str + "...");
+        } while (name.width() > width - name.x);
+      }
+
+      super.layout();
+    }
+
+    @Override
+    protected void onTouchDown() {
+      bg.brightness(1.5f);
+      Sample.INSTANCE.play(Assets.SND_CLICK, 0.7f, 0.7f, 1.2f);
+    }
+
+    ;
+
+    protected void onTouchUp() {
+      bg.brightness(1.0f);
+    }
+
+    ;
+
+    @Override
+    protected void onClick() {
+      Game.scene().add(new WndItem(null, item));
+    }
+  }
+
+  private class QuickSlotButton extends ItemSlot {
+
+    public static final int HEIGHT = 22;
+
+    private Item item;
+    private ColorBlock bg;
+
+    QuickSlotButton(Item item) {
+      super(item);
+      this.item = item;
+    }
+
+    @Override
+    protected void createChildren() {
+      bg = new ColorBlock(HEIGHT, HEIGHT, 0x9953564D);
+      add(bg);
+
+      super.createChildren();
+    }
+
+    @Override
+    protected void layout() {
+      bg.x = x;
+      bg.y = y;
+
+      super.layout();
+    }
+
+    @Override
+    protected void onTouchDown() {
+      bg.brightness(1.5f);
+      Sample.INSTANCE.play(Assets.SND_CLICK, 0.7f, 0.7f, 1.2f);
+    }
+
+    ;
+
+    protected void onTouchUp() {
+      bg.brightness(1.0f);
+    }
+
+    ;
+
+    @Override
+    protected void onClick() {
+      Game.scene().add(new WndItem(null, item));
+    }
+  }
 }

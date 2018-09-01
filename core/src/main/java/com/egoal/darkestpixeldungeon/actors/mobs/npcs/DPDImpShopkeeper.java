@@ -19,38 +19,38 @@ import com.watabou.utils.Random;
  * Created by 93942 on 8/21/2018.
  */
 
-public class DPDImpShopkeeper extends DPDShopKeeper{
-	{
-		spriteClass	=	ImpSprite.class;
-	}
-	
-	@Override
-	public DPDShopKeeper initSellItems(){
-		// devil would be place by painter, here, add extra items
-		addItemToSell(new PotionOfHealing());
-		
+public class DPDImpShopkeeper extends DPDShopKeeper {
+  {
+    spriteClass = ImpSprite.class;
+  }
 
-		for (int i=0; i < 3; i++)
-			addItemToSell( Generator.random( Generator.Category.POTION ) );
+  @Override
+  public DPDShopKeeper initSellItems() {
+    // devil would be place by painter, here, add extra items
+    addItemToSell(new PotionOfHealing());
 
-		addItemToSell( new ScrollOfIdentify() );
-		addItemToSell( new ScrollOfRemoveCurse() );
-		addItemToSell( new ScrollOfMagicMapping() );
-		addItemToSell( Generator.random( Generator.Category.SCROLL ) );
 
-		for (int i=0; i < 2; i++)
-			addItemToSell( Random.Int(2) == 0 ?
-					Generator.random( Generator.Category.POTION ) :
-					Generator.random( Generator.Category.SCROLL ) );
-		
-		return this;
-	}
-	
-	@Override
-	protected void flee() {
-		destroy();
+    for (int i = 0; i < 3; i++)
+      addItemToSell(Generator.random(Generator.Category.POTION));
 
-		sprite.emitter().burst( Speck.factory( Speck.WOOL ), 15 );
-		sprite.killAndErase();
-	}
+    addItemToSell(new ScrollOfIdentify());
+    addItemToSell(new ScrollOfRemoveCurse());
+    addItemToSell(new ScrollOfMagicMapping());
+    addItemToSell(Generator.random(Generator.Category.SCROLL));
+
+    for (int i = 0; i < 2; i++)
+      addItemToSell(Random.Int(2) == 0 ?
+              Generator.random(Generator.Category.POTION) :
+              Generator.random(Generator.Category.SCROLL));
+
+    return this;
+  }
+
+  @Override
+  protected void flee() {
+    destroy();
+
+    sprite.emitter().burst(Speck.factory(Speck.WOOL), 15);
+    sprite.killAndErase();
+  }
 }

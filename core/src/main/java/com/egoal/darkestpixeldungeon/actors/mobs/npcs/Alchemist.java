@@ -34,232 +34,238 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Alchemist extends NPC{
-	{
-		name    =   Messages.get(this, "name");
-		spriteClass =   AlchemistSprite.class;
-	}
+public class Alchemist extends NPC {
+  {
+    name = Messages.get(this, "name");
+    spriteClass = AlchemistSprite.class;
+  }
 
-	@Override
-	public boolean interact(){
-		sprite.turnTo(pos,Dungeon.hero.pos);
+  @Override
+  public boolean interact() {
+    sprite.turnTo(pos, Dungeon.hero.pos);
 
-		if(!Quest.hasGiven_){
-			// give quest
-			GameScene.show(new WndQuest(this, Messages.get(this, "hello")){
-				@Override
-				public void onBackPressed(){
-					super.onBackPressed();
+    if (!Quest.hasGiven_) {
+      // give quest
+      GameScene.show(new WndQuest(this, Messages.get(this, "hello")) {
+        @Override
+        public void onBackPressed() {
+          super.onBackPressed();
 
-					Quest.hasGiven_ =   true;
-					Quest.hasCompleted_ =   false;
+          Quest.hasGiven_ = true;
+          Quest.hasCompleted_ = false;
 
-					// drop dew vial
-					DewVial dv  =   new DewVial();
-					if(dv.doPickUp(Dungeon.hero)){
-						GLog.i(Messages.get(Dungeon.hero, "you_now_have", dv.name()));
-					}else
-						Dungeon.level.drop(dv, Dungeon.hero.pos).sprite.drop();
+          // drop dew vial
+          DewVial dv = new DewVial();
+          if (dv.doPickUp(Dungeon.hero)) {
+            GLog.i(Messages.get(Dungeon.hero, "you_now_have", dv.name()));
+          } else
+            Dungeon.level.drop(dv, Dungeon.hero.pos).sprite.drop();
 
-					Dungeon.limitedDrops.dewVial.drop();
-				}
-			});
+          Dungeon.limitedDrops.dewVial.drop();
+        }
+      });
 
-			// todo: add journal
+      // todo: add journal
 
-		}else{
-			if(!Quest.hasCompleted_){
-				GameScene.show(new WndAlchemist(this));
-			}else{
-				tell(Messages.get(this, "farewell"));
-			}
-		}
+    } else {
+      if (!Quest.hasCompleted_) {
+        GameScene.show(new WndAlchemist(this));
+      } else {
+        tell(Messages.get(this, "farewell"));
+      }
+    }
 
 
-		return false;
-	}
+    return false;
+  }
 
-	// drink and give reward
-	public void drink(){
-		DewVial dv  =   Dungeon.hero.belongings.getItem(DewVial.class);
-		assert(dv!=null);
-		// drink
-		int vol =   dv.getVolume();
-		// sprite.emitter().burst(Speck.factory(Speck.HEALING), vol>5?2:1);
-		new Flare(6, 32).show(sprite, 2f);
-		sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
-		GLog.i(Messages.get(this, "drink"));
+  // drink and give reward
+  public void drink() {
+    DewVial dv = Dungeon.hero.belongings.getItem(DewVial.class);
+    assert (dv != null);
+    // drink
+    int vol = dv.getVolume();
+    // sprite.emitter().burst(Speck.factory(Speck.HEALING), vol>5?2:1);
+    new Flare(6, 32).show(sprite, 2f);
+    sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+    GLog.i(Messages.get(this, "drink"));
 
-		Dungeon.hero.spend(1.0f);
-		Dungeon.hero.busy();
-		Sample.INSTANCE.play(Assets.SND_DRINK);
-		// empty dew vial
-		dv.empty();
+    Dungeon.hero.spend(1.0f);
+    Dungeon.hero.busy();
+    Sample.INSTANCE.play(Assets.SND_DRINK);
+    // empty dew vial
+    dv.empty();
 
-		// give reward
-		(new Gold(Random.Int(0, vol*15)+20)).doPickUp(Dungeon.hero);
-		
-		if(vol>=5){
-			// give test papers
-			for(int i=0; i<vol/5 && i<3; ++i){
-				PotionTestPaper ptp=new PotionTestPaper();
-				// ptp.setTargetPotion(alItems.get(Random.Int(alItems.size())));
-				// ptp.setTarget((Class<Potion>)potionList.get(Random.Int(potionList.size())));
-				if(ptp.doPickUp(Dungeon.hero)){
-				}else{
-					Dungeon.level.drop(ptp,Dungeon.hero.pos).sprite.drop();
-				}
-			}
+    // give reward
+    (new Gold(Random.Int(0, vol * 15) + 20)).doPickUp(Dungeon.hero);
 
-			GLog.i(Messages.get(this,"reward_given"));
-		}
-		Quest.hasCompleted_ =   true;
-	}
+    if (vol >= 5) {
+      // give test papers
+      for (int i = 0; i < vol / 5 && i < 3; ++i) {
+        PotionTestPaper ptp = new PotionTestPaper();
+        // ptp.setTargetPotion(alItems.get(Random.Int(alItems.size())));
+        // ptp.setTarget((Class<Potion>)potionList.get(Random.Int(potionList
+        // .size())));
+        if (ptp.doPickUp(Dungeon.hero)) {
+        } else {
+          Dungeon.level.drop(ptp, Dungeon.hero.pos).sprite.drop();
+        }
+      }
 
-	@Override
-	public String description(){
-		return Messages.get(this, "desc");
-	}
+      GLog.i(Messages.get(this, "reward_given"));
+    }
+    Quest.hasCompleted_ = true;
+  }
 
-	// unbreakable
-	@Override
-	public boolean reset() {
-		return true;
-	}
+  @Override
+  public String description() {
+    return Messages.get(this, "desc");
+  }
 
-	@Override
-	protected boolean act() {
-		throwItem();
-		return super.act();
-	}
+  // unbreakable
+  @Override
+  public boolean reset() {
+    return true;
+  }
 
-	@Override
-	public int defenseSkill( Char enemy ) {
-		return 1000;
-	}
+  @Override
+  protected boolean act() {
+    throwItem();
+    return super.act();
+  }
 
-	@Override
-	public int takeDamage(Damage dmg){
-		return 0;
-	}
+  @Override
+  public int defenseSkill(Char enemy) {
+    return 1000;
+  }
 
-	@Override
-	public void add( Buff buff ) {
-	}
-	
-	private void tell(String text){
-		GameScene.show(new WndQuest(this, text));
-	}
+  @Override
+  public int takeDamage(Damage dmg) {
+    return 0;
+  }
 
-	public static class Quest{
-		private static boolean hasGiven_    =   false;
-		private static boolean hasCompleted_    =   false;
+  @Override
+  public void add(Buff buff) {
+  }
 
-		public static void reset(){
-			hasCompleted_   =   false;
-			hasGiven_   =   false;
-		}
+  private void tell(String text) {
+    GameScene.show(new WndQuest(this, text));
+  }
 
-		// serialization
-		private static final String NODE    =   "alchemist";
-		private static final String GIVEN   =   "given";
-		private static final String COMPLETED   =   "completed";
-		public static void storeInBundle(Bundle bundle){
-			Bundle node =   new Bundle();
-			node.put(GIVEN, hasGiven_);
-			node.put(COMPLETED, hasCompleted_);
+  public static class Quest {
+    private static boolean hasGiven_ = false;
+    private static boolean hasCompleted_ = false;
 
-			bundle.put(NODE, node);
-		}
-		public static void restoreFromBundle(Bundle bundle){
-			Bundle node =   bundle.getBundle(NODE);
+    public static void reset() {
+      hasCompleted_ = false;
+      hasGiven_ = false;
+    }
 
-			if(!node.isNull()){
-				hasGiven_   =   node.getBoolean(GIVEN);
-				hasCompleted_   =   node.getBoolean(COMPLETED);
-			}else
-				reset();
-		}
+    // serialization
+    private static final String NODE = "alchemist";
+    private static final String GIVEN = "given";
+    private static final String COMPLETED = "completed";
 
-	}
+    public static void storeInBundle(Bundle bundle) {
+      Bundle node = new Bundle();
+      node.put(GIVEN, hasGiven_);
+      node.put(COMPLETED, hasCompleted_);
 
-	public class WndAlchemist extends Window{
-		private Alchemist alchemist_;
+      bundle.put(NODE, node);
+    }
 
-		private static final int WIDTH  =   120;
-		private static final float GAP  =   2.f;
-		private static final int BTN_HEIGHT =   20;
+    public static void restoreFromBundle(Bundle bundle) {
+      Bundle node = bundle.getBundle(NODE);
 
-		public WndAlchemist(Alchemist alch){
-			super();
+      if (!node.isNull()) {
+        hasGiven_ = node.getBoolean(GIVEN);
+        hasCompleted_ = node.getBoolean(COMPLETED);
+      } else
+        reset();
+    }
 
-			alchemist_  =   alch;
+  }
 
-			IconTitle titleBar  =   new IconTitle();
-			titleBar.icon(new AlchemistSprite());
-			titleBar.label(alchemist_.name);
-			titleBar.setRect(0, 0, WIDTH, 0);
-			add(titleBar);
+  public class WndAlchemist extends Window {
+    private Alchemist alchemist_;
 
-			RenderedTextMultiline rtmMessage    =   PixelScene.renderMultiline(
-				Messages.get(this, "back"), 6);
-			rtmMessage.maxWidth(WIDTH);
-			rtmMessage.setPos(0f, titleBar.bottom()+GAP);
-			add(rtmMessage);
+    private static final int WIDTH = 120;
+    private static final float GAP = 2.f;
+    private static final int BTN_HEIGHT = 20;
 
-			// add buttons
-			RedButton btnAgree  =   new RedButton(Messages.get(this, "yes")){
-				@Override
-				protected void onClick(){ onAnswered(); }
-			};
-			btnAgree.setRect(0, rtmMessage.bottom()+GAP, WIDTH, BTN_HEIGHT);
-			add(btnAgree);
+    public WndAlchemist(Alchemist alch) {
+      super();
 
-			RedButton btnDisagree   =   new RedButton(Messages.get(this, "no")){
-				@Override
-				protected void onClick(){
-					hide();
-					yell(Messages.get(WndAlchemist.class, "wait"));
-				}
-			};
-			btnDisagree.setRect(0, btnAgree.bottom()+GAP, WIDTH, BTN_HEIGHT);
-			add(btnDisagree);
+      alchemist_ = alch;
 
-			resize(WIDTH, (int)btnDisagree.bottom());
-		}
+      IconTitle titleBar = new IconTitle();
+      titleBar.icon(new AlchemistSprite());
+      titleBar.label(alchemist_.name);
+      titleBar.setRect(0, 0, WIDTH, 0);
+      add(titleBar);
 
-		private void onAnswered(){
-			hide();
+      RenderedTextMultiline rtmMessage = PixelScene.renderMultiline(
+              Messages.get(this, "back"), 6);
+      rtmMessage.maxWidth(WIDTH);
+      rtmMessage.setPos(0f, titleBar.bottom() + GAP);
+      add(rtmMessage);
 
-			DewVial dv  =   Dungeon.hero.belongings.getItem(DewVial.class);
-			if(dv==null){
-				GameScene.show(new WndQuest(alchemist_, Messages.get(this, "bottle_miss")));
-			}else{
-				int vol =   dv.getVolume();
-				if(vol==0){
-					GameScene.show(new WndQuest(alchemist_, Messages.get(this, "empty")));
-				}else{
-					String responds =   "";
-					if(vol<5){
-						responds    =   Messages.get(this, "little");
-					}else if(dv.isFull()){
-						responds    =   Messages.get(this, "full");
-					}else
-						responds    =   Messages.get(this, "enough");
+      // add buttons
+      RedButton btnAgree = new RedButton(Messages.get(this, "yes")) {
+        @Override
+        protected void onClick() {
+          onAnswered();
+        }
+      };
+      btnAgree.setRect(0, rtmMessage.bottom() + GAP, WIDTH, BTN_HEIGHT);
+      add(btnAgree);
 
-					GameScene.show(new WndQuest(alchemist_, responds){
-						@Override
-						public void onBackPressed(){
-							super.onBackPressed();
-							alchemist_.drink();
-						}
-					});
-				}
-			}
+      RedButton btnDisagree = new RedButton(Messages.get(this, "no")) {
+        @Override
+        protected void onClick() {
+          hide();
+          yell(Messages.get(WndAlchemist.class, "wait"));
+        }
+      };
+      btnDisagree.setRect(0, btnAgree.bottom() + GAP, WIDTH, BTN_HEIGHT);
+      add(btnDisagree);
 
-		}
+      resize(WIDTH, (int) btnDisagree.bottom());
+    }
 
-	}
+    private void onAnswered() {
+      hide();
+
+      DewVial dv = Dungeon.hero.belongings.getItem(DewVial.class);
+      if (dv == null) {
+        GameScene.show(new WndQuest(alchemist_, Messages.get(this, 
+                "bottle_miss")));
+      } else {
+        int vol = dv.getVolume();
+        if (vol == 0) {
+          GameScene.show(new WndQuest(alchemist_, Messages.get(this, "empty")));
+        } else {
+          String responds = "";
+          if (vol < 5) {
+            responds = Messages.get(this, "little");
+          } else if (dv.isFull()) {
+            responds = Messages.get(this, "full");
+          } else
+            responds = Messages.get(this, "enough");
+
+          GameScene.show(new WndQuest(alchemist_, responds) {
+            @Override
+            public void onBackPressed() {
+              super.onBackPressed();
+              alchemist_.drink();
+            }
+          });
+        }
+      }
+
+    }
+
+  }
 
 
 }

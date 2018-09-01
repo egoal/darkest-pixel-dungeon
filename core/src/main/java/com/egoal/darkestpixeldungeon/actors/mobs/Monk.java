@@ -39,100 +39,101 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public class Monk extends Mob {
-	
-	{
-		spriteClass = MonkSprite.class;
-		
-		HP = HT = 70;
-		defenseSkill = 30;
-		
-		EXP = 11;
-		maxLvl = 21;
-		
-		loot = new Food();
-		lootChance = 0.083f;
 
-		properties.add(Property.UNDEAD);
-		addResistances(Damage.Element.SHADOW, 1.25f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
+  {
+    spriteClass = MonkSprite.class;
 
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange( 12, 25 ), this, target);
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 30;
-	}
-	
-	@Override
-	protected float attackDelay() {
-		return 0.5f;
-	}
+    HP = HT = 70;
+    defenseSkill = 30;
 
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 2);
-		return dmg;
-	}
-	
-	@Override
-	public void die( Object cause ) {
-		Imp.Quest.process( this );
-		
-		super.die( cause );
-	}
+    EXP = 11;
+    maxLvl = 21;
 
-	private int hitsToDisarm = 0;
-	
-	@Override
-	public Damage attackProc(Damage damage ) {
-		
-		if (damage.to == Dungeon.hero) {
-			
-			Hero hero = Dungeon.hero;
-			KindOfWeapon weapon = hero.belongings.weapon;
-			
-			if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
-				if (hitsToDisarm == 0) hitsToDisarm = Random.NormalIntRange(4, 8);
+    loot = new Food();
+    lootChance = 0.083f;
 
-				if (--hitsToDisarm == 0) {
-					hero.belongings.weapon = null;
-					Dungeon.quickslot.clearItem(weapon);
-					weapon.updateQuickslot();
-					Dungeon.level.drop(weapon, hero.pos).sprite.drop();
-					GLog.w(Messages.get(this, "disarm", weapon.name()));
-				}
-			}
-		}
-		
-		return damage;
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Amok.class );
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
+    properties.add(Property.UNDEAD);
+    addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
 
-	private static String DISARMHITS = "hitsToDisarm";
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(12, 25), this, target);
+  }
 
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put(DISARMHITS, hitsToDisarm);
-	}
+  @Override
+  public int attackSkill(Char target) {
+    return 30;
+  }
 
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		hitsToDisarm = bundle.getInt(DISARMHITS);
-	}
+  @Override
+  protected float attackDelay() {
+    return 0.5f;
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 2);
+    return dmg;
+  }
+
+  @Override
+  public void die(Object cause) {
+    Imp.Quest.process(this);
+
+    super.die(cause);
+  }
+
+  private int hitsToDisarm = 0;
+
+  @Override
+  public Damage attackProc(Damage damage) {
+
+    if (damage.to == Dungeon.hero) {
+
+      Hero hero = Dungeon.hero;
+      KindOfWeapon weapon = hero.belongings.weapon;
+
+      if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
+        if (hitsToDisarm == 0) hitsToDisarm = Random.NormalIntRange(4, 8);
+
+        if (--hitsToDisarm == 0) {
+          hero.belongings.weapon = null;
+          Dungeon.quickslot.clearItem(weapon);
+          weapon.updateQuickslot();
+          Dungeon.level.drop(weapon, hero.pos).sprite.drop();
+          GLog.w(Messages.get(this, "disarm", weapon.name()));
+        }
+      }
+    }
+
+    return damage;
+  }
+
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+  static {
+    IMMUNITIES.add(Amok.class);
+    IMMUNITIES.add(Terror.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
+
+  private static String DISARMHITS = "hitsToDisarm";
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(DISARMHITS, hitsToDisarm);
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    hitsToDisarm = bundle.getInt(DISARMHITS);
+  }
 }

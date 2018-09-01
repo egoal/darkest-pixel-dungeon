@@ -33,37 +33,38 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.effects.particles.SnowParticle;
 import com.watabou.utils.Random;
 
-public class AntiEntropy extends Armor.Glyph{
+public class AntiEntropy extends Armor.Glyph {
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
-	
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-		if (Random.Int( 8 ) == 0) {
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-			if (Dungeon.level.adjacent( attacker.pos, defender.pos )) {
-				Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random.Float(0.5f, 1f));
-				CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
-			}
-			
-			Buff.affect( defender, Burning.class ).reignite( defender );
-			defender.sprite.emitter().burst( FlameParticle.FACTORY, 5 );
+    if (Random.Int(8) == 0) {
 
-		}
-		
-		return damage;
-	}
+      if (Dungeon.level.adjacent(attacker.pos, defender.pos)) {
+        Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random
+                .Float(0.5f, 1f));
+        CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
+      }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+      Buff.affect(defender, Burning.class).reignite(defender);
+      defender.sprite.emitter().burst(FlameParticle.FACTORY, 5);
 
-	@Override
-	public boolean curse() {
-		return true;
-	}
+    }
+
+    return damage;
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
+
+  @Override
+  public boolean curse() {
+    return true;
+  }
 }

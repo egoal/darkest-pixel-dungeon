@@ -34,75 +34,77 @@ import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.watabou.utils.Random;
 
 public class Scorpio extends Mob {
-	
-	{
-		spriteClass = ScorpioSprite.class;
-		
-		HP = HT = 95;
-		defenseSkill = 24;
-		viewDistance = Light.DISTANCE;
-		
-		EXP = 14;
-		maxLvl = 25;
-		
-		loot = new PotionOfHealing();
-		lootChance = 0.2f;
 
-		properties.add(Property.DEMONIC);
+  {
+    spriteClass = ScorpioSprite.class;
 
-		addResistances(Damage.Element.POISON, 1.25f);
-		addResistances(Damage.Element.SHADOW, 1.25f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
-	
-	@Override
-	public Damage giveDamage(Char target){
-		return new Damage(Random.NormalIntRange(26, 36), this, target);
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 36;
-	}
-	
-	@Override
-	public Damage defendDamage(Damage dmg){
-		dmg.value	-=	Random.NormalIntRange(0, 16);
-		return dmg;
-	}
-	
-	@Override
-	protected boolean canAttack( Char enemy ) {
-		Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
-		return !Dungeon.level.adjacent( pos, enemy.pos ) && attack.collisionPos == enemy.pos;
-	}
-	
-	@Override
-	public Damage attackProc(Damage dmg){
-		if(Random.Int(2)==0)
-			Buff.prolong((Char)dmg.to, Cripple.class, Cripple.DURATION);
-		
-		return dmg;
-	}
-	
-	@Override
-	protected boolean getCloser( int target ) {
-		if (state == HUNTING) {
-			return enemySeen && getFurther( target );
-		} else {
-			return super.getCloser( target );
-		}
-	}
-	
-	@Override
-	protected Item createLoot() {
-		//5/count+5 total chance of getting healing, failing the 2nd roll drops mystery meat instead.
-		if (Random.Int( 5 + Dungeon.limitedDrops.scorpioHP.count ) <= 4) {
-			Dungeon.limitedDrops.scorpioHP.count++;
-			return (Item)loot;
-		} else {
-			return new MysteryMeat();
-		}
-	}
-	
+    HP = HT = 95;
+    defenseSkill = 24;
+    viewDistance = Light.DISTANCE;
+
+    EXP = 14;
+    maxLvl = 25;
+
+    loot = new PotionOfHealing();
+    lootChance = 0.2f;
+
+    properties.add(Property.DEMONIC);
+
+    addResistances(Damage.Element.POISON, 1.25f);
+    addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(26, 36), this, target);
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 36;
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 16);
+    return dmg;
+  }
+
+  @Override
+  protected boolean canAttack(Char enemy) {
+    Ballistica attack = new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE);
+    return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos == 
+            enemy.pos;
+  }
+
+  @Override
+  public Damage attackProc(Damage dmg) {
+    if (Random.Int(2) == 0)
+      Buff.prolong((Char) dmg.to, Cripple.class, Cripple.DURATION);
+
+    return dmg;
+  }
+
+  @Override
+  protected boolean getCloser(int target) {
+    if (state == HUNTING) {
+      return enemySeen && getFurther(target);
+    } else {
+      return super.getCloser(target);
+    }
+  }
+
+  @Override
+  protected Item createLoot() {
+    //5/count+5 total chance of getting healing, failing the 2nd roll drops 
+    // mystery meat instead.
+    if (Random.Int(5 + Dungeon.limitedDrops.scorpioHP.count) <= 4) {
+      Dungeon.limitedDrops.scorpioHP.count++;
+      return (Item) loot;
+    } else {
+      return new MysteryMeat();
+    }
+  }
+
 }

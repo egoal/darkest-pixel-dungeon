@@ -29,31 +29,32 @@ import com.watabou.utils.Random;
 
 public class Dirk extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.DIRK;
+  {
+    image = ItemSpriteSheet.DIRK;
 
-		tier = 2;
-	}
+    tier = 2;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return  4*(tier+1) +    //12 base, down from 15
-				lvl*(tier+1);   //scaling unchanged
-	}
+  @Override
+  public int max(int lvl) {
+    return 4 * (tier + 1) +    //12 base, down from 15
+            lvl * (tier + 1);   //scaling unchanged
+  }
 
-	// check AssassinsBlade
-	@Override
-	public Damage giveDamage(Hero hero,Char target){
-		// Char enemy	=	hero.enemy();
-		if(target instanceof Mob && ((Mob)target).surprisedBy(hero)){
-			// assassin, deals avg damage to max on surprise, instead of min to max.
-			Damage dmg	=	new Damage(imbue.damageFactor(Random.NormalIntRange((min() + max()) / 2, max())),
-					hero, target);
-			int exStr	=	hero.STR()-STRReq();
-			if(exStr>0)
-				dmg.value	+=	exStr;
-			return dmg;
-		}else
-			return super.giveDamage(hero, target);
-	}
+  // check AssassinsBlade
+  @Override
+  public Damage giveDamage(Hero hero, Char target) {
+    // Char enemy	=	hero.enemy();
+    if (target instanceof Mob && ((Mob) target).surprisedBy(hero)) {
+      // assassin, deals avg damage to max on surprise, instead of min to max.
+      Damage dmg = new Damage(imbue.damageFactor(Random.NormalIntRange((min()
+              + max()) / 2, max())),
+              hero, target);
+      int exStr = hero.STR() - STRReq();
+      if (exStr > 0)
+        dmg.value += exStr;
+      return dmg;
+    } else
+      return super.giveDamage(hero, target);
+  }
 }

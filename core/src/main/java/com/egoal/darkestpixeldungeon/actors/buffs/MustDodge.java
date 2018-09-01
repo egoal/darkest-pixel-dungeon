@@ -14,54 +14,63 @@ import javax.microedition.khronos.opengles.GL;
  */
 
 //* buff checked in Char::checkHit
-public class MustDodge extends FlavourBuff{
-	private int dodgeType	=	0;
-	
-	private static final String DODGE_TYPE	=	"dodge_type";
-	@Override
-	public void storeInBundle(Bundle bundle){
-		super.storeInBundle(bundle);
-		bundle.put(DODGE_TYPE, dodgeType);
-	}
-	@Override
-	public void restoreFromBundle(Bundle bundle){
-		super.restoreFromBundle(bundle);
-		dodgeType	=	bundle.getInt(DODGE_TYPE);
-	}
-	
-	public MustDodge addDodgeType(Damage.Type t){
-		dodgeType	|=	type2int(t);
-		return this;
-	}
-	public MustDodge addDodgeTypeAll(){
-		dodgeType	=	0x07;
-		return this;
-	}
-	
-	private int type2int(Damage.Type t){
-		switch(t){
-			case NORMAL:
-				return 0x01;
-			case MAGICAL:
-				return 0x02;
-			case MENTAL:
-				return 0x04;
-			default:
-				return 0x00;
-		}
-	}
-	
-	// check type
-	public boolean canDodge(Damage dmg){
-		return (dodgeType& type2int(dmg.type))!=0;
-	}
-	
-	@Override
-	public int icon(){ return BuffIndicator.MUST_DODGE; }
-	
-	@Override
-	public String toString(){ return Messages.get(this, "name"); }
-	
-	@Override
-	public String desc(){ return Messages.get(this, "desc", dodgeType, dispTurns()); }
+public class MustDodge extends FlavourBuff {
+  private int dodgeType = 0;
+
+  private static final String DODGE_TYPE = "dodge_type";
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(DODGE_TYPE, dodgeType);
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    dodgeType = bundle.getInt(DODGE_TYPE);
+  }
+
+  public MustDodge addDodgeType(Damage.Type t) {
+    dodgeType |= type2int(t);
+    return this;
+  }
+
+  public MustDodge addDodgeTypeAll() {
+    dodgeType = 0x07;
+    return this;
+  }
+
+  private int type2int(Damage.Type t) {
+    switch (t) {
+      case NORMAL:
+        return 0x01;
+      case MAGICAL:
+        return 0x02;
+      case MENTAL:
+        return 0x04;
+      default:
+        return 0x00;
+    }
+  }
+
+  // check type
+  public boolean canDodge(Damage dmg) {
+    return (dodgeType & type2int(dmg.type)) != 0;
+  }
+
+  @Override
+  public int icon() {
+    return BuffIndicator.MUST_DODGE;
+  }
+
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dodgeType, dispTurns());
+  }
 }

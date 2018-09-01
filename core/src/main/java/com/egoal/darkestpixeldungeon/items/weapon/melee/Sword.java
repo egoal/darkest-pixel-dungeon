@@ -23,11 +23,11 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sword extends MeleeWeapon {
-	
-	{
-		image = ItemSpriteSheet.SWORD;
 
-		tier = 3;
-	}
+  {
+    image = ItemSpriteSheet.SWORD;
+
+    tier = 3;
+  }
 
 }

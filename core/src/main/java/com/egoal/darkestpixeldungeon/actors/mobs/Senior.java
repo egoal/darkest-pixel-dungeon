@@ -30,27 +30,27 @@ import com.watabou.utils.Random;
 
 public class Senior extends Monk {
 
-	{
-		spriteClass = SeniorSprite.class;
-	}
+  {
+    spriteClass = SeniorSprite.class;
+  }
 
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange(16, 24), this, target);
-	}
-	
-	@Override
-	public Damage attackProc(Damage damage ) {
-		Char enemy	=	(Char)damage.to;
-		if (Random.Int( 10 ) == 0) {
-			Buff.prolong( enemy, Paralysis.class, 1.1f );
-		}
-		return super.attackProc(damage);
-	}
-	
-	@Override
-	public void die( Object cause ) {
-		super.die( cause );
-		Badges.validateRare( this );
-	}
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(16, 24), this, target);
+  }
+
+  @Override
+  public Damage attackProc(Damage damage) {
+    Char enemy = (Char) damage.to;
+    if (Random.Int(10) == 0) {
+      Buff.prolong(enemy, Paralysis.class, 1.1f);
+    }
+    return super.attackProc(damage);
+  }
+
+  @Override
+  public void die(Object cause) {
+    super.die(cause);
+    Badges.validateRare(this);
+  }
 }

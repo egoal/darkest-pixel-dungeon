@@ -24,17 +24,17 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class HandAxe extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.HAND_AXE;
+  {
+    image = ItemSpriteSheet.HAND_AXE;
 
-		tier = 2;
-		ACC = 1.225f; //22.5% boost to accuracy
-	}
+    tier = 2;
+    ACC = 1.225f; //22.5% boost to accuracy
+  }
 
-	@Override
-	public int max(int lvl) {
-		return  4*(tier+1) +    //12 base, down from 15
-				lvl*(tier+1);   //scaling unchanged
-	}
+  @Override
+  public int max(int lvl) {
+    return 4 * (tier + 1) +    //12 base, down from 15
+            lvl * (tier + 1);   //scaling unchanged
+  }
 
 }

@@ -28,19 +28,19 @@ import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class VenomTrap extends Trap {
 
-	{
-		color = TrapSprite.VIOLET;
-		shape = TrapSprite.GRILL;
-	}
+  {
+    color = TrapSprite.VIOLET;
+    shape = TrapSprite.GRILL;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		VenomGas venomGas = Blob.seed(pos, 80 + 5 * Dungeon.depth, VenomGas.class);
+    VenomGas venomGas = Blob.seed(pos, 80 + 5 * Dungeon.depth, VenomGas.class);
 
-		venomGas.setStrength(1+Dungeon.depth/4);
+    venomGas.setStrength(1 + Dungeon.depth / 4);
 
-		GameScene.add(venomGas);
+    GameScene.add(venomGas);
 
-	}
+  }
 }

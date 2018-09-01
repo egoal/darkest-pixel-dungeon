@@ -28,30 +28,30 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Displacement extends Armor.Glyph{
+public class Displacement extends Armor.Glyph {
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-		if (defender == Dungeon.hero && Random.Int(20) == 0){
-			ScrollOfTeleportation.teleportHero(Dungeon.hero);
-			damage.value	=	0;
-		}
+    if (defender == Dungeon.hero && Random.Int(20) == 0) {
+      ScrollOfTeleportation.teleportHero(Dungeon.hero);
+      damage.value = 0;
+    }
 
-		return damage;
-	}
+    return damage;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
 
-	@Override
-	public boolean curse() {
-		return true;
-	}
+  @Override
+  public boolean curse() {
+    return true;
+  }
 }

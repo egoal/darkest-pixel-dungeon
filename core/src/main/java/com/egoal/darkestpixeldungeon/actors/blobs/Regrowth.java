@@ -32,45 +32,47 @@ import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 
 public class Regrowth extends Blob {
-	
-	@Override
-	protected void evolve() {
-		super.evolve();
-		
-		if (volume > 0) {
-			int cell;
-			for (int i = area.left; i < area.right; i++) {
-				for (int j = area.top; j < area.bottom; j++) {
-					cell = i + j*Dungeon.level.width();
-					if (off[cell] > 0) {
-						int c = Dungeon.level.map[cell];
-						int c1 = c;
-						if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
-							c1 = cur[cell] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS;
-						} else if (c == Terrain.GRASS && cur[cell] > 9 && Dungeon.level.plants.get(cell) == null ) {
-							c1 = Terrain.HIGH_GRASS;
-						}
 
-						if (c1 != c) {
-							Level.set( cell, c1 );
-							GameScene.updateMap( cell );
-						}
+  @Override
+  protected void evolve() {
+    super.evolve();
 
-						Char ch = Actor.findChar( cell );
-						if (ch != null && off[cell] > 1) {
-							Buff.prolong( ch, Roots.class, TICK );
-						}
-					}
-				}
-			}
-			Dungeon.observe();
-		}
-	}
-	
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		
-		emitter.start( LeafParticle.LEVEL_SPECIFIC, 0.2f, 0 );
-	}
+    if (volume > 0) {
+      int cell;
+      for (int i = area.left; i < area.right; i++) {
+        for (int j = area.top; j < area.bottom; j++) {
+          cell = i + j * Dungeon.level.width();
+          if (off[cell] > 0) {
+            int c = Dungeon.level.map[cell];
+            int c1 = c;
+            if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain
+                    .EMPTY_DECO) {
+              c1 = cur[cell] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS;
+            } else if (c == Terrain.GRASS && cur[cell] > 9 && Dungeon.level
+                    .plants.get(cell) == null) {
+              c1 = Terrain.HIGH_GRASS;
+            }
+
+            if (c1 != c) {
+              Level.set(cell, c1);
+              GameScene.updateMap(cell);
+            }
+
+            Char ch = Actor.findChar(cell);
+            if (ch != null && off[cell] > 1) {
+              Buff.prolong(ch, Roots.class, TICK);
+            }
+          }
+        }
+      }
+      Dungeon.observe();
+    }
+  }
+
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
+
+    emitter.start(LeafParticle.LEVEL_SPECIFIC, 0.2f, 0);
+  }
 }

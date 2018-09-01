@@ -36,57 +36,57 @@ import com.watabou.utils.Random;
 
 public class IncendiaryDart extends MissileWeapon {
 
-	{
-		image = ItemSpriteSheet.INCENDIARY_DART;
-	}
+  {
+    image = ItemSpriteSheet.INCENDIARY_DART;
+  }
 
-	@Override
-	public int min(int lvl) {
-		return 1;
-	}
+  @Override
+  public int min(int lvl) {
+    return 1;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return 2;
-	}
+  @Override
+  public int max(int lvl) {
+    return 2;
+  }
 
-	@Override
-	public int STRReq(int lvl) {
-		return 12;
-	}
+  @Override
+  public int STRReq(int lvl) {
+    return 12;
+  }
 
-	public IncendiaryDart() {
-		this( 1 );
-	}
-	
-	public IncendiaryDart( int number ) {
-		super();
-		quantity = number;
-	}
-	
-	@Override
-	protected void onThrow( int cell ) {
-		Char enemy = Actor.findChar( cell );
-		if ((enemy == null || enemy == curUser) && Level.flamable[cell])
-			GameScene.add( Blob.seed( cell, 4, Fire.class ) );
-		else
-			super.onThrow( cell );
-	}
-	
-	@Override
-	public Damage proc(Damage damage){
-		Buff.affect( (Char)damage.to, Burning.class ).reignite( (Char)damage.to );
-		return super.proc(damage);
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.Int( 3, 6 );
-		return this;
-	}
-	
-	@Override
-	public int price() {
-		return 5 * quantity;
-	}
+  public IncendiaryDart() {
+    this(1);
+  }
+
+  public IncendiaryDart(int number) {
+    super();
+    quantity = number;
+  }
+
+  @Override
+  protected void onThrow(int cell) {
+    Char enemy = Actor.findChar(cell);
+    if ((enemy == null || enemy == curUser) && Level.flamable[cell])
+      GameScene.add(Blob.seed(cell, 4, Fire.class));
+    else
+      super.onThrow(cell);
+  }
+
+  @Override
+  public Damage proc(Damage damage) {
+    Buff.affect((Char) damage.to, Burning.class).reignite((Char) damage.to);
+    return super.proc(damage);
+  }
+
+  @Override
+  public Item random() {
+    quantity = Random.Int(3, 6);
+    return this;
+  }
+
+  @Override
+  public int price() {
+    return 5 * quantity;
+  }
 }

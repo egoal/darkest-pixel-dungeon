@@ -35,208 +35,216 @@ import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
-	private static final int NUM_BUTTONS	=	6;
-	
-	private static QuickSlotButton[] instance	=	new QuickSlotButton[NUM_BUTTONS];
-	private int slotNum;
+  private static final int NUM_BUTTONS = 6;
 
-	private ItemSlot slot;
-	
-	private static Image crossB;
-	private static Image crossM;
-	
-	private static boolean targeting = false;
-	public static Char lastTarget = null;
-	
-	public QuickSlotButton( int slotNum ) {
-		super();
-		this.slotNum = slotNum;
-		item( select( slotNum ) );
-		
-		instance[slotNum] = this;
-	}
-	
-	@Override
-	public void destroy() {
-		super.destroy();
-		
-		reset();
-	}
+  private static QuickSlotButton[] instance = new QuickSlotButton[NUM_BUTTONS];
+  private int slotNum;
 
-	public static void reset() {
-		instance = new QuickSlotButton[NUM_BUTTONS];
+  private ItemSlot slot;
 
-		lastTarget = null;
-	}
-	
-	@Override
-	protected void createChildren() {
-		super.createChildren();
-		
-		slot = new ItemSlot() {
-			@Override
-			protected void onClick() {
-				if (targeting) {
-					int cell = autoAim(lastTarget, select(slotNum));
+  private static Image crossB;
+  private static Image crossM;
 
-					if (cell != -1){
-						GameScene.handleCell(cell);
-					} else {
-						//couldn't auto-aim, just target the position and hope for the best.
-						GameScene.handleCell( lastTarget.pos );
-					}
-				} else {
-					Item item = select(slotNum);
-					if (item.usesTargeting)
-						useTargeting();
-					item.execute( Dungeon.hero );
-				}
-			}
-			@Override
-			protected boolean onLongClick() {
-				return QuickSlotButton.this.onLongClick();
-			}
-			@Override
-			protected void onTouchDown() {
-				icon.lightness( 0.7f );
-			}
-			@Override
-			protected void onTouchUp() {
-				icon.resetColor();
-			}
-		};
-		slot.showParams( true, false, true );
-		add( slot );
-		
-		crossB = Icons.TARGET.get();
-		crossB.visible = false;
-		add( crossB );
-		
-		crossM = new Image();
-		crossM.copy( crossB );
-	}
-	
-	@Override
-	protected void layout() {
-		super.layout();
-		
-		slot.fill( this );
-		
-		crossB.x = x + (width - crossB.width) / 2;
-		crossB.y = y + (height - crossB.height) / 2;
-		PixelScene.align(crossB);
-	}
-	
-	@Override
-	protected void onClick() {
-		GameScene.selectItem( this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item") );
-	}
-	
-	@Override
-	protected boolean onLongClick() {
-		GameScene.selectItem( this, WndBag.Mode.QUICKSLOT, Messages.get(this, "select_item") );
-		return true;
-	}
+  private static boolean targeting = false;
+  public static Char lastTarget = null;
 
-	private static Item select(int slotNum){
-		return Dungeon.quickslot.getItem( slotNum );
-	}
+  public QuickSlotButton(int slotNum) {
+    super();
+    this.slotNum = slotNum;
+    item(select(slotNum));
 
-	@Override
-	public void onSelect( Item item ) {
-		if (item != null) {
-			Dungeon.quickslot.setSlot( slotNum , item );
-			refresh();
-		}
-	}
-	
-	public void item( Item item ) {
-		slot.item( item );
-		enableSlot();
-	}
-	
-	public void enable( boolean value ) {
-		active = value;
-		if (value) {
-			enableSlot();
-		} else {
-			slot.enable( false );
-		}
-	}
-	
-	private void enableSlot() {
-		slot.enable(Dungeon.quickslot.isNonePlaceholder( slotNum ));
-	}
-	
-	private void useTargeting() {
+    instance[slotNum] = this;
+  }
 
-		if (lastTarget != null &&
-				Actor.chars().contains( lastTarget ) &&
-				lastTarget.isAlive() &&
-				Dungeon.visible[lastTarget.pos]) {
+  @Override
+  public void destroy() {
+    super.destroy();
 
-			targeting = true;
-			lastTarget.sprite.parent.add( crossM );
-			crossM.point( DungeonTilemap.tileToWorld( lastTarget.pos ) );
-			crossB.x = x + (width - crossB.width) / 2;
-			crossB.y = y + (height - crossB.height) / 2;
-			crossB.visible = true;
+    reset();
+  }
 
-		} else {
+  public static void reset() {
+    instance = new QuickSlotButton[NUM_BUTTONS];
 
-			lastTarget = null;
-			targeting = false;
+    lastTarget = null;
+  }
 
-		}
+  @Override
+  protected void createChildren() {
+    super.createChildren();
 
-	}
+    slot = new ItemSlot() {
+      @Override
+      protected void onClick() {
+        if (targeting) {
+          int cell = autoAim(lastTarget, select(slotNum));
 
-	public static int autoAim(Char target){
-		//will use generic projectile logic if no item is specified
-		return autoAim(target, new Item());
-	}
+          if (cell != -1) {
+            GameScene.handleCell(cell);
+          } else {
+            //couldn't auto-aim, just target the position and hope for the best.
+            GameScene.handleCell(lastTarget.pos);
+          }
+        } else {
+          Item item = select(slotNum);
+          if (item.usesTargeting)
+            useTargeting();
+          item.execute(Dungeon.hero);
+        }
+      }
 
-	//FIXME: this is currently very expensive, should either optimize ballistica or this, or both
-	public static int autoAim(Char target, Item item){
+      @Override
+      protected boolean onLongClick() {
+        return QuickSlotButton.this.onLongClick();
+      }
 
-		//first try to directly target
-		if (item.throwPos(Dungeon.hero, target.pos) == target.pos) {
-			return target.pos;
-		}
+      @Override
+      protected void onTouchDown() {
+        icon.lightness(0.7f);
+      }
 
-		//Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
-		PathFinder.buildDistanceMap( target.pos, BArray.not( new boolean[Dungeon.level.length()], null ), 2 );
-		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE
-					&& item.throwPos(Dungeon.hero, i) == target.pos)
-				return i;
-		}
+      @Override
+      protected void onTouchUp() {
+        icon.resetColor();
+      }
+    };
+    slot.showParams(true, false, true);
+    add(slot);
 
-		//couldn't find a cell, give up.
-		return -1;
-	}
-	
-	public static void refresh() {
-		for (int i = 0; i < instance.length; i++) {
-			if (instance[i] != null) {
-				instance[i].item(select(i));
-			}
-		}
-	}
-	
-	public static void target( Char target ) {
-		if (target != Dungeon.hero) {
-			lastTarget = target;
-			
-			HealthIndicator.instance.target( target );
-		}
-	}
-	
-	public static void cancel() {
-		if (targeting) {
-			crossB.visible = false;
-			crossM.remove();
-			targeting = false;
-		}
-	}
+    crossB = Icons.TARGET.get();
+    crossB.visible = false;
+    add(crossB);
+
+    crossM = new Image();
+    crossM.copy(crossB);
+  }
+
+  @Override
+  protected void layout() {
+    super.layout();
+
+    slot.fill(this);
+
+    crossB.x = x + (width - crossB.width) / 2;
+    crossB.y = y + (height - crossB.height) / 2;
+    PixelScene.align(crossB);
+  }
+
+  @Override
+  protected void onClick() {
+    GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this, 
+            "select_item"));
+  }
+
+  @Override
+  protected boolean onLongClick() {
+    GameScene.selectItem(this, WndBag.Mode.QUICKSLOT, Messages.get(this, 
+            "select_item"));
+    return true;
+  }
+
+  private static Item select(int slotNum) {
+    return Dungeon.quickslot.getItem(slotNum);
+  }
+
+  @Override
+  public void onSelect(Item item) {
+    if (item != null) {
+      Dungeon.quickslot.setSlot(slotNum, item);
+      refresh();
+    }
+  }
+
+  public void item(Item item) {
+    slot.item(item);
+    enableSlot();
+  }
+
+  public void enable(boolean value) {
+    active = value;
+    if (value) {
+      enableSlot();
+    } else {
+      slot.enable(false);
+    }
+  }
+
+  private void enableSlot() {
+    slot.enable(Dungeon.quickslot.isNonePlaceholder(slotNum));
+  }
+
+  private void useTargeting() {
+
+    if (lastTarget != null &&
+            Actor.chars().contains(lastTarget) &&
+            lastTarget.isAlive() &&
+            Dungeon.visible[lastTarget.pos]) {
+
+      targeting = true;
+      lastTarget.sprite.parent.add(crossM);
+      crossM.point(DungeonTilemap.tileToWorld(lastTarget.pos));
+      crossB.x = x + (width - crossB.width) / 2;
+      crossB.y = y + (height - crossB.height) / 2;
+      crossB.visible = true;
+
+    } else {
+
+      lastTarget = null;
+      targeting = false;
+
+    }
+
+  }
+
+  public static int autoAim(Char target) {
+    //will use generic projectile logic if no item is specified
+    return autoAim(target, new Item());
+  }
+
+  //FIXME: this is currently very expensive, should either optimize 
+  // ballistica or this, or both
+  public static int autoAim(Char target, Item item) {
+
+    //first try to directly target
+    if (item.throwPos(Dungeon.hero, target.pos) == target.pos) {
+      return target.pos;
+    }
+
+    //Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim 
+    // basically.
+    PathFinder.buildDistanceMap(target.pos, BArray.not(new boolean[Dungeon
+            .level.length()], null), 2);
+    for (int i = 0; i < PathFinder.distance.length; i++) {
+      if (PathFinder.distance[i] < Integer.MAX_VALUE
+              && item.throwPos(Dungeon.hero, i) == target.pos)
+        return i;
+    }
+
+    //couldn't find a cell, give up.
+    return -1;
+  }
+
+  public static void refresh() {
+    for (int i = 0; i < instance.length; i++) {
+      if (instance[i] != null) {
+        instance[i].item(select(i));
+      }
+    }
+  }
+
+  public static void target(Char target) {
+    if (target != Dungeon.hero) {
+      lastTarget = target;
+
+      HealthIndicator.instance.target(target);
+    }
+  }
+
+  public static void cancel() {
+    if (targeting) {
+      crossB.visible = false;
+      crossM.remove();
+      targeting = false;
+    }
+  }
 }

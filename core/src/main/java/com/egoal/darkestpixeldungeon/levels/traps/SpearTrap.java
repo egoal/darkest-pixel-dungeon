@@ -36,37 +36,37 @@ import com.watabou.utils.Random;
 
 public class SpearTrap extends Trap {
 
-	{
-		color = TrapSprite.GREY;
-		shape = TrapSprite.DOTS;
-	}
+  {
+    color = TrapSprite.GREY;
+    shape = TrapSprite.DOTS;
+  }
 
-	@Override
-	public void trigger() {
-		if (Dungeon.visible[pos]){
-			Sample.INSTANCE.play(Assets.SND_TRAP);
-		}
-		//this trap is not disarmed by being triggered
-		reveal();
-		Level.set(pos, Terrain.TRAP);
-		activate();
-	}
+  @Override
+  public void trigger() {
+    if (Dungeon.visible[pos]) {
+      Sample.INSTANCE.play(Assets.SND_TRAP);
+    }
+    //this trap is not disarmed by being triggered
+    reveal();
+    Level.set(pos, Terrain.TRAP);
+    activate();
+  }
 
-	@Override
-	public void activate() {
-		if (Dungeon.visible[pos]){
-			Sample.INSTANCE.play(Assets.SND_HIT);
-			Wound.hit(pos);
-		}
+  @Override
+  public void activate() {
+    if (Dungeon.visible[pos]) {
+      Sample.INSTANCE.play(Assets.SND_HIT);
+      Wound.hit(pos);
+    }
 
-		Char ch = Actor.findChar( pos);
-		if (ch != null && !ch.flying){
-			int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth*2);
-			ch.takeDamage(ch.defendDamage(new Damage(Math.max(damage, 0) , this, ch)));
-			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(this, "ondeath") );
-			}
-		}
-	}
+    Char ch = Actor.findChar(pos);
+    if (ch != null && !ch.flying) {
+      int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth * 2);
+      ch.takeDamage(ch.defendDamage(new Damage(Math.max(damage, 0), this, ch)));
+      if (!ch.isAlive() && ch == Dungeon.hero) {
+        Dungeon.fail(getClass());
+        GLog.n(Messages.get(this, "ondeath"));
+      }
+    }
+  }
 }

@@ -41,93 +41,98 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
 public class PotionOfPurity extends Potion {
-	
-	private static final int DISTANCE	= 5;
 
-	{
-		initials = 9;
-	}
+  private static final int DISTANCE = 5;
 
-	@Override
-	public boolean canBeReinforced(){ return !reinforced; }
-	
-	@Override
-	public void shatter( int cell ) {
-		
-		PathFinder.buildDistanceMap( cell, BArray.not( Level.losBlocking, null ), DISTANCE );
-		
-		boolean procd = false;
-		
-		Blob[] blobs = {
-			Dungeon.level.blobs.get( ToxicGas.class ),
-			Dungeon.level.blobs.get( ParalyticGas.class ),
-			Dungeon.level.blobs.get( ConfusionGas.class ),
-			Dungeon.level.blobs.get( StenchGas.class ),
-			Dungeon.level.blobs.get( VenomGas.class )
-		};
-		
-		for (int j=0; j < blobs.length; j++) {
-			
-			Blob blob = blobs[j];
-			if (blob == null) {
-				continue;
-			}
-			
-			for (int i=0; i < Dungeon.level.length(); i++) {
-				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-					
-					int value = blob.cur[i];
-					if (value > 0) {
-						
-						blob.cur[i] = 0;
-						blob.volume -= value;
-						procd = true;
+  {
+    initials = 9;
+  }
 
-						if (Dungeon.visible[i]) {
-							CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 1 );
-						}
-					}
+  @Override
+  public boolean canBeReinforced() {
+    return !reinforced;
+  }
 
-				}
-			}
-		}
-		
-		boolean heroAffected = PathFinder.distance[Dungeon.hero.pos] < Integer.MAX_VALUE;
-		
-		if (procd) {
+  @Override
+  public void shatter(int cell) {
 
-			if (Dungeon.visible[cell]) {
-				splash( cell );
-				Sample.INSTANCE.play( Assets.SND_SHATTER );
-			}
+    PathFinder.buildDistanceMap(cell, BArray.not(Level.losBlocking, null), 
+            DISTANCE);
 
-			setKnown();
+    boolean procd = false;
 
-			if (heroAffected) {
-				GLog.p( Messages.get(this, "freshness") );
-			}
-			
-		} else {
-			
-			super.shatter( cell );
-			
-			if (heroAffected) {
-				GLog.i( Messages.get(this, "freshness") );
-				setKnown();
-			}
-			
-		}
-	}
-	
-	@Override
-	public void apply( Hero hero ) {
-		GLog.w( Messages.get(this, "no_smell") );
-		Buff.prolong( hero, GasesImmunity.class, GasesImmunity.DURATION *(reinforced?2: 1));
-		setKnown();
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? (int)(40 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+    Blob[] blobs = {
+            Dungeon.level.blobs.get(ToxicGas.class),
+            Dungeon.level.blobs.get(ParalyticGas.class),
+            Dungeon.level.blobs.get(ConfusionGas.class),
+            Dungeon.level.blobs.get(StenchGas.class),
+            Dungeon.level.blobs.get(VenomGas.class)
+    };
+
+    for (int j = 0; j < blobs.length; j++) {
+
+      Blob blob = blobs[j];
+      if (blob == null) {
+        continue;
+      }
+
+      for (int i = 0; i < Dungeon.level.length(); i++) {
+        if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+
+          int value = blob.cur[i];
+          if (value > 0) {
+
+            blob.cur[i] = 0;
+            blob.volume -= value;
+            procd = true;
+
+            if (Dungeon.visible[i]) {
+              CellEmitter.get(i).burst(Speck.factory(Speck.DISCOVER), 1);
+            }
+          }
+
+        }
+      }
+    }
+
+    boolean heroAffected = PathFinder.distance[Dungeon.hero.pos] < Integer
+            .MAX_VALUE;
+
+    if (procd) {
+
+      if (Dungeon.visible[cell]) {
+        splash(cell);
+        Sample.INSTANCE.play(Assets.SND_SHATTER);
+      }
+
+      setKnown();
+
+      if (heroAffected) {
+        GLog.p(Messages.get(this, "freshness"));
+      }
+
+    } else {
+
+      super.shatter(cell);
+
+      if (heroAffected) {
+        GLog.i(Messages.get(this, "freshness"));
+        setKnown();
+      }
+
+    }
+  }
+
+  @Override
+  public void apply(Hero hero) {
+    GLog.w(Messages.get(this, "no_smell"));
+    Buff.prolong(hero, GasesImmunity.class, GasesImmunity.DURATION * 
+            (reinforced ? 2 : 1));
+    setKnown();
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (40 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

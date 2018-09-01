@@ -26,12 +26,13 @@ import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class WndInfoTrap extends WndTitledMessage {
 
-	public WndInfoTrap(Trap trap) {
+  public WndInfoTrap(Trap trap) {
 
-		super(new TrapSprite( trap.color + (trap.shape * 16) ),
-				trap.name,
-				(!trap.active ? Messages.get(WndInfoTrap.class, "inactive") + "\n\n" : "") + trap.desc());
+    super(new TrapSprite(trap.color + (trap.shape * 16)),
+            trap.name,
+            (!trap.active ? Messages.get(WndInfoTrap.class, "inactive") + 
+                    "\n\n" : "") + trap.desc());
 
-	}
+  }
 
 }

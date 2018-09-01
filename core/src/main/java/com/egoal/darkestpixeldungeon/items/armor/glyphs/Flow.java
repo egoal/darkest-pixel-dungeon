@@ -25,19 +25,19 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
-public class Flow extends Armor.Glyph{
+public class Flow extends Armor.Glyph {
 
-	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x0000FF );
+  private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing(0x0000FF);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		//no proc effect, see hero.speed for effect.
-		return damage;
-	}
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    //no proc effect, see hero.speed for effect.
+    return damage;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLUE;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLUE;
+  }
 
 }

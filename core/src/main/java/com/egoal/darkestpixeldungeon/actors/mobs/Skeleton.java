@@ -36,79 +36,83 @@ import com.watabou.utils.Random;
 
 public class Skeleton extends Mob {
 
-	private static final String TXT_HERO_KILLED = "You were killed by the explosion of bones...";
-	
-	{
-		spriteClass = SkeletonSprite.class;
-		
-		HP = HT = 25;
-		defenseSkill = 9;
-		
-		EXP = 5;
-		maxLvl = 10;
+  private static final String TXT_HERO_KILLED = "You were killed by the " +
+          "explosion of bones...";
 
-		loot = Generator.Category.WEAPON;
-		lootChance = 0.2f;
+  {
+    spriteClass = SkeletonSprite.class;
 
-		properties.add(Property.UNDEAD);
+    HP = HT = 25;
+    defenseSkill = 9;
 
-		addResistances(Damage.Element.FIRE, .75f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
+    EXP = 5;
+    maxLvl = 10;
 
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange(2, 10), this, target);
-	}
+    loot = Generator.Category.WEAPON;
+    lootChance = 0.2f;
 
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 5);
-		return dmg;
-	}
-	
-	@Override
-	public void die( Object cause ) {
-		
-		super.die( cause );
-		
-		boolean heroKilled = false;
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
-			if (ch != null && ch.isAlive()) {
-				Damage dmg	=	new Damage(Random.NormalIntRange(4, 12), 
-					this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
-				ch.takeDamage(dmg);
-				if (ch == Dungeon.hero && !ch.isAlive()) {
-					heroKilled = true;
-				}
-			}
-		}
-		
-		if (Dungeon.visible[pos]) {
-			Sample.INSTANCE.play( Assets.SND_BONES );
-		}
-		
-		if (heroKilled) {
-			Dungeon.fail( getClass() );
-			GLog.n( Messages.get(this, "explo_kill") );
-		}
-	}
-	
-	@Override
-	protected Item createLoot() {
-		Item loot;
-		do {
-			loot = Generator.random(Generator.Category.WEAPON);
-			//50% chance of re-rolling tier 4 or 5 items
-		} while (loot instanceof MeleeWeapon && ((MeleeWeapon) loot).tier >= 4 && Random.Int(2) == 0);
-		loot.level(0);
-		return loot;
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
+    properties.add(Property.UNDEAD);
+
+    addResistances(Damage.Element.FIRE, .75f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(2, 10), this, target);
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 5);
+    return dmg;
+  }
+
+  @Override
+  public void die(Object cause) {
+
+    super.die(cause);
+
+    boolean heroKilled = false;
+    for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+      Char ch = findChar(pos + PathFinder.NEIGHBOURS8[i]);
+      if (ch != null && ch.isAlive()) {
+        Damage dmg = new Damage(Random.NormalIntRange(4, 12),
+                this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element
+                .SHADOW);
+        ch.takeDamage(dmg);
+        if (ch == Dungeon.hero && !ch.isAlive()) {
+          heroKilled = true;
+        }
+      }
+    }
+
+    if (Dungeon.visible[pos]) {
+      Sample.INSTANCE.play(Assets.SND_BONES);
+    }
+
+    if (heroKilled) {
+      Dungeon.fail(getClass());
+      GLog.n(Messages.get(this, "explo_kill"));
+    }
+  }
+
+  @Override
+  protected Item createLoot() {
+    Item loot;
+    do {
+      loot = Generator.random(Generator.Category.WEAPON);
+      //50% chance of re-rolling tier 4 or 5 items
+    }
+    while (loot instanceof MeleeWeapon && ((MeleeWeapon) loot).tier >= 4 && 
+            Random.Int(2) == 0);
+    loot.level(0);
+    return loot;
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 12;
+  }
 
 }

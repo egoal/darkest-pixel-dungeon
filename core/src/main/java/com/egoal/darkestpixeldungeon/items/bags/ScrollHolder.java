@@ -27,20 +27,20 @@ import com.egoal.darkestpixeldungeon.items.Item;
 
 public class ScrollHolder extends Bag {
 
-	{
-		image = ItemSpriteSheet.HOLDER;
-		
-		size =	Belongings.BACKPACK_SIZE;
-	}
-	
-	@Override
-	public boolean grab( Item item ) {
-		return item instanceof Scroll;
-	}
-	
-	@Override
-	public int price() {
-		return 40;
-	}
+  {
+    image = ItemSpriteSheet.HOLDER;
+
+    size = Belongings.BACKPACK_SIZE;
+  }
+
+  @Override
+  public boolean grab(Item item) {
+    return item instanceof Scroll;
+  }
+
+  @Override
+  public int price() {
+    return 40;
+  }
 
 }

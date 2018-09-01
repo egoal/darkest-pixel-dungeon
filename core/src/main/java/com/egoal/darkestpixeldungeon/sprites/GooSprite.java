@@ -30,122 +30,124 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class GooSprite extends MobSprite {
-	
-	private Animation pump;
-	private Animation pumpAttack;
 
-	private Emitter spray;
+  private Animation pump;
+  private Animation pumpAttack;
 
-	public GooSprite() {
-		super();
-		
-		texture( Assets.GOO );
-		
-		TextureFilm frames = new TextureFilm( texture, 20, 14 );
-		
-		idle = new Animation( 10, true );
-		idle.frames( frames, 2, 1, 0, 0, 1 );
-		
-		run = new Animation( 15, true );
-		run.frames( frames, 3, 2, 1, 2 );
-		
-		pump = new Animation( 20, true );
-		pump.frames( frames, 4, 3, 2, 1, 0 );
+  private Emitter spray;
 
-		pumpAttack = new Animation ( 20, false );
-		pumpAttack.frames( frames, 4, 3, 2, 1, 0, 7);
+  public GooSprite() {
+    super();
 
-		attack = new Animation( 10, false );
-		attack.frames( frames, 8, 9, 10 );
-		
-		die = new Animation( 10, false );
-		die.frames( frames, 5, 6, 7 );
-		
-		play(idle);
+    texture(Assets.GOO);
 
-		spray = centerEmitter();
-		spray.autoKill = false;
-		spray.pour( GooParticle.FACTORY, 0.04f );
-		spray.on = false;
-	}
+    TextureFilm frames = new TextureFilm(texture, 20, 14);
 
-	@Override
-	public void link(Char ch) {
-		super.link(ch);
-		if (ch.HP*2 <= ch.HT)
-			spray(true);
-	}
+    idle = new Animation(10, true);
+    idle.frames(frames, 2, 1, 0, 0, 1);
 
-	public void pumpUp() {
-		play( pump );
-	}
+    run = new Animation(15, true);
+    run.frames(frames, 3, 2, 1, 2);
 
-	public void pumpAttack() { play(pumpAttack); }
+    pump = new Animation(20, true);
+    pump.frames(frames, 4, 3, 2, 1, 0);
 
-	@Override
-	public int blood() {
-		return 0xFF000000;
-	}
+    pumpAttack = new Animation(20, false);
+    pumpAttack.frames(frames, 4, 3, 2, 1, 0, 7);
 
-	public void spray(boolean on){
-		spray.on = on;
-	}
+    attack = new Animation(10, false);
+    attack.frames(frames, 8, 9, 10);
 
-	@Override
-	public void update() {
-		super.update();
-		spray.pos(center());
-		spray.visible = visible;
-	}
+    die = new Animation(10, false);
+    die.frames(frames, 5, 6, 7);
 
-	public static class GooParticle extends PixelParticle.Shrinking {
+    play(idle);
 
-		public static final Emitter.Factory FACTORY = new Factory() {
-			@Override
-			public void emit( Emitter emitter, int index, float x, float y ) {
-				((GooParticle)emitter.recycle( GooParticle.class )).reset( x, y );
-			}
-		};
+    spray = centerEmitter();
+    spray.autoKill = false;
+    spray.pour(GooParticle.FACTORY, 0.04f);
+    spray.on = false;
+  }
 
-		public GooParticle() {
-			super();
+  @Override
+  public void link(Char ch) {
+    super.link(ch);
+    if (ch.HP * 2 <= ch.HT)
+      spray(true);
+  }
 
-			color( 0x000000 );
-			lifespan = 0.3f;
+  public void pumpUp() {
+    play(pump);
+  }
 
-			acc.set( 0, +50 );
-		}
+  public void pumpAttack() {
+    play(pumpAttack);
+  }
 
-		public void reset( float x, float y ) {
-			revive();
+  @Override
+  public int blood() {
+    return 0xFF000000;
+  }
 
-			this.x = x;
-			this.y = y;
+  public void spray(boolean on) {
+    spray.on = on;
+  }
 
-			left = lifespan;
+  @Override
+  public void update() {
+    super.update();
+    spray.pos(center());
+    spray.visible = visible;
+  }
 
-			size = 4;
-			speed.polar( -Random.Float( PointF.PI ), Random.Float( 32, 48 ) );
-		}
+  public static class GooParticle extends PixelParticle.Shrinking {
 
-		@Override
-		public void update() {
-			super.update();
-			float p = left / lifespan;
-			am = p > 0.5f ? (1 - p) * 2f : 1;
-		}
-	}
+    public static final Emitter.Factory FACTORY = new Factory() {
+      @Override
+      public void emit(Emitter emitter, int index, float x, float y) {
+        ((GooParticle) emitter.recycle(GooParticle.class)).reset(x, y);
+      }
+    };
 
-	@Override
-	public void onComplete( Animation anim ) {
-		super.onComplete(anim);
+    public GooParticle() {
+      super();
 
-		if (anim == pumpAttack) {
+      color(0x000000);
+      lifespan = 0.3f;
 
-			idle();
-			ch.onAttackComplete();
-		} else if (anim == die) {
-			spray.killAndErase();
-		}
-	}
+      acc.set(0, +50);
+    }
+
+    public void reset(float x, float y) {
+      revive();
+
+      this.x = x;
+      this.y = y;
+
+      left = lifespan;
+
+      size = 4;
+      speed.polar(-Random.Float(PointF.PI), Random.Float(32, 48));
+    }
+
+    @Override
+    public void update() {
+      super.update();
+      float p = left / lifespan;
+      am = p > 0.5f ? (1 - p) * 2f : 1;
+    }
+  }
+
+  @Override
+  public void onComplete(Animation anim) {
+    super.onComplete(anim);
+
+    if (anim == pumpAttack) {
+
+      idle();
+      ch.onAttackComplete();
+    } else if (anim == die) {
+      spray.killAndErase();
+    }
+  }
 }

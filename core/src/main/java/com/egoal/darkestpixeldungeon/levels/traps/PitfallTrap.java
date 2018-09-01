@@ -35,52 +35,55 @@ import com.egoal.darkestpixeldungeon.levels.features.Chasm;
 
 public class PitfallTrap extends Trap {
 
-	{
-		color = TrapSprite.RED;
-		shape = TrapSprite.DIAMOND;
-	}
+  {
+    color = TrapSprite.RED;
+    shape = TrapSprite.DIAMOND;
+  }
 
-	@Override
-	public void activate() {
-		Heap heap = Dungeon.level.heaps.get( pos );
+  @Override
+  public void activate() {
+    Heap heap = Dungeon.level.heaps.get(pos);
 
-		if (heap != null){
-			for (Item item : heap.items){
-				Dungeon.dropToChasm(item);
-			}
-			heap.sprite.kill();
-			GameScene.discard(heap);
-			Dungeon.level.heaps.remove( pos );
-		}
+    if (heap != null) {
+      for (Item item : heap.items) {
+        Dungeon.dropToChasm(item);
+      }
+      heap.sprite.kill();
+      GameScene.discard(heap);
+      Dungeon.level.heaps.remove(pos);
+    }
 
-		Char ch = Actor.findChar( pos );
+    Char ch = Actor.findChar(pos);
 
-		if (ch == Dungeon.hero){
-			Chasm.heroFall( pos );
-		} else if (ch != null){
-			Chasm.mobFall((Mob)ch);
-		}
-	}
+    if (ch == Dungeon.hero) {
+      Chasm.heroFall(pos);
+    } else if (ch != null) {
+      Chasm.mobFall((Mob) ch);
+    }
+  }
 
-	@Override
-	protected void disarm() {
-		super.disarm();
+  @Override
+  protected void disarm() {
+    super.disarm();
 
-		//if making a pit here wouldn't block any paths, make a pit tile instead of a disarmed trap tile.
-		if (!(Dungeon.level.solid[pos - Dungeon.level.width()] && Dungeon.level.solid[pos + Dungeon.level.width()])
-				&& !(Dungeon.level.solid[pos - 1]&& Dungeon.level.solid[pos + 1])){
+    //if making a pit here wouldn't block any paths, make a pit tile instead 
+    // of a disarmed trap tile.
+    if (!(Dungeon.level.solid[pos - Dungeon.level.width()] && Dungeon.level
+            .solid[pos + Dungeon.level.width()])
+            && !(Dungeon.level.solid[pos - 1] && Dungeon.level.solid[pos + 
+            1])) {
 
-			int c = Dungeon.level.map[pos - Dungeon.level.width()];
+      int c = Dungeon.level.map[pos - Dungeon.level.width()];
 
-			if (c == Terrain.WALL || c == Terrain.WALL_DECO) {
-				Level.set(pos, Terrain.CHASM_WALL);
-			} else {
-				Level.set( pos, Terrain.CHASM_FLOOR );
-			}
+      if (c == Terrain.WALL || c == Terrain.WALL_DECO) {
+        Level.set(pos, Terrain.CHASM_WALL);
+      } else {
+        Level.set(pos, Terrain.CHASM_FLOOR);
+      }
 
-			sprite.parent.add(new WindParticle.Wind(pos));
-			sprite.kill();
-			GameScene.updateMap( pos );
-		}
-	}
+      sprite.parent.add(new WindParticle.Wind(pos));
+      sprite.kill();
+      GameScene.updateMap(pos);
+    }
+  }
 }

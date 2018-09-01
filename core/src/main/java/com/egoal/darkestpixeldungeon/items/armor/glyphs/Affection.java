@@ -29,31 +29,33 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.watabou.utils.Random;
 
-public class Affection extends Armor.Glyph{
-	
-	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing( 0xFF4488 );
-	
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+public class Affection extends Armor.Glyph {
 
-		int level = Math.max(0, armor.level());
-		
-		if (Random.Int( level / 2 + 10 ) >= 9) {
-			
-			int duration = Random.IntRange( 2, 5 );
+  private static ItemSprite.Glowing PINK = new ItemSprite.Glowing(0xFF4488);
 
-			Buff.affect( attacker, Charm.class, Charm.durationFactor( attacker ) * duration ).object = defender.id();
-			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-		}
-		
-		return damage;
-	}
+    int level = Math.max(0, armor.level());
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return PINK;
-	}
+    if (Random.Int(level / 2 + 10) >= 9) {
+
+      int duration = Random.IntRange(2, 5);
+
+      Buff.affect(attacker, Charm.class, Charm.durationFactor(attacker) * 
+              duration).object = defender.id();
+      attacker.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f,
+              5);
+
+    }
+
+    return damage;
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return PINK;
+  }
 }

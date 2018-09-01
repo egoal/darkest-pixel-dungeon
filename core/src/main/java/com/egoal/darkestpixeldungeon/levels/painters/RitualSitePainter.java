@@ -31,45 +31,45 @@ import com.watabou.utils.Point;
 
 public class RitualSitePainter extends Painter {
 
-	public static void paint(Level level,Room room) {
+  public static void paint(Level level, Room room) {
 
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
-		}
+    for (Room.Door door : room.connected.values()) {
+      door.set(Room.Door.Type.REGULAR);
+    }
 
-		fill(level, room, Terrain.WALL);
-		fill(level, room, 1, Terrain.EMPTY);
+    fill(level, room, Terrain.WALL);
+    fill(level, room, 1, Terrain.EMPTY);
 
-		RitualMarker vis = new RitualMarker();
-		Point c = room.center();
-		vis.pos(c.x - 1, c.y - 1);
+    RitualMarker vis = new RitualMarker();
+    Point c = room.center();
+    vis.pos(c.x - 1, c.y - 1);
 
-		level.customTiles.add(vis);
+    level.customTiles.add(vis);
 
-		fill(level, c.x-1, c.y-1, 3, 3, Terrain.EMPTY_DECO);
+    fill(level, c.x - 1, c.y - 1, 3, 3, Terrain.EMPTY_DECO);
 
-		level.addItemToSpawn(new CeremonialCandle());
-		level.addItemToSpawn(new CeremonialCandle());
-		level.addItemToSpawn(new CeremonialCandle());
-		level.addItemToSpawn(new CeremonialCandle());
+    level.addItemToSpawn(new CeremonialCandle());
+    level.addItemToSpawn(new CeremonialCandle());
+    level.addItemToSpawn(new CeremonialCandle());
+    level.addItemToSpawn(new CeremonialCandle());
 
-		CeremonialCandle.ritualPos = c.x + (level.width() * c.y);
-	}
+    CeremonialCandle.ritualPos = c.x + (level.width() * c.y);
+  }
 
-	public static class RitualMarker extends CustomTileVisual{
+  public static class RitualMarker extends CustomTileVisual {
 
-		{
-			name = Messages.get(this, "name");
+    {
+      name = Messages.get(this, "name");
 
-			tx = Assets.PRISON_QUEST;
-			txX = txY = 0;
-			tileW = tileH = 3;
-		}
+      tx = Assets.PRISON_QUEST;
+      txX = txY = 0;
+      tileW = tileH = 3;
+    }
 
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
-	}
+    @Override
+    public String desc() {
+      return Messages.get(this, "desc");
+    }
+  }
 
 }

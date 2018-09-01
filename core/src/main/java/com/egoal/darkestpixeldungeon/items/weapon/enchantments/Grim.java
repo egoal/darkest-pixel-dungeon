@@ -29,41 +29,44 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.watabou.utils.Random;
 
-public class Grim extends Weapon.Enchantment{
-	
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
-	
-	@Override
-	public Damage proc(Weapon weapon, Damage damage) {
-		Char defender	=	(Char)damage.to;
-		Char attacker	=	(Char)damage.from;
+public class Grim extends Weapon.Enchantment {
 
-		int level = Math.max( 0, weapon.level() );
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-		int enemyHealth = defender.HP - damage.value;
-		if (enemyHealth == 0) return damage; //no point in proccing if they're already dead.
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    Char attacker = (Char) damage.from;
 
-		//scales from 0 - 30% based on how low hp the enemy is, plus 1% per level
-		int chance = Math.round(((defender.HT - enemyHealth) / (float)defender.HT)*30 + level);
-		
-		if (Random.Int( 100 ) < chance) {
-			// defender.damage( defender.HP, this );
-			defender.takeDamage(new Damage(defender.HP, 
-				this, defender).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE).addElement(Damage.Element.SHADOW));
-			defender.sprite.emitter().burst( ShadowParticle.UP, 5 );
-			
-			if (!defender.isAlive() && attacker instanceof Hero) {
-				Badges.validateGrimWeapon();
-			}
-			
-		}
+    int level = Math.max(0, weapon.level());
 
-		return damage;
-	}
-	
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+    int enemyHealth = defender.HP - damage.value;
+    if (enemyHealth == 0)
+      return damage; //no point in proccing if they're already dead.
+
+    //scales from 0 - 30% based on how low hp the enemy is, plus 1% per level
+    int chance = Math.round(((defender.HT - enemyHealth) / (float) defender
+            .HT) * 30 + level);
+
+    if (Random.Int(100) < chance) {
+      // defender.damage( defender.HP, this );
+      defender.takeDamage(new Damage(defender.HP,
+              this, defender).type(Damage.Type.MAGICAL).addFeature(Damage
+              .Feature.PURE).addElement(Damage.Element.SHADOW));
+      defender.sprite.emitter().burst(ShadowParticle.UP, 5);
+
+      if (!defender.isAlive() && attacker instanceof Hero) {
+        Badges.validateGrimWeapon();
+      }
+
+    }
+
+    return damage;
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
 
 }

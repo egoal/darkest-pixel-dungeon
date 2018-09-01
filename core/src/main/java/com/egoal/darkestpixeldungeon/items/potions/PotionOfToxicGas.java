@@ -35,50 +35,52 @@ import com.watabou.utils.Random;
 
 public class PotionOfToxicGas extends Potion {
 
-	{
-		initials = 11;
-	}
+  {
+    initials = 11;
+  }
 
-	@Override
-	public boolean canBeReinforced(){ return !reinforced; }
-	
-	@Override
-	public void shatter( int cell ) {
+  @Override
+  public boolean canBeReinforced() {
+    return !reinforced;
+  }
 
-		if (Dungeon.visible[cell]) {
-			setKnown();
+  @Override
+  public void shatter(int cell) {
 
-			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-		}
+    if (Dungeon.visible[cell]) {
+      setKnown();
 
-		if(reinforced){
-			reinforced_shatter(cell);	
-		}
-		else
-			GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
-	}
-	
-	private void reinforced_shatter(int cell){
-		for(int offset: PathFinder.NEIGHBOURS9){
-			Mob mob	=	Dungeon.level.findMob(cell+offset);
-			if(mob!=null){
-				reinforced_affect(mob);
-			}
-		}
-		if(Dungeon.level.distance(curUser.pos, cell)<=1){
-			reinforced_affect(curUser);
-		}
-	}
-	private void reinforced_affect(Char c){
-		Poison p	=	Buff.affect(c, Poison.class);
-		p.set(Random.Int(6, 10));
-		p.addDamage(Dungeon.depth/2+Random.Int(1, 4));
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? (int)(30 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
-	
+      splash(cell);
+      Sample.INSTANCE.play(Assets.SND_SHATTER);
+    }
+
+    if (reinforced) {
+      reinforced_shatter(cell);
+    } else
+      GameScene.add(Blob.seed(cell, 1000, ToxicGas.class));
+  }
+
+  private void reinforced_shatter(int cell) {
+    for (int offset : PathFinder.NEIGHBOURS9) {
+      Mob mob = Dungeon.level.findMob(cell + offset);
+      if (mob != null) {
+        reinforced_affect(mob);
+      }
+    }
+    if (Dungeon.level.distance(curUser.pos, cell) <= 1) {
+      reinforced_affect(curUser);
+    }
+  }
+
+  private void reinforced_affect(Char c) {
+    Poison p = Buff.affect(c, Poison.class);
+    p.set(Random.Int(6, 10));
+    p.addDamage(Dungeon.depth / 2 + Random.Int(1, 4));
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
+
 }

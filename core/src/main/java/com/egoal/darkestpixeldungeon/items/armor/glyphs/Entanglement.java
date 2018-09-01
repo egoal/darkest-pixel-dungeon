@@ -32,32 +32,32 @@ import com.egoal.darkestpixeldungeon.plants.Earthroot;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Random;
 
-public class Entanglement extends Armor.Glyph{
-	
-	private static ItemSprite.Glowing BROWN = new ItemSprite.Glowing( 0x663300 );
-	
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+public class Entanglement extends Armor.Glyph {
 
-		int level = Math.max( 0, armor.level() );
-		
-		if (Random.Int( 3 ) == 0) {
-			
-			Buff.prolong( defender, Roots.class, 5 );
-			Buff.affect( defender, Earthroot.Armor.class ).level( 5 + level );
-			CellEmitter.bottom( defender.pos ).start( EarthParticle.FACTORY, 0.05f, 8 );
-			Camera.main.shake( 1, 0.4f );
-			
-		}
+  private static ItemSprite.Glowing BROWN = new ItemSprite.Glowing(0x663300);
 
-		return damage;
-	}
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BROWN;
-	}
-		
+    int level = Math.max(0, armor.level());
+
+    if (Random.Int(3) == 0) {
+
+      Buff.prolong(defender, Roots.class, 5);
+      Buff.affect(defender, Earthroot.Armor.class).level(5 + level);
+      CellEmitter.bottom(defender.pos).start(EarthParticle.FACTORY, 0.05f, 8);
+      Camera.main.shake(1, 0.4f);
+
+    }
+
+    return damage;
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BROWN;
+  }
+
 }

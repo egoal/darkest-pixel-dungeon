@@ -27,35 +27,36 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Unstable extends Weapon.Enchantment{
+public class Unstable extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
+  private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF);
 
-	private static Class<?extends Weapon.Enchantment>[] randomEnchants = new Class[]{
-			Blazing.class,
-			Chilling.class,
-			Dazzling.class,
-			Eldritch.class,
-			Grim.class,
-			Lucky.class,
-			Shocking.class,
-			Stunning.class,
-			Vampiric.class,
-			Vorpal.class
-	};
+  private static Class<? extends Weapon.Enchantment>[] randomEnchants = new 
+          Class[]{
+          Blazing.class,
+          Chilling.class,
+          Dazzling.class,
+          Eldritch.class,
+          Grim.class,
+          Lucky.class,
+          Shocking.class,
+          Stunning.class,
+          Vampiric.class,
+          Vorpal.class
+  };
 
-	@Override
-	public Damage proc(Weapon weapon,Damage damage) {
-		try {
-			return Random.oneOf(randomEnchants).newInstance().proc( weapon, damage );
-		} catch (Exception e) {
-			DarkestPixelDungeon.reportException(e);
-			return damage;
-		}
-	}
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    try {
+      return Random.oneOf(randomEnchants).newInstance().proc(weapon, damage);
+    } catch (Exception e) {
+      DarkestPixelDungeon.reportException(e);
+      return damage;
+    }
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return WHITE;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return WHITE;
+  }
 }

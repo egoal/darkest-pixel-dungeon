@@ -10,31 +10,31 @@ import com.watabou.utils.Random;
  * Created by 93942 on 8/16/2018.
  */
 
-public class CrystalsSwords extends MeleeWeapon{
-	{
-		image	=	ItemSpriteSheet.DPD_CRYSTALS_SWORDS;
-		
-		tier	=	3;
-	}
-	
-	// 16 + 3*lvl
-	@Override
-	public int max(int lvl){
-		return 4*(tier+1)+
-				lvl*(tier);
-	}
-	
-	@Override
-	public Damage giveDamage(Hero hero, Char target){
-		Damage dmg	=	super.giveDamage(hero, target);
-		
-		// 20% chance to deal 2 times damage
-		if(Random.Float()<.2f){
-			dmg.value	*=	2.f;
-			dmg.addFeature(Damage.Feature.CRITCIAL);
-		}
-		
-		return dmg;
-	}
-	
+public class CrystalsSwords extends MeleeWeapon {
+  {
+    image = ItemSpriteSheet.DPD_CRYSTALS_SWORDS;
+
+    tier = 3;
+  }
+
+  // 16 + 3*lvl
+  @Override
+  public int max(int lvl) {
+    return 4 * (tier + 1) +
+            lvl * (tier);
+  }
+
+  @Override
+  public Damage giveDamage(Hero hero, Char target) {
+    Damage dmg = super.giveDamage(hero, target);
+
+    // 20% chance to deal 2 times damage
+    if (Random.Float() < .2f) {
+      dmg.value *= 2.f;
+      dmg.addFeature(Damage.Feature.CRITCIAL);
+    }
+
+    return dmg;
+  }
+
 }

@@ -24,24 +24,27 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 
 public class PotionOfExperience extends Potion {
 
-	{
-		initials = 0;
+  {
+    initials = 0;
 
-		bones = true;
-	}
-	
-	@Override
-	public void apply( Hero hero ) {
-		setKnown();
-		hero.earnExp( reinforced? hero.maxExp()*3/2: hero.maxExp() );
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ?(int)(50 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
-	
-	@Override
-	public boolean canBeReinforced(){ return true; }
-	
+    bones = true;
+  }
+
+  @Override
+  public void apply(Hero hero) {
+    setKnown();
+    hero.earnExp(reinforced ? hero.maxExp() * 3 / 2 : hero.maxExp());
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (50 * quantity * (reinforced ? 1.5 : 1)) : super
+            .price();
+  }
+
+  @Override
+  public boolean canBeReinforced() {
+    return true;
+  }
+
 }

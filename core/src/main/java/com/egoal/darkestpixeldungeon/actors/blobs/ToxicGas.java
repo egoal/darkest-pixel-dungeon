@@ -32,50 +32,51 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
-public class ToxicGas extends Blob implements Hero.Doom{
-	
-	@Override
-	protected void evolve() {
-		super.evolve();
+public class ToxicGas extends Blob implements Hero.Doom {
 
-		int levelDamage = 5 + Dungeon.depth * 5;
+  @Override
+  protected void evolve() {
+    super.evolve();
 
-		Char ch;
-		int cell;
+    int levelDamage = 5 + Dungeon.depth * 5;
 
-		for (int i = area.left; i < area.right; i++){
-			for (int j = area.top; j < area.bottom; j++){
-				cell = i + j*Dungeon.level.width();
-				if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
-					int damage = (ch.HT + levelDamage) / 40;
-					if (Random.Int( 40 ) < (ch.HT + levelDamage) % 40) {
-						damage++;
-					}
-					
-					ch.takeDamage(new Damage(damage, this, ch).addElement(Damage.Element.POISON).type(Damage.Type.MAGICAL));
-				}
-			}
-		}
-	}
-	
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
+    Char ch;
+    int cell;
 
-		emitter.pour( Speck.factory( Speck.TOXIC ), 0.4f );
-	}
-	
-	@Override
-	public String tileDesc() {
-		return Messages.get(this, "desc");
-	}
-	
-	@Override
-	public void onDeath() {
-		
-		Badges.validateDeathFromGas();
-		
-		Dungeon.fail( getClass() );
-		GLog.n( Messages.get(this, "ondeath") );
-	}
+    for (int i = area.left; i < area.right; i++) {
+      for (int j = area.top; j < area.bottom; j++) {
+        cell = i + j * Dungeon.level.width();
+        if (cur[cell] > 0 && (ch = Actor.findChar(cell)) != null) {
+          int damage = (ch.HT + levelDamage) / 40;
+          if (Random.Int(40) < (ch.HT + levelDamage) % 40) {
+            damage++;
+          }
+
+          ch.takeDamage(new Damage(damage, this, ch).addElement(Damage
+                  .Element.POISON).type(Damage.Type.MAGICAL));
+        }
+      }
+    }
+  }
+
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
+
+    emitter.pour(Speck.factory(Speck.TOXIC), 0.4f);
+  }
+
+  @Override
+  public String tileDesc() {
+    return Messages.get(this, "desc");
+  }
+
+  @Override
+  public void onDeath() {
+
+    Badges.validateDeathFromGas();
+
+    Dungeon.fail(getClass());
+    GLog.n(Messages.get(this, "ondeath"));
+  }
 }

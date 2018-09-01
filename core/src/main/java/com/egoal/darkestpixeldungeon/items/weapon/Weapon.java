@@ -64,279 +64,288 @@ import javax.microedition.khronos.opengles.GL;
 
 abstract public class Weapon extends KindOfWeapon {
 
-	private static final int HITS_TO_KNOW    = 20;
+  private static final int HITS_TO_KNOW = 20;
 
-	private static final String TXT_TO_STRING		= "%s :%d";
+  private static final String TXT_TO_STRING = "%s :%d";
 
-	public float    ACC = 1f;	// Accuracy modifier
-	public float	DLY	= 1f;	// Speed modifier
-	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
+  public float ACC = 1f;  // Accuracy modifier
+  public float DLY = 1f;  // Speed modifier
+  public int RCH = 1;    // Reach modifier (only applies to melee hits)
 
-	// 灌注
-	public enum Imbue {
-		NONE	(1.0f, 1.00f),
-		LIGHT	(0.7f, 0.67f),
-		HEAVY	(1.5f, 1.67f);
+  // 灌注
+  public enum Imbue {
+    NONE(1.0f, 1.00f),
+    LIGHT(0.7f, 0.67f),
+    HEAVY(1.5f, 1.67f);
 
-		private float damageFactor;
-		private float delayFactor;
+    private float damageFactor;
+    private float delayFactor;
 
-		Imbue(float dmg, float dly){
-			damageFactor = dmg;
-			delayFactor = dly;
-		}
+    Imbue(float dmg, float dly) {
+      damageFactor = dmg;
+      delayFactor = dly;
+    }
 
-		public int damageFactor(int dmg){
-			return Math.round(dmg * damageFactor);
-		}
+    public int damageFactor(int dmg) {
+      return Math.round(dmg * damageFactor);
+    }
 
-		public float delayFactor(float dly){
-			return dly * delayFactor;
-		}
-	}
-	public Imbue imbue = Imbue.NONE;
+    public float delayFactor(float dly) {
+      return dly * delayFactor;
+    }
+  }
 
-	private int hitsToKnow = HITS_TO_KNOW;
-	
-	public Enchantment enchantment;
-	
-	@Override
-	public Damage proc(Damage dmg){
-		if(enchantment!=null)
-			dmg	=	enchantment.proc(this, dmg);
-		
-		if(!levelKnown){
-			if(--hitsToKnow<=0){
-				levelKnown	=	true;
-				GLog.i(Messages.get(Weapon.class, "identify"));
-				Badges.validateItemLevelAquired(this);
-			}
-		}
-		
-		return dmg;
-	}
+  public Imbue imbue = Imbue.NONE;
 
-	private static final String UNFAMILIRIARITY	= "unfamiliarity";
-	private static final String ENCHANTMENT		= "enchantment";
-	private static final String IMBUE			= "imbue";
+  private int hitsToKnow = HITS_TO_KNOW;
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( UNFAMILIRIARITY, hitsToKnow );
-		bundle.put( ENCHANTMENT, enchantment );
-		bundle.put( IMBUE, imbue );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		if ((hitsToKnow = bundle.getInt( UNFAMILIRIARITY )) == 0) {
-			hitsToKnow = HITS_TO_KNOW;
-		}
-		enchantment = (Enchantment)bundle.get( ENCHANTMENT );
-		imbue = bundle.getEnum( IMBUE, Imbue.class );
-	}
-	
-	@Override
-	public float accuracyFactor( Hero hero ) {
-		
-		int encumbrance = STRReq() - hero.STR();
+  public Enchantment enchantment;
 
-		if (hasEnchant(Wayward.class))
-			encumbrance = Math.max(3, encumbrance+3);
+  @Override
+  public Damage proc(Damage dmg) {
+    if (enchantment != null)
+      dmg = enchantment.proc(this, dmg);
 
-		float ACC = this.ACC;
-		
-		if (this instanceof MissileWeapon) {
-			int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
-			ACC *= (float)(Math.pow(1.2, bonus));
-		}
+    if (!levelKnown) {
+      if (--hitsToKnow <= 0) {
+        levelKnown = true;
+        GLog.i(Messages.get(Weapon.class, "identify"));
+        Badges.validateItemLevelAquired(this);
+      }
+    }
 
-		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
-	}
-	
-	@Override
-	public float speedFactor( Hero hero ) {
+    return dmg;
+  }
 
-		int encumrance = STRReq() - hero.STR();
-		if (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS) {
-			encumrance -= 2;
-		}
+  private static final String UNFAMILIRIARITY = "unfamiliarity";
+  private static final String ENCHANTMENT = "enchantment";
+  private static final String IMBUE = "imbue";
 
-		float DLY = imbue.delayFactor(this.DLY);
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(UNFAMILIRIARITY, hitsToKnow);
+    bundle.put(ENCHANTMENT, enchantment);
+    bundle.put(IMBUE, imbue);
+  }
 
-		int bonus = RingOfFuror.getBonus(hero, RingOfFuror.Furor.class);
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    if ((hitsToKnow = bundle.getInt(UNFAMILIRIARITY)) == 0) {
+      hitsToKnow = HITS_TO_KNOW;
+    }
+    enchantment = (Enchantment) bundle.get(ENCHANTMENT);
+    imbue = bundle.getEnum(IMBUE, Imbue.class);
+  }
 
-		DLY = (float)(0.25 + (DLY - 0.25)*Math.pow(0.8, bonus));
+  @Override
+  public float accuracyFactor(Hero hero) {
 
-		return (encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);
-	}
+    int encumbrance = STRReq() - hero.STR();
 
-	@Override
-	public int reachFactor(Hero hero) {
-		return hasEnchant(Projecting.class) ? RCH+1 : RCH;
-	}
+    if (hasEnchant(Wayward.class))
+      encumbrance = Math.max(3, encumbrance + 3);
 
-	@Override
-	public Damage giveDamage(Hero hero, Char target){
-		Damage dmg	=	super.giveDamage(hero, target); 
-		
-		// extra damage
-		int exStr	=	hero.STR()-STRReq();
-		if(exStr>0){
-			dmg.value	+=	Random.Int(1, exStr);
-		}
-		
-		dmg.value	=	imbue.damageFactor(dmg.value);
-		return dmg;
-	}
+    float ACC = this.ACC;
 
-	public int STRReq(){
-		return STRReq(level());
-	}
+    if (this instanceof MissileWeapon) {
+      int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim
+              .class);
+      ACC *= (float) (Math.pow(1.2, bonus));
+    }
 
-	public abstract int STRReq(int lvl);
-	
-	public Item upgrade( boolean enchant ) {
+    return encumbrance > 0 ? (float) (ACC / Math.pow(1.5, encumbrance)) : ACC;
+  }
 
-		if (enchant && (enchantment == null || enchantment.curse())){
-			enchant( Enchantment.random() );
-		} else if (!enchant && Random.Float() > Math.pow(0.9, level())){
-			enchant(null);
-		}
-		
-		return super.upgrade();
-	}
-	
-	@Override
-	public String name() {
-		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( super.name() ) : super.name();
-	}
-	
-	@Override
-	public Item random() {
-		float roll = Random.Float();
-		if (roll < 0.3f){
-			//30% chance to be level 0 and cursed
-			enchant(Enchantment.randomCurse());
-			cursed = true;
-			return this;
-		} else if (roll < 0.75f){
-			//45% chance to be level 0
-		} else if (roll < 0.95f){
-			//15% chance to be +1
-			upgrade(1);
-		} else {
-			//5% chance to be +2
-			upgrade(2);
-		}
+  @Override
+  public float speedFactor(Hero hero) {
 
-		//if not cursed, 10% chance to be enchanted (7% overall)
-		if (Random.Int(10) == 0)
-			enchant();
+    int encumrance = STRReq() - hero.STR();
+    if (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS) {
+      encumrance -= 2;
+    }
 
-		return this;
-	}
-	
-	public Weapon enchant( Enchantment ench ) {
-		enchantment = ench;
-		return this;
-	}
+    float DLY = imbue.delayFactor(this.DLY);
 
-	public Weapon enchant() {
+    int bonus = RingOfFuror.getBonus(hero, RingOfFuror.Furor.class);
 
-		Class<? extends Enchantment> oldEnchantment = enchantment != null ? enchantment.getClass() : null;
-		Enchantment ench = Enchantment.random();
-		while (ench.getClass() == oldEnchantment) {
-			ench = Enchantment.random();
-		}
+    DLY = (float) (0.25 + (DLY - 0.25) * Math.pow(0.8, bonus));
 
-		return enchant( ench );
-	}
+    return (encumrance > 0 ? (float) (DLY * Math.pow(1.2, encumrance)) : DLY);
+  }
 
-	public boolean hasEnchant(Class<?extends Enchantment> type) {
-		return enchantment != null && enchantment.getClass() == type;
-	}
+  @Override
+  public int reachFactor(Hero hero) {
+    return hasEnchant(Projecting.class) ? RCH + 1 : RCH;
+  }
 
-	public boolean hasGoodEnchant(){
-		return enchantment != null && !enchantment.curse();
-	}
+  @Override
+  public Damage giveDamage(Hero hero, Char target) {
+    Damage dmg = super.giveDamage(hero, target);
 
-	public boolean hasCurseEnchant(){		return enchantment != null && enchantment.curse();
-	}
+    // extra damage
+    int exStr = hero.STR() - STRReq();
+    if (exStr > 0) {
+      dmg.value += Random.Int(1, exStr);
+    }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
-	}
+    dmg.value = imbue.damageFactor(dmg.value);
+    return dmg;
+  }
 
-	public static abstract class Enchantment implements Bundlable {
+  public int STRReq() {
+    return STRReq(level());
+  }
 
-		private static final Class<?>[] enchants = new Class<?>[]{
-			Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
-			Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Unstable.class, Dazzling.class,
-			Grim.class, Stunning.class, Vampiric.class, Holy.class};
-		private static final float[] chances= new float[]{
-			10, 10, 10, 10,
-			5, 5, 5, 5, 5, 5,
-			2, 2, 2, 1 };
+  public abstract int STRReq(int lvl);
 
-		private static final Class<?>[] curses = new Class<?>[]{
-				Annoying.class, Displacing.class, Exhausting.class, Fragile.class, Sacrificial.class, Wayward.class
-		};
-		
-		public abstract Damage proc(Weapon weapon, Damage damage);
-		// public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
+  public Item upgrade(boolean enchant) {
 
-		public String name() {
-			if (!curse())
-				return name( Messages.get(this, "enchant"));
-			else
-				return name( Messages.get(Item.class, "curse"));
-		}
+    if (enchant && (enchantment == null || enchantment.curse())) {
+      enchant(Enchantment.random());
+    } else if (!enchant && Random.Float() > Math.pow(0.9, level())) {
+      enchant(null);
+    }
 
-		public String name( String weaponName ) {
-			return Messages.get(this, "name", weaponName);
-		}
+    return super.upgrade();
+  }
 
-		public String desc() {
-			return Messages.get(this, "desc");
-		}
+  @Override
+  public String name() {
+    return enchantment != null && (cursedKnown || !enchantment.curse()) ? 
+            enchantment.name(super.name()) : super.name();
+  }
 
-		public boolean curse() {
-			return false;
-		}
+  @Override
+  public Item random() {
+    float roll = Random.Float();
+    if (roll < 0.3f) {
+      //30% chance to be level 0 and cursed
+      enchant(Enchantment.randomCurse());
+      cursed = true;
+      return this;
+    } else if (roll < 0.75f) {
+      //45% chance to be level 0
+    } else if (roll < 0.95f) {
+      //15% chance to be +1
+      upgrade(1);
+    } else {
+      //5% chance to be +2
+      upgrade(2);
+    }
 
-		@Override
-		public void restoreFromBundle( Bundle bundle ) {
-		}
+    //if not cursed, 10% chance to be enchanted (7% overall)
+    if (Random.Int(10) == 0)
+      enchant();
 
-		@Override
-		public void storeInBundle( Bundle bundle ) {
-		}
-		
-		public abstract ItemSprite.Glowing glowing();
-		
-		@SuppressWarnings("unchecked")
-		public static Enchantment random() {
-			try {
-				return ((Class<Enchantment>)enchants[ Random.chances( chances ) ]).newInstance();
-			} catch (Exception e) {
-				DarkestPixelDungeon.reportException(e);
-				return null;
-			}
-		}
+    return this;
+  }
 
-		@SuppressWarnings("unchecked")
-		public static Enchantment randomCurse(){
-			try {
-				return ((Class<Enchantment>)Random.oneOf(curses)).newInstance();
-			} catch (Exception e) {
-				DarkestPixelDungeon.reportException(e);
-				return null;
-			}
-		}
-		
-	}
+  public Weapon enchant(Enchantment ench) {
+    enchantment = ench;
+    return this;
+  }
+
+  public Weapon enchant() {
+
+    Class<? extends Enchantment> oldEnchantment = enchantment != null ? 
+            enchantment.getClass() : null;
+    Enchantment ench = Enchantment.random();
+    while (ench.getClass() == oldEnchantment) {
+      ench = Enchantment.random();
+    }
+
+    return enchant(ench);
+  }
+
+  public boolean hasEnchant(Class<? extends Enchantment> type) {
+    return enchantment != null && enchantment.getClass() == type;
+  }
+
+  public boolean hasGoodEnchant() {
+    return enchantment != null && !enchantment.curse();
+  }
+
+  public boolean hasCurseEnchant() {
+    return enchantment != null && enchantment.curse();
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return enchantment != null && (cursedKnown || !enchantment.curse()) ? 
+            enchantment.glowing() : null;
+  }
+
+  public static abstract class Enchantment implements Bundlable {
+
+    private static final Class<?>[] enchants = new Class<?>[]{
+            Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
+            Chilling.class, Eldritch.class, Lucky.class, Projecting.class, 
+            Unstable.class, Dazzling.class,
+            Grim.class, Stunning.class, Vampiric.class, Holy.class};
+    private static final float[] chances = new float[]{
+            10, 10, 10, 10,
+            5, 5, 5, 5, 5, 5,
+            2, 2, 2, 1};
+
+    private static final Class<?>[] curses = new Class<?>[]{
+            Annoying.class, Displacing.class, Exhausting.class, Fragile
+            .class, Sacrificial.class, Wayward.class
+    };
+
+    public abstract Damage proc(Weapon weapon, Damage damage);
+    // public abstract int proc( Weapon weapon, Char attacker, Char defender,
+    // int damage );
+
+    public String name() {
+      if (!curse())
+        return name(Messages.get(this, "enchant"));
+      else
+        return name(Messages.get(Item.class, "curse"));
+    }
+
+    public String name(String weaponName) {
+      return Messages.get(this, "name", weaponName);
+    }
+
+    public String desc() {
+      return Messages.get(this, "desc");
+    }
+
+    public boolean curse() {
+      return false;
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+    }
+
+    public abstract ItemSprite.Glowing glowing();
+
+    @SuppressWarnings("unchecked")
+    public static Enchantment random() {
+      try {
+        return ((Class<Enchantment>) enchants[Random.chances(chances)]).newInstance();
+      } catch (Exception e) {
+        DarkestPixelDungeon.reportException(e);
+        return null;
+      }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Enchantment randomCurse() {
+      try {
+        return ((Class<Enchantment>) Random.oneOf(curses)).newInstance();
+      } catch (Exception e) {
+        DarkestPixelDungeon.reportException(e);
+        return null;
+      }
+    }
+
+  }
 }

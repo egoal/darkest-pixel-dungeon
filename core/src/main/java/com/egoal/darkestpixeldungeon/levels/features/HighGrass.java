@@ -42,72 +42,76 @@ import com.watabou.utils.Random;
 
 public class HighGrass {
 
-	public static void trample( Level level, int pos, Char ch ) {
-		
-		// Level.set( pos, Terrain.GRASS );
-		Level.set(pos, Terrain.HIGH_GRASS_COLLECTED);
-		GameScene.updateMap( pos );
+  public static void trample(Level level, int pos, Char ch) {
 
-		if (!Dungeon.isChallenged( Challenges.NO_HERBALISM )) {
-			// the sandals artifact effect
-			int naturalismLevel = 0;
+    // Level.set( pos, Terrain.GRASS );
+    Level.set(pos, Terrain.HIGH_GRASS_COLLECTED);
+    GameScene.updateMap(pos);
 
-			if (ch != null) {
-				SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
-				if (naturalism != null) {
-					if (!naturalism.isCursed()) {
-						naturalismLevel = naturalism.itemLevel() + 1;
-						naturalism.charge();
-					} else {
-						naturalismLevel = -1;
-					}
-				}
-			}
+    if (!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+      // the sandals artifact effect
+      int naturalismLevel = 0;
 
-			if (naturalismLevel >= 0) {
-				// Seed, scales from 1/16 to 1/4
-				// in the village level, more unlikely to drop seed
-				int chance	=	Dungeon.depth==0? 30: (16-naturalismLevel*3);
-				if (Random.Int(chance) == 0) {
-					Item seed = Generator.random(Generator.Category.SEED);
+      if (ch != null) {
+        SandalsOfNature.Naturalism naturalism = ch.buff(SandalsOfNature
+                .Naturalism.class);
+        if (naturalism != null) {
+          if (!naturalism.isCursed()) {
+            naturalismLevel = naturalism.itemLevel() + 1;
+            naturalism.charge();
+          } else {
+            naturalismLevel = -1;
+          }
+        }
+      }
 
-					if (seed instanceof BlandfruitBush.Seed) {
-						if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
-							level.drop(seed, pos).sprite.drop();
-							Dungeon.limitedDrops.blandfruitSeed.count++;
-						}
-					} else
-						level.drop(seed, pos).sprite.drop();
-				}
+      if (naturalismLevel >= 0) {
+        // Seed, scales from 1/16 to 1/4
+        // in the village level, more unlikely to drop seed
+        int chance = Dungeon.depth == 0 ? 30 : (16 - naturalismLevel * 3);
+        if (Random.Int(chance) == 0) {
+          Item seed = Generator.random(Generator.Category.SEED);
 
-				// Dew, scales from 1/6 to 1/3
-				// now it's 1/5->1/3
-				if(Random.Int(10-naturalismLevel)<2)
-					level.drop(new Dewdrop(), pos);
-			}
-		}
+          if (seed instanceof BlandfruitBush.Seed) {
+            if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >=
+                    0) {
+              level.drop(seed, pos).sprite.drop();
+              Dungeon.limitedDrops.blandfruitSeed.count++;
+            }
+          } else
+            level.drop(seed, pos).sprite.drop();
+        }
 
-		int leaves = 4;
-		
-		if (ch instanceof Hero) {
-			Hero hero = (Hero)ch;
+        // Dew, scales from 1/6 to 1/3
+        // now it's 1/5->1/3
+        if (Random.Int(10 - naturalismLevel) < 2)
+          level.drop(new Dewdrop(), pos);
+      }
+    }
 
-			// Barkskin
-			if (hero.subClass == HeroSubClass.WARDEN) {
-				Buff.affect(ch, Barkskin.class).level(ch.HT / 3);
-				leaves += 4;
-			}
+    int leaves = 4;
 
-			//Camouflage
-			if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class)){
-				Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
-				leaves += 4;
-			}
-		}
-		
-		CellEmitter.get( pos ).burst( LeafParticle.LEVEL_SPECIFIC, leaves );
-		//observe already happens when hero moves
-		if (ch != Dungeon.hero)
-			Dungeon.observe();
-	}
+    if (ch instanceof Hero) {
+      Hero hero = (Hero) ch;
+
+      // Barkskin
+      if (hero.subClass == HeroSubClass.WARDEN) {
+        Buff.affect(ch, Barkskin.class).level(ch.HT / 3);
+        leaves += 4;
+      }
+
+      //Camouflage
+      if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph
+              (Camouflage.class)) {
+        Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings
+                .armor.level());
+        leaves += 4;
+      }
+    }
+
+    CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves);
+    //observe already happens when hero moves
+    if (ch != Dungeon.hero)
+      Dungeon.observe();
+  }
 }

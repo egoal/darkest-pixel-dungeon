@@ -27,20 +27,20 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class SeedPouch extends Bag {
 
-	{
-		image = ItemSpriteSheet.POUCH;
-		
-		size = Belongings.BACKPACK_SIZE;
-	}
-	
-	@Override
-	public boolean grab( Item item ) {
-		return item instanceof Plant.Seed;
-	}
-	
-	@Override
-	public int price() {
-		return 30;
-	}
+  {
+    image = ItemSpriteSheet.POUCH;
+
+    size = Belongings.BACKPACK_SIZE;
+  }
+
+  @Override
+  public boolean grab(Item item) {
+    return item instanceof Plant.Seed;
+  }
+
+  @Override
+  public int price() {
+    return 30;
+  }
 
 }

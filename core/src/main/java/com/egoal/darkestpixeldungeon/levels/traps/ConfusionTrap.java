@@ -28,15 +28,15 @@ import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class ConfusionTrap extends Trap {
 
-	{
-		color = TrapSprite.TEAL;
-		shape = TrapSprite.GRILL;
-	}
+  {
+    color = TrapSprite.TEAL;
+    shape = TrapSprite.GRILL;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		GameScene.add(Blob.seed(pos, 300 + 20 * Dungeon.depth, ConfusionGas.class));
+    GameScene.add(Blob.seed(pos, 300 + 20 * Dungeon.depth, ConfusionGas.class));
 
-	}
+  }
 }

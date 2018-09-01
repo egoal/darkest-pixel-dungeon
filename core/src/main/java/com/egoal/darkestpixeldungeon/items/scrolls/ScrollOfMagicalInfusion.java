@@ -31,32 +31,32 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
 
 public class ScrollOfMagicalInfusion extends InventoryScroll {
-	
-	{
-		initials = 2;
-		mode = WndBag.Mode.ENCHANTABLE;
 
-		bones = true;
-	}
-	
-	@Override
-	protected void onItemSelected( Item item ) {
+  {
+    initials = 2;
+    mode = WndBag.Mode.ENCHANTABLE;
 
-		if (item instanceof Weapon)
-			((Weapon)item).upgrade(true);
-		else
-			((Armor)item).upgrade(true);
-		
-		GLog.p( Messages.get(this, "infuse", item.name()) );
-		
-		Badges.validateItemLevelAquired(item);
+    bones = true;
+  }
 
-		curUser.sprite.emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
-		Enchanting.show(curUser, item);
-	}
+  @Override
+  protected void onItemSelected(Item item) {
 
-	@Override
-	public int price() {
-		return isKnown() ? 100 * quantity : super.price();
-	}
+    if (item instanceof Weapon)
+      ((Weapon) item).upgrade(true);
+    else
+      ((Armor) item).upgrade(true);
+
+    GLog.p(Messages.get(this, "infuse", item.name()));
+
+    Badges.validateItemLevelAquired(item);
+
+    curUser.sprite.emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
+    Enchanting.show(curUser, item);
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? 100 * quantity : super.price();
+  }
 }

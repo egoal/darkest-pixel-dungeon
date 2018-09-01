@@ -30,211 +30,211 @@ import com.watabou.utils.Rect;
 
 public class Blob extends Actor {
 
-	{
-		actPriority = 1; //take priority over mobs, but not the hero
-	}
-	
-	public int volume = 0;
-	
-	public int[] cur;
-	protected int[] off;
-	
-	public BlobEmitter emitter;
+  {
+    actPriority = 1; //take priority over mobs, but not the hero
+  }
 
-	public Rect area = new Rect();
+  public int volume = 0;
 
-	private static final String CUR		= "cur";
-	private static final String START	= "start";
-	private static final String LENGTH	= "length";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		
-		if (volume > 0) {
-		
-			int start;
-			for (start=0; start < Dungeon.level.length(); start++) {
-				if (cur[start] > 0) {
-					break;
-				}
-			}
-			int end;
-			for (end=Dungeon.level.length()-1; end > start; end--) {
-				if (cur[end] > 0) {
-					break;
-				}
-			}
-			
-			bundle.put( START, start );
-			bundle.put( LENGTH, cur.length );
-			bundle.put( CUR, trim( start, end + 1 ) );
-			
-		}
-	}
-	
-	private int[] trim( int start, int end ) {
-		int len = end - start;
-		int[] copy = new int[len];
-		System.arraycopy( cur, start, copy, 0, len );
-		return copy;
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		
-		super.restoreFromBundle( bundle );
+  public int[] cur;
+  protected int[] off;
 
-		if (bundle.contains(LENGTH)) {
-			cur = new int[bundle.getInt(LENGTH)];
-		} else {
-			//compatability with pre-0.4.2
-			cur = new int[1024];
-		}
-		off = new int[cur.length];
-		
-		int[] data = bundle.getIntArray( CUR );
-		if (data != null) {
-			int start = bundle.getInt( START );
-			for (int i=0; i < data.length; i++) {
-				cur[i + start] = data[i];
-				volume += data[i];
-			}
-		}
-	}
-	
-	@Override
-	public boolean act() {
-		
-		spend( TICK );
-		
-		if (volume > 0) {
+  public BlobEmitter emitter;
 
-			if (area.isEmpty())
-				setupArea();
+  public Rect area = new Rect();
 
-			volume = 0;
+  private static final String CUR = "cur";
+  private static final String START = "start";
+  private static final String LENGTH = "length";
 
-			evolve();
-			int[] tmp = off;
-			off = cur;
-			cur = tmp;
-			
-		} else {
-			area.setEmpty();
-		}
-		
-		return true;
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
 
-	public void setupArea(){
-		for (int cell=0; cell < cur.length; cell++) {
-			if (cur[cell] != 0){
-				area.union(cell%Dungeon.level.width(), cell/Dungeon.level.width());
-			}
-		}
-	}
-	
-	public void use( BlobEmitter emitter ) {
-		this.emitter = emitter;
-	}
-	
-	protected void evolve() {
-		
-		boolean[] blocking = Level.solid;
-		int cell;
-		for (int i=area.top-1; i <= area.bottom; i++) {
-			for (int j = area.left-1; j <= area.right; j++) {
-				cell = j + i*Dungeon.level.width();
-				if (Dungeon.level.insideMap(cell)) {
-					if (!blocking[cell]) {
+    if (volume > 0) {
 
-						int count = 1;
-						int sum = cur[cell];
+      int start;
+      for (start = 0; start < Dungeon.level.length(); start++) {
+        if (cur[start] > 0) {
+          break;
+        }
+      }
+      int end;
+      for (end = Dungeon.level.length() - 1; end > start; end--) {
+        if (cur[end] > 0) {
+          break;
+        }
+      }
 
-						if (j > area.left && !blocking[cell-1]) {
-							sum += cur[cell-1];
-							count++;
-						}
-						if (j < area.right && !blocking[cell+1]) {
-							sum += cur[cell+1];
-							count++;
-						}
-						if (i > area.top && !blocking[cell-Dungeon.level.width()]) {
-							sum += cur[cell-Dungeon.level.width()];
-							count++;
-						}
-						if (i < area.bottom && !blocking[cell+Dungeon.level.width()]) {
-							sum += cur[cell+Dungeon.level.width()];
-							count++;
-						}
+      bundle.put(START, start);
+      bundle.put(LENGTH, cur.length);
+      bundle.put(CUR, trim(start, end + 1));
 
-						int value = sum >= count ? (sum / count) - 1 : 0;
-						off[cell] = value;
+    }
+  }
 
-						if (value > 0){
-							if (i < area.top)
-								area.top = i;
-							else if (i >= area.bottom)
-								area.bottom = i+1;
-							if (j < area.left)
-								area.left = j;
-							else if (j >= area.right)
-								area.right = j+1;
-						}
+  private int[] trim(int start, int end) {
+    int len = end - start;
+    int[] copy = new int[len];
+    System.arraycopy(cur, start, copy, 0, len);
+    return copy;
+  }
 
-						volume += value;
-					} else {
-						off[cell] = 0;
-					}
-				}
-			}
-		}
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
 
-	public void seed( Level level, int cell, int amount ) {
-		if (cur == null) cur = new int[level.length()];
-		if (off == null) off = new int[cur.length];
+    super.restoreFromBundle(bundle);
 
-		cur[cell] += amount;
-		volume += amount;
+    if (bundle.contains(LENGTH)) {
+      cur = new int[bundle.getInt(LENGTH)];
+    } else {
+      //compatability with pre-0.4.2
+      cur = new int[1024];
+    }
+    off = new int[cur.length];
 
-		area.union(cell%level.width(), cell/level.width());
-	}
-	
-	public void clear( int cell ) {
-		volume -= cur[cell];
-		cur[cell] = 0;
-	}
+    int[] data = bundle.getIntArray(CUR);
+    if (data != null) {
+      int start = bundle.getInt(START);
+      for (int i = 0; i < data.length; i++) {
+        cur[i + start] = data[i];
+        volume += data[i];
+      }
+    }
+  }
 
-	public void fullyClear(){
-		volume = 0;
-		area.setEmpty();
-		cur = new int[Dungeon.level.length()];
-		off = new int[Dungeon.level.length()];
-	}
-	
-	public String tileDesc() {
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static<T extends Blob> T seed( int cell, int amount, Class<T> type ) {
-		try {
-			
-			T gas = (T)Dungeon.level.blobs.get( type );
-			if (gas == null) {
-				gas = type.newInstance();
-				Dungeon.level.blobs.put( type, gas );
-			}
-			
-			gas.seed( Dungeon.level, cell, amount );
-			
-			return gas;
-			
-		} catch (Exception e) {
-			DarkestPixelDungeon.reportException(e);
-			return null;
-		}
-	}
+  @Override
+  public boolean act() {
+
+    spend(TICK);
+
+    if (volume > 0) {
+
+      if (area.isEmpty())
+        setupArea();
+
+      volume = 0;
+
+      evolve();
+      int[] tmp = off;
+      off = cur;
+      cur = tmp;
+
+    } else {
+      area.setEmpty();
+    }
+
+    return true;
+  }
+
+  public void setupArea() {
+    for (int cell = 0; cell < cur.length; cell++) {
+      if (cur[cell] != 0) {
+        area.union(cell % Dungeon.level.width(), cell / Dungeon.level.width());
+      }
+    }
+  }
+
+  public void use(BlobEmitter emitter) {
+    this.emitter = emitter;
+  }
+
+  protected void evolve() {
+
+    boolean[] blocking = Level.solid;
+    int cell;
+    for (int i = area.top - 1; i <= area.bottom; i++) {
+      for (int j = area.left - 1; j <= area.right; j++) {
+        cell = j + i * Dungeon.level.width();
+        if (Dungeon.level.insideMap(cell)) {
+          if (!blocking[cell]) {
+
+            int count = 1;
+            int sum = cur[cell];
+
+            if (j > area.left && !blocking[cell - 1]) {
+              sum += cur[cell - 1];
+              count++;
+            }
+            if (j < area.right && !blocking[cell + 1]) {
+              sum += cur[cell + 1];
+              count++;
+            }
+            if (i > area.top && !blocking[cell - Dungeon.level.width()]) {
+              sum += cur[cell - Dungeon.level.width()];
+              count++;
+            }
+            if (i < area.bottom && !blocking[cell + Dungeon.level.width()]) {
+              sum += cur[cell + Dungeon.level.width()];
+              count++;
+            }
+
+            int value = sum >= count ? (sum / count) - 1 : 0;
+            off[cell] = value;
+
+            if (value > 0) {
+              if (i < area.top)
+                area.top = i;
+              else if (i >= area.bottom)
+                area.bottom = i + 1;
+              if (j < area.left)
+                area.left = j;
+              else if (j >= area.right)
+                area.right = j + 1;
+            }
+
+            volume += value;
+          } else {
+            off[cell] = 0;
+          }
+        }
+      }
+    }
+  }
+
+  public void seed(Level level, int cell, int amount) {
+    if (cur == null) cur = new int[level.length()];
+    if (off == null) off = new int[cur.length];
+
+    cur[cell] += amount;
+    volume += amount;
+
+    area.union(cell % level.width(), cell / level.width());
+  }
+
+  public void clear(int cell) {
+    volume -= cur[cell];
+    cur[cell] = 0;
+  }
+
+  public void fullyClear() {
+    volume = 0;
+    area.setEmpty();
+    cur = new int[Dungeon.level.length()];
+    off = new int[Dungeon.level.length()];
+  }
+
+  public String tileDesc() {
+    return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T extends Blob> T seed(int cell, int amount, Class<T> type) {
+    try {
+
+      T gas = (T) Dungeon.level.blobs.get(type);
+      if (gas == null) {
+        gas = type.newInstance();
+        Dungeon.level.blobs.put(type, gas);
+      }
+
+      gas.seed(Dungeon.level, cell, amount);
+
+      return gas;
+
+    } catch (Exception e) {
+      DarkestPixelDungeon.reportException(e);
+      return null;
+    }
+  }
 }

@@ -28,33 +28,33 @@ import com.watabou.utils.Random;
 
 public class Crab extends Mob {
 
-	{
-		spriteClass = CrabSprite.class;
-		
-		HP = HT = 15;
-		defenseSkill = 5;
-		baseSpeed = 2f;
-		
-		EXP = 4;
-		maxLvl = 9;
-		
-		loot = new MysteryMeat();
-		lootChance = 0.167f;
-	}
-	
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange(1, 8), this, target);
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
-	
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 4);
-		return dmg;
-	}
+  {
+    spriteClass = CrabSprite.class;
+
+    HP = HT = 15;
+    defenseSkill = 5;
+    baseSpeed = 2f;
+
+    EXP = 4;
+    maxLvl = 9;
+
+    loot = new MysteryMeat();
+    lootChance = 0.167f;
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(1, 8), this, target);
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 12;
+  }
+
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 4);
+    return dmg;
+  }
 }

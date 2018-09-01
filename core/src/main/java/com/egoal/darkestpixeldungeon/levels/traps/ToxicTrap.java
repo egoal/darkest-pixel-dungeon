@@ -26,17 +26,17 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
-public class ToxicTrap extends Trap{
+public class ToxicTrap extends Trap {
 
-	{
-		color = TrapSprite.GREEN;
-		shape = TrapSprite.GRILL;
-	}
+  {
+    color = TrapSprite.GREEN;
+    shape = TrapSprite.GRILL;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		GameScene.add( Blob.seed( pos, 300 + 20 * Dungeon.depth, ToxicGas.class ) );
+    GameScene.add(Blob.seed(pos, 300 + 20 * Dungeon.depth, ToxicGas.class));
 
-	}
+  }
 }

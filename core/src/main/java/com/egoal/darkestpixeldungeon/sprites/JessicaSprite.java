@@ -10,24 +10,24 @@ import com.watabou.noosa.TextureFilm;
  * Created by 93942 on 5/5/2018.
  */
 
-public class JessicaSprite extends MobSprite{
-	
-	public JessicaSprite(){
-		super();
-		
-		texture(Assets.DPD_JESSICA);
+public class JessicaSprite extends MobSprite {
 
-		// set animations
-		TextureFilm frames	=	new TextureFilm(texture, 12, 15);
-		idle	=	new MovieClip.Animation(1, true);
-		idle.frames(frames, 0, 1);
+  public JessicaSprite() {
+    super();
 
-		run	=	new MovieClip.Animation(20, true);
-		run.frames(frames, 0);
+    texture(Assets.DPD_JESSICA);
 
-		die	=	new MovieClip.Animation(20, true);
-		die.frames(frames, 0);
+    // set animations
+    TextureFilm frames = new TextureFilm(texture, 12, 15);
+    idle = new MovieClip.Animation(1, true);
+    idle.frames(frames, 0, 1);
 
-		play(idle);
-	}
+    run = new MovieClip.Animation(20, true);
+    run.frames(frames, 0);
+
+    die = new MovieClip.Animation(20, true);
+    die.frames(frames, 0);
+
+    play(idle);
+  }
 }

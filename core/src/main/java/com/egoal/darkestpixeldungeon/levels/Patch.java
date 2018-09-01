@@ -23,69 +23,69 @@ package com.egoal.darkestpixeldungeon.levels;
 import com.watabou.utils.Random;
 
 public class Patch {
-	
-	// the live game to generate some thing, like grass, 
-	// i can use this to generate valley
-	public static boolean[] generate( Level level, float seed, int nGen ){
-		return generate(level.width(), level.height(), seed, nGen);
-	}
 
-	public static boolean[] generate(int w, int h, float seed, int nGen){
-		boolean[] cur = new boolean[w*h];
-		boolean[] off = new boolean[w*h];
+  // the live game to generate some thing, like grass, 
+  // i can use this to generate valley
+  public static boolean[] generate(Level level, float seed, int nGen) {
+    return generate(level.width(), level.height(), seed, nGen);
+  }
 
-		for (int i=0; i < w*h; i++) {
-			off[i] = Random.Float() < seed;
-		}
+  public static boolean[] generate(int w, int h, float seed, int nGen) {
+    boolean[] cur = new boolean[w * h];
+    boolean[] off = new boolean[w * h];
 
-		for (int i=0; i < nGen; i++) {
+    for (int i = 0; i < w * h; i++) {
+      off[i] = Random.Float() < seed;
+    }
 
-			for (int y=1; y < h-1; y++) {
-				for (int x=1; x < w-1; x++) {
+    for (int i = 0; i < nGen; i++) {
 
-					int pos = x + y * w;
-					// check nearest 8
-					int count = 0;
-					if (off[pos-w-1]) {
-						count++;
-					}
-					if (off[pos-w]) {
-						count++;
-					}
-					if (off[pos-w+1]) {
-						count++;
-					}
-					if (off[pos-1]) {
-						count++;
-					}
-					if (off[pos+1]) {
-						count++;
-					}
-					if (off[pos+w-1]) {
-						count++;
-					}
-					if (off[pos+w]) {
-						count++;
-					}
-					if (off[pos+w+1]) {
-						count++;
-					}
+      for (int y = 1; y < h - 1; y++) {
+        for (int x = 1; x < w - 1; x++) {
 
-					if (!off[pos] && count >= 5) {
-						cur[pos] = true;
-					} else if (off[pos] && count >= 4) {
-						cur[pos] = true;
-					} else {
-						cur[pos] = false;
-					}
-				}
-			}
+          int pos = x + y * w;
+          // check nearest 8
+          int count = 0;
+          if (off[pos - w - 1]) {
+            count++;
+          }
+          if (off[pos - w]) {
+            count++;
+          }
+          if (off[pos - w + 1]) {
+            count++;
+          }
+          if (off[pos - 1]) {
+            count++;
+          }
+          if (off[pos + 1]) {
+            count++;
+          }
+          if (off[pos + w - 1]) {
+            count++;
+          }
+          if (off[pos + w]) {
+            count++;
+          }
+          if (off[pos + w + 1]) {
+            count++;
+          }
 
-			boolean[] tmp = cur;
-			cur = off;
-			off = tmp;
-		}
+          if (!off[pos] && count >= 5) {
+            cur[pos] = true;
+          } else if (off[pos] && count >= 4) {
+            cur[pos] = true;
+          } else {
+            cur[pos] = false;
+          }
+        }
+      }
 
-		return off;
-	}
+      boolean[] tmp = cur;
+      cur = off;
+      off = tmp;
+    }
+
+    return off;
+  }
 }

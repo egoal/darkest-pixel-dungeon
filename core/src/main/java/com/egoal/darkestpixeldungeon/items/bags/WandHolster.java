@@ -27,44 +27,44 @@ import com.egoal.darkestpixeldungeon.items.wands.Wand;
 
 public class WandHolster extends Bag {
 
-	{
-		image = ItemSpriteSheet.HOLSTER;
-		
-		size =	Belongings.BACKPACK_SIZE;
-	}
+  {
+    image = ItemSpriteSheet.HOLSTER;
 
-	public static float HOLSTER_SCALE_FACTOR = 0.85f;
-	
-	@Override
-	public boolean grab( Item item ) {
-		return item instanceof Wand;
-	}
-	
-	@Override
-	public boolean collect( Bag container ) {
-		if (super.collect( container )) {
-			if (owner != null) {
-				for (Item item : items) {
-					((Wand)item).charge( owner, HOLSTER_SCALE_FACTOR );
-				}
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
+    size = Belongings.BACKPACK_SIZE;
+  }
 
-	@Override
-	public void onDetach( ) {
-		super.onDetach();
-		for (Item item : items) {
-			((Wand)item).stopCharging();
-		}
-	}
-	
-	@Override
-	public int price() {
-		return 50;
-	}
+  public static float HOLSTER_SCALE_FACTOR = 0.85f;
+
+  @Override
+  public boolean grab(Item item) {
+    return item instanceof Wand;
+  }
+
+  @Override
+  public boolean collect(Bag container) {
+    if (super.collect(container)) {
+      if (owner != null) {
+        for (Item item : items) {
+          ((Wand) item).charge(owner, HOLSTER_SCALE_FACTOR);
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    for (Item item : items) {
+      ((Wand) item).stopCharging();
+    }
+  }
+
+  @Override
+  public int price() {
+    return 50;
+  }
 
 }

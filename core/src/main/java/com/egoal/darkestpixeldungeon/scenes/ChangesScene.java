@@ -43,132 +43,134 @@ import java.util.ArrayList;
 
 public class ChangesScene extends PixelScene {
 
-	private static final int BTN_WIDTH	=	30;
-	private static final int BTN_HEIGHT	=	15;
-	private static final int BTN_GAP	=	2;
-	
-	@Override
-	public void create() {
-		super.create();
+  private static final int BTN_WIDTH = 30;
+  private static final int BTN_HEIGHT = 15;
+  private static final int BTN_GAP = 2;
 
-		int w = Camera.main.width;
-		int h = Camera.main.height;
+  @Override
+  public void create() {
+    super.create();
 
-		RenderedText title = renderText( Messages.get(this, "title"), 9 );
-		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2 ;
-		title.y = 4;
-		align(title);
-		add(title);
+    int w = Camera.main.width;
+    int h = Camera.main.height;
 
-		ExitButton btnExit = new ExitButton();
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		add( btnExit );
+    RenderedText title = renderText(Messages.get(this, "title"), 9);
+    title.hardlight(Window.TITLE_COLOR);
+    title.x = (w - title.width()) / 2;
+    title.y = 4;
+    align(title);
+    add(title);
 
-		
-		// add chrome base
-		int pw = w - 6;
-		int ph = h - 20;
-		
-		NinePatch panel = Chrome.get(Chrome.Type.WINDOW);
-		panel.size( pw, ph );
-		panel.x = (w - pw) / 2;
-		panel.y = title.y + title.height() + 2;
-		add( panel );
-		
-		// add scroll text
-		ScrollPane list = new ScrollPane( new Component() );
-		add( list );
-		
-		Component content = list.content();
-		content.clear();
-		
-		//Messages.get(this, "warning")+"
-		RenderedTextMultiline text	=	renderMultiline("_"+
-			DarkestPixelDungeon.version+"_\n"+
-			Messages.get(this, "info"+DarkestPixelDungeon.version), 6 );
-		text.maxWidth((int) panel.innerWidth());
-		content.add(text);
+    ExitButton btnExit = new ExitButton();
+    btnExit.setPos(Camera.main.width - btnExit.width(), 0);
+    add(btnExit);
 
-		// add versions' button
-		final String HSPLIT	=	"---";
-		String[] oldVersions	=	new String[]{
-			"0.2.1a", "0.2.1", "0.2.0", 
-			HSPLIT,
-			"0.1.3", "0.1.2", "0.1.1", 
-			"0.1.0", "", ""
-		};
-		{
-			// todo: code lint
-			float sx	=	0f;
-			float sy	=	text.height()+8;
-			int r	=	0;
-			int c	=	0;
-			int gaps	=	0;
-			for(String v: oldVersions){
-				if(v.equals(HSPLIT)){
-					++gaps;
-					continue;
-				}
-				
-				if(v.length()>0){
-					RedButton rb	=	createChangeButton(v);
-					rb.setRect(sx+(BTN_WIDTH+BTN_GAP)*c,sy+(BTN_GAP+BTN_HEIGHT)*r+gaps*BTN_GAP,
-							BTN_WIDTH,BTN_HEIGHT);
-					content.add(rb);
-				}
-				
-				if((++c)==3){
-					++r;
-					c	=	0;
-				}
-			}
-			content.setSize(panel.innerWidth(), sy+(BTN_GAP+BTN_HEIGHT)*r+BTN_HEIGHT);
-		}
-		
-		list.setRect(
-				panel.x + panel.marginLeft(),
-				panel.y + panel.marginTop(),
-				panel.innerWidth(),
-				panel.innerHeight());
-		list.scrollTo(0, 0);
 
-		Archs archs = new Archs();
-		archs.setSize( Camera.main.width, Camera.main.height );
-		addToBack( archs );
+    // add chrome base
+    int pw = w - 6;
+    int ph = h - 20;
 
-		fadeIn();
-	}
+    NinePatch panel = Chrome.get(Chrome.Type.WINDOW);
+    panel.size(pw, ph);
+    panel.x = (w - pw) / 2;
+    panel.y = title.y + title.height() + 2;
+    add(panel);
 
-	@Override
-	protected void onBackPressed() {
-		DarkestPixelDungeon.switchNoFade(TitleScene.class);
-	}
+    // add scroll text
+    ScrollPane list = new ScrollPane(new Component());
+    add(list);
 
-	private RedButton createChangeButton(final String version){
-		RedButton btnVersion	=	new RedButton(version){
-			@Override
-			protected void onClick(){
-				parent.add(new ChangesWindow(
-						Messages.get(ChangesScene.class, "info"+version)));
-			}
-		};
+    Component content = list.content();
+    content.clear();
 
-		return btnVersion;
-	}
+    //Messages.get(this, "warning")+"
+    RenderedTextMultiline text = renderMultiline("_" +
+            DarkestPixelDungeon.version + "_\n" +
+            Messages.get(this, "info" + DarkestPixelDungeon.version), 6);
+    text.maxWidth((int) panel.innerWidth());
+    content.add(text);
 
-	private static class ChangesWindow extends WndMessage{
-		public ChangesWindow(String message){
-			super(message);
+    // add versions' button
+    final String HSPLIT = "---";
+    String[] oldVersions = new String[]{
+            "0.2.1a", "0.2.1", "0.2.0",
+            HSPLIT,
+            "0.1.3", "0.1.2", "0.1.1",
+            "0.1.0", "", ""
+    };
+    {
+      // todo: code lint
+      float sx = 0f;
+      float sy = text.height() + 8;
+      int r = 0;
+      int c = 0;
+      int gaps = 0;
+      for (String v : oldVersions) {
+        if (v.equals(HSPLIT)) {
+          ++gaps;
+          continue;
+        }
 
-			add(new TouchArea(chrome){
-				@Override
-				protected void onClick(Touchscreen.Touch touch){
-					hide();	
-				}
-			});
-		}
-	}
+        if (v.length() > 0) {
+          RedButton rb = createChangeButton(v);
+          rb.setRect(sx + (BTN_WIDTH + BTN_GAP) * c, sy + (BTN_GAP + 
+                          BTN_HEIGHT) * r + gaps * BTN_GAP,
+                  BTN_WIDTH, BTN_HEIGHT);
+          content.add(rb);
+        }
+
+        if ((++c) == 3) {
+          ++r;
+          c = 0;
+        }
+      }
+      content.setSize(panel.innerWidth(), sy + (BTN_GAP + BTN_HEIGHT) * r + 
+              BTN_HEIGHT);
+    }
+
+    list.setRect(
+            panel.x + panel.marginLeft(),
+            panel.y + panel.marginTop(),
+            panel.innerWidth(),
+            panel.innerHeight());
+    list.scrollTo(0, 0);
+
+    Archs archs = new Archs();
+    archs.setSize(Camera.main.width, Camera.main.height);
+    addToBack(archs);
+
+    fadeIn();
+  }
+
+  @Override
+  protected void onBackPressed() {
+    DarkestPixelDungeon.switchNoFade(TitleScene.class);
+  }
+
+  private RedButton createChangeButton(final String version) {
+    RedButton btnVersion = new RedButton(version) {
+      @Override
+      protected void onClick() {
+        parent.add(new ChangesWindow(
+                Messages.get(ChangesScene.class, "info" + version)));
+      }
+    };
+
+    return btnVersion;
+  }
+
+  private static class ChangesWindow extends WndMessage {
+    public ChangesWindow(String message) {
+      super(message);
+
+      add(new TouchArea(chrome) {
+        @Override
+        protected void onClick(Touchscreen.Touch touch) {
+          hide();
+        }
+      });
+    }
+  }
 }
 
 

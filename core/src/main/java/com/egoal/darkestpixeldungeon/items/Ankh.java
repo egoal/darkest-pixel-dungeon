@@ -35,97 +35,99 @@ import java.util.ArrayList;
 
 public class Ankh extends Item {
 
-	public static final String AC_BLESS = "BLESS";
-	private static int BLESS_CONSUME	=	15;
-	
-	{
-		image = ItemSpriteSheet.ANKH;
+  public static final String AC_BLESS = "BLESS";
+  private static int BLESS_CONSUME = 15;
 
-		//You tell the ankh no, don't revive me, and then it comes back to revive you again in another run.
-		//I'm not sure if that's enthusiasm or passive-aggression.
-		bones = true;
-	}
+  {
+    image = ItemSpriteSheet.ANKH;
 
-	private Boolean blessed = false;
-	
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+    //You tell the ankh no, don't revive me, and then it comes back to revive
+    // you again in another run.
+    //I'm not sure if that's enthusiasm or passive-aggression.
+    bones = true;
+  }
 
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions(hero);
-		DewVial vial = hero.belongings.getItem(DewVial.class);
-		if (vial != null && vial.getVolume()>=BLESS_CONSUME && !blessed)
-			actions.add( AC_BLESS );
-		return actions;
-	}
+  private Boolean blessed = false;
 
-	@Override
-	public void execute( final Hero hero, String action ) {
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
 
-		super.execute( hero, action );
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
 
-		if (action.equals( AC_BLESS )) {
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    ArrayList<String> actions = super.actions(hero);
+    DewVial vial = hero.belongings.getItem(DewVial.class);
+    if (vial != null && vial.getVolume() >= BLESS_CONSUME && !blessed)
+      actions.add(AC_BLESS);
+    return actions;
+  }
 
-			DewVial vial = hero.belongings.getItem(DewVial.class);
-			if (vial != null){
-				blessed = true;
-				// vial.empty();
-				vial.setVolume(vial.getVolume()-BLESS_CONSUME);
-				GLog.p( Messages.get(this, "bless") );
-				hero.spend( 1f );
-				hero.busy();
+  @Override
+  public void execute(final Hero hero, String action) {
+
+    super.execute(hero, action);
+
+    if (action.equals(AC_BLESS)) {
+
+      DewVial vial = hero.belongings.getItem(DewVial.class);
+      if (vial != null) {
+        blessed = true;
+        // vial.empty();
+        vial.setVolume(vial.getVolume() - BLESS_CONSUME);
+        GLog.p(Messages.get(this, "bless"));
+        hero.spend(1f);
+        hero.busy();
 
 
-				Sample.INSTANCE.play( Assets.SND_DRINK );
-				CellEmitter.get(hero.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-				hero.sprite.operate( hero.pos );
-			}
-		}
-	}
-	
-	@Override
-	public String desc() {
-		if (blessed)
-			return Messages.get(this, "desc_blessed");
-		else
-			return super.desc();
-	}
+        Sample.INSTANCE.play(Assets.SND_DRINK);
+        CellEmitter.get(hero.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+        hero.sprite.operate(hero.pos);
+      }
+    }
+  }
 
-	public Boolean isBlessed(){
-		return blessed;
-	}
+  @Override
+  public String desc() {
+    if (blessed)
+      return Messages.get(this, "desc_blessed");
+    else
+      return super.desc();
+  }
 
-	private static final ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFCC );
+  public Boolean isBlessed() {
+    return blessed;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return isBlessed() ? WHITE : null;
-	}
+  private static final ItemSprite.Glowing WHITE = new ItemSprite.Glowing
+          (0xFFFFCC);
 
-	private static final String BLESSED = "blessed";
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return isBlessed() ? WHITE : null;
+  }
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( BLESSED, blessed );
-	}
+  private static final String BLESSED = "blessed";
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		blessed	= bundle.getBoolean( BLESSED );
-	}
-	
-	@Override
-	public int price() {
-		return 50 * quantity;
-	}
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(BLESSED, blessed);
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    blessed = bundle.getBoolean(BLESSED);
+  }
+
+  @Override
+  public int price() {
+    return 50 * quantity;
+  }
 }

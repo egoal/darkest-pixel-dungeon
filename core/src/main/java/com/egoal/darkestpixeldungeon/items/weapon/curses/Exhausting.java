@@ -29,29 +29,29 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.watabou.utils.Random;
 
-public class Exhausting extends Weapon.Enchantment{
+public class Exhausting extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-	@Override
-	public Damage proc(Weapon weapon,Damage damage) {
-		Char defender	=	(Char)damage.to;
-		Char attacker	=	(Char)damage.from;
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    Char attacker = (Char) damage.from;
 
-		if (attacker == Dungeon.hero && Random.Int(20) == 0) {
-			Buff.affect(attacker, Weakness.class, Random.Float(5f, 25f));
-		}
+    if (attacker == Dungeon.hero && Random.Int(20) == 0) {
+      Buff.affect(attacker, Weakness.class, Random.Float(5f, 25f));
+    }
 
-		return damage;
-	}
+    return damage;
+  }
 
-	@Override
-	public boolean curse() {
-		return true;
-	}
+  @Override
+  public boolean curse() {
+    return true;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
 }

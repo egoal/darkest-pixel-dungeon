@@ -24,10 +24,10 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class WornShortsword extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.WORN_SHORTSWORD;
+  {
+    image = ItemSpriteSheet.WORN_SHORTSWORD;
 
-		tier = 1;
-	}
+    tier = 1;
+  }
 
 }

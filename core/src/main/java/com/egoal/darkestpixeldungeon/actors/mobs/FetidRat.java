@@ -35,66 +35,67 @@ import java.util.HashSet;
 
 public class FetidRat extends Rat {
 
-	{
-		spriteClass = FetidRatSprite.class;
+  {
+    spriteClass = FetidRatSprite.class;
 
-		HP = HT = 20;
-		defenseSkill = 5;
+    HP = HT = 20;
+    defenseSkill = 5;
 
-		EXP = 4;
+    EXP = 4;
 
-		state = WANDERING;
+    state = WANDERING;
 
-		properties.add(Property.MINIBOSS);
-		properties.add(Property.DEMONIC);
+    properties.add(Property.MINIBOSS);
+    properties.add(Property.DEMONIC);
 
-		addResistances(Damage.Element.POISON, 1.25f);
-		addResistances(Damage.Element.SHADOW, 1.25f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
+    addResistances(Damage.Element.POISON, 1.25f);
+    addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
+  @Override
+  public int attackSkill(Char target) {
+    return 12;
+  }
 
-	@Override
-	public Damage defendDamage(Damage dmg){
-		dmg.value	-=	Random.NormalIntRange(0, 2);
-		return dmg;
-	}
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 2);
+    return dmg;
+  }
 
-	@Override
-	public Damage attackProc(Damage damage) {
-		if (Random.Int(3) == 0) {
-			Buff.affect((Char)damage.to, Ooze.class);
-		}
+  @Override
+  public Damage attackProc(Damage damage) {
+    if (Random.Int(3) == 0) {
+      Buff.affect((Char) damage.to, Ooze.class);
+    }
 
-		return damage;
-	}
+    return damage;
+  }
 
-	@Override
-	public Damage defenseProc(Damage damage ) {
+  @Override
+  public Damage defenseProc(Damage damage) {
 
-		GameScene.add(Blob.seed(pos, 20, StenchGas.class));
+    GameScene.add(Blob.seed(pos, 20, StenchGas.class));
 
-		return super.defenseProc(damage);
-	}
+    return super.defenseProc(damage);
+  }
 
-	@Override
-	public void die( Object cause ) {
-		super.die( cause );
+  @Override
+  public void die(Object cause) {
+    super.die(cause);
 
-		Ghost.Quest.process();
-	}
+    Ghost.Quest.process();
+  }
 
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( StenchGas.class );
-	}
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
+  static {
+    IMMUNITIES.add(StenchGas.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
 }

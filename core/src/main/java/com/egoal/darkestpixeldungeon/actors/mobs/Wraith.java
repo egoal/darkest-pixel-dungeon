@@ -39,97 +39,99 @@ import java.util.HashSet;
 
 public class Wraith extends Mob {
 
-	private static final float SPAWN_DELAY	= 2f;
-	
-	protected int level;
-	
-	{
-		spriteClass = WraithSprite.class;
-		
-		HP = HT = 1;
-		EXP = 0;
-		
-		flying = true;
+  private static final float SPAWN_DELAY = 2f;
 
-		properties.add(Property.UNDEAD);
-		addResistances(Damage.Element.SHADOW, 1.25f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
-	
-	private static final String LEVEL = "level";
-	
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEVEL, level );
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		level = bundle.getInt( LEVEL );
-		adjustStats( level );
-	}
+  protected int level;
 
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange(1 + level/2, 2 + level), this, target);
-	}
-	
-	@Override
-	public int attackSkill( Char target ) {
-		return 10 + level;
-	}
-	
-	public void adjustStats( int level ) {
-		this.level = level;
-		defenseSkill = attackSkill( null ) * 5;
-		enemySeen = true;
-	}
+  {
+    spriteClass = WraithSprite.class;
 
-	@Override
-	public boolean reset() {
-		state = WANDERING;
-		return true;
-	}
-	
-	public static void spawnAround( int pos ) {
-		for (int n : PathFinder.NEIGHBOURS4) {
-			int cell = pos + n;
-			if (Level.passable[cell] && Actor.findChar( cell ) == null) {
-				spawnAt( cell );
-			}
-		}
-	}
-	
-	public static Wraith spawnAt( int pos ) {
-		if (Level.passable[pos] && Actor.findChar( pos ) == null) {
-			
-			Wraith w = new Wraith();
-			w.adjustStats( Dungeon.depth );
-			w.pos = pos;
-			w.state = w.HUNTING;
-			GameScene.add( w, SPAWN_DELAY );
-			
-			w.sprite.alpha( 0 );
-			w.sprite.parent.add( new AlphaTweener( w.sprite, 1, 0.5f ) );
-			
-			w.sprite.emitter().burst( ShadowParticle.CURSE, 5 );
-			
-			return w;
-		} else {
-			return null;
-		}
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Grim.class );
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
+    HP = HT = 1;
+    EXP = 0;
+
+    flying = true;
+
+    properties.add(Property.UNDEAD);
+    addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
+
+  private static final String LEVEL = "level";
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(LEVEL, level);
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    level = bundle.getInt(LEVEL);
+    adjustStats(level);
+  }
+
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, 
+            target);
+  }
+
+  @Override
+  public int attackSkill(Char target) {
+    return 10 + level;
+  }
+
+  public void adjustStats(int level) {
+    this.level = level;
+    defenseSkill = attackSkill(null) * 5;
+    enemySeen = true;
+  }
+
+  @Override
+  public boolean reset() {
+    state = WANDERING;
+    return true;
+  }
+
+  public static void spawnAround(int pos) {
+    for (int n : PathFinder.NEIGHBOURS4) {
+      int cell = pos + n;
+      if (Level.passable[cell] && Actor.findChar(cell) == null) {
+        spawnAt(cell);
+      }
+    }
+  }
+
+  public static Wraith spawnAt(int pos) {
+    if (Level.passable[pos] && Actor.findChar(pos) == null) {
+
+      Wraith w = new Wraith();
+      w.adjustStats(Dungeon.depth);
+      w.pos = pos;
+      w.state = w.HUNTING;
+      GameScene.add(w, SPAWN_DELAY);
+
+      w.sprite.alpha(0);
+      w.sprite.parent.add(new AlphaTweener(w.sprite, 1, 0.5f));
+
+      w.sprite.emitter().burst(ShadowParticle.CURSE, 5);
+
+      return w;
+    } else {
+      return null;
+    }
+  }
+
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+  static {
+    IMMUNITIES.add(Grim.class);
+    IMMUNITIES.add(Terror.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
 }

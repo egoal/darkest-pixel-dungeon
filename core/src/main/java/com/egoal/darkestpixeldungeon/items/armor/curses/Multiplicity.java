@@ -42,66 +42,69 @@ import java.util.ArrayList;
 
 public class Multiplicity extends Armor.Glyph {
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-		if (Random.Int(20) == 0){
-			ArrayList<Integer> spawnPoints = new ArrayList<>();
+    if (Random.Int(20) == 0) {
+      ArrayList<Integer> spawnPoints = new ArrayList<>();
 
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				int p = defender.pos + PathFinder.NEIGHBOURS8[i];
-				if (Actor.findChar( p ) == null && (Level.passable[p] || Level.avoid[p])) {
-					spawnPoints.add( p );
-				}
-			}
+      for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+        int p = defender.pos + PathFinder.NEIGHBOURS8[i];
+        if (Actor.findChar(p) == null && (Level.passable[p] || Level
+                .avoid[p])) {
+          spawnPoints.add(p);
+        }
+      }
 
-			if (spawnPoints.size() > 0) {
+      if (spawnPoints.size() > 0) {
 
-				Mob m = null;
-				if (Random.Int(2) == 0 && defender instanceof Hero){
-					m = new MirrorImage();
-					((MirrorImage)m).duplicate( (Hero)defender );
+        Mob m = null;
+        if (Random.Int(2) == 0 && defender instanceof Hero) {
+          m = new MirrorImage();
+          ((MirrorImage) m).duplicate((Hero) defender);
 
-				} else {
-					if (attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)){
-						m = Bestiary.mutable(Dungeon.depth % 5 == 0 ? Dungeon.depth - 1 : Dungeon.depth);
-					} else {
-						try {
-							m = (Mob)attacker.getClass().newInstance();
-							Bundle store = new Bundle();
-							attacker.storeInBundle(store);
-							m.restoreFromBundle(store);
-							m.HP = m.HT;
-						} catch (Exception e) {
-							DarkestPixelDungeon.reportException(e);
-							m = null;
-						}
-					}
+        } else {
+          if (attacker.properties().contains(Char.Property.BOSS) || attacker
+                  .properties().contains(Char.Property.MINIBOSS)) {
+            m = Bestiary.mutable(Dungeon.depth % 5 == 0 ? Dungeon.depth - 1 :
+                    Dungeon.depth);
+          } else {
+            try {
+              m = (Mob) attacker.getClass().newInstance();
+              Bundle store = new Bundle();
+              attacker.storeInBundle(store);
+              m.restoreFromBundle(store);
+              m.HP = m.HT;
+            } catch (Exception e) {
+              DarkestPixelDungeon.reportException(e);
+              m = null;
+            }
+          }
 
-				}
+        }
 
-				if (m != null) {
-					GameScene.add(m);
-					ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
-				}
+        if (m != null) {
+          GameScene.add(m);
+          ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
+        }
 
-			}
-		}
+      }
+    }
 
-		return damage;
-	}
+    return damage;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
 
-	@Override
-	public boolean curse() {
-		return true;
-	}
+  @Override
+  public boolean curse() {
+    return true;
+  }
 }

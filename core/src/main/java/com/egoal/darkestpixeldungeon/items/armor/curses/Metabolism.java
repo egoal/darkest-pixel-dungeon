@@ -30,47 +30,49 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Random;
 
-public class Metabolism extends Armor.Glyph{
+public class Metabolism extends Armor.Glyph {
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
-	
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+  private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing(0x000000);
 
-		if (Random.Int( 6 ) == 0) {
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-			//assumes using up 10% of starving, and healing of 1 hp per 10 turns;
-			int healing = Math.min((int)Hunger.STARVING/100, defender.HT - defender.HP);
+    if (Random.Int(6) == 0) {
 
-			if (healing > 0) {
-				
-				Hunger hunger = defender.buff( Hunger.class );
-				
-				if (hunger != null && !hunger.isStarving()) {
-					
-					hunger.reduceHunger( healing * -10 );
-					BuffIndicator.refreshHero();
-					
-					defender.HP += healing;
-					defender.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-					defender.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healing ) );
-				}
-			}
+      //assumes using up 10% of starving, and healing of 1 hp per 10 turns;
+      int healing = Math.min((int) Hunger.STARVING / 100, defender.HT - 
+              defender.HP);
 
-		}
-		
-		return damage;
-	}
+      if (healing > 0) {
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
-	}
+        Hunger hunger = defender.buff(Hunger.class);
 
-	@Override
-	public boolean curse() {
-		return true;
-	}
+        if (hunger != null && !hunger.isStarving()) {
+
+          hunger.reduceHunger(healing * -10);
+          BuffIndicator.refreshHero();
+
+          defender.HP += healing;
+          defender.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+          defender.sprite.showStatus(CharSprite.POSITIVE, Integer.toString
+                  (healing));
+        }
+      }
+
+    }
+
+    return damage;
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return BLACK;
+  }
+
+  @Override
+  public boolean curse() {
+    return true;
+  }
 }

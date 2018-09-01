@@ -27,33 +27,33 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
 public class MindVision extends FlavourBuff {
 
-	public static final float DURATION = 20f;
-	
-	public int distance = 2;
+  public static final float DURATION = 20f;
 
-	{
-		type = buffType.POSITIVE;
-	}
-	
-	@Override
-	public int icon() {
-		return BuffIndicator.MIND_VISION;
-	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
+  public int distance = 2;
 
-	@Override
-	public void detach() {
-		super.detach();
-		Dungeon.observe();
-		GameScene.updateFog();
-	}
+  {
+    type = buffType.POSITIVE;
+  }
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
+  @Override
+  public int icon() {
+    return BuffIndicator.MIND_VISION;
+  }
+
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
+
+  @Override
+  public void detach() {
+    super.detach();
+    Dungeon.observe();
+    GameScene.updateFog();
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dispTurns());
+  }
 }

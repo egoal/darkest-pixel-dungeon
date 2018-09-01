@@ -40,181 +40,188 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Thief extends Mob {
-	
-	public Item item;
-	
-	{
-		spriteClass = ThiefSprite.class;
-		
-		HP = HT = 20;
-		defenseSkill = 6;
-		
-		EXP = 5;
-		maxLvl = 10;
-		
-		loot = new MasterThievesArmband().identify();
-		lootChance = 0.01f;
 
-		FLEEING = new Fleeing();
+  public Item item;
 
-		properties.add(Property.DEMONIC);
-		addResistances(Damage.Element.POISON, 1.25f);
-		addResistances(Damage.Element.HOLY, .667f);
-	}
+  {
+    spriteClass = ThiefSprite.class;
 
-	private static final String ITEM = "item";
+    HP = HT = 20;
+    defenseSkill = 6;
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( ITEM, item );
-	}
+    EXP = 5;
+    maxLvl = 10;
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		item = (Item)bundle.get( ITEM );
-	}
+    loot = new MasterThievesArmband().identify();
+    lootChance = 0.01f;
 
-	@Override
-	public float speed() {
-		if (item != null) return (5*super.speed())/6;
-		else return super.speed();
-	}
+    FLEEING = new Fleeing();
 
-	@Override
-	protected float attackDelay() {
-		return 0.5f;
-	}
+    properties.add(Property.DEMONIC);
+    addResistances(Damage.Element.POISON, 1.25f);
+    addResistances(Damage.Element.HOLY, .667f);
+  }
 
-	@Override
-	public void die( Object cause ) {
+  private static final String ITEM = "item";
 
-		super.die( cause );
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(ITEM, item);
+  }
 
-		if (item != null) {
-			Dungeon.level.drop( item, pos ).sprite.drop();
-			//updates position
-			if (item instanceof Honeypot.ShatteredPot) ((Honeypot.ShatteredPot)item).setHolder( this );
-		}
-	}
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+    item = (Item) bundle.get(ITEM);
+  }
 
-	@Override
-	protected Item createLoot(){
-		if (!Dungeon.limitedDrops.armband.dropped()) {
-			Dungeon.limitedDrops.armband.drop();
-			return super.createLoot();
-		} else
-			return new Gold(Random.NormalIntRange(100, 250));
-	}
+  @Override
+  public float speed() {
+    if (item != null) return (5 * super.speed()) / 6;
+    else return super.speed();
+  }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
+  @Override
+  protected float attackDelay() {
+    return 0.5f;
+  }
 
-	@Override
-	public Damage giveDamage(Char target){
-		return new Damage(Random.NormalIntRange( 1, 10 ), this, target);
-	}
-	
-	@Override 
-	public Damage defendDamage(Damage dmg){
-		dmg.value	-=	Random.NormalIntRange(0, 3);
-		return dmg;
-	}
-	
-	@Override
-	public Damage attackProc(Damage dmg){
-		Char enemy	=	(Char)dmg.to;
-		if (item == null && enemy instanceof Hero&& steal( (Hero)enemy )) {
-			state = FLEEING;
-		}
+  @Override
+  public void die(Object cause) {
 
-		return dmg;
-	}
+    super.die(cause);
 
-	@Override
-	public Damage defenseProc(Damage damage) {
-		if (state == FLEEING) {
-			Dungeon.level.drop( new Gold(), pos ).sprite.drop();
-		}
+    if (item != null) {
+      Dungeon.level.drop(item, pos).sprite.drop();
+      //updates position
+      if (item instanceof Honeypot.ShatteredPot)
+        ((Honeypot.ShatteredPot) item).setHolder(this);
+    }
+  }
 
-		return super.defenseProc(damage);
-	}
+  @Override
+  protected Item createLoot() {
+    if (!Dungeon.limitedDrops.armband.dropped()) {
+      Dungeon.limitedDrops.armband.drop();
+      return super.createLoot();
+    } else
+      return new Gold(Random.NormalIntRange(100, 250));
+  }
 
-	protected boolean steal( Hero hero ) {
+  @Override
+  public int attackSkill(Char target) {
+    return 12;
+  }
 
-		Item item = hero.belongings.randomUnequipped();
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(1, 10), this, target);
+  }
 
-		if (item != null && !item.unique && item.level() < 1 ) {
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 3);
+    return dmg;
+  }
 
-			GLog.w( Messages.get(Thief.class, "stole", item.name()) );
-			Dungeon.quickslot.clearItem( item );
-			item.updateQuickslot();
+  @Override
+  public Damage attackProc(Damage dmg) {
+    Char enemy = (Char) dmg.to;
+    if (item == null && enemy instanceof Hero && steal((Hero) enemy)) {
+      state = FLEEING;
+    }
 
-			// process on the honey pot
-			if (item instanceof Honeypot){
-				this.item = ((Honeypot)item).shatter(this, this.pos);
-				item.detach( hero.belongings.backpack );
-			} else {
-				this.item = item.detach( hero.belongings.backpack );
-				if ( item instanceof Honeypot.ShatteredPot)
-					((Honeypot.ShatteredPot)item).setHolder(this);
-			}
+    return dmg;
+  }
 
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public Damage defenseProc(Damage damage) {
+    if (state == FLEEING) {
+      Dungeon.level.drop(new Gold(), pos).sprite.drop();
+    }
 
-	@Override
-	public String description() {
-		String desc = super.description();
+    return super.defenseProc(damage);
+  }
 
-		if (item != null) {
-			desc += Messages.get(this, "carries", item.name() );
-		}
+  protected boolean steal(Hero hero) {
 
-		return desc;
-	}
+    Item item = hero.belongings.randomUnequipped();
 
-	private class Fleeing extends Mob.Fleeing {
-		@Override
-		protected void nowhereToRun() {
-			if (buff( Terror.class ) == null && buff( Corruption.class ) == null) {
-				if (enemySeen) {
-					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
-					state = HUNTING;
-				} else {
+    if (item != null && !item.unique && item.level() < 1) {
 
-					int count = 32;
-					int newPos;
-					do {
-						newPos = Dungeon.level.randomRespawnCell();
-						if (count-- <= 0) {
-							break;
-						}
-					} while (newPos == -1 || Dungeon.visible[newPos] || Dungeon.level.distance(newPos, pos) < (count/3));
+      GLog.w(Messages.get(Thief.class, "stole", item.name()));
+      Dungeon.quickslot.clearItem(item);
+      item.updateQuickslot();
 
-					if (newPos != -1) {
+      // process on the honey pot
+      if (item instanceof Honeypot) {
+        this.item = ((Honeypot) item).shatter(this, this.pos);
+        item.detach(hero.belongings.backpack);
+      } else {
+        this.item = item.detach(hero.belongings.backpack);
+        if (item instanceof Honeypot.ShatteredPot)
+          ((Honeypot.ShatteredPot) item).setHolder(this);
+      }
 
-						if (Dungeon.visible[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
-						pos = newPos;
-						sprite.place( pos );
-						sprite.visible = Dungeon.visible[pos];
-						if (Dungeon.visible[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-					}
+  @Override
+  public String description() {
+    String desc = super.description();
 
-					if (item != null) GLog.n( Messages.get(Thief.class, "escapes", item.name()));
-					item = null;
-					state = WANDERING;
-				}
-			} else {
-				super.nowhereToRun();
-			}
-		}
-	}
+    if (item != null) {
+      desc += Messages.get(this, "carries", item.name());
+    }
+
+    return desc;
+  }
+
+  private class Fleeing extends Mob.Fleeing {
+    @Override
+    protected void nowhereToRun() {
+      if (buff(Terror.class) == null && buff(Corruption.class) == null) {
+        if (enemySeen) {
+          sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class,
+                  "rage"));
+          state = HUNTING;
+        } else {
+
+          int count = 32;
+          int newPos;
+          do {
+            newPos = Dungeon.level.randomRespawnCell();
+            if (count-- <= 0) {
+              break;
+            }
+          }
+          while (newPos == -1 || Dungeon.visible[newPos] || Dungeon.level
+                  .distance(newPos, pos) < (count / 3));
+
+          if (newPos != -1) {
+
+            if (Dungeon.visible[pos])
+              CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+            pos = newPos;
+            sprite.place(pos);
+            sprite.visible = Dungeon.visible[pos];
+            if (Dungeon.visible[pos])
+              CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+
+          }
+
+          if (item != null)
+            GLog.n(Messages.get(Thief.class, "escapes", item.name()));
+          item = null;
+          state = WANDERING;
+        }
+      } else {
+        super.nowhereToRun();
+      }
+    }
+  }
 }

@@ -24,17 +24,17 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Knuckles extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.KNUCKLEDUSTER;
+  {
+    image = ItemSpriteSheet.KNUCKLEDUSTER;
 
-		tier = 1;
-		DLY = 0.5f; //2x speed
-	}
+    tier = 1;
+    DLY = 0.5f; //2x speed
+  }
 
-	@Override
-	public int max(int lvl) {
-		return  3*(tier+1) +    //6 base, down from 10
-				lvl*tier;       //+1 per level, down from +2
-	}
+  @Override
+  public int max(int lvl) {
+    return 3 * (tier + 1) +    //6 base, down from 10
+            lvl * tier;       //+1 per level, down from +2
+  }
 
 }

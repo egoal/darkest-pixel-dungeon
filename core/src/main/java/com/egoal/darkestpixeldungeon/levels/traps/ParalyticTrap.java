@@ -26,17 +26,17 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
-public class ParalyticTrap extends Trap{
+public class ParalyticTrap extends Trap {
 
-	{
-		color = TrapSprite.YELLOW;
-		shape = TrapSprite.GRILL;
-	}
+  {
+    color = TrapSprite.YELLOW;
+    shape = TrapSprite.GRILL;
+  }
 
-	@Override
-	public void activate() {
+  @Override
+  public void activate() {
 
-		GameScene.add( Blob.seed( pos, 80 + 5 * Dungeon.depth, ParalyticGas.class ) );
+    GameScene.add(Blob.seed(pos, 80 + 5 * Dungeon.depth, ParalyticGas.class));
 
-	}
+  }
 }

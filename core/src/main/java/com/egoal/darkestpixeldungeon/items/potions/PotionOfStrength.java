@@ -28,25 +28,25 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 
 public class PotionOfStrength extends Potion {
 
-	{
-		initials = 10;
+  {
+    initials = 10;
 
-		bones = true;
-	}
-	
-	@Override
-	public void apply( Hero hero ) {
-		setKnown();
-		
-		hero.STR++;
-		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
-		GLog.p( Messages.get(this, "msg_2") );
-		
-		Badges.validateStrengthAttained();
-	}
+    bones = true;
+  }
 
-	@Override
-	public int price() {
-		return isKnown() ?(int)(50 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
+  @Override
+  public void apply(Hero hero) {
+    setKnown();
+
+    hero.STR++;
+    hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "msg_1"));
+    GLog.p(Messages.get(this, "msg_2"));
+
+    Badges.validateStrengthAttained();
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (50 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+  }
 }

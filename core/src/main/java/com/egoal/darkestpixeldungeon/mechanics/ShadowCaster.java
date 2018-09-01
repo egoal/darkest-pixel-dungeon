@@ -27,127 +27,141 @@ import com.watabou.utils.PathFinder;
 
 public final class ShadowCaster {
 
-	private static final int MAX_DISTANCE = 10;
+  private static final int MAX_DISTANCE = 10;
 
-	private static boolean[] falseArray;
-	
-	private static int[][] rounding;
-	static {
-		rounding = new int[MAX_DISTANCE+1][];
-		for (int i=1; i <= MAX_DISTANCE; i++) {
-			rounding[i] = new int[i+1];
-			for (int j=1; j <= i; j++) {
-				rounding[i][j] = (int)Math.min( j, Math.round( i * Math.cos( Math.asin( j / (i + 0.5) ))));
-			}
-		}
-	}
-	
-	public static void castShadow( int x, int y, boolean[] fieldOfView,
-		int viewDistance, int seeDistance){
+  private static boolean[] falseArray;
 
-		BArray.setFalse(fieldOfView);
+  private static int[][] rounding;
 
-		fieldOfView[y * Dungeon.level.width() + x] = true;
+  static {
+    rounding = new int[MAX_DISTANCE + 1][];
+    for (int i = 1; i <= MAX_DISTANCE; i++) {
+      rounding[i] = new int[i + 1];
+      for (int j = 1; j <= i; j++) {
+        rounding[i][j] = (int) Math.min(j, Math.round(i * Math.cos(Math.asin
+                (j / (i + 0.5)))));
+      }
+    }
+  }
 
-		boolean[] losBlocking = Level.losBlocking;
-		Obstacles obs = new Obstacles();
+  public static void castShadow(int x, int y, boolean[] fieldOfView,
+                                int viewDistance, int seeDistance) {
 
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, +1, +1, 0, 0 );
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, -1, +1, 0, 0 );
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, +1, -1, 0, 0 );
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, -1, -1, 0, 0 );
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, +1 );
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, +1 );
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, -1 );
-		scanSector( viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, -1 );
+    BArray.setFalse(fieldOfView);
 
-	}
+    fieldOfView[y * Dungeon.level.width() + x] = true;
 
-	//FIXME This is is the primary performance bottleneck for game logic, need to optimize or rewrite
-	private static void scanSector( int viewDistance, int seeDistance, boolean[] fieldOfView, boolean[] losBlocking, Obstacles obs, int cx, int cy, int m1, int m2, int m3, int m4 ) {
-		
-		obs.reset();
-		
-		for (int p=1; p <= seeDistance; p++) {
+    boolean[] losBlocking = Level.losBlocking;
+    Obstacles obs = new Obstacles();
 
-			float dq2 = 0.5f / p;
-			
-			int pp = rounding[seeDistance][p];
-			for (int q=0; q <= pp; q++) {
-				
-				int x = cx + q * m1 + p * m3;
-				int y = cy + p * m2 + q * m4;
-				
-				if (y >= 0 && y < Dungeon.level.height() && x >= 0 && x < Dungeon.level.width()) {
-					
-					float a0 = (float)q / p;
-					float a1 = a0 - dq2;
-					float a2 = a0 + dq2;
-					
-					int pos = y * Dungeon.level.width() + x;
-	
-					if (obs.isBlocked( a0 ) && obs.isBlocked( a1 ) && obs.isBlocked( a2 )) {
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, +1, +1, 0, 0);
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, -1, +1, 0, 0);
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, +1, -1, 0, 0);
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, -1, -1, 0, 0);
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, 0, 0, +1, +1);
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, 0, 0, -1, +1);
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, 0, 0, +1, -1);
+    scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x, 
+            y, 0, 0, -1, -1);
 
-						// Do nothing
-					} else {
-						if(p<=viewDistance || Level.lighted[pos]){
-							// in view or lighted
-							fieldOfView[pos]	=	true;
-						}
-					}
-					
-					if (losBlocking[pos]) {
-						obs.add( a1, a2 );
-					}
+  }
 
-				}
-			}
-			
-			obs.nextRow();
-		}
-	}
-	
-	private static final class Obstacles {
-		
-		private static int SIZE = (MAX_DISTANCE+1) * (MAX_DISTANCE+1) / 2;
-		private float[] a1 = new float[SIZE];
-		private float[] a2 = new float[SIZE];
-		
-		private int length;
-		private int limit;
-		
-		public void reset() {
-			length = 0;
-			limit = 0;
-		}
-		
-		public void add( float o1, float o2 ) {
-			
-			if (length > limit && o1 <= a2[length-1]) {
+  //FIXME This is is the primary performance bottleneck for game logic, need 
+  // to optimize or rewrite
+  private static void scanSector(int viewDistance, int seeDistance, boolean[]
+          fieldOfView, boolean[] losBlocking, Obstacles obs, int cx, int cy, 
+                                 int m1, int m2, int m3, int m4) {
 
-				// Merging several blocking cells
-				a2[length-1] = o2;
-				
-			} else {
-				
-				a1[length] = o1;
-				a2[length++] = o2;
-				
-			}
-			
-		}
-		
-		public boolean isBlocked( float a ) {
-			for (int i=0; i < limit; i++) {
-				if (a >= a1[i] && a <= a2[i]) {
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		public void nextRow() {
-			limit = length;
-		}
-	}
+    obs.reset();
+
+    for (int p = 1; p <= seeDistance; p++) {
+
+      float dq2 = 0.5f / p;
+
+      int pp = rounding[seeDistance][p];
+      for (int q = 0; q <= pp; q++) {
+
+        int x = cx + q * m1 + p * m3;
+        int y = cy + p * m2 + q * m4;
+
+        if (y >= 0 && y < Dungeon.level.height() && x >= 0 && x < Dungeon
+                .level.width()) {
+
+          float a0 = (float) q / p;
+          float a1 = a0 - dq2;
+          float a2 = a0 + dq2;
+
+          int pos = y * Dungeon.level.width() + x;
+
+          if (obs.isBlocked(a0) && obs.isBlocked(a1) && obs.isBlocked(a2)) {
+
+            // Do nothing
+          } else {
+            if (p <= viewDistance || Level.lighted[pos]) {
+              // in view or lighted
+              fieldOfView[pos] = true;
+            }
+          }
+
+          if (losBlocking[pos]) {
+            obs.add(a1, a2);
+          }
+
+        }
+      }
+
+      obs.nextRow();
+    }
+  }
+
+  private static final class Obstacles {
+
+    private static int SIZE = (MAX_DISTANCE + 1) * (MAX_DISTANCE + 1) / 2;
+    private float[] a1 = new float[SIZE];
+    private float[] a2 = new float[SIZE];
+
+    private int length;
+    private int limit;
+
+    public void reset() {
+      length = 0;
+      limit = 0;
+    }
+
+    public void add(float o1, float o2) {
+
+      if (length > limit && o1 <= a2[length - 1]) {
+
+        // Merging several blocking cells
+        a2[length - 1] = o2;
+
+      } else {
+
+        a1[length] = o1;
+        a2[length++] = o2;
+
+      }
+
+    }
+
+    public boolean isBlocked(float a) {
+      for (int i = 0; i < limit; i++) {
+        if (a >= a1[i] && a <= a2[i]) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    public void nextRow() {
+      limit = length;
+    }
+  }
 }

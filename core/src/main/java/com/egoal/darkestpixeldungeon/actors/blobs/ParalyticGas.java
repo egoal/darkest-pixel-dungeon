@@ -30,34 +30,34 @@ import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 
 public class ParalyticGas extends Blob {
-	
-	@Override
-	protected void evolve() {
-		super.evolve();
-		
-		Char ch;
-		int cell;
 
-		for (int i = area.left; i < area.right; i++) {
-			for (int j = area.top; j < area.bottom; j++) {
-				cell = i + j * Dungeon.level.width();
-				if (cur[cell] > 0 && (ch = Actor.findChar(cell)) != null) {
-					if (!ch.immunizedBuffs().contains(this.getClass()))
-						Buff.prolong(ch, Paralysis.class, Paralysis.duration(ch));
-				}
-			}
-		}
-	}
-	
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		
-		emitter.pour( Speck.factory( Speck.PARALYSIS ), 0.4f );
-	}
-	
-	@Override
-	public String tileDesc() {
-		return Messages.get(this, "desc");
-	}
+  @Override
+  protected void evolve() {
+    super.evolve();
+
+    Char ch;
+    int cell;
+
+    for (int i = area.left; i < area.right; i++) {
+      for (int j = area.top; j < area.bottom; j++) {
+        cell = i + j * Dungeon.level.width();
+        if (cur[cell] > 0 && (ch = Actor.findChar(cell)) != null) {
+          if (!ch.immunizedBuffs().contains(this.getClass()))
+            Buff.prolong(ch, Paralysis.class, Paralysis.duration(ch));
+        }
+      }
+    }
+  }
+
+  @Override
+  public void use(BlobEmitter emitter) {
+    super.use(emitter);
+
+    emitter.pour(Speck.factory(Speck.PARALYSIS), 0.4f);
+  }
+
+  @Override
+  public String tileDesc() {
+    return Messages.get(this, "desc");
+  }
 }

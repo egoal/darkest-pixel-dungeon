@@ -35,83 +35,85 @@ import java.util.HashSet;
 
 public class RotLasher extends Mob {
 
-	{
-		spriteClass = RotLasherSprite.class;
+  {
+    spriteClass = RotLasherSprite.class;
 
-		HP = HT = 40;
-		defenseSkill = 0;
+    HP = HT = 40;
+    defenseSkill = 0;
 
-		EXP = 1;
+    EXP = 1;
 
-		loot = Generator.Category.SEED;
-		lootChance = 1f;
+    loot = Generator.Category.SEED;
+    lootChance = 1f;
 
-		state = WANDERING = new Waiting();
+    state = WANDERING = new Waiting();
 
-		properties.add(Property.IMMOVABLE);
-	}
+    properties.add(Property.IMMOVABLE);
+  }
 
-	@Override
-	protected boolean act() {
-		if (enemy == null || !Dungeon.level.adjacent(pos, enemy.pos)) {
-			HP = Math.min(HT, HP + 3);
-		}
-		return super.act();
-	}
+  @Override
+  protected boolean act() {
+    if (enemy == null || !Dungeon.level.adjacent(pos, enemy.pos)) {
+      HP = Math.min(HT, HP + 3);
+    }
+    return super.act();
+  }
 
-	@Override
-	public int takeDamage(Damage dmg){
-		if(dmg.hasElement(Damage.Element.FIRE)){
-			destroy();
-			sprite.die();
-			
-			return HP;
-		} else {
-			return super.takeDamage(dmg);
-		}
-	}
+  @Override
+  public int takeDamage(Damage dmg) {
+    if (dmg.hasElement(Damage.Element.FIRE)) {
+      destroy();
+      sprite.die();
 
-	@Override
-	public Damage attackProc(Damage damage) {
-		Buff.affect((Char)damage.to, Cripple.class, 2f );
-		return super.attackProc(damage);
-	}
+      return HP;
+    } else {
+      return super.takeDamage(dmg);
+    }
+  }
 
-	@Override
-	protected boolean getCloser(int target) {
-		return true;
-	}
+  @Override
+  public Damage attackProc(Damage damage) {
+    Buff.affect((Char) damage.to, Cripple.class, 2f);
+    return super.attackProc(damage);
+  }
 
-	@Override
-	protected boolean getFurther(int target) {
-		return true;
-	}
+  @Override
+  protected boolean getCloser(int target) {
+    return true;
+  }
 
-	@Override
-	public Damage giveDamage(Char target) {
-		return new Damage(Random.NormalIntRange(8, 15 ), this, target);
-	}
+  @Override
+  protected boolean getFurther(int target) {
+    return true;
+  }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 15;
-	}
+  @Override
+  public Damage giveDamage(Char target) {
+    return new Damage(Random.NormalIntRange(8, 15), this, target);
+  }
 
-	@Override
-	public Damage defendDamage(Damage dmg) {
-		dmg.value	-=	Random.NormalIntRange(0, 8);
-		return dmg;
-	}
+  @Override
+  public int attackSkill(Char target) {
+    return 15;
+  }
 
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( ToxicGas.class );
-	}
+  @Override
+  public Damage defendDamage(Damage dmg) {
+    dmg.value -= Random.NormalIntRange(0, 8);
+    return dmg;
+  }
 
-	@Override
-	public HashSet<Class<?>> immunizedBuffs() {
-		return IMMUNITIES;
-	}
+  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
-	private class Waiting extends Mob.Wandering{}
+  static {
+    IMMUNITIES.add(ToxicGas.class);
+  }
+
+  @Override
+  public HashSet<Class<?>> immunizedBuffs() {
+    return IMMUNITIES;
+  }
+
+  private class Waiting extends Mob.Wandering {
+  }
 }

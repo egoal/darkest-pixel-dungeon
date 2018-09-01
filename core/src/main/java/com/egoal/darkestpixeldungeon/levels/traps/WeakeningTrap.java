@@ -30,24 +30,24 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
-public class WeakeningTrap extends Trap{
+public class WeakeningTrap extends Trap {
 
-	{
-		color = TrapSprite.GREEN;
-		shape = TrapSprite.WAVES;
-	}
+  {
+    color = TrapSprite.GREEN;
+    shape = TrapSprite.WAVES;
+  }
 
-	@Override
-	public void activate() {
-		if (Dungeon.visible[ pos ]){
-			CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
-		}
+  @Override
+  public void activate() {
+    if (Dungeon.visible[pos]) {
+      CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
+    }
 
-		Char ch = Actor.findChar( pos );
-		if (ch == Dungeon.hero){
-			Buff.prolong( ch, Weakness.class, Weakness.duration(ch)*2f);
-		} else if (ch != null) {
-			Buff.prolong( ch, Slow.class, Slow.duration(ch));
-		}
-	}
+    Char ch = Actor.findChar(pos);
+    if (ch == Dungeon.hero) {
+      Buff.prolong(ch, Weakness.class, Weakness.duration(ch) * 2f);
+    } else if (ch != null) {
+      Buff.prolong(ch, Slow.class, Slow.duration(ch));
+    }
+  }
 }

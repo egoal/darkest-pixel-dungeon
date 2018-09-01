@@ -25,20 +25,20 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Quarterstaff extends MeleeWeapon {
 
-	{
-		image = ItemSpriteSheet.QUARTERSTAFF;
+  {
+    image = ItemSpriteSheet.QUARTERSTAFF;
 
-		tier = 2;
-	}
+    tier = 2;
+  }
 
-	@Override
-	public int max(int lvl) {
-		return  4*(tier+1) +    //12 base, down from 15
-				lvl*(tier+1);   //scaling unchanged
-	}
+  @Override
+  public int max(int lvl) {
+    return 4 * (tier + 1) +    //12 base, down from 15
+            lvl * (tier + 1);   //scaling unchanged
+  }
 
-	@Override
-	public int defenseFactor(Hero hero) {
-		return 2;	//2 extra defence
-	}
+  @Override
+  public int defenseFactor(Hero hero) {
+    return 2;  //2 extra defence
+  }
 }

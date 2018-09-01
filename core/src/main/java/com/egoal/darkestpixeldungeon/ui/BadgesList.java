@@ -35,94 +35,94 @@ import java.util.ArrayList;
 
 public class BadgesList extends ScrollPane {
 
-	private ArrayList<ListItem> items = new ArrayList<ListItem>();
-	
-	public BadgesList( boolean global ) {
-		super( new Component() );
-		
-		for (Badges.Badge badge : Badges.filtered( global )) {
-			
-			if (badge.image == -1) {
-				continue;
-			}
-			
-			ListItem item = new ListItem( badge );
-			content.add( item );
-			items.add( item );
-		}
-	}
-	
-	@Override
-	protected void layout() {
-		
-		float pos = 0;
-		
-		int size = items.size();
-		for (int i=0; i < size; i++) {
-			items.get( i ).setRect( 0, pos, width, ListItem.HEIGHT );
-			pos += ListItem.HEIGHT;
-		}
-		
-		content.setSize( width, pos );
+  private ArrayList<ListItem> items = new ArrayList<ListItem>();
 
-		super.layout();
-	}
-	
-	@Override
-	public void onClick( float x, float y ) {
-		int size = items.size();
-		for (int i=0; i < size; i++) {
-			if (items.get( i ).onClick( x, y )) {
-				break;
-			}
-		}
-	}
+  public BadgesList(boolean global) {
+    super(new Component());
 
-	private class ListItem extends Component {
-		
-		private static final float HEIGHT	= 20;
-		
-		private Badges.Badge badge;
-		
-		private Image icon;
-		private RenderedText label;
-		
-		public ListItem( Badges.Badge badge ) {
-			super();
-			
-			this.badge = badge;
-			icon.copy( BadgeBanner.image( badge.image ));
-			label.text( badge.desc() );
-		}
-		
-		@Override
-		protected void createChildren() {
-			icon = new Image();
-			add( icon );
-			
-			label = PixelScene.renderText( 6 );
-			add( label );
-		}
-		
-		@Override
-		protected void layout() {
-			icon.x = x;
-			icon.y = y + (height - icon.height) / 2;
-			PixelScene.align(icon);
-			
-			label.x = icon.x + icon.width + 2;
-			label.y = y + (height - label.baseLine()) / 2;
-			PixelScene.align(label);
-		}
-		
-		public boolean onClick( float x, float y ) {
-			if (inside( x, y )) {
-				Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-				Game.scene().add( new WndBadge( badge ) );
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
+    for (Badges.Badge badge : Badges.filtered(global)) {
+
+      if (badge.image == -1) {
+        continue;
+      }
+
+      ListItem item = new ListItem(badge);
+      content.add(item);
+      items.add(item);
+    }
+  }
+
+  @Override
+  protected void layout() {
+
+    float pos = 0;
+
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      items.get(i).setRect(0, pos, width, ListItem.HEIGHT);
+      pos += ListItem.HEIGHT;
+    }
+
+    content.setSize(width, pos);
+
+    super.layout();
+  }
+
+  @Override
+  public void onClick(float x, float y) {
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      if (items.get(i).onClick(x, y)) {
+        break;
+      }
+    }
+  }
+
+  private class ListItem extends Component {
+
+    private static final float HEIGHT = 20;
+
+    private Badges.Badge badge;
+
+    private Image icon;
+    private RenderedText label;
+
+    public ListItem(Badges.Badge badge) {
+      super();
+
+      this.badge = badge;
+      icon.copy(BadgeBanner.image(badge.image));
+      label.text(badge.desc());
+    }
+
+    @Override
+    protected void createChildren() {
+      icon = new Image();
+      add(icon);
+
+      label = PixelScene.renderText(6);
+      add(label);
+    }
+
+    @Override
+    protected void layout() {
+      icon.x = x;
+      icon.y = y + (height - icon.height) / 2;
+      PixelScene.align(icon);
+
+      label.x = icon.x + icon.width + 2;
+      label.y = y + (height - label.baseLine()) / 2;
+      PixelScene.align(label);
+    }
+
+    public boolean onClick(float x, float y) {
+      if (inside(x, y)) {
+        Sample.INSTANCE.play(Assets.SND_CLICK, 0.7f, 0.7f, 1.2f);
+        Game.scene().add(new WndBadge(badge));
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }

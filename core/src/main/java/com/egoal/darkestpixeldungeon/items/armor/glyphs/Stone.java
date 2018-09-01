@@ -25,24 +25,24 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 
-public class Stone extends Armor.Glyph{
+public class Stone extends Armor.Glyph {
 
-	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x222222 );
+  private static ItemSprite.Glowing GREY = new ItemSprite.Glowing(0x222222);
 
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		//no proc effect, see armor.DrMin
-		return damage;
-	}
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    //no proc effect, see armor.DrMin
+    return damage;
+  }
 
-	@Override
-	public float tierSTRAdjust() {
-		return 1.5f;
-	}
+  @Override
+  public float tierSTRAdjust() {
+    return 1.5f;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return GREY;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return GREY;
+  }
 
 }

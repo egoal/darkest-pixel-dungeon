@@ -40,178 +40,186 @@ import java.util.ArrayList;
 
 public class WndCatalogs extends WndTabbed {
 
-	private static final int WIDTH    = 112;
-	private static final int HEIGHT    = 141;
+  private static final int WIDTH = 112;
+  private static final int HEIGHT = 141;
 
-	private static final int ITEM_HEIGHT	= 17;
+  private static final int ITEM_HEIGHT = 17;
 
-	private RedButton btnJournal;
-	private RedButton btnTitle;
-	private ScrollPane list;
-	
-	private ArrayList<ListItem> items = new ArrayList<>();
-	
-	private static boolean showPotions = true;
-	
-	public WndCatalogs() {
-		
-		super();
+  private RedButton btnJournal;
+  private RedButton btnTitle;
+  private ScrollPane list;
 
-		resize( WIDTH, HEIGHT );
+  private ArrayList<ListItem> items = new ArrayList<>();
 
-		btnJournal = new RedButton( Messages.get(WndJournal.class, "title"), 9 ){
-			@Override
-			protected void onClick() {
-				hide();
-				GameScene.show(new WndJournal());
-			}
-		};
-		btnJournal.setRect(0, 0, WIDTH/2f - 1, btnJournal.reqHeight());
-		PixelScene.align( btnJournal );
-		add( btnJournal );
+  private static boolean showPotions = true;
 
-		//does nothing, we're already in the catalog
-		btnTitle = new RedButton( Messages.get(this, "title"), 9 );
-		btnTitle.textColor( Window.TITLE_COLOR );
-		btnTitle.setRect(WIDTH/2f+1, 0, WIDTH/2f - 1, btnTitle.reqHeight());
-		PixelScene.align(btnTitle);
-		add( btnTitle );
-		
-		list = new ScrollPane( new Component() ) {
-			@Override
-			public void onClick( float x, float y ) {
-				int size = items.size();
-				for (int i=0; i < size; i++) {
-					if (items.get( i ).onClick( x, y )) {
-						break;
-					}
-				}
-			}
-		};
-		add( list );
-		list.setRect( 0, btnTitle.height() + 1, width, height - btnTitle.height() - 1 );
+  public WndCatalogs() {
 
-		boolean showPotions = WndCatalogs.showPotions;
-		Tab[] tabs = {
-			new LabeledTab( Messages.get(this, "potions") ) {
-				protected void select( boolean value ) {
-					super.select( value );
-					WndCatalogs.showPotions = value;
-					updateList();
-				};
-			},
-			new LabeledTab( Messages.get(this, "scrolls") ) {
-				protected void select( boolean value ) {
-					super.select( value );
-					WndCatalogs.showPotions = !value;
-					updateList();
-				};
-			}
-		};
-		for (Tab tab : tabs) {
-			add( tab );
-		}
+    super();
 
-		layoutTabs();
-		
-		select( showPotions ? 0 : 1 );
-	}
-	
-	private void updateList() {
+    resize(WIDTH, HEIGHT);
 
-		items.clear();
-		
-		Component content = list.content();
-		content.clear();
-		list.scrollTo( 0, 0 );
-		
-		float pos = 0;
-		for (Class<? extends Item> itemClass : showPotions ? Potion.getKnown() : Scroll.getKnown()) {
-			ListItem item = new ListItem( itemClass );
-			item.setRect( 0, pos, width, ITEM_HEIGHT );
-			content.add( item );
-			items.add( item );
-			
-			pos += item.height();
-		}
-		
-		for (Class<? extends Item> itemClass : showPotions ? Potion.getUnknown() : Scroll.getUnknown()) {
-			ListItem item = new ListItem( itemClass );
-			item.setRect( 0, pos, width, ITEM_HEIGHT );
-			content.add( item );
-			items.add( item );
-			
-			pos += item.height();
-		}
+    btnJournal = new RedButton(Messages.get(WndJournal.class, "title"), 9) {
+      @Override
+      protected void onClick() {
+        hide();
+        GameScene.show(new WndJournal());
+      }
+    };
+    btnJournal.setRect(0, 0, WIDTH / 2f - 1, btnJournal.reqHeight());
+    PixelScene.align(btnJournal);
+    add(btnJournal);
 
-		content.setSize( width, pos );
-		list.setSize( list.width(), list.height() );
-	}
-	
-	private static class ListItem extends Component {
-		
-		private Item item;
-		private boolean identified;
-		
-		private ItemSprite sprite;
-		private RenderedTextMultiline label;
-		private ColorBlock line;
-		
-		public ListItem( Class<? extends Item> cl ) {
-			super();
-			
-			try {
-				item = cl.newInstance();
-				if (identified = item.isIdentified()) {
-					sprite.view( item.image(), null );
-					label.text( Messages.titleCase(item.name()) );
-				} else {
-					sprite.view( ItemSpriteSheet.SOMETHING, null );
-					label.text( Messages.titleCase(item.trueName()) );
-					label.hardlight( 0xCCCCCC );
-				}
-			} catch (Exception e) {
-				DarkestPixelDungeon.reportException(e);
-			}
-		}
-		
-		@Override
-		protected void createChildren() {
-			sprite = new ItemSprite();
-			add( sprite );
+    //does nothing, we're already in the catalog
+    btnTitle = new RedButton(Messages.get(this, "title"), 9);
+    btnTitle.textColor(Window.TITLE_COLOR);
+    btnTitle.setRect(WIDTH / 2f + 1, 0, WIDTH / 2f - 1, btnTitle.reqHeight());
+    PixelScene.align(btnTitle);
+    add(btnTitle);
 
-			label = PixelScene.renderMultiline( 7 );
-			add( label );
+    list = new ScrollPane(new Component()) {
+      @Override
+      public void onClick(float x, float y) {
+        int size = items.size();
+        for (int i = 0; i < size; i++) {
+          if (items.get(i).onClick(x, y)) {
+            break;
+          }
+        }
+      }
+    };
+    add(list);
+    list.setRect(0, btnTitle.height() + 1, width, height - btnTitle.height() 
+            - 1);
 
-			line = new ColorBlock( 1, 1, 0xFF222222);
-			add(line);
-		}
-		
-		@Override
-		protected void layout() {
-			sprite.y = y + 1 + (height - 1 - sprite.height) / 2f;
-			PixelScene.align(sprite);
+    boolean showPotions = WndCatalogs.showPotions;
+    Tab[] tabs = {
+            new LabeledTab(Messages.get(this, "potions")) {
+              protected void select(boolean value) {
+                super.select(value);
+                WndCatalogs.showPotions = value;
+                updateList();
+              }
 
-			line.size(width, 1);
-			line.x = 0;
-			line.y = y;
+              ;
+            },
+            new LabeledTab(Messages.get(this, "scrolls")) {
+              protected void select(boolean value) {
+                super.select(value);
+                WndCatalogs.showPotions = !value;
+                updateList();
+              }
 
-			label.maxWidth((int)(width - sprite.width - 1));
-			label.setPos(sprite.x + sprite.width + 1,  y + 1 + (height - 1 - label.height()) / 2f);
-			PixelScene.align(label);
-		}
-		
-		public boolean onClick( float x, float y ) {
-			if (inside( x, y )) {
-				if (identified)
-					GameScene.show( new WndInfoItem( item ) );
-				else
-					GameScene.show( new WndTitledMessage( new ItemSprite(ItemSpriteSheet.SOMETHING, null),
-							Messages.titleCase(item.trueName()), item.desc() ));
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
+              ;
+            }
+    };
+    for (Tab tab : tabs) {
+      add(tab);
+    }
+
+    layoutTabs();
+
+    select(showPotions ? 0 : 1);
+  }
+
+  private void updateList() {
+
+    items.clear();
+
+    Component content = list.content();
+    content.clear();
+    list.scrollTo(0, 0);
+
+    float pos = 0;
+    for (Class<? extends Item> itemClass : showPotions ? Potion.getKnown() : 
+            Scroll.getKnown()) {
+      ListItem item = new ListItem(itemClass);
+      item.setRect(0, pos, width, ITEM_HEIGHT);
+      content.add(item);
+      items.add(item);
+
+      pos += item.height();
+    }
+
+    for (Class<? extends Item> itemClass : showPotions ? Potion.getUnknown() 
+            : Scroll.getUnknown()) {
+      ListItem item = new ListItem(itemClass);
+      item.setRect(0, pos, width, ITEM_HEIGHT);
+      content.add(item);
+      items.add(item);
+
+      pos += item.height();
+    }
+
+    content.setSize(width, pos);
+    list.setSize(list.width(), list.height());
+  }
+
+  private static class ListItem extends Component {
+
+    private Item item;
+    private boolean identified;
+
+    private ItemSprite sprite;
+    private RenderedTextMultiline label;
+    private ColorBlock line;
+
+    public ListItem(Class<? extends Item> cl) {
+      super();
+
+      try {
+        item = cl.newInstance();
+        if (identified = item.isIdentified()) {
+          sprite.view(item.image(), null);
+          label.text(Messages.titleCase(item.name()));
+        } else {
+          sprite.view(ItemSpriteSheet.SOMETHING, null);
+          label.text(Messages.titleCase(item.trueName()));
+          label.hardlight(0xCCCCCC);
+        }
+      } catch (Exception e) {
+        DarkestPixelDungeon.reportException(e);
+      }
+    }
+
+    @Override
+    protected void createChildren() {
+      sprite = new ItemSprite();
+      add(sprite);
+
+      label = PixelScene.renderMultiline(7);
+      add(label);
+
+      line = new ColorBlock(1, 1, 0xFF222222);
+      add(line);
+    }
+
+    @Override
+    protected void layout() {
+      sprite.y = y + 1 + (height - 1 - sprite.height) / 2f;
+      PixelScene.align(sprite);
+
+      line.size(width, 1);
+      line.x = 0;
+      line.y = y;
+
+      label.maxWidth((int) (width - sprite.width - 1));
+      label.setPos(sprite.x + sprite.width + 1, y + 1 + (height - 1 - label
+              .height()) / 2f);
+      PixelScene.align(label);
+    }
+
+    public boolean onClick(float x, float y) {
+      if (inside(x, y)) {
+        if (identified)
+          GameScene.show(new WndInfoItem(item));
+        else
+          GameScene.show(new WndTitledMessage(new ItemSprite(ItemSpriteSheet.SOMETHING, null),
+                  Messages.titleCase(item.trueName()), item.desc()));
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }

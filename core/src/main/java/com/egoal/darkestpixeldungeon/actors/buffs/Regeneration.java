@@ -25,39 +25,40 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.Dungeon;
 
 public class Regeneration extends Buff {
-	
-	private static final float REGENERATION_DELAY = 8.7f;
-	
-	@Override
-	public boolean act() {
-		if (target.isAlive()) {
 
-			if (target.HP < target.HT && !((Hero)target).isStarving()) {
-				LockedFloor lock = target.buff(LockedFloor.class);
-				if (target.HP > 0 && (lock == null || lock.regenOn())) {
-					target.HP += 1;
-					if (target.HP == target.HT) {
-						((Hero) target).resting = false;
-					}
-				}
-			}
+  private static final float REGENERATION_DELAY = 8.7f;
 
-			ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
+  @Override
+  public boolean act() {
+    if (target.isAlive()) {
 
-			if (regenBuff != null)
-				if (regenBuff.isCursed())
-					spend( REGENERATION_DELAY * 1.5f );
-				else
-					spend( REGENERATION_DELAY - regenBuff.itemLevel()*0.9f );
-			else
-				spend( REGENERATION_DELAY );
-			
-		} else {
-			
-			diactivate();
-			
-		}
-		
-		return true;
-	}
+      if (target.HP < target.HT && !((Hero) target).isStarving()) {
+        LockedFloor lock = target.buff(LockedFloor.class);
+        if (target.HP > 0 && (lock == null || lock.regenOn())) {
+          target.HP += 1;
+          if (target.HP == target.HT) {
+            ((Hero) target).resting = false;
+          }
+        }
+      }
+
+      ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff
+              (ChaliceOfBlood.chaliceRegen.class);
+
+      if (regenBuff != null)
+        if (regenBuff.isCursed())
+          spend(REGENERATION_DELAY * 1.5f);
+        else
+          spend(REGENERATION_DELAY - regenBuff.itemLevel() * 0.9f);
+      else
+        spend(REGENERATION_DELAY);
+
+    } else {
+
+      diactivate();
+
+    }
+
+    return true;
+  }
 }

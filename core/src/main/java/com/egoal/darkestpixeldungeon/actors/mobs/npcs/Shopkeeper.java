@@ -35,69 +35,70 @@ import com.egoal.darkestpixeldungeon.sprites.ShopkeeperSprite;
 
 public class Shopkeeper extends NPC {
 
-	{
-		spriteClass = ShopkeeperSprite.class;
+  {
+    spriteClass = ShopkeeperSprite.class;
 
-		properties.add(Property.IMMOVABLE);
-	}
-	
-	@Override
-	protected boolean act() {
+    properties.add(Property.IMMOVABLE);
+  }
 
-		throwItem();
-		
-		sprite.turnTo( pos, Dungeon.hero.pos );
-		spend( TICK );
-		return true;
-	}
-	
-	@Override
-	public int takeDamage(Damage dmg){
-		flee();
-		return 0;
-	}
-	
-	@Override
-	public void add( Buff buff ) {
-		flee();
-	}
-	
-	public void flee() {
-		for (Heap heap: Dungeon.level.heaps.values()) {
-			if (heap.type == Heap.Type.FOR_SALE) {
-				CellEmitter.get( heap.pos ).burst( ElmoParticle.FACTORY, 4 );
-				heap.destroy();
-			}
-		}
-		
-		destroy();
-		
-		sprite.killAndErase();
-		CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
-	}
-	
-	@Override
-	public boolean reset() {
-		return true;
-	}
-	
-	public static WndBag sell() {
-		return GameScene.selectItem( itemSelector, WndBag.Mode.FOR_SALE, Messages.get(Shopkeeper.class, "sell"));
-	}
-	
-	private static WndBag.Listener itemSelector = new WndBag.Listener() {
-		@Override
-		public void onSelect( Item item ) {
-			if (item != null) {
-				WndBag parentWnd = sell();
-				GameScene.show( new WndTradeItem( item, parentWnd ) );
-			}
-		}
-	};
+  @Override
+  protected boolean act() {
 
-	@Override
-	public boolean interact() {
-		sell();
-		return false;
-	}
+    throwItem();
+
+    sprite.turnTo(pos, Dungeon.hero.pos);
+    spend(TICK);
+    return true;
+  }
+
+  @Override
+  public int takeDamage(Damage dmg) {
+    flee();
+    return 0;
+  }
+
+  @Override
+  public void add(Buff buff) {
+    flee();
+  }
+
+  public void flee() {
+    for (Heap heap : Dungeon.level.heaps.values()) {
+      if (heap.type == Heap.Type.FOR_SALE) {
+        CellEmitter.get(heap.pos).burst(ElmoParticle.FACTORY, 4);
+        heap.destroy();
+      }
+    }
+
+    destroy();
+
+    sprite.killAndErase();
+    CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
+  }
+
+  @Override
+  public boolean reset() {
+    return true;
+  }
+
+  public static WndBag sell() {
+    return GameScene.selectItem(itemSelector, WndBag.Mode.FOR_SALE, Messages
+            .get(Shopkeeper.class, "sell"));
+  }
+
+  private static WndBag.Listener itemSelector = new WndBag.Listener() {
+    @Override
+    public void onSelect(Item item) {
+      if (item != null) {
+        WndBag parentWnd = sell();
+        GameScene.show(new WndTradeItem(item, parentWnd));
+      }
+    }
+  };
+
+  @Override
+  public boolean interact() {
+    sell();
+    return false;
+  }
 }

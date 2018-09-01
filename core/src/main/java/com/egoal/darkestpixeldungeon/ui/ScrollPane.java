@@ -31,139 +31,140 @@ import com.watabou.utils.PointF;
 
 public class ScrollPane extends Component {
 
-	protected static final int THUMB_COLOR		= 0xFF7b8073;
-	protected static final float THUMB_ALPHA	= 0.5f;
+  protected static final int THUMB_COLOR = 0xFF7b8073;
+  protected static final float THUMB_ALPHA = 0.5f;
 
-	protected TouchController controller;
-	protected Component content;
-	protected ColorBlock thumb;
+  protected TouchController controller;
+  protected Component content;
+  protected ColorBlock thumb;
 
-	protected float minX;
-	protected float minY;
-	protected float maxX;
-	protected float maxY;
+  protected float minX;
+  protected float minY;
+  protected float maxX;
+  protected float maxY;
 
-	public ScrollPane( Component content ) {
-		super();
+  public ScrollPane(Component content) {
+    super();
 
-		this.content = content;
-		addToBack( content );
+    this.content = content;
+    addToBack(content);
 
-		width = content.width();
-		height = content.height();
+    width = content.width();
+    height = content.height();
 
-		content.camera = new Camera( 0, 0, 1, 1, PixelScene.defaultZoom );
-		Camera.add( content.camera );
-	}
+    content.camera = new Camera(0, 0, 1, 1, PixelScene.defaultZoom);
+    Camera.add(content.camera);
+  }
 
-	@Override
-	public void destroy() {
-		super.destroy();
-		Camera.remove( content.camera );
-	}
+  @Override
+  public void destroy() {
+    super.destroy();
+    Camera.remove(content.camera);
+  }
 
-	public void scrollTo( float x, float y ) {
-		content.camera.scroll.set( x, y );
-	}
+  public void scrollTo(float x, float y) {
+    content.camera.scroll.set(x, y);
+  }
 
-	@Override
-	protected void createChildren() {
-		controller = new TouchController();
-		add( controller );
+  @Override
+  protected void createChildren() {
+    controller = new TouchController();
+    add(controller);
 
-		thumb = new ColorBlock( 1, 1, THUMB_COLOR );
-		thumb.am = THUMB_ALPHA;
-		add( thumb );
-	}
+    thumb = new ColorBlock(1, 1, THUMB_COLOR);
+    thumb.am = THUMB_ALPHA;
+    add(thumb);
+  }
 
-	@Override
-	protected void layout() {
+  @Override
+  protected void layout() {
 
-		content.setPos( 0, 0 );
-		controller.x = x;
-		controller.y = y;
-		controller.width = width;
-		controller.height = height;
+    content.setPos(0, 0);
+    controller.x = x;
+    controller.y = y;
+    controller.width = width;
+    controller.height = height;
 
-		Point p = camera().cameraToScreen( x, y );
-		Camera cs = content.camera;
-		cs.x = p.x;
-		cs.y = p.y;
-		cs.resize( (int)width, (int)height );
+    Point p = camera().cameraToScreen(x, y);
+    Camera cs = content.camera;
+    cs.x = p.x;
+    cs.y = p.y;
+    cs.resize((int) width, (int) height);
 
-		thumb.visible = height < content.height();
-		if (thumb.visible) {
-			thumb.scale.set( 2, height * height / content.height() );
-			thumb.x = right() - thumb.width();
-			thumb.y = y;
-		}
-	}
+    thumb.visible = height < content.height();
+    if (thumb.visible) {
+      thumb.scale.set(2, height * height / content.height());
+      thumb.x = right() - thumb.width();
+      thumb.y = y;
+    }
+  }
 
-	public Component content() {
-		return content;
-	}
+  public Component content() {
+    return content;
+  }
 
-	public void onClick( float x, float y ) {
-	}
+  public void onClick(float x, float y) {
+  }
 
-	public class TouchController extends TouchArea {
+  public class TouchController extends TouchArea {
 
-		private float dragThreshold;
+    private float dragThreshold;
 
-		public TouchController() {
-			super( 0, 0, 0, 0 );
-			dragThreshold = PixelScene.defaultZoom * 8;
-		}
+    public TouchController() {
+      super(0, 0, 0, 0);
+      dragThreshold = PixelScene.defaultZoom * 8;
+    }
 
-		@Override
-		protected void onTouchUp( Touch touch ) {
-			if (dragging) {
+    @Override
+    protected void onTouchUp(Touch touch) {
+      if (dragging) {
 
-				dragging = false;
-				thumb.am = THUMB_ALPHA;
+        dragging = false;
+        thumb.am = THUMB_ALPHA;
 
-			} else {
+      } else {
 
-				PointF p = content.camera.screenToCamera( (int)touch.current.x, (int)touch.current.y );
-				ScrollPane.this.onClick( p.x, p.y );
+        PointF p = content.camera.screenToCamera((int) touch.current.x, (int)
+                touch.current.y);
+        ScrollPane.this.onClick(p.x, p.y);
 
-			}
-		}
+      }
+    }
 
-		private boolean dragging = false;
-		private PointF lastPos = new PointF();
+    private boolean dragging = false;
+    private PointF lastPos = new PointF();
 
-		@Override
-		protected void onDrag( Touch t ) {
-			if (dragging) {
+    @Override
+    protected void onDrag(Touch t) {
+      if (dragging) {
 
-				Camera c = content.camera;
+        Camera c = content.camera;
 
-				c.scroll.offset( PointF.diff( lastPos, t.current ).invScale( c.zoom ) );
-				if (c.scroll.x + width > content.width()) {
-					c.scroll.x = content.width() - width;
-				}
-				if (c.scroll.x < 0) {
-					c.scroll.x = 0;
-				}
-				if (c.scroll.y + height > content.height()) {
-					c.scroll.y = content.height() - height;
-				}
-				if (c.scroll.y < 0) {
-					c.scroll.y = 0;
-				}
+        c.scroll.offset(PointF.diff(lastPos, t.current).invScale(c.zoom));
+        if (c.scroll.x + width > content.width()) {
+          c.scroll.x = content.width() - width;
+        }
+        if (c.scroll.x < 0) {
+          c.scroll.x = 0;
+        }
+        if (c.scroll.y + height > content.height()) {
+          c.scroll.y = content.height() - height;
+        }
+        if (c.scroll.y < 0) {
+          c.scroll.y = 0;
+        }
 
-				thumb.y = y + height * c.scroll.y / content.height();
+        thumb.y = y + height * c.scroll.y / content.height();
 
-				lastPos.set( t.current );
+        lastPos.set(t.current);
 
-			} else if (PointF.distance( t.current, t.start ) > dragThreshold) {
+      } else if (PointF.distance(t.current, t.start) > dragThreshold) {
 
-				dragging = true;
-				lastPos.set( t.current );
-				thumb.am = 1;
+        dragging = true;
+        lastPos.set(t.current);
+        thumb.am = 1;
 
-			}
-		}
-	}
+      }
+    }
+  }
 }

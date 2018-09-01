@@ -30,51 +30,51 @@ import java.util.ArrayList;
 
 public class MerchantsBeacon extends Item {
 
-	private static final String AC_USE = "USE";
+  private static final String AC_USE = "USE";
 
-	{
-		image = ItemSpriteSheet.BEACON;
+  {
+    image = ItemSpriteSheet.BEACON;
 
-		stackable = true;
+    stackable = true;
 
-		defaultAction = AC_USE;
+    defaultAction = AC_USE;
 
-		bones = true;
-	}
+    bones = true;
+  }
 
-	@Override
-	public ArrayList<String> actions(Hero hero) {
-		ArrayList<String> actions = super.actions(hero);
-		actions.add(AC_USE);
-		return actions;
-	}
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    ArrayList<String> actions = super.actions(hero);
+    actions.add(AC_USE);
+    return actions;
+  }
 
-	@Override
-	public void execute(Hero hero, String action) {
+  @Override
+  public void execute(Hero hero, String action) {
 
-		super.execute(hero, action);
+    super.execute(hero, action);
 
-		if (action.equals(AC_USE)) {
-			detach( hero.belongings.backpack );
-			Shopkeeper.sell();
-			Sample.INSTANCE.play( Assets.SND_BEACON );
-		}
+    if (action.equals(AC_USE)) {
+      detach(hero.belongings.backpack);
+      Shopkeeper.sell();
+      Sample.INSTANCE.play(Assets.SND_BEACON);
+    }
 
-	}
+  }
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
 
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
 
-	@Override
-	public int price() {
-		return 5 * quantity;
-	}
+  @Override
+  public int price() {
+    return 5 * quantity;
+  }
 
 }

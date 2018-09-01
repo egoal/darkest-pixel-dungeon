@@ -41,37 +41,37 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 
 public class Dreamfoil extends Plant {
 
-	{
-		image = 10;
-	}
+  {
+    image = 10;
+  }
 
-	@Override
-	public void activate() {
-		Char ch = Actor.findChar(pos);
+  @Override
+  public void activate() {
+    Char ch = Actor.findChar(pos);
 
-		if (ch != null) {
-			if (ch instanceof Mob)
-				Buff.affect(ch, MagicalSleep.class);
-			else if (ch instanceof Hero){
-				GLog.i( Messages.get(this, "refreshed") );
-				Buff.detach( ch, Poison.class );
-				Buff.detach( ch, Cripple.class );
-				Buff.detach( ch, Weakness.class );
-				Buff.detach( ch, Bleeding.class );
-				Buff.detach( ch, Drowsy.class );
-				Buff.detach( ch, Slow.class );
-				Buff.detach( ch, Vertigo.class);
-				Buff.detach(ch, Vulnerable.class);
-			}
-		}
-	}
+    if (ch != null) {
+      if (ch instanceof Mob)
+        Buff.affect(ch, MagicalSleep.class);
+      else if (ch instanceof Hero) {
+        GLog.i(Messages.get(this, "refreshed"));
+        Buff.detach(ch, Poison.class);
+        Buff.detach(ch, Cripple.class);
+        Buff.detach(ch, Weakness.class);
+        Buff.detach(ch, Bleeding.class);
+        Buff.detach(ch, Drowsy.class);
+        Buff.detach(ch, Slow.class);
+        Buff.detach(ch, Vertigo.class);
+        Buff.detach(ch, Vulnerable.class);
+      }
+    }
+  }
 
-	public static class Seed extends Plant.Seed {
-		{
-			image = ItemSpriteSheet.SEED_DREAMFOIL;
+  public static class Seed extends Plant.Seed {
+    {
+      image = ItemSpriteSheet.SEED_DREAMFOIL;
 
-			plantClass = Dreamfoil.class;
-			alchemyClass = PotionOfPurity.class;
-		}
-	}
+      plantClass = Dreamfoil.class;
+      alchemyClass = PotionOfPurity.class;
+    }
+  }
 }

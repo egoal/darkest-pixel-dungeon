@@ -35,72 +35,72 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
-	{
-		initials = 8;
-		mode = WndBag.Mode.UNIDED_OR_CURSED;
-	}
+  {
+    initials = 8;
+    mode = WndBag.Mode.UNIDED_OR_CURSED;
+  }
 
-	@Override
-	protected void onItemSelected(Item item) {
-		new Flare( 6, 32 ).show( curUser.sprite, 2f ) ;
+  @Override
+  protected void onItemSelected(Item item) {
+    new Flare(6, 32).show(curUser.sprite, 2f);
 
-		boolean procced = uncurse( curUser, item );
+    boolean procced = uncurse(curUser, item);
 
-		Weakness.detach( curUser, Weakness.class );
+    Weakness.detach(curUser, Weakness.class);
 
-		if (procced) {
-			GLog.p( Messages.get(this, "cleansed") );
-		} else {
-			GLog.i( Messages.get(this, "not_cleansed") );
-		}
-	}
+    if (procced) {
+      GLog.p(Messages.get(this, "cleansed"));
+    } else {
+      GLog.i(Messages.get(this, "not_cleansed"));
+    }
+  }
 
-	public static boolean uncurse(Hero hero,Item... items ) {
-		
-		boolean procced = false;
-		for (Item item : items) {
-			if (item != null && item.cursed) {
-				item.cursed = false;
-				procced = true;
-			}
-			if (item instanceof Weapon){
-				Weapon w = (Weapon) item;
-				if (w.hasCurseEnchant()){
-					w.enchant(null);
-					w.cursed = false;
-					procced = true;
-				}
-			}
-			if (item instanceof Armor){
-				Armor a = (Armor) item;
-				if (a.hasCurseGlyph()){
-					a.inscribe(null);
-					a.cursed = false;
-					procced = true;
-				}
-			}
-			if (item instanceof Ring && item.level() <= 0){
-				item.upgrade(1 - item.level());
-			}
-			if (item instanceof Bag){
-				for (Item bagItem : ((Bag)item).items){
-					if (bagItem != null && bagItem.cursed) {
-						bagItem.cursed = false;
-						procced = true;
-					}
-				}
-			}
-		}
-		
-		if (procced) {
-			hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-		}
-		
-		return procced;
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
-	}
+  public static boolean uncurse(Hero hero, Item... items) {
+
+    boolean procced = false;
+    for (Item item : items) {
+      if (item != null && item.cursed) {
+        item.cursed = false;
+        procced = true;
+      }
+      if (item instanceof Weapon) {
+        Weapon w = (Weapon) item;
+        if (w.hasCurseEnchant()) {
+          w.enchant(null);
+          w.cursed = false;
+          procced = true;
+        }
+      }
+      if (item instanceof Armor) {
+        Armor a = (Armor) item;
+        if (a.hasCurseGlyph()) {
+          a.inscribe(null);
+          a.cursed = false;
+          procced = true;
+        }
+      }
+      if (item instanceof Ring && item.level() <= 0) {
+        item.upgrade(1 - item.level());
+      }
+      if (item instanceof Bag) {
+        for (Item bagItem : ((Bag) item).items) {
+          if (bagItem != null && bagItem.cursed) {
+            bagItem.cursed = false;
+            procced = true;
+          }
+        }
+      }
+    }
+
+    if (procced) {
+      hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+    }
+
+    return procced;
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? 30 * quantity : super.price();
+  }
 }

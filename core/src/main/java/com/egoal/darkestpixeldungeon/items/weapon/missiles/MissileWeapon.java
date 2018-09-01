@@ -39,138 +39,147 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-abstract public class MissileWeapon extends Weapon{
+abstract public class MissileWeapon extends Weapon {
 
-	{
-		stackable = true;
-		levelKnown = true;
+  {
+    stackable = true;
+    levelKnown = true;
 
-		defaultAction = AC_THROW;
-		usesTargeting = true;
-	}
-	
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.remove( AC_EQUIP );
-		return actions;
-	}
+    defaultAction = AC_THROW;
+    usesTargeting = true;
+  }
 
-	@Override
-	public int throwPos(Hero user, int dst) {
-		if (hasEnchant(Projecting.class)
-				&& !Level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4){
-			return dst;
-		} else {
-			return super.throwPos(user, dst);
-		}
-	}
+  @Override
+  public ArrayList<String> actions(Hero hero) {
+    ArrayList<String> actions = super.actions(hero);
+    actions.remove(AC_EQUIP);
+    return actions;
+  }
 
-	@Override
-	protected void onThrow( int cell ) {
-		Char enemy = Actor.findChar( cell );
-		if (enemy == null || enemy == curUser) {
-			if (this instanceof Boomerang)
-				super.onThrow( cell );
-			else
-				miss( cell );
-		} else {
-			if (!curUser.shoot( enemy, this )) {
-				miss( cell );
-			} else if (!(this instanceof Boomerang)){
+  @Override
+  public int throwPos(Hero user, int dst) {
+    if (hasEnchant(Projecting.class)
+            && !Level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 
+            4) {
+      return dst;
+    } else {
+      return super.throwPos(user, dst);
+    }
+  }
 
-				int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
+  @Override
+  protected void onThrow(int cell) {
+    Char enemy = Actor.findChar(cell);
+    if (enemy == null || enemy == curUser) {
+      if (this instanceof Boomerang)
+        super.onThrow(cell);
+      else
+        miss(cell);
+    } else {
+      if (!curUser.shoot(enemy, this)) {
+        miss(cell);
+      } else if (!(this instanceof Boomerang)) {
 
-				//* huntress bonus
-				if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
-					bonus += 3;
+        int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting
+                .Aim.class);
 
-				if (Random.Float() > Math.pow(0.7, bonus)){
-					if (enemy.isAlive())
-						Buff.affect(enemy, PinCushion.class).stick(this);
-					else
-						Dungeon.level.drop( this, enemy.pos).sprite.drop();
-				}
+        //* huntress bonus
+        if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion
+                .class) == null)
+          bonus += 3;
 
-			}
-		}
-	}
-	
-	protected void miss( int cell ) {
-		int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
+        if (Random.Float() > Math.pow(0.7, bonus)) {
+          if (enemy.isAlive())
+            Buff.affect(enemy, PinCushion.class).stick(this);
+          else
+            Dungeon.level.drop(this, enemy.pos).sprite.drop();
+        }
 
-		//degraded ring of sharpshooting will even make missed shots break.
-		if (Random.Float() < Math.pow(0.6, -bonus))
-			super.onThrow( cell );
-	}
-	
-	@Override
-	public Damage proc(Damage dmg){
-		Hero hero	=	(Hero)(dmg.from);
-		// remove self
-		if(hero.rangedWeapon==null && stackable){
-			if(quantity==1)
-				doUnequip(hero, false, false);
-			else
-				detach(null);
-		}
-		
-		return super.proc(dmg);
-	}
-	
-	@Override
-	public Damage giveDamage(Hero hero, Char target){
-		Damage dmg	=	super.giveDamage(hero, target).addFeature(Damage.Feature.RANGED);
-		
-		// huntress perk
-		int exstr	=	hero.STR()-	STRReq();
-		if(hero.heroPerk.contain(HeroPerk.Perk.SHOOTER))
-			dmg.value	+=	Random.Int(1, exstr);
-		
-		return dmg;
-	}
-	
-	@Override
-	public Item random() {
-		return this;
-	}
-	
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
-	
-	@Override
-	public String info() {
+      }
+    }
+  }
 
-		String info = desc();
-		
-		info += "\n\n" + Messages.get( MissileWeapon.class, "stats", imbue.damageFactor(min()), imbue.damageFactor(max()), STRReq());
+  protected void miss(int cell) {
+    int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim
+            .class);
 
-		if (STRReq() > Dungeon.hero.STR()) {
-			info += " " + Messages.get(Weapon.class, "too_heavy");
-		} else if (Dungeon.hero.heroClass == HeroClass.HUNTRESS && Dungeon.hero.STR() > STRReq()){
-			info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
-		}
+    //degraded ring of sharpshooting will even make missed shots break.
+    if (Random.Float() < Math.pow(0.6, -bonus))
+      super.onThrow(cell);
+  }
 
-		if (enchantment != null && (cursedKnown || !enchantment.curse())){
-			info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
-			info += " " + Messages.get(enchantment, "desc");
-		}
+  @Override
+  public Damage proc(Damage dmg) {
+    Hero hero = (Hero) (dmg.from);
+    // remove self
+    if (hero.rangedWeapon == null && stackable) {
+      if (quantity == 1)
+        doUnequip(hero, false, false);
+      else
+        detach(null);
+    }
 
-		if (cursed && isEquipped( Dungeon.hero )) {
-			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
-		} else if (cursedKnown && cursed) {
-			info += "\n\n" + Messages.get(Weapon.class, "cursed");
-		}
+    return super.proc(dmg);
+  }
 
-		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
-		
-		return info;
-	}
+  @Override
+  public Damage giveDamage(Hero hero, Char target) {
+    Damage dmg = super.giveDamage(hero, target).addFeature(Damage.Feature
+            .RANGED);
+
+    // huntress perk
+    int exstr = hero.STR() - STRReq();
+    if (hero.heroPerk.contain(HeroPerk.Perk.SHOOTER))
+      dmg.value += Random.Int(1, exstr);
+
+    return dmg;
+  }
+
+  @Override
+  public Item random() {
+    return this;
+  }
+
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
+
+  @Override
+  public boolean isIdentified() {
+    return true;
+  }
+
+  @Override
+  public String info() {
+
+    String info = desc();
+
+    info += "\n\n" + Messages.get(MissileWeapon.class, "stats", imbue
+            .damageFactor(min()), imbue.damageFactor(max()), STRReq());
+
+    if (STRReq() > Dungeon.hero.STR()) {
+      info += " " + Messages.get(Weapon.class, "too_heavy");
+    } else if (Dungeon.hero.heroClass == HeroClass.HUNTRESS && Dungeon.hero
+            .STR() > STRReq()) {
+      info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR
+              () - STRReq());
+    }
+
+    if (enchantment != null && (cursedKnown || !enchantment.curse())) {
+      info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment
+              .name());
+      info += " " + Messages.get(enchantment, "desc");
+    }
+
+    if (cursed && isEquipped(Dungeon.hero)) {
+      info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
+    } else if (cursedKnown && cursed) {
+      info += "\n\n" + Messages.get(Weapon.class, "cursed");
+    }
+
+    info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
+
+    return info;
+  }
 }

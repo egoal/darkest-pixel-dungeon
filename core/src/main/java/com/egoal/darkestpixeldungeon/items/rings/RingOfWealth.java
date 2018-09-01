@@ -22,11 +22,11 @@ package com.egoal.darkestpixeldungeon.items.rings;
 
 public class RingOfWealth extends Ring {
 
-	@Override
-	protected RingBuff buff( ) {
-		return new Wealth();
-	}
+  @Override
+  protected RingBuff buff() {
+    return new Wealth();
+  }
 
-	public class Wealth extends RingBuff {
-	}
+  public class Wealth extends RingBuff {
+  }
 }

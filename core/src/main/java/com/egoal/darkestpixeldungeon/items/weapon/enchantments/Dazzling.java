@@ -33,30 +33,30 @@ import com.watabou.utils.Random;
 
 public class Dazzling extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xFFFF00 );
+  private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing(0xFFFF00);
 
-	@Override
-	public Damage proc(Weapon weapon, Damage damage) {
-		Char defender	=	(Char)damage.to;
-		// lvl 0 - 20%
-		// lvl 1 - 33%
-		// lvl 2 - 43%
-		int level = Math.max( 0, weapon.level() );
+  @Override
+  public Damage proc(Weapon weapon, Damage damage) {
+    Char defender = (Char) damage.to;
+    // lvl 0 - 20%
+    // lvl 1 - 33%
+    // lvl 2 - 43%
+    int level = Math.max(0, weapon.level());
 
-		if (Random.Int( level + 5 ) >= 4) {
+    if (Random.Int(level + 5) >= 4) {
 
-			Buff.prolong( defender, Blindness.class, Random.Float( 1f, 1f + level ) );
-			Buff.prolong( defender, Cripple.class, Random.Float( 1f, 1f + level/2f ) );
-			defender.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
+      Buff.prolong(defender, Blindness.class, Random.Float(1f, 1f + level));
+      Buff.prolong(defender, Cripple.class, Random.Float(1f, 1f + level / 2f));
+      defender.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6);
 
-		}
+    }
 
-		return damage;
-	}
+    return damage;
+  }
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return YELLOW;
-	}
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return YELLOW;
+  }
 
 }

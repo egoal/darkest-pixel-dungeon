@@ -40,99 +40,105 @@ import java.util.ArrayList;
 
 public class WandOfDisintegration extends DamageWand {
 
-	{
-		image = ItemSpriteSheet.WAND_DISINTEGRATION;
+  {
+    image = ItemSpriteSheet.WAND_DISINTEGRATION;
 
-		collisionProperties = Ballistica.WONT_STOP;
-	}
+    collisionProperties = Ballistica.WONT_STOP;
+  }
 
 
-	public int min(int lvl){
-		return 2+lvl;
-	}
+  public int min(int lvl) {
+    return 2 + lvl;
+  }
 
-	public int max(int lvl){
-		return 8+4*lvl;
-	}
-	
-	@Override
-	protected void onZap( Ballistica beam ) {
-		
-		boolean terrainAffected = false;
-		
-		int level = level();
-		
-		int maxDistance = Math.min(distance(), beam.dist);
-		
-		ArrayList<Char> chars = new ArrayList<>();
+  public int max(int lvl) {
+    return 8 + 4 * lvl;
+  }
 
-		int terrainPassed = 2, terrainBonus = 0;
-		for (int c : beam.subPath(1, maxDistance)) {
-			
-			Char ch;
-			if ((ch = Actor.findChar( c )) != null) {
+  @Override
+  protected void onZap(Ballistica beam) {
 
-				//we don't want to count passed terrain after the last enemy hit. That would be a lot of bonus levels.
-				//terrainPassed starts at 2, equivalent of rounding up when /3 for integer arithmetic.
-				terrainBonus += terrainPassed/3;
-				terrainPassed = terrainPassed%3;
+    boolean terrainAffected = false;
 
-				chars.add( ch );
-			}
+    int level = level();
 
-			if (Level.flamable[c]) {
+    int maxDistance = Math.min(distance(), beam.dist);
 
-				Dungeon.level.destroy( c );
-				GameScene.updateMap( c );
-				terrainAffected = true;
-				
-			}
+    ArrayList<Char> chars = new ArrayList<>();
 
-			if (Level.solid[c])
-				terrainPassed++;
-			
-			CellEmitter.center( c ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
-		}
-		
-		if (terrainAffected) {
-			Dungeon.observe();
-		}
-		
-		int lvl = level + (chars.size()-1) + terrainBonus;
-		for (Char ch : chars) {
-			processSoulMark(ch, chargesPerCast());
-			// ch.damage( damageRoll(lvl), this );
-			ch.takeDamage(new Damage(damageRoll(lvl), this, ch).type(Damage.Type.MAGICAL));
-			ch.sprite.centerEmitter().burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
-			ch.sprite.flash();
-		}
-	}
+    int terrainPassed = 2, terrainBonus = 0;
+    for (int c : beam.subPath(1, maxDistance)) {
 
-	@Override
-	public void onHit(MagesStaff staff,Char attacker,Char defender,int damage) {
-		//no direct effect, see magesStaff.reachfactor
-	}
+      Char ch;
+      if ((ch = Actor.findChar(c)) != null) {
 
-	private int distance() {
-		return level()*2 + 4;
-	}
-	
-	@Override
-	protected void fx( Ballistica beam, Callback callback ) {
-		
-		int cell = beam.path.get(Math.min(beam.dist, distance()));
-		curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld( cell )));
-		callback.call();
-	}
+        //we don't want to count passed terrain after the last enemy hit. 
+        // That would be a lot of bonus levels.
+        //terrainPassed starts at 2, equivalent of rounding up when /3 for 
+        // integer arithmetic.
+        terrainBonus += terrainPassed / 3;
+        terrainPassed = terrainPassed % 3;
 
-	@Override
-	public void staffFx(MagesStaff.StaffParticle particle) {
-		particle.color(0x220022);
-		particle.am = 0.6f;
-		particle.setLifespan(0.6f);
-		particle.acc.set(40, -40);
-		particle.setSize(0f, 3f);
-		particle.shuffleXY(2f);
-	}
+        chars.add(ch);
+      }
+
+      if (Level.flamable[c]) {
+
+        Dungeon.level.destroy(c);
+        GameScene.updateMap(c);
+        terrainAffected = true;
+
+      }
+
+      if (Level.solid[c])
+        terrainPassed++;
+
+      CellEmitter.center(c).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
+    }
+
+    if (terrainAffected) {
+      Dungeon.observe();
+    }
+
+    int lvl = level + (chars.size() - 1) + terrainBonus;
+    for (Char ch : chars) {
+      processSoulMark(ch, chargesPerCast());
+      // ch.damage( damageRoll(lvl), this );
+      ch.takeDamage(new Damage(damageRoll(lvl), this, ch).type(Damage.Type
+              .MAGICAL));
+      ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange
+              (1, 2));
+      ch.sprite.flash();
+    }
+  }
+
+  @Override
+  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
+          damage) {
+    //no direct effect, see magesStaff.reachfactor
+  }
+
+  private int distance() {
+    return level() * 2 + 4;
+  }
+
+  @Override
+  protected void fx(Ballistica beam, Callback callback) {
+
+    int cell = beam.path.get(Math.min(beam.dist, distance()));
+    curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), 
+            DungeonTilemap.tileCenterToWorld(cell)));
+    callback.call();
+  }
+
+  @Override
+  public void staffFx(MagesStaff.StaffParticle particle) {
+    particle.color(0x220022);
+    particle.am = 0.6f;
+    particle.setLifespan(0.6f);
+    particle.acc.set(40, -40);
+    particle.setSize(0f, 3f);
+    particle.shuffleXY(2f);
+  }
 
 }

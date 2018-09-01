@@ -38,160 +38,163 @@ import java.util.Iterator;
 
 public class Bones {
 
-	private static final String BONES_FILE	= "bones.dat";
-	
-	private static final String LEVEL	= "level";
-	private static final String ITEM	= "item";
+  private static final String BONES_FILE = "bones.dat";
 
-	private static int depth = -1;
-	private static Item item;
-	
-	public static void leave() {
+  private static final String LEVEL = "level";
+  private static final String ITEM = "item";
 
-		depth = Dungeon.depth;
+  private static int depth = -1;
+  private static Item item;
 
-		//heroes which have won the game, who die far above their farthest depth, or who are challenged drop no bones.
-		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0) {
-			depth = -1;
-			return;
-		}
+  public static void leave() {
 
-		item = pickItem(Dungeon.hero);
+    depth = Dungeon.depth;
 
-		Bundle bundle = new Bundle();
-		bundle.put( LEVEL, depth );
-		bundle.put( ITEM, item );
+    //heroes which have won the game, who die far above their farthest depth,
+    // or who are challenged drop no bones.
+    if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth 
+            || Dungeon.challenges > 0) {
+      depth = -1;
+      return;
+    }
 
-		try {
-			OutputStream output = Game.instance.openFileOutput( BONES_FILE, Game.MODE_PRIVATE );
-			Bundle.write( bundle, output );
-			output.close();
-		} catch (IOException e) {
-			DarkestPixelDungeon.reportException(e);
-		}
-	}
+    item = pickItem(Dungeon.hero);
 
-	private static Item pickItem(Hero hero){
-		Item item = null;
-		if (Random.Int(2) == 0) {
-			switch (Random.Int(6)) {
-				case 0:
-					item = hero.belongings.weapon;
-					break;
-				case 1:
-					item = hero.belongings.armor;
-					break;
-				case 2:
-					item = hero.belongings.misc1;
-					break;
-				case 3:
-					item = hero.belongings.misc2;
-					break;
-				case 4:
-					item	=	hero.belongings.misc3;
-					break;
-				case 5:
-					item = Dungeon.quickslot.randomNonePlaceholder();
-					break;
-			}
-			if (item != null && !item.bones)
-				return pickItem(hero);
-		} else {
+    Bundle bundle = new Bundle();
+    bundle.put(LEVEL, depth);
+    bundle.put(ITEM, item);
 
-			Iterator<Item> iterator = hero.belongings.backpack.iterator();
-			Item curItem;
-			ArrayList<Item> items = new ArrayList<Item>();
-			while (iterator.hasNext()){
-				curItem = iterator.next();
-				if (curItem.bones)
-					items.add(curItem);
-			}
+    try {
+      OutputStream output = Game.instance.openFileOutput(BONES_FILE, Game
+              .MODE_PRIVATE);
+      Bundle.write(bundle, output);
+      output.close();
+    } catch (IOException e) {
+      DarkestPixelDungeon.reportException(e);
+    }
+  }
 
-			if (Random.Int(3) < items.size()) {
-				item = Random.element(items);
-				if (item.stackable){
-					if (item instanceof MissileWeapon){
-						item.quantity(Random.NormalIntRange(1, item.quantity()));
-					} else {
-						item.quantity(Random.NormalIntRange(1, (item.quantity() + 1) / 2));
-					}
-				}
-			}
-		}
-		if (item == null) {
-			if (Dungeon.gold > 50) {
-				item = new Gold( Random.NormalIntRange( 50, Dungeon.gold ) );
-			} else {
-				item = new Gold( 50 );
-			}
-		}
-		return item;
-	}
+  private static Item pickItem(Hero hero) {
+    Item item = null;
+    if (Random.Int(2) == 0) {
+      switch (Random.Int(6)) {
+        case 0:
+          item = hero.belongings.weapon;
+          break;
+        case 1:
+          item = hero.belongings.armor;
+          break;
+        case 2:
+          item = hero.belongings.misc1;
+          break;
+        case 3:
+          item = hero.belongings.misc2;
+          break;
+        case 4:
+          item = hero.belongings.misc3;
+          break;
+        case 5:
+          item = Dungeon.quickslot.randomNonePlaceholder();
+          break;
+      }
+      if (item != null && !item.bones)
+        return pickItem(hero);
+    } else {
 
-	public static Item get() {
-		if (depth == -1) {
+      Iterator<Item> iterator = hero.belongings.backpack.iterator();
+      Item curItem;
+      ArrayList<Item> items = new ArrayList<Item>();
+      while (iterator.hasNext()) {
+        curItem = iterator.next();
+        if (curItem.bones)
+          items.add(curItem);
+      }
 
-			try {
-				InputStream input = Game.instance.openFileInput( BONES_FILE ) ;
-				Bundle bundle = Bundle.read( input );
-				input.close();
+      if (Random.Int(3) < items.size()) {
+        item = Random.element(items);
+        if (item.stackable) {
+          if (item instanceof MissileWeapon) {
+            item.quantity(Random.NormalIntRange(1, item.quantity()));
+          } else {
+            item.quantity(Random.NormalIntRange(1, (item.quantity() + 1) / 2));
+          }
+        }
+      }
+    }
+    if (item == null) {
+      if (Dungeon.gold > 50) {
+        item = new Gold(Random.NormalIntRange(50, Dungeon.gold));
+      } else {
+        item = new Gold(50);
+      }
+    }
+    return item;
+  }
 
-				depth = bundle.getInt( LEVEL );
-				item = (Item)bundle.get( ITEM );
+  public static Item get() {
+    if (depth == -1) {
 
-				return get();
+      try {
+        InputStream input = Game.instance.openFileInput(BONES_FILE);
+        Bundle bundle = Bundle.read(input);
+        input.close();
 
-			} catch (IOException e) {
-				return null;
-			}
+        depth = bundle.getInt(LEVEL);
+        item = (Item) bundle.get(ITEM);
 
-		} else {
-			//heroes who are challenged cannot find bones
-			if (depth == Dungeon.depth && Dungeon.challenges == 0) {
-				Game.instance.deleteFile( BONES_FILE );
-				depth = 0;
+        return get();
 
-				if (item instanceof Artifact){
-					if (Generator.removeArtifact((Artifact)item)) {
-						try {
-							Artifact artifact = (Artifact)item.getClass().newInstance();
-							//caps displayed artifact level
-							artifact.transferUpgrade(Math.min(
-									item.visiblyUpgraded(),
-									1 + ((Dungeon.depth * 3) / 10)));
+      } catch (IOException e) {
+        return null;
+      }
 
-							artifact.cursed = true;
-							artifact.cursedKnown = true;
+    } else {
+      //heroes who are challenged cannot find bones
+      if (depth == Dungeon.depth && Dungeon.challenges == 0) {
+        Game.instance.deleteFile(BONES_FILE);
+        depth = 0;
 
-							return artifact;
-						} catch (Exception e) {
-							DarkestPixelDungeon.reportException(e);
-							return new Gold(item.price());
-						}
-					} else {
-						return new Gold(item.price());
-					}
-				}
-				
-				if (item.isUpgradable()) {
-					item.cursed = true;
-					item.cursedKnown = true;
-					if (item.isUpgradable()) {
-						//gain 1 level every 3.333 floors down plus one additional level.
-						int lvl = 1 + ((Dungeon.depth * 3) / 10);
-						if (lvl < item.level()) {
-							item.degrade( item.level() - lvl );
-						}
-						item.levelKnown = false;
-					}
-				}
-				
-				item.reset();
-				
-				return item;
-			} else {
-				return null;
-			}
-		}
-	}
+        if (item instanceof Artifact) {
+          if (Generator.removeArtifact((Artifact) item)) {
+            try {
+              Artifact artifact = (Artifact) item.getClass().newInstance();
+              //caps displayed artifact level
+              artifact.transferUpgrade(Math.min(
+                      item.visiblyUpgraded(),
+                      1 + ((Dungeon.depth * 3) / 10)));
+
+              artifact.cursed = true;
+              artifact.cursedKnown = true;
+
+              return artifact;
+            } catch (Exception e) {
+              DarkestPixelDungeon.reportException(e);
+              return new Gold(item.price());
+            }
+          } else {
+            return new Gold(item.price());
+          }
+        }
+
+        if (item.isUpgradable()) {
+          item.cursed = true;
+          item.cursedKnown = true;
+          if (item.isUpgradable()) {
+            //gain 1 level every 3.333 floors down plus one additional level.
+            int lvl = 1 + ((Dungeon.depth * 3) / 10);
+            if (lvl < item.level()) {
+              item.degrade(item.level() - lvl);
+            }
+            item.levelKnown = false;
+          }
+        }
+
+        item.reset();
+
+        return item;
+      } else {
+        return null;
+      }
+    }
+  }
 }

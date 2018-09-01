@@ -28,28 +28,29 @@ import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Repulsion extends Armor.Glyph{
+public class Repulsion extends Armor.Glyph {
 
-	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
-	
-	@Override
-	public Damage proc(Armor armor, Damage damage){
-		Char attacker	=	(Char)damage.from;
-		Char defender	=	(Char)damage.to;
+  private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing(0xFFFFFF);
 
-		int level = Math.max( 0, armor.level() );
+  @Override
+  public Damage proc(Armor armor, Damage damage) {
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
 
-		if (Random.Int( level + 5 ) >= 4){
-			int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
-			Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, Ballistica.MAGIC_BOLT);
-			WandOfBlastWave.throwChar(attacker, trajectory, 2);
-		}
-		
-		return damage;
-	}
+    int level = Math.max(0, armor.level());
 
-	@Override
-	public ItemSprite.Glowing glowing() {
-		return WHITE;
-	}
+    if (Random.Int(level + 5) >= 4) {
+      int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
+      Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, 
+              Ballistica.MAGIC_BOLT);
+      WandOfBlastWave.throwChar(attacker, trajectory, 2);
+    }
+
+    return damage;
+  }
+
+  @Override
+  public ItemSprite.Glowing glowing() {
+    return WHITE;
+  }
 }

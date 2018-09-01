@@ -32,30 +32,31 @@ import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class PotionOfInvisibility extends Potion {
 
-	private static final float ALPHA	= 0.4f;
+  private static final float ALPHA = 0.4f;
 
-	{
-		initials = 3;
-	}
+  {
+    initials = 3;
+  }
 
-	@Override
-	public void apply( Hero hero ) {
-		setKnown();
-		Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
-		GLog.i( Messages.get(this, "invisible") );
-		Sample.INSTANCE.play( Assets.SND_MELD );
-	}
-	
-	@Override
-	public int price() {
-		return isKnown() ? (int)(40 * quantity*(reinforced? 1.5: 1)): super.price();
-	}
-	
-	public static void melt( Char ch ) {
-		if (ch.sprite.parent != null) {
-			ch.sprite.parent.add( new AlphaTweener( ch.sprite, ALPHA, 0.4f ) );
-		} else {
-			ch.sprite.alpha( ALPHA );
-		}
-	}
+  @Override
+  public void apply(Hero hero) {
+    setKnown();
+    Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
+    GLog.i(Messages.get(this, "invisible"));
+    Sample.INSTANCE.play(Assets.SND_MELD);
+  }
+
+  @Override
+  public int price() {
+    return isKnown() ? (int) (40 * quantity * (reinforced ? 1.5 : 1)) : super
+            .price();
+  }
+
+  public static void melt(Char ch) {
+    if (ch.sprite.parent != null) {
+      ch.sprite.parent.add(new AlphaTweener(ch.sprite, ALPHA, 0.4f));
+    } else {
+      ch.sprite.alpha(ALPHA);
+    }
+  }
 }

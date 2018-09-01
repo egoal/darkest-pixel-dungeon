@@ -26,29 +26,29 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
 public class Amok extends FlavourBuff {
 
-	{
-		type = buffType.NEGATIVE;
-	}
-	
-	@Override
-	public int icon() {
-		return BuffIndicator.AMOK;
-	}
+  {
+    type = buffType.NEGATIVE;
+  }
 
-	@Override
-	public void detach() {
-		super.detach();
-		if (target instanceof Mob)
-			((Mob)target).aggro( null );
-	}
+  @Override
+  public int icon() {
+    return BuffIndicator.AMOK;
+  }
 
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
+  @Override
+  public void detach() {
+    super.detach();
+    if (target instanceof Mob)
+      ((Mob) target).aggro(null);
+  }
 
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dispTurns());
+  }
 }
