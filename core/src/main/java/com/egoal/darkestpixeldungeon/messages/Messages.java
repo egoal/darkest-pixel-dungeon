@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.messages;
 
 import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 
 import java.util.Arrays;
@@ -138,9 +139,8 @@ public class Messages {
       if (c != null && c.getSuperclass() != null) {
         return get(c.getSuperclass(), k, args);
       } else {
-        Log.d("dpd", "missed string: " + c.getName() + " | " + k + " || " + 
-                key);
-        return c.getName() + " | " + k;
+        Log.d("dpd", "missed string: " + k + " || " + key);
+        return "missed string: " + k;
       }
     }
   }
@@ -175,7 +175,8 @@ public class Messages {
       String result = "";
       //split by any unicode space character
       for (String word : str.split("(?<=\\p{Zs})")) {
-        if (noCaps.contains(word.trim().toLowerCase(Locale.ENGLISH).replaceAll(":|[0-9]", ""))) {
+        if (noCaps.contains(word.trim().toLowerCase(Locale.ENGLISH)
+                .replaceAll(":|[0-9]", ""))) {
           result += word;
         } else {
           result += capitalize(word);

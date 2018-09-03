@@ -164,7 +164,7 @@ public class Pressure extends Buff implements Hero.Doom {
       if (Dungeon.depth > 0) {
         // chance to increase, not in the village
         if (Random.Int(10) == 0) {
-          upPressure(Random.Int(1, (Dungeon.depth * 2 / 7 + 1)));
+          upPressure(Random.Int(1, (Dungeon.depth / 3 + 1)));
         }
       }
 
@@ -173,7 +173,8 @@ public class Pressure extends Buff implements Hero.Doom {
         // take damage
         double ed = Math.exp(collapseDuration++ - 4.);
         target.takeDamage(new Damage((int) (target.HT * (ed / (ed + 1.))),
-                this, target).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
+                this, target).type(Damage.Type.MAGICAL).addFeature(Damage
+                .Feature.PURE));
 
         if (target == Dungeon.hero) {
           Dungeon.hero.interrupt();

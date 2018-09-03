@@ -319,7 +319,7 @@ public class SurfaceScene extends PixelScene {
     private static final int HEIGHT = 32;
 
     public Avatar(HeroClass cl) {
-      super(Assets.AVATARS);
+      super(Assets.DPD_AVATARS);
       frame(new TextureFilm(texture, WIDTH, HEIGHT).get(cl.ordinal()));
     }
   }

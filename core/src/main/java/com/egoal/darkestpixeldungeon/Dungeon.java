@@ -329,6 +329,7 @@ public class Dungeon {
     }
   }
 
+  // drop items to the next level
   public static void dropToChasm(Item item) {
     int depth = Dungeon.depth + 1;
     ArrayList<Item> dropped = (ArrayList<Item>) Dungeon.droppedItems.get(depth);
@@ -338,6 +339,7 @@ public class Dungeon {
     dropped.add(item);
   }
 
+  // quotas
   public static boolean posNeeded() {
     //2 POS each floor set
     int posLeftThisSet = 2 - (limitedDrops.strengthPotions.count - (depth /
@@ -392,6 +394,7 @@ public class Dungeon {
     return slLeft > 0 && Random.Int(10 - depth % 10) < slLeft;
   }
 
+  // save
   private static final String RG_GAME_FILE = "game.dat";
   private static final String RG_DEPTH_FILE = "depth%d.dat";
 

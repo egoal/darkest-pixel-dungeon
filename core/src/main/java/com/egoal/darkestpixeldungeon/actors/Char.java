@@ -133,7 +133,7 @@ public abstract class Char extends Actor {
 
       // enemy armor defense
 
-      // sniper's perk, todo: use pure damage instead
+      // sniper's perk, 
       if (this instanceof Hero && ((Hero) this).rangedWeapon != null && (
               (Hero) this).subClass == HeroSubClass.SNIPER) {
         // sniper's perk: ignore defence

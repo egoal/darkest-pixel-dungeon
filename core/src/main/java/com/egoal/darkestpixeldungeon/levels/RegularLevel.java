@@ -674,7 +674,7 @@ public abstract class RegularLevel extends Level {
     Iterator<Room> stdRoomIter = stdRooms.iterator();
 
     // random spawn seller
-    if (Dungeon.depth > 0 && !(this instanceof LastShopLevel)) {
+    if (Dungeon.depth > 0 && Dungeon.depth<20) {
       float psratio = Dungeon.shopOnLevel() ? .1f : .2f;
       if (Random.Float() < psratio) {
         DPDShopKeeper ps = new PotionSeller().initSellItems();

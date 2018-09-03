@@ -394,7 +394,7 @@ public class Statuary extends NPC {
       GLog.i(Messages.get(this, "blasphemy"));
       GLog.w(Messages.get(this, "greedy"));
 
-      return false;
+      return true;
     }
   }
 

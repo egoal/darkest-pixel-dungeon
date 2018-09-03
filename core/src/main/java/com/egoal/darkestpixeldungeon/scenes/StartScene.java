@@ -411,7 +411,6 @@ public class StartScene extends PixelScene {
 
       super.createChildren();
 
-      // avatar = new Image( Assets.AVATARS );
       avatar = new Image(Assets.DPD_AVATARS);
       add(avatar);
 

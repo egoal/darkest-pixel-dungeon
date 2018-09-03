@@ -186,7 +186,7 @@ public class Hero extends Char {
     super();
     name = Messages.get(this, "name");
 
-    HP = HT = 20 + 2;
+    HP = HT = 22;
     STR = STARTING_STR;
     awareness = 0.1f;
 
@@ -208,7 +208,6 @@ public class Hero extends Char {
   private static final String STRENGTH = "STR";
   private static final String LEVEL = "lvl";
   private static final String EXPERIENCE = "exp";
-  // private static final String FOLLOWERS	=	"followers";
   private static final String CRITICAL = "critical";
 
   @Override
@@ -253,11 +252,6 @@ public class Hero extends Char {
     exp = bundle.getInt(EXPERIENCE);
 
     criticalChance_ = bundle.getFloat(CRITICAL);
-//		for(Bundlable b: bundle.getCollection(FOLLOWERS)){
-//			try{
-//				followers_.add((Char)b);
-//			}catch(Exception e){}
-//		}
 
     belongings.restoreFromBundle(bundle);
   }
@@ -300,9 +294,6 @@ public class Hero extends Char {
     }
     followers_.clear();
   }
-//	public void clearFollowers(){
-//		followers_.clear();
-//	}
 
   public static void preview(GamesInProgress.Info info, Bundle bundle) {
     info.level = bundle.getInt(LEVEL);

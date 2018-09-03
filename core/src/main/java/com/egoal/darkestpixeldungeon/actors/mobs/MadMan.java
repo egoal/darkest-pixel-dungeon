@@ -30,7 +30,7 @@ public class MadMan extends Mob implements Callback {
     defenseSkill = 5 + Dungeon.depth;
 
     EXP = Math.min(3 + Dungeon.depth / 2, 12);
-    maxLvl = Dungeon.depth + 2;
+    maxLvl = Dungeon.depth + 3;
 
     loot = Humanity.class;
     lootChance = 0.2f;
