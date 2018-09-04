@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
+import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -334,6 +335,13 @@ public abstract class Char extends Actor {
         dmg.value = 0;
         return dmg;
       }
+      
+    ResistAny ra  = buff(ResistAny.class);
+    if(ra!=null){
+      ra.resist();
+      dmg.value = 0;
+      return dmg;
+    }
 
     HashMap<Integer, Float> mr = null;
     if (dmg.type == Damage.Type.NORMAL)

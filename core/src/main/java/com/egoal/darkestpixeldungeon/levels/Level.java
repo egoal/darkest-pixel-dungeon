@@ -282,8 +282,8 @@ public abstract class Level implements Bundlable {
         int torchSpawnTime = 10;
         for (int i = 0; i < torchSpawnTime; ++i) {
           int PROB_NUM = 4 * (torchCount + 1) * (torchCount + 1) +
-                  (Dungeon.depth / 2 + 1) * (Dungeon.depth / 2 + 1) / 20;
-          // now the expectation is 1.3->0.7 with 1->25
+                  (Dungeon.depth + 1) * Dungeon.depth / 20;
+          // now the expectation is 1.3->0.2 with 1->25
           if (Random.Int(PROB_NUM) == 0) {
             addItemToSpawn(new Torch());
             ++torchCount;
@@ -934,6 +934,7 @@ public abstract class Level implements Bundlable {
         break;
 
       case Terrain.HIGH_GRASS:
+      case Terrain.HIGH_GRASS_COLLECTED:
         HighGrass.trample(this, cell, ch);
         break;
 

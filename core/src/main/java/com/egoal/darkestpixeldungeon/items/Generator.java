@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfVenom;
@@ -214,7 +215,7 @@ public class Generator {
           HashMap<Generator.Category, Float>();
 
   private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{0, 0, 0, 
-          1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+          1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1};
 
   static {
 
@@ -251,7 +252,7 @@ public class Generator {
             PotionOfInvisibility.class,
             PotionOfMight.class,
             PotionOfFrost.class};
-    Category.POTION.probs = new float[]{45, 4, 15, 10, 15, 10, 0, 20, 12, 10,
+    Category.POTION.probs = new float[]{40, 4, 15, 10, 15, 10, 0, 20, 12, 10,
             0, 10};
 
     //TODO: add last ones when implemented
@@ -376,7 +377,8 @@ public class Generator {
             DriedRose.class, //starts with no chance of spawning, chance is 
             // set directly after beating ghost quest.
             LloydsBeacon.class,
-            EtherealChains.class
+            EtherealChains.class,
+            RiemannianManifoldShield.class,
     };
     Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 

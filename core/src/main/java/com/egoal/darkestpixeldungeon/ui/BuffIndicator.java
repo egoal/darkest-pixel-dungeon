@@ -92,6 +92,7 @@ public class BuffIndicator extends Component {
   public static final int COLLAPSE = 47;
   public static final int MUST_DODGE = 48;
   public static final int VULERABLE = 49;
+  public static final int RESIST_ANY  = 50;
 
   public static final int SIZE = 7;
 

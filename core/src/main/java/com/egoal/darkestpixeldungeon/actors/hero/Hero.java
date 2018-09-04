@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
+import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
@@ -463,10 +464,10 @@ public class Hero extends Char {
     // critical
     int bonusCritical = RingOfCritical.getBonus(this, RingOfCritical.Critical
             .class);
-    float theCriticalChance = criticalChance_ * (float) Math.pow(1.15, 
+    float theCriticalChance = criticalChance_ * (float) Math.pow(1.15,
             bonusCritical);
 
-    if (!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Float() < 
+    if (!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Float() <
             theCriticalChance) {
       dmg.value *= 1.5f;
       dmg.addFeature(Damage.Feature.CRITCIAL);
@@ -844,11 +845,11 @@ public class Hero extends Char {
           } else {
 
             boolean important =
-                    ((item instanceof ScrollOfUpgrade || item instanceof 
+                    ((item instanceof ScrollOfUpgrade || item instanceof
                             ScrollOfMagicalInfusion) && ((Scroll) item)
                             .isKnown()) ||
-                            ((item instanceof PotionOfStrength || item 
-                                    instanceof PotionOfMight) && ((Potion) 
+                            ((item instanceof PotionOfStrength || item
+                                    instanceof PotionOfMight) && ((Potion)
                                     item).isKnown());
             if (important) {
               GLog.p(Messages.get(this, "you_now_have", item.name()));
@@ -1015,7 +1016,7 @@ public class Hero extends Char {
           Game.switchScene(SurfaceScene.class);
         }
 
-      } else if (Dungeon.depth == 1 && belongings.getItem(Amulet.class) == 
+      } else if (Dungeon.depth == 1 && belongings.getItem(Amulet.class) ==
               null) {
         GameScene.show(new WndMessage(Messages.get(this, "leave")));
         ready();
@@ -1094,9 +1095,9 @@ public class Hero extends Char {
     // sniper perk
     if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
       Char target = (Char) dmg.to;
-      Buff.prolong(this, SnipersMark.class, attackDelay() * 1.1f).object = 
+      Buff.prolong(this, SnipersMark.class, attackDelay() * 1.1f).object =
               target.id();
-      Buff.prolong(target, ViewMark.class, attackDelay() * 1.1f).observer = 
+      Buff.prolong(target, ViewMark.class, attackDelay() * 1.1f).observer =
               this.id();
     }
 
@@ -1140,7 +1141,7 @@ public class Hero extends Char {
 
     CapeOfThorns.Thorns thorns = buff(CapeOfThorns.Thorns.class);
     if (thorns != null)
-      dmg.value = thorns.proc(dmg.value, (dmg.from instanceof Char ? (Char) 
+      dmg.value = thorns.proc(dmg.value, (dmg.from instanceof Char ? (Char)
               dmg.from : null), this);
 
     MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
@@ -1153,8 +1154,6 @@ public class Hero extends Char {
               * ((float) (HT - HP) / HT)));
 
     // berserk
-
-
     // note: resistance move to resistDamage
 
     if (dmg.type == Damage.Type.MENTAL)
@@ -1199,6 +1198,12 @@ public class Hero extends Char {
   @Override
   public Damage resistDamage(Damage dmg) {
     // note: immunities is processed in super
+    {
+      RiemannianManifoldShield.Recharge r = buff(RiemannianManifoldShield
+              .Recharge.class);
+      if (r != null && r.isCursed())
+        return dmg;
+    }
 
     // resistance
     if (dmg.type == Damage.Type.MAGICAL) {
@@ -1246,11 +1251,11 @@ public class Hero extends Char {
 
       if (heroPerk.contain(HeroPerk.Perk.POSITIVE) && Random.Float() < .15f) {
         dmg.value = 0;
-        sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, 
+        sprite.showStatus(CharSprite.DEFAULT, Messages.get(this,
                 "mental_resist"));
       } else if (subClass == HeroSubClass.STARGAZER && Random.Float() < .1f) {
         dmg.value = 0;
-        sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, 
+        sprite.showStatus(CharSprite.DEFAULT, Messages.get(this,
                 "mental_resist"));
       }
     }
@@ -1281,7 +1286,7 @@ public class Hero extends Char {
           newMob = true;
         }
 
-        if (!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != 
+        if (!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) !=
                 -1) {
           if (target == null) {
             target = m;
@@ -1415,10 +1420,10 @@ public class Hero extends Char {
 
       curAction = new HeroAction.Cook(cell);
 
-    } else if (Dungeon.level.map[cell] == Terrain.ENCHANTING_STATION && cell 
+    } else if (Dungeon.level.map[cell] == Terrain.ENCHANTING_STATION && cell
             != pos) {
       curAction = new HeroAction.Enchant(cell);
-    } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell)) 
+    } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell))
             instanceof Mob) {
 
       if (ch instanceof NPC) {
@@ -1508,7 +1513,7 @@ public class Hero extends Char {
     if (levelUp) {
 
       GLog.p(Messages.get(this, "new_level"), lvl);
-      sprite.showStatus(CharSprite.POSITIVE, Messages.get(Hero.class, 
+      sprite.showStatus(CharSprite.POSITIVE, Messages.get(Hero.class,
               "level_up"));
       Sample.INSTANCE.play(Assets.SND_LEVELUP);
 
@@ -1813,16 +1818,18 @@ public class Hero extends Char {
       }
       StatusPane.needsKeyUpdate = true;
 
-      Level.set(doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : 
+      Level.set(doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR :
               Terrain.UNLOCKED_EXIT);
       GameScene.updateMap(doorCell);
 
     } else if (curAction instanceof HeroAction.OpenChest) {
 
-      Heap heap = Dungeon.level.heaps.get(((HeroAction.OpenChest) curAction).dst);
+      Heap heap = Dungeon.level.heaps.get(((HeroAction.OpenChest) curAction)
+              .dst);
       if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
         Sample.INSTANCE.play(Assets.SND_BONES);
-      } else if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST) {
+      } else if (heap.type == Type.LOCKED_CHEST || heap.type == Type
+              .CRYSTAL_CHEST) {
         belongings.specialKeys[Dungeon.depth]--;
       }
       StatusPane.needsKeyUpdate = true;
@@ -1842,7 +1849,8 @@ public class Hero extends Char {
 
     int distance = 1 + positive + negative;
 
-    float level = intentional ? (2 * awareness - awareness * awareness) : awareness;
+    float level = intentional ? (2 * awareness - awareness * awareness) :
+            awareness;
     if (distance <= 0) {
       level /= 2 - distance;
       distance = 1;
@@ -1867,9 +1875,11 @@ public class Hero extends Char {
       by = Dungeon.level.height() - 1;
     }
 
-    TalismanOfForesight.Foresight foresight = buff(TalismanOfForesight.Foresight.class);
+    TalismanOfForesight.Foresight foresight = buff(TalismanOfForesight
+            .Foresight.class);
 
-    //cursed talisman of foresight makes unintentionally finding things impossible.
+    //cursed talisman of foresight makes unintentionally finding things 
+    // impossible.
     if (foresight != null && foresight.isCursed()) {
       level = -1;
     }

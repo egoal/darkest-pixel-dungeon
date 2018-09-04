@@ -313,7 +313,7 @@ public class Statuary extends NPC {
                     (4) == 0) {
               Dungeon.limitedDrops.chaliceOfBlood.count = 1;
 
-              Dungeon.level.drop(new ChaliceOfBlood().identify(), hero.pos)
+              Dungeon.level.drop(new ChaliceOfBlood().random(), hero.pos)
                       .sprite.drop();
               hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
               Sample.INSTANCE.play(Assets.SND_BURNING);

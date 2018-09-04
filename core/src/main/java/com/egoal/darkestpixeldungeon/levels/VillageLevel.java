@@ -22,6 +22,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
@@ -414,7 +415,7 @@ public class VillageLevel extends RegularLevel {
     }
 
     // test 
-    if (false) {
+    if (true) {
       // Rat dg	=	new Rat();
       Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
       // SkeletonKnight dg	=	new SkeletonKnight();
@@ -425,6 +426,7 @@ public class VillageLevel extends RegularLevel {
       mobs.add(dg);
 
       drop(new Gold(1000), entrance);
+      drop(new RiemannianManifoldShield().random(), entrance);
     }
 
     super.createMobs();

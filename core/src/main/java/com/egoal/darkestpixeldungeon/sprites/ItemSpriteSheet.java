@@ -274,6 +274,7 @@ public class ItemSpriteSheet {
   public static final int DPD_UNHOLY_BLOOD = ARTIFACTS + 26;
   public static final int DPD_MASK_OF_MADNESS = ARTIFACTS + 27;
   public static final int DPD_ASTROLABE = ARTIFACTS + 28;
+  public static final int DPD_RIEMANNIAN_SHIELD = ARTIFACTS+29;
 
   public static final int DPD_HUMANITY = FOOD + 8;
   public static final int DPD_WINE = FOOD + 9;

@@ -42,7 +42,7 @@ public class MaskOfMadness extends Artifact {
 
     public Damage procIncomingDamage(Damage dmg) {
       float ratio = dmg.type == Damage.Type.MENTAL ? 1.25f :
-              (1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f) + 0.1f * 
+              (1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f) + 0.1f *
                       level());
 
       dmg.value *= ratio;
@@ -62,7 +62,8 @@ public class MaskOfMadness extends Artifact {
       if (exp >= level() * 2 && level() < levelCap) {
         exp -= level() * 2;
         // take mental damage
-        Dungeon.hero.takeDamage(new Damage(level(), this, Dungeon.hero).type(Damage.Type.MENTAL));
+        Dungeon.hero.takeDamage(new Damage(level(), this, Dungeon.hero).type
+                (Damage.Type.MENTAL));
         upgrade();
         GLog.p(Messages.get(MaskOfMadness.class, "levelup"));
       }
