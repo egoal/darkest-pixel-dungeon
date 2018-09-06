@@ -195,6 +195,10 @@ public class Belongings implements Iterable<Item> {
     return Random.element(backpack.items);
   }
 
+  public Item[] equippedItems(){
+    return new Item[]{weapon, armor, misc1, misc2, misc3};
+  }
+  
   public void resurrect(int depth) {
 
     for (Item item : backpack.items.toArray(new Item[0])) {

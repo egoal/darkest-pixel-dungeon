@@ -63,6 +63,13 @@ public abstract class RegularLevel extends Level {
   public int secretDoors;
 
   @Override
+  protected void setupSize(){
+    if(width==0&& height==0)
+      width = height  = 36;
+    length  = width*height;
+  }
+  
+  @Override
   protected boolean build() {
 
     if (!initRooms()) {

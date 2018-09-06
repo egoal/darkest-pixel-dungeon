@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.SoulMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
+import com.egoal.darkestpixeldungeon.effects.MagicMissile;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
@@ -28,6 +29,7 @@ import com.egoal.darkestpixeldungeon.windows.IconTitle;
 import com.egoal.darkestpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Point;
 
 import java.util.ArrayList;
@@ -130,8 +132,14 @@ public class UrnOfShadow extends Artifact {
   }
 
   // check to not be negative value
-  int volume() {
+  public int volume() {
     return volume;
+  }
+
+  public UrnOfShadow volume(int v) {
+    volume = v;
+    updateQuickslot();
+    return this;
   }
 
   void consume(int v) {
@@ -197,10 +205,10 @@ public class UrnOfShadow extends Artifact {
       RedButton btn0 = addCastAndHelpButton(OP_SOUL_BURN, titlebar.bottom() +
               GAP, COST_SOUL_BURN);
 
-      RedButton btn1 = addCastAndHelpButton(OP_SOUL_MARK, btn0.bottom() + 
+      RedButton btn1 = addCastAndHelpButton(OP_SOUL_MARK, btn0.bottom() +
               GAP, COST_SOUL_MARK);
 
-      RedButton btn2 = addCastAndHelpButton(OP_DEMENTAGE, btn1.bottom() + 
+      RedButton btn2 = addCastAndHelpButton(OP_DEMENTAGE, btn1.bottom() +
               GAP, COST_DEMENTAGE);
 
       resize(WIDTH, (int) btn2.bottom());
@@ -209,7 +217,7 @@ public class UrnOfShadow extends Artifact {
     private static final int WIDTH_CAST_BUTTON = 60;
     private static final int WIDTH_HELP_BUTTON = 15;
 
-    private RedButton addCastAndHelpButton(final String op, float y, final 
+    private RedButton addCastAndHelpButton(final String op, float y, final
     int cost) {
       RedButton btnCast = new RedButton(Messages.get(this, op)) {
         @Override
@@ -231,44 +239,59 @@ public class UrnOfShadow extends Artifact {
                   new ItemSprite(urnOfShadow.image(), null),
                   Messages.get(UrnOfShadow.WndUrnOfShadow.class, op),
                   Messages.get(UrnOfShadow.WndUrnOfShadow.class, op + "_desc") +
-                          Messages.get(UrnOfShadow.WndUrnOfShadow.class, 
+                          Messages.get(UrnOfShadow.WndUrnOfShadow.class,
                                   "cost", cost)));
         }
       };
-      btnHelp.setRect(WIDTH - WIDTH_HELP_BUTTON, btnCast.top(), 
+      btnHelp.setRect(WIDTH - WIDTH_HELP_BUTTON, btnCast.top(),
               WIDTH_HELP_BUTTON, BTN_HEIGHT);
       add(btnHelp);
 
       return btnCast;
     }
 
-    private void opSoulBurn(Char target) {
+    private void opSoulBurn(final Char target) {
       urnOfShadow.consume(COST_SOUL_BURN);
 
-      Damage dmg = curUser.giveDamage(target);
-      dmg.value *= 0.8 * Math.pow(1.1, level() - 1);
-      dmg.type(Damage.Type.MAGICAL).addFeature(Damage.Feature.ACCURATE)
-              .addElement(Damage.Element.SHADOW);
-      target.takeDamage(dmg);
-      Buff.affect(target, SoulBurning.class).reignite(target);
-
-      curUser.sprite.attack(target.pos);
+      curUser.sprite.zap(target.pos);
       curUser.spend(TIME_TO_CAST);
       curUser.busy();
+
+      MagicMissile.shadow(curUser.sprite.parent, curUser.pos, target.pos, new
+              Callback() {
+                @Override
+                public void call() {
+                  Damage dmg = curUser.giveDamage(target);
+                  dmg.value *= 0.8 * Math.pow(1.1, level());
+                  dmg.type(Damage.Type.MAGICAL).addFeature(Damage.Feature
+                          .ACCURATE)
+                          .addElement(Damage.Element.SHADOW);
+                  target.takeDamage(dmg);
+                  Buff.affect(target, SoulBurning.class).reignite(target);
+                }
+              });
+      Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 
-    private void opSoulMark(Char target) {
+    private void opSoulMark(final Char target) {
       urnOfShadow.consume(COST_SOUL_MARK);
 
-      SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION * (float) 
-              Math.pow(1.1, level()));
-
       curUser.sprite.attack(target.pos);
       curUser.spend(TIME_TO_CAST);
       curUser.busy();
+
+      MagicMissile.shadow(curUser.sprite.parent, curUser.pos, target.pos, new
+              Callback() {
+                @Override
+                public void call() {
+                  SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION *
+                          (float) Math.pow(1.1, level()));
+                }
+              });
+      Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 
-    private void opDementage(Char target) {
+    private void opDementage(final Char target) {
       if (target.buff(Corruption.class) != null) {
         GLog.w(Messages.get(this, "already_dementage"));
         return;
@@ -289,22 +312,29 @@ public class UrnOfShadow extends Artifact {
 
       // corruption, refill health
       urnOfShadow.consume((int) Math.ceil(COST_DEMENTAGE * Math.pow(.9, level
-              () - 1)));
-
-      Buff.append(target, Dementage.class);
-      target.HP = target.HT;
+              ())));
 
       curUser.sprite.attack(target.pos);
       curUser.spend(TIME_TO_CAST);
       curUser.busy();
-      GLog.i(Messages.get(this, "sucess_dementage", target.name));
+
+      MagicMissile.shadow(curUser.sprite.parent, curUser.pos, target.pos, new
+              Callback() {
+                @Override
+                public void call() {
+                  Buff.append(target, Dementage.class);
+                  target.HP = target.HT;
+                  GLog.i(Messages.get(WndUrnOfShadow.class,
+                          "sucess_dementage", target.name));
+                }
+              });
     }
 
     protected CellSelector.Listener caster = new CellSelector.Listener() {
       @Override
       public void onSelect(Integer target) {
         if (target != null) {
-          final Ballistica shot = new Ballistica(curUser.pos, target, 
+          final Ballistica shot = new Ballistica(curUser.pos, target,
                   Ballistica.MAGIC_BOLT);
           //todo: check
           Char c = Actor.findChar(shot.collisionPos);
@@ -321,7 +351,8 @@ public class UrnOfShadow extends Artifact {
                 break;
             }
           } else {
-            GLog.w(Messages.get(UrnOfShadow.WndUrnOfShadow.class, "not_select_target"));
+            GLog.w(Messages.get(UrnOfShadow.WndUrnOfShadow.class,
+                    "not_select_target"));
           }
           ;
         }

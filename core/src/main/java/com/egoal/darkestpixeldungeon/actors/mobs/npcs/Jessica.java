@@ -135,6 +135,7 @@ public class Jessica extends NPC {
 
     public static boolean spawnJessica(VillageLevel level, Room villageRoom) {
       Jessica j = new Jessica();
+      reset();  // reset quest
       do {
         j.pos = level.pointToCell(villageRoom.random(1));
       }

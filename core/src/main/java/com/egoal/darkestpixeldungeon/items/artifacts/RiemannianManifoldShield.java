@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -22,11 +23,14 @@ public class RiemannianManifoldShield extends Artifact {
     levelCap = 10;
     exp = 0;
     cooldown = 1;
+    
+    defaultAction = "NONE"; // to put into quick slot
   }
-
+  
   // called when ResistAny detached
   public void recharge() {
-    if (isEquipped(curUser)) {
+    // curUser is assigned in the execute method!!!
+    if (isEquipped(Dungeon.hero)) {
       if (level() <= 3)
         cooldown = 33 - level() * 3;
       else if (level() <= 7)
@@ -46,6 +50,7 @@ public class RiemannianManifoldShield extends Artifact {
   @Override
   public boolean doUnequip(Hero hero, boolean collect, boolean single) {
     GLog.w(Messages.get(this, "unequipped"));
+    recharge();
 
     return super.doUnequip(hero, collect, single);
   }

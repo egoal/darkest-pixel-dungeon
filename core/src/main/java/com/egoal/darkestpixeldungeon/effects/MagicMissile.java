@@ -77,7 +77,7 @@ public class MagicMissile extends Emitter {
     width = height = size;
   }
 
-  public static void blueLight(Group group, int from, int to, Callback 
+  public static void blueLight(Group group, int from, int to, Callback
           callback) {
     MagicMissile missile = ((MagicMissile) group.recycle(MagicMissile.class));
     missile.reset(from, to, callback);
@@ -98,7 +98,7 @@ public class MagicMissile extends Emitter {
     missile.pour(EarthParticle.FACTORY, 0.01f);
   }
 
-  public static void purpleLight(Group group, int from, int to, Callback 
+  public static void purpleLight(Group group, int from, int to, Callback
           callback) {
     MagicMissile missile = ((MagicMissile) group.recycle(MagicMissile.class));
     missile.reset(from, to, callback);
@@ -106,7 +106,7 @@ public class MagicMissile extends Emitter {
     missile.pour(PurpleParticle.MISSILE, 0.01f);
   }
 
-  public static void whiteLight(Group group, int from, int to, Callback 
+  public static void whiteLight(Group group, int from, int to, Callback
           callback) {
     MagicMissile missile = ((MagicMissile) group.recycle(MagicMissile.class));
     missile.reset(from, to, callback);
@@ -135,7 +135,7 @@ public class MagicMissile extends Emitter {
     missile.pour(LeafParticle.GENERAL, 0.03f);
   }
 
-  public static void slowness(Group group, int from, int to, Callback 
+  public static void slowness(Group group, int from, int to, Callback
           callback) {
     MagicMissile missile = ((MagicMissile) group.recycle(MagicMissile.class));
     missile.reset(from, to, callback);
@@ -149,7 +149,7 @@ public class MagicMissile extends Emitter {
     missile.pour(ForceParticle.FACTORY, 0.01f);
   }
 
-  public static void coldLight(Group group, int from, int to, Callback 
+  public static void coldLight(Group group, int from, int to, Callback
           callback) {
     MagicMissile missile = ((MagicMissile) group.recycle(MagicMissile.class));
     missile.reset(from, to, callback);
@@ -333,7 +333,7 @@ public class MagicMissile extends Emitter {
     public static final Emitter.Factory FACTORY = new Factory() {
       @Override
       public void emit(Emitter emitter, int index, float x, float y) {
-        ((SlowParticle) emitter.recycle(SlowParticle.class)).reset(x, y, 
+        ((SlowParticle) emitter.recycle(SlowParticle.class)).reset(x, y,
                 emitter);
       }
 
@@ -381,7 +381,7 @@ public class MagicMissile extends Emitter {
     public static final Emitter.Factory FACTORY = new Factory() {
       @Override
       public void emit(Emitter emitter, int index, float x, float y) {
-        ((ForceParticle) emitter.recycle(ForceParticle.class)).reset(index, 
+        ((ForceParticle) emitter.recycle(ForceParticle.class)).reset(index,
                 x, y);
       }
     };

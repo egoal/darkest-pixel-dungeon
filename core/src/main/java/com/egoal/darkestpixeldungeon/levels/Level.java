@@ -245,7 +245,7 @@ public abstract class Level implements Bundlable {
       if (rose != null && !rose.cursed) {
         //this way if a rose is dropped later in the game, player still has a
         // chance to max it out.
-        int petalsNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) - 
+        int petalsNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) -
                 rose.droppedPetals) / 3);
 
         for (int i = 1; i <= petalsNeeded; i++) {
@@ -559,7 +559,7 @@ public abstract class Level implements Bundlable {
     do {
       cell = Random.Int(length());
     }
-    while (!passable[cell] || Dungeon.visible[cell] || Actor.findChar(cell) 
+    while (!passable[cell] || Dungeon.visible[cell] || Actor.findChar(cell)
             != null);
     return cell;
   }
@@ -689,7 +689,7 @@ public abstract class Level implements Bundlable {
   private int getWaterTile(int pos) {
     int t = Terrain.WATER_TILES;
     for (int j = 0; j < PathFinder.NEIGHBOURS4.length; j++) {
-      if ((Terrain.flags[map[pos + PathFinder.NEIGHBOURS4[N4Indicies[j]]]] & 
+      if ((Terrain.flags[map[pos + PathFinder.NEIGHBOURS4[N4Indicies[j]]]] &
               Terrain.UNSTITCHABLE) != 0) {
         t += 1 << j;
       }
@@ -759,7 +759,7 @@ public abstract class Level implements Bundlable {
   public static void set(int cell, int terrain) {
     Painter.set(Dungeon.level, cell, terrain);
 
-    if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP && terrain 
+    if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP && terrain
             != Terrain.INACTIVE_TRAP) {
       Dungeon.level.traps.remove(cell);
     }
@@ -781,16 +781,16 @@ public abstract class Level implements Bundlable {
     // challenges primarily.
     if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food ||
             item instanceof BlandfruitBush.Seed)) ||
-            (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof 
+            (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof
                     Armor) ||
-            (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof 
+            (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof
                     PotionOfHealing) ||
-            (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item 
-                    instanceof Plant.Seed || item instanceof Dewdrop || item 
+            (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item
+                    instanceof Plant.Seed || item instanceof Dewdrop || item
                     instanceof SeedPouch)) ||
             (Dungeon.isChallenged(Challenges.NO_SCROLLS) && ((item instanceof
-                    Scroll && !(item instanceof ScrollOfUpgrade || item 
-                    instanceof ScrollOfMagicalInfusion)) || item instanceof 
+                    Scroll && !(item instanceof ScrollOfUpgrade || item
+                    instanceof ScrollOfMagicalInfusion)) || item instanceof
                     ScrollHolder)) ||
             item == null) {
 
@@ -811,7 +811,7 @@ public abstract class Level implements Bundlable {
                     (item instanceof Blandfruit && (((Blandfruit) item)
                             .potionAttrib != null || heaps.get(cell) != null)
                     ) ||
-                    Dungeon.hero.buff(AlchemistsToolkit.alchemy.class) != 
+                    Dungeon.hero.buff(AlchemistsToolkit.alchemy.class) !=
                             null && Dungeon.hero.buff(AlchemistsToolkit
                             .alchemy.class).isCursed())) {
       int n;
