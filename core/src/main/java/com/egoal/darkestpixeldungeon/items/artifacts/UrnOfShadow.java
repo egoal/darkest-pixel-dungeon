@@ -102,6 +102,7 @@ public class UrnOfShadow extends Artifact {
   }
 
   public void collectSoul(Mob mob) {
+    curUser = Dungeon.hero;
     if (!isEquipped(curUser)) {
       return;
     }
@@ -328,6 +329,7 @@ public class UrnOfShadow extends Artifact {
                           "sucess_dementage", target.name));
                 }
               });
+      Sample.INSTANCE.play(Assets.SND_ZAP);
     }
 
     protected CellSelector.Listener caster = new CellSelector.Listener() {

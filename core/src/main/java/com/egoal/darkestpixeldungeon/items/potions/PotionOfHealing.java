@@ -50,7 +50,6 @@ public class PotionOfHealing extends Potion {
   public void apply(Hero hero) {
     setKnown();
     cure(Dungeon.hero);
-    GLog.p(Messages.get(this, "heal"));
   }
 
   private void cure(Hero hero) {
@@ -63,13 +62,18 @@ public class PotionOfHealing extends Potion {
       Buff.detach(hero, Cripple.class);
       Buff.detach(hero, Weakness.class);
       Buff.detach(hero, Burning.class);
+
+      GLog.p(Messages.get(this, "heal"));
     }else{
       int value = hero.HT-hero.HP;
+      // directly recover some health, since buff is act later than chars
+      hero.HP = Math.min(hero.HT, hero.HP+value/2);
+      
       Mending m = hero.buff(Mending.class);
       if(m!=null){
-        m.set(m.recoveryValue+value);
+        m.set(m.recoveryValue+value/2);
       }else{
-        Buff.affect(hero, Mending.class).set(value);
+        Buff.affect(hero, Mending.class).set(value/2);
       }
     }
 

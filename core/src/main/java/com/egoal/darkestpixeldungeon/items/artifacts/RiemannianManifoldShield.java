@@ -68,19 +68,20 @@ public class RiemannianManifoldShield extends Artifact {
         return true;
       }
 
-      if (--cooldown == 0 && curUser.buff(ResistAny.class) == null) {
-        Buff.affect(curUser, ResistAny.class).set(1);
+      if (--cooldown == 0 && Dungeon.hero.buff(ResistAny.class) == null) {
+        Buff.affect(Dungeon.hero, ResistAny.class).set(1);
 
         exp += 1;
         // check upgrade
-        int requireExp = (level() + 1) * level();
+        int requireExp = (level() + 1) * level()+1;
         if (exp > requireExp && level() < levelCap) {
           exp -= requireExp;
           upgrade();
           GLog.p(Messages.get(RiemannianManifoldShield.class, "levelup"));
         }
       }
-
+      updateQuickslot();
+      
       spend(TICK);
       return true;
     }

@@ -416,19 +416,20 @@ public class VillageLevel extends RegularLevel {
     }
 
     // test 
-    if (true) {
-      // Rat dg	=	new Rat();
-      Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
+    if (false) {
+       Rat dg	=	new Rat();
+      // Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
       // SkeletonKnight dg	=	new SkeletonKnight();
 //			MadMan dg	=	new MadMan();
       do {
         dg.pos = pointToCell(roomEntrance.random());
       } while (findMob(dg.pos) != null || dg.pos == entrance);
       mobs.add(dg);
-
+      
       drop(new Gold(1000), entrance);
       drop(new RiemannianManifoldShield(), entrance);
       drop(new UrnOfShadow().volume(10), entrance);
+      drop(new PotionOfHealing().identify(), entrance);
     }
 
     super.createMobs();

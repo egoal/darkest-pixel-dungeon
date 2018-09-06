@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
@@ -41,6 +42,7 @@ public class Mending extends Buff {
   @Override
   public boolean act() {
     int v = (int) Math.ceil(recoveryValue / 2f);
+    recoveryValue -=  v;
     if (v <= 1) {
       detach();
     } else {
@@ -53,6 +55,9 @@ public class Mending extends Buff {
     return true;
   }
 
+  @Override
+  public int icon(){ return BuffIndicator.BLESS; }
+  
   @Override
   public String toString() {
     return Messages.get(this, "name");
