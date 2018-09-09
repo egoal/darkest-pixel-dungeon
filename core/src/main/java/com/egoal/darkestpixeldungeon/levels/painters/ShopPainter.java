@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.items.Bomb;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
+import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WarHammer;
 import com.egoal.darkestpixeldungeon.levels.LastShopLevel;
@@ -219,6 +220,7 @@ public class ShopPainter extends Painter {
 
     itemsToSpawn.add(new OverpricedRation());
     itemsToSpawn.add(new OverpricedRation());
+    itemsToSpawn.add(new Wine());
 
     itemsToSpawn.add(new Bomb().random());
     switch (Random.Int(5)) {

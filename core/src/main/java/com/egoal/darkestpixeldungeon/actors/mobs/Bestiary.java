@@ -131,7 +131,7 @@ public class Bestiary {
         chances = new float[]{1, .5f, .2f, 3, 1, 1, 0.02f, .02f};
         classes = new Class<?>[]{Bat.class, SkeletonKnight.class, MadMan
                 .class, Brute.class, Shaman.class, Spinner.class, Elemental
-                .class, MadMan.class};
+                .class, Monk.class};
         break;
       case 14:
         chances = new float[]{1, .5f, 3, 1, 4, 0.02f, 0.01f};

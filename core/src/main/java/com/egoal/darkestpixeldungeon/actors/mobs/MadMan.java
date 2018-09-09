@@ -26,13 +26,13 @@ public class MadMan extends Mob implements Callback {
   {
     spriteClass = Sprite.class;
 
-    HP = HT = 15 + 2 * Dungeon.depth;
+    HP = HT = 10 + 2 * Dungeon.depth;
     defenseSkill = 5 + Dungeon.depth;
 
     EXP = Math.min(3 + Dungeon.depth / 2, 12);
     maxLvl = Dungeon.depth + 3;
 
-    loot = Humanity.class;
+    loot = new Humanity();
     lootChance = 0.2f;
 
     addResistances(Damage.Element.SHADOW, 2f);

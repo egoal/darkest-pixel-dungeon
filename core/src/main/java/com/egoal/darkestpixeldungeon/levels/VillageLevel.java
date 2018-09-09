@@ -432,6 +432,8 @@ public class VillageLevel extends RegularLevel {
       drop(new PotionOfHealing().identify(), entrance);
     }
 
+    drop(new RiemannianManifoldShield(), entrance);
+
     super.createMobs();
   }
 

@@ -62,7 +62,9 @@ public class Tengu extends Mob {
 
     properties.add(Property.BOSS);
 
-    addResistances(Damage.Element.SHADOW, 1.25f);
+    // resistances see resist damage
+    // addResistances(Damage.Element.FIRE, 1.25f, 1f);
+    // addResistances(Damage.Element.POISON, 1.25f, 1f);
   }
 
   @Override
@@ -80,7 +82,11 @@ public class Tengu extends Mob {
 
   @Override
   public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 5);
+    if (dmg.isFeatured(Damage.Feature.RANGED))
+      dmg.value -= Random.NormalIntRange(0, 10);
+    else
+      dmg.value -= Random.NormalIntRange(0, 5);
+
     return dmg;
   }
 
@@ -236,6 +242,8 @@ public class Tengu extends Mob {
   public Damage resistDamage(Damage dmg) {
     if (dmg.isFeatured(Damage.Feature.DEATH))
       dmg.value *= 0.5;
+    else if (dmg.type == Damage.Type.MAGICAL)
+      dmg.value *= 0.75;
     return super.resistDamage(dmg);
   }
 

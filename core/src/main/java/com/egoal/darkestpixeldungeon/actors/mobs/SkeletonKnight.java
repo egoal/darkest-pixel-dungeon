@@ -29,7 +29,7 @@ public class SkeletonKnight extends Mob {
     EXP = 10;
     maxLvl = 18;
 
-    loot = Wine.class;
+    loot = new Wine();
     lootChance = .1f;
 
     properties.add(Property.UNDEAD);

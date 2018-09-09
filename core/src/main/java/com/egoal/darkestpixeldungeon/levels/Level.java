@@ -924,11 +924,13 @@ public abstract class Level implements Bundlable {
     }
 
     Trap trap = null;
+    boolean isTrapHidden = false;
 
     switch (map[cell]) {
 
       case Terrain.SECRET_TRAP:
         GLog.i(Messages.get(Level.class, "hidden_plate"));
+        isTrapHidden = true;
       case Terrain.TRAP:
         trap = traps.get(cell);
         break;
@@ -964,8 +966,8 @@ public abstract class Level implements Bundlable {
 
         trap.trigger();
 
-        // up pressure when trigger a trap
-        if (ch == Dungeon.hero && !(trap instanceof WornTrap))
+        // up pressure when trigger a hidden trap
+        if (!isTrapHidden && ch == Dungeon.hero && !(trap instanceof WornTrap))
           ch.takeDamage(new Damage(Random.NormalIntRange(1, 8), trap, ch)
                   .type(Damage.Type.MENTAL));
 

@@ -73,7 +73,7 @@ public class RiemannianManifoldShield extends Artifact {
 
         exp += 1;
         // check upgrade
-        int requireExp = (level() + 1) * level()+1;
+        int requireExp = level()* level()+1;
         if (exp > requireExp && level() < levelCap) {
           exp -= requireExp;
           upgrade();

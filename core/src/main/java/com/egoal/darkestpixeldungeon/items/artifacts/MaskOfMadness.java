@@ -42,7 +42,7 @@ public class MaskOfMadness extends Artifact {
 
     public Damage procIncomingDamage(Damage dmg) {
       float ratio = dmg.type == Damage.Type.MENTAL ? 1.25f :
-              (1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f) + 0.1f *
+              (1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f) + 0.05f *
                       level());
 
       dmg.value *= ratio;
@@ -51,7 +51,8 @@ public class MaskOfMadness extends Artifact {
     }
 
     public Damage procOutcomingDamage(Damage dmg) {
-      float ratio = 1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f);
+      // float ratio = 1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f);
+      float ratio = 2f-1.5f/((float)Math.exp(level()/3f)+.5f); 
       dmg.value *= ratio;
 
       return dmg;

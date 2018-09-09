@@ -108,7 +108,7 @@ public class Toolbar extends Component {
 
     btnQuick = new QuickslotTool[NUM_QUICK_SLOTS];
     for (int i = 0; i < NUM_QUICK_SLOTS; ++i) {
-      add(btnQuick[NUM_QUICK_SLOTS - 1 - i] = new QuickslotTool(64, 0, 22, 
+      add(btnQuick[NUM_QUICK_SLOTS - 1 - i] = new QuickslotTool(64, 0, 22,
               24, NUM_QUICK_SLOTS - 1 - i));
     }
 
@@ -117,7 +117,7 @@ public class Toolbar extends Component {
 
       @Override
       protected void onClick() {
-        GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, 
+        GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null,
                 WndBag.Mode.ALL, null));
       }
 
@@ -169,31 +169,37 @@ public class Toolbar extends Component {
     float right = width;
     switch (Mode.valueOf(DarkestPixelDungeon.toolbarMode())) {
       case SPLIT:
-        // 4 lines, text height is 6
-        btnSearch.setPos(x, y - btnQuick[0].height() - 6 * 5);
-        btnWait.setPos(x, btnSearch.top() - btnSearch.height());
+        // if more than 3 quick buttons is used, move up
+        if (slots > 3) {
+          // 4 lines, text height is 6
+          btnSearch.setPos(x, y - btnQuick[0].height() - 6 * 5);
+          btnWait.setPos(x, btnSearch.top() - btnSearch.height());
+        } else {
+          btnWait.setPos(x, y+2);
+          btnSearch.setPos(btnWait.right(), btnWait.top());
+        }
 
+        // bottom right
         btnInventory.setPos(right - btnInventory.width(), y);
 
         // layout the quick slots
-        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), 
+        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(),
                 visible[0]);
-        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(), 
+        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(),
                 visible[1]);
-        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(), 
+        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(),
                 visible[2]);
-        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(), 
+        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(),
                 visible[3]);
-        btnQuick[4].setPos(btnQuick[3].left() - btnQuick[4].width(), 
+        btnQuick[4].setPos(btnQuick[3].left() - btnQuick[4].width(),
                 visible[4]);
-        btnQuick[5].setPos(btnQuick[4].left() - btnQuick[5].width(), 
+        btnQuick[5].setPos(btnQuick[4].left() - btnQuick[5].width(),
                 visible[5]);
         break;
 
-      //center = group but.. well.. centered, so all we need to do is 
-      // pre-emptively set the right side further in.
+      //! blew 2 mode is disabled ever since, 
       case CENTER:
-        float toolbarWidth = btnWait.width() + btnSearch.width() + 
+        float toolbarWidth = btnWait.width() + btnSearch.width() +
                 btnInventory.width();
         for (Button slot : btnQuick) {
           if (slot.visible) toolbarWidth += slot.width();
@@ -205,18 +211,19 @@ public class Toolbar extends Component {
         btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
         btnInventory.setPos(btnSearch.left() - btnInventory.width(), y);
 
-        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), 
+        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(),
                 visible[0]);
-        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(), 
+        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(),
                 visible[1]);
-        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(), 
+        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(),
                 visible[2]);
-        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(), 
+        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(),
                 visible[3]);
         break;
     }
     right = width;
 
+    // this is also disabled
     if (DarkestPixelDungeon.flipToolbar()) {
 
       btnWait.setPos((right - btnWait.right()), y);
@@ -358,7 +365,7 @@ public class Toolbar extends Component {
     @Override
     protected void layout() {
       super.layout();
-      slot.setRect(x + borderLeft, y + 2, width - borderLeft - borderRight, 
+      slot.setRect(x + borderLeft, y + 2, width - borderLeft - borderRight,
               height - 4);
     }
 

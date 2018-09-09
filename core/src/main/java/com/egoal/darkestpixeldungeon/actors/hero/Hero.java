@@ -1177,10 +1177,10 @@ public class Hero extends Char {
         if (dmg.isFeatured(Damage.Feature.CRITCIAL)) {
           // when take critical damage, up pressure
           if (dmg.type != Damage.Type.MENTAL)
-            dmgMental.value += dmg.value / 4;
+            dmgMental.value += Random.Int(dmg.value / 4);
         }
-        if (!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP < HT / 4 && dmg
-                .value > 0) {
+        if (!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP < HT / 4 &&
+                dmg.from instanceof Mob && dmg.value > 0) {
           // when health is low	
           dmgMental.value += Random.Int(1, 5);
         }

@@ -164,7 +164,7 @@ public class Pressure extends Buff implements Hero.Doom {
       if (Dungeon.depth > 0) {
         // chance to increase, not in the village
         if (Random.Int(10) == 0) {
-          upPressure(Random.Int(1, (Dungeon.depth* 2 / 7 + 1)));
+          upPressure(Random.Int(1, 4+Dungeon.depth/5));
         }
       }
 

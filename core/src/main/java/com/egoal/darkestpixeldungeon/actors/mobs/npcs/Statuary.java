@@ -378,7 +378,8 @@ public class Statuary extends NPC {
       Generator.Category gc = Random.Float() < .4 ? Generator.Category
               .WEAPON : Generator.Category.ARMOR;
       Item item = Generator.random(gc);
-      item.upgrade(1);
+      if (Random.Float() < .4)
+        item.upgrade(1);
       if (item instanceof Armor) {
         ((Armor) item).inscribe(Armor.Glyph.randomCurse());
       } else if (item instanceof Weapon) {
