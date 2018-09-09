@@ -108,6 +108,7 @@ public class DPDShopKeeper extends NPC {
 
   @Override
   public void add(Buff buff) {
+    flee();
   }
 
   @Override

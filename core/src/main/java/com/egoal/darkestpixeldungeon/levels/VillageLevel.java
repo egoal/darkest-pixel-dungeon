@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fog;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
+import com.egoal.darkestpixeldungeon.actors.mobs.Crab;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.actors.mobs.MadMan;
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
@@ -20,6 +21,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
@@ -28,6 +30,7 @@ import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
@@ -416,8 +419,9 @@ public class VillageLevel extends RegularLevel {
     }
 
     // test 
-    if (false) {
-       Rat dg	=	new Rat();
+    if (true) {
+       // Rat dg	=	new Rat();
+      Crab dg = new Crab();
       // Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
       // SkeletonKnight dg	=	new SkeletonKnight();
 //			MadMan dg	=	new MadMan();
@@ -431,8 +435,8 @@ public class VillageLevel extends RegularLevel {
       drop(new UrnOfShadow().volume(10), entrance);
       drop(new PotionOfHealing().identify(), entrance);
     }
-
-    drop(new RiemannianManifoldShield(), entrance);
+    
+    drop(new WandOfFireblast().identify(), entrance);
 
     super.createMobs();
   }

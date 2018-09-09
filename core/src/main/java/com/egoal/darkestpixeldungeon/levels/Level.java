@@ -967,7 +967,7 @@ public abstract class Level implements Bundlable {
         trap.trigger();
 
         // up pressure when trigger a hidden trap
-        if (!isTrapHidden && ch == Dungeon.hero && !(trap instanceof WornTrap))
+        if (isTrapHidden && ch == Dungeon.hero)
           ch.takeDamage(new Damage(Random.NormalIntRange(1, 8), trap, ch)
                   .type(Damage.Type.MENTAL));
 
