@@ -1141,9 +1141,8 @@ public class Hero extends Char {
 
     CapeOfThorns.Thorns thorns = buff(CapeOfThorns.Thorns.class);
     if (thorns != null)
-      dmg.value = thorns.proc(dmg.value, (dmg.from instanceof Char ? (Char)
-              dmg.from : null), this);
-
+      dmg = thorns.proc(dmg);
+    
     MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
     if (madness != null)
       dmg = madness.procIncomingDamage(dmg);

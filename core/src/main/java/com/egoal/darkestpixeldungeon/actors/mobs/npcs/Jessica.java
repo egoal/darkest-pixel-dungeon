@@ -173,7 +173,8 @@ public class Jessica extends NPC {
           do {
             heap.pos = level.pointToCell(room.random());
           }
-          while (level.map[heap.pos] == Terrain.ENTRANCE || level.map[heap.pos] == Terrain.SIGN);
+          while (level.map[heap.pos] == Terrain.ENTRANCE || 
+                  !level.passable[heap.pos]);
           level.heaps.put(heap.pos, heap);
 
           spawned_ = true;

@@ -67,9 +67,10 @@ public class Fire extends Blob {
 
         } else {
 
-          if (flamable[cell]
-                  && (cur[cell - 1] > 0
-                  || cur[cell + 1] > 0
+          // expand, 
+          // since the outer box must be wall, no need to do border check.
+          if (flamable[cell] && 
+                  (cur[cell - 1] > 0 || cur[cell + 1] > 0
                   || cur[cell - Dungeon.level.width()] > 0
                   || cur[cell + Dungeon.level.width()] > 0)) {
             fire = 4;

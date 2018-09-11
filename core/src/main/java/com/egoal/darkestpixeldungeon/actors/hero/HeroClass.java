@@ -136,29 +136,22 @@ public enum HeroClass {
   }
 
   private static void initDebug(Hero hero) {
-    for (int i = 0; i < 9; ++i) {
-      (new ScrollOfMagicMapping()).identify().collect();
-
-      (new PotionOfHealing()).identify().collect();
-      (new PotionOfStrength()).identify().collect();
-      (new PotionOfExperience()).identify().collect();
-
-      (new PotionOfMindVision()).identify().collect();
-    }
-
-    (new PlateArmor()).upgrade(6).identify().collect();
-    (new AssassinsBlade()).upgrade(6).identify().collect();
-
-    (new WandOfPrismaticLight()).identify().collect();
+    hero.HP = 1;
+    hero.HT = 300;
+    hero.STR  = 20;
+    
+    new ScrollOfMagicMapping().quantity(9).identify().collect();
+    new PotionOfHealing().quantity(9).identify().collect();
+    new PotionOfExperience().quantity(20).identify().collect();
+    new PotionOfMindVision().quantity(9).identify().collect();
+    
+    (new PlateArmor()).upgrade(9).identify().collect();
+    (new AssassinsBlade()).upgrade(9).identify().collect();
 
     (new TomeOfMastery()).identify().collect();
     (new ArmorKit()).identify().collect();
 
-    (new ScrollOfTerror()).identify().collect();
-
     (new SeedPouch()).identify().collect();
-
-    hero.HP = 1;
   }
 
   public Badges.Badge masteryBadge() {

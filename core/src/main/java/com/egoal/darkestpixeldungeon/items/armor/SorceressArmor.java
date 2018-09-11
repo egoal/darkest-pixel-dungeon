@@ -42,14 +42,14 @@ public class SorceressArmor extends ClassArmor {
     // do
     for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size
             ()])) {
-      if (Level.fieldOfView[mob.pos]) {
-        // terrified & venom 
-        Buff.affect(mob, Terror.class, 3).object = curUser.id();
-
+      if (Level.fieldOfView[mob.pos] && Dungeon.level.distance(mob.pos, curUser.pos)<8) {
+        // terrified & venom
         Venom v = new Venom();
         // fixme: null danger
-        v.set(5f, (curUser.giveDamage(null).value / 5 + 2));
+        v.set(5f, (curUser.giveDamage(mob).value / 5 + 2));
         v.attachTo(mob);
+
+        Buff.affect(mob, Terror.class, 3).object = curUser.id();
       }
     }
 

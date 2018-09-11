@@ -23,12 +23,17 @@ package com.egoal.darkestpixeldungeon.items.artifacts;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
+import javax.microedition.khronos.opengles.GL;
+
+//* check in Hero::takeDamage
 public class CapeOfThorns extends Artifact {
 
   {
@@ -36,7 +41,7 @@ public class CapeOfThorns extends Artifact {
 
     levelCap = 10;
 
-    charge = 0;
+    charge = 99;
     chargeCap = 100;
     cooldown = 0;
 
@@ -78,37 +83,39 @@ public class CapeOfThorns extends Artifact {
       return true;
     }
 
-    public int proc(int damage, Char attacker, Char defender) {
-      if (cooldown == 0) {
-        charge += damage * (0.5 + level() * 0.05);
-        if (charge >= chargeCap) {
-          charge = 0;
-          cooldown = 10 + level();
+    public Damage proc(Damage dmg){
+      if(cooldown==0){
+        charge  +=  dmg.value*(.5+level()*.05);
+        if(charge>=chargeCap){
+          charge  = 0;
+          cooldown  = 10+level();
           GLog.p(Messages.get(this, "radiating"));
           BuffIndicator.refreshHero();
         }
       }
-
-      if (cooldown != 0) {
-        int deflected = Random.NormalIntRange(0, damage);
-        damage -= deflected;
-
-        if (attacker != null && Dungeon.level.adjacent(attacker.pos, defender
-                .pos)) {
-          attacker.takeDamage(new Damage(deflected, this, attacker));
-        }
-
+      
+      if(cooldown!=0){
+        // has the buff
+        int deflected = Random.NormalIntRange(0, dmg.value);
+        dmg.value -=  deflected;
+        
+        if(dmg.from instanceof Mob && dmg.to instanceof Hero && 
+                Dungeon.level.adjacent(((Mob) dmg.from).pos, 
+                ((Hero) dmg.to).pos))
+          ((Mob) dmg.from).takeDamage(new Damage(deflected, dmg.to, dmg.from));
+        
         exp += deflected;
-
-        if (exp >= (level() + 1) * 5 && level() < levelCap) {
-          exp -= (level() + 1) * 5;
+        int requireExp  = (level()+1)*5;
+        if(exp>=requireExp && level()<levelCap){
+          exp -=  requireExp;
           upgrade();
           GLog.p(Messages.get(this, "levelup"));
         }
-
       }
+      
       updateQuickslot();
-      return damage;
+      
+      return dmg;
     }
 
     @Override

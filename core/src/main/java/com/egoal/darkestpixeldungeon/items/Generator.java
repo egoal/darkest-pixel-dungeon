@@ -395,7 +395,7 @@ public class Generator {
             Dreamfoil.Seed.class,
             Stormvine.Seed.class,
             Starflower.Seed.class};
-    Category.SEED.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 
+    Category.SEED.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 2, 12, 
             12, 1};
   }
 

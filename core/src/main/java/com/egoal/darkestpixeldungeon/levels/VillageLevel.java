@@ -24,11 +24,16 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
+import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage;
+import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
@@ -381,62 +386,24 @@ public class VillageLevel extends RegularLevel {
       mobs.add(s);
     }
 
-    // shopkeepers
-    if (false) {
-      DPDShopKeeper dsk = new DPDShopKeeper().initSellItems();
-      dsk.addItemToSell(new PotionOfHealing());
-      dsk.addItemToSell(new PotionOfHealing());
-      dsk.addItemToSell(new AssassinsBlade());
-      dsk.addItemToSell(new ScrollOfUpgrade());
-      dsk.addItemToSell(new Torch().quantity(3));
-      dsk.addItemToSell(new Knuckles());
-      dsk.addItemToSell(new BattleGloves());
-      do {
-        dsk.pos = pointToCell(roomExit.random(1));
-      }
-      while (findMob(dsk.pos) != null || !passable[dsk.pos] || map[dsk.pos]
-              == Terrain.SIGN);
-      mobs.add(dsk);
-
-      {
-        DPDShopKeeper ps = new PotionSeller().initSellItems();
-        do {
-          ps.pos = pointToCell(roomExit.random(1));
-        }
-        while (findMob(ps.pos) != null || !passable[ps.pos] || map[ps.pos] ==
-                Terrain.SIGN);
-        mobs.add(ps);
-      }
-      {
-        DPDShopKeeper ps = new ScrollSeller().initSellItems();
-        do {
-          ps.pos = pointToCell(roomExit.random(1));
-        }
-        while (findMob(ps.pos) != null || !passable[ps.pos] || map[ps.pos] ==
-                Terrain.SIGN);
-        mobs.add(ps);
-      }
-    }
-
     // test 
-    if (true) {
-       // Rat dg	=	new Rat();
-      Crab dg = new Crab();
-      // Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
-      // SkeletonKnight dg	=	new SkeletonKnight();
-//			MadMan dg	=	new MadMan();
-      do {
-        dg.pos = pointToCell(roomEntrance.random());
-      } while (findMob(dg.pos) != null || dg.pos == entrance);
-      mobs.add(dg);
+    if (false) {
+      // Rat dg	=	new Rat();
+//      Crab dg = new Crab();
+//      // Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
+//      // SkeletonKnight dg	=	new SkeletonKnight();
+////			MadMan dg	=	new MadMan();
+//      do {
+//        dg.pos = pointToCell(roomEntrance.random());
+//      } while (findMob(dg.pos) != null || dg.pos == entrance);
+//      mobs.add(dg);
+      // drop(new ScrollOfMagicMapping().quantity(9).identify(), entrance);
       
-      drop(new Gold(1000), entrance);
-      drop(new RiemannianManifoldShield(), entrance);
-      drop(new UrnOfShadow().volume(10), entrance);
-      drop(new PotionOfHealing().identify(), entrance);
+      CapeOfThorns c  = new CapeOfThorns();
+      c.upgrade(5).identify();
+      drop(c, entrance);
+      drop(new ClothArmor().inscribe(new Camouflage()).identify(), entrance);
     }
-    
-    drop(new WandOfFireblast().identify(), entrance);
 
     super.createMobs();
   }

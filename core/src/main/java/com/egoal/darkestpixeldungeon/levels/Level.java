@@ -347,7 +347,7 @@ public abstract class Level implements Bundlable {
       width = bundle.getInt("width");
       height = bundle.getInt("height");
     } else
-      width = height = 32; //default sizes
+      width = height = 36; //default sizes
     length = width * height;
     PathFinder.setMapSize(width(), height());
 
@@ -1183,6 +1183,7 @@ public abstract class Level implements Bundlable {
       case Terrain.BARRICADE:
         return Messages.get(Level.class, "barricade_name");
       case Terrain.HIGH_GRASS:
+      case Terrain.HIGH_GRASS_COLLECTED:
         return Messages.get(Level.class, "high_grass_name");
       case Terrain.LOCKED_EXIT:
         return Messages.get(Level.class, "locked_exit_name");
@@ -1231,6 +1232,7 @@ public abstract class Level implements Bundlable {
       case Terrain.EMBERS:
         return Messages.get(Level.class, "embers_desc");
       case Terrain.HIGH_GRASS:
+      case Terrain.HIGH_GRASS_COLLECTED:
         return Messages.get(Level.class, "high_grass_desc");
       case Terrain.LOCKED_DOOR:
         return Messages.get(Level.class, "locked_door_desc");

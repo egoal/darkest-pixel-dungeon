@@ -73,13 +73,6 @@ public class Blob extends Actor {
     }
   }
 
-  private int[] trim(int start, int end) {
-    int len = end - start;
-    int[] copy = new int[len];
-    System.arraycopy(cur, start, copy, 0, len);
-    return copy;
-  }
-
   @Override
   public void restoreFromBundle(Bundle bundle) {
 
@@ -89,7 +82,9 @@ public class Blob extends Actor {
       cur = new int[bundle.getInt(LENGTH)];
     } else {
       //compatability with pre-0.4.2
-      cur = new int[1024];
+      // cur = new int[Dungeon.level.length()]; // level has not initialized, 
+      // now, the map size is 36 x 36
+      cur = new int[36*36];
     }
     off = new int[cur.length];
 
@@ -101,6 +96,13 @@ public class Blob extends Actor {
         volume += data[i];
       }
     }
+  }
+
+  private int[] trim(int start, int end) {
+    int len = end - start;
+    int[] copy = new int[len];
+    System.arraycopy(cur, start, copy, 0, len);
+    return copy;
   }
 
   @Override

@@ -777,7 +777,7 @@ public abstract class RegularLevel extends Level {
   @Override
   protected void createItems() {
 
-    int nItems  = Random.Int(3, 5);
+    int nItems  = 3;
     int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
 
     //just in case someone gets a ridiculous ring, cap this at 80%

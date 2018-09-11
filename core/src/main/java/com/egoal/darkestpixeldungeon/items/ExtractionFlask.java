@@ -118,13 +118,6 @@ public class ExtractionFlask extends Item {
     return false;
   }
 
-  private static final HashMap<Class<?>, Class<?>> hmSeed2Enhantment = new 
-          HashMap<Class<?>, Class<?>>() {
-    {
-      put(Blindweed.Seed.class, Dazzling.class);
-    }
-  };
-
   public static String verifyItems(Item item1, Item item2, int mode) {
     if (mode == WndExtractionFlask.MODE_REFINE) {
       DewVial dv = Dungeon.hero.belongings.getItem(DewVial.class);
@@ -167,7 +160,7 @@ public class ExtractionFlask extends Item {
       if (Random.Int(15) == 0)
         GLog.w(Messages.get(ExtractionFlask.class, "refine_failed"));
       else
-        potion = Random.Int(4) == 0 ? new PotionOfToxicGas() :
+        potion = Random.Int(5) == 0 ? new PotionOfToxicGas() :
                 Generator.random(Generator.Category.POTION);
     }
 
