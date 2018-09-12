@@ -108,10 +108,10 @@ abstract public class KindOfWeapon extends EquipableItem {
     return 1;
   }
 
-  public int defenseFactor(Hero hero) {
-    return 0;
+  public Damage defendDamage(Damage dmg){
+    return dmg;
   }
-
+  
   // process, called in attackProc
   public Damage proc(Damage dmg) {
     return dmg;

@@ -399,10 +399,12 @@ public class VillageLevel extends RegularLevel {
 //      mobs.add(dg);
       // drop(new ScrollOfMagicMapping().quantity(9).identify(), entrance);
       
-      CapeOfThorns c  = new CapeOfThorns();
-      c.upgrade(5).identify();
-      drop(c, entrance);
-      drop(new ClothArmor().inscribe(new Camouflage()).identify(), entrance);
+//      CapeOfThorns c  = new CapeOfThorns();
+//      c.upgrade(5).identify();
+//      drop(c, entrance);
+//      drop(new ClothArmor().inscribe(new Camouflage()).identify(), entrance);
+      drop(new RiemannianManifoldShield().identify(), entrance);
+      drop(new UrnOfShadow().identify(), entrance);
     }
 
     super.createMobs();

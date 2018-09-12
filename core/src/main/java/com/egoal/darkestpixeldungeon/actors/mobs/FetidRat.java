@@ -50,7 +50,7 @@ public class FetidRat extends Rat {
 
     addResistances(Damage.Element.POISON, 1.25f);
     addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
+    addResistances(Damage.Element.HOLY, .8f);
   }
 
   @Override

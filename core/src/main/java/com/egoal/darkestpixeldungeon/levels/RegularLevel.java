@@ -63,12 +63,12 @@ public abstract class RegularLevel extends Level {
   public int secretDoors;
 
   @Override
-  protected void setupSize(){
-    if(width==0&& height==0)
-      width = height  = 36;
-    length  = width*height;
+  protected void setupSize() {
+    if (width == 0 && height == 0)
+      width = height = 36;
+    length = width * height;
   }
-  
+
   @Override
   protected boolean build() {
 
@@ -327,7 +327,7 @@ public abstract class RegularLevel extends Level {
     if (feeling == Feeling.GRASS) {
 
       for (Room room : rooms) {
-        if (room.type != Type.NULL && room.type != Type.PASSAGE && room.type 
+        if (room.type != Type.NULL && room.type != Type.PASSAGE && room.type
                 != Type.TUNNEL) {
           grass[(room.left + 1) + (room.top + 1) * width()] = true;
           grass[(room.right - 1) + (room.top + 1) * width()] = true;
@@ -345,7 +345,7 @@ public abstract class RegularLevel extends Level {
             count++;
           }
         }
-        map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : 
+        map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS :
                 Terrain.GRASS;
       }
     }
@@ -447,8 +447,8 @@ public abstract class RegularLevel extends Level {
       split(new Rect(rect.left, rect.top, rect.right, vh));
       split(new Rect(rect.left, vh, rect.right, rect.bottom));
 
-    } else if ((Math.random() <= (minRoomSize * minRoomSize / rect.square()) 
-            && w <= maxRoomSize && h <= maxRoomSize) || w < minRoomSize || h 
+    } else if ((Math.random() <= (minRoomSize * minRoomSize / rect.square())
+            && w <= maxRoomSize && h <= maxRoomSize) || w < minRoomSize || h
             < minRoomSize) {
 
       rooms.add((Room) new Room().set(rect));
@@ -532,7 +532,7 @@ public abstract class RegularLevel extends Level {
     lights = Math.min(lights, alCells.size());
     Collections.shuffle(alCells);
     for (int i = 0; i < lights; ++i)
-      map[alCells.get(i)] = Random.Int(5) == 0 ? Terrain.WALL_LIGHT_OFF : 
+      map[alCells.get(i)] = Random.Int(5) == 0 ? Terrain.WALL_LIGHT_OFF :
               Terrain.WALL_LIGHT_ON;
   }
 
@@ -681,7 +681,7 @@ public abstract class RegularLevel extends Level {
     Iterator<Room> stdRoomIter = stdRooms.iterator();
 
     // random spawn seller
-    if (Dungeon.depth > 0 && Dungeon.depth<20) {
+    if (Dungeon.depth > 0 && Dungeon.depth < 20) {
       float psratio = Dungeon.shopOnLevel() ? .1f : .2f;
       if (Random.Float() < psratio) {
         DPDShopKeeper ps = new PotionSeller().initSellItems();
@@ -746,7 +746,7 @@ public abstract class RegularLevel extends Level {
       }
 
       cell = pointToCell(room.random());
-      if (!Dungeon.visible[cell] && Actor.findChar(cell) == null && 
+      if (!Dungeon.visible[cell] && Actor.findChar(cell) == null &&
               passable[cell]) {
         return cell;
       }
@@ -777,7 +777,7 @@ public abstract class RegularLevel extends Level {
   @Override
   protected void createItems() {
 
-    int nItems  = 3;
+    int nItems = 3;
     int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
 
     //just in case someone gets a ridiculous ring, cap this at 80%
@@ -878,7 +878,8 @@ public abstract class RegularLevel extends Level {
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
 
-    rooms = new HashSet<>((Collection<Room>) ((Collection<?>) bundle.getCollection("rooms")));
+    rooms = new HashSet<>((Collection<Room>) ((Collection<?>) bundle
+            .getCollection("rooms")));
     for (Room r : rooms) {
       if (r.type == Type.WEAK_FLOOR) {
         weakFloorCreated = true;

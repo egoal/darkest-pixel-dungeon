@@ -412,8 +412,11 @@ public class Hero extends Char {
     if (dmg.type == Damage.Type.MENTAL) {
       // do nothing, todo: mental defense
     } else {
+      if(belongings.weapon!=null)
+        dmg = belongings.weapon.defendDamage(dmg);
+      
       int dr = 0;
-
+      
       if (belongings.armor != null) {
         dr = Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor
                 .DRMax());
@@ -423,9 +426,6 @@ public class Hero extends Char {
           dr = Math.max(dr, 0);
         }
       }
-
-      if (belongings.weapon != null)
-        dr += Random.NormalIntRange(0, belongings.weapon.defenseFactor(this));
 
       // barkskin buff
       Barkskin bark = buff(Barkskin.class);

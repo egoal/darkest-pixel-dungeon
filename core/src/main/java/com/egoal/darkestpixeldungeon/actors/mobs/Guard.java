@@ -58,7 +58,7 @@ public class Guard extends Mob {
     lootChance = 0.25f;
 
     properties.add(Property.DEMONIC);
-    addResistances(Damage.Element.HOLY, .667f);
+    addResistances(Damage.Element.HOLY, .8f);
   }
 
   @Override

@@ -282,9 +282,9 @@ public class ShopPainter extends Painter {
         rare = Generator.random(Generator.Category.RING);
         rare.level(1);
         break;
-      case 2:
-        rare = Generator.random(Generator.Category.ARTIFACT).identify();
-        break;
+//      case 2:
+//        rare = Generator.random(Generator.Category.ARTIFACT).identify();
+//        break;
       default:
         rare = new Stylus();
     }

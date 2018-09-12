@@ -96,8 +96,9 @@ public class Statue extends Mob {
 
   @Override
   public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, Dungeon.depth + weapon
-            .defenseFactor(null));
+    dmg = weapon.defendDamage(dmg);
+    dmg.value -= Random.NormalIntRange(0, Dungeon.depth);
+    
     return dmg;
   }
 

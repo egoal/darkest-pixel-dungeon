@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
@@ -32,6 +33,7 @@ public class ResistAny extends Buff {
           if(item instanceof RiemannianManifoldShield)
             ((RiemannianManifoldShield) item).recharge();
       }
+      target.sprite.showStatus(CharSprite.WARNING, Messages.get(this, "resist"));
       detach();
     }
   }

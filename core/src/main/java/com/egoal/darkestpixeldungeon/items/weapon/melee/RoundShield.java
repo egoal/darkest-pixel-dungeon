@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.melee;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -38,7 +39,13 @@ public class RoundShield extends MeleeWeapon {
   }
 
   @Override
-  public int defenseFactor(Hero hero) {
-    return 5 + 2 * level();     //5 extra defence, plus 2 per level;
+  public Damage defendDamage(Damage dmg) {
+    int value = 5 + 2 * level();
+    if (dmg.type == Damage.Type.NORMAL)
+      dmg.value -= value;
+    else if (dmg.type == Damage.Type.MAGICAL)
+      dmg.value -= value * 4 / 5;
+
+    return dmg;
   }
 }

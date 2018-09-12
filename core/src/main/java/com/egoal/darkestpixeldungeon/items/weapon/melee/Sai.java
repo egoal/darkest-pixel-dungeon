@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.melee;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -39,7 +40,10 @@ public class Sai extends MeleeWeapon {
   }
 
   @Override
-  public int defenseFactor(Hero hero) {
-    return 3;  //3 extra defence
+  public Damage defendDamage(Damage dmg){
+    if(dmg.type== Damage.Type.NORMAL)
+      dmg.value -=  3;
+    
+    return dmg;
   }
 }

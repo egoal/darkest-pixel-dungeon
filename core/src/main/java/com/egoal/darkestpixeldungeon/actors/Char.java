@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -142,6 +143,12 @@ public abstract class Char extends Actor {
         dmg = enemy.defendDamage(dmg);
 
       dmg = attackProc(dmg);
+      
+      ResistAny ra  = enemy.buff(ResistAny.class);
+      if(ra!=null && dmg.type!= Damage.Type.MENTAL){
+        ra.resist();
+        dmg.value = 0;
+      }
       dmg = enemy.defenseProc(dmg);
 
       // todo: use more sfx
@@ -330,18 +337,18 @@ public abstract class Char extends Actor {
   }
 
   protected Damage resistDamage(Damage dmg) {
+    ResistAny ra  = buff(ResistAny.class);
+    if(ra!=null && dmg.type!= Damage.Type.MENTAL){
+      ra.resist();
+      dmg.value = 0;
+      return dmg;
+    }
+    
     for (Class<?> im : immunizedBuffs())
       if (dmg.from.getClass() == im) {
         dmg.value = 0;
         return dmg;
       }
-      
-    ResistAny ra  = buff(ResistAny.class);
-    if(ra!=null){
-      ra.resist();
-      dmg.value = 0;
-      return dmg;
-    }
 
     HashMap<Integer, Float> mr = null;
     if (dmg.type == Damage.Type.NORMAL)

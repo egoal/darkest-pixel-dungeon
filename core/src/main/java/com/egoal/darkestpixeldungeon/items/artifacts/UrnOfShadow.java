@@ -269,6 +269,9 @@ public class UrnOfShadow extends Artifact {
                           .addElement(Damage.Element.SHADOW);
                   target.takeDamage(dmg);
                   Buff.affect(target, SoulBurning.class).reignite(target);
+                  
+                  // pass
+                  curUser.next();
                 }
               });
       Sample.INSTANCE.play(Assets.SND_ZAP);
@@ -287,6 +290,8 @@ public class UrnOfShadow extends Artifact {
                 public void call() {
                   SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION *
                           (float) Math.pow(1.1, level()));
+
+                  curUser.next();
                 }
               });
       Sample.INSTANCE.play(Assets.SND_ZAP);
@@ -327,6 +332,8 @@ public class UrnOfShadow extends Artifact {
                   target.HP = target.HT;
                   GLog.i(Messages.get(WndUrnOfShadow.class,
                           "sucess_dementage", target.name));
+
+                  curUser.next();
                 }
               });
       Sample.INSTANCE.play(Assets.SND_ZAP);

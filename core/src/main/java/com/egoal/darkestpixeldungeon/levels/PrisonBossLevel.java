@@ -116,6 +116,13 @@ public class PrisonBossLevel extends Level {
   }
 
   @Override
+  protected void setupSize() {
+    if (width == 0 || height == 0)
+      width = height = 32;
+    length = width * height;
+  }
+
+  @Override
   protected boolean build() {
 
     map = MAP_START.clone();
@@ -403,7 +410,7 @@ public class PrisonBossLevel extends Level {
   // instead of hard-coding
   //Especially as I means I won't be limited to legal identifiers
   private static final int[] MAP_START =
-          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, 
+          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W, W, W,
@@ -469,7 +476,7 @@ public class PrisonBossLevel extends Level {
                   W, W, W, W, W, W, W, W, W, W, W, W};
 
   private static final int[] MAP_MAZE =
-          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, 
+          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, e, e, e, W, W, M, W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W, W, W,
@@ -535,7 +542,7 @@ public class PrisonBossLevel extends Level {
                   W, W, W, W, W, W, W, W, W, W, W, W};
 
   private static final int[] MAP_ARENA =
-          {W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, 
+          {W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W,
                   W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e,
                   e, e, e, e, e, e, W, W, W, W, W, W,
@@ -601,7 +608,7 @@ public class PrisonBossLevel extends Level {
                   W, W, W, W, W, W, W, W, W, W, W, W};
 
   private static final int[] MAP_END =
-          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, 
+          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W, W, W,
@@ -629,24 +636,42 @@ public class PrisonBossLevel extends Level {
                   W, W, W, W, W, W, W, W, W, W, W, W,
                   W, e, e, e, D, e, D, e, e, e, e, e, e, e, e, e, W, W, W, W,
                   W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, X, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, e, W, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, M, W, D, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, P, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
+                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, M, W, W, e, W, W, e, e, e, e, e, e, e, e, e, e, e, e,
+                  e, X, W, W, W, W, W, W, W, W, W, W,
+                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, e, e, e, D, e, D, e, e, e, W, e, e, e, e, e, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, M, W, W, e, W, W, e, W, e, e, e, e, e, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, e, e, e, D, e, D, e, e, e, e, e, e, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, e, e, e, W, e, W, e, e, e, e, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, M, W, D, W, M, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, T, T, P, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+                  W, W, W, W, W, W, W, W, W, W, W, W};
 
 
   public static class exitVisual extends CustomTileVisual {

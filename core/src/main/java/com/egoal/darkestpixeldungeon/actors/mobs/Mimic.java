@@ -55,7 +55,6 @@ public class Mimic extends Mob {
     spriteClass = MimicSprite.class;
 
     properties.add(Property.DEMONIC);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   public ArrayList<Item> items;

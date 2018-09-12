@@ -31,12 +31,10 @@ public class RiemannianManifoldShield extends Artifact {
   public void recharge() {
     // curUser is assigned in the execute method!!!
     if (isEquipped(Dungeon.hero)) {
-      if (level() <= 3)
-        cooldown = 33 - level() * 3;
-      else if (level() <= 7)
-        cooldown = 24 - (level() - 3) * 2;
+      if(level()<=5)
+        cooldown  = 45-level()*3;
       else
-        cooldown = 16 - (level() - 7);
+        cooldown  = 30-(level()-5)*3;
     }
   }
 
