@@ -61,7 +61,7 @@ public class Humanity extends Item {
 
       hero.sprite.operate(hero.pos);
 
-      GLog.i(Messages.get(this, "used"));
+      GLog.p(Messages.get(this, "used"));
     }
   }
 

@@ -28,7 +28,7 @@ public class DevilGhost extends Wraith {
     spriteClass = DevilGhostSprite.class;
 
     HP = HT = 4;
-    EXP = 5;
+    EXP = 1;
 
     loot = new DemonicSkull();
     lootChance = 1.f;

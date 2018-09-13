@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -138,8 +139,8 @@ public class Goo extends Mob {
   public Damage attackProc(Damage damage) {
     Char enemy = (Char) damage.to;
     if (Random.Int(3) == 0) {
-      Buff.affect(enemy, Ooze.class);
-      enemy.sprite.burst(0x000000, 5);
+      Buff.prolong(enemy, Vulnerable.class, 3).ratio  = 1.25f;
+      enemy.sprite.burst(0xFF0000, 5);
     }
 
     if (pumpedUp > 0) {
@@ -147,6 +148,16 @@ public class Goo extends Mob {
     }
 
     return damage;
+  }
+
+  @Override
+  public Damage defenseProc(Damage dmg) {
+    if(pumpedUp==0 && Random.Int(4)==0){
+      Buff.affect(enemy, Ooze.class);
+      enemy.sprite.burst(0x000000, 5);
+    }
+    
+    return super.defenseProc(dmg);
   }
 
   @Override

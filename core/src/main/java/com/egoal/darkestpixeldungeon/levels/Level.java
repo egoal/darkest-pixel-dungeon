@@ -201,7 +201,7 @@ public abstract class Level implements Bundlable {
     mapped = new boolean[length()];
     Arrays.fill(mapped, false);
 
-    if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
+    if (Dungeon.depth > 0 && (!(Dungeon.bossLevel() || Dungeon.depth == 21))) {
       addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
       // special items

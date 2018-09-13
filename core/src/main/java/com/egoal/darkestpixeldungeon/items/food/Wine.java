@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.food;
 
+import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
@@ -10,6 +11,7 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ public class Wine extends Item {
 
       hero.sprite.operate(hero.pos);
       GLog.i(Messages.get(this, "drunk"));
+      Sample.INSTANCE.play(Assets.SND_DRINK);
     }
   }
 

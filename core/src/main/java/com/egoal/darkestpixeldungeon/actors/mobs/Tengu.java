@@ -63,8 +63,8 @@ public class Tengu extends Mob {
     properties.add(Property.BOSS);
 
     // resistances see resist damage
-    // addResistances(Damage.Element.FIRE, 1.25f, 1f);
-    // addResistances(Damage.Element.POISON, 1.25f, 1f);
+    addResistances(Damage.Element.FIRE, 1.25f, 1f);
+    addResistances(Damage.Element.POISON, 1.25f, 1f);
   }
 
   @Override
@@ -83,7 +83,7 @@ public class Tengu extends Mob {
   @Override
   public Damage defendDamage(Damage dmg) {
     if (dmg.isFeatured(Damage.Feature.RANGED))
-      dmg.value -= Random.NormalIntRange(0, 10);
+      dmg.value -= Random.NormalIntRange(3, 10);
     else
       dmg.value -= Random.NormalIntRange(0, 5);
 

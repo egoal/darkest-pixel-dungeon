@@ -45,7 +45,7 @@ public class ChaliceOfBlood extends Artifact {
     levelCap = 10;
   }
 
-  public static final String AC_PRICK = "PRICK";
+  private static final String AC_PRICK = "PRICK";
 
   @Override
   public ArrayList<String> actions(Hero hero) {
@@ -55,7 +55,7 @@ public class ChaliceOfBlood extends Artifact {
     return actions;
   }
 
-  int prickValue() {
+  private int prickValue() {
     return 3 * (level() + 1) * (level() + 1) / 2 + 2 * level();
   }
 

@@ -214,9 +214,13 @@ public abstract class Char extends Actor {
   }
 
   public boolean checkHit(Damage dmg) {
+    // when from nowhere, be accurate
+    if(dmg.from instanceof Mob && !Dungeon.visible[((Char) dmg.from).pos])
+      dmg.addFeature(Damage.Feature.ACCURATE);
+    
     if (dmg.isFeatured(Damage.Feature.ACCURATE))
       return true;
-
+    
     MustDodge md = buff(MustDodge.class);
     if (md != null && md.canDodge(dmg))
       return false;

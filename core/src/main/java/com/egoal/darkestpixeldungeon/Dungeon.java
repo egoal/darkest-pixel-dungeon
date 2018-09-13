@@ -34,6 +34,7 @@ import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.*;
+import com.egoal.darkestpixeldungeon.levels.traps.DPDPrisonBossLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
@@ -58,7 +59,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-  public static int initialDepth_ = DarkestPixelDungeon.debug()? 8: -1;
+  public static int initialDepth_ = DarkestPixelDungeon.debug()? 9: -1;
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -197,6 +198,7 @@ public class Dungeon {
       }
     }
 
+    boolean isDebug = DarkestPixelDungeon.debug();
     Level level;
     switch (depth) {
       case 0:
@@ -218,7 +220,7 @@ public class Dungeon {
         level = new PrisonLevel();
         break;
       case 10:
-        level = new PrisonBossLevel();
+        level = isDebug? new DPDPrisonBossLevel(): new PrisonBossLevel();
         break;
       case 11:
       case 12:

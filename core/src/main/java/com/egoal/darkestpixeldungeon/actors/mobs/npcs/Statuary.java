@@ -333,7 +333,7 @@ public class Statuary extends NPC {
       GLog.i(Messages.get(this, "blasphemy"));
 
       // spawn ghost
-      int count = Random.Int(10) == 0 ? 2 : 1;
+      int count = Random.Int(5) == 0 ? 2 : 1;
       for (int n : PathFinder.NEIGHBOURS4) {
         int cell = pos + n;
         if (Level.passable[cell] && Actor.findChar(cell) == null) {
