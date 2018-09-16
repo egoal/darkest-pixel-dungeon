@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.rings;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
@@ -39,31 +40,17 @@ public class RingOfElements extends Ring {
     return new Resistance();
   }
 
-  private static final HashSet<Class<?>> EMPTY = new HashSet<Class<?>>();
-  public static final HashSet<Class<?>> FULL;
-
-  static {
-    FULL = new HashSet<Class<?>>();
-    FULL.add(Burning.class);
-    FULL.add(ToxicGas.class);
-    FULL.add(Poison.class);
-    FULL.add(Venom.class);
-    FULL.add(LightningTrap.Electricity.class);
-    FULL.add(Warlock.class);
-    FULL.add(Eye.class);
-    FULL.add(Yog.BurningFist.class);
-  }
-
   public class Resistance extends RingBuff {
 
-    public HashSet<Class<?>> resistances() {
-      if (Random.Int(level() + 2) >= 2) {
-        return FULL;
-      } else {
-        return EMPTY;
+    public Damage resist(Damage dmg){
+      if(dmg.element!=Damage.Element.NONE){
+        // resist any damage with element
+        dmg.value *=  Math.pow(.8, level()/3.);
       }
+      return dmg;
     }
 
+    // decrease debuff duration
     public float durationFactor() {
       return level() < 0 ? 1 : (1 + 0.5f * level()) / (1 + level());
     }

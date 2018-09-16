@@ -133,6 +133,8 @@ public enum HeroClass {
       initDebug(hero);
     }
 
+    new ScrollOfMagicMapping().quantity(10).collect();
+    
   }
 
   private static void initDebug(Hero hero) {

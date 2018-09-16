@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.levels.Room;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.VillageLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.plants.Sungrass;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.JessicaSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -146,6 +147,23 @@ public class Jessica extends NPC {
       return true;
     }
 
+    public static boolean spawnBook(PrisonLevel level) {
+      if (!given_ || spawned_)
+        return true;
+
+      if (Dungeon.depth > 5 && Random.Int(10 - Dungeon.depth) == 0) {
+        Heap heap = new Heap();
+        heap.type = Heap.Type.SKELETON;
+        heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
+        heap.drop(Generator.random(Generator.Category.RING).random());
+
+        level.heaps.put(level.randomRespawnCell(), heap);
+        spawned_ = true;
+      }
+
+      return true;
+    }
+
     public static boolean spawnBook(Level level, Collection<Room> rooms) {
       if (!given_ || spawned_)
         // on quest, or already spawned
@@ -173,7 +191,7 @@ public class Jessica extends NPC {
           do {
             heap.pos = level.pointToCell(room.random());
           }
-          while (level.map[heap.pos] == Terrain.ENTRANCE || 
+          while (level.map[heap.pos] == Terrain.ENTRANCE ||
                   !level.passable[heap.pos]);
           level.heaps.put(heap.pos, heap);
 

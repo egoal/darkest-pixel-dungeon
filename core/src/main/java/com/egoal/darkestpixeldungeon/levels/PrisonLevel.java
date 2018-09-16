@@ -101,10 +101,16 @@ public class PrisonLevel extends RegularLevel {
       }
     }
 
-    return Wandmaker.Quest.spawn(this, roomEntrance, rooms) &&
-            Jessica.Quest.spawnBook(this, rooms);
+    return Wandmaker.Quest.spawn(this, roomEntrance, rooms);
   }
 
+  @Override
+  public void createItems(){
+    Jessica.Quest.spawnBook(this);
+    
+    super.createItems();
+  }
+  
   @Override
   protected void decorate() {
 

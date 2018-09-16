@@ -25,7 +25,9 @@ import com.egoal.darkestpixeldungeon.levels.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Rect;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Painter {
 
@@ -52,7 +54,7 @@ public class Painter {
   }
 
   public static void fill(Level level, Rect rect, int value) {
-    fill(level, rect.left, rect.top, rect.width() + 1, rect.height() + 1, 
+    fill(level, rect.left, rect.top, rect.width() + 1, rect.height() + 1,
             value);
   }
 
@@ -67,7 +69,48 @@ public class Painter {
             .height() + 1 - (t + b), value);
   }
 
-  public static Point drawInside(Level level, Room room, Point from, int n, 
+  // lane links, closed range[y1, y2]
+  public static void linkV(Level level, int x, int y1, int y2, int value) {
+    int s = y1 < y2 ? y1 : y2;
+    int e = y1 < y2 ? y2 : y1;
+      
+    for (int y = s; y <= e; ++y)
+      set(level, y * level.width() + x, value);
+  }
+
+  public static void linkH(Level level, int y, int x1, int x2, int value) {
+    int s = x1 < x2 ? x1 : x2;
+    int e = x1 < x2 ? x2 : x1;
+
+    for (int x = s; x <= e; ++x)
+      set(level, y * level.width() + x, value);
+  }
+
+  public static void randomLink(Level level, int x1, int y1, int x2, int y2,
+                                int value) {
+    int dx = x1 > x2 ? -1 : 1;
+    int nx = (x2 - x1) / dx;
+    int dy = y1 > y2 ? -1 : 1;
+    int ny = (y2 - y1) / dy;
+
+    ArrayList<Point> adp = new ArrayList<>();
+    for (int i = 0; i < nx; ++i)
+      adp.add(new Point(dx, 0));
+    for (int i = 0; i < ny; ++i)
+      adp.add(new Point(0, dy));
+    Collections.shuffle(adp);
+
+    int x = x1;
+    int y = y1;
+    for (Point dp : adp) {
+      x += dp.x;
+      y += dp.y;
+
+      level.map[y * level.width() + x] = value;
+    }
+  }
+
+  public static Point drawInside(Level level, Room room, Point from, int n,
                                  int value) {
 
     Point step = new Point();

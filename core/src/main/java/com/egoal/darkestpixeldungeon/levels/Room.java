@@ -185,6 +185,9 @@ public class Room extends Rect implements Graph.Node, Bundlable {
             (top + bottom) / 2 + (((bottom - top) & 1) == 1 ? Random.Int(2) :
                     0));
   }
+  public Point centerFixed(){
+    return new Point((left+right)/2, (top+bottom)/2);
+  }
 
   // **** Graph.Node interface ****
 

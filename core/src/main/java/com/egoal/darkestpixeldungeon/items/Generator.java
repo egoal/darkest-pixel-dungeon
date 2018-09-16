@@ -353,8 +353,7 @@ public class Generator {
             RingOfForce.class,
             RingOfFuror.class,
             RingOfHaste.class,
-            RingOfCritical.class, //currently removed from drop tables, 
-            // pending rework
+            RingOfCritical.class,
             RingOfMight.class,
             RingOfSharpshooting.class,
             RingOfTenacity.class,

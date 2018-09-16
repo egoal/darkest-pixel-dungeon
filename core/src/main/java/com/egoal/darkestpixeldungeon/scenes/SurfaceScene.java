@@ -316,7 +316,7 @@ public class SurfaceScene extends PixelScene {
   private static class Avatar extends Image {
 
     private static final int WIDTH = 24;
-    private static final int HEIGHT = 32;
+    private static final int HEIGHT = 30;
 
     public Avatar(HeroClass cl) {
       super(Assets.DPD_AVATARS);

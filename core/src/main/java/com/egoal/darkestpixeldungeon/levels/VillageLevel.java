@@ -207,48 +207,12 @@ public class VillageLevel extends RegularLevel {
       // link lanes
       Point pt0 = curRoom.random();
       Point pt1 = toRoom.random();
-      linkLane(pt0.x, pt0.y, pt1.x, pt1.y);
+      
+      Painter.randomLink(this, pt0.x, pt0.y, pt1.x, pt1.y, Terrain.EMPTY);
 
       curRoom = toRoom;
     }
 
-  }
-
-  private void linkLaneV(int x, int y1, int y2) {
-    int ds = y1 < y2 ? 1 : -1;
-    for (int y = y1; y != y2; y += ds) {
-      map[y * width + x] = Terrain.EMPTY;
-    }
-  }
-
-  private void linkLaneH(int y, int x1, int x2) {
-    int ds = x1 < x2 ? 1 : -1;
-    for (int x = x1; x != x2; x += ds) {
-      map[y * width + x] = Terrain.EMPTY;
-    }
-  }
-
-  private void linkLane(int x1, int y1, int x2, int y2) {
-    int dx = x1 > x2 ? -1 : 1;
-    int nx = (x2 - x1) / dx;
-    int dy = y1 > y2 ? -1 : 1;
-    int ny = (y2 - y1) / dy;
-
-    ArrayList<Point> adp = new ArrayList<>();
-    for (int i = 0; i < nx; ++i)
-      adp.add(new Point(dx, 0));
-    for (int i = 0; i < ny; ++i)
-      adp.add(new Point(0, dy));
-    Collections.shuffle(adp);
-
-    int x = x1;
-    int y = y1;
-    for (Point dp : adp) {
-      x += dp.x;
-      y += dp.y;
-
-      map[y * width + x] = Terrain.EMPTY;
-    }
   }
 
   @Override

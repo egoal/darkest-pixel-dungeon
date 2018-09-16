@@ -1147,6 +1147,7 @@ public class Hero extends Char {
     if (madness != null)
       dmg = madness.procIncomingDamage(dmg);
 
+    // 韧性之戒
     int tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
     if (tenacity != 0)
       dmg.value = (int) Math.ceil((float) dmg.value * Math.pow(0.85, tenacity
@@ -1214,11 +1215,10 @@ public class Hero extends Char {
     }
 
     // resistance of ring, 
-    // todo: rework this ring, use my style resistance, the ratio
     RingOfElements.Resistance r = buff(RingOfElements.Resistance.class);
-    if (r != null && r.resistances() == RingOfElements.FULL)
-      dmg.value = Random.Int(0, dmg.value);
-
+    if(r!=null)
+      dmg = r.resist(dmg);
+    
     return super.resistDamage(dmg);
   }
 
