@@ -20,12 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
-import android.database.DatabaseUtils;
-import android.view.View;
-
 import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
+import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -40,7 +37,6 @@ import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
-import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
 import com.egoal.darkestpixeldungeon.actors.Actor;
@@ -154,7 +150,11 @@ public abstract class Level implements Bundlable {
 
   protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
+  // visuals is added each time the scene is created, 
+  // so, no need to keep track on them in the bundle
   protected Group visuals;
+  //todo: rework on this awful things...
+  protected ArrayList<LightVisual> visualLights = new ArrayList<>();
 
   public int color1 = 0x004400;
   public int color2 = 0x88CC44;
@@ -502,14 +502,37 @@ public abstract class Level implements Bundlable {
         }
       }
       if (luminary[i]) {
-        addLightVisuals(this, visuals, i);
+        addLightVisual(i);
       }
     }
     return visuals;
   }
 
-  public void addLightVisuals(Level level, Group group, int pos) {
-    group.add(new TorchLight(pos));
+  public void addLightVisual(int pos) {
+    LightVisual e = lightVisual(pos);
+    visuals.add(e);
+    visualLights.add(e);
+  }
+
+  public void clearLightVisuals() {
+    for (LightVisual e : visualLights)
+      visuals.erase(e);
+
+    visualLights.clear();
+  }
+
+  public void removeLightVisualAt(int pos) {
+    for(LightVisual lv: visualLights){
+      if(lv.pos==pos){
+        visuals.erase(lv);
+        visualLights.remove(lv);
+        break;
+      }
+    }
+  }
+
+  protected LightVisual lightVisual(int pos) {
+    return new TorchLight(pos);
   }
 
   public int nMobs() {
@@ -1270,14 +1293,18 @@ public abstract class Level implements Bundlable {
   }
 
   // basic light visual
-  public static class TorchLight extends Emitter {
-    private int pos;
+  public static class LightVisual extends Emitter {
+    public int pos;
 
-    public TorchLight(int pos) {
-      super();
-
+    public LightVisual(int pos) {
       this.pos = pos;
+    }
+  }
 
+  public static class TorchLight extends LightVisual {
+    public TorchLight(int pos) {
+      super(pos);
+      
       PointF p = DungeonTilemap.tileCenterToWorld(pos);
       pos(p.x - 1, p.y + 3, 2, 0);
 

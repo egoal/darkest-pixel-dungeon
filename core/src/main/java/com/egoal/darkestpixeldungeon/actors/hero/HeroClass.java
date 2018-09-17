@@ -50,6 +50,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
@@ -126,15 +127,9 @@ public enum HeroClass {
     if (!Dungeon.isChallenged(Challenges.DARKNESS))
       new Torch().identify().collect();
 
-    // a wine
-    new Wine().collect();
-
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
-
-    new ScrollOfMagicMapping().quantity(10).collect();
-    
   }
 
   private static void initDebug(Hero hero) {
@@ -154,6 +149,8 @@ public enum HeroClass {
     (new ArmorKit()).identify().collect();
 
     (new SeedPouch()).identify().collect();
+    
+    new WandOfBlastWave().identify().collect();
   }
 
   public Badges.Badge masteryBadge() {
@@ -177,6 +174,8 @@ public enum HeroClass {
     Dart darts = new Dart(8);
     darts.identify().collect();
 
+    new Wine().collect();
+    
     if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
       if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
         hero.belongings.armor.affixSeal(new BrokenSeal());

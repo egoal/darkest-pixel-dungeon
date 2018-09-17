@@ -152,9 +152,13 @@ public abstract class Char extends Actor {
       dmg = enemy.defenseProc(dmg);
 
       // todo: use more sfx
-      if (visibleFight)
-        Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
-
+      if (visibleFight) {
+        if(dmg.isFeatured(Damage.Feature.CRITCIAL))
+          Sample.INSTANCE.play(Assets.SND_CRITICAL, 1, 1, Random.Float(.8f, 1.25f));
+        else
+          Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
+      }
+        
       // may died in proc
       if (!enemy.isAlive()) return true;
 

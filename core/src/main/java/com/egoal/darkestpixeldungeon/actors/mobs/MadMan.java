@@ -47,7 +47,7 @@ public class MadMan extends Mob implements Callback {
     if (target instanceof Hero) {
       int dis = Dungeon.level.distance(pos, enemy.pos);
       return new Damage(Random.Int(4 - dis, 6 - dis), this, target).type
-              (Damage.Type.MENTAL);
+              (Damage.Type.MENTAL).addFeature(Damage.Feature.ACCURATE);
     } else
       return new Damage(1, this, target).addFeature(Damage.Feature.PURE)
               .addFeature(Damage

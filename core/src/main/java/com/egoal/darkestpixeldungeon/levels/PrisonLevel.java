@@ -183,16 +183,9 @@ public class PrisonLevel extends RegularLevel {
     }
   }
 
-//	@Override
-//	public Group addVisuals() {
-//		super.addVisuals();
-//		addPrisonVisuals(this, visuals);
-//		return visuals;
-//	}
-
   @Override
-  public void addLightVisuals(Level level, Group group, int pos) {
-    group.add(new Torch(pos));
+  protected LightVisual lightVisual(int pos){
+    return new Torch(pos);
   }
 
   public static void addPrisonVisuals(Level level, Group group) {
@@ -203,14 +196,10 @@ public class PrisonLevel extends RegularLevel {
     }
   }
 
-  public static class Torch extends Emitter {
-
-    private int pos;
+  public static class Torch extends LightVisual {
 
     public Torch(int pos) {
-      super();
-
-      this.pos = pos;
+      super(pos);
 
       PointF p = DungeonTilemap.tileCenterToWorld(pos);
       pos(p.x - 1, p.y + 3, 2, 0);

@@ -275,7 +275,7 @@ public class Statuary extends NPC {
         int requireValue = 0;
         if (requireBlood) {
           // more blood
-          requireValue = (int) (hero.HT * Random.Float(.3f, .6f));
+          requireValue = (int) (hero.HT * Random.Float(.25f, .5f));
           if (requireValue >= hero.HP)
             requireValue = hero.HP - 1;
 
@@ -359,7 +359,8 @@ public class Statuary extends NPC {
         GLog.i(Messages.get(this, "nothing", supply));
       } else {
         // give reward, random things
-        if (Random.Int(600) < gold) {
+        float rawardRatio = (gold - 100) * .6f / 400f + .3f;
+        if (Random.Float() < rawardRatio) {
           Generator.Category gc = Random.Float() < .4 ? Generator.Category
                   .WEAPON : Generator.Category.ARMOR;
           Dungeon.level.drop(Generator.random(gc), hero.pos);

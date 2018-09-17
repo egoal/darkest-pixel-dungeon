@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class Group extends Gizmo {
 
-	protected ArrayList<Gizmo> members;
+	public ArrayList<Gizmo> members;
 	
 	// Accessing it is a little faster,
 	// than calling members.getSize()

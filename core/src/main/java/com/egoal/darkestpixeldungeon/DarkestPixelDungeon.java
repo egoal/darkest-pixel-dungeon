@@ -248,7 +248,9 @@ public class DarkestPixelDungeon extends Game {
             Assets.SND_BEE,
             Assets.SND_DEGRADE,
             Assets.SND_MIMIC,
-            Assets.SND_ASTROLABE);
+            
+            Assets.SND_ASTROLABE, 
+            Assets.SND_CRITICAL);
 
     if (classicFont()) {
       RenderedText.setFont("pixelfont.ttf");
