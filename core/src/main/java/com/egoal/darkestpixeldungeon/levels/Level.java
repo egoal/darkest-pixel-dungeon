@@ -478,38 +478,46 @@ public abstract class Level implements Bundlable {
 
   abstract protected void createItems();
 
-  public boolean loadMapDataFromFile(String mapfile){
-    try{
-      InputStream is  = Game.instance.getAssets().open(mapfile);
+  public boolean loadMapDataFromFile(String mapfile) {
+    try {
+      InputStream is = Game.instance.getAssets().open(mapfile);
       BufferedReader br = new BufferedReader(new InputStreamReader(is));
-      
+
       String line;
-      line  = br.readLine();
-      String[] wh = line.split(",");
+      line = br.readLine();
+      String[] wh = line.split(" ");
       int w = Integer.parseInt(wh[0]);
       int h = Integer.parseInt(wh[1]);
-      
-      for(int r=0; r<h; ++r){
-        String[] eles = br.readLine().split(",");
-        for(int c=0; c<w; ++c)
-          map[r*width()+c]  = Integer.parseInt(eles[c]);
+
+      // load map, assign necessary values
+      for (int r = 0; r < h; ++r) {
+        String[] eles = br.readLine().split(" ");
+        for (int c = 0; c < w; ++c) {
+          int t = Integer.parseInt(eles[c]);
+          int pos = r * width() + c;
+
+          map[pos] = t;
+          switch (t) {
+            case Terrain.ENTRANCE:
+              entrance = pos;
+              break;
+            case Terrain.LOCKED_EXIT:
+            case Terrain.UNLOCKED_EXIT:
+            case Terrain.EXIT:
+              exit = pos;
+              break;
+          }
+
+        }
       }
-    }catch (IOException e){
+    } catch (IOException e) {
       DarkestPixelDungeon.reportException(e);
       return false;
     }
     
-    // assign some necessary values
-    for(int i: map){
-      if(i==Terrain.ENTRANCE)
-        entrance  = i;
-      else if(i==Terrain.EXIT || i==Terrain.LOCKED_EXIT || i==Terrain.UNLOCKED_EXIT)
-        exit  = i;
-    }
-    
     return true;
   }
-  
+
   public void seal() {
     if (!locked) {
       locked = true;
@@ -557,8 +565,8 @@ public abstract class Level implements Bundlable {
   }
 
   public void removeLightVisualAt(int pos) {
-    for(LightVisual lv: visualLights){
-      if(lv.pos==pos){
+    for (LightVisual lv : visualLights) {
+      if (lv.pos == pos) {
         visuals.erase(lv);
         visualLights.remove(lv);
         break;
@@ -1339,7 +1347,7 @@ public abstract class Level implements Bundlable {
   public static class TorchLight extends LightVisual {
     public TorchLight(int pos) {
       super(pos);
-      
+
       PointF p = DungeonTilemap.tileCenterToWorld(pos);
       pos(p.x - 1, p.y + 3, 2, 0);
 

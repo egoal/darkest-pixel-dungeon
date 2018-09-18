@@ -94,44 +94,44 @@ public class CityBossLevel extends Level {
 
   @Override
   protected boolean build() {
-    loadMapDataFromFile(MAP_FILE);
-    
-    return true;
-//    Painter.fill(this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY);
-//    Painter.fill(this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP);
-//
-//    int y = TOP + 1;
-//    while (y < TOP + HALL_HEIGHT) {
-//      map[y * width() + CENTER - 2] = Terrain.STATUE_SP;
-//      map[y * width() + CENTER + 2] = Terrain.STATUE_SP;
-//      y += 2;
-//    }
-//
-//    int left = pedestal(true);
-//    int right = pedestal(false);
-//    map[left] = map[right] = Terrain.PEDESTAL;
-//    for (int i = left + 1; i < right; i++) {
-//      map[i] = Terrain.EMPTY_SP;
-//    }
-//
-//    exit = (TOP - 1) * width() + CENTER;
-//    map[exit] = Terrain.LOCKED_EXIT;
-//
-//    arenaDoor = (TOP + HALL_HEIGHT) * width() + CENTER;
-//    map[arenaDoor] = Terrain.DOOR;
-//
-//    Painter.fill(this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, 
-//            CHAMBER_HEIGHT, Terrain.EMPTY);
-//    Painter.fill(this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, 
-//            Terrain.BOOKSHELF);
-//    Painter.fill(this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, 
-//            CHAMBER_HEIGHT, Terrain.BOOKSHELF);
-//
-//    entrance = (TOP + HALL_HEIGHT + 2 + Random.Int(CHAMBER_HEIGHT - 1)) * 
-//            width() + LEFT + (/*1 +*/ Random.Int(HALL_WIDTH - 2));
-//    map[entrance] = Terrain.ENTRANCE;
-//
+//    loadMapDataFromFile(MAP_FILE);
+//    
 //    return true;
+    Painter.fill(this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY);
+    Painter.fill(this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP);
+
+    int y = TOP + 1;
+    while (y < TOP + HALL_HEIGHT) {
+      map[y * width() + CENTER - 2] = Terrain.STATUE_SP;
+      map[y * width() + CENTER + 2] = Terrain.STATUE_SP;
+      y += 2;
+    }
+
+    int left = pedestal(true);
+    int right = pedestal(false);
+    map[left] = map[right] = Terrain.PEDESTAL;
+    for (int i = left + 1; i < right; i++) {
+      map[i] = Terrain.EMPTY_SP;
+    }
+
+    exit = (TOP - 1) * width() + CENTER;
+    map[exit] = Terrain.LOCKED_EXIT;
+
+    arenaDoor = (TOP + HALL_HEIGHT) * width() + CENTER;
+    map[arenaDoor] = Terrain.DOOR;
+
+    Painter.fill(this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, 
+            CHAMBER_HEIGHT, Terrain.EMPTY);
+    Painter.fill(this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, 
+            Terrain.BOOKSHELF);
+    Painter.fill(this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, 
+            CHAMBER_HEIGHT, Terrain.BOOKSHELF);
+
+    entrance = (TOP + HALL_HEIGHT + 2 + Random.Int(CHAMBER_HEIGHT - 1)) * 
+            width() + LEFT + (/*1 +*/ Random.Int(HALL_WIDTH - 2));
+    map[entrance] = Terrain.ENTRANCE;
+
+    return true;
   }
 
   @Override
