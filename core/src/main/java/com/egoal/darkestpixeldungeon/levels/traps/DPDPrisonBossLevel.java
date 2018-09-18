@@ -19,7 +19,6 @@ import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
-import com.watabou.noosa.Gizmo;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -34,6 +33,8 @@ public class DPDPrisonBossLevel extends Level {
   {
     color1 = 0x6a723d;
     color2 = 0x88924c;
+    
+    viewDistance  = 3;
   }
 
   private Room rmStart, rmHall, rmExit;
@@ -328,7 +329,7 @@ public class DPDPrisonBossLevel extends Level {
     }
 
     // 8 lights
-    hallLights = new int[8];
+    hallLights = new int[12];
     {
       hallLights[0] = randomPos(rmHall.left, cx - 3, rmHall.top, cy - 3, 1);
       hallLights[1] = randomPos(cx - 3, cx + 4, rmHall.top, cy - 3, 1);
@@ -340,6 +341,12 @@ public class DPDPrisonBossLevel extends Level {
       hallLights[5] = randomPos(rmHall.left, cx - 3, cy + 4, rmHall.bottom, 1);
       hallLights[6] = randomPos(cx - 3, cx + 4, cy + 4, rmHall.bottom, 1);
       hallLights[7] = randomPos(cx + 4, rmHall.right, cy + 4, rmHall.bottom, 1);
+
+      // put in the corners
+      hallLights[8] = pos(cx-3, cy-3);
+      hallLights[9] = pos(cx+3, cy-3);
+      hallLights[10]  = pos(cx-3, cy+3);
+      hallLights[11]  = pos(cx+3, cy+3);
     }
     for(int i: hallLights)
       map[i]  = Terrain.WALL_LIGHT_ON;

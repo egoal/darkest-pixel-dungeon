@@ -36,8 +36,10 @@ import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.DM300Sprite;
@@ -148,6 +150,20 @@ public class DM300 extends Mob {
       lock.addTime(dmg.value * 1.5f);
 
     return val;
+  }
+
+  @Override
+  public Damage attackProc(Damage dmg) {
+    // chance to knock back
+    if (dmg.to instanceof Char && Random.Float()<.25f) {
+      Char tgt  = (Char) dmg.to;
+      int opposite  = tgt.pos+ (tgt.pos-pos);
+      Ballistica shot = new Ballistica(tgt.pos, opposite, Ballistica.MAGIC_BOLT);
+      
+      WandOfBlastWave.throwChar(tgt, shot, 1);
+    }
+
+    return super.attackProc(dmg);
   }
 
   @Override

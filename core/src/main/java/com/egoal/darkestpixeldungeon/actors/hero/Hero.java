@@ -1172,12 +1172,12 @@ public class Hero extends Char {
         if (dmg.from instanceof Char && !Dungeon.visible[((Char) dmg.from)
                 .pos]) {
           // when hit from nowhere
-          dmgMental.value += Random.Int(dmg.value / 3) + 1;
+          dmgMental.value += Random.Int(1, 4);
         }
         if (dmg.isFeatured(Damage.Feature.CRITCIAL)) {
           // when take critical damage, up pressure
           if (dmg.type != Damage.Type.MENTAL)
-            dmgMental.value += Random.Int(dmg.value / 4);
+            dmgMental.value += Random.Int(1, 8);
         }
         if (!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP < HT / 4 &&
                 dmg.from instanceof Mob && dmg.value > 0) {

@@ -59,7 +59,11 @@ public class Monk extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(12, 25), this, target);
+    int value = Random.NormalIntRange(12, 25);
+    Damage dmg = new Damage(value, this, target);
+    if (value > 18)
+      dmg.addFeature(Damage.Feature.CRITCIAL);
+    return dmg;
   }
 
   @Override
@@ -96,7 +100,7 @@ public class Monk extends Mob {
       KindOfWeapon weapon = hero.belongings.weapon;
 
       if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
-        if (hitsToDisarm == 0) hitsToDisarm = Random.NormalIntRange(4, 8);
+        if (hitsToDisarm == 0) hitsToDisarm = Random.NormalIntRange(6, 9);
 
         if (--hitsToDisarm == 0) {
           hero.belongings.weapon = null;

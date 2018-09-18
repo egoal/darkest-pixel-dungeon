@@ -65,7 +65,7 @@ public class Brute extends Mob {
   public Damage giveDamage(Char target) {
     Damage damage = new Damage(Random.NormalIntRange(8, 24), this, target);
     if (enraged) {
-      damage.value *= Random.Float(1.5f, 2.f);
+      damage.value *= Random.Float(1.25f, 1.75f);
       damage.addFeature(Damage.Feature.CRITCIAL);
     }
     return damage;

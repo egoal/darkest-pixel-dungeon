@@ -11,7 +11,6 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
-import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.levels.traps.DPDPrisonBossLevel;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;

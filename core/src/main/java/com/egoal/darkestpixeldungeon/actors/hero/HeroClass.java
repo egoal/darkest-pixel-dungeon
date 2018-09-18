@@ -65,6 +65,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.plants.Blindweed;
+import com.egoal.darkestpixeldungeon.plants.Earthroot;
 import com.egoal.darkestpixeldungeon.plants.Firebloom;
 import com.egoal.darkestpixeldungeon.plants.Sorrowmoss;
 import com.watabou.utils.Bundle;
@@ -145,6 +146,8 @@ public enum HeroClass {
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
 
+    new Earthroot.Seed().quantity(3).identify().collect();
+    
     (new TomeOfMastery()).identify().collect();
     (new ArmorKit()).identify().collect();
 

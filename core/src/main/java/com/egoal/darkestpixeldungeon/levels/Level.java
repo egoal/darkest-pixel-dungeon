@@ -22,7 +22,6 @@ package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -85,6 +84,10 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -475,6 +478,38 @@ public abstract class Level implements Bundlable {
 
   abstract protected void createItems();
 
+  public boolean loadMapDataFromFile(String mapfile){
+    try{
+      InputStream is  = Game.instance.getAssets().open(mapfile);
+      BufferedReader br = new BufferedReader(new InputStreamReader(is));
+      
+      String line;
+      line  = br.readLine();
+      String[] wh = line.split(",");
+      int w = Integer.parseInt(wh[0]);
+      int h = Integer.parseInt(wh[1]);
+      
+      for(int r=0; r<h; ++r){
+        String[] eles = br.readLine().split(",");
+        for(int c=0; c<w; ++c)
+          map[r*width()+c]  = Integer.parseInt(eles[c]);
+      }
+    }catch (IOException e){
+      DarkestPixelDungeon.reportException(e);
+      return false;
+    }
+    
+    // assign some necessary values
+    for(int i: map){
+      if(i==Terrain.ENTRANCE)
+        entrance  = i;
+      else if(i==Terrain.EXIT || i==Terrain.LOCKED_EXIT || i==Terrain.UNLOCKED_EXIT)
+        exit  = i;
+    }
+    
+    return true;
+  }
+  
   public void seal() {
     if (!locked) {
       locked = true;
