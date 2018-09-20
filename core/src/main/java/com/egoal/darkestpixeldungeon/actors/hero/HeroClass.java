@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.books.Book;
@@ -154,6 +155,8 @@ public enum HeroClass {
     (new SeedPouch()).identify().collect();
     
     new WandOfBlastWave().identify().collect();
+
+    new GoldPlatedStatue().identify().collect();
   }
 
   public Badges.Badge masteryBadge() {

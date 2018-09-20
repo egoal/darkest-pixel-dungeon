@@ -179,7 +179,7 @@ public class Statuary extends NPC {
         hero.takeDamage(new Damage(Random.Int(5, 15),
                 this, hero).type(Damage.Type.MENTAL).addFeature(Damage
                 .Feature.ACCURATE));
-        GLog.h(Messages.get(this, "unholy"));
+        GLog.n(Messages.get(this, "unholy"));
       } else {
         // reward
         int rp = (int) (hero.buff(Pressure.class).pressure * 0.3f);

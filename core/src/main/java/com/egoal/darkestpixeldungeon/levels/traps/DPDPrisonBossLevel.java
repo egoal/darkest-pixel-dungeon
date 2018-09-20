@@ -20,6 +20,7 @@ import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -33,16 +34,16 @@ public class DPDPrisonBossLevel extends Level {
   {
     color1 = 0x6a723d;
     color2 = 0x88924c;
-    
-    viewDistance  = 3;
+
+    viewDistance = 3;
   }
 
-  private Room rmStart, rmHall, rmExit;
+  public Room rmStart, rmHall, rmExit;
   private ArrayList<Room> rmPrisonCells;
   private int[] hallLights;
   private boolean enteredMainHall = false;
   public boolean isLighted = true;
-  
+
   @Override
   public String tilesTex() {
     return Assets.TILES_PRISON;
@@ -53,25 +54,25 @@ public class DPDPrisonBossLevel extends Level {
     return Assets.WATER_PRISON;
   }
 
-  public void turnLights(boolean on){
-    if(on==isLighted) return;
-    
+  public void turnLights(boolean on) {
+    if (on == isLighted) return;
+
     isLighted = on;
-    for(int i: hallLights){
-      map[i]  = on? Terrain.WALL_LIGHT_ON: Terrain.WALL_LIGHT_OFF;
-      
+    for (int i : hallLights) {
+      map[i] = on ? Terrain.WALL_LIGHT_ON : Terrain.WALL_LIGHT_OFF;
+
       GameScene.updateMap(i);
     }
-    
-    if(!on){
-      for(int i: hallLights)
+
+    if (!on) {
+      for (int i : hallLights)
         removeLightVisualAt(i);
     }
-    
+
     buildFlagMaps();
     Dungeon.observe();
   }
-  
+
   @Override
   protected boolean build() {
     Arrays.fill(map, Terrain.WALL);
@@ -128,10 +129,10 @@ public class DPDPrisonBossLevel extends Level {
     if (rmHall.left - rmStart.centerFixed().x >= 5)
       placePrisonCellsBesideLaneV(rmStart.centerFixed().x, rmStart.bottom + 1,
               rmHall.bottom - 2, false);
-    
-    if(rmPrisonCells.isEmpty())
+
+    if (rmPrisonCells.isEmpty())
       return false;
-    
+
     if (width - rmExit.centerFixed().x >= 5)
       placePrisonCellsBesideLaneV(rmExit.centerFixed().x, rmHall.top + 2,
               rmExit.top - 1, false);
@@ -146,6 +147,12 @@ public class DPDPrisonBossLevel extends Level {
       placePrisonCellsBesideLaneH(rmHall.top + 1, rmHall.left, rmExit
               .centerFixed().x, true);
 
+    // at last, check the door pos
+    for (int i : PathFinder.NEIGHBOURS4)
+      if (map[hallEntrance() + i] == Terrain.DOOR || map[hallExit() + i] ==
+              Terrain.DOOR)
+        return false;
+
     // entrance && exit
     entrance = pointToCell(rmStart.centerFixed());
     exit = pointToCell(rmExit.centerFixed());
@@ -159,41 +166,42 @@ public class DPDPrisonBossLevel extends Level {
   @Override
   protected void decorate() {
     // some blood on floor
-    for(Room r: rmPrisonCells)
-      if(Random.Int(2)==0)
-        map[pointToCell(r.random())]  = Terrain.EMPTY_DECO;
-    
-    int cntblood  = Random.Int(6, 15);
-    while(cntblood>0){
+    for (Room r : rmPrisonCells)
+      if (Random.Int(2) == 0)
+        map[pointToCell(r.random())] = Terrain.EMPTY_DECO;
+
+    int cntblood = Random.Int(6, 15);
+    while (cntblood > 0) {
       int pos = pointToCell(rmHall.random());
-      if(map[pos]==Terrain.EMPTY){
-        map[pos]  = Terrain.EMPTY_DECO;
+      if (map[pos] == Terrain.EMPTY) {
+        map[pos] = Terrain.EMPTY_DECO;
         --cntblood;
       }
     }
-    
+
     // some book shelves on the side
   }
-  
+
   @Override
-  public void press(int cell, Char ch){
+  public void press(int cell, Char ch) {
     super.press(cell, ch);
-    
+
     // when hero enter the main hall, lock the level, let tengu in
-    if(ch==Dungeon.hero && !enteredMainHall && rmHall.inside(cellToPoint(cell))){
+    if (ch == Dungeon.hero && !enteredMainHall && rmHall.inside(cellToPoint
+            (cell))) {
       enteredMainHall = true;
       onHeroEnteredHall();
     }
   }
-  
-  private void onHeroEnteredHall(){
+
+  private void onHeroEnteredHall() {
     seal();
 
     // lock the hall exit
     set(hallEntrance(), Terrain.LOCKED_DOOR);
     GameScene.updateMap(hallEntrance());
     Dungeon.observe();
-    
+
     // add dpd tengu
     Mob tengu = new DPDTengu();
     tengu.pos = pointToCell(rmHall.centerFixed());
@@ -202,21 +210,21 @@ public class DPDPrisonBossLevel extends Level {
 
     tengu.notice();
   }
-  
+
   @Override
-  public Heap drop(Item item, int cell){
-    if(item instanceof SkeletonKey){
+  public Heap drop(Item item, int cell) {
+    if (item instanceof SkeletonKey) {
       // tengu is dead...
       unseal();
-      
+
       set(hallEntrance(), Terrain.DOOR);
       GameScene.updateMap(hallEntrance());
       Dungeon.observe();
     }
-    
+
     return super.drop(item, cell);
   }
-  
+
   // place rooms beside a vertical lane
   private void placePrisonCellsBesideLaneV(int x, int y1, int y2, boolean
           atLeft) {
@@ -309,24 +317,12 @@ public class DPDPrisonBossLevel extends Level {
     Painter.fill(this, rmHall.shrink(), Terrain.EMPTY);
 
     // center
-    int cx  = rmHall.centerFixed().x;
-    int cy  = rmHall.centerFixed().y;
+    int cx = rmHall.centerFixed().x;
+    int cy = rmHall.centerFixed().y;
     Painter.fill(this, cx - 1, cy - 1, 3, 3, Terrain.EMPTY_SP);
 
     // centroid is water, to avoid fire damage
     map[pos(cx, cy)] = Terrain.WATER;
-
-    // surround by traps
-    for (int x = cx - 3; x <= cx + 3; ++x) {
-      for (int y = cy - 3; y <= cy + 3; ++y) {
-        int pos = pos(x, y);
-        if (map[pos] == Terrain.EMPTY) {
-          Trap t = new SpearTrap().reveal();
-          setTrap(t, pos);
-          map[pos] = Terrain.TRAP;
-        }
-      }
-    }
 
     // 8 lights
     hallLights = new int[12];
@@ -343,13 +339,25 @@ public class DPDPrisonBossLevel extends Level {
       hallLights[7] = randomPos(cx + 4, rmHall.right, cy + 4, rmHall.bottom, 1);
 
       // put in the corners
-      hallLights[8] = pos(cx-3, cy-3);
-      hallLights[9] = pos(cx+3, cy-3);
-      hallLights[10]  = pos(cx-3, cy+3);
-      hallLights[11]  = pos(cx+3, cy+3);
+      hallLights[8] = pos(cx - 3, cy - 3);
+      hallLights[9] = pos(cx + 3, cy - 3);
+      hallLights[10] = pos(cx - 3, cy + 3);
+      hallLights[11] = pos(cx + 3, cy + 3);
     }
-    for(int i: hallLights)
-      map[i]  = Terrain.WALL_LIGHT_ON;
+    for (int i : hallLights)
+      map[i] = Terrain.WALL_LIGHT_ON;
+
+    // surround by traps
+    for (int x = cx - 3; x <= cx + 3; ++x) {
+      for (int y = cy - 3; y <= cy + 3; ++y) {
+        int pos = pos(x, y);
+        if (map[pos] == Terrain.EMPTY) {
+          Trap t = new SpearTrap().reveal();
+          setTrap(t, pos);
+          map[pos] = Terrain.TRAP;
+        }
+      }
+    }
 
     // an alarm trap at left bottom,
     {
@@ -368,13 +376,14 @@ public class DPDPrisonBossLevel extends Level {
     map[pos(rmHall.right, rmHall.top + 1)] = Terrain.LOCKED_EXIT;
   }
 
-  private int hallEntrance(){
-    return pos(rmHall.left, rmHall.bottom-1);
+  private int hallEntrance() {
+    return pos(rmHall.left, rmHall.bottom - 1);
   }
-  private int hallExit(){
-    return pos(rmHall.right, rmHall.top+1);
+
+  private int hallExit() {
+    return pos(rmHall.right, rmHall.top + 1);
   }
-  
+
   private int pos(int x, int y) {
     return x + y * width;
   }
@@ -403,15 +412,15 @@ public class DPDPrisonBossLevel extends Level {
     Item item = Bones.get();
     if (item != null)
       drop(item, randomRespawnCell()).type = Heap.Type.REMAINS;
-    
+
     // drop the key to the entrance
     ArrayList<Room> rmOnTheLeft = new ArrayList<>();
-    for(Room rm: rmPrisonCells){
-      if(rm.right<= rmHall.left)
+    for (Room rm : rmPrisonCells) {
+      if (rm.right <= rmHall.left)
         rmOnTheLeft.add(rm);
     }
-    int keypos  = pointToCell(Random.element(rmOnTheLeft).random());
-    IronKey ik  = new IronKey(Dungeon.depth);
+    int keypos = pointToCell(Random.element(rmOnTheLeft).random());
+    IronKey ik = new IronKey(Dungeon.depth);
     drop(ik, keypos);
   }
 
@@ -436,24 +445,24 @@ public class DPDPrisonBossLevel extends Level {
         return super.tileDesc(tile);
     }
   }
-  
+
   private static final String ENTERED = "entered";
-  private static final String HALL  = "hall";
-  
+  private static final String HALL = "hall";
+
   @Override
-  public void storeInBundle(Bundle bundle){
+  public void storeInBundle(Bundle bundle) {
     super.storeInBundle(bundle);
-    
+
     bundle.put(ENTERED, enteredMainHall);
     bundle.put(HALL, rmHall);
   }
-  
+
   @Override
-  public void restoreFromBundle(Bundle bundle){
+  public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
-    
+
     enteredMainHall = bundle.getBoolean(ENTERED);
-    rmHall  = new Room();
+    rmHall = new Room();
     rmHall.restoreFromBundle(bundle.getBundle(HALL));
   }
 }

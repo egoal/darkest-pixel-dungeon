@@ -23,28 +23,28 @@ public class RiemannianManifoldShield extends Artifact {
     levelCap = 10;
     exp = 0;
     cooldown = 1;
-    
+
     defaultAction = "NONE"; // to put into quick slot
   }
-  
+
   // called when ResistAny detached
   public void recharge() {
     // curUser is assigned in the execute method!!!
     if (isEquipped(Dungeon.hero)) {
-      if(level()<=5)
-        cooldown  = 45-level()*3;
+      if (level() <= 5)
+        cooldown = 45 - level() * 3;
       else
-        cooldown  = 30-(level()-5)*3;
+        cooldown = 30 - (level() - 5) * 3;
     }
   }
 
   // more likely to be cursed.
   @Override
-  public Item random(){
-    cursed  = Random.Float()<.7f;
+  public Item random() {
+    cursed = Random.Float() < .7f;
     return this;
   }
-  
+
   @Override
   public boolean doUnequip(Hero hero, boolean collect, boolean single) {
     GLog.w(Messages.get(this, "unequipped"));
@@ -71,7 +71,7 @@ public class RiemannianManifoldShield extends Artifact {
 
         exp += 1;
         // check upgrade
-        int requireExp = level()* level()+1;
+        int requireExp = level() * level() + 1;
         if (exp > requireExp && level() < levelCap) {
           exp -= requireExp;
           upgrade();
@@ -79,7 +79,7 @@ public class RiemannianManifoldShield extends Artifact {
         }
       }
       updateQuickslot();
-      
+
       spend(TICK);
       return true;
     }
@@ -94,8 +94,8 @@ public class RiemannianManifoldShield extends Artifact {
   @Override
   public String desc() {
     String desc = super.desc();
-    
-    if(isIdentified() && cursed)
+
+    if (isIdentified() && cursed)
       desc += "\n\n" + Messages.get(this, "desc_cursed");
 
     return desc;

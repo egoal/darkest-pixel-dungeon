@@ -63,8 +63,8 @@ public class MaskOfMadness extends Artifact {
       if (exp >= level() * 2 && level() < levelCap) {
         exp -= level() * 2;
         // take mental damage
-        Dungeon.hero.takeDamage(new Damage(level(), this, Dungeon.hero).type
-                (Damage.Type.MENTAL));
+//        Dungeon.hero.takeDamage(new Damage(level(), this, Dungeon.hero).type
+//                (Damage.Type.MENTAL));
         upgrade();
         GLog.p(Messages.get(MaskOfMadness.class, "levelup"));
       }

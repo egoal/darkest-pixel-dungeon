@@ -52,7 +52,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class CharSprite extends MovieClip implements Tweener.Listener, 
+public class CharSprite extends MovieClip implements Tweener.Listener,
         MovieClip.Listener {
 
   // Color constants for floating text
@@ -66,7 +66,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
   private static final float FLASH_INTERVAL = 0.05f;
 
   public enum State {
-    BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, 
+    BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED,
     DARKENED, MARKED,
     SOUL_BURNING,
   }
@@ -128,9 +128,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
     final int csize = DungeonTilemap.SIZE;
 
     return new PointF(
-            PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 
+            PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) +
                     0.5f) * csize - width * 0.5f),
-            PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 
+            PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) +
                     1.0f) * csize - height)
     );
   }
@@ -149,6 +149,21 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
         FloatingText.show(tile.x, tile.y - (width * 0.5f), ch.pos, text, color);
       } else {
         FloatingText.show(x + width * 0.5f, y, text, color);
+      }
+    }
+  }
+
+  //todo: let it jump out!
+  public void jumpStatus(int color, String text, Object... args) {
+    if (visible) {
+      if (args.length > 0)
+        text = Messages.format(text, args);
+
+      if (ch != null) {
+        PointF tile = DungeonTilemap.tileCenterToWorld(ch.pos);
+        FloatingText.show(tile.x, tile.y - (width * .5f), ch.pos, text, color);
+      } else {
+        FloatingText.show(x + width * .5f, y, text, color);
       }
     }
   }
@@ -215,7 +230,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
     jumpCallback = callback;
 
     int distance = Dungeon.level.distance(from, to);
-    jumpTweener = new JumpTweener(this, worldToCamera(to), distance * 4, 
+    jumpTweener = new JumpTweener(this, worldToCamera(to), distance * 4,
             distance * 0.1f);
     jumpTweener.listener = this;
     parent.add(jumpTweener);
@@ -534,7 +549,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
 
     @Override
     protected void updateValues(float progress) {
-      visual.point(PointF.inter(start, end, progress).offset(0, -height * 4 * progress * (1 - progress)));
+      visual.point(PointF.inter(start, end, progress).offset(0, -height * 4 *
+              progress * (1 - progress)));
     }
   }
 }

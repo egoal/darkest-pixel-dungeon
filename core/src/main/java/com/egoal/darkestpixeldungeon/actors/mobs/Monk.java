@@ -61,7 +61,7 @@ public class Monk extends Mob {
   public Damage giveDamage(Char target) {
     int value = Random.NormalIntRange(12, 25);
     Damage dmg = new Damage(value, this, target);
-    if (value > 18)
+    if (value > 21)
       dmg.addFeature(Damage.Feature.CRITCIAL);
     return dmg;
   }

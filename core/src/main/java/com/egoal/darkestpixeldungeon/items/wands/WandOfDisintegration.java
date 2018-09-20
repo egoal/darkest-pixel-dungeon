@@ -105,7 +105,7 @@ public class WandOfDisintegration extends DamageWand {
       processSoulMark(ch, chargesPerCast());
       // ch.damage( damageRoll(lvl), this );
       ch.takeDamage(new Damage(damageRoll(lvl), this, ch).type(Damage.Type
-              .MAGICAL));
+              .MAGICAL).addFeature(Damage.Feature.PURE));
       ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange
               (1, 2));
       ch.sprite.flash();

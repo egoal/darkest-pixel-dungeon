@@ -152,7 +152,7 @@ public class Goo extends Mob {
 
   @Override
   public Damage defenseProc(Damage dmg) {
-    if(pumpedUp==0 && Random.Int(4)==0){
+    if(pumpedUp==0 && Random.Int(4)==0 && !dmg.isFeatured(Damage.Feature.RANGED)){
       Buff.affect(enemy, Ooze.class);
       enemy.sprite.burst(0x000000, 5);
     }

@@ -157,7 +157,10 @@ public class Jessica extends NPC {
         heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
         heap.drop(Generator.random(Generator.Category.RING).random());
 
-        level.heaps.put(level.randomRespawnCell(), heap);
+        heap.pos  = level.randomRespawnCell();
+        level.heaps.put(heap.pos, heap);
+        
+//        level.heaps.put(level.randomRespawnCell(), heap);
         spawned_ = true;
       }
 

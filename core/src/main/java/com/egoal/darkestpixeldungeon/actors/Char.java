@@ -143,9 +143,9 @@ public abstract class Char extends Actor {
         dmg = enemy.defendDamage(dmg);
 
       dmg = attackProc(dmg);
-      
-      ResistAny ra  = enemy.buff(ResistAny.class);
-      if(ra!=null && dmg.type!= Damage.Type.MENTAL){
+
+      ResistAny ra = enemy.buff(ResistAny.class);
+      if (ra != null && dmg.type != Damage.Type.MENTAL) {
         ra.resist();
         dmg.value = 0;
       }
@@ -153,12 +153,13 @@ public abstract class Char extends Actor {
 
       // todo: use more sfx
       if (visibleFight) {
-        if(dmg.isFeatured(Damage.Feature.CRITCIAL))
-          Sample.INSTANCE.play(Assets.SND_CRITICAL, 1, 1, Random.Float(.8f, 1.25f));
+        if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature
+                .CRITCIAL) && dmg.value > 0)
+          Sample.INSTANCE.play(Assets.SND_CRITICAL, 1, 1, 1f);
         else
           Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
       }
-        
+
       // may died in proc
       if (!enemy.isAlive()) return true;
 
@@ -219,12 +220,12 @@ public abstract class Char extends Actor {
 
   public boolean checkHit(Damage dmg) {
     // when from nowhere, be accurate
-    if(dmg.from instanceof Mob && !Dungeon.visible[((Char) dmg.from).pos])
+    if (dmg.from instanceof Mob && !Dungeon.visible[((Char) dmg.from).pos])
       dmg.addFeature(Damage.Feature.ACCURATE);
-    
+
     if (dmg.isFeatured(Damage.Feature.ACCURATE))
       return true;
-    
+
     MustDodge md = buff(MustDodge.class);
     if (md != null && md.canDodge(dmg))
       return false;
@@ -345,13 +346,13 @@ public abstract class Char extends Actor {
   }
 
   protected Damage resistDamage(Damage dmg) {
-    ResistAny ra  = buff(ResistAny.class);
-    if(ra!=null && dmg.type!= Damage.Type.MENTAL){
+    ResistAny ra = buff(ResistAny.class);
+    if (ra != null && dmg.type != Damage.Type.MENTAL) {
       ra.resist();
       dmg.value = 0;
       return dmg;
     }
-    
+
     for (Class<?> im : immunizedBuffs())
       if (dmg.from.getClass() == im) {
         dmg.value = 0;

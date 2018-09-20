@@ -175,6 +175,7 @@ public class Tengu extends Mob {
 
   private void jump() {
 
+    // active some trap
     for (int i = 0; i < 4; i++) {
       int trapPos;
       do {

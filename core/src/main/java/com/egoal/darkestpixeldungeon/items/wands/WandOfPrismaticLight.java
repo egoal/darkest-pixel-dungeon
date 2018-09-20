@@ -95,16 +95,12 @@ public class WandOfPrismaticLight extends DamageWand {
       ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
       Sample.INSTANCE.play(Assets.SND_BURNING);
 
-      // ch.damage(Math.round(dmg*1.333f), this);
-      ch.takeDamage(new Damage(Math.round(dmg * 1.333f), this, ch).type
-              (Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
     } else {
       ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level());
-
-      ch.takeDamage(new Damage(dmg, this, ch).type(Damage.Type.MAGICAL)
-              .addElement(Damage.Element.LIGHT));
     }
 
+    ch.takeDamage(new Damage(dmg, this, ch).type(Damage.Type.MAGICAL)
+            .addElement(Damage.Element.HOLY));
   }
 
   private void affectMap(Ballistica beam) {
@@ -145,7 +141,7 @@ public class WandOfPrismaticLight extends DamageWand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
+  public void onHit(MagesStaff staff, Char attacker, Char defender, int
           damage) {
     //cripples enemy
     Buff.prolong(defender, Cripple.class, 1f + staff.level());
