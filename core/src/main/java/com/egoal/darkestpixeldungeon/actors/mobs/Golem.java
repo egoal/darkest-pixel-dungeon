@@ -42,6 +42,8 @@ public class Golem extends Mob {
     EXP = 12;
     maxLvl = 22;
     
+    properties.add(Property.MACHINE);
+    
     addResistances(Damage.Element.LIGHT, .75f);
   }
 

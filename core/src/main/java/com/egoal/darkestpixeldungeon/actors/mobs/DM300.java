@@ -68,6 +68,7 @@ public class DM300 extends Mob {
     lootChance = 0.333f;
 
     properties.add(Property.BOSS);
+    properties.add(Property.MACHINE);
 
     addResistances(Damage.Element.ICE, .8f);
     addResistances(Damage.Element.POISON, 100.f, 1.5f);

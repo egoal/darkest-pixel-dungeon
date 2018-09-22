@@ -1,6 +1,8 @@
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
  * Created by 93942 on 9/21/2018.
  */
 
+// check Gold::doPickUp
 public class GoldPlatedStatue extends Artifact {
   {
     image = ItemSpriteSheet.DPD_GOLD_PLATE_STATUE;
@@ -26,23 +29,38 @@ public class GoldPlatedStatue extends Artifact {
   @Override
   public ArrayList<String> actions(Hero hero) {
     ArrayList<String> actions = super.actions(hero);
-    actions.add(AC_INVEST);
-    
+    if (level() < levelCap)
+      actions.add(AC_INVEST);
+
     return actions;
   }
+
   @Override
   public void execute(final Hero hero, String action) {
     super.execute(hero, action);
     if (action.equals(AC_INVEST)) {
-      GLog.p("gold got, upgraded.");
+      int goldRequired = (level() + 1) * 100;
+      if (Dungeon.gold < goldRequired)
+        GLog.w(Messages.get(GoldPlatedStatue.class, "no_enough_gold"));
+      else {
+        Dungeon.gold -= goldRequired;
+
+        upgrade();
+      }
     }
   }
-  
+
   @Override
   protected ArtifactBuff passiveBuff() {
     return new Greedy();
   }
-    
+
   public class Greedy extends ArtifactBuff {
+    public int extraCollect(int gold) {
+      float ratio = cursed? -.3f: level() * .1f;
+      
+      return (int) (gold * ratio);
+    }
+
   }
 }

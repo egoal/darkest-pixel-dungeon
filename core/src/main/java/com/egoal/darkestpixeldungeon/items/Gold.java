@@ -20,11 +20,14 @@
  */
 package com.egoal.darkestpixeldungeon.items;
 
+import android.text.StaticLayout;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
@@ -59,9 +62,18 @@ public class Gold extends Item {
 
   @Override
   public boolean doPickUp(Hero hero) {
+    int greedyCollect = 0;
 
-    Dungeon.gold += quantity;
-    Statistics.goldCollected += quantity;
+    GoldPlatedStatue.Greedy greedy = hero.buff(GoldPlatedStatue.Greedy.class);
+    if (greedy != null) {
+      // greedy collect
+      greedyCollect = greedy.extraCollect(quantity);
+      if (greedyCollect == 0)
+        greedyCollect = 1;
+    }
+    
+    Dungeon.gold += quantity+greedyCollect;
+    Statistics.goldCollected += quantity+greedyCollect;
     Badges.validateGoldCollected();
 
     MasterThievesArmband.Thievery thievery = hero.buff(MasterThievesArmband
@@ -70,7 +82,13 @@ public class Gold extends Item {
       thievery.collect(quantity);
 
     GameScene.pickUp(this);
-    hero.sprite.showStatus(CharSprite.NEUTRAL, TXT_VALUE, quantity);
+    
+    
+    if(greedyCollect>0) {
+      hero.sprite.showStatus(CharSprite.NEUTRAL, "%+d(%+d)", quantity, greedyCollect);
+    }else{
+      hero.sprite.showStatus(CharSprite.NEUTRAL, TXT_VALUE, quantity);
+    }
     hero.spendAndNext(TIME_TO_PICK_UP);
 
     Sample.INSTANCE.play(Assets.SND_GOLD, 1, 1, Random.Float(0.9f, 1.1f));

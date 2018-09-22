@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import android.opengl.GLES20;
+
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.levels.traps.*;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -67,6 +68,13 @@ public class HallsLevel extends RegularLevel {
   }
 
   @Override
+  protected void setupSize() {
+    if (width == 0 || height == 0)
+      width = height = 32;
+    length = width * height;
+  }
+
+  @Override
   public void create() {
     addItemToSpawn(new Torch());
     super.create();
@@ -94,7 +102,7 @@ public class HallsLevel extends RegularLevel {
   protected Class<?>[] trapClasses() {
     return new Class[]{BlazingTrap.class, DisintegrationTrap.class, FrostTrap
             .class, SpearTrap.class, VenomTrap.class,
-            ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, 
+            ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class,
             OozeTrap.class, WeakeningTrap.class,
             CursingTrap.class, FlockTrap.class, GrimTrap.class, GuardianTrap
             .class, SummoningTrap.class, TeleportationTrap.class,

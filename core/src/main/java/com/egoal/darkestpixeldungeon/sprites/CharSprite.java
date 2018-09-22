@@ -153,21 +153,6 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
     }
   }
 
-  //todo: let it jump out!
-  public void jumpStatus(int color, String text, Object... args) {
-    if (visible) {
-      if (args.length > 0)
-        text = Messages.format(text, args);
-
-      if (ch != null) {
-        PointF tile = DungeonTilemap.tileCenterToWorld(ch.pos);
-        FloatingText.show(tile.x, tile.y - (width * .5f), ch.pos, text, color);
-      } else {
-        FloatingText.show(x + width * .5f, y, text, color);
-      }
-    }
-  }
-
   public void idle() {
     play(idle);
   }

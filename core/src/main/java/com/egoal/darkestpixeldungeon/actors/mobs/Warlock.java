@@ -53,8 +53,6 @@ public class Warlock extends Mob implements Callback {
     loot = Generator.Category.POTION;
     lootChance = 0.83f;
 
-    properties.add(Property.UNDEAD);
-
     addResistances(Damage.Element.SHADOW, 1.25f);
     addResistances(Damage.Element.HOLY, .667f);
   }

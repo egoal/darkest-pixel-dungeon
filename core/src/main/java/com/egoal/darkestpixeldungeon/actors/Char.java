@@ -150,8 +150,7 @@ public abstract class Char extends Actor {
         dmg.value = 0;
       }
       dmg = enemy.defenseProc(dmg);
-
-      // todo: use more sfx
+      
       if (visibleFight) {
         if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature
                 .CRITCIAL) && dmg.value > 0)
@@ -171,7 +170,7 @@ public abstract class Char extends Actor {
         Camera.main.shake(GameMath.gate(1, shake, 5), .3f);
 
       // take!
-      enemy.takeDamage(dmg);
+      int dmgtoken = enemy.takeDamage(dmg);
 
       // buffs, dont know why this piece of code exists, 
       // maybe the mage? or the attack effect?
@@ -181,8 +180,22 @@ public abstract class Char extends Actor {
         buff(EarthImbue.class).proc(enemy);
 
       // effects
+      // show damage value
+      if (dmgtoken > 0 || dmg.from instanceof Char) {
+        String number = Integer.toString(dmgtoken);
+        int color = HP > HT / 2 ? CharSprite.WARNING : CharSprite.NEGATIVE;
+
+        if (dmg.isFeatured(Damage.Feature.CRITCIAL))
+          number += "!";
+
+        sprite.showStatus(color, number);
+      }
+
+      // burst blood
       enemy.sprite.bloodBurstA(sprite.center(), dmg.value);
       enemy.sprite.flash();
+
+
       if (!enemy.isAlive() && visibleFight) {
         if (enemy == Dungeon.hero) {
           // hero die
@@ -312,15 +325,6 @@ public abstract class Char extends Actor {
       case MAGICAL:
         HP -= dmg.value;
         break;
-    }
-
-    // effects, show number
-    if (dmg.value > 0 || dmg.from instanceof Char) {
-      String number = Integer.toString(dmg.value);
-      if (dmg.isFeatured(Damage.Feature.CRITCIAL))
-        number += "!";
-      sprite.showStatus(HP > HT / 2 ? CharSprite.WARNING : CharSprite
-              .NEGATIVE, number);
     }
 
     //note: this is a important setting
@@ -577,6 +581,7 @@ public abstract class Char extends Actor {
     MINIBOSS,
     UNDEAD,
     DEMONIC,
+    MACHINE,
     IMMOVABLE
   }
 }

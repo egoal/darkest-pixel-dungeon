@@ -54,6 +54,13 @@ public class SewerLevel extends RegularLevel {
   }
 
   @Override
+  protected void setupSize() {
+    if (width == 0 || height == 0)
+      width = height = 32;
+    length = width * height;
+  }
+
+  @Override
   public String tilesTex() {
     return Assets.TILES_SEWERS;
   }
@@ -89,13 +96,6 @@ public class SewerLevel extends RegularLevel {
                     2, 2,
                     1, 1, 1};
   }
-
-//	@Override
-//	protected boolean assignRoomType(){
-//		if(!super.assignRoomType()) return false;
-//		
-//		return Jessica.Quest.spawnBook(this, rooms);
-//	}
 
   @Override
   protected void decorate() {

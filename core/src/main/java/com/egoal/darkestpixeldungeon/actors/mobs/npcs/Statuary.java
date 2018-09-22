@@ -202,12 +202,11 @@ public class Statuary extends NPC {
         }
       }
     } else {
-      // blasphemy
+      // blasphemy: curse an item, then drop the blood
       hero.busy();
       hero.sprite.operate(hero.pos);
       GLog.i(Messages.get(this, "blasphemy"));
 
-      // curse an item
       {
         ArrayList<Item> itemToCurse = new ArrayList<>();
         KindOfWeapon weapon = hero.belongings.weapon;
@@ -225,17 +224,19 @@ public class Statuary extends NPC {
         if (hero.belongings.misc3 != null)
           itemToCurse.add(hero.belongings.misc3);
 
-        Item item = Random.element(itemToCurse);
-        item.cursed = item.cursedKnown = true;
-        if (item instanceof Weapon) {
-          Weapon w = (Weapon) item;
-          if (w.enchantment == null)
-            w.enchantment = Weapon.Enchantment.randomCurse();
-        }
-        if (item instanceof Armor) {
-          Armor a = (Armor) item;
-          if (a.glyph == null)
-            a.glyph = Armor.Glyph.randomCurse();
+        if(itemToCurse.size()>0) {
+          Item item = Random.element(itemToCurse);
+          item.cursed = item.cursedKnown = true;
+          if (item instanceof Weapon) {
+            Weapon w = (Weapon) item;
+            if (w.enchantment == null)
+              w.enchantment = Weapon.Enchantment.randomCurse();
+          }
+          if (item instanceof Armor) {
+            Armor a = (Armor) item;
+            if (a.glyph == null)
+              a.glyph = Armor.Glyph.randomCurse();
+          }
         }
 
         if (Dungeon.visible[pos]) {
@@ -327,13 +328,13 @@ public class Statuary extends NPC {
       }
 
     } else {
-      // blasphemy
+      // blasphemy: devil ghost, 
       hero.busy();
       hero.sprite.operate(hero.pos);
       GLog.i(Messages.get(this, "blasphemy"));
 
       // spawn ghost
-      int count = Random.Int(5) == 0 ? 2 : 1;
+      int count = Random.Int(4) == 0 ? 2 : 1;
       for (int n : PathFinder.NEIGHBOURS4) {
         int cell = pos + n;
         if (Level.passable[cell] && Actor.findChar(cell) == null) {

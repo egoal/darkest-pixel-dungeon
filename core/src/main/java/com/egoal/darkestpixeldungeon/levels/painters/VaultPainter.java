@@ -52,11 +52,18 @@ public class VaultPainter extends Painter {
         break;
 
       case 1:
-        Item i1, i2;
-        do {
-          i1 = prize(level);
-          i2 = prize(level);
-        } while (i1.getClass() == i2.getClass());
+        // ensure two different categories
+        Generator.Category c1 = Random.oneOf(Generator.Category.WAND, 
+            Generator.Category.RING, Generator.Category.ARTIFACT);
+        Generator.Category c2;
+        do{
+          c2 = Random.oneOf(Generator.Category.WAND,
+              Generator.Category.RING, Generator.Category.ARTIFACT);
+        }while (c1==c2);
+        
+        Item i1 = Generator.random(c1);
+        Item i2 = Generator.random(c2);
+        
         level.drop(i1, c).type = Type.CRYSTAL_CHEST;
         level.drop(i2, c + PathFinder.NEIGHBOURS8[Random.Int(8)]).type = Type
                 .CRYSTAL_CHEST;

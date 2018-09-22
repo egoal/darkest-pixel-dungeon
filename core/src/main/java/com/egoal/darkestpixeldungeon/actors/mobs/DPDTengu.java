@@ -222,7 +222,7 @@ public class DPDTengu extends Mob {
   }
 
   // tengu's skill
-  class Phantom extends Mob {
+  static class Phantom extends Mob {
     {
       spriteClass = TenguSprite.class;
       HP = HT = 1;

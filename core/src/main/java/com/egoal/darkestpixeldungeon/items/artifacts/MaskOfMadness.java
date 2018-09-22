@@ -41,7 +41,7 @@ public class MaskOfMadness extends Artifact {
   public class Madness extends ArtifactBuff {
 
     public Damage procIncomingDamage(Damage dmg) {
-      float ratio = dmg.type == Damage.Type.MENTAL ? 1.25f :
+      float ratio = dmg.type == Damage.Type.MENTAL ? 1.5f :
               (1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f) + 0.05f *
                       level());
 
