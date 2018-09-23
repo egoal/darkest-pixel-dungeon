@@ -100,7 +100,7 @@ public class Tengu extends Mob {
 
     int beforeHitHP = HP;
     super.takeDamage(damage);
-    int dmg = beforeHitHP - HP;
+    int dmg = super.takeDamage(damage);
 
     LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
     if (lock != null) {

@@ -84,7 +84,7 @@ public class Gold extends Item {
     GameScene.pickUp(this);
     
     
-    if(greedyCollect>0) {
+    if(greedyCollect!=0) {
       hero.sprite.showStatus(CharSprite.NEUTRAL, "%+d(%+d)", quantity, greedyCollect);
     }else{
       hero.sprite.showStatus(CharSprite.NEUTRAL, TXT_VALUE, quantity);

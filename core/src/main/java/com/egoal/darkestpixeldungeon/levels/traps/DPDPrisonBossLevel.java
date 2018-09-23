@@ -90,6 +90,12 @@ public class DPDPrisonBossLevel extends Level {
 
       Painter.fill(this, rmStart, 1, Terrain.EMPTY);
       map[pos(rmStart.centerFixed().x, rmStart.bottom)] = Terrain.DOOR;
+
+      int sp;
+      do {
+        sp = pointToCell(rmStart.random());
+      } while (map[sp] != Terrain.EMPTY);
+      map[sp] = Terrain.SIGN;
     }
 
     // link start-> hall
@@ -154,8 +160,12 @@ public class DPDPrisonBossLevel extends Level {
         return false;
 
     // entrance && exit
-    entrance = pointToCell(rmStart.centerFixed());
-    exit = pointToCell(rmExit.centerFixed());
+//    entrance = pointToCell(rmStart.centerFixed());
+//    exit = pointToCell(rmExit.centerFixed());
+
+    do {
+      entrance = pointToCell(rmHall.random(1));
+    } while (map[entrance] != Terrain.EMPTY);
 
     map[entrance] = Terrain.ENTRANCE;
     map[exit] = Terrain.EXIT;
@@ -395,10 +405,6 @@ public class DPDPrisonBossLevel extends Level {
 
   @Override
   protected void createMobs() {
-    Mob mob = new Rat();// Bestiary.mob(Dungeon.depth);
-
-    mob.pos = randomRespawnCell();
-    mobs.add(mob);
   }
 
   @Override
@@ -448,6 +454,7 @@ public class DPDPrisonBossLevel extends Level {
 
   private static final String ENTERED = "entered";
   private static final String HALL = "hall";
+  private static final String LIGHTED  = "lighted";
 
   @Override
   public void storeInBundle(Bundle bundle) {
@@ -455,6 +462,7 @@ public class DPDPrisonBossLevel extends Level {
 
     bundle.put(ENTERED, enteredMainHall);
     bundle.put(HALL, rmHall);
+    bundle.put(LIGHTED, isLighted);
   }
 
   @Override
@@ -462,6 +470,7 @@ public class DPDPrisonBossLevel extends Level {
     super.restoreFromBundle(bundle);
 
     enteredMainHall = bundle.getBoolean(ENTERED);
+    isLighted = bundle.getBoolean(LIGHTED);
     rmHall = new Room();
     rmHall.restoreFromBundle(bundle.getBundle(HALL));
   }

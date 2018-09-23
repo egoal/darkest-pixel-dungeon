@@ -135,9 +135,10 @@ public enum HeroClass {
   }
 
   private static void initDebug(Hero hero) {
-    hero.HP = 1;
+    hero.HP = 100;
     hero.HT = 300;
     hero.STR  = 20;
+    hero.lvl  = 12;
     
     new ScrollOfMagicMapping().quantity(9).identify().collect();
     new PotionOfHealing().quantity(9).identify().collect();

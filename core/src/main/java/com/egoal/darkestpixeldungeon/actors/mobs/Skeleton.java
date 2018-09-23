@@ -36,9 +36,6 @@ import com.watabou.utils.Random;
 
 public class Skeleton extends Mob {
 
-  private static final String TXT_HERO_KILLED = "You were killed by the " +
-          "explosion of bones...";
-
   {
     spriteClass = SkeletonSprite.class;
 

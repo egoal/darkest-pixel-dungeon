@@ -112,4 +112,18 @@ public class TenguSprite extends MobSprite {
       super.onComplete(anim);
     }
   }
+  
+  public static class Phantom extends TenguSprite{
+    public Phantom() {
+      super();
+
+      TextureFilm frames = new TextureFilm(texture, 14, 16);
+
+      // reverse run...
+      die = new Animation(15, false);
+      die.frames(frames, 0, 5, 4, 3, 2);
+
+      play(run.clone());
+    }
+  }
 }

@@ -25,8 +25,12 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
+import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor;
+import com.egoal.darkestpixeldungeon.items.armor.glyphs.Brimstone;
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage;
+import com.egoal.darkestpixeldungeon.items.armor.glyphs.Viscosity;
 import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
+import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
@@ -40,6 +44,9 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
+import com.egoal.darkestpixeldungeon.levels.traps.BlazingTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
@@ -63,6 +70,14 @@ public class VillageLevel extends RegularLevel {
   public String waterTex() {
     return Assets.DPD_WATER_VILLAGE;
   }
+
+  @Override
+  protected void setupSize() {
+    if (width == 0 && height == 0)
+      width = height = 24;
+    length = width * height;
+  }
+
 
   protected boolean build() {
     if (!initRooms() || rooms.size() < 2)
@@ -122,7 +137,7 @@ public class VillageLevel extends RegularLevel {
 
     //2. place more rooms
     {
-      int numRooms = Random.Int(8, 12) + 2;
+      int numRooms = Random.Int(6, 10);// Random.Int(8, 12) + 2;
       for (int i = 0; i < 1000 && rooms.size() < numRooms; ++i) {
         int w = Random.Int(4, 9);
         int h = Random.Int(4, 9);
@@ -207,7 +222,7 @@ public class VillageLevel extends RegularLevel {
       // link lanes
       Point pt0 = curRoom.random();
       Point pt1 = toRoom.random();
-      
+
       Painter.randomLink(this, pt0.x, pt0.y, pt1.x, pt1.y, Terrain.EMPTY);
 
       curRoom = toRoom;
@@ -363,12 +378,19 @@ public class VillageLevel extends RegularLevel {
 //      mobs.add(dg);
       // drop(new ScrollOfMagicMapping().quantity(9).identify(), entrance);
       
-//      CapeOfThorns c  = new CapeOfThorns();
-//      c.upgrade(5).identify();
-//      drop(c, entrance);
-//      drop(new ClothArmor().inscribe(new Camouflage()).identify(), entrance);
-      drop(new RiemannianManifoldShield().identify(), entrance);
-      drop(new UrnOfShadow().identify(), entrance);
+      drop(new LeatherArmor().inscribe(new Viscosity()).upgrade(3), entrance);
+      drop(new ScrollOfMagicMapping().identify(), entrance);
+
+      for (int i = 0; i < 5; ++i) {
+        Trap ft = new BlazingTrap().reveal();
+        int pos;
+        do {
+          pos = pointToCell(roomExit.random(1));
+        } while (findMob(pos) != null || !passable[pos]);
+
+        setTrap(ft, pos);
+        map[pos] = Terrain.TRAP;
+      }
     }
 
     super.createMobs();

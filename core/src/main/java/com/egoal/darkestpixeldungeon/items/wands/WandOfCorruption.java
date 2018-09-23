@@ -89,7 +89,6 @@ public class WandOfCorruption extends Wand {
       curCharges -= extraCharges;
       usagesToKnow -= extraCharges;
 
-      processSoulMark(ch, extraCharges + chargesPerCast());
     }
   }
 

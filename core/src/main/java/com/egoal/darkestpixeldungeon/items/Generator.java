@@ -253,7 +253,7 @@ public class Generator {
             PotionOfInvisibility.class,
             PotionOfMight.class,
             PotionOfFrost.class};
-    Category.POTION.probs = new float[]{40, 4, 15, 10, 15, 10, 0, 20, 12, 10,
+    Category.POTION.probs = new float[]{35, 4, 15, 10, 15, 10, 0, 20, 12, 10,
             0, 10};
 
     //TODO: add last ones when implemented

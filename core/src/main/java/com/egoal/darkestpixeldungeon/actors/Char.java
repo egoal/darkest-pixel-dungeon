@@ -180,17 +180,6 @@ public abstract class Char extends Actor {
         buff(EarthImbue.class).proc(enemy);
 
       // effects
-      // show damage value
-      if (dmgtoken > 0 || dmg.from instanceof Char) {
-        String number = Integer.toString(dmgtoken);
-        int color = HP > HT / 2 ? CharSprite.WARNING : CharSprite.NEGATIVE;
-
-        if (dmg.isFeatured(Damage.Feature.CRITCIAL))
-          number += "!";
-
-        sprite.showStatus(color, number);
-      }
-
       // burst blood
       enemy.sprite.bloodBurstA(sprite.center(), dmg.value);
       enemy.sprite.flash();
@@ -330,6 +319,17 @@ public abstract class Char extends Actor {
     //note: this is a important setting
     if (HP < 0) HP = 0;
 
+    // show damage value
+    if (dmg.value > 0 || dmg.from instanceof Char) {
+      String number = Integer.toString(dmg.value);
+      int color = HP > HT / 2 ? CharSprite.WARNING : CharSprite.NEGATIVE;
+
+      if (dmg.isFeatured(Damage.Feature.CRITCIAL))
+        number += "!";
+
+      sprite.showStatus(color, number);
+    }
+    
     if (!isAlive())
       die(dmg.from);
 

@@ -44,7 +44,8 @@ public class Viscosity extends Armor.Glyph {
     Char attacker = (Char) damage.from;
     Char defender = (Char) damage.to;
 
-    if (damage.value == 0) {
+    if (damage.value <= 0) {
+      damage.value = 0;
       return damage;
     }
 
@@ -59,8 +60,8 @@ public class Viscosity extends Armor.Glyph {
       }
       debuff.prolong(damage.value);
 
-      defender.sprite.showStatus(CharSprite.WARNING, Messages.get(this, 
-              "deferred", damage));
+      defender.sprite.showStatus(CharSprite.WARNING, Messages.get(this,
+              "deferred", damage.value));
 
       damage.value = 0;
       return damage;

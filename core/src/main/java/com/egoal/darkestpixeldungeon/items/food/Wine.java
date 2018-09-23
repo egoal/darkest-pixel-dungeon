@@ -76,5 +76,10 @@ public class Wine extends Item {
   public int price(){
     return 15*quantity();
   }
-  
+
+  public boolean isUpgradable() {
+    return false;
+  }
+
+
 }

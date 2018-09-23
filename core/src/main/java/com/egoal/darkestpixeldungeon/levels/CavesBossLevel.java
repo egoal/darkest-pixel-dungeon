@@ -96,6 +96,13 @@ public class CavesBossLevel extends Level {
   }
 
   @Override
+  protected void setupSize() {
+    if (width == 0 || height == 0)
+      width = height = 32;
+    length = width * height;
+  }
+
+  @Override
   protected boolean build() {
 
     int topMost = Integer.MAX_VALUE;
@@ -117,7 +124,7 @@ public class CavesBossLevel extends Level {
         bottom = Random.Int(ROOM_TOP + 3, height() - 1);
       }
 
-      Painter.fill(this, left, top, right - left + 1, bottom - top + 1, 
+      Painter.fill(this, left, top, right - left + 1, bottom - top + 1,
               Terrain.EMPTY);
 
       if (top < topMost) {
@@ -195,7 +202,7 @@ public class CavesBossLevel extends Level {
 
     int sign;
     do {
-      sign = Random.Int(ROOM_LEFT, ROOM_RIGHT) + Random.Int(ROOM_TOP, 
+      sign = Random.Int(ROOM_LEFT, ROOM_RIGHT) + Random.Int(ROOM_TOP,
               ROOM_BOTTOM) * width();
     } while (sign == entrance || map[sign] == Terrain.INACTIVE_TRAP);
     map[sign] = Terrain.SIGN;
@@ -282,7 +289,7 @@ public class CavesBossLevel extends Level {
   private boolean outsideEntraceRoom(int cell) {
     int cx = cell % width();
     int cy = cell / width();
-    return cx < ROOM_LEFT - 1 || cx > ROOM_RIGHT + 1 || cy < ROOM_TOP - 1 || 
+    return cx < ROOM_LEFT - 1 || cx > ROOM_RIGHT + 1 || cy < ROOM_TOP - 1 ||
             cy > ROOM_BOTTOM + 1;
   }
 

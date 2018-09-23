@@ -38,7 +38,7 @@ public class GoldPlatedStatue extends Artifact {
   @Override
   public void execute(final Hero hero, String action) {
     super.execute(hero, action);
-    if (action.equals(AC_INVEST)) {
+    if (action.equals(AC_INVEST) && level()<levelCap) {
       int goldRequired = (level() + 1) * 100;
       if (Dungeon.gold < goldRequired)
         GLog.w(Messages.get(GoldPlatedStatue.class, "no_enough_gold"));
@@ -46,6 +46,7 @@ public class GoldPlatedStatue extends Artifact {
         Dungeon.gold -= goldRequired;
 
         upgrade();
+        GLog.p(Messages.get(GoldPlatedStatue.class, "levelup", goldRequired));
       }
     }
   }

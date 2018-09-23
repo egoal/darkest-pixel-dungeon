@@ -92,7 +92,8 @@ public class Burning extends Buff implements Hero.Doom {
 
         if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph
                 (Brimstone.class)) {
-
+          // wear armor with brimstone
+          
           float heal = hero.belongings.armor.level() / 5f;
           if (Random.Float() < heal % 1) heal++;
           if (heal >= 1 && hero.HP < hero.HT) {
