@@ -27,6 +27,8 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
@@ -92,7 +94,7 @@ public class Yog extends Mob {
       fist1.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
       fist2.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
     }
-    while (!Level.passable[fist1.pos] || !Level.passable[fist2.pos] || 
+    while (!Level.passable[fist1.pos] || !Level.passable[fist2.pos] ||
             fist1.pos == fist2.pos);
 
     GameScene.add(fist1);
@@ -153,7 +155,7 @@ public class Yog extends Mob {
     }
 
     for (Mob mob : Dungeon.level.mobs) {
-      if (mob instanceof BurningFist || mob instanceof RottingFist || mob 
+      if (mob instanceof BurningFist || mob instanceof RottingFist || mob
               instanceof Larva) {
         mob.aggro(enemy);
       }
@@ -169,6 +171,9 @@ public class Yog extends Mob {
   @SuppressWarnings("unchecked")
   @Override
   public void die(Object cause) {
+
+    // remove view mark
+    Buff.detach(Dungeon.hero, ViewMark.class);
 
     for (Mob mob : (Iterable<Mob>) Dungeon.level.mobs.clone()) {
       if (mob instanceof BurningFist || mob instanceof RottingFist) {
@@ -208,8 +213,8 @@ public class Yog extends Mob {
     IMMUNITIES.add(Sleep.class);
     IMMUNITIES.add(Burning.class);
     IMMUNITIES.add(ToxicGas.class);
-    IMMUNITIES.add(ScrollOfPsionicBlast.class);
     IMMUNITIES.add(Vertigo.class);
+    IMMUNITIES.add(Corruption.class);
   }
 
   @Override
@@ -239,6 +244,7 @@ public class Yog extends Mob {
 
       properties.add(Property.BOSS);
       properties.add(Property.DEMONIC);
+
       addResistances(Damage.Element.POISON, 1.25f);
       addResistances(Damage.Element.HOLY, .667f);
     }
@@ -278,7 +284,24 @@ public class Yog extends Mob {
         HP += REGENERATION;
       }
 
-      return super.act();
+      // eyed, share vision with yog
+      // code related to Mob::act, but no need to update field of view, 
+      boolean justAlerted = alerted;
+      alerted = false;
+
+      sprite.hideAlert();
+
+      if (paralysed > 0) {
+        enemySeen = false;
+        spend(TICK);
+        return true;
+      }
+
+      enemy = chooseEnemy();
+      boolean enemyInFOV = enemy != null && enemy.isAlive() &&
+              enemy.invisible <= 0;
+
+      return state.act(enemyInFOV, justAlerted);
     }
 
     @Override
@@ -305,12 +328,14 @@ public class Yog extends Mob {
       IMMUNITIES.add(Terror.class);
       IMMUNITIES.add(Poison.class);
       IMMUNITIES.add(Vertigo.class);
+      IMMUNITIES.add(Corruption.class);
     }
 
     @Override
     public HashSet<Class<?>> immunizedBuffs() {
       return IMMUNITIES;
     }
+
   }
 
   public static class BurningFist extends Mob {
@@ -395,7 +420,23 @@ public class Yog extends Mob {
                 .class));
       }
 
-      return super.act();
+      // code related to RottingFist::act
+      boolean justAlerted = alerted;
+      alerted = false;
+
+      sprite.hideAlert();
+
+      if (paralysed > 0) {
+        enemySeen = false;
+        spend(TICK);
+        return true;
+      }
+
+      enemy = chooseEnemy();
+      boolean enemyInFOV = enemy != null && enemy.isAlive() &&
+              enemy.invisible <= 0;
+
+      return state.act(enemyInFOV, justAlerted);
     }
 
     @Override
@@ -421,8 +462,8 @@ public class Yog extends Mob {
       IMMUNITIES.add(Sleep.class);
       IMMUNITIES.add(Terror.class);
       IMMUNITIES.add(Burning.class);
-      IMMUNITIES.add(ScrollOfPsionicBlast.class);
       IMMUNITIES.add(Vertigo.class);
+      IMMUNITIES.add(Corruption.class);
     }
 
     @Override
@@ -464,4 +505,5 @@ public class Yog extends Mob {
       return dmg;
     }
   }
+
 }

@@ -412,11 +412,11 @@ public class Hero extends Char {
     if (dmg.type == Damage.Type.MENTAL) {
       // do nothing, todo: mental defense
     } else {
-      if(belongings.weapon!=null)
+      if (belongings.weapon != null)
         dmg = belongings.weapon.defendDamage(dmg);
-      
+
       int dr = 0;
-      
+
       if (belongings.armor != null) {
         dr = Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor
                 .DRMax());
@@ -1142,7 +1142,7 @@ public class Hero extends Char {
     CapeOfThorns.Thorns thorns = buff(CapeOfThorns.Thorns.class);
     if (thorns != null)
       dmg = thorns.proc(dmg);
-    
+
     MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
     if (madness != null)
       dmg = madness.procIncomingDamage(dmg);
@@ -1216,9 +1216,9 @@ public class Hero extends Char {
 
     // resistance of ring, 
     RingOfElements.Resistance r = buff(RingOfElements.Resistance.class);
-    if(r!=null)
+    if (r != null)
       dmg = r.resist(dmg);
-    
+
     return super.resistDamage(dmg);
   }
 
@@ -1789,7 +1789,8 @@ public class Hero extends Char {
     // may recover pressure
     if (ch.properties().contains(Property.BOSS))
       recoverSanity(Random.IntRange(6, 12));
-    else if (ch instanceof Mob && ((Mob) ch).maxLvl>=lvl && Random.Int(10) == 0) {
+    else if (ch instanceof Mob && ((Mob) ch).maxLvl >= lvl && Random.Int(10) 
+            == 0) {
       recoverSanity(Random.IntRange(1, 6));
     }
 

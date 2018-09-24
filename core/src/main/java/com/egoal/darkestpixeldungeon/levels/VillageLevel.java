@@ -39,6 +39,7 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfCorruption;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
@@ -366,7 +367,7 @@ public class VillageLevel extends RegularLevel {
     }
 
     // test 
-    if (false) {
+    if (true) {
       // Rat dg	=	new Rat();
 //      Crab dg = new Crab();
 //      // Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
@@ -378,19 +379,21 @@ public class VillageLevel extends RegularLevel {
 //      mobs.add(dg);
       // drop(new ScrollOfMagicMapping().quantity(9).identify(), entrance);
       
-      drop(new LeatherArmor().inscribe(new Viscosity()).upgrade(3), entrance);
-      drop(new ScrollOfMagicMapping().identify(), entrance);
-
-      for (int i = 0; i < 5; ++i) {
-        Trap ft = new BlazingTrap().reveal();
-        int pos;
-        do {
-          pos = pointToCell(roomExit.random(1));
-        } while (findMob(pos) != null || !passable[pos]);
-
-        setTrap(ft, pos);
-        map[pos] = Terrain.TRAP;
-      }
+//      drop(new LeatherArmor().inscribe(new Viscosity()).upgrade(3), entrance);
+//      drop(new ScrollOfMagicMapping().identify(), entrance);
+//
+//      for (int i = 0; i < 5; ++i) {
+//        Trap ft = new BlazingTrap().reveal();
+//        int pos;
+//        do {
+//          pos = pointToCell(roomExit.random(1));
+//        } while (findMob(pos) != null || !passable[pos]);
+//
+//        setTrap(ft, pos);
+//        map[pos] = Terrain.TRAP;
+//      }
+      
+      new WandOfCorruption().upgrade(3).identify().collect();
     }
 
     super.createMobs();

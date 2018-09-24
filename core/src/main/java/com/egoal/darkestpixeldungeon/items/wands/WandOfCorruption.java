@@ -82,11 +82,12 @@ public class WandOfCorruption extends Wand {
   }
 
   private static final float MINOR_DEBUFF_WEAKEN = .8f;
-  private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS = 
+  private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS =
           new HashMap<>();
 
   static {
-    MINOR_DEBUFFS.put(Weakness.class, 0f);  // in dpd, weakness can only attach hero
+    MINOR_DEBUFFS.put(Weakness.class, 0f);  // in dpd, weakness can only 
+    // attach hero
     MINOR_DEBUFFS.put(Cripple.class, 1f);
     MINOR_DEBUFFS.put(Blindness.class, 1f);
     MINOR_DEBUFFS.put(Terror.class, 1f);
@@ -102,7 +103,7 @@ public class WandOfCorruption extends Wand {
   }
 
   private static final float MAJOR_DEBUFF_WEAKEN = .667f;
-  private static final HashMap<Class<? extends Buff>, Float> MAJOR_DEBUFFS = 
+  private static final HashMap<Class<? extends Buff>, Float> MAJOR_DEBUFFS =
           new HashMap<>();
 
   static {
@@ -173,7 +174,7 @@ public class WandOfCorruption extends Wand {
     }
   }
 
-  private void debuffEnemy(Mob enemy, HashMap<Class<? extends Buff>, Float> 
+  private void debuffEnemy(Mob enemy, HashMap<Class<? extends Buff>, Float>
           category) {
     HashMap<Class<? extends Buff>, Float> debuffs = new HashMap<>(category);
     for (Buff existing : enemy.buffs()) {
@@ -189,47 +190,50 @@ public class WandOfCorruption extends Wand {
     }
 
     //all buffs with a > 0 chance are flavor buffs
-    Class<? extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) 
+    Class<? extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>)
             Random.chances(debuffs);
-   
-    if(debuffCls!=null)
-      Buff.append(enemy, debuffCls, 6+level()*3);
-    else{
+
+    if (debuffCls != null)
+      Buff.append(enemy, debuffCls, 6 + level() * 3);
+    else {
       //if no debuff can be applied (all are present), then go up one tier
-      if(category==MINOR_DEBUFFS) debuffEnemy(enemy, MAJOR_DEBUFFS);
-      else if(category==MAJOR_DEBUFFS) corruptEnemy(enemy);
+      if (category == MINOR_DEBUFFS) debuffEnemy(enemy, MAJOR_DEBUFFS);
+      else if (category == MAJOR_DEBUFFS) corruptEnemy(enemy);
     }
   }
 
   private void corruptEnemy(Mob enemy) {
     //cannot re-corrupt or doom an enemy, so give them a major debuff instead
-    if(enemy.buff(Corruption.class) != null || enemy.buff(Vulnerable.class) != null){
-      GLog.w( Messages.get(this, "already_corrupted") );
+    if (enemy.buff(Corruption.class) != null || enemy.buff(Vulnerable.class) 
+            != null) {
+      GLog.w(Messages.get(this, "already_corrupted"));
       return;
     }
-    
-    if(!enemy.immunizedBuffs().contains(Corruption.class)){
-      enemy.HP  = enemy.HT;
-      for(Buff buff: enemy.buffs()){
-        if(buff.type== Buff.buffType.NEGATIVE && !(buff instanceof SoulMark))
+
+    if (!enemy.immunizedBuffs().contains(Corruption.class)) {
+      enemy.HP = enemy.HT;
+      for (Buff buff : enemy.buffs()) {
+        if (buff.type == Buff.buffType.NEGATIVE && !(buff instanceof SoulMark))
           buff.detach();
-        // what is this?
-        else if(buff instanceof PinCushion)
+          // what is this?
+        else if (buff instanceof PinCushion)
           buff.detach();
       }
+      Buff.affect(enemy, Corruption.class);
 
       // in dpd, enemy would not dead directly...
 //      Statistics.enemiesSlain++;
 //      Badges.validateMonstersSlain();
 //      Statistics.qualifiedForNoKilling  = false;
 //      if(enemy.EXP>0 && curUser.lvl<=enemy.maxLvl){
-//        curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
+//        curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, 
+// "exp", enemy.EXP));
 //        curUser.earnExp(enemy.EXP);
 //      }
-      
-    }else{
+
+    } else {
       // in dpd, i give the vulnerable
-      Buff.prolong(enemy, Vulnerable.class, Vulnerable.DURATION).ratio  = 1.5f;
+      Buff.prolong(enemy, Vulnerable.class, Vulnerable.DURATION).ratio = 1.5f;
     }
   }
 

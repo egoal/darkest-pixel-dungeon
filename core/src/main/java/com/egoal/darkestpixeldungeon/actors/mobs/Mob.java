@@ -154,7 +154,7 @@ public abstract class Mob extends Char {
   @Override
   protected boolean act() {
 
-    super.act();
+    super.act();  // update field of view
 
     boolean justAlerted = alerted;
     alerted = false;

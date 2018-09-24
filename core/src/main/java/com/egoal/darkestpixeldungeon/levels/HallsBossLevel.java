@@ -21,6 +21,8 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
@@ -88,6 +90,16 @@ public class HallsBossLevel extends Level {
     stairs = bundle.getInt(STAIRS);
     enteredArena = bundle.getBoolean(ENTERED);
     keyDropped = bundle.getBoolean(DROPPED);
+  }
+
+  @Override
+  protected void setupSize() {
+    if (width == 0 || height == 0) {
+      width = WIDTH;
+      height = HEIGHT;
+    }
+
+    length = width * height;
   }
 
   @Override
@@ -206,6 +218,9 @@ public class HallsBossLevel extends Level {
                       Dungeon.visible[boss.pos]);
       GameScene.add(boss);
       boss.spawnFists();
+      
+      // give an observer
+      Buff.prolong(hero, ViewMark.class, 1000).observer  = boss.id();
 
       stairs = entrance;
       entrance = -1;

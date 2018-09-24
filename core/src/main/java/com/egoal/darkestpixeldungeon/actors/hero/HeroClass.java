@@ -139,18 +139,18 @@ public enum HeroClass {
   }
 
   private static void initDebug(Hero hero) {
-    hero.HP = 140;
-    hero.HT = 140;
+    hero.HP = 160;
+    hero.HT = 160;
     hero.STR  = 18;
-    hero.lvl  = 22;
+    hero.lvl  = 26;
     
     new ScrollOfMagicMapping().quantity(9).identify().collect();
-    new PotionOfHealing().quantity(9).identify().collect();
-    new PotionOfExperience().quantity(20).identify().collect();
-    new PotionOfMindVision().quantity(9).identify().collect();
     
+    new PotionOfHealing().quantity(9).identify().collect();
+    new PotionOfMindVision().quantity(9).identify().collect();
     new PotionOfLiquidFlame().quantity(2).identify().collect();
     new PotionOfToxicGas().quantity(3).identify().collect();
+    new PotionOfInvisibility().quantity(3).identify().collect();
     
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
@@ -163,7 +163,7 @@ public enum HeroClass {
     (new SeedPouch()).identify().collect();
     
     new WandOfBlastWave().identify().collect();
-    new WandOfCorruption().upgrade(3).identify().collect();
+    new WandOfCorruption().upgrade(10).identify().collect();
 
     new GoldPlatedStatue().identify().collect();
     
