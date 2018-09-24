@@ -73,10 +73,11 @@ public class Wine extends Item {
   }
 
   @Override
-  public int price(){
-    return 15*quantity();
+  public int price() {
+    return 15 * quantity();
   }
 
+  @Override
   public boolean isUpgradable() {
     return false;
   }

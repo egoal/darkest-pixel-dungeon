@@ -190,6 +190,13 @@ public class Yog extends Mob {
     yell(Messages.get(this, "notice"));
   }
 
+  @Override
+  public Damage resistDamage(Damage dmg) {
+    if (dmg.isFeatured(Damage.Feature.DEATH))
+      dmg.value *= 0.2;
+    return super.resistDamage(dmg);
+  }
+
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 
   static {
@@ -286,7 +293,7 @@ public class Yog extends Mob {
     @Override
     public Damage resistDamage(Damage dmg) {
       if (dmg.isFeatured(Damage.Feature.DEATH))
-        dmg.value *= 0.8;
+        dmg.value *= 0.2;
       return super.resistDamage(dmg);
     }
 
@@ -403,7 +410,7 @@ public class Yog extends Mob {
     @Override
     public Damage resistDamage(Damage dmg) {
       if (dmg.isFeatured(Damage.Feature.DEATH))
-        dmg.value *= 0.5;
+        dmg.value *= 0.2;
       return dmg;
     }
 

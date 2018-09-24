@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.TenguSprite;
 import com.egoal.darkestpixeldungeon.ui.BossHealthBar;
+import com.egoal.darkestpixeldungeon.ui.HealthIndicator;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -44,7 +45,7 @@ public class DPDTengu extends Mob {
 
     HP = HT = 120;
     EXP = 20;
-    defenseSkill = 0;
+    defenseSkill = 15;
 
     HUNTING = new Hunting();
 
@@ -54,8 +55,8 @@ public class DPDTengu extends Mob {
   // 0: simple jump& shot
   // 1: phantom strike, jump& shot
   //todo: use ai state instead
-  int attackStage = 0;
-  HashSet<Phantom> phantoms = new HashSet<>();
+  private int attackStage = 0;
+  private HashSet<Phantom> phantoms = new HashSet<>();
 
   @Override
   protected boolean canAttack(Char enemy) {
@@ -65,6 +66,26 @@ public class DPDTengu extends Mob {
 
   @Override
   protected boolean doAttack(Char enemy) {
+    if (!phantoms.isEmpty()) {
+      // when hero is not adjacent to any of tengu or his phantoms, 
+      // if attack directly, the phantoms perform bad
+      boolean shouldFollow = !Dungeon.level.adjacent(enemy.pos, pos);
+      if (!shouldFollow)
+        for (Phantom p : phantoms) {
+          if (!Dungeon.level.adjacent(p.pos, enemy.pos)) {
+            shouldFollow = true;
+            break;
+          }
+        }
+
+      if (shouldFollow) {
+        clearPhantoms();
+        jumpPhantomAttack(enemy.pos);
+        
+        return true;
+      }
+    }
+
     if (enemy == Dungeon.hero)
       Dungeon.hero.resting = false;
 
@@ -76,16 +97,13 @@ public class DPDTengu extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(0, 2), this, target).addFeature
+    return new Damage(Random.NormalIntRange(6, 20), this, target).addFeature
             (Damage.Feature.RANGED);
   }
 
   @Override
   public Damage defendDamage(Damage dmg) {
     dmg.value -= Random.NormalIntRange(0, 5);
-
-    if (dmg.isFeatured(Damage.Feature.RANGED))
-      dmg.value -= 3;
 
     return dmg;
   }
@@ -107,6 +125,9 @@ public class DPDTengu extends Mob {
   public int takeDamage(Damage dmg) {
     int val = super.takeDamage(dmg);
 
+    // already dead, nothing to do...
+    if (!isAlive()) return val;
+
     LockedFloor lf = Dungeon.hero.buff(LockedFloor.class);
     if (lf != null)
       lf.addTime(val * 2);  // no need to give extra duration, since the map 
@@ -116,7 +137,7 @@ public class DPDTengu extends Mob {
     // keep the tengu stand on the water longer
     boolean bracketExceed = HP < (HT - 40) &&
             (HP + val) / hpBracket != HP / hpBracket;
-    
+
     //todo: code cleanse
     if (attackStage == 0) {
       boolean switchStage = HP < HT / 2;
@@ -144,7 +165,7 @@ public class DPDTengu extends Mob {
 
         attackStage = 1;
 
-        GLog.i("switch to phase 1.");
+        // GLog.i("switch to phase 1.");
       } else {
         // hard attack from the face, jump away
         if (bracketExceed || (dmg.from instanceof Char &&
@@ -156,26 +177,24 @@ public class DPDTengu extends Mob {
     } else if (attackStage == 1) {
       if (!phantoms.isEmpty()) {
         // destroy all phantoms, jump away 
-        for (Phantom p : phantoms)
-          p.die(null);
-        phantoms.clear();
-
+        clearPhantoms();
+        
         jumpAway(pos);
 
-        GLog.i("destroy phantoms and jump away.");
+        // GLog.i("destroy phantoms and jump away.");
       } else {
         // attack from face, or (attack from ranged, and bracket exceed), 
         // jump & create phantoms
         if (dmg.from instanceof Char) {
           Char c = (Char) dmg.from;
 
-          if (Dungeon.level.adjacent(c.pos, pos) && Random.Int(3) == 0)
+          if (Dungeon.level.adjacent(c.pos, pos) && Random.Int(4) == 0)
             jumpAway(pos);
           else {
             // ranged attack or adjacent attack but rolled
             jumpPhantomAttack(c.pos);
 
-            GLog.i("phantoms strike!");
+            // GLog.i("phantoms strike!");
           }
         } else if (bracketExceed) {
           jumpAway(pos);
@@ -189,8 +208,8 @@ public class DPDTengu extends Mob {
   @Override
   public Damage resistDamage(Damage dmg) {
     if (dmg.isFeatured(Damage.Feature.DEATH))
-      dmg.value *= .1;
-    else if (dmg.type == Damage.Type.MAGICAL)
+      dmg.value *= .2;
+    if (dmg.type == Damage.Type.MAGICAL)
       dmg.value *= .75;
 
     return super.resistDamage(dmg);
@@ -233,8 +252,8 @@ public class DPDTengu extends Mob {
       newpos = Dungeon.level.pointToCell(((DPDPrisonBossLevel) Dungeon.level)
               .rmHall.random(1));
     }
-    while (Level.solid[newpos] || Dungeon.level.distance(newpos, thepos) <
-            6 ||
+    while (Level.solid[newpos] || Dungeon.level.map[newpos] == Terrain.TRAP ||
+            Dungeon.level.distance(newpos, thepos) < 6 ||
             Actor.findChar(newpos) != null);
 
     if (Dungeon.visible[pos])
@@ -258,7 +277,10 @@ public class DPDTengu extends Mob {
         availables.add(pos);
     }
 
-    if (availables.size() < 3) {
+    // hide the bar, avoid distinguishing from which
+    HealthIndicator.instance.target(null);
+
+    if (availables.size() < 4) {
       // no space to spawn phantoms
       jumpAway(enemypos);
     } else {
@@ -267,26 +289,43 @@ public class DPDTengu extends Mob {
       availables.toArray(arr);
       Random.shuffle(arr);
 
-      float jumptime = 1 / speed();
+      // for the performance of phantom strike,
+      // use random jump time cost
+      // float jumptime = 1 / speed();
 
-      // 2 phantoms
-      for (int i = 0; i < 2; ++i) {
-        Phantom p = new Phantom();
+      // 2, 3 phantoms
+      int cntphantoms = Random.Int(3)==0? 3: 2;
+      for (int i = 0; i < cntphantoms; ++i) {
+        Phantom p = new Phantom().imitate(this);
 
         p.pos = arr[i];
         p.state = p.HUNTING;
+
+        float jumptime = Random.Float(.01f, .03f);
         GameScene.add(p, jumptime);
+
+        phantoms.add(p);
       }
 
       // self
-      sprite.move(pos, arr[2]);
+      sprite.move(pos, arr[cntphantoms]);
       sprite.turnTo(pos, enemy.pos);
-      move(arr[2]);
+      move(arr[cntphantoms]);
 
+      float jumptime = Random.Float(.01f, .03f);
       spend(jumptime);
     }
   }
 
+  private void clearPhantoms(){
+    for(Phantom p: phantoms){
+      if(p!=null && p.isAlive())
+        p.die(null);
+    }
+    
+    phantoms.clear();
+  }
+  
   private static final String ATTACK_STAGE = "attack_stage";
 
   @Override
@@ -304,6 +343,10 @@ public class DPDTengu extends Mob {
 
     BossHealthBar.assignBoss(this);
     if (HP <= HT / 2) BossHealthBar.bleed(true);
+
+    for (Mob m : Dungeon.level.mobs)
+      if (m instanceof Phantom)
+        phantoms.add((Phantom) m);
   }
 
   // tengu is always hunting..
@@ -348,6 +391,13 @@ public class DPDTengu extends Mob {
       return Messages.get(DPDTengu.class, "desc");
     }
 
+    public Phantom imitate(DPDTengu tengu) {
+      HP = tengu.HP;
+      HT = tengu.HT;
+
+      return this;
+    }
+
     @Override
     public int attackSkill(Char target) {
       return 10;
@@ -358,21 +408,22 @@ public class DPDTengu extends Mob {
       HP = 0;
       die(dmg.from);
 
-      return HT;
+      //todo: add sfx
+      return 0;
     }
 
-    private class Hunting extends Mob.Hunting {
-      @Override
-      public boolean act(boolean enemyInFov, boolean justAlerted) {
-        // do nothing...
-        if (enemy == null)
-          chooseEnemy();
-
-        sprite.turnTo(pos, enemy.pos);
-        spend(TICK);
-
-        return true;
-      }
-    }
+//    private class Hunting extends Mob.Hunting {
+//      @Override
+//      public boolean act(boolean enemyInFov, boolean justAlerted) {
+//        // do nothing...
+//        if (enemy == null)
+//          chooseEnemy();
+//
+//        sprite.turnTo(pos, enemy.pos);
+//        spend(TICK);
+//
+//        return true;
+//      }
+//    }
   }
 }

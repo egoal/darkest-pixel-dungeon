@@ -277,6 +277,8 @@ public class ItemSpriteSheet {
   public static final int DPD_RIEMANNIAN_SHIELD = ARTIFACTS + 29;
   public static final int DPD_GOLD_PLATE_STATUE = ARTIFACTS + 30;
 
+  public static final int DPD_DWARF_CROWN = SINGLE_USE + 16;
+
   public static final int DPD_HUMANITY = FOOD + 8;
   public static final int DPD_WINE = FOOD + 9;
 

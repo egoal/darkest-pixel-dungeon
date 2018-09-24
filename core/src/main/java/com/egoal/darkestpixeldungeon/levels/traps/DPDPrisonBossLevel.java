@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.items.keys.IronKey;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -160,8 +161,8 @@ public class DPDPrisonBossLevel extends Level {
         return false;
 
     // entrance && exit
-//    entrance = pointToCell(rmStart.centerFixed());
-//    exit = pointToCell(rmExit.centerFixed());
+    entrance = pointToCell(rmStart.centerFixed());
+    exit = pointToCell(rmExit.centerFixed());
 
     do {
       entrance = pointToCell(rmHall.random(1));
@@ -428,6 +429,10 @@ public class DPDPrisonBossLevel extends Level {
     int keypos = pointToCell(Random.element(rmOnTheLeft).random());
     IronKey ik = new IronKey(Dungeon.depth);
     drop(ik, keypos);
+    
+    // give a torch, torches is necessary to fight tengu
+    int torchpos  = pointToCell(Random.element(rmOnTheLeft).random());
+    drop(new Torch(), torchpos);
   }
 
   @Override

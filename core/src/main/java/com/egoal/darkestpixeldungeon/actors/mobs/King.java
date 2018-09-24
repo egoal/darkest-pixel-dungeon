@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
+import com.egoal.darkestpixeldungeon.items.CrownOfDwarf;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
@@ -159,7 +160,8 @@ public class King extends Mob {
     GameScene.bossSlain();
     Dungeon.level.drop(new ArmorKit(), pos).sprite.drop();
     Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
-
+    Dungeon.level.drop(new CrownOfDwarf(), pos).sprite.drop();
+    
     super.die(cause);
 
     Badges.validateBossSlain();
@@ -239,7 +241,7 @@ public class King extends Mob {
   @Override
   public Damage resistDamage(Damage dmg) {
     if (dmg.isFeatured(Damage.Feature.DEATH))
-      dmg.value *= 0.5;
+      dmg.value *= 0.2;
     return super.resistDamage(dmg);
   }
 

@@ -23,9 +23,11 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
+import com.egoal.darkestpixeldungeon.items.CrownOfDwarf;
 import com.egoal.darkestpixeldungeon.items.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.DewVial;
 import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
 import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
@@ -61,6 +63,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
@@ -136,14 +139,17 @@ public enum HeroClass {
 
   private static void initDebug(Hero hero) {
     hero.HP = 100;
-    hero.HT = 300;
-    hero.STR  = 20;
+    hero.HT = 100;
+    hero.STR  = 14;
     hero.lvl  = 12;
     
     new ScrollOfMagicMapping().quantity(9).identify().collect();
     new PotionOfHealing().quantity(9).identify().collect();
     new PotionOfExperience().quantity(20).identify().collect();
     new PotionOfMindVision().quantity(9).identify().collect();
+    
+    new PotionOfLiquidFlame().quantity(2).identify().collect();
+    new PotionOfToxicGas().quantity(3).identify().collect();
     
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
@@ -158,6 +164,11 @@ public enum HeroClass {
     new WandOfBlastWave().identify().collect();
 
     new GoldPlatedStatue().identify().collect();
+    
+    new MailArmor().upgrade(1).identify().collect();
+    new Sword().upgrade(1).identify().collect();
+    
+    new CrownOfDwarf().collect();
   }
 
   public Badges.Badge masteryBadge() {
