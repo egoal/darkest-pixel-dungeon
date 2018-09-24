@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage;
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Viscosity;
 import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
+import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
@@ -394,6 +395,7 @@ public class VillageLevel extends RegularLevel {
 //      }
       
       new WandOfCorruption().upgrade(3).identify().collect();
+      new MaskOfMadness().identify().collect();
     }
 
     super.createMobs();

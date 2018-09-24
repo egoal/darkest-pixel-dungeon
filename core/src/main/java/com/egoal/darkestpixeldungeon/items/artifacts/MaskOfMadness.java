@@ -41,7 +41,7 @@ public class MaskOfMadness extends Artifact {
   public class Madness extends ArtifactBuff {
 
     public Damage procIncomingDamage(Damage dmg) {
-      float ratio = dmg.type == Damage.Type.MENTAL ? 1.5f :
+      float ratio = dmg.type == Damage.Type.MENTAL ? 1.75f :
               (1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f) + 0.05f *
                       level());
 
@@ -57,6 +57,14 @@ public class MaskOfMadness extends Artifact {
 
       return dmg;
     }
+    
+    // check Pressure::act
+//    public int procPressure(int val){
+//      // ratio: .25->.5
+//      int extra = (int)(val*(.25f+ level()*.025f));
+//      if(extra<=0) extra=1;
+//      return val+extra;
+//    }
 
     public void onEmenySlayed(Char e) {
       exp += e.properties().contains(Char.Property.BOSS) ? 3 : 1;

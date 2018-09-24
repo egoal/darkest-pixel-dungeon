@@ -6,6 +6,7 @@ import android.util.Log;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -164,7 +165,13 @@ public class Pressure extends Buff implements Hero.Doom {
       if (Dungeon.depth > 0) {
         // chance to increase, not in the village
         if (Random.Int(10) == 0) {
-          upPressure(Random.Int(1, 4+Dungeon.depth/5));
+          int val = Random.Int(1, 3 + Dungeon.depth / 5);
+//          MaskOfMadness.Madness mm = Dungeon.hero.buff(MaskOfMadness.Madness
+//                  .class);
+//          if (mm != null)
+//            val = mm.procPressure(val);
+
+          upPressure(val);
         }
       }
 
