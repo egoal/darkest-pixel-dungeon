@@ -54,6 +54,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
+import com.egoal.darkestpixeldungeon.items.wands.WandOfCorruption;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
@@ -138,10 +139,10 @@ public enum HeroClass {
   }
 
   private static void initDebug(Hero hero) {
-    hero.HP = 100;
-    hero.HT = 100;
-    hero.STR  = 14;
-    hero.lvl  = 12;
+    hero.HP = 140;
+    hero.HT = 140;
+    hero.STR  = 18;
+    hero.lvl  = 22;
     
     new ScrollOfMagicMapping().quantity(9).identify().collect();
     new PotionOfHealing().quantity(9).identify().collect();
@@ -153,7 +154,7 @@ public enum HeroClass {
     
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
-
+    
     new Earthroot.Seed().quantity(3).identify().collect();
     
     (new TomeOfMastery()).identify().collect();
@@ -162,13 +163,12 @@ public enum HeroClass {
     (new SeedPouch()).identify().collect();
     
     new WandOfBlastWave().identify().collect();
+    new WandOfCorruption().upgrade(3).identify().collect();
 
     new GoldPlatedStatue().identify().collect();
     
     new MailArmor().upgrade(1).identify().collect();
     new Sword().upgrade(1).identify().collect();
-    
-    new CrownOfDwarf().collect();
   }
 
   public Badges.Badge masteryBadge() {

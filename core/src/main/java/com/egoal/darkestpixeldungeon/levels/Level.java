@@ -514,7 +514,7 @@ public abstract class Level implements Bundlable {
       DarkestPixelDungeon.reportException(e);
       return false;
     }
-    
+
     return true;
   }
 
@@ -1204,6 +1204,10 @@ public abstract class Level implements Bundlable {
 
   public int pointToCell(Point p) {
     return p.x + p.y * width();
+  }
+
+  public int xy2cell(int x, int y) {
+    return x + y * width();
   }
 
   public String tileName(int tile) {

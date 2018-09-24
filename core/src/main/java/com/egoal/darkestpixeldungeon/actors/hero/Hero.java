@@ -1789,7 +1789,7 @@ public class Hero extends Char {
     // may recover pressure
     if (ch.properties().contains(Property.BOSS))
       recoverSanity(Random.IntRange(6, 12));
-    else if (Random.Int(10) == 0) {
+    else if (ch instanceof Mob && ((Mob) ch).maxLvl>=lvl && Random.Int(10) == 0) {
       recoverSanity(Random.IntRange(1, 6));
     }
 
