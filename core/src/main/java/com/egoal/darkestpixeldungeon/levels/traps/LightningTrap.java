@@ -52,8 +52,9 @@ public class LightningTrap extends Trap {
 
     if (ch != null) {
       ch.takeDamage(new Damage(Math.max(1, Random.Int(ch.HP / 3, 2 * ch.HP / 
-              3)),
-              this, ch).addElement(Damage.Element.LIGHT));
+              3)), this, ch).type(Damage.Type.MAGICAL).addElement(Damage
+              .Element.LIGHT));
+      
       if (ch == Dungeon.hero) {
 
         Camera.main.shake(2, 0.3f);
@@ -84,11 +85,5 @@ public class LightningTrap extends Trap {
     }
 
     CellEmitter.center(pos).burst(SparkParticle.FACTORY, Random.IntRange(3, 4));
-  }
-
-  //FIXME: this is bad, handle when you rework resistances, make into a category
-  public static final Electricity LIGHTNING = new Electricity();
-
-  public static class Electricity {
   }
 }

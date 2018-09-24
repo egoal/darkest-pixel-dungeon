@@ -48,6 +48,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.egoal.darkestpixeldungeon.levels.traps.BlazingTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.utils.*;
@@ -75,8 +76,10 @@ public class VillageLevel extends RegularLevel {
 
   @Override
   protected void setupSize() {
-    if (width == 0 && height == 0)
-      width = height = 24;
+    if (width == 0 && height == 0){
+      width = 28;
+      height  = 32;
+    }
     length = width * height;
   }
 
@@ -139,7 +142,7 @@ public class VillageLevel extends RegularLevel {
 
     //2. place more rooms
     {
-      int numRooms = Random.Int(6, 10);// Random.Int(8, 12) + 2;
+      int numRooms = Random.Int(6, 8) + 2;
       for (int i = 0; i < 1000 && rooms.size() < numRooms; ++i) {
         int w = Random.Int(4, 9);
         int h = Random.Int(4, 9);
@@ -379,22 +382,21 @@ public class VillageLevel extends RegularLevel {
 //      } while (findMob(dg.pos) != null || dg.pos == entrance);
 //      mobs.add(dg);
       // drop(new ScrollOfMagicMapping().quantity(9).identify(), entrance);
-      
+
 //      drop(new LeatherArmor().inscribe(new Viscosity()).upgrade(3), entrance);
 //      drop(new ScrollOfMagicMapping().identify(), entrance);
-//
-//      for (int i = 0; i < 5; ++i) {
-//        Trap ft = new BlazingTrap().reveal();
-//        int pos;
-//        do {
-//          pos = pointToCell(roomExit.random(1));
-//        } while (findMob(pos) != null || !passable[pos]);
-//
-//        setTrap(ft, pos);
-//        map[pos] = Terrain.TRAP;
-//      }
-      
-      new WandOfCorruption().upgrade(3).identify().collect();
+      for (int i = 0; i < 10; ++i) {
+        Trap ft = new LightningTrap().hide();// reveal();
+        int pos;
+        do {
+          pos = pointToCell(roomExit.random(1));
+        } while (findMob(pos) != null || !passable[pos]);
+
+        setTrap(ft, pos);
+        map[pos] = Terrain.TRAP;
+      }
+
+//      new WandOfCorruption().upgrade(3).identify().collect();
       new MaskOfMadness().identify().collect();
     }
 

@@ -136,6 +136,8 @@ public enum HeroClass {
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
+    
+    hero.HP = 1;
   }
 
   private static void initDebug(Hero hero) {

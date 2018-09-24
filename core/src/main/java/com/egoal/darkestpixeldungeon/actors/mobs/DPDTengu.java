@@ -376,6 +376,7 @@ public class DPDTengu extends Mob {
 
       HP = HT = 1;
       EXP = 0;
+      maxLvl  = 1;
 
       defenseSkill = 0;
       // HUNTING = new Phantom.Hunting();
@@ -409,19 +410,5 @@ public class DPDTengu extends Mob {
       //todo: add sfx
       return 0;
     }
-
-//    private class Hunting extends Mob.Hunting {
-//      @Override
-//      public boolean act(boolean enemyInFov, boolean justAlerted) {
-//        // do nothing...
-//        if (enemy == null)
-//          chooseEnemy();
-//
-//        sprite.turnTo(pos, enemy.pos);
-//        spend(TICK);
-//
-//        return true;
-//      }
-//    }
   }
 }

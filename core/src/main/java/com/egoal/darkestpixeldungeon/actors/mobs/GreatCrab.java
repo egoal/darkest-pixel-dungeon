@@ -71,8 +71,7 @@ public class GreatCrab extends Crab {
     //All direct damage from these sources is negated, no exceptions. 
     // blob/debuff effects go through as normal.
     if ((enemySeen && state != SLEEPING && paralysed == 0)
-            && (dmg.from instanceof Wand || dmg.from instanceof LightningTrap
-            .Electricity || dmg.from instanceof Char)) {
+            && (dmg.from instanceof Wand || dmg.from instanceof Char)) {
       GLog.n(Messages.get(this, "noticed"));
       sprite.showStatus(CharSprite.NEUTRAL, Messages.get(this, "blocked"));
 

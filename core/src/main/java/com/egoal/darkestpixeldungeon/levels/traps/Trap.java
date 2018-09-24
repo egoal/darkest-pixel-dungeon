@@ -22,12 +22,17 @@ package com.egoal.darkestpixeldungeon.levels.traps;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public abstract class Trap implements Bundlable {
 
@@ -70,8 +75,15 @@ public abstract class Trap implements Bundlable {
         Sample.INSTANCE.play(Assets.SND_TRAP);
       }
 
-      // when trigger, 
-
+      // when trigger a hidden trap, up pressure 
+      if (!visible) {
+        Char ch = Actor.findChar(pos);
+        if (ch instanceof Hero && ch.isAlive()) {
+          ch.takeDamage(new Damage(Random.NormalIntRange(1, 8), this, ch)
+                  .type(Damage.Type.MENTAL));
+        }
+      }
+      
       disarm();
       reveal();
       activate();

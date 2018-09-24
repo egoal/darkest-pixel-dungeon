@@ -204,13 +204,18 @@ public class WandOfCorruption extends Wand {
 
   private void corruptEnemy(Mob enemy) {
     //cannot re-corrupt or doom an enemy, so give them a major debuff instead
-    if (enemy.buff(Corruption.class) != null || enemy.buff(Vulnerable.class) 
+    if (enemy.buff(Corruption.class) != null || enemy.buff(Vulnerable.class)
             != null) {
       GLog.w(Messages.get(this, "already_corrupted"));
       return;
     }
 
-    if (!enemy.immunizedBuffs().contains(Corruption.class)) {
+    boolean canbecorruptted = !enemy.immunizedBuffs().contains(Corruption.class)
+            && !enemy.properties().contains(Char.Property.BOSS) &&
+            !enemy.properties().contains(Char.Property.MINIBOSS) &&
+            !enemy.properties().contains(Char.Property.MACHINE);
+
+    if (canbecorruptted) {
       enemy.HP = enemy.HT;
       for (Buff buff : enemy.buffs()) {
         if (buff.type == Buff.buffType.NEGATIVE && !(buff instanceof SoulMark))

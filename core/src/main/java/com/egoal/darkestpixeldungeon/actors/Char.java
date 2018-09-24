@@ -428,8 +428,8 @@ public abstract class Char extends Actor {
     super.spend(time / timeScale);
   }
 
-  public HashSet<Buff> buffs() {
-    return buffs;
+  public synchronized HashSet<Buff> buffs() {
+    return new HashSet<>(buffs);
   }
 
   @SuppressWarnings("unchecked")
