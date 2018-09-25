@@ -238,7 +238,7 @@ public class WandOfCorruption extends Wand {
 
     } else {
       // in dpd, i give the vulnerable
-      Buff.prolong(enemy, Vulnerable.class, Vulnerable.DURATION).ratio = 1.5f;
+      Buff.prolong(enemy, Vulnerable.class, Vulnerable.DURATION*2).ratio = 1.5f;
     }
   }
 

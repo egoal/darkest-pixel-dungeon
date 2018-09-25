@@ -77,8 +77,8 @@ public class VillageLevel extends RegularLevel {
   @Override
   protected void setupSize() {
     if (width == 0 && height == 0){
-      width = 28;
-      height  = 32;
+      width = 24;
+      height  = 28;
     }
     length = width * height;
   }
@@ -371,7 +371,7 @@ public class VillageLevel extends RegularLevel {
     }
 
     // test 
-    if (true) {
+    if (false) {
       // Rat dg	=	new Rat();
 //      Crab dg = new Crab();
 //      // Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
@@ -397,7 +397,7 @@ public class VillageLevel extends RegularLevel {
       }
 
 //      new WandOfCorruption().upgrade(3).identify().collect();
-      new MaskOfMadness().identify().collect();
+//      new MaskOfMadness().identify().collect();
     }
 
     super.createMobs();

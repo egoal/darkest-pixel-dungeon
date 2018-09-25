@@ -224,7 +224,7 @@ public abstract class RegularLevel extends Level {
         //!!! all specials in 1 connected room
         if (specials.size() > 0 &&
                 r.width() > 3 && r.height() > 3 &&
-                Random.Int(specialRooms * (specialRooms - 1) + 1) == 0) {
+                Random.Int(specialRooms * (specialRooms - 1) + 2) == 0) {
 
           if (pitRoomNeeded && !pitMade) {
 

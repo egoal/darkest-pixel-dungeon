@@ -21,7 +21,6 @@ public class GoldPlatedStatue extends Artifact {
     image = ItemSpriteSheet.DPD_GOLD_PLATE_STATUE;
 
     levelCap = 10;
-    defaultAction = AC_INVEST;
   }
 
   private static final String AC_INVEST = "INVEST";
@@ -29,7 +28,7 @@ public class GoldPlatedStatue extends Artifact {
   @Override
   public ArrayList<String> actions(Hero hero) {
     ArrayList<String> actions = super.actions(hero);
-    if (level() < levelCap)
+    if (level() < levelCap && !cursed)
       actions.add(AC_INVEST);
 
     return actions;
@@ -51,6 +50,22 @@ public class GoldPlatedStatue extends Artifact {
     }
   }
 
+  @Override
+  public String desc() {
+    String desc = super.desc();
+
+    if (isEquipped(Dungeon.hero)) {
+      if (!cursed) {
+        if (level() < levelCap)
+          desc += "\n\n" + Messages.get(this, "desc_hint");
+      } else {
+        desc += "\n\n" + Messages.get(this, "desc_cursed");
+      }
+    }
+
+    return desc;
+  }
+  
   @Override
   protected ArtifactBuff passiveBuff() {
     return new Greedy();

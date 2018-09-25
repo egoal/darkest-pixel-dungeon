@@ -137,14 +137,13 @@ public enum HeroClass {
       initDebug(hero);
     }
     
-    hero.HP = 1;
   }
 
   private static void initDebug(Hero hero) {
-    hero.HP = 160;
-    hero.HT = 160;
-    hero.STR  = 18;
-    hero.lvl  = 26;
+    hero.HP = 100;
+    hero.HT = 100;
+    hero.STR  = 14;
+    hero.lvl  = 12;
     
     new ScrollOfMagicMapping().quantity(9).identify().collect();
     

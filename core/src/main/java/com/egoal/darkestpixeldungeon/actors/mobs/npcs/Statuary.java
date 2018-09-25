@@ -294,7 +294,7 @@ public class Statuary extends NPC {
         // reward
         UrnOfShadow uos = hero.belongings.getItem(UrnOfShadow.class);
         if (uos != null && uos.level() < 10) {
-          uos.upgrade();
+          uos.upgrade(2);
         } else {
           // must be positive
           if (requireBlood) {

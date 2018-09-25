@@ -5,6 +5,8 @@ import com.egoal.darkestpixeldungeon.Bones;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.mobs.DPDTengu;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
@@ -74,6 +76,10 @@ public class DPDPrisonBossLevel extends Level {
     Dungeon.observe();
   }
 
+  public int hallCenter(){
+    return pointToCell(rmHall.centerFixed());
+  }
+  
   @Override
   protected boolean build() {
     Arrays.fill(map, Terrain.WALL);
@@ -201,11 +207,11 @@ public class DPDPrisonBossLevel extends Level {
     if (ch == Dungeon.hero && !enteredMainHall && rmHall.inside(cellToPoint
             (cell))) {
       enteredMainHall = true;
-      onHeroEnteredHall();
+      onHeroEnteredHall(ch);
     }
   }
 
-  private void onHeroEnteredHall() {
+  private void onHeroEnteredHall(Char hero) {
     seal();
 
     // lock the hall exit
@@ -220,6 +226,10 @@ public class DPDPrisonBossLevel extends Level {
     tengu.state = tengu.HUNTING;
 
     tengu.notice();
+
+    // give buff
+    Buff.prolong(hero, Ignorant.class, 1000);
+    
   }
 
   @Override

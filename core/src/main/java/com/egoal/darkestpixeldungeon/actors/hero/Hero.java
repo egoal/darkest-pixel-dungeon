@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
+import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -1265,7 +1266,7 @@ public class Hero extends Char {
     // final int NORMAL	=	0x361936;
     final int WARNING = 0x0A0A0A;
 
-    if (rv > 0) {
+    if (rv > 0 && buff(Ignorant.class)==null) {
       sprite.showStatus(WARNING, Integer.toString(rv));
     }
 

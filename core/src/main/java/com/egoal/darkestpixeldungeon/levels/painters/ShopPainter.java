@@ -141,6 +141,9 @@ public class ShopPainter extends Painter {
 
     itemsToSpawn = new ArrayList<Item>();
 
+    itemsToSpawn.add(Generator.random(Generator.Category.POTION));
+    itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
+
     // armors and weapons 
     switch (Dungeon.depth) {
       case 6:
@@ -177,18 +180,6 @@ public class ShopPainter extends Painter {
         itemsToSpawn.add(new Torch());
         if (Random.Int(10) == 0)
           itemsToSpawn.add(new Torch());
-        break;
-
-      case 21:
-        itemsToSpawn.add(Random.Int(2) == 0 ? new Greatsword().identify() : 
-                new WarHammer().identify());
-        itemsToSpawn.add(Random.Int(2) == 0 ?
-                new Javelin().quantity(Random.NormalIntRange(4, 7)) :
-                new Tamahawk().quantity(Random.NormalIntRange(4, 7)));
-        itemsToSpawn.add(new PlateArmor().identify());
-        itemsToSpawn.add(new Torch());
-        itemsToSpawn.add(new Torch());
-        itemsToSpawn.add(new Torch());
         break;
     }
 
@@ -282,22 +273,11 @@ public class ShopPainter extends Painter {
         rare = Generator.random(Generator.Category.RING);
         rare.level(1);
         break;
-//      case 2:
-//        rare = Generator.random(Generator.Category.ARTIFACT).identify();
-//        break;
       default:
         rare = new Stylus();
     }
     rare.cursed = rare.cursedKnown = false;
     itemsToSpawn.add(rare);
-
-    Log.d("dpd", Integer.toString(itemsToSpawn.size()) + " items spawned.");
-    //this is a hard limit, level gen allows for at most an 8x5 room, can't 
-    // fit more than 39 items + 1 shopkeeper.
-    if (itemsToSpawn.size() > DPDShopKeeper.MAX_ITEMS)
-      throw new RuntimeException("Shop attempted to carry more than 39 items!");
-
-    // Collections.shuffle(itemsToSpawn);
   }
 
   private static void ChooseBag(Belongings pack) {

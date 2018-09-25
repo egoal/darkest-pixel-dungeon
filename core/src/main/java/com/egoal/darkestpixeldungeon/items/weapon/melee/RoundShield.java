@@ -41,6 +41,7 @@ public class RoundShield extends MeleeWeapon {
   @Override
   public Damage defendDamage(Damage dmg) {
     int value = 5 + 2 * level();
+    
     if (dmg.type == Damage.Type.NORMAL)
       dmg.value -= value;
     else if (dmg.type == Damage.Type.MAGICAL)

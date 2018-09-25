@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
+import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
@@ -220,6 +221,7 @@ public abstract class Char extends Actor {
     return dmg;
   }
 
+  //todo: rework this function!
   public boolean checkHit(Damage dmg) {
     // when from nowhere, be accurate
     if (dmg.from instanceof Mob && !Dungeon.visible[((Char) dmg.from).pos])
@@ -320,14 +322,16 @@ public abstract class Char extends Actor {
     if (HP < 0) HP = 0;
 
     // show damage value
-    if (dmg.value > 0 || dmg.from instanceof Char) {
-      String number = Integer.toString(dmg.value);
-      int color = HP > HT / 2 ? CharSprite.WARNING : CharSprite.NEGATIVE;
+    if(buff(Ignorant.class)==null) {
+      if (dmg.value > 0 || dmg.from instanceof Char) {
+        String number = Integer.toString(dmg.value);
+        int color = HP > HT / 2 ? CharSprite.WARNING : CharSprite.NEGATIVE;
 
-      if (dmg.isFeatured(Damage.Feature.CRITCIAL))
-        number += "!";
+        if (dmg.isFeatured(Damage.Feature.CRITCIAL))
+          number += "!";
 
-      sprite.showStatus(color, number);
+        sprite.showStatus(color, number);
+      }
     }
     
     if (!isAlive())
