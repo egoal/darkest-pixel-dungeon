@@ -37,10 +37,11 @@ public class GoldPlatedStatue extends Artifact {
   @Override
   public void execute(final Hero hero, String action) {
     super.execute(hero, action);
-    if (action.equals(AC_INVEST) && level()<levelCap) {
-      int goldRequired = (level() + 1) * 100;
+    if (action.equals(AC_INVEST) && level() < levelCap) {
+      int goldRequired = (int) (100 * Math.pow(1.3, level()));
       if (Dungeon.gold < goldRequired)
-        GLog.w(Messages.get(GoldPlatedStatue.class, "no_enough_gold"));
+        GLog.w(Messages.get(GoldPlatedStatue.class, "no_enough_gold", 
+                goldRequired));
       else {
         Dungeon.gold -= goldRequired;
 
@@ -65,7 +66,7 @@ public class GoldPlatedStatue extends Artifact {
 
     return desc;
   }
-  
+
   @Override
   protected ArtifactBuff passiveBuff() {
     return new Greedy();
@@ -73,8 +74,8 @@ public class GoldPlatedStatue extends Artifact {
 
   public class Greedy extends ArtifactBuff {
     public int extraCollect(int gold) {
-      float ratio = cursed? -.3f: level() * .1f;
-      
+      float ratio = cursed ? -.3f : level() * .1f;
+
       return (int) (gold * ratio);
     }
 
