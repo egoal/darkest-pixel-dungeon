@@ -96,17 +96,16 @@ public class ChaliceOfBlood extends Artifact {
     }
 
     hero.defendDamage(damage);
-
     hero.sprite.operate(hero.pos);
-    hero.busy();
     hero.spend(3f);
+    hero.busy();
+
     GLog.w(Messages.get(this, "onprick"));
     if (damage.value <= 0) {
       damage.value = 1;
     } else {
       Sample.INSTANCE.play(Assets.SND_CURSED);
-      hero.sprite.emitter().burst(ShadowParticle.CURSE, 4 + (damage.value / 
-              10));
+      hero.sprite.emitter().burst(ShadowParticle.CURSE, 4 + damage.value / 10);
     }
 
     hero.takeDamage(damage);

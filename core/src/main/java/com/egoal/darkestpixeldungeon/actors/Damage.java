@@ -1,5 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors;
 
+import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
+
 /**
  * Created by 93942 on 4/30/2018.
  */
@@ -26,7 +28,7 @@ public class Damage {
     public static final int HOLY = 0x0040;  // this should use name: light
 
     public static final int ELEMENT_COUNT = 7;
-
+    
     public static int all() {
       int a = 0;
       for (int i = 0; i < ELEMENT_COUNT; ++i)

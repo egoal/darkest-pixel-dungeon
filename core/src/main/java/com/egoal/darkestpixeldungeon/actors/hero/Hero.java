@@ -212,6 +212,9 @@ public class Hero extends Char {
   private static final String EXPERIENCE = "exp";
   private static final String CRITICAL = "critical";
 
+  private static final String RESISTANCE_MAGICAL = "resistance_magical";
+  private static final String RESISTANCE_NORMAL = "resistance_normal";
+
   @Override
   public void storeInBundle(Bundle bundle) {
 
@@ -232,6 +235,8 @@ public class Hero extends Char {
     bundle.put(CRITICAL, criticalChance_);
 
     // bundle.put(FOLLOWERS, followers_);
+    bundle.put(RESISTANCE_MAGICAL, resistanceMagical);
+    bundle.put(RESISTANCE_NORMAL, resistanceNormal);
 
     belongings.storeInBundle(bundle);
   }
@@ -254,6 +259,9 @@ public class Hero extends Char {
     exp = bundle.getInt(EXPERIENCE);
 
     criticalChance_ = bundle.getFloat(CRITICAL);
+
+    resistanceMagical = bundle.getFloatArray(RESISTANCE_MAGICAL);
+    resistanceNormal = bundle.getFloatArray(RESISTANCE_NORMAL);
 
     belongings.restoreFromBundle(bundle);
   }
@@ -506,10 +514,6 @@ public class Hero extends Char {
 
     if (buff(Fury.class) != null)
       dmg.value *= 1.5f;
-
-    // critical damage recover pressure
-    if (dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Int(20) == 0)
-      recoverSanity(Random.Int(dmg.value / 8) + 1);
 
     return dmg;
   }
@@ -1093,6 +1097,11 @@ public class Hero extends Char {
     if (wep != null)
       dmg = wep.proc(dmg);
 
+    // critical damage recover pressure
+    if (dmg.isFeatured(Damage.Feature.CRITCIAL) && dmg.value > 0 && Random
+            .Int(20) == 0)
+      recoverSanity(Math.min(Random.Int(dmg.value / 6) + 1, 10));
+
     // sniper perk
     if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
       Char target = (Char) dmg.to;
@@ -1266,7 +1275,7 @@ public class Hero extends Char {
     // final int NORMAL	=	0x361936;
     final int WARNING = 0x0A0A0A;
 
-    if (rv > 0 && buff(Ignorant.class)==null) {
+    if (rv > 0 && buff(Ignorant.class) == null) {
       sprite.showStatus(WARNING, Integer.toString(rv));
     }
 
@@ -1790,7 +1799,7 @@ public class Hero extends Char {
     // may recover pressure
     if (ch.properties().contains(Property.BOSS))
       recoverSanity(Random.IntRange(6, 12));
-    else if (ch instanceof Mob && ((Mob) ch).maxLvl >= lvl && Random.Int(10) 
+    else if (ch instanceof Mob && ((Mob) ch).maxLvl >= lvl && Random.Int(10)
             == 0) {
       recoverSanity(Random.IntRange(1, 6));
     }

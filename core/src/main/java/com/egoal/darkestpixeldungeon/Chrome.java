@@ -35,13 +35,14 @@ public class Chrome {
     TAB_SET,
     TAB_SELECTED,
     TAB_UNSELECTED,
+    
     DPD_BOOK,
   }
 
   ;
 
   public static NinePatch get(Type type) {
-    String Asset = Assets.CHROME;
+    String Asset = Assets.DPD_CHROME;
     switch (type) {
       case WINDOW:
         return new NinePatch(Asset, 0, 0, 20, 20, 6);

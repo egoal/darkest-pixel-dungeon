@@ -271,7 +271,7 @@ public abstract class Level implements Bundlable {
             feeling = Feeling.WATER;
             break;
           case 2:
-            feeling = Feeling.GRASS;
+            // feeling = Feeling.GRASS;
             break;
           case 3:
           case 4:

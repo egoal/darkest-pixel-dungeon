@@ -26,32 +26,32 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 
 public class Regeneration extends Buff {
 
-  private static final float REGENERATION_DELAY = 8f; //8.7f
+  private static final float REGENERATION_DELAY = 8f;
 
   @Override
   public boolean act() {
     if (target.isAlive()) {
 
+      int dhp = 1;
+      ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff
+              (ChaliceOfBlood.chaliceRegen.class);
+
+      if(regenBuff!=null && !regenBuff.isCursed())
+        dhp += target.HT*0.01*regenBuff.itemLevel();
+
       if (target.HP < target.HT && !((Hero) target).isStarving()) {
         LockedFloor lock = target.buff(LockedFloor.class);
         if (target.HP > 0 && (lock == null || lock.regenOn())) {
-          target.HP += 1;
-          if (target.HP == target.HT) {
+          target.HP += dhp;
+          if (target.HP >= target.HT) {
+            target.HP = target.HT;
             ((Hero) target).resting = false;
           }
         }
       }
 
-      ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff
-              (ChaliceOfBlood.chaliceRegen.class);
-
-      if (regenBuff != null)
-        if (regenBuff.isCursed())
-          spend(REGENERATION_DELAY * 1.5f);
-        else
-          spend(REGENERATION_DELAY - regenBuff.itemLevel() * 0.9f);
-      else
-        spend(REGENERATION_DELAY);
+      spend(regenBuff != null && regenBuff.isCursed() ? REGENERATION_DELAY * 
+              2 : REGENERATION_DELAY);
 
     } else {
 

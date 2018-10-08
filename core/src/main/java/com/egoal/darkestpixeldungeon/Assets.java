@@ -191,6 +191,7 @@ public class Assets {
   public static final String DPD_CONS_ICONS = "dpd/consumable_icons.png";
   public static final String DPD_AVATARS = "dpd/avatars.png";
   public static final String DPD_FIREBALL = "dpd/fireball.png";
+  public static final String DPD_CHROME = "dpd/chrome.png";
 
   // npc
   public static final String DPD_CAT_LIX = "dpd/cat_lix.png";

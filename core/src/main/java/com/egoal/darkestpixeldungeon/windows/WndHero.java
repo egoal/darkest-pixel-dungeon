@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.Statistics;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
@@ -50,6 +51,7 @@ public class WndHero extends WndTabbed {
 
   private StatsTab stats;
   private BuffsTab buffs;
+  private DetailsTab details;
 
   private SmartTexture icons;
   private TextureFilm film;
@@ -64,24 +66,32 @@ public class WndHero extends WndTabbed {
     stats = new StatsTab();
     add(stats);
 
+    details = new DetailsTab();
+    add(details);
+
     buffs = new BuffsTab();
     add(buffs);
 
     add(new LabeledTab(Messages.get(this, "stats")) {
+      @Override
       protected void select(boolean value) {
         super.select(value);
         stats.visible = stats.active = selected;
       }
-
-      ;
+    });
+    add(new LabeledTab(Messages.get(this, "details")) {
+      @Override
+      protected void select(boolean value) {
+        super.select(value);
+        details.visible = details.active = selected;
+      }
     });
     add(new LabeledTab(Messages.get(this, "buffs")) {
+      @Override
       protected void select(boolean value) {
         super.select(value);
         buffs.visible = buffs.active = selected;
       }
-
-      ;
     });
 
     resize(WIDTH, (int) Math.max(stats.height(), buffs.height()));
@@ -107,7 +117,7 @@ public class WndHero extends WndTabbed {
         title.label(Messages.get(this, "title", hero.lvl, hero.className())
                 .toUpperCase(Locale.ENGLISH));
       else
-        title.label((hero.givenName() + "\n" + Messages.get(this, "title", 
+        title.label((hero.givenName() + "\n" + Messages.get(this, "title",
                 hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH));
       title.color(Window.SHPX_COLOR);
       title.setRect(0, 0, WIDTH, 0);
@@ -117,7 +127,7 @@ public class WndHero extends WndTabbed {
 
       statSlot(Messages.get(this, "str"), hero.STR());
       if (hero.SHLD > 0)
-        statSlot(Messages.get(this, "health"), hero.HP + "+" + hero.SHLD + 
+        statSlot(Messages.get(this, "health"), hero.HP + "+" + hero.SHLD +
                 "/" + hero.HT);
       else statSlot(Messages.get(this, "health"), (hero.HP) + "/" + hero.HT);
       statSlot(Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp());
@@ -224,5 +234,47 @@ public class WndHero extends WndTabbed {
         GameScene.show(new WndInfoBuff(buff));
       }
     }
+  }
+
+  private class DetailsTab extends Group {
+    SmartTexture resistIcons;
+
+    public DetailsTab() {
+      // resistance
+      float top = 0f;
+      top = layoutResistances(top);
+      
+    }
+
+    private float layoutResistances(float thetop) {
+      final int GAP = 5;
+      final int ICON_SIZE = 8;
+
+      resistIcons = TextureCache.get(Assets.DPD_CONS_ICONS);
+
+      RenderedText rt = PixelScene.renderText(Messages.get(this, "resistance"), 8);
+      rt.y = thetop;
+      add(rt);
+      
+      Hero hero = Dungeon.hero;
+      
+      for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
+        Image icon = new Image(resistIcons);
+        icon.frame(ICON_SIZE * i, 16, ICON_SIZE, ICON_SIZE);
+        icon.y = rt.y+rt.height()+ (GAP + ICON_SIZE)*i;
+        add(icon);
+
+        RenderedText txt = PixelScene.renderText(String.format("%2.1f/%2.1f", 
+                hero.resistanceNormal[i], hero.resistanceMagical[i]), 8);
+        txt.x = icon.width+GAP;
+        txt.y = (icon.height-txt.baseLine())/2+icon.y;
+        add(txt);
+        
+        thetop = icon.y+icon.height()+GAP;
+      }
+      
+      return thetop;
+    }
+
   }
 }

@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.items.armor.glyphs.Brimstone;
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage;
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Viscosity;
 import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
+import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
@@ -76,9 +77,9 @@ public class VillageLevel extends RegularLevel {
 
   @Override
   protected void setupSize() {
-    if (width == 0 && height == 0){
+    if (width == 0 && height == 0) {
       width = 24;
-      height  = 28;
+      height = 28;
     }
     length = width * height;
   }
@@ -372,32 +373,10 @@ public class VillageLevel extends RegularLevel {
 
     // test 
     if (false) {
-      // Rat dg	=	new Rat();
-//      Crab dg = new Crab();
-//      // Statuary dg = new Statuary().type(Statuary.Type.MONSTER);
-//      // SkeletonKnight dg	=	new SkeletonKnight();
-////			MadMan dg	=	new MadMan();
-//      do {
-//        dg.pos = pointToCell(roomEntrance.random());
-//      } while (findMob(dg.pos) != null || dg.pos == entrance);
-//      mobs.add(dg);
-      // drop(new ScrollOfMagicMapping().quantity(9).identify(), entrance);
-
-//      drop(new LeatherArmor().inscribe(new Viscosity()).upgrade(3), entrance);
-//      drop(new ScrollOfMagicMapping().identify(), entrance);
-      for (int i = 0; i < 10; ++i) {
-        Trap ft = new LightningTrap().hide();// reveal();
-        int pos;
-        do {
-          pos = pointToCell(roomExit.random(1));
-        } while (findMob(pos) != null || !passable[pos]);
-
-        setTrap(ft, pos);
-        map[pos] = Terrain.TRAP;
-      }
-
-//      new WandOfCorruption().upgrade(3).identify().collect();
-//      new MaskOfMadness().identify().collect();
+      ChaliceOfBlood c = new ChaliceOfBlood();
+      c.level(7);
+      c.upgrade();
+      c.collect();
     }
 
     super.createMobs();

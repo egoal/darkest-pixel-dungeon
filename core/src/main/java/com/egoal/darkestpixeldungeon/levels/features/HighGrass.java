@@ -44,11 +44,10 @@ public class HighGrass {
 
   public static void trample(Level level, int pos, Char ch) {
 
-    if(level.map[pos]==Terrain.HIGH_GRASS_COLLECTED){
+    if (level.map[pos] == Terrain.HIGH_GRASS_COLLECTED) {
       // already collected,
-    }else{
-      Level.set(pos, Terrain.HIGH_GRASS_COLLECTED);
-      GameScene.updateMap(pos);
+    } else {
+      int newTile = Terrain.HIGH_GRASS_COLLECTED;
 
       if (!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
         // the sandals artifact effect
@@ -82,16 +81,36 @@ public class HighGrass {
               }
             } else
               level.drop(seed, pos).sprite.drop();
+
+            // if seed dropped, remove the high grass
+            newTile = Terrain.GRASS;
           }
 
           // Dew, scales from 1/6 to 1/3
-          // now it's 1/5->1/3
-          if (Random.Int(10 - naturalismLevel) < 2)
-            level.drop(new Dewdrop(), pos);
+          // now it's 1/5->1/3, and can drop more than one!
+          if (Random.Int(10 - naturalismLevel) < 2) {
+            int q = 0;
+            switch (Random.Int(10)) {
+              case 0:
+              case 1:
+                q = 2;
+                break;
+              case 2:
+                q = 3;
+                break;
+              default:
+                q = 1;
+            }
+
+            level.drop(new Dewdrop().quantity(q), pos);
+          }
         }
       }
+
+      Level.set(pos, newTile);
+      GameScene.updateMap(pos);
     }
-    
+
     int leaves = 4;
 
     if (ch instanceof Hero) {

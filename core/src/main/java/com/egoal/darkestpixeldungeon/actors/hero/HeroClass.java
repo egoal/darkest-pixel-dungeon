@@ -140,8 +140,8 @@ public enum HeroClass {
   }
 
   private static void initDebug(Hero hero) {
-    hero.HP = 100;
-    hero.HT = 100;
+    hero.HP = 1000;
+    hero.HT = 1000;
     hero.STR  = 14;
     hero.lvl  = 12;
     

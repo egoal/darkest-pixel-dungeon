@@ -57,6 +57,8 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -83,8 +85,17 @@ public abstract class Char extends Actor {
   public int viewDistance = 8;
   public int seeDistance = 8;
 
+  // resistances
+  public float[] resistanceMagical = new float[Damage.Element.ELEMENT_COUNT];
+  public float[] resistanceNormal = new float[Damage.Element.ELEMENT_COUNT];
+  
   private HashSet<Buff> buffs = new HashSet<>();
 
+  {
+    Arrays.fill(resistanceMagical, 1f);
+    Arrays.fill(resistanceNormal, 1f);
+  }
+  
   @Override
   protected boolean act() {
     Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
@@ -151,7 +162,7 @@ public abstract class Char extends Actor {
         dmg.value = 0;
       }
       dmg = enemy.defenseProc(dmg);
-      
+
       if (visibleFight) {
         if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature
                 .CRITCIAL) && dmg.value > 0)
@@ -322,7 +333,7 @@ public abstract class Char extends Actor {
     if (HP < 0) HP = 0;
 
     // show damage value
-    if(buff(Ignorant.class)==null) {
+    if (buff(Ignorant.class) == null) {
       if (dmg.value > 0 || dmg.from instanceof Char) {
         String number = Integer.toString(dmg.value);
         int color = HP > HT / 2 ? CharSprite.WARNING : CharSprite.NEGATIVE;
@@ -333,20 +344,20 @@ public abstract class Char extends Actor {
         sprite.showStatus(color, number);
       }
     }
-    
+
     if (!isAlive())
       die(dmg.from);
 
     return dmg.value;
   }
-
-  // resistances
-  private HashMap<Integer, Float> mapMagicalResistances = new HashMap<>();
-  private HashMap<Integer, Float> mapNormalResistances = new HashMap<>();
-
+  
   public void addResistances(int element, float magical, float normal) {
-    mapMagicalResistances.put(element, magical);
-    mapNormalResistances.put(element, normal);
+    for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
+      if ((element & 0x01 << i) != 0) {
+        resistanceMagical[i] = magical;
+        resistanceNormal[i] = normal;
+      }
+    }
   }
 
   public void addResistances(int ele, float r) {
@@ -367,20 +378,20 @@ public abstract class Char extends Actor {
         return dmg;
       }
 
-    HashMap<Integer, Float> mr = null;
+    float[] resistance = null;
     if (dmg.type == Damage.Type.NORMAL)
-      mr = mapNormalResistances;
+      resistance = resistanceNormal;
     else if (dmg.type == Damage.Type.MAGICAL)
-      mr = mapMagicalResistances;
+      resistance = resistanceMagical;
 
-    if (mr != null) {
+    if (resistance != null) {
       for (int of = 0; of < Damage.Element.ELEMENT_COUNT; ++of) {
-        int ele = 1 << of;
-        if (dmg.hasElement(ele) && mr.containsKey(ele)) {
-          dmg.value /= mr.get(ele);
-        }
+        int ele = 0x01 << of;
+        if (dmg.hasElement(ele))
+          dmg.value /= resistance[of];
       }
     }
+
     return dmg;
   }
 
