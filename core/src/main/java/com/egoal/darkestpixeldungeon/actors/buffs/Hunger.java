@@ -82,9 +82,11 @@ public class Hunger extends Buff implements Hero.Doom {
           target.takeDamage(new Damage((int) partialDamage,
                   this, target).type(Damage.Type.MAGICAL).addFeature(Damage
                   .Feature.PURE));
-          target.takeDamage(new Damage(Random.Int(0, (int) partialDamage + 1),
-                  this, target).type(Damage.Type.MENTAL).addFeature(Damage
-                  .Feature.PURE));
+          if(target.isAlive()) {
+            target.takeDamage(new Damage(Random.Int(0, (int) partialDamage + 1),
+                    this, target).type(Damage.Type.MENTAL).addFeature(Damage
+                    .Feature.PURE));
+          }
           partialDamage -= (int) partialDamage;
         }
 

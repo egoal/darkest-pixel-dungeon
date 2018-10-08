@@ -49,8 +49,7 @@ public class WandOfMagicMissile extends DamageWand {
 
     Char ch = Actor.findChar(bolt.collisionPos);
     if (ch != null) {
-      processSoulMark(ch, chargesPerCast());
-      ch.takeDamage(new Damage(damageRoll(), this, ch).type(Damage.Type
+      ch.takeDamage(new Damage(damageRoll(), curUser, ch).type(Damage.Type
               .MAGICAL));
 
       ch.sprite.burst(0xFFFFFFFF, level() / 2 + 2);
@@ -59,8 +58,9 @@ public class WandOfMagicMissile extends DamageWand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
+    Char attacker = (Char)damage.from;
+    
     Buff.prolong(attacker, Recharging.class, 1 + staff.level() / 2f);
     SpellSprite.show(attacker, SpellSprite.CHARGE);
 

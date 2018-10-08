@@ -41,11 +41,11 @@ public class Vampiric extends Weapon.Enchantment {
 
     int level = Math.max(0, weapon.level());
 
-    // lvl 0 - 20%
-    // lvl 1 - 21.5%
-    // lvl 2 - 23%
+    // lvl 0 - 20% -> .25
+    // lvl 1 - 21.5% -> .268
+    // lvl 2 - 23% -> .286
     int maxValue = Math.round(damage.value * ((level + 10) / (float) (level +
-            50)));
+            40)));
     int effValue = Math.min(Random.IntRange(0, maxValue), attacker.HT - 
             attacker.HP);
 

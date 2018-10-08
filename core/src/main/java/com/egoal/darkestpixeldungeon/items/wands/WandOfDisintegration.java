@@ -52,7 +52,7 @@ public class WandOfDisintegration extends DamageWand {
   }
 
   public int max(int lvl) {
-    return 8 + 4 * lvl;
+    return 6 + 4 * lvl;
   }
 
   @Override
@@ -102,9 +102,8 @@ public class WandOfDisintegration extends DamageWand {
 
     int lvl = level + (chars.size() - 1) + terrainBonus;
     for (Char ch : chars) {
-      processSoulMark(ch, chargesPerCast());
       // ch.damage( damageRoll(lvl), this );
-      ch.takeDamage(new Damage(damageRoll(lvl), this, ch).type(Damage.Type
+      ch.takeDamage(new Damage(damageRoll(lvl), curUser, ch).type(Damage.Type
               .MAGICAL).addFeature(Damage.Feature.PURE));
       ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange
               (1, 2));
@@ -113,8 +112,7 @@ public class WandOfDisintegration extends DamageWand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     //no direct effect, see magesStaff.reachfactor
   }
 

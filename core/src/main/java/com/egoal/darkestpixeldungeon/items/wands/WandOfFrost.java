@@ -78,9 +78,8 @@ public class WandOfFrost extends DamageWand {
         ch.sprite.burst(0xFF99CCFF, level() / 2 + 2);
       }
 
-      processSoulMark(ch, chargesPerCast());
       // ch.damage(damage, this);
-      ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL)
+      ch.takeDamage(new Damage(damage, curUser, ch).type(Damage.Type.MAGICAL)
               .addElement(Damage.Element.ICE));
 
       if (ch.isAlive()) {
@@ -100,8 +99,9 @@ public class WandOfFrost extends DamageWand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
+    Char defender = (Char)damage.to; 
+    
     Chill chill = defender.buff(Chill.class);
     if (chill != null && Random.IntRange(2, 10) > chill.cooldown()) {
       //need to delay this through an actor so that the freezing isn't broken

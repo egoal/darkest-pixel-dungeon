@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.wands;
 
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -100,9 +101,6 @@ public class WandOfRegrowth extends Wand {
       }
 
       Char ch = Actor.findChar(i);
-      if (ch != null) {
-        processSoulMark(ch, chargesPerCast());
-      }
 
       GameScene.add(Blob.seed(i, 10, Regrowth.class));
 
@@ -113,7 +111,7 @@ public class WandOfRegrowth extends Wand {
     if (strength >= 0 && Level.passable[cell] && !Level.losBlocking[cell]) {
       affectedCells.add(cell);
       if (strength >= 1.5f) {
-        spreadRegrowth(cell + PathFinder.CIRCLE[left(direction)], strength - 
+        spreadRegrowth(cell + PathFinder.CIRCLE[left(direction)], strength -
                 1.5f);
         spreadRegrowth(cell + PathFinder.CIRCLE[direction], strength - 1.5f);
         spreadRegrowth(cell + PathFinder.CIRCLE[right(direction)], strength -
@@ -125,7 +123,7 @@ public class WandOfRegrowth extends Wand {
       visualCells.add(cell);
   }
 
-  private void placePlants(float numPlants, float numDews, float numPods, 
+  private void placePlants(float numPlants, float numDews, float numPods,
                            float numStars) {
     Iterator<Integer> cells = affectedCells.iterator();
     Level floor = Dungeon.level;
@@ -170,8 +168,7 @@ public class WandOfRegrowth extends Wand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     //like pre-nerf vampiric enchantment, except with herbal healing buff
 
     int level = Math.max(0, staff.level());
@@ -179,9 +176,11 @@ public class WandOfRegrowth extends Wand {
     // lvl 0 - 33%
     // lvl 1 - 43%
     // lvl 2 - 50%
-    int maxValue = damage * (level + 2) / (level + 6);
-    int effValue = Math.min(Random.IntRange(0, maxValue), attacker.HT - 
-            attacker.HP);
+    int maxValue = damage.value * (level + 2) / (level + 6);
+
+    Char attacker = (Char) damage.from;
+    int effValue = Math.min(Random.IntRange(0, maxValue),
+            attacker.HT - attacker.HP);
 
     Buff.affect(attacker, Sungrass.Health.class).boost(effValue);
 
@@ -305,7 +304,8 @@ public class WandOfRegrowth extends Wand {
 
       for (int i = 0; i < nSeeds && !candidates.isEmpty(); i++) {
         Integer c = Random.element(candidates);
-        Dungeon.level.drop(Generator.random(Generator.Category.SEED), c).sprite.drop(pos);
+        Dungeon.level.drop(Generator.random(Generator.Category.SEED), c)
+                .sprite.drop(pos);
         candidates.remove(c);
       }
 

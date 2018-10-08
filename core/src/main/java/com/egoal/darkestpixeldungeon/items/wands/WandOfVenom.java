@@ -50,13 +50,6 @@ public class WandOfVenom extends Wand {
             .class);
     ((VenomGas) venomGas).setStrength(level() + 1);
     GameScene.add(venomGas);
-
-    for (int i : PathFinder.NEIGHBOURS9) {
-      Char ch = Actor.findChar(bolt.collisionPos + i);
-      if (ch != null) {
-        processSoulMark(ch, chargesPerCast());
-      }
-    }
   }
 
   @Override
@@ -67,11 +60,9 @@ public class WandOfVenom extends Wand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     //acts like venomous enchantment
-    // new Venomous().proc(staff, attacker, defender, damage);
-    new Venomous().proc(staff, new Damage(damage, attacker, defender));
+    new Venomous().proc(staff, damage);
   }
 
   @Override

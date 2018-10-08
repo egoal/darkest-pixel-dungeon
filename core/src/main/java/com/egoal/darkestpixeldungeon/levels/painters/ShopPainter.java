@@ -141,9 +141,21 @@ public class ShopPainter extends Painter {
 
     itemsToSpawn = new ArrayList<Item>();
 
-    itemsToSpawn.add(Generator.random(Generator.Category.POTION));
-    itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
-
+    // potion of healing and scroll of remove curse is preferred
+    {
+      ScrollOfRemoveCurse s = new ScrollOfRemoveCurse();
+      if(s.isKnown())
+        itemsToSpawn.add(s);
+      else
+        itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
+      
+      PotionOfHealing p = new PotionOfHealing();
+      if(p.isKnown())
+        itemsToSpawn.add(p);
+      else
+        itemsToSpawn.add(Generator.random(Generator.Category.POTION));
+    }
+    
     // armors and weapons 
     switch (Dungeon.depth) {
       case 6:

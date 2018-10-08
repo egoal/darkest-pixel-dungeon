@@ -82,7 +82,7 @@ public class WandOfFireblast extends DamageWand {
 
         int damage = damageRoll();
 
-        ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL)
+        ch.takeDamage(new Damage(damage, curUser, ch).type(Damage.Type.MAGICAL)
                 .addElement(Damage.Element.FIRE));
         Buff.affect(ch, Burning.class).reignite(ch);
         switch (chargesPerCast()) {
@@ -105,10 +105,10 @@ public class WandOfFireblast extends DamageWand {
       affectedCells.add(cell);
       if (strength >= 1.5f) {
         visualCells.remove(cell);
-        spreadFlames(cell + PathFinder.CIRCLE[left(direction)], strength - 
+        spreadFlames(cell + PathFinder.CIRCLE[left(direction)], strength -
                 1.5f);
         spreadFlames(cell + PathFinder.CIRCLE[direction], strength - 1.5f);
-        spreadFlames(cell + PathFinder.CIRCLE[right(direction)], strength - 
+        spreadFlames(cell + PathFinder.CIRCLE[right(direction)], strength -
                 1.5f);
       } else {
         visualCells.add(cell);
@@ -126,11 +126,9 @@ public class WandOfFireblast extends DamageWand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     //acts like blazing enchantment
-    // new Blazing().proc( staff, attacker, defender, damage);
-    new Blazing().proc(staff, new Damage(damage, attacker, defender));
+    new Blazing().proc(staff, damage);
   }
 
   @Override

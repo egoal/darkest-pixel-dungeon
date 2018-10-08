@@ -78,8 +78,7 @@ public class WandOfBlastWave extends DamageWand {
       Char ch = Actor.findChar(bolt.collisionPos + i);
 
       if (ch != null) {
-        processSoulMark(ch, chargesPerCast());
-        ch.takeDamage(new Damage(Math.round(damage * 0.667f), this, ch).type
+        ch.takeDamage(new Damage(Math.round(damage * 0.667f), curUser, ch).type
                 (Damage.Type.MAGICAL));
 
         if (ch.isAlive()) {
@@ -94,8 +93,7 @@ public class WandOfBlastWave extends DamageWand {
     //throws the char at the center of the blast
     Char ch = Actor.findChar(bolt.collisionPos);
     if (ch != null) {
-      processSoulMark(ch, chargesPerCast());
-      ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL));
+      ch.takeDamage(new Damage(damage, curUser, ch).type(Damage.Type.MAGICAL));
 
       if (ch.isAlive() && bolt.path.size() > bolt.dist + 1) {
         Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt
@@ -144,7 +142,7 @@ public class WandOfBlastWave extends DamageWand {
           // this);
           ch.takeDamage(new Damage(Random.NormalIntRange((finalDist + 1) / 2,
                   finalDist),
-                  this, ch).type(Damage.Type.MAGICAL));
+                  null, ch).type(Damage.Type.MAGICAL));
 
           Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange(
                   (finalDist + 1) / 2, finalDist) + 1);
@@ -156,13 +154,15 @@ public class WandOfBlastWave extends DamageWand {
 
   @Override
   //behaves just like glyph of Repulsion
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     int level = Math.max(0, staff.level());
 
     // lvl 0 - 25%
     // lvl 1 - 40%
     // lvl 2 - 50%
+    Char attacker = (Char)damage.from; 
+    Char defender = (Char)damage.to;
+    
     if (Random.Int(level + 4) >= 3) {
       int oppositeHero = defender.pos + (defender.pos - attacker.pos);
       Ballistica trajectory = new Ballistica(defender.pos, oppositeHero, 

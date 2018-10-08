@@ -38,15 +38,19 @@ public class GoldPlatedStatue extends Artifact {
   public void execute(final Hero hero, String action) {
     super.execute(hero, action);
     if (action.equals(AC_INVEST) && level() < levelCap) {
-      int goldRequired = (int) (100 * Math.pow(1.3, level()));
-      if (Dungeon.gold < goldRequired)
-        GLog.w(Messages.get(GoldPlatedStatue.class, "no_enough_gold", 
-                goldRequired));
+      if (!isEquipped(hero))
+        GLog.i(Messages.get(Artifact.class, "need_to_equip"));
       else {
-        Dungeon.gold -= goldRequired;
+        int goldRequired = (int) (100 * Math.pow(1.3, level()));
+        if (Dungeon.gold < goldRequired)
+          GLog.w(Messages.get(GoldPlatedStatue.class, "no_enough_gold",
+                  goldRequired));
+        else {
+          Dungeon.gold -= goldRequired;
 
-        upgrade();
-        GLog.p(Messages.get(GoldPlatedStatue.class, "levelup", goldRequired));
+          upgrade();
+          GLog.p(Messages.get(GoldPlatedStatue.class, "levelup", goldRequired));
+        }
       }
     }
   }

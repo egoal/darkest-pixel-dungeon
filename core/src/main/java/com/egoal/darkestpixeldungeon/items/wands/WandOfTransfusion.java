@@ -80,9 +80,6 @@ public class WandOfTransfusion extends Wand {
 
     //if we find a character..
     if (ch != null && ch instanceof Mob) {
-
-      processSoulMark(ch, chargesPerCast());
-
       //heals an ally, or charmed/corrupted enemy
       if (((Mob) ch).ally || ch.buff(Charm.class) != null || ch.buff
               (Corruption.class) != null) {
@@ -102,7 +99,8 @@ public class WandOfTransfusion extends Wand {
         //deals 30%+5%*lvl total HP.
         int damage = (int) Math.ceil(ch.HT * (0.3f + (0.05f * level())));
         // ch.damage(damage, this);
-        ch.takeDamage(new Damage(damage, this, ch).type(Damage.Type.MAGICAL));
+        ch.takeDamage(new Damage(damage, curUser, ch).type(Damage.Type
+                .MAGICAL));
         ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
         Sample.INSTANCE.play(Assets.SND_BURNING);
 
@@ -114,11 +112,11 @@ public class WandOfTransfusion extends Wand {
                 .object = curUser.id();
 
         duration *= Random.Float(0.75f, 1f);
-        Buff.affect(curUser, Charm.class, Charm.durationFactor(ch) * 
+        Buff.affect(curUser, Charm.class, Charm.durationFactor(ch) *
                 duration).object = ch.id();
 
         ch.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
-        curUser.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 
+        curUser.sprite.centerEmitter().start(Speck.factory(Speck.HEART),
                 0.2f, 5);
 
       }
@@ -182,7 +180,7 @@ public class WandOfTransfusion extends Wand {
   private void damageHero() {
     // 15% of max hp
     int damage = (int) Math.ceil(curUser.HT * 0.15f);
-    curUser.takeDamage(new Damage(damage, this, curUser).type(Damage.Type
+    curUser.takeDamage(new Damage(damage, curUser, curUser).type(Damage.Type
             .MAGICAL));
 
     if (!curUser.isAlive()) {
@@ -197,8 +195,7 @@ public class WandOfTransfusion extends Wand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     // lvl 0 - 10%
     // lvl 1 - 18%
     // lvl 2 - 25%
@@ -206,7 +203,8 @@ public class WandOfTransfusion extends Wand {
       //grants a free use of the staff
       freeCharge = true;
       GLog.p(Messages.get(this, "charged"));
-      attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
+      if(damage.from instanceof Char)
+        ((Char) damage.from).sprite.emitter().burst(BloodParticle.BURST, 20);
     }
   }
 

@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.actors.mobs.Wraith;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -66,7 +67,7 @@ public class CorpseDust extends Item {
   @Override
   public boolean doPickUp(Hero hero) {
     if (super.doPickUp(hero)) {
-      GLog.n("You feel a shiver run down your spine.");
+      GLog.n(Messages.get(this, "picked"));
       Buff.affect(hero, DustGhostSpawner.class);
       return true;
     }

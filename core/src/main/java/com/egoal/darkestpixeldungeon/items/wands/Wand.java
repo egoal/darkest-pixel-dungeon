@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
@@ -101,9 +102,8 @@ public abstract class Wand extends Item {
   }
 
   protected abstract void onZap(Ballistica attack);
-
-  public abstract void onHit(MagesStaff staff, Char attacker, Char defender, 
-                             int damage);
+  
+  public abstract void onHit(MagesStaff staff, Damage damage);
 
   @Override
   public boolean collect(Bag container) {
@@ -129,16 +129,6 @@ public abstract class Wand extends Item {
   public void charge(Char owner, float chargeScaleFactor) {
     charge(owner);
     charger.setScaleFactor(chargeScaleFactor);
-  }
-
-  protected void processSoulMark(Char target, int chargesUsed) {
-    // do nothing, since warlock overhauled
-    return;
-//		if (target != Dungeon.hero &&
-//				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
-//				Random.Float() < .15f + (level()*chargesUsed*0.03f)){
-//			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + level());
-//		}
   }
 
   @Override

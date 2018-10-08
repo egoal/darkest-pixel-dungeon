@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
@@ -243,13 +244,12 @@ public class WandOfCorruption extends Wand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     // lvl 0 - 25%
     // lvl 1 - 40%
     // lvl 2 - 50%
     if (Random.Int(level() + 4) >= 3) {
-      Buff.prolong(defender, Amok.class, 3 + level());
+      Buff.prolong((Char)damage.to, Amok.class, 3 + level());
     }
   }
 

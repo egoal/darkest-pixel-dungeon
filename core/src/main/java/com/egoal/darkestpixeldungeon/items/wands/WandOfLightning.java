@@ -73,9 +73,8 @@ public class WandOfLightning extends DamageWand {
     int max = 10 + 5 * level();
 
     for (Char ch : affected) {
-      processSoulMark(ch, chargesPerCast());
       ch.takeDamage(new Damage(Math.round(damageRoll() * multipler),
-              this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element
+              curUser, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element
               .LIGHT));
 
       if (ch == Dungeon.hero) Camera.main.shake(2, 0.3f);
@@ -90,11 +89,9 @@ public class WandOfLightning extends DamageWand {
   }
 
   @Override
-  public void onHit(MagesStaff staff, Char attacker, Char defender, int 
-          damage) {
+  public void onHit(MagesStaff staff, Damage damage) {
     //acts like shocking enchantment
-    // new Shocking().proc(staff, attacker, defender, damage);
-    new Shocking().proc(staff, new Damage(damage, attacker, defender));
+    new Shocking().proc(staff, damage);
   }
 
   private void arc(Char ch) {
