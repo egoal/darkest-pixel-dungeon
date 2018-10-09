@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
@@ -32,6 +33,7 @@ import com.egoal.darkestpixeldungeon.sprites.MobSprite;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.ui.ScrollPane;
+import com.egoal.darkestpixeldungeon.ui.StatusPane;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.IconTitle;
@@ -149,6 +151,19 @@ public class Statuary extends NPC {
     if (!isActive)
       return false;
 
+    // add journal
+    switch (type){
+      case ANGEL:
+        Journal.add(Journal.Feature.STATUARY_ANGEL);
+        break;
+      case DEVIL:
+        Journal.add(Journal.Feature.STATUARY_DEVIL);
+        break;
+      case MONSTER:
+        Journal.add(Journal.Feature.STATUARY_MONSTER);
+        break;
+    }
+    
     GameScene.show(new WndStatuary(this));
 
     return false;
@@ -166,7 +181,21 @@ public class Statuary extends NPC {
         isActive = !answerMonster(agree, Dungeon.hero);
         break;
     }
-    // isActive	=	true;
+    
+    if(!isActive){
+      // remove journal
+      switch (type){
+        case ANGEL:
+          Journal.remove(Journal.Feature.STATUARY_ANGEL);
+          break;
+        case DEVIL:
+          Journal.remove(Journal.Feature.STATUARY_DEVIL);
+          break;
+        case MONSTER:
+          Journal.remove(Journal.Feature.STATUARY_MONSTER);
+          break;
+      }
+    }
   }
 
   private boolean answerAngle(boolean agree, Hero hero) {
@@ -374,14 +403,14 @@ public class Statuary extends NPC {
       // lost memory
       Arrays.fill(Dungeon.level.mapped, false);
       Arrays.fill(Dungeon.level.visited, false);
+      StatusPane.needsCompassUpdate = true;
       GameScene.updateFog();
 
       // reward
       Generator.Category gc = Random.Float() < .4 ? Generator.Category
               .WEAPON : Generator.Category.ARMOR;
       Item item = Generator.random(gc);
-      if (Random.Float() < .4)
-        item.upgrade(1);
+      item.upgrade(Random.Float()<.1? 2: 1);
       if (item instanceof Armor) {
         ((Armor) item).inscribe(Armor.Glyph.randomCurse());
       } else if (item instanceof Weapon) {

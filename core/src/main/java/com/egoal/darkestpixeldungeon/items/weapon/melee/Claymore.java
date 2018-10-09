@@ -22,10 +22,10 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee;
 
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 
-public class Greatsword extends MeleeWeapon {
+public class Claymore extends MeleeWeapon {
 
   {
-    image = ItemSpriteSheet.GREATSWORD;
+    image = ItemSpriteSheet.Claymore;
 
     tier = 5;
   }

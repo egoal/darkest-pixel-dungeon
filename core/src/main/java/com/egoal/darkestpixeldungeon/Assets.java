@@ -31,10 +31,7 @@ public class Assets {
   public static final String LOCKED = "locked_badge.png";
   public static final String AMULET = "amulet.png";
 
-  public static final String CHROME = "chrome.png";
   public static final String ICONS = "icons.png";
-  public static final String STATUS = "status_pane.png";
-  public static final String MENU = "menu_button.png";
   public static final String HP_BAR = "hp_bar.png";
   public static final String SHLD_BAR = "shield_bar.png";
   public static final String XP_BAR = "exp_bar.png";
@@ -46,12 +43,10 @@ public class Assets {
   public static final String MAGE = "mage.png";
   public static final String ROGUE = "rogue.png";
   public static final String HUNTRESS = "ranger.png";
-  public static final String AVATARS = "avatars.png";
   public static final String PET = "pet.png";
 
   public static final String SURFACE = "surface.png";
 
-  public static final String FIREBALL = "fireball.png";
   public static final String SPECKS = "specks.png";
   public static final String EFFECTS = "effects.png";
 
@@ -97,7 +92,6 @@ public class Assets {
   public static final String ROT_HEART = "rot_heart.png";
   public static final String GUARD = "guard.png";
 
-  public static final String ITEMS = "items.png";
   public static final String PLANTS = "plants.png";
   public static final String TRAPS = "traps.png";
 
@@ -120,7 +114,6 @@ public class Assets {
   public static final String BUFFS_SMALL = "buffs.png";
   public static final String BUFFS_LARGE = "large_buffs.png";
   public static final String SPELL_ICONS = "spell_icons.png";
-  public static final String CONS_ICONS = "consumable_icons.png";
 
   public static final String PIXELFONT = "pixel_font.png";
   public static final String FONT1X = "font1x.png";
@@ -183,8 +176,9 @@ public class Assets {
   public static final String SND_CRITICAL = "snd_critical.mp3";
   
   // dpd assets
+  // replacement & creation
   //////////////////////////////////////////////////////
-  // replacement
+  // ui
   public static final String DPD_ICONS = "dpd/icons.png";
   public static final String DPD_ITEMS = "dpd/items.png";
   public static final String DPD_BANNERS = "dpd/banners.png";
@@ -192,7 +186,10 @@ public class Assets {
   public static final String DPD_AVATARS = "dpd/avatars.png";
   public static final String DPD_FIREBALL = "dpd/fireball.png";
   public static final String DPD_CHROME = "dpd/chrome.png";
-
+  public static final String DPD_MENU = "dpd/menu_button.png";
+  public static final String DPD_STATUS = "dpd/status_pane.png";
+  public static final String DPD_SAN_BAR = "dpd/san_bar.png";
+  
   // npc
   public static final String DPD_CAT_LIX = "dpd/cat_lix.png";
   public static final String DPD_ALCHEMIST = "dpd/alchemist.png";
@@ -200,6 +197,7 @@ public class Assets {
   public static final String DPD_JESSICA = "dpd/jessica.png";
   public static final String DPD_NOVE = "dpd/nove.png";
   public static final String DPD_STATUARY = "dpd/statuary.png";
+  public static final String DPD_MINSTREL = "dpd/minstrel.png";
 
   public static final String DPD_POTION_SELLER  = "dpd/potion_seller.png";
   public static final String DPD_SCROLL_SELLER  = "dpd/scroll_seller.png";
@@ -215,8 +213,5 @@ public class Assets {
   public static final String DPD_DEVIL_GHOST = "dpd/devil_ghost.png";
   public static final String DPD_SKELETON_KNIGHT = "dpd/skeleton_knight.png";
   public static final String DPD_MADMAN = "dpd/madman.png";
-
-  public static final String DPD_STATUS = "dpd/status_pane.png";
-  public static final String DPD_SAN_BAR = "dpd/san_bar.png";
 
 }

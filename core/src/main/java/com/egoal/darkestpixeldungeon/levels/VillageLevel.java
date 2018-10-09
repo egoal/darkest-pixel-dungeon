@@ -17,6 +17,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Minstrel;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
@@ -355,14 +356,14 @@ public class VillageLevel extends RegularLevel {
               .pos] == Terrain.SIGN);
       mobs.add(sodan);
     }
-
+           
     // scholar
     {
       // scholar is on the right side of the map
       Scholar s = new Scholar();
       Room theRoom = (Room) new Room().set(-1, -1, -1, -1);
       for (Room rm : rooms) {
-        if (rm.right > theRoom.right)
+        if (rm.right > theRoom.right && rm!=roomExit)
           theRoom = rm;
       }
       do {
@@ -370,7 +371,21 @@ public class VillageLevel extends RegularLevel {
       } while (findMob(s.pos) != null || !passable[s.pos]);
       mobs.add(s);
     }
-
+    
+    // minstrel
+    {
+      Minstrel m = new Minstrel();
+      Room rm = null;
+      do{
+        rm = Random.element(rooms);
+      }while(rm==roomEntrance || rm==roomExit);
+      
+      do{
+        m.pos = pointToCell(rm.random(1));
+      }while(findMob(m.pos)!=null || !passable[m.pos]);
+      mobs.add(m);
+    }
+    
     // test 
     if (false) {
       ChaliceOfBlood c = new ChaliceOfBlood();

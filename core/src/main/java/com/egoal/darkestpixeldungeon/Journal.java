@@ -39,7 +39,16 @@ public class Journal {
     GHOST,
     WANDMAKER,
     TROLL,
-    IMP;
+    IMP,
+    
+    STATUARY_ANGEL, 
+    STATUARY_DEVIL,
+    STATUARY_MONSTER,
+
+    SHOP_KEEPER,
+    SCROLL_SELLER,
+    POTION_SELLER,
+    ;
 
     public String desc() {
       return Messages.get(this, name());

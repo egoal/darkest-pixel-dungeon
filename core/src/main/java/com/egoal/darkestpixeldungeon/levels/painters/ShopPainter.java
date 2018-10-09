@@ -20,8 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.levels.painters;
 
-import android.util.Log;
-
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDImpShopkeeper;
@@ -33,7 +31,6 @@ import com.egoal.darkestpixeldungeon.items.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.WarHammer;
 import com.egoal.darkestpixeldungeon.levels.LastShopLevel;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
@@ -41,7 +38,6 @@ import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Shopkeeper;
-import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.MerchantsBeacon;
 import com.egoal.darkestpixeldungeon.items.Stylus;
@@ -49,7 +45,6 @@ import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.items.Weightstone;
 import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
-import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.armor.ScaleArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
@@ -58,12 +53,9 @@ import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
 import com.egoal.darkestpixeldungeon.items.food.OverpricedRation;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.egoal.darkestpixeldungeon.items.wands.Wand;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleAxe;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Greatsword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.HandAxe;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Longsword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Mace;
@@ -73,17 +65,12 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.CurareDart;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.IncendiaryDart;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Shuriken;
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Tamahawk;
 import com.egoal.darkestpixeldungeon.levels.Room;
-import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import javax.microedition.khronos.opengles.GL;
 
 public class ShopPainter extends Painter {
 

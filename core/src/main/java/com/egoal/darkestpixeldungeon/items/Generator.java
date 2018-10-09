@@ -116,7 +116,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Glaive;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Greataxe;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Greatshield;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Greatsword;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Claymore;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.HandAxe;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Longsword;
@@ -323,7 +323,7 @@ public class Generator {
     Category.WEP_T4.probs = new float[]{6, 5, 5, 4, 4, 6};
 
     Category.WEP_T5.classes = new Class<?>[]{
-            Greatsword.class,
+            Claymore.class,
             WarHammer.class,
             Glaive.class,
             Greataxe.class,

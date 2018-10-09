@@ -1,23 +1,16 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
-import com.egoal.darkestpixeldungeon.items.potions.Potion;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Greatsword;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Claymore;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WarHammer;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Tamahawk;
-import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ImpSprite;
 import com.watabou.utils.Random;
 
@@ -46,7 +39,7 @@ public class DPDImpShopkeeper extends DPDShopKeeper {
               Generator.random(Generator.Category.POTION) :
               Generator.random(Generator.Category.SCROLL));
 
-    addItemToSell(Random.Int(2) == 0 ? new Greatsword().identify() :
+    addItemToSell(Random.Int(2) == 0 ? new Claymore().identify() :
             new WarHammer().identify());
 
     addItemToSell(Random.Int(2) == 0 ? 

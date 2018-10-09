@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -119,6 +120,13 @@ public class DPDShopKeeper extends NPC {
   // interact
   @Override
   public boolean interact() {
+    if (this instanceof ScrollSeller)
+      Journal.add(Journal.Feature.SCROLL_SELLER);
+    else if (this instanceof PotionSeller)
+      Journal.add(Journal.Feature.POTION_SELLER);
+    else
+      Journal.add(Journal.Feature.SHOP_KEEPER);
+
     GameScene.show(new WndShop(this));
 
     return false;
@@ -130,6 +138,13 @@ public class DPDShopKeeper extends NPC {
 
   // actions
   protected void flee() {
+    if (this instanceof ScrollSeller)
+      Journal.remove(Journal.Feature.SCROLL_SELLER);
+    else if (this instanceof PotionSeller)
+      Journal.remove(Journal.Feature.POTION_SELLER);
+    else
+      Journal.remove(Journal.Feature.SHOP_KEEPER);
+
     destroy();
     sprite.killAndErase();
     CellEmitter.get(pos).burst(ElmoParticle.FACTORY, 6);
@@ -270,7 +285,7 @@ public class DPDShopKeeper extends NPC {
       // add items
       int btm = placeItems(sk, line.y + line.height() + GAP);
       updateButtons();
-      
+
       resize(WIDTH, btm);
     }
 
@@ -316,7 +331,7 @@ public class DPDShopKeeper extends NPC {
           itemPrices_.get(i).hardlight(0xFFFF00);
         }
       }
-      
+
     }
 
     private void onPlayerWantBuy(final Item item) {

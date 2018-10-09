@@ -1551,7 +1551,7 @@ public class Hero extends Char {
     criticalChance_ += 0.4f / 100f;
 
     // recover sanity
-    recoverSanity(Math.min(Random.IntRange(1, lvl), (int) (buff(Pressure
+    recoverSanity(Math.min(Random.IntRange(1, lvl/2), (int) (buff(Pressure
             .class).pressure * 0.3f)));
   }
 

@@ -199,6 +199,12 @@ public class StatusPane extends Component {
   public void update() {
     super.update();
 
+    if(needsCompassUpdate){
+      needsCompassUpdate = true;
+      compass.visible = false;
+      compass.update();
+    }
+    
     float health = Dungeon.hero.HP;
     float shield = Dungeon.hero.SHLD;
     float max = Dungeon.hero.HT;
@@ -214,13 +220,13 @@ public class StatusPane extends Component {
     } else if ((health / max) < 0.3f) {
       warning += Game.elapsed * 5f * (0.4f - (health / max));
       warning %= 1f;
-      avatar.tint(ColorMath.interpolate(warning, 0x660000, 0xCC0000, 
+      avatar.tint(ColorMath.interpolate(warning, 0x660000, 0xCC0000,
               0x660000), 0.5f);
-    } else if (p.getLevel() == Pressure.Level.NERVOUS || p.getLevel() == 
+    } else if (p.getLevel() == Pressure.Level.NERVOUS || p.getLevel() ==
             Pressure.Level.COLLAPSE) {
       warning += Game.elapsed * 5f * (0.4f - (health / max));
       warning %= 1f;
-      avatar.tint(ColorMath.interpolate(warning, 0x333333, 0x666666, 
+      avatar.tint(ColorMath.interpolate(warning, 0x333333, 0x666666,
               0x333333), 0.5f);
     } else {
       avatar.resetColor();
@@ -265,7 +271,9 @@ public class StatusPane extends Component {
             true);
   }
 
+  //fixme: due to the design, this is used as an interface, not a good idea.
   public static boolean needsKeyUpdate = false;
+  public static boolean needsCompassUpdate = false;
 
   private static class JournalButton extends Button {
 
@@ -284,10 +292,10 @@ public class StatusPane extends Component {
     protected void createChildren() {
       super.createChildren();
 
-      bg = new Image(Assets.MENU, 2, 2, 13, 11);
+      bg = new Image(Assets.DPD_MENU, 2, 2, 13, 11);
       add(bg);
 
-      icon = new Image(Assets.MENU, 31, 0, 11, 7);
+      icon = new Image(Assets.DPD_MENU, 31, 0, 11, 7);
       add(icon);
       needsKeyUpdate = true;
     }
@@ -390,7 +398,7 @@ public class StatusPane extends Component {
     protected void createChildren() {
       super.createChildren();
 
-      image = new Image(Assets.MENU, 17, 2, 12, 11);
+      image = new Image(Assets.DPD_MENU, 17, 2, 12, 11);
       add(image);
     }
 
