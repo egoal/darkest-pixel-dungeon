@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.weapon;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Arrogant;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting;
@@ -46,6 +47,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Lucky;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Stunning;
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Suppress;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous;
@@ -213,7 +215,7 @@ abstract public class Weapon extends KindOfWeapon {
 
   @Override
   public String name() {
-    return enchantment != null && (cursedKnown || !enchantment.curse()) ? 
+    return enchantment != null && (cursedKnown || !enchantment.curse()) ?
             enchantment.name(super.name()) : super.name();
   }
 
@@ -249,7 +251,7 @@ abstract public class Weapon extends KindOfWeapon {
 
   public Weapon enchant() {
 
-    Class<? extends Enchantment> oldEnchantment = enchantment != null ? 
+    Class<? extends Enchantment> oldEnchantment = enchantment != null ?
             enchantment.getClass() : null;
     Enchantment ench = Enchantment.random();
     while (ench.getClass() == oldEnchantment) {
@@ -273,7 +275,7 @@ abstract public class Weapon extends KindOfWeapon {
 
   @Override
   public ItemSprite.Glowing glowing() {
-    return enchantment != null && (cursedKnown || !enchantment.curse()) ? 
+    return enchantment != null && (cursedKnown || !enchantment.curse()) ?
             enchantment.glowing() : null;
   }
 
@@ -281,22 +283,20 @@ abstract public class Weapon extends KindOfWeapon {
 
     private static final Class<?>[] enchants = new Class<?>[]{
             Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
-            Chilling.class, Eldritch.class, Lucky.class, Projecting.class, 
-            Unstable.class, Dazzling.class,
-            Grim.class, Stunning.class, Vampiric.class, Holy.class};
+            Chilling.class, Eldritch.class, Lucky.class, Projecting.class,
+            Unstable.class, Dazzling.class, Suppress.class,
+            Grim.class, Stunning.class, Vampiric.class,};
     private static final float[] chances = new float[]{
             10, 10, 10, 10,
-            5, 5, 5, 5, 5, 5,
-            2, 2, 2, 1};
+            5, 5, 5, 5, 5, 5, 5,
+            2, 2, 2};
 
     private static final Class<?>[] curses = new Class<?>[]{
             Annoying.class, Displacing.class, Exhausting.class, Fragile
-            .class, Sacrificial.class, Wayward.class
+            .class, Sacrificial.class, Wayward.class, Arrogant.class, 
     };
 
     public abstract Damage proc(Weapon weapon, Damage damage);
-    // public abstract int proc( Weapon weapon, Char attacker, Char defender,
-    // int damage );
 
     public String name() {
       if (!curse())
@@ -330,7 +330,8 @@ abstract public class Weapon extends KindOfWeapon {
     @SuppressWarnings("unchecked")
     public static Enchantment random() {
       try {
-        return ((Class<Enchantment>) enchants[Random.chances(chances)]).newInstance();
+        return ((Class<Enchantment>) enchants[Random.chances(chances)])
+                .newInstance();
       } catch (Exception e) {
         DarkestPixelDungeon.reportException(e);
         return null;

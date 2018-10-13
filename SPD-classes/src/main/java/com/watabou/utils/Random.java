@@ -75,6 +75,32 @@ public class Random {
     return -1;
   }
 
+  // pseudo random with radix number
+  public static class PseudoRadix {
+    int radix;
+    int left_chances = 0;
+    float left_positive_chances = 0f;
+
+    public PseudoRadix(int radix) {
+      this.radix = radix;
+    }
+
+    public boolean check(float ratio) {
+      if (left_chances == 0) {
+        // reset
+        left_chances = radix;
+        left_positive_chances += radix * ratio;
+      }
+
+      boolean positive = Random.Float() < left_positive_chances / left_chances;
+      --left_chances;
+      if (positive)
+        left_positive_chances -= 1f;
+
+      return positive;
+    }
+  }
+
   @SuppressWarnings("unchecked")
   public static <K> K chances(HashMap<K, Float> chances) {
 

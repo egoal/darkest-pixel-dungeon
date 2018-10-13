@@ -35,14 +35,17 @@ public class Lucky extends Weapon.Enchantment {
 
   private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing(0x00FF00);
 
+  private final int RADIX = 10;
+  Random.PseudoRadix rpr = new Random.PseudoRadix(RADIX);
+
   @Override
   public Damage proc(Weapon weapon, Damage damage) {
     Char defender = (Char) damage.to;
     Char attacker = (Char) damage.from;
 
     int level = Math.max(0, weapon.level());
-
-    if (Random.Int(100) < (55 + level)) {
+    float ratio = (55 + level) / 100f;
+    if (rpr.check(ratio)) {
       int exStr = 0;
       if (attacker == Dungeon.hero)
         exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());

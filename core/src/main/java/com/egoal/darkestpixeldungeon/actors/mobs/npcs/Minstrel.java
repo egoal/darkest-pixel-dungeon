@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -15,6 +16,7 @@ import com.egoal.darkestpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.Random;
 
 import javax.microedition.khronos.opengles.GL;
 
@@ -53,6 +55,11 @@ public class Minstrel extends NPC{
 
   @Override
   protected boolean act() {
+    // leave after some time
+    if(Statistics.duration>1200f){
+      die(null);
+    }
+    
     throwItem();
     return super.act();
   }

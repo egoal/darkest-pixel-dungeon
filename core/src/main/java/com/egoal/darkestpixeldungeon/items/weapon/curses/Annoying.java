@@ -51,7 +51,7 @@ public class Annoying extends Weapon.Enchantment {
               0.3f, 3);
       Sample.INSTANCE.play(Assets.SND_MIMIC);
       Invisibility.dispel();
-      GLog.n(Messages.get(this, "msg_" + (Random.Int(5) + 1)));
+      GLog.w(Messages.get(this, "msg_" + (Random.Int(5) + 1)));
     }
 
     return damage;
