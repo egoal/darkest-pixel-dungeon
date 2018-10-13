@@ -34,12 +34,16 @@ public enum Icons {
   WARNING,
   TARGET,
   MASTERY,
+  
   WATA,
   SHPX,
+  
   WARRIOR,
   MAGE,
   ROGUE,
   HUNTRESS,
+  SORCERESS,
+  
   CLOSE,
   DEPTH,
   DEPTH_LG,
@@ -54,21 +58,18 @@ public enum Icons {
   UNCHECKED,
   EXIT,
   NOTES,
-  LANGS,
   CHALLENGE_OFF,
   CHALLENGE_ON,
   RESUME,
 
-  DPD_LIX,
-  DPD_SORCERESS;
+  LIX;
 
   public Image get() {
     return get(this);
   }
 
   public static Image get(Icons type) {
-    Image icon = new Image(Assets.ICONS);
-    boolean isDPD = false;
+    Image icon = new Image(Assets.DPD_ICONS);
     switch (type) {
       case SKULL:
         icon.frame(icon.texture.uvRect(0, 0, 8, 8));
@@ -94,12 +95,17 @@ public enum Icons {
       case MASTERY:
         icon.frame(icon.texture.uvRect(16, 14, 30, 28));
         break;
+        
       case WATA:
         icon.frame(icon.texture.uvRect(30, 16, 45, 26));
         break;
       case SHPX:
-        icon.frame(icon.texture.uvRect(64, 44, 80, 60));
+        icon.frame(icon.texture.uvRect(64, 48, 80, 64));
         break;
+      case LIX:
+        icon.frame(icon.texture.uvRect(80, 48, 96, 64));
+        break;
+        
       case WARRIOR:
         icon.frame(icon.texture.uvRect(0, 29, 16, 45));
         break;
@@ -112,6 +118,10 @@ public enum Icons {
       case HUNTRESS:
         icon.frame(icon.texture.uvRect(48, 29, 64, 45));
         break;
+      case SORCERESS:
+        icon.frame(icon.texture.uvRect(64, 29, 80, 45));
+        break;
+        
       case CLOSE:
         icon.frame(icon.texture.uvRect(0, 45, 13, 58));
         break;
@@ -152,35 +162,17 @@ public enum Icons {
         icon.frame(icon.texture.uvRect(108, 0, 124, 16));
         break;
       case NOTES:
-        icon.frame(icon.texture.uvRect(79, 40, 94, 56));
-        break;
-      case LANGS:
-        icon.frame(icon.texture.uvRect(94, 40, 110, 56));
+        icon.frame(icon.texture.uvRect(95, 42, 107, 55));
         break;
       case CHALLENGE_OFF:
-        icon.frame(icon.texture.uvRect(78, 16, 102, 40));
+        icon.frame(icon.texture.uvRect(80, 16, 104, 40));
         break;
       case CHALLENGE_ON:
-        icon.frame(icon.texture.uvRect(102, 16, 126, 40));
+        icon.frame(icon.texture.uvRect(104, 16, 128, 40));
         break;
       case RESUME:
         icon.frame(icon.texture.uvRect(13, 53, 24, 64));
         break;
-      default:
-        isDPD = true;
-        break;
-    }
-
-    if (isDPD) {
-      icon = new Image(Assets.DPD_ICONS);
-      switch (type) {
-        case DPD_LIX:
-          icon.frame(icon.texture.uvRect(63, 42, 79, 58));
-          break;
-        case DPD_SORCERESS:
-          icon.frame(icon.texture.uvRect(96, 48, 112, 64));
-          break;
-      }
     }
 
     return icon;
@@ -197,7 +189,7 @@ public enum Icons {
       case HUNTRESS:
         return get(HUNTRESS);
       case SORCERESS:
-        return get(DPD_SORCERESS);
+        return get(SORCERESS);
       default:
         return null;
     }

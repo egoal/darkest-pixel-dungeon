@@ -34,7 +34,7 @@ import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.*;
-import com.egoal.darkestpixeldungeon.levels.traps.DPDPrisonBossLevel;
+import com.egoal.darkestpixeldungeon.levels.DPDPrisonBossLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;

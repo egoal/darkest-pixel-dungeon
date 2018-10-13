@@ -34,6 +34,11 @@ public class MaskOfMadness extends Artifact {
   }
 
   @Override
+  public int price() {
+    return 0;
+  }
+
+  @Override
   protected ArtifactBuff passiveBuff() {
     return new Madness();
   }
@@ -52,27 +57,17 @@ public class MaskOfMadness extends Artifact {
 
     public Damage procOutcomingDamage(Damage dmg) {
       // float ratio = 1.8f - 1.5f / ((float) Math.exp(level() / 3f) + 1f);
-      float ratio = 2f-1.5f/((float)Math.exp(level()/3f)+.5f); 
+      float ratio = 2f - 1.5f / ((float) Math.exp(level() / 3f) + .5f);
       dmg.value *= ratio;
 
       return dmg;
     }
-    
-    // check Pressure::act
-//    public int procPressure(int val){
-//      // ratio: .25->.5
-//      int extra = (int)(val*(.25f+ level()*.025f));
-//      if(extra<=0) extra=1;
-//      return val+extra;
-//    }
 
     public void onEmenySlayed(Char e) {
       exp += e.properties().contains(Char.Property.BOSS) ? 3 : 1;
       if (exp >= level() * 2 && level() < levelCap) {
         exp -= level() * 2;
-        // take mental damage
-//        Dungeon.hero.takeDamage(new Damage(level(), this, Dungeon.hero).type
-//                (Damage.Type.MENTAL));
+
         upgrade();
         GLog.p(Messages.get(MaskOfMadness.class, "levelup"));
       }

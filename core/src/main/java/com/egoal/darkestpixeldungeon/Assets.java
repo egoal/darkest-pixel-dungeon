@@ -31,7 +31,18 @@ public class Assets {
   public static final String LOCKED = "locked_badge.png";
   public static final String AMULET = "amulet.png";
 
-  public static final String ICONS = "icons.png";
+  // ui
+  public static final String DPD_ICONS = "dpd/icons.png";
+  public static final String DPD_ITEMS = "dpd/items.png";
+  public static final String DPD_BANNERS = "dpd/banners.png";
+  public static final String DPD_CONS_ICONS = "dpd/consumable_icons.png";
+  public static final String DPD_AVATARS = "dpd/avatars.png";
+  public static final String DPD_FIREBALL = "dpd/fireball.png";
+  public static final String DPD_CHROME = "dpd/chrome.png";
+  public static final String DPD_MENU = "dpd/menu_button.png";
+  public static final String DPD_STATUS = "dpd/status_pane.png";
+  public static final String DPD_SAN_BAR = "dpd/san_bar.png";
+  
   public static final String HP_BAR = "hp_bar.png";
   public static final String SHLD_BAR = "shield_bar.png";
   public static final String XP_BAR = "exp_bar.png";
@@ -39,10 +50,12 @@ public class Assets {
   public static final String SHADOW = "shadow.png";
   public static final String BOSSHP = "boss_hp.png";
 
+  // heros
   public static final String WARRIOR = "warrior.png";
   public static final String MAGE = "mage.png";
   public static final String ROGUE = "rogue.png";
   public static final String HUNTRESS = "ranger.png";
+  public static final String DPD_SORCERESS = "dpd/sorceress.png";
   public static final String PET = "pet.png";
 
   public static final String SURFACE = "surface.png";
@@ -50,6 +63,7 @@ public class Assets {
   public static final String SPECKS = "specks.png";
   public static final String EFFECTS = "effects.png";
 
+  // characters
   public static final String RAT = "rat.png";
   public static final String GNOLL = "gnoll.png";
   public static final String CRAB = "crab.png";
@@ -91,10 +105,29 @@ public class Assets {
   public static final String ROT_LASH = "rot_lasher.png";
   public static final String ROT_HEART = "rot_heart.png";
   public static final String GUARD = "guard.png";
-
+  // npc
+  public static final String DPD_CAT_LIX = "dpd/cat_lix.png";
+  public static final String DPD_ALCHEMIST = "dpd/alchemist.png";
+  public static final String DPD_SCHOLAR = "dpd/scholar.png";
+  public static final String DPD_JESSICA = "dpd/jessica.png";
+  public static final String DPD_NOVE = "dpd/nove.png";
+  public static final String DPD_STATUARY = "dpd/statuary.png";
+  public static final String DPD_MINSTREL = "dpd/minstrel.png";
+  // shop keeper
+  public static final String DPD_POTION_SELLER  = "dpd/potion_seller.png";
+  public static final String DPD_SCROLL_SELLER  = "dpd/scroll_seller.png";
+  // mobs
+  public static final String DPD_DEVIL_GHOST = "dpd/devil_ghost.png";
+  public static final String DPD_SKELETON_KNIGHT = "dpd/skeleton_knight.png";
+  public static final String DPD_MADMAN = "dpd/madman.png";
+  
   public static final String PLANTS = "plants.png";
   public static final String TRAPS = "traps.png";
 
+  // level
+  public static final String DPD_TILES_VILLAGE = "dpd/tiles_village.png";
+  public static final String DPD_WATER_VILLAGE = "dpd/water_village.png";
+  
   public static final String TILES_SEWERS = "tiles0.png";
   public static final String TILES_PRISON = "tiles1.png";
   public static final String TILES_CAVES = "tiles2.png";
@@ -119,10 +152,11 @@ public class Assets {
   public static final String FONT1X = "font1x.png";
   public static final String FONT2X = "font2x.png";
 
+  // sounds
   public static final String THEME = "theme.mp3";
   public static final String TUNE = "game.mp3";
   public static final String HAPPY = "surface.mp3";
-
+  
   public static final String SND_CLICK = "snd_click.mp3";
   public static final String SND_BADGE = "snd_badge.mp3";
   public static final String SND_GOLD = "snd_gold.mp3";
@@ -175,43 +209,4 @@ public class Assets {
   public static final String SND_ASTROLABE = "snd_astrolabe.mp3";
   public static final String SND_CRITICAL = "snd_critical.mp3";
   
-  // dpd assets
-  // replacement & creation
-  //////////////////////////////////////////////////////
-  // ui
-  public static final String DPD_ICONS = "dpd/icons.png";
-  public static final String DPD_ITEMS = "dpd/items.png";
-  public static final String DPD_BANNERS = "dpd/banners.png";
-  public static final String DPD_CONS_ICONS = "dpd/consumable_icons.png";
-  public static final String DPD_AVATARS = "dpd/avatars.png";
-  public static final String DPD_FIREBALL = "dpd/fireball.png";
-  public static final String DPD_CHROME = "dpd/chrome.png";
-  public static final String DPD_MENU = "dpd/menu_button.png";
-  public static final String DPD_STATUS = "dpd/status_pane.png";
-  public static final String DPD_SAN_BAR = "dpd/san_bar.png";
-  
-  // npc
-  public static final String DPD_CAT_LIX = "dpd/cat_lix.png";
-  public static final String DPD_ALCHEMIST = "dpd/alchemist.png";
-  public static final String DPD_SCHOLAR = "dpd/scholar.png";
-  public static final String DPD_JESSICA = "dpd/jessica.png";
-  public static final String DPD_NOVE = "dpd/nove.png";
-  public static final String DPD_STATUARY = "dpd/statuary.png";
-  public static final String DPD_MINSTREL = "dpd/minstrel.png";
-
-  public static final String DPD_POTION_SELLER  = "dpd/potion_seller.png";
-  public static final String DPD_SCROLL_SELLER  = "dpd/scroll_seller.png";
-  
-  // level
-  public static final String DPD_TILES_VILLAGE = "dpd/tiles_village.png";
-  public static final String DPD_WATER_VILLAGE = "dpd/water_village.png";
-
-  // character
-  public static final String DPD_SORCERESS = "dpd/sorceress.png";
-
-  // mobs
-  public static final String DPD_DEVIL_GHOST = "dpd/devil_ghost.png";
-  public static final String DPD_SKELETON_KNIGHT = "dpd/skeleton_knight.png";
-  public static final String DPD_MADMAN = "dpd/madman.png";
-
 }

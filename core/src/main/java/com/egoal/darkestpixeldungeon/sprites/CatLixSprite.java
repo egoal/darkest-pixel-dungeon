@@ -14,10 +14,8 @@ public class CatLixSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 14);
 
-    idle = new Animation(10, true);
-    // idle.frames( frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 
-    // 3, 3, 3, 3, 3, 3, 2, 1 );
-    idle.frames(frames, 0);
+    idle = new Animation(2, true);
+    idle.frames( frames, 0, 1, 2, 3);
 
     run = new Animation(20, true);
     run.frames(frames, 0);

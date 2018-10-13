@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.ui.Window;
+import com.watabou.noosa.Image;
 
 public class WndOptions extends Window {
 
@@ -45,14 +46,50 @@ public class WndOptions extends Window {
     tfTitle.maxWidth(width - MARGIN * 2);
     add(tfTitle);
 
-    RenderedTextMultiline tfMesage = PixelScene.renderMultiline(6);
-    tfMesage.text(message, width - MARGIN * 2);
-    tfMesage.setPos(MARGIN, tfTitle.top() + tfTitle.height() + MARGIN);
-    add(tfMesage);
+    float pos = addMessageAndOptions(tfTitle.bottom() + MARGIN, width,
+            message, options);
 
-    float pos = tfMesage.bottom() + MARGIN;
+    resize(width, (int) pos);
+  }
 
-    for (int i = 0; i < options.length; i++) {
+  public WndOptions(Image icon, String title, String message, String...
+          options) {
+    super();
+
+    int width = DarkestPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
+
+    IconTitle ic = new IconTitle(icon, title);
+    ic.setRect(0, 0, width, 0);
+    add(ic);
+
+    float pos = addMessageAndOptions(ic.bottom() + MARGIN, width, message, 
+            options);
+
+    resize(width, (int) pos);
+  }
+
+  protected void onSelect(int index) {
+  }
+
+  private float addMessageAndOptions(float pos, int width, String message,
+                                     String... options) {
+    if (message.length() > 0)
+      pos = addMessage(pos, width, message);
+
+    return addOptions(pos, width, options);
+  }
+
+  private float addMessage(float pos, int width, String message) {
+    RenderedTextMultiline rtm = PixelScene.renderMultiline(6);
+    rtm.text(message, width - MARGIN * 2);
+    rtm.setPos(MARGIN, pos);
+    add(rtm);
+
+    return rtm.bottom() + MARGIN;
+  }
+
+  private float addOptions(float pos, int width, String... options) {
+    for (int i = 0; i < options.length; ++i) {
       final int index = i;
       RedButton btn = new RedButton(options[i]) {
         @Override
@@ -67,11 +104,6 @@ public class WndOptions extends Window {
       pos += BUTTON_HEIGHT + MARGIN;
     }
 
-    resize(width, (int) pos);
+    return pos;
   }
-
-  protected void onSelect(int index) {
-  }
-
-  ;
 }

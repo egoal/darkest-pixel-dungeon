@@ -1,7 +1,5 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
-import android.provider.LiveFolders;
-
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -25,7 +23,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
-import com.egoal.darkestpixeldungeon.levels.traps.DPDPrisonBossLevel;
+import com.egoal.darkestpixeldungeon.levels.DPDPrisonBossLevel;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;

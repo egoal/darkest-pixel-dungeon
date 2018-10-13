@@ -383,6 +383,7 @@ public class VillageLevel extends RegularLevel {
       do{
         m.pos = pointToCell(rm.random(1));
       }while(findMob(m.pos)!=null || !passable[m.pos]);
+      map[m.pos] = Terrain.GRASS; // stand on grass...
       mobs.add(m);
     }
     

@@ -70,7 +70,7 @@ public class AboutScene extends PixelScene {
     final float wataOffset = DarkestPixelDungeon.landscape() ? colWidth : 0;
 
     // add dpd sign
-    Image lix = Icons.DPD_LIX.get();
+    Image lix = Icons.LIX.get();
     lix.x = (colWidth - lix.width()) / 2;
     lix.y = colTop;
     align(lix);

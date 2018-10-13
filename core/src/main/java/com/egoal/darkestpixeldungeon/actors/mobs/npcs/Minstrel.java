@@ -8,9 +8,15 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.MobSprite;
+import com.egoal.darkestpixeldungeon.utils.GLog;
+import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.egoal.darkestpixeldungeon.windows.WndQuest;
+import com.egoal.darkestpixeldungeon.windows.WndTitledMessage;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
+
+import javax.microedition.khronos.opengles.GL;
 
 /**
  * Created by 93942 on 10/10/2018.
@@ -25,7 +31,16 @@ public class Minstrel extends NPC{
   public boolean interact() {
     sprite.turnTo(pos, Dungeon.hero.pos);
 
-    tell(Messages.get(this, "poetry_away"));
+    GameScene.show(new WndOptions(new MinstrelSprite(), name,  
+            Messages.get(Minstrel.class, "hello"),
+            Messages.get(Minstrel.class, "ac_sing"),
+            Messages.get(Minstrel.class, "ac_yourself"),
+            Messages.get(Minstrel.class, "ac_leave")){
+      @Override
+      protected void onSelect(int index){
+        onSelectHello(index);
+      }
+    });
     
     return false;
   }
@@ -60,6 +75,29 @@ public class Minstrel extends NPC{
     GameScene.show(new WndQuest(this, text));
   }
 
+  private void onSelectHello(int index){
+    // 0 sing, 1 leave
+    switch (index){
+      case 0:
+        final String[] poetries = new String[]{"away"};
+        GameScene.show(new WndOptions(new MinstrelSprite(), name, 
+                Messages.get(Minstrel.class, "select_poetry"),
+                poetries){
+          @Override
+          protected void onSelect(int index){
+            tell(Messages.get(Minstrel.class, "poetry_"+poetries[index]));
+          }
+        });
+        break;
+      case 1:
+        tell(Messages.get(Minstrel.class, "introduction"));
+        break;
+      case 2:
+        GLog.p(Messages.get(Minstrel.class, "farewell"));
+        break;
+    }
+  }
+  
   public static class MinstrelSprite extends MobSprite{
     
     public MinstrelSprite(){

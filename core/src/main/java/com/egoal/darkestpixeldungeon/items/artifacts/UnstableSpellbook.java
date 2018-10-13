@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -106,21 +107,27 @@ public class UnstableSpellbook extends Artifact {
       else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
       else if (cursed) GLog.i(Messages.get(this, "cursed"));
       else {
-        charge--;
+        // pressure
+        Pressure.Level plvl = hero.buff(Pressure.class).getLevel();
+        if (plvl == Pressure.Level.COLLAPSE || plvl == Pressure.Level.NERVOUS)
+          GLog.n(Messages.get(Scroll.class, "nervous"));
+        else {
+          charge--;
 
-        Scroll scroll;
-        do {
-          scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
-        } while (scroll == null ||
-                //gotta reduce the rate on these scrolls or that'll be all 
-                // the item does.
-                ((scroll instanceof ScrollOfIdentify ||
-                        scroll instanceof ScrollOfRemoveCurse ||
-                        scroll instanceof ScrollOfMagicMapping) && Random.Int
-                        (2) == 0));
+          Scroll scroll;
+          do {
+            scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
+          } while (scroll == null ||
+                  //gotta reduce the rate on these scrolls or that'll be all 
+                  // the item does.
+                  ((scroll instanceof ScrollOfIdentify ||
+                          scroll instanceof ScrollOfRemoveCurse ||
+                          scroll instanceof ScrollOfMagicMapping) && Random.Int
+                          (2) == 0));
 
-        scroll.ownedByBook = true;
-        scroll.execute(hero, AC_READ);
+          scroll.ownedByBook = true;
+          scroll.execute(hero, AC_READ);
+        }
       }
 
     } else if (action.equals(AC_ADD)) {

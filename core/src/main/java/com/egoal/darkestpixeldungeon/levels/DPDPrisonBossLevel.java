@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.levels.traps;
+package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
@@ -20,6 +20,9 @@ import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
 import com.egoal.darkestpixeldungeon.levels.Room;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
+import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.SpearTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;

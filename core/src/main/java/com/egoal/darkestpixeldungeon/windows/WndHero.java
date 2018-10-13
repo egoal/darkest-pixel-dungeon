@@ -153,8 +153,8 @@ public class WndHero extends WndTabbed {
       // add hunger state slot
       Hunger hg = ((Hunger) hero.buff(Hunger.class));
       if (hg != null)
-        statSlot(Messages.get(this, "hunger"), hg.hunger() + "/" + (int) hg
-                .STARVING);
+        statSlot(Messages.get(this, "hunger"), hg.hunger() + "/" + (int) 
+                Hunger.STARVING);
 
       pos += GAP;
 
