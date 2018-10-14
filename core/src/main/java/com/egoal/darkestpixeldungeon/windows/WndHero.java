@@ -277,7 +277,7 @@ public class WndHero extends WndTabbed {
         icon.y = rt.y + rt.height() + (GAP + ICON_SIZE) * i;
         add(icon);
 
-        RenderedText txt = PixelScene.renderText(String.format("%2.1f/%2.1f",
+        RenderedText txt = PixelScene.renderText(String.format("%3.2f/%3.2f",
                 hero.resistanceNormal[i], hero.resistanceMagical[i]), 8);
         txt.x = icon.width + GAP;
         txt.y = (icon.height - txt.baseLine()) / 2 + icon.y;

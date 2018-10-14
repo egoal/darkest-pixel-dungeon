@@ -38,6 +38,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.security.cert.TrustAnchor;
+
 public class RockfallTrap extends Trap {
 
   {
@@ -47,7 +49,10 @@ public class RockfallTrap extends Trap {
 
   @Override
   public void activate() {
+    fallRocks(pos);
+  }
 
+  public static void fallRocks(int pos) {
     boolean seen = false;
 
     for (int i : PathFinder.NEIGHBOURS9) {
@@ -69,17 +74,16 @@ public class RockfallTrap extends Trap {
 
       if (ch != null) {
         int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth * 2);
-        ch.takeDamage(ch.defendDamage(new Damage(Math.max(0, damage), this, 
-                ch)));
+        ch.takeDamage(ch.defendDamage(new Damage(Math.max(0, damage), 
+                new RockfallTrap(), ch)));
 
         Buff.prolong(ch, Paralysis.class, Paralysis.duration(ch) / 2);
 
         if (!ch.isAlive() && ch == Dungeon.hero) {
-          Dungeon.fail(getClass());
-          GLog.n(Messages.get(this, "ondeath"));
+          Dungeon.fail(RockfallTrap.class);
+          GLog.n(Messages.get(RockfallTrap.class, "ondeath"));
         }
       }
     }
-
   }
 }

@@ -19,6 +19,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Minstrel;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Questioner;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
@@ -387,12 +388,15 @@ public class VillageLevel extends RegularLevel {
       mobs.add(m);
     }
     
+    
     // test 
     if (false) {
-      ChaliceOfBlood c = new ChaliceOfBlood();
-      c.level(7);
-      c.upgrade();
-      c.collect();
+      Questioner q = new Questioner();
+      do{
+        q.pos = pointToCell(roomExit.random());
+      }while(findMob(q.pos)!=null);
+      map[q.pos] = Terrain.WALL;
+      mobs.add(q);
     }
 
     super.createMobs();

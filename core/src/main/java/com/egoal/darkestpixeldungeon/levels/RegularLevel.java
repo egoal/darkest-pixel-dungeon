@@ -221,7 +221,7 @@ public abstract class RegularLevel extends Level {
     for (Room r : rooms) {
       if (r.type == Type.NULL &&
               r.connected.size() == 1) {
-        //!!! all specials in 1 connected room
+        //!!! all specials is 1 connected room
         if (specials.size() > 0 &&
                 r.width() > 3 && r.height() > 3 &&
                 Random.Int(specialRooms * (specialRooms - 1) + 2) == 0) {
@@ -600,6 +600,9 @@ public abstract class RegularLevel extends Level {
           break;
         case LOCKED:
           map[door] = Terrain.LOCKED_DOOR;
+          break;
+        case USER_DEFINED:
+          // do nothing...
           break;
       }
     }

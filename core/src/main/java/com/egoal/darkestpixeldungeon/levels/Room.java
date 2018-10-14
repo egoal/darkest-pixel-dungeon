@@ -106,7 +106,10 @@ public class Room extends Rect implements Graph.Node, Bundlable {
     RITUAL_SITE(RitualSitePainter.class),
 
     // dpd
-    STATUARY(StatuaryPainter.class);
+    STATUARY(StatuaryPainter.class), 
+    QUESTIONER(QuestionerPainter.class), 
+    
+    ;
 
     private Method paint;
 
@@ -138,7 +141,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
           Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type
                           .GARDEN, Type.LIBRARY, Type.ARMORY,
           Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type
-                          .LABORATORY, Type.VAULT, Type.STATUARY
+                          .LABORATORY, Type.VAULT, Type.STATUARY, Type.QUESTIONER
   ));
 
   public Type type = Type.NULL;
@@ -276,7 +279,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
   public static class Door extends Point {
 
     public static enum Type {
-      EMPTY, TUNNEL, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED
+      EMPTY, TUNNEL, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED, USER_DEFINED, 
     }
 
     public Type type = Type.EMPTY;

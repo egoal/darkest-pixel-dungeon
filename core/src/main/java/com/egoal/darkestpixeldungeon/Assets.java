@@ -113,6 +113,7 @@ public class Assets {
   public static final String DPD_NOVE = "dpd/nove.png";
   public static final String DPD_STATUARY = "dpd/statuary.png";
   public static final String DPD_MINSTREL = "dpd/minstrel.png";
+  public static final String DPD_QUESTIONER = "dpd/questioner.png";
   // shop keeper
   public static final String DPD_POTION_SELLER  = "dpd/potion_seller.png";
   public static final String DPD_SCROLL_SELLER  = "dpd/scroll_seller.png";

@@ -212,6 +212,11 @@ public enum HeroClass {
     hero.heroPerk.add(HeroPerk.Perk.DRUNKARD);
 
     new PotionOfHealing().setKnown();
+    
+    // resists
+    hero.addResistances(Damage.Element.FIRE, 1.1f);
+    hero.addResistances(Damage.Element.LIGHT, .9f);
+    hero.addResistances(Damage.Element.SHADOW, .8f, .9f);
   }
 
   private static void initMage(Hero hero) {
@@ -230,6 +235,10 @@ public enum HeroClass {
     Dungeon.quickslot.setSlot(0, staff);
 
     new ScrollOfUpgrade().setKnown();
+    
+    hero.addResistances(Damage.Element.FIRE, 1f, 1.2f);
+    hero.addResistances(Damage.Element.POISON, .8f);
+    hero.addResistances(Damage.Element.LIGHT, 1.1f);
   }
 
   private static void initRogue(Hero hero) {
@@ -249,6 +258,10 @@ public enum HeroClass {
     hero.heroPerk.add(HeroPerk.Perk.KEEN);
 
     new ScrollOfMagicMapping().setKnown();
+    
+    hero.addResistances(Damage.Element.POISON, 1.2f);
+    hero.addResistances(Damage.Element.ICE, .8f, .9f);
+    hero.addResistances(Damage.Element.SHADOW, .9f, 1.1f);
   }
 
   private static void initHuntress(Hero hero) {
@@ -263,17 +276,15 @@ public enum HeroClass {
     hero.heroPerk.add(HeroPerk.Perk.SHOOTER);
 
     new PotionOfMindVision().setKnown();
+    
+    hero.addResistances(Damage.Element.POISON, 1.2f);
+    hero.addResistances(Damage.Element.ICE, .9f);
+    hero.addResistances(Damage.Element.ACID, .9f);
   }
 
   // extra classes
   private static void initSorceress(Hero hero) {
     // perks
-    // resists and extra resists to poison
-    for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
-      hero.addResistances(1 << i, 1.25f, 1f);
-    }
-    hero.addResistances(Damage.Element.POISON, 2.f);
-
     hero.heroPerk.add(HeroPerk.Perk.SHREWD);
     hero.heroPerk.add(HeroPerk.Perk.POSITIVE);
 
@@ -291,6 +302,11 @@ public enum HeroClass {
 
     new PotionOfToxicGas().identify().collect();
 
+    // resists and extra resists to poison
+    for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
+      hero.addResistances(1 << i, 1.25f, 1f);
+    }
+    hero.addResistances(Damage.Element.POISON, 2f);    
   }
 
   private static void initPerks(Hero hero) {
