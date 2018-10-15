@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.items.books.Book;
+import com.egoal.darkestpixeldungeon.items.books.TextBook;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.ui.Window;
@@ -14,7 +15,7 @@ import com.watabou.utils.PointF;
  * Created by 93942 on 5/10/2018.
  */
 
-public class WndBook extends Window {
+public class WndTextBook extends Window {
 
   private static final int WIDTH = 96;
   private static final int MARGIN = 6;
@@ -23,14 +24,14 @@ public class WndBook extends Window {
 
   private RenderedTextMultiline title_, content_, pageinfo_;
   private int page_ = 0;
-  private Book book_;
+  private TextBook book_;
 
-  public WndBook(final Book book) {
+  public WndTextBook(final TextBook book) {
     super(0, 0, Chrome.get(Chrome.Type.DPD_BOOK));
 
     book_ = book;
 
-    title_ = PixelScene.renderMultiline(book.title(), 6);
+    title_ = PixelScene.renderMultiline(book.bookName(), 6);
     title_.maxWidth(WIDTH - MARGIN * 2);
     title_.invert();
     title_.setPos((WIDTH - (int) (title_.width())) / 2, 2);
@@ -64,7 +65,7 @@ public class WndBook extends Window {
       }
     });
 
-    resize((int) (content_.width() + MARGIN * 2), HEIGHT);
+    resize(WIDTH + MARGIN * 2, HEIGHT);
   }
 
   private void updatePage() {

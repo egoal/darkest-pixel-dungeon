@@ -109,15 +109,16 @@ public class Questioner extends NPC {
   }
 
   private void randomPlaceItem(Item item, boolean mimic) {
-    while (true) {
-      int p = Dungeon.level.pointToCell(heldRoom.random());
-      if (Level.passable[p] && Dungeon.level.heaps.get(p) != null) {
-        Dungeon.level.drop(item, p).type = mimic ? Heap.Type.MIMIC : Heap
-                .Type.CHEST;
-
-        break;
-      }
-    }
+    Heap heap = new Heap();
+    heap.type = mimic? Heap.Type.MIMIC: Heap.Type.CHEST;
+    heap.drop(item);    
+    
+    do{
+      heap.pos = Dungeon.level.pointToCell(heldRoom.random());
+    }while(!Level.passable[heap.pos] || Dungeon.level.heaps.get(heap.pos)!=null);
+    
+    Dungeon.level.heaps.put(heap.pos, heap);
+    GameScene.add(heap);
   }
 
   private void open() {
@@ -183,8 +184,8 @@ public class Questioner extends NPC {
 
       // animations
       TextureFilm frames = new TextureFilm(texture, 16, 16);
-      idle = new Animation(1, true);
-      idle.frames(frames, 0);
+      idle = new Animation(2, true);
+      idle.frames(frames, 0, 1, 2, 3);
 
       run = new MovieClip.Animation(1, true);
       run.frames(frames, 0);

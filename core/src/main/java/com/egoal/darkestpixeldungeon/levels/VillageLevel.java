@@ -38,6 +38,8 @@ import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
+import com.egoal.darkestpixeldungeon.items.books.TextBook;
+import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
@@ -390,13 +392,15 @@ public class VillageLevel extends RegularLevel {
     
     
     // test 
-    if (false) {
-      Questioner q = new Questioner();
+    if (!false) {
+      Questioner q = new Questioner().hold(roomExit);
       do{
         q.pos = pointToCell(roomExit.random());
       }while(findMob(q.pos)!=null);
       map[q.pos] = Terrain.WALL;
       mobs.add(q);
+      
+      drop(Generator.random(Generator.Category.BOOK), entrance);
     }
 
     super.createMobs();

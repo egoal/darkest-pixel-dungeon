@@ -23,6 +23,10 @@ package com.egoal.darkestpixeldungeon.items;
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
+import com.egoal.darkestpixeldungeon.items.books.Book;
+import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
+import com.egoal.darkestpixeldungeon.items.books.textbook
+        .HeadlessKnightsLengend;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfVenom;
@@ -172,7 +176,8 @@ public class Generator {
     ARTIFACT(15, Artifact.class),
     SEED(50, Plant.Seed.class),
     FOOD(0, Food.class),
-    GOLD(500, Gold.class);
+    GOLD(500, Gold.class),
+    BOOK(0, Book.class);
 
     public Class<?>[] classes;
     public float[] probs;
@@ -212,10 +217,10 @@ public class Generator {
           {0, 2, 8, 20, 70}
   };
 
-  private static HashMap<Category, Float> categoryProbs = new 
+  private static HashMap<Category, Float> categoryProbs = new
           HashMap<Generator.Category, Float>();
 
-  private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{0, 0, 0, 
+  private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{0, 0, 0,
           1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1};
 
   static {
@@ -237,7 +242,7 @@ public class Generator {
             ScrollOfMagicalInfusion.class,
             ScrollOfPsionicBlast.class,
             ScrollOfMirrorImage.class};
-    Category.SCROLL.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 
+    Category.SCROLL.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0,
             4, 10};
 
     Category.POTION.classes = new Class<?>[]{
@@ -271,7 +276,7 @@ public class Generator {
             WandOfTransfusion.class,
             WandOfCorruption.class,
             WandOfRegrowth.class};
-    Category.WAND.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 
+    Category.WAND.probs = new float[]{5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/
             3, 3, 3};
 
     //see generator.randomWeapon
@@ -396,8 +401,14 @@ public class Generator {
             Dreamfoil.Seed.class,
             Stormvine.Seed.class,
             Starflower.Seed.class};
-    Category.SEED.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 2, 12, 
+    Category.SEED.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 2, 12,
             12, 1};
+
+    Category.BOOK.classes = new Class<?>[]{
+            CallysDiary.class,
+            HeadlessKnightsLengend.class,
+    };
+    Category.BOOK.probs = new float[]{0, 1,};
   }
 
   public static void reset() {
@@ -562,7 +573,8 @@ public class Generator {
 
   //used to store information on which artifacts have been spawned.
   public static void storeInBundle(Bundle bundle) {
-    bundle.put(ARTIFACTS, spawnedArtifacts.toArray(new String[spawnedArtifacts.size()]));
+    bundle.put(ARTIFACTS, spawnedArtifacts.toArray(new 
+            String[spawnedArtifacts.size()]));
   }
 
   public static void restoreFromBundle(Bundle bundle) {

@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import android.hardware.camera2.DngCreator;
+import android.telecom.Call;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -9,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.books.Book;
+import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
@@ -24,6 +26,7 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.security.cert.TrustAnchor;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -43,12 +46,12 @@ public class Jessica extends NPC {
     //todo: solve the multiple book bug!!
     sprite.turnTo(pos, Dungeon.hero.pos);
     if (!Quest.completed_) {
-      if (Dungeon.hero.belongings.getItem(Book.class) == null) {
+      CallysDiary cd = Dungeon.hero.belongings.getItem(CallysDiary.class);
+      if(cd==null){
         tell(Messages.get(this, "please"));
         Quest.given_ = true;
       } else {
-        Dungeon.hero.belongings.getItem(Book.class).detach(Dungeon.hero
-                .belongings.backpack);
+        cd.detach(Dungeon.hero.belongings.backpack);
         GLog.w(Messages.get(this, "return_book"));
         Quest.completed_ = true;
         tell(Messages.get(this, "thank_you"));
@@ -154,7 +157,8 @@ public class Jessica extends NPC {
       if (Dungeon.depth > 5 && Random.Int(10 - Dungeon.depth) == 0) {
         Heap heap = new Heap();
         heap.type = Heap.Type.SKELETON;
-        heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
+        // heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
+        heap.drop(new CallysDiary());
         heap.drop(Generator.random(Generator.Category.RING).random());
 
         heap.pos  = level.randomRespawnCell();
@@ -165,45 +169,6 @@ public class Jessica extends NPC {
       }
 
       return true;
-    }
-
-    public static boolean spawnBook(Level level, Collection<Room> rooms) {
-      if (!given_ || spawned_)
-        // on quest, or already spawned
-        return true;
-
-      if (Dungeon.depth > 5 && Random.Int(10 - Dungeon.depth) == 0) {
-        //* spawn the book
-        //0. select a room, 
-        Room room = null;
-        for (Room r : rooms) {
-          if (r.type == Room.Type.STANDARD && r.width() > 3 && r.height() > 3 &&
-                  r.connected.size() == 1) {
-            room = r;
-            break;
-          }
-        }
-
-        //1. give skeleton heap, 
-        if (room != null) {
-          Heap heap = new Heap();
-          heap.type = Heap.Type.SKELETON;
-          heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
-          heap.drop(Generator.random(Generator.Category.RING).random());
-
-          do {
-            heap.pos = level.pointToCell(room.random());
-          }
-          while (level.map[heap.pos] == Terrain.ENTRANCE ||
-                  !level.passable[heap.pos]);
-          level.heaps.put(heap.pos, heap);
-
-          spawned_ = true;
-          return true;
-        } else
-          return false;
-      } else
-        return true;
     }
   }
 

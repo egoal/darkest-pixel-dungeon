@@ -37,6 +37,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
 import com.egoal.darkestpixeldungeon.plants.Plant;
+import com.egoal.darkestpixeldungeon.plants.Sungrass;
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -919,7 +920,7 @@ public abstract class Level implements Bundlable {
 
     return heap;
   }
-
+  
   public Plant plant(Plant.Seed seed, int pos) {
 
     Plant plant = plants.get(pos);
