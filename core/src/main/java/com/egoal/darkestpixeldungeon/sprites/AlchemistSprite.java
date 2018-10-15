@@ -8,7 +8,7 @@ public class AlchemistSprite extends MobSprite {
   public AlchemistSprite() {
     super();
 
-    texture(Assets.DPD_ALCHEMIST);
+    texture(Assets.ALCHEMIST);
 
     TextureFilm frames = new TextureFilm(texture, 12, 14);   // width & height
 

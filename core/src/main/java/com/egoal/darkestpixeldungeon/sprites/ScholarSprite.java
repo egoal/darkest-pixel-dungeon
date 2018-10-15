@@ -12,7 +12,7 @@ public class ScholarSprite extends MobSprite {
   public ScholarSprite() {
     super();
 
-    texture(Assets.DPD_SCHOLAR);
+    texture(Assets.SCHOLAR);
 
     // set animations
     TextureFilm frames = new TextureFilm(texture, 12, 15);

@@ -5,7 +5,6 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
@@ -95,7 +94,7 @@ public class DevilGhost extends Wraith {
     public DevilGhostSprite() {
       super();
 
-      texture(Assets.DPD_DEVIL_GHOST);
+      texture(Assets.DEVIL_GHOST);
 
       TextureFilm frames = new TextureFilm(texture, 14, 24);
 

@@ -129,7 +129,7 @@ public class MadMan extends Mob implements Callback {
     public Sprite() {
       super();
 
-      texture(Assets.DPD_MADMAN);
+      texture(Assets.MADMAN);
 
       TextureFilm frames = new TextureFilm(texture, 12, 14);
 

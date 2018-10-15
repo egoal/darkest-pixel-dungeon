@@ -1,61 +1,16 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
-import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
-import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
-import com.egoal.darkestpixeldungeon.actors.blobs.Fog;
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
-import com.egoal.darkestpixeldungeon.actors.mobs.Crab;
-import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
-import com.egoal.darkestpixeldungeon.actors.mobs.MadMan;
-import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
-import com.egoal.darkestpixeldungeon.actors.mobs.SkeletonKnight;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Minstrel;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Questioner;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Statuary;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Gold;
-import com.egoal.darkestpixeldungeon.items.Torch;
-import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
-import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor;
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Brimstone;
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage;
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Viscosity;
-import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
-import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
-import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
-import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
-import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
-import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
-import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
-import com.egoal.darkestpixeldungeon.items.books.TextBook;
-import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
-import com.egoal.darkestpixeldungeon.items.potions.Potion;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfCorruption;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
-import com.egoal.darkestpixeldungeon.levels.traps.BlazingTrap;
-import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
-import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
-import com.egoal.darkestpixeldungeon.levels.traps.Trap;
-import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
 
@@ -71,12 +26,12 @@ public class VillageLevel extends RegularLevel {
 
   @Override
   public String tilesTex() {
-    return Assets.DPD_TILES_VILLAGE;
+    return Assets.TILES_VILLAGE;
   }
 
   @Override
   public String waterTex() {
-    return Assets.DPD_WATER_VILLAGE;
+    return Assets.WATER_VILLAGE;
   }
 
   @Override

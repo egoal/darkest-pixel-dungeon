@@ -79,11 +79,8 @@ public class Swarm extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    Damage dmg = new Damage(Random.NormalIntRange(0, 4), this, target);
-    if (dmg.value == 0)
-      dmg = new Damage(Random.NormalIntRange(1, 4), this, target).type(Damage
-              .Type.MENTAL);
-    return dmg;
+    return new Damage(Random.NormalIntRange(1, 4), this, target).type(
+            Random.Int(3)==0? Damage.Type.MENTAL: Damage.Type.NORMAL);
   }
 
   @Override

@@ -1,8 +1,6 @@
 package com.egoal.darkestpixeldungeon.sprites;
 
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
-import com.watabou.glwrap.Texture;
 import com.watabou.noosa.TextureFilm;
 
 /**
@@ -14,7 +12,7 @@ public class DisheartenedBuddySprite extends MobSprite {
   public DisheartenedBuddySprite() {
     super();
 
-    texture(Assets.DPD_NOVE);
+    texture(Assets.NOVE);
 
     TextureFilm frames = new TextureFilm(texture, 12, 15);
 

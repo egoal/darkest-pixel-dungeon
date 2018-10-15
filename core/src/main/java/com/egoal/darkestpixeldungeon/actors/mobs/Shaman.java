@@ -56,7 +56,8 @@ public class Shaman extends Mob implements Callback {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(2, 8), this, target);
+    return new Damage(Random.NormalIntRange(2, 8), this, target).addElement
+            (Damage.Element.LIGHT);
   }
 
   @Override

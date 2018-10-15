@@ -1,7 +1,5 @@
 package com.egoal.darkestpixeldungeon.sprites;
 
-import android.text.style.AbsoluteSizeSpan;
-
 import com.egoal.darkestpixeldungeon.Assets;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
@@ -15,7 +13,7 @@ public class JessicaSprite extends MobSprite {
   public JessicaSprite() {
     super();
 
-    texture(Assets.DPD_JESSICA);
+    texture(Assets.JESSICA);
 
     // set animations
     TextureFilm frames = new TextureFilm(texture, 12, 15);

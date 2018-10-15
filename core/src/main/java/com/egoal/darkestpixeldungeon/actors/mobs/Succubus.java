@@ -69,7 +69,8 @@ public class Succubus extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(22, 30), this, target);
+    return new Damage(Random.NormalIntRange(22, 30), this, target).addElement(
+            Damage.Element.ICE);
   }
 
   @Override

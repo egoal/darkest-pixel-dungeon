@@ -1,8 +1,6 @@
 package com.egoal.darkestpixeldungeon.sprites;
 
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.watabou.noosa.TextureFilm;
 
 /**
@@ -14,7 +12,7 @@ public class SkeletonKnightSprite extends MobSprite {
   public SkeletonKnightSprite() {
     super();
 
-    texture(Assets.DPD_SKELETON_KNIGHT);
+    texture(Assets.SKELETON_KNIGHT);
 
     TextureFilm frames = new TextureFilm(texture, 12, 15);
 

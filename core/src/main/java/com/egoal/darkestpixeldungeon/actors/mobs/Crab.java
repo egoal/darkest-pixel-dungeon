@@ -40,6 +40,9 @@ public class Crab extends Mob {
 
     loot = new MysteryMeat();
     lootChance = 0.167f;
+    
+    addResistances(Damage.Element.LIGHT, .8f);
+    addResistances(Damage.Element.ICE, 1.1f);
   }
 
   @Override

@@ -59,7 +59,8 @@ public class Warlock extends Mob implements Callback {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(16, 22), this, target);
+    return new Damage(Random.NormalIntRange(16, 22), this, target).addElement
+            (Damage.Element.SHADOW);
   }
 
   @Override

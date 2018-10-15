@@ -12,7 +12,7 @@ public class ScrollSellerSprite extends MobSprite {
   public ScrollSellerSprite() {
     super();
 
-    texture(Assets.DPD_SCROLL_SELLER);
+    texture(Assets.SCROLL_SELLER);
 
     // set animations
     TextureFilm frames = new TextureFilm(texture, 12, 15);

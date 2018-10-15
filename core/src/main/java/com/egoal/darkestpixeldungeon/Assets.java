@@ -22,192 +22,203 @@ package com.egoal.darkestpixeldungeon;
 
 public class Assets {
 
-  public static final String ARCS_BG = "arcs1.png";
-  public static final String ARCS_FG = "arcs2.png";
-  public static final String DASHBOARD = "dashboard.png";
+  private static final String ACTORS = "actors/";
+  private static final String LEVELS = "levels/";
+  private static final String SOUNDS = "sounds/";
+  private static final String MISCS = "miscs/";
 
-  public static final String BANNERS = "banners.png";
-  public static final String BADGES = "badges.png";
-  public static final String LOCKED = "locked_badge.png";
-  public static final String AMULET = "amulet.png";
-
-  // ui
-  public static final String DPD_ICONS = "dpd/icons.png";
-  public static final String DPD_ITEMS = "dpd/items.png";
-  public static final String DPD_BANNERS = "dpd/banners.png";
-  public static final String DPD_CONS_ICONS = "dpd/consumable_icons.png";
-  public static final String DPD_AVATARS = "dpd/avatars.png";
-  public static final String DPD_FIREBALL = "dpd/fireball.png";
-  public static final String DPD_CHROME = "dpd/chrome.png";
-  public static final String DPD_MENU = "dpd/menu_button.png";
-  public static final String DPD_STATUS = "dpd/status_pane.png";
-  public static final String DPD_SAN_BAR = "dpd/san_bar.png";
-  
-  public static final String HP_BAR = "hp_bar.png";
-  public static final String SHLD_BAR = "shield_bar.png";
-  public static final String XP_BAR = "exp_bar.png";
-  public static final String TOOLBAR = "toolbar.png";
-  public static final String SHADOW = "shadow.png";
-  public static final String BOSSHP = "boss_hp.png";
-
+  // actors=====================================================================
   // heros
-  public static final String WARRIOR = "warrior.png";
-  public static final String MAGE = "mage.png";
-  public static final String ROGUE = "rogue.png";
-  public static final String HUNTRESS = "ranger.png";
-  public static final String DPD_SORCERESS = "dpd/sorceress.png";
-  public static final String PET = "pet.png";
+  public static final String WARRIOR = ACTORS + "warrior.png";
+  public static final String MAGE = ACTORS + "mage.png";
+  public static final String ROGUE = ACTORS + "rogue.png";
+  public static final String HUNTRESS = ACTORS + "ranger.png";
+  public static final String DPD_SORCERESS = ACTORS + "sorceress.png";
 
-  public static final String SURFACE = "surface.png";
-
-  public static final String SPECKS = "specks.png";
-  public static final String EFFECTS = "effects.png";
-
-  // characters
-  public static final String RAT = "rat.png";
-  public static final String GNOLL = "gnoll.png";
-  public static final String CRAB = "crab.png";
-  public static final String GOO = "goo.png";
-  public static final String SWARM = "swarm.png";
-  public static final String SKELETON = "skeleton.png";
-  public static final String SHAMAN = "shaman.png";
-  public static final String THIEF = "thief.png";
-  public static final String TENGU = "tengu.png";
-  public static final String SHEEP = "sheep.png";
-  public static final String KEEPER = "shopkeeper.png";
-  public static final String BAT = "bat.png";
-  public static final String BRUTE = "brute.png";
-  public static final String SPINNER = "spinner.png";
-  public static final String DM300 = "dm300.png";
-  public static final String WRAITH = "wraith.png";
-  public static final String ELEMENTAL = "elemental.png";
-  public static final String MONK = "monk.png";
-  public static final String WARLOCK = "warlock.png";
-  public static final String GOLEM = "golem.png";
-  public static final String UNDEAD = "undead.png";
-  public static final String KING = "king.png";
-  public static final String STATUE = "statue.png";
-  public static final String PIRANHA = "piranha.png";
-  public static final String EYE = "eye.png";
-  public static final String SUCCUBUS = "succubus.png";
-  public static final String SCORPIO = "scorpio.png";
-  public static final String ROTTING = "rotting_fist.png";
-  public static final String BURNING = "burning_fist.png";
-  public static final String YOG = "yog.png";
-  public static final String LARVA = "larva.png";
-  public static final String GHOST = "ghost.png";
-  public static final String MAKER = "wandmaker.png";
-  public static final String TROLL = "blacksmith.png";
-  public static final String IMP = "demon.png";
-  public static final String RATKING = "ratking.png";
-  public static final String BEE = "bee.png";
-  public static final String MIMIC = "mimic.png";
-  public static final String ROT_LASH = "rot_lasher.png";
-  public static final String ROT_HEART = "rot_heart.png";
-  public static final String GUARD = "guard.png";
   // npc
-  public static final String DPD_CAT_LIX = "dpd/cat_lix.png";
-  public static final String DPD_ALCHEMIST = "dpd/alchemist.png";
-  public static final String DPD_SCHOLAR = "dpd/scholar.png";
-  public static final String DPD_JESSICA = "dpd/jessica.png";
-  public static final String DPD_NOVE = "dpd/nove.png";
-  public static final String DPD_STATUARY = "dpd/statuary.png";
-  public static final String DPD_MINSTREL = "dpd/minstrel.png";
-  public static final String DPD_QUESTIONER = "dpd/questioner.png";
+  public static final String PET = ACTORS + "pet.png";
+  public static final String GHOST = ACTORS + "ghost.png";
+  public static final String MAKER = ACTORS + "wandmaker.png";
+  public static final String TROLL = ACTORS + "blacksmith.png";
+  public static final String IMP = ACTORS + "demon.png";
+  public static final String RATKING = ACTORS + "ratking.png";
+  public static final String CAT_LIX = ACTORS + "cat_lix.png";
+  public static final String ALCHEMIST = ACTORS + "alchemist.png";
+  public static final String SCHOLAR = ACTORS + "scholar.png";
+  public static final String JESSICA = ACTORS + "jessica.png";
+  public static final String NOVE = ACTORS + "nove.png";
+  public static final String STATUARY = ACTORS + "statuary.png";
+  public static final String MINSTREL = ACTORS + "minstrel.png";
+  public static final String QUESTIONER = ACTORS + "questioner.png";
   // shop keeper
-  public static final String DPD_POTION_SELLER  = "dpd/potion_seller.png";
-  public static final String DPD_SCROLL_SELLER  = "dpd/scroll_seller.png";
+  public static final String KEEPER = ACTORS + "shopkeeper.png";
+  public static final String POTION_SELLER = ACTORS + "potion_seller.png";
+  public static final String SCROLL_SELLER = ACTORS + "scroll_seller.png";
+
   // mobs
-  public static final String DPD_DEVIL_GHOST = "dpd/devil_ghost.png";
-  public static final String DPD_SKELETON_KNIGHT = "dpd/skeleton_knight.png";
-  public static final String DPD_MADMAN = "dpd/madman.png";
+  public static final String RAT = ACTORS + "rat.png";
+  public static final String GNOLL = ACTORS + "gnoll.png";
+  public static final String CRAB = ACTORS + "crab.png";
+  public static final String GOO = ACTORS + "goo.png";
+  public static final String SWARM = ACTORS + "swarm.png";
+  public static final String SKELETON = ACTORS + "skeleton.png";
+  public static final String SHAMAN = ACTORS + "shaman.png";
+  public static final String THIEF = ACTORS + "thief.png";
+  public static final String TENGU = ACTORS + "tengu.png";
+  public static final String SHEEP = ACTORS + "sheep.png";
+  public static final String BAT = ACTORS + "bat.png";
+  public static final String BRUTE = ACTORS + "brute.png";
+  public static final String SPINNER = ACTORS + "spinner.png";
+  public static final String DM300 = ACTORS + "dm300.png";
+  public static final String WRAITH = ACTORS + "wraith.png";
+  public static final String ELEMENTAL = ACTORS + "elemental.png";
+  public static final String MONK = ACTORS + "monk.png";
+  public static final String WARLOCK = ACTORS + "warlock.png";
+  public static final String GOLEM = ACTORS + "golem.png";
+  public static final String UNDEAD = ACTORS + "undead.png";
+  public static final String KING = ACTORS + "king.png";
+  public static final String STATUE = ACTORS + "statue.png";
+  public static final String PIRANHA = ACTORS + "piranha.png";
+  public static final String EYE = ACTORS + "eye.png";
+  public static final String SUCCUBUS = ACTORS + "succubus.png";
+  public static final String SCORPIO = ACTORS + "scorpio.png";
+  public static final String ROTTING = ACTORS + "rotting_fist.png";
+  public static final String BURNING = ACTORS + "burning_fist.png";
+  public static final String YOG = ACTORS + "yog.png";
+  public static final String LARVA = ACTORS + "larva.png";
+  public static final String BEE = ACTORS + "bee.png";
+  public static final String MIMIC = ACTORS + "mimic.png";
+  public static final String ROT_LASH = ACTORS + "rot_lasher.png";
+  public static final String ROT_HEART = ACTORS + "rot_heart.png";
+  public static final String GUARD = ACTORS + "guard.png";
+  public static final String DEVIL_GHOST = ACTORS + "devil_ghost.png";
+  public static final String SKELETON_KNIGHT = ACTORS + "skeleton_knight.png";
+  public static final String MADMAN = ACTORS + "madman.png";
+
+  // levels=====================================================================
+  // tile
+  public static final String TILES_VILLAGE = LEVELS + "tiles_village.png";
+  public static final String TILES_SEWERS = LEVELS + "tiles0.png";
+  public static final String TILES_PRISON = LEVELS + "tiles1.png";
+  public static final String TILES_CAVES = LEVELS + "tiles2.png";
+  public static final String TILES_CITY = LEVELS + "tiles3.png";
+  public static final String TILES_HALLS = LEVELS + "tiles4.png";
   
-  public static final String PLANTS = "plants.png";
-  public static final String TRAPS = "traps.png";
-
-  // level
-  public static final String DPD_TILES_VILLAGE = "dpd/tiles_village.png";
-  public static final String DPD_WATER_VILLAGE = "dpd/water_village.png";
+  // water
+  public static final String WATER_VILLAGE = LEVELS + "water_village.png";
+  public static final String WATER_SEWERS = LEVELS + "water0.png";
+  public static final String WATER_PRISON = LEVELS + "water1.png";
+  public static final String WATER_CAVES = LEVELS + "water2.png";
+  public static final String WATER_CITY = LEVELS + "water3.png";
+  public static final String WATER_HALLS = LEVELS + "water4.png";
   
-  public static final String TILES_SEWERS = "tiles0.png";
-  public static final String TILES_PRISON = "tiles1.png";
-  public static final String TILES_CAVES = "tiles2.png";
-  public static final String TILES_CITY = "tiles3.png";
-  public static final String TILES_HALLS = "tiles4.png";
+  // traps
+  public static final String TRAPS = LEVELS + "traps.png";
+  
+  // plants
+  public static final String PLANTS = LEVELS + "plants.png";
 
-  public static final String WATER_SEWERS = "water0.png";
-  public static final String WATER_PRISON = "water1.png";
-  public static final String WATER_CAVES = "water2.png";
-  public static final String WATER_CITY = "water3.png";
-  public static final String WATER_HALLS = "water4.png";
+  // miscs======================================================================
+  // ui
+  public static final String HP_BAR = MISCS + "hp_bar.png";
+  public static final String SHLD_BAR = MISCS + "shield_bar.png";
+  public static final String XP_BAR = MISCS + "exp_bar.png";
+  public static final String TOOLBAR = MISCS + "toolbar.png";
+  public static final String SHADOW = MISCS + "shadow.png";
+  public static final String BOSSHP = MISCS + "boss_hp.png";
+  public static final String DPD_ICONS = MISCS + "icons.png";
+  public static final String DPD_ITEMS = MISCS + "items.png";
+  public static final String DPD_BANNERS = MISCS + "dpd-banners.png";
+  public static final String DPD_CONS_ICONS = MISCS + "consumable_icons.png";
+  public static final String DPD_AVATARS = MISCS + "avatars.png";
+  public static final String DPD_FIREBALL = MISCS + "fireball.png";
+  public static final String DPD_CHROME = MISCS + "chrome.png";
+  public static final String DPD_MENU = MISCS + "menu_button.png";
+  public static final String DPD_STATUS = MISCS + "status_pane.png";
+  public static final String DPD_SAN_BAR = MISCS + "san_bar.png";
+  public static final String BUFFS_SMALL = MISCS + "buffs.png";
+  public static final String BUFFS_LARGE = MISCS + "large_buffs.png";
+  public static final String SPELL_ICONS = MISCS + "spell_icons.png";
+  
+  // effects
+  public static final String SPECKS = MISCS + "specks.png";
+  public static final String EFFECTS = MISCS + "effects.png";
+  
+  // other
+  public static final String ARCS_BG = MISCS + "arcs1.png";
+  public static final String ARCS_FG = MISCS + "arcs2.png";
+  public static final String DASHBOARD = MISCS + "dashboard.png";
+  public static final String BANNERS = MISCS + "banners.png";
+  public static final String BADGES = MISCS + "badges.png";
+  public static final String LOCKED = MISCS + "locked_badge.png";
+  public static final String AMULET = MISCS + "amulet.png";
+  public static final String SURFACE = MISCS + "surface.png";
 
+  // sounds=====================================================================
+  // music
+  public static final String THEME = SOUNDS + "theme.mp3";
+  public static final String TUNE = SOUNDS + "game.mp3";
+  public static final String HAPPY = SOUNDS + "surface.mp3";
+  
+  // ui
+  public static final String SND_CLICK = SOUNDS + "snd_click.mp3";
+  public static final String SND_BADGE = SOUNDS + "snd_badge.mp3";
+  public static final String SND_GOLD = SOUNDS + "snd_gold.mp3";
+  
+  // sfx
+  public static final String SND_OPEN = "sounds/snd_door_open.mp3";
+  public static final String SND_UNLOCK = "sounds/snd_unlock.mp3";
+  public static final String SND_ITEM = "sounds/snd_item.mp3";
+  public static final String SND_DEWDROP = "sounds/snd_dewdrop.mp3";
+  public static final String SND_HIT = "sounds/snd_hit.mp3";
+  public static final String SND_MISS = "sounds/snd_miss.mp3";
+  public static final String SND_STEP = "sounds/snd_step.mp3";
+  public static final String SND_WATER = "sounds/snd_water.mp3";
+  public static final String SND_DESCEND = "sounds/snd_descend.mp3";
+  public static final String SND_EAT = "sounds/snd_eat.mp3";
+  public static final String SND_READ = "sounds/snd_read.mp3";
+  public static final String SND_LULLABY = "sounds/snd_lullaby.mp3";
+  public static final String SND_DRINK = "sounds/snd_drink.mp3";
+  public static final String SND_SHATTER = "sounds/snd_shatter.mp3";
+  public static final String SND_ZAP = "sounds/snd_zap.mp3";
+  public static final String SND_LIGHTNING = "sounds/snd_lightning.mp3";
+  public static final String SND_LEVELUP = "sounds/snd_levelup.mp3";
+  public static final String SND_DEATH = "sounds/snd_death.mp3";
+  public static final String SND_CHALLENGE = "sounds/snd_challenge.mp3";
+  public static final String SND_CURSED = "sounds/snd_cursed.mp3";
+  public static final String SND_TRAP = "sounds/snd_trap.mp3";
+  public static final String SND_EVOKE = "sounds/snd_evoke.mp3";
+  public static final String SND_TOMB = "sounds/snd_tomb.mp3";
+  public static final String SND_ALERT = "sounds/snd_alert.mp3";
+  public static final String SND_MELD = "sounds/snd_meld.mp3";
+  public static final String SND_BOSS = "sounds/snd_boss.mp3";
+  public static final String SND_BLAST = "sounds/snd_blast.mp3";
+  public static final String SND_PLANT = "sounds/snd_plant.mp3";
+  public static final String SND_RAY = "sounds/snd_ray.mp3";
+  public static final String SND_BEACON = "sounds/snd_beacon.mp3";
+  public static final String SND_TELEPORT = "sounds/snd_teleport.mp3";
+  public static final String SND_CHARMS = "sounds/snd_charms.mp3";
+  public static final String SND_MASTERY = "sounds/snd_mastery.mp3";
+  public static final String SND_PUFF = "sounds/snd_puff.mp3";
+  public static final String SND_ROCKS = "sounds/snd_rocks.mp3";
+  public static final String SND_BURNING = "sounds/snd_burning.mp3";
+  public static final String SND_FALLING = "sounds/snd_falling.mp3";
+  public static final String SND_GHOST = "sounds/snd_ghost.mp3";
+  public static final String SND_SECRET = "sounds/snd_secret.mp3";
+  public static final String SND_BONES = "sounds/snd_bones.mp3";
+  public static final String SND_BEE = "sounds/snd_bee.mp3";
+  public static final String SND_DEGRADE = "sounds/snd_degrade.mp3";
+  public static final String SND_MIMIC = "sounds/snd_mimic.mp3";
+  public static final String SND_ASTROLABE = "sounds/snd_astrolabe.mp3";
+  public static final String SND_CRITICAL = "sounds/snd_critical.mp3";
+
+  // spd legacy=================================================================
   public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";
   public static final String PRISON_QUEST = "custom_tiles/prison_quests.png";
   public static final String PRISON_EXIT = "custom_tiles/prison_exit.png";
 
-  public static final String BUFFS_SMALL = "buffs.png";
-  public static final String BUFFS_LARGE = "large_buffs.png";
-  public static final String SPELL_ICONS = "spell_icons.png";
-
+  //
   public static final String PIXELFONT = "pixel_font.png";
   public static final String FONT1X = "font1x.png";
   public static final String FONT2X = "font2x.png";
-
-  // sounds
-  public static final String THEME = "theme.mp3";
-  public static final String TUNE = "game.mp3";
-  public static final String HAPPY = "surface.mp3";
-  
-  public static final String SND_CLICK = "snd_click.mp3";
-  public static final String SND_BADGE = "snd_badge.mp3";
-  public static final String SND_GOLD = "snd_gold.mp3";
-
-  public static final String SND_OPEN = "snd_door_open.mp3";
-  public static final String SND_UNLOCK = "snd_unlock.mp3";
-  public static final String SND_ITEM = "snd_item.mp3";
-  public static final String SND_DEWDROP = "snd_dewdrop.mp3";
-  public static final String SND_HIT = "snd_hit.mp3";
-  public static final String SND_MISS = "snd_miss.mp3";
-  public static final String SND_STEP = "snd_step.mp3";
-  public static final String SND_WATER = "snd_water.mp3";
-  public static final String SND_DESCEND = "snd_descend.mp3";
-  public static final String SND_EAT = "snd_eat.mp3";
-  public static final String SND_READ = "snd_read.mp3";
-  public static final String SND_LULLABY = "snd_lullaby.mp3";
-  public static final String SND_DRINK = "snd_drink.mp3";
-  public static final String SND_SHATTER = "snd_shatter.mp3";
-  public static final String SND_ZAP = "snd_zap.mp3";
-  public static final String SND_LIGHTNING = "snd_lightning.mp3";
-  public static final String SND_LEVELUP = "snd_levelup.mp3";
-  public static final String SND_DEATH = "snd_death.mp3";
-  public static final String SND_CHALLENGE = "snd_challenge.mp3";
-  public static final String SND_CURSED = "snd_cursed.mp3";
-  public static final String SND_TRAP = "snd_trap.mp3";
-  public static final String SND_EVOKE = "snd_evoke.mp3";
-  public static final String SND_TOMB = "snd_tomb.mp3";
-  public static final String SND_ALERT = "snd_alert.mp3";
-  public static final String SND_MELD = "snd_meld.mp3";
-  public static final String SND_BOSS = "snd_boss.mp3";
-  public static final String SND_BLAST = "snd_blast.mp3";
-  public static final String SND_PLANT = "snd_plant.mp3";
-  public static final String SND_RAY = "snd_ray.mp3";
-  public static final String SND_BEACON = "snd_beacon.mp3";
-  public static final String SND_TELEPORT = "snd_teleport.mp3";
-  public static final String SND_CHARMS = "snd_charms.mp3";
-  public static final String SND_MASTERY = "snd_mastery.mp3";
-  public static final String SND_PUFF = "snd_puff.mp3";
-  public static final String SND_ROCKS = "snd_rocks.mp3";
-  public static final String SND_BURNING = "snd_burning.mp3";
-  public static final String SND_FALLING = "snd_falling.mp3";
-  public static final String SND_GHOST = "snd_ghost.mp3";
-  public static final String SND_SECRET = "snd_secret.mp3";
-  public static final String SND_BONES = "snd_bones.mp3";
-  public static final String SND_BEE = "snd_bee.mp3";
-  public static final String SND_DEGRADE = "snd_degrade.mp3";
-  public static final String SND_MIMIC = "snd_mimic.mp3";
-  
-  // dpd
-  public static final String SND_ASTROLABE = "snd_astrolabe.mp3";
-  public static final String SND_CRITICAL = "snd_critical.mp3";
-  
 }

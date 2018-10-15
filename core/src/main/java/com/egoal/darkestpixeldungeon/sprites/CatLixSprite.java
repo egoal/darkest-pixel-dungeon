@@ -10,7 +10,7 @@ public class CatLixSprite extends MobSprite {
   public CatLixSprite() {
     super();
 
-    texture(Assets.DPD_CAT_LIX);
+    texture(Assets.CAT_LIX);
 
     TextureFilm frames = new TextureFilm(texture, 12, 14);
 

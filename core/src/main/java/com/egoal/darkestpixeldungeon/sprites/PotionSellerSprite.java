@@ -13,7 +13,7 @@ public class PotionSellerSprite extends MobSprite {
   public PotionSellerSprite() {
     super();
 
-    texture(Assets.DPD_POTION_SELLER);
+    texture(Assets.POTION_SELLER);
 
     // set animations
     TextureFilm frames = new TextureFilm(texture, 12, 16);

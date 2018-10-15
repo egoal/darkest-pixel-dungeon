@@ -57,7 +57,8 @@ public class Scorpio extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(26, 36), this, target);
+    return new Damage(Random.NormalIntRange(26, 36), this, target).addElement
+            (Damage.Element.POISON);
   }
 
   @Override
@@ -74,7 +75,7 @@ public class Scorpio extends Mob {
   @Override
   protected boolean canAttack(Char enemy) {
     Ballistica attack = new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE);
-    return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos == 
+    return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos ==
             enemy.pos;
   }
 

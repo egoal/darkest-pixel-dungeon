@@ -180,7 +180,7 @@ public class Questioner extends NPC {
     public Sprite() {
       super();
 
-      texture(Assets.DPD_QUESTIONER);
+      texture(Assets.QUESTIONER);
 
       // animations
       TextureFilm frames = new TextureFilm(texture, 16, 16);

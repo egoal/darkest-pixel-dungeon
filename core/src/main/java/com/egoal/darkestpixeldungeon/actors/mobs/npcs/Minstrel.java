@@ -12,13 +12,8 @@ import com.egoal.darkestpixeldungeon.sprites.MobSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.egoal.darkestpixeldungeon.windows.WndQuest;
-import com.egoal.darkestpixeldungeon.windows.WndTitledMessage;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.utils.Random;
-
-import javax.microedition.khronos.opengles.GL;
 
 /**
  * Created by 93942 on 10/10/2018.
@@ -110,7 +105,7 @@ public class Minstrel extends NPC{
     public MinstrelSprite(){
       super();
 
-      texture(Assets.DPD_MINSTREL);
+      texture(Assets.MINSTREL);
 
       // set animations
       TextureFilm frames = new TextureFilm(texture, 12, 15);

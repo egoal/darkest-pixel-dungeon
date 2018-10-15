@@ -56,7 +56,8 @@ public class Spinner extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(10, 25), this, target);
+    return new Damage(Random.NormalIntRange(10, 25), this, target).addElement
+            (Damage.Element.POISON);
   }
 
   @Override
