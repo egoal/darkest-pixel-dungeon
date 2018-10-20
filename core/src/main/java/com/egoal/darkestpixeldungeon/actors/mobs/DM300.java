@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import android.widget.GridLayout;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -43,6 +45,7 @@ import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.DM300Sprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
@@ -76,9 +79,15 @@ public class DM300 extends Mob {
     addResistances(Damage.Element.LIGHT, .667f);
   }
 
+  private boolean overloaded = false;
+
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(20, 25), this, target);
+    int val = Random.NormalIntRange(20, 25);
+    if (overloaded)
+      val *= 1.2;
+
+    return new Damage(val, this, target);
   }
 
   @Override
@@ -98,6 +107,19 @@ public class DM300 extends Mob {
     GameScene.add(Blob.seed(pos, 30, ToxicGas.class));
 
     return super.act();
+  }
+
+  @Override
+  public float attackDelay() {
+    return overloaded ? .667f : 1f;
+  }
+
+  public String description() {
+    String desc = Messages.get(this, "desc");
+    if (overloaded)
+      desc += "\n\n" + Messages.get(this, "overloaded_desc");
+
+    return desc;
   }
 
   @Override
@@ -151,17 +173,20 @@ public class DM300 extends Mob {
     if (lock != null && !immunizedBuffs().contains(dmg.from.getClass()))
       lock.addTime(dmg.value * 1.5f);
 
+    if (HP < HT * .3 && !overloaded) overload();
+
     return val;
   }
 
   @Override
   public Damage attackProc(Damage dmg) {
     // chance to knock back
-    if (dmg.to instanceof Char && Random.Float()<.25f) {
-      Char tgt  = (Char) dmg.to;
-      int opposite  = tgt.pos+ (tgt.pos-pos);
-      Ballistica shot = new Ballistica(tgt.pos, opposite, Ballistica.MAGIC_BOLT);
-      
+    if (dmg.to instanceof Char && Random.Float() < .25f) {
+      Char tgt = (Char) dmg.to;
+      int opposite = tgt.pos + (tgt.pos - pos);
+      Ballistica shot = new Ballistica(tgt.pos, opposite, Ballistica
+              .MAGIC_BOLT);
+
       WandOfBlastWave.throwChar(tgt, shot, 1);
     }
 
@@ -197,9 +222,22 @@ public class DM300 extends Mob {
   public Damage resistDamage(Damage dmg) {
     if (dmg.isFeatured(Damage.Feature.DEATH))
       dmg.value *= 0.2;
-    if (dmg.type == Damage.Type.NORMAL)
+
+    if (!overloaded && dmg.type == Damage.Type.NORMAL)
       dmg.value *= 0.8;
+
     return super.resistDamage(dmg);
+  }
+
+  private void overload() {
+    overloaded = true;
+
+    // remove ice resistance, immune fire damage
+    addResistances(Damage.Element.ICE, 1f);
+    // addResistances(Damage.Element.FIRE, 100f, 1f);
+
+    sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "overload"));
+    sprite.emitter().burst(Speck.factory(Speck.WOOL), 5);
   }
 
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
@@ -215,9 +253,19 @@ public class DM300 extends Mob {
     return IMMUNITIES;
   }
 
+  private static final String OVERLOADED = "overloaded";
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put(OVERLOADED, overloaded);
+  }
+
   @Override
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
+    overloaded = bundle.getBoolean(OVERLOADED);
+
     BossHealthBar.assignBoss(this);
   }
 }

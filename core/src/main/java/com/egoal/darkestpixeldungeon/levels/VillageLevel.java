@@ -1,6 +1,8 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Alchemist;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
@@ -347,7 +349,7 @@ public class VillageLevel extends RegularLevel {
     
     
     // test 
-    if (!false) {
+    if (DarkestPixelDungeon.debug()) {
       Questioner q = new Questioner().hold(roomExit);
       do{
         q.pos = pointToCell(roomExit.random());

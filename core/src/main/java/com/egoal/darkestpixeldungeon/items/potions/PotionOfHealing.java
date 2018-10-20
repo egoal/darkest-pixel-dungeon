@@ -64,16 +64,17 @@ public class PotionOfHealing extends Potion {
       Buff.detach(hero, Burning.class);
 
       GLog.p(Messages.get(this, "heal"));
-    }else{
-      int value = hero.HT-hero.HP;
+    } else {
+      int value = hero.HT - hero.HP;
       // directly recover some health, since buff is act later than chars
-      hero.HP = Math.min(hero.HT, hero.HP+value/2);
-      
+      int directRecover = value / 3;
+      hero.HP = Math.min(hero.HT, hero.HP + directRecover);
+
       Mending m = hero.buff(Mending.class);
-      if(m!=null){
-        m.set(m.recoveryValue+value/2);
-      }else{
-        Buff.affect(hero, Mending.class).set(value/2);
+      if (m != null) {
+        m.set(m.recoveryValue + value - directRecover);
+      } else {
+        Buff.affect(hero, Mending.class).set(value - directRecover);
       }
     }
 

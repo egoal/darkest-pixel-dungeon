@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.Torch;
@@ -56,22 +57,9 @@ public class CatLix extends NPC {
     // prepare rewards
     gift.identify();
 
-    // gift.addItem(new Humanity());
     gift.addItem(new Food());
-
-    ArrayList<Item> alItems = new ArrayList<>();
-    if (isPraised_) {
-      alItems.add(new ScrollOfIdentify());
-      alItems.add(new ScrollOfMagicMapping());
-      alItems.add(new ScrollOfRemoveCurse());
-      alItems.add(new ScrollOfLullaby());
-    } else {
-      alItems.add(new PotionOfHealing());
-      alItems.add(new PotionOfExperience());
-      alItems.add(new PotionOfMindVision());
-      alItems.add(new PotionOfInvisibility());
-    }
-    gift.addItem(alItems.get(Random.Int(alItems.size())));
+    gift.addItem(Generator.random(isPraised_ ? Generator.Category.SCROLL : 
+            Generator.Category.POTION));
 
     gift.addItem(new SkeletonKey(Dungeon.depth));
   }
