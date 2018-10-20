@@ -63,7 +63,7 @@ public class Ballistica {
     else
       collisionPos = path.get(dist = path.size() - 1);
   }
-
+  
   private void build(int from, int to, boolean stopTarget, boolean stopChars,
                      boolean stopTerrain) {
     int w = Dungeon.level.width();

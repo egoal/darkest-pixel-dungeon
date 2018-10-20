@@ -50,7 +50,6 @@ public class SoulBurning extends Buff implements Hero.Doom {
       if (target instanceof Hero) {
         //todo: affect hero
       } else {
-        // target.damage(dmgHP, this);
         target.takeDamage(new Damage(dmgHP,
                 this, target).type(Damage.Type.MAGICAL).addElement(Damage
                 .Element.SHADOW));

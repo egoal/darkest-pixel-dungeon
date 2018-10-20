@@ -75,8 +75,7 @@ public class Skeleton extends Mob {
       Char ch = findChar(pos + PathFinder.NEIGHBOURS8[i]);
       if (ch != null && ch.isAlive()) {
         Damage dmg = new Damage(Random.NormalIntRange(4, 12),
-                this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element
-                .SHADOW);
+                this, ch).addElement(Damage.Element.SHADOW);
         ch.takeDamage(dmg);
         if (ch == Dungeon.hero && !ch.isAlive()) {
           heroKilled = true;

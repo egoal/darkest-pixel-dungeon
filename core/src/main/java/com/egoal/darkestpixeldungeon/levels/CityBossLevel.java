@@ -236,7 +236,7 @@ public class CityBossLevel extends Level {
   }
 
   private boolean isNearToHallCenter(int cell) {
-    return cell / width() < 17;
+    return cell / width() < 20;
   }
 
   @Override

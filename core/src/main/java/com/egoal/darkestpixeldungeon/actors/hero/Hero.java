@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
+import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -33,7 +34,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Bones;
@@ -121,6 +122,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -204,7 +206,34 @@ public class Hero extends Char {
 
     return weakened ? STR - 2 : STR;
   }
+  
+  // view control
+  @Override
+  public int viewDistance(){
+    int vd = Dungeon.level.viewDistance;
+    if(Dungeon.level.feeling == Level.Feeling.DARK)
+      vd /= 2;
+    
+    if(buff(Light.class)!=null){
+      vd = Math.max(vd, Light.DISTANCE);
+    }
+    
+    if(heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
+      vd += 1;
+    
+    return GameMath.clamp(vd, 1, 9);
+  }
 
+  @Override
+  public int seeDistance(){
+    int sd = Dungeon.level.seeDistance;
+    
+    if(heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
+      sd += 1;
+
+    return GameMath.clamp(sd, 1, 9);
+  }
+  
   private static final String ATTACK = "attackSkill";
   private static final String DEFENSE = "defenseSkill";
   private static final String STRENGTH = "STR";
@@ -850,8 +879,7 @@ public class Hero extends Char {
           } else {
 
             boolean important =
-                    ((item instanceof ScrollOfUpgrade || item instanceof
-                            ScrollOfMagicalInfusion) && ((Scroll) item)
+                    ((item instanceof ScrollOfUpgrade) && ((Scroll) item)
                             .isKnown()) ||
                             ((item instanceof PotionOfStrength || item
                                     instanceof PotionOfMight) && ((Potion)

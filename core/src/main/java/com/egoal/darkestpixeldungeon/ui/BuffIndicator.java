@@ -94,6 +94,7 @@ public class BuffIndicator extends Component {
   public static final int VULERABLE = 49;
   public static final int RESIST_ANY = 50;
   public static final int IGNORANT = 51;
+  public static final int SHOCK = 52;
 
   public static final int SIZE = 7;
 

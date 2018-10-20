@@ -24,7 +24,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -110,8 +110,7 @@ public class Burning extends Buff implements Hero.Doom {
           if (!burnedSomething) {
             Item item = hero.belongings.randomUnequipped();
             if (item instanceof Scroll
-                    && !(item instanceof ScrollOfUpgrade || item instanceof 
-                    ScrollOfMagicalInfusion)) {
+                    && !(item instanceof ScrollOfUpgrade)) {
 
               item = item.detach(hero.belongings.backpack);
               GLog.w(Messages.get(this, "burnsup", Messages.capitalize(item
@@ -147,8 +146,7 @@ public class Burning extends Buff implements Hero.Doom {
         Item item = ((Thief) target).item;
 
         if (item instanceof Scroll &&
-                !(item instanceof ScrollOfUpgrade || item instanceof 
-                        ScrollOfMagicalInfusion)) {
+                !(item instanceof ScrollOfUpgrade)) {
           target.sprite.emitter().burst(ElmoParticle.FACTORY, 6);
           ((Thief) target).item = null;
         }

@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.*;
-import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -34,10 +33,9 @@ import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
 import com.egoal.darkestpixeldungeon.plants.Plant;
-import com.egoal.darkestpixeldungeon.plants.Sungrass;
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -109,7 +107,7 @@ public abstract class Level implements Bundlable {
   protected int height;
   protected int length;
 
-  protected static final float TIME_TO_RESPAWN = 50;
+  protected static final float TIME_TO_RESPAWN = 40;
 
   public int version;
   public int[] map;
@@ -220,10 +218,7 @@ public abstract class Level implements Bundlable {
         Dungeon.limitedDrops.strengthPotions.count++;
       }
       if (Dungeon.souNeeded()) {
-        if (Random.Float() > Math.pow(0.925, bonus))
-          addItemToSpawn(new ScrollOfMagicalInfusion());
-        else
-          addItemToSpawn(new ScrollOfUpgrade());
+        addItemToSpawn(new ScrollOfUpgrade());
         Dungeon.limitedDrops.upgradeScrolls.count++;
       }
       if (Dungeon.asNeeded()) {
@@ -856,8 +851,7 @@ public abstract class Level implements Bundlable {
                     instanceof Plant.Seed || item instanceof Dewdrop || item
                     instanceof SeedPouch)) ||
             (Dungeon.isChallenged(Challenges.NO_SCROLLS) && ((item instanceof
-                    Scroll && !(item instanceof ScrollOfUpgrade || item
-                    instanceof ScrollOfMagicalInfusion)) || item instanceof
+                    Scroll && !(item instanceof ScrollOfUpgrade)) || item instanceof
                     ScrollHolder)) ||
             item == null) {
 
@@ -1088,8 +1082,8 @@ public abstract class Level implements Bundlable {
             && c.buff(TimekeepersHourglass.timeStasis.class) == null && c
             .isAlive();
     if (sighted) {
-      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance, c
-              .seeDistance);
+      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance(), c
+              .seeDistance());
     } else {
       BArray.setFalse(fieldOfView);
     }

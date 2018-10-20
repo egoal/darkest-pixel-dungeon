@@ -170,7 +170,7 @@ public class DPDTengu extends Mob {
       boolean switchStage = HP < HT / 2;
 
       if (switchStage) {
-        HP = HT / 2 - 1; // avoid directly death from healthy
+        HP = HT / 2; // avoid directly death from healthy
 
         // turn off the lights and give blind
         if (((DPDPrisonBossLevel) Dungeon.level).isLighted)

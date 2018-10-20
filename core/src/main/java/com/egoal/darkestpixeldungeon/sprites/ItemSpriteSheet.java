@@ -204,6 +204,8 @@ public class ItemSpriteSheet {
   public static final int SCROLL_BERKANAN = SCROLLS + 9;
   public static final int SCROLL_ODAL = SCROLLS + 10;
   public static final int SCROLL_TIWAZ = SCROLLS + 11;
+  public static final int SCROLL_QI = SCROLLS+12;
+  public static final int SCROLL_LINGEL = SCROLLS+13;
 
   private static final int POTIONS = xy(1, 21);  //16 slots
   public static final int POTION_CRIMSON = POTIONS + 0;
@@ -276,6 +278,7 @@ public class ItemSpriteSheet {
   public static final int DPD_ASTROLABE = ARTIFACTS + 28;
   public static final int DPD_RIEMANNIAN_SHIELD = ARTIFACTS + 29;
   public static final int DPD_GOLD_PLATE_STATUE = ARTIFACTS + 30;
+  public static final int DPD_BONE_HAND = ARTIFACTS + 31;
 
   public static final int DPD_DWARF_CROWN = SINGLE_USE + 16;
 

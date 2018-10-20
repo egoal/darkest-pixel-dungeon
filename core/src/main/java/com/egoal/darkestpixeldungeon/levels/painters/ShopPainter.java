@@ -131,13 +131,13 @@ public class ShopPainter extends Painter {
     // potion of healing and scroll of remove curse is preferred
     {
       ScrollOfRemoveCurse s = new ScrollOfRemoveCurse();
-      if(s.isKnown())
+      if(s.isKnown() && Random.Float()<.5f)
         itemsToSpawn.add(s);
       else
         itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
       
       PotionOfHealing p = new PotionOfHealing();
-      if(p.isKnown())
+      if(p.isKnown() && Random.Float()<.5f)
         itemsToSpawn.add(p);
       else
         itemsToSpawn.add(Generator.random(Generator.Category.POTION));

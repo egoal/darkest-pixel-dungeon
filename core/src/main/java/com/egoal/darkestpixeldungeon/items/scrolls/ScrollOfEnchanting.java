@@ -30,7 +30,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
 
-public class ScrollOfMagicalInfusion extends InventoryScroll {
+public class ScrollOfEnchanting extends InventoryScroll {
 
   {
     initials = 2;
@@ -41,13 +41,13 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 
   @Override
   protected void onItemSelected(Item item) {
-
+    
     if (item instanceof Weapon)
-      ((Weapon) item).upgrade(true);
+      ((Weapon) item).enchant();
     else
-      ((Armor) item).upgrade(true);
+      ((Armor) item).inscribe();
 
-    GLog.p(Messages.get(this, "infuse", item.name()));
+    GLog.p(Messages.get(this, "enchant", item.name()));
 
     Badges.validateItemLevelAquired(item);
 
@@ -57,6 +57,6 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 
   @Override
   public int price() {
-    return isKnown() ? 100 * quantity : super.price();
+    return isKnown() ? 40 * quantity : super.price();
   }
 }

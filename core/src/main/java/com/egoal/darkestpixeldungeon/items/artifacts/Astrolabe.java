@@ -350,7 +350,7 @@ public class Astrolabe extends Artifact {
         if (c.HP > c.HT)
           c.HT = c.HP;
         c.sprite.showStatus(CharSprite.POSITIVE, Integer.toString(dhp));
-        Buff.prolong(c, Vulnerable.class, Vulnerable.DURATION).ratio = 1.5f;
+        Buff.prolong(c, Vulnerable.class, Vulnerable.DURATION).ratio = 2f;
       }
     }
   }

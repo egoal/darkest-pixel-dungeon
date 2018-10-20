@@ -28,7 +28,7 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -193,22 +193,14 @@ public class WaterOfTransmutation extends WellWater {
   }
 
   private Scroll changeScroll(Scroll s) {
-    if (s instanceof ScrollOfUpgrade) {
-
-      return new ScrollOfMagicalInfusion();
-
-    } else if (s instanceof ScrollOfMagicalInfusion) {
-
-      return new ScrollOfUpgrade();
-
-    } else {
-
-      Scroll n;
-      do {
-        n = (Scroll) Generator.random(Generator.Category.SCROLL);
-      } while (n.getClass() == s.getClass());
-      return n;
-    }
+    // do not affect scroll of upgrade.
+    if(s instanceof ScrollOfUpgrade) return null;
+    
+    Scroll n;
+    do {
+      n = (Scroll) Generator.random(Generator.Category.SCROLL);
+    } while (n.getClass() == s.getClass());
+    return n;
   }
 
   private Potion changePotion(Potion p) {

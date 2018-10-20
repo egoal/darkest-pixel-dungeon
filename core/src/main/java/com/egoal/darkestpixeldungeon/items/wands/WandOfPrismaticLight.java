@@ -73,8 +73,7 @@ public class WandOfPrismaticLight extends DamageWand {
     }
     affectMap(beam);
 
-    if (Dungeon.level.viewDistance < 4)
-      Buff.prolong(curUser, Light.class, 4f + level() * 4);
+    Buff.prolong(curUser, Light.class, 4f + level() * 4);
   }
 
   private void affectTarget(Char ch) {

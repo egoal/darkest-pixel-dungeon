@@ -17,8 +17,8 @@ public class Suppress extends Weapon.Enchantment {
     if (damage.to instanceof Char) {
       float pm = 1f - ((Char) damage.to).HP / (float) (((Char) damage.to).HT);
       int level = Math.max(0, weapon.level());
-      if(level>0)
-        damage.value  *= (1f+Math.pow(pm, level>3? 2: 3));
+      if (level > 0)
+        damage.value *= (1f + Math.pow(pm, 3) * (level > 3 ? 1f : .5f));
     }
 
     return damage;

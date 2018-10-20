@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.messages.Languages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -54,8 +56,7 @@ public class DarkestPixelDungeon extends Game {
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Swing");
 
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.scrolls
-                    .ScrollOfMagicalInfusion.class,
+            ScrollOfEnchanting.class,
             "com.egoal.darkestpixeldungeon.items.scrolls" +
                     ".ScrollOfWeaponUpgrade");
 

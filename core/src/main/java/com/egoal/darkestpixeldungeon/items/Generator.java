@@ -27,7 +27,9 @@ import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
 import com.egoal.darkestpixeldungeon.items.books.textbook
         .HeadlessKnightsLengend;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfVenom;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
@@ -230,20 +232,18 @@ public class Generator {
     Category.GOLD.probs = new float[]{1};
 
     Category.SCROLL.classes = new Class<?>[]{
-            ScrollOfIdentify.class,
-            ScrollOfTeleportation.class,
-            ScrollOfRemoveCurse.class,
-            ScrollOfUpgrade.class,
-            ScrollOfRecharging.class,
-            ScrollOfMagicMapping.class,
-            ScrollOfRage.class,
-            ScrollOfTerror.class,
-            ScrollOfLullaby.class,
-            ScrollOfMagicalInfusion.class,
-            ScrollOfPsionicBlast.class,
-            ScrollOfMirrorImage.class};
-    Category.SCROLL.probs = new float[]{30, 10, 20, 0, 15, 15, 12, 8, 8, 0,
-            4, 10};
+            ScrollOfIdentify.class, ScrollOfTeleportation.class,
+            ScrollOfRemoveCurse.class, ScrollOfUpgrade.class,
+            ScrollOfRecharging.class, ScrollOfMagicMapping.class,
+            ScrollOfRage.class, ScrollOfTerror.class,
+            ScrollOfLullaby.class, ScrollOfEnchanting.class,
+            ScrollOfPsionicBlast.class, ScrollOfMirrorImage.class,
+            ScrollOfCurse.class, ScrollOfLight.class,
+    };
+    Category.SCROLL.probs = new float[]{30, 10, 20, 0, 
+            15, 15, 12, 8, 
+            8, 6, 4, 10, 
+            4, 4};
 
     Category.POTION.classes = new Class<?>[]{
             PotionOfHealing.class,
@@ -573,7 +573,7 @@ public class Generator {
 
   //used to store information on which artifacts have been spawned.
   public static void storeInBundle(Bundle bundle) {
-    bundle.put(ARTIFACTS, spawnedArtifacts.toArray(new 
+    bundle.put(ARTIFACTS, spawnedArtifacts.toArray(new
             String[spawnedArtifacts.size()]));
   }
 

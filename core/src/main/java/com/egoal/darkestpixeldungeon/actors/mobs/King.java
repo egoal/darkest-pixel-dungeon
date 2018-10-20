@@ -24,6 +24,8 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
@@ -70,6 +72,7 @@ public class King extends Mob {
     properties.add(Property.UNDEAD);
 
     addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.POISON, 1.2f);
   }
 
   private boolean nextPedestal = true;
@@ -205,7 +208,7 @@ public class King extends Mob {
     PathFinder.buildDistanceMap(pos, passable, undeadsToSummon);
     PathFinder.distance[pos] = Integer.MAX_VALUE;
     int dist = 1;
-
+    
     undeadLabel:
     for (int i = 0; i < undeadsToSummon; i++) {
       do {
@@ -215,6 +218,9 @@ public class King extends Mob {
             Undead undead = new Undead();
             undead.pos = j;
             GameScene.add(undead);
+            if(buff(LifeLink.class)==null){
+              Buff.prolong(this, LifeLink.class, 10f).linker = undead.id();
+            }
 
             ScrollOfTeleportation.appear(undead, j);
             new Flare(3, 32).color(0x000000, false).show(undead.sprite, 2f);
@@ -250,6 +256,7 @@ public class King extends Mob {
   static {
     IMMUNITIES.add(Paralysis.class);
     IMMUNITIES.add(Vertigo.class);
+    IMMUNITIES.add(Corruption.class);
   }
 
   @Override

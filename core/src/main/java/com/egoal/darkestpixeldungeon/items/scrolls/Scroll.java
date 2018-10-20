@@ -55,12 +55,14 @@ public abstract class Scroll extends Item {
           ScrollOfRage.class,
           ScrollOfTerror.class,
           ScrollOfLullaby.class,
-          ScrollOfMagicalInfusion.class,
+          ScrollOfEnchanting.class,
           ScrollOfPsionicBlast.class,
-          ScrollOfMirrorImage.class
+          ScrollOfMirrorImage.class,
+          ScrollOfCurse.class,
+          ScrollOfLight.class,
   };
 
-  private static final HashMap<String, Integer> runes = new HashMap<String, 
+  private static final HashMap<String, Integer> runes = new HashMap<String,
           Integer>() {
     {
       put("KAUNAN", ItemSpriteSheet.SCROLL_KAUNAN);
@@ -75,6 +77,8 @@ public abstract class Scroll extends Item {
       put("BERKANAN", ItemSpriteSheet.SCROLL_BERKANAN);
       put("ODAL", ItemSpriteSheet.SCROLL_ODAL);
       put("TIWAZ", ItemSpriteSheet.SCROLL_TIWAZ);
+      put("QI", ItemSpriteSheet.SCROLL_QI);
+      put("LINGEL", ItemSpriteSheet.SCROLL_LINGEL);
     }
   };
 
@@ -91,7 +95,7 @@ public abstract class Scroll extends Item {
 
   @SuppressWarnings("unchecked")
   public static void initLabels() {
-    handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls, 
+    handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls,
             runes);
   }
 
@@ -105,7 +109,7 @@ public abstract class Scroll extends Item {
 
   @SuppressWarnings("unchecked")
   public static void restore(Bundle bundle) {
-    handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls, 
+    handler = new ItemStatusHandler<>((Class<? extends Scroll>[]) scrolls,
             runes, bundle);
   }
 

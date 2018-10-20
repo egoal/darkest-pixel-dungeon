@@ -42,7 +42,7 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfExperience;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
@@ -238,8 +238,7 @@ public class Heap implements Bundlable {
 
     for (Item item : items.toArray(new Item[0])) {
       if (item instanceof Scroll
-              && !(item instanceof ScrollOfUpgrade || item instanceof 
-              ScrollOfMagicalInfusion)) {
+              && !(item instanceof ScrollOfUpgrade)) {
         items.remove(item);
         burnt = true;
       } else if (item instanceof Dewdrop) {

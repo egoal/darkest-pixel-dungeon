@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -128,6 +129,7 @@ public class Wraith extends Mob {
   static {
     IMMUNITIES.add(Grim.class);
     IMMUNITIES.add(Terror.class);
+    IMMUNITIES.add(Corruption.class);
   }
 
   @Override

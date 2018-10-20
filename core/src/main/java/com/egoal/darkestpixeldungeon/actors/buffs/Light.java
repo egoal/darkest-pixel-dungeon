@@ -38,10 +38,7 @@ public class Light extends FlavourBuff {
   @Override
   public boolean attachTo(Char target) {
     if (super.attachTo(target)) {
-      if (Dungeon.level != null) {
-        target.viewDistance = Math.max(Dungeon.level.viewDistance, DISTANCE);
-        Dungeon.observe();
-      }
+      Dungeon.observe();
       return true;
     } else {
       return false;
@@ -50,14 +47,8 @@ public class Light extends FlavourBuff {
 
   @Override
   public void detach() {
-    target.viewDistance = Dungeon.level.viewDistance;
-    if (target instanceof Hero) {
-      if (((Hero) target).heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
-        target.viewDistance += 1;
-    }
-
-    Dungeon.observe(DISTANCE + 1);
-    super.detach();
+    super.detach();    
+    Dungeon.observe();
   }
 
   @Override

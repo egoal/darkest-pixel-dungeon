@@ -59,7 +59,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-  public static int initialDepth_ = -1;
+  public static int initialDepth_ = 9;
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -79,6 +79,7 @@ public class Dungeon {
     //all unlimited health potion sources (except guards, which are at the 
     // bottom.
     swarmHP,
+    guardHP,
     batHP,
     warlockHP,
     scorpioHP,
@@ -97,8 +98,8 @@ public class Dungeon {
     scrollBag,
     potionBag,
     wandBag,
-
-    guardHP;
+    
+    ;
 
     public int count = 0;
 
@@ -307,24 +308,13 @@ public class Dungeon {
 
     hero.pos = pos;
 
-    // initial vision
-    Light light = hero.buff(Light.class);
-    hero.viewDistance = light == null ? level.viewDistance : Math.max(Light
-            .DISTANCE, level.viewDistance);
-    hero.seeDistance = level.seeDistance;
-    // huntress perk
-    if (hero.heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) {
-      hero.viewDistance += 1;
-      hero.seeDistance += 1;
-    }
-
     observe();
     try {
       saveAll();
     } catch (IOException e) {
       DarkestPixelDungeon.reportException(e);
       /*This only catches IO errors. Yes, this means things can go wrong, and 
-			they can go wrong catastrophically.
+      they can go wrong catastrophically.
 			But when they do the user will get a nice 'report this issue' dialogue, 
 			and I can fix the bug.*/
     }
@@ -716,8 +706,9 @@ public class Dungeon {
   }
 
   public static void observe() {
-    // observe( hero.viewDistance+1 );
-    observe(hero.seeDistance + 1);
+    if (hero == null)
+      return;
+    observe(hero.seeDistance() + 1);
   }
 
   public static void observe(int dist) {
@@ -781,7 +772,7 @@ public class Dungeon {
 
   }
 
-  public static int findStep(Char ch, int from, int to, boolean pass[], 
+  public static int findStep(Char ch, int from, int to, boolean pass[],
                              boolean[] visible) {
 
     if (level.adjacent(from, to)) {
@@ -806,7 +797,7 @@ public class Dungeon {
 
   }
 
-  public static int flee(Char ch, int cur, int from, boolean pass[], 
+  public static int flee(Char ch, int cur, int from, boolean pass[],
                          boolean[] visible) {
 
     setupPassable();

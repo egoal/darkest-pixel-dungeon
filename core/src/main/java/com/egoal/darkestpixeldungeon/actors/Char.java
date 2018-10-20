@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
+import com.egoal.darkestpixeldungeon.actors.buffs.Shock;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
@@ -82,20 +83,20 @@ public abstract class Char extends Actor {
   public boolean flying = false;
   public int invisible = 0;
 
-  public int viewDistance = 8;
-  public int seeDistance = 8;
+  protected int viewDistance = 8;
+  protected int seeDistance = 8;
 
   // resistances
   public float[] resistanceMagical = new float[Damage.Element.ELEMENT_COUNT];
   public float[] resistanceNormal = new float[Damage.Element.ELEMENT_COUNT];
-  
+
   private HashSet<Buff> buffs = new HashSet<>();
 
   {
     Arrays.fill(resistanceMagical, 1f);
     Arrays.fill(resistanceNormal, 1f);
   }
-  
+
   @Override
   protected boolean act() {
     Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
@@ -135,6 +136,14 @@ public abstract class Char extends Actor {
         ((Buff) b).attachTo(this);
       }
     }
+  }
+
+  public int viewDistance() {
+    return viewDistance;
+  }
+
+  public int seeDistance() {
+    return seeDistance;
   }
 
   public boolean attack(Char enemy) {
@@ -182,7 +191,7 @@ public abstract class Char extends Actor {
         Camera.main.shake(GameMath.gate(1, shake, 5), .3f);
 
       // take!
-      int dmgtoken = enemy.takeDamage(dmg);
+      enemy.takeDamage(dmg);
 
       // buffs, dont know why this piece of code exists, 
       // maybe the mage? or the attack effect?
@@ -232,21 +241,25 @@ public abstract class Char extends Actor {
     return dmg;
   }
 
-  //todo: rework this function!
   public boolean checkHit(Damage dmg) {
-    // when from nowhere, be accurate
+    Char attacker = (Char) dmg.from;
+    Char defender = (Char) dmg.to;
+    
+    // shocked, must miss
+    if(attacker.buff(Shock.class)!=null) return false;
+
+    // must dodge, cannot hit
+    MustDodge md = buff(MustDodge.class);
+    if (md != null && md.canDodge(dmg))
+      return false;
+    
+    // when from no where, be accurate
     if (dmg.from instanceof Mob && !Dungeon.visible[((Char) dmg.from).pos])
       dmg.addFeature(Damage.Feature.ACCURATE);
 
     if (dmg.isFeatured(Damage.Feature.ACCURATE))
       return true;
-
-    MustDodge md = buff(MustDodge.class);
-    if (md != null && md.canDodge(dmg))
-      return false;
-
-    Char attacker = (Char) dmg.from;
-    Char defender = (Char) dmg.to;
+    
     float acuRoll = Random.Float(attacker.attackSkill(defender));
     float defRoll = Random.Float(defender.defenseSkill(attacker));
     if (attacker.buffs(Bless.class) != null) acuRoll *= 1.2f;
@@ -350,7 +363,7 @@ public abstract class Char extends Actor {
 
     return dmg.value;
   }
-  
+
   public void addResistances(int element, float magical, float normal) {
     for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
       if ((element & 0x01 << i) != 0) {
