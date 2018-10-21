@@ -49,6 +49,9 @@ import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.potions.*;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -147,8 +150,8 @@ public enum HeroClass {
   private static void initDebug(Hero hero) {
     hero.HP = 1000;
     hero.HT = 1000;
-    hero.STR  = 14;
-    hero.lvl  = 12;
+    hero.STR  = 18;
+    hero.lvl  = 20;
     
     new ScrollOfMagicMapping().quantity(9).identify().collect();
     new ScrollOfLight().quantity(3).identify().collect();
@@ -177,7 +180,10 @@ public enum HeroClass {
     new WandOfDisintegration().upgrade(2).identify().collect();
     
     new HandOfTheElder().identify().collect();
-    
+    new RingOfEvasion().identify().collect();
+    new RingOfForce().identify().collect();
+    new RingOfForce().identify().collect();
+    new RingOfAccuracy().identify().collect();
   }
 
   public Badges.Badge masteryBadge() {

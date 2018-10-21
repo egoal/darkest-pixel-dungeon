@@ -280,7 +280,7 @@ public class UrnOfShadow extends Artifact {
     private void opSoulMark(final Char target) {
       urnOfShadow.consume(COST_SOUL_MARK);
 
-      curUser.sprite.attack(target.pos);
+      curUser.sprite.zap(target.pos);
       curUser.spend(TIME_TO_CAST);
       curUser.busy();
 
@@ -320,7 +320,7 @@ public class UrnOfShadow extends Artifact {
       urnOfShadow.consume((int) Math.ceil(COST_DEMENTAGE * Math.pow(.9, level
               ())));
 
-      curUser.sprite.attack(target.pos);
+      curUser.sprite.zap(target.pos);
       curUser.spend(TIME_TO_CAST);
       curUser.busy();
 

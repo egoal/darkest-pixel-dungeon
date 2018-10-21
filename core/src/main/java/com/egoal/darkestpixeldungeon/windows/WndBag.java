@@ -21,12 +21,14 @@
 package com.egoal.darkestpixeldungeon.windows;
 
 import android.graphics.RectF;
+
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.food.Food;
+import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.plants.Plant;
@@ -73,6 +75,7 @@ public class WndBag extends WndTabbed {
     FOOD,
     POTION,
     SCROLL,
+    RING,
     EQUIPMENT
   }
 
@@ -117,7 +120,7 @@ public class WndBag extends WndTabbed {
     int slotsWidth = SLOT_SIZE * nCols + SLOT_MARGIN * (nCols - 1);
     int slotsHeight = SLOT_SIZE * nRows + SLOT_MARGIN * (nRows - 1);
 
-    RenderedText txtTitle = PixelScene.renderText(title != null ? title : 
+    RenderedText txtTitle = PixelScene.renderText(title != null ? title :
             Messages.titleCase(bag.name()), 9);
     txtTitle.hardlight(TITLE_COLOR);
     txtTitle.x = (int) (slotsWidth - txtTitle.width()) / 2;
@@ -156,13 +159,13 @@ public class WndBag extends WndTabbed {
 
     } else {
 
-      return new WndBag(Dungeon.hero.belongings.backpack, listener, mode, 
+      return new WndBag(Dungeon.hero.belongings.backpack, listener, mode,
               title);
 
     }
   }
 
-  public static WndBag getBag(Class<? extends Bag> bagClass, Listener 
+  public static WndBag getBag(Class<? extends Bag> bagClass, Listener
           listener, Mode mode, String title) {
     Bag bag = Dungeon.hero.belongings.getItem(bagClass);
     return bag != null ?
@@ -364,7 +367,7 @@ public class WndBag extends WndTabbed {
       super.item(item);
       if (item != null) {
 
-        bg.texture(TextureCache.createSolid(item.isEquipped(Dungeon.hero) ? 
+        bg.texture(TextureCache.createSolid(item.isEquipped(Dungeon.hero) ?
                 EQUIPPED : NORMAL));
         if (item.cursed && item.cursedKnown) {
           bg.ra = +0.3f;
@@ -382,15 +385,15 @@ public class WndBag extends WndTabbed {
                           .isEquipped(Dungeon.hero) || !item.cursed) ||
                           mode == Mode.UPGRADEABLE && item.isUpgradable() ||
                           mode == Mode.UNIDENTIFED && !item.isIdentified() ||
-                          mode == Mode.UNIDED_OR_CURSED && ((item instanceof 
-                                  EquipableItem || item instanceof Wand) && 
+                          mode == Mode.UNIDED_OR_CURSED && ((item instanceof
+                                  EquipableItem || item instanceof Wand) &&
                                   (!item.isIdentified() || item.cursed)) ||
-                          mode == Mode.QUICKSLOT && (item.defaultAction != 
+                          mode == Mode.QUICKSLOT && (item.defaultAction !=
                                   null) ||
                           mode == Mode.WEAPON && (item instanceof MeleeWeapon
                                   || item instanceof Boomerang) ||
                           mode == Mode.ARMOR && (item instanceof Armor) ||
-                          mode == Mode.ENCHANTABLE && (item instanceof 
+                          mode == Mode.ENCHANTABLE && (item instanceof
                                   MeleeWeapon || item instanceof Boomerang ||
                                   item instanceof Armor) ||
                           mode == Mode.WAND && (item instanceof Wand) ||
@@ -398,8 +401,9 @@ public class WndBag extends WndTabbed {
                           mode == Mode.FOOD && (item instanceof Food) ||
                           mode == Mode.POTION && (item instanceof Potion) ||
                           mode == Mode.SCROLL && (item instanceof Scroll) ||
-                          mode == Mode.EQUIPMENT && (item instanceof 
+                          mode == Mode.EQUIPMENT && (item instanceof
                                   EquipableItem) ||
+                          mode == Mode.RING && (item instanceof Ring) ||
                           mode == Mode.ALL
           );
           //extra logic for cursed weapons or armor

@@ -1,5 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 /**
@@ -23,5 +25,20 @@ public class LifeLink extends FlavourBuff {
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
     linker = bundle.getInt(LINKER);
+  }
+
+  @Override
+  public int icon() {
+    return BuffIndicator.LIFE_LINK;
+  }
+
+  @Override
+  public String toString() {
+    return Messages.get(this, "name");
+  }
+
+  @Override
+  public String desc() {
+    return Messages.get(this, "desc", dispTurns());
   }
 }

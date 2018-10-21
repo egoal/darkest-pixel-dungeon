@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
+import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shock;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -244,26 +245,29 @@ public abstract class Char extends Actor {
   public boolean checkHit(Damage dmg) {
     Char attacker = (Char) dmg.from;
     Char defender = (Char) dmg.to;
-    
-    // shocked, must miss
-    if(attacker.buff(Shock.class)!=null) return false;
 
+    // shocked, must miss
+    if (attacker.buff(Shock.class) != null) return false;
+    
     // must dodge, cannot hit
-    MustDodge md = buff(MustDodge.class);
+    MustDodge md = defender.buff(MustDodge.class);
     if (md != null && md.canDodge(dmg))
       return false;
-    
+
     // when from no where, be accurate
     if (dmg.from instanceof Mob && !Dungeon.visible[((Char) dmg.from).pos])
       dmg.addFeature(Damage.Feature.ACCURATE);
 
     if (dmg.isFeatured(Damage.Feature.ACCURATE))
       return true;
-    
+
     float acuRoll = Random.Float(attacker.attackSkill(defender));
     float defRoll = Random.Float(defender.defenseSkill(attacker));
+    
+    // buff fix
     if (attacker.buffs(Bless.class) != null) acuRoll *= 1.2f;
     if (defender.buffs(Bless.class) != null) defRoll *= 1.2f;
+    if (defender.buffs(Roots.class) != null) defRoll *= .5f;
 
     float bonus = 1.f;
     if (dmg.type == Damage.Type.MAGICAL || dmg.type == Damage.Type.MENTAL)
