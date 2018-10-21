@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.WindParticle;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -34,6 +35,8 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.microedition.khronos.opengles.GL;
 
 
 /**
@@ -160,6 +163,11 @@ public class DPDShopKeeper extends NPC {
       return;
     }
     GameScene.show(new WndSellItems(this));
+  }
+
+  protected void onPlayerStealFailed(Hero hero) {
+    yell(Messages.get(this, "thief"));
+    flee();
   }
 
   protected WndBag sellAny() {
@@ -338,8 +346,8 @@ public class DPDShopKeeper extends NPC {
       final int price = buyPrice(item);
 
       boolean canBuy = price <= Dungeon.gold;
-      add(new WndConfirmBuy(item, Messages.get(DPDShopKeeper.class, "buy"),
-              canBuy) {
+      add(new WndConfirmBuy(item, price, Messages.get(DPDShopKeeper.class,
+              "buy"), canBuy) {
         @Override
         protected void onConfirmed() {
           Hero hero = Dungeon.hero;
@@ -359,7 +367,33 @@ public class DPDShopKeeper extends NPC {
 
           hide();
         }
+
+        @Override
+        protected void onConfirmedSteal(boolean succeed) {
+          hide();
+
+          if (succeed) {
+            sk_.removeItemFromSell(item);
+            if (!item.doPickUp(Dungeon.hero))
+              Dungeon.level.drop(item, Dungeon.hero.pos).sprite.drop();
+
+            // update button states
+            for (ItemButton ib : itemButtons_)
+              if (ib.item() == item) {
+                ib.enable(false);
+                break;
+              }
+            updateButtons();
+          } else {
+            closeThis();
+            sk_.onPlayerStealFailed(Dungeon.hero);
+          }
+        }
       });
+    }
+
+    private void closeThis() {
+      hide();
     }
 
     private int buyPrice(Item item) {
@@ -421,7 +455,8 @@ public class DPDShopKeeper extends NPC {
       private static final int WIDTH = 120;
       private static final int BTN_HEIGHT = 16;
 
-      public WndConfirmBuy(Item item, String btnText, boolean canbuy) {
+      public WndConfirmBuy(Item item, final int price, String btnText, boolean
+              canbuy) {
         super();
 
         float pos = createDescription(item);
@@ -436,7 +471,27 @@ public class DPDShopKeeper extends NPC {
         add(btnBuy);
         btnBuy.enable(canbuy);
 
-        resize(WIDTH, (int) btnBuy.bottom());
+        float btm = btnBuy.bottom();
+
+        final MasterThievesArmband.Thievery t = Dungeon.hero.buff
+                (MasterThievesArmband.Thievery.class);
+        if (t != null) {
+          final float chance = t.stealChance(price);
+          RedButton btnSteal = new RedButton(Messages.get(DPDShopKeeper
+                          .class, "steal",
+                  Math.min(100, (int) (chance * 100)))) {
+            @Override
+            protected void onClick() {
+              onConfirmedSteal(t.steal(price));
+            }
+          };
+          btnSteal.setRect(0, btnBuy.bottom() + GAP, WIDTH, BTN_HEIGHT);
+          add(btnSteal);
+
+          btm = btnSteal.bottom();
+        }
+
+        resize(WIDTH, (int) btm);
       }
 
       private float createDescription(Item item) {
@@ -456,6 +511,9 @@ public class DPDShopKeeper extends NPC {
       }
 
       protected void onConfirmed() {
+      }
+
+      protected void onConfirmedSteal(boolean succeed) {
       }
     }
   }

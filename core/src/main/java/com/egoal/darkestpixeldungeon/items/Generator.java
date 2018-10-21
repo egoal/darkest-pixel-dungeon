@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items;
 
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
+import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
@@ -223,7 +224,7 @@ public class Generator {
           HashMap<Generator.Category, Float>();
 
   private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{0, 0, 0,
-          1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1};
+          1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0};
 
   static {
 
@@ -385,6 +386,7 @@ public class Generator {
             EtherealChains.class,
             RiemannianManifoldShield.class,
             GoldPlatedStatue.class,
+            HandOfTheElder.class,
     };
     Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 

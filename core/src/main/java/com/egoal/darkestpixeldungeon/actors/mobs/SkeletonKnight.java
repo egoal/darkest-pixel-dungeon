@@ -5,6 +5,8 @@ import android.database.DatabaseUtils;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.food.Humanity;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -99,6 +101,15 @@ public class SkeletonKnight extends Mob {
     return super.attack(enemy);
   }
 
+  @Override
+  protected Item createLoot() {
+    if(!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float()<0.5f) {
+      Dungeon.limitedDrops.handOfElder.drop();
+      return new HandOfTheElder().random();
+    }
+    return super.createLoot();
+  }
+  
   private static final String COOLDOWN_COMBO = "cooldown_combo";
 
   @Override

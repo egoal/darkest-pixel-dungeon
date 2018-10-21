@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
+import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.books.Book;
@@ -184,6 +185,8 @@ public enum HeroClass {
     new RingOfForce().identify().collect();
     new RingOfForce().identify().collect();
     new RingOfAccuracy().identify().collect();
+    
+    new MasterThievesArmband().identify().collect();
   }
 
   public Badges.Badge masteryBadge() {

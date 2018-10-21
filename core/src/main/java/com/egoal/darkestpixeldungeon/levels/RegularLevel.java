@@ -515,7 +515,7 @@ public abstract class RegularLevel extends Level {
       for (int y = r.top; y < r.bottom + 1; ++y) {
         int pos = width * y + x;
         // NEIGHBOUR 4
-        if (map[pos] == Terrain.WALL) {
+        if (map[pos] == Terrain.WALL && findMob(pos)==null) {
           for (int dp : PathFinder.NEIGHBOURS4) {
             int np = pos + dp;
             if (np >= 0 && np < length && r.inside(cellToPoint(np)) &&

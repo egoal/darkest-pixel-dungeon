@@ -9,9 +9,12 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DisheartenedBuddy;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Minstrel;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Questioner;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Scholar;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.*;
 import com.watabou.utils.Random;
@@ -354,8 +357,22 @@ public class VillageLevel extends RegularLevel {
       do{
         q.pos = pointToCell(roomExit.random());
       }while(findMob(q.pos)!=null);
-      map[q.pos] = Terrain.WALL;
+      map[q.pos] = Terrain.SECRET_DOOR;
       mobs.add(q);
+
+      PotionSeller ps = new PotionSeller();
+      ps.initSellItems();
+      do{
+        ps.pos = pointToCell(roomExit.random());
+      }while(findMob(ps.pos)!=null);
+      mobs.add(ps);
+
+      ScrollSeller ss = new ScrollSeller();
+      ss.initSellItems();
+      do{
+        ss.pos = pointToCell(roomExit.random());
+      }while(findMob(ss.pos)!=null);
+      mobs.add(ss);
       
       drop(Generator.random(Generator.Category.BOOK), entrance);
     }

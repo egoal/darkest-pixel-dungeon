@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.SkeletonSprite;
@@ -95,15 +96,22 @@ public class Skeleton extends Mob {
 
   @Override
   protected Item createLoot() {
-    Item loot;
-    do {
-      loot = Generator.random(Generator.Category.WEAPON);
-      //50% chance of re-rolling tier 4 or 5 items
+    if(!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float()<0.1f) {
+      Dungeon.limitedDrops.handOfElder.drop();
+      return new HandOfTheElder().random();
     }
-    while (loot instanceof MeleeWeapon && ((MeleeWeapon) loot).tier >= 4 && 
-            Random.Int(2) == 0);
-    loot.level(0);
-    return loot;
+    else{
+      Item loot;
+      do {
+        loot = Generator.random(Generator.Category.WEAPON);
+        //50% chance of re-rolling tier 4 or 5 items
+      }
+      while (loot instanceof MeleeWeapon && ((MeleeWeapon) loot).tier >= 4 &&
+              Random.Int(2) == 0);
+      loot.level(0);
+      
+      return loot;
+    }
   }
 
   @Override

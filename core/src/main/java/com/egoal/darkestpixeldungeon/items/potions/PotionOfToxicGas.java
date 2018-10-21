@@ -59,7 +59,7 @@ public class PotionOfToxicGas extends Potion {
     } else
       GameScene.add(Blob.seed(cell, 1000, ToxicGas.class));
   }
-
+  
   private void reinforced_shatter(int cell) {
     for (int offset : PathFinder.NEIGHBOURS9) {
       Mob mob = Dungeon.level.findMob(cell + offset);

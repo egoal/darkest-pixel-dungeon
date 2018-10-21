@@ -59,7 +59,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-  public static int initialDepth_ = 19;
+  public static int initialDepth_ = -1;
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -91,6 +91,7 @@ public class Dungeon {
     armband,
     chaliceOfBlood, // only the statuary drop this now
     demonicSkull,
+    handOfElder,
 
     //containers
     dewVial,
