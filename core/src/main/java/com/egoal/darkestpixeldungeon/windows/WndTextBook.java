@@ -65,7 +65,7 @@ public class WndTextBook extends Window {
       }
     });
 
-    resize(WIDTH + MARGIN * 2, HEIGHT);
+    resize(WIDTH, HEIGHT);
   }
 
   private void updatePage() {

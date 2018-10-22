@@ -286,4 +286,5 @@ public class ItemSpriteSheet {
   public static final int DPD_WINE = FOOD + 9;
 
   public static final int DPD_BOOKS = xy(1, 23);
+  public static final int DPD_NOTES = DPD_BOOKS+1;
 }

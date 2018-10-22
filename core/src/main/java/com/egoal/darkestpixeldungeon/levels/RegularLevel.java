@@ -669,7 +669,7 @@ public abstract class RegularLevel extends Level {
         return 0;
       default:
         //fixme: 32**2=1024 while 36**2=1296, but this is really bad.
-        return length > 1200 ? (3 + Dungeon.depth % 5 + Random.Int(8)) :
+        return length > 1200 ? (3 + Dungeon.depth % 5 + Random.Int(6)) :
                 (2 + Dungeon.depth % 5 + Random.Int(6));
     }
   }

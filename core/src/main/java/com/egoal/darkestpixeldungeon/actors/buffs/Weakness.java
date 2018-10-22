@@ -46,14 +46,13 @@ public class Weakness extends FlavourBuff {
 
   @Override
   public boolean attachTo(Char target) {
-    if (super.attachTo(target)) {
-      Hero hero = (Hero) target;
-      hero.weakened = true;
-
-      return true;
-    } else {
-      return false;
+    boolean attached = super.attachTo(target);
+    
+    if(attached && target instanceof Hero){
+      ((Hero) target).weakened = true;
     }
+    
+    return attached;
   }
 
   @Override

@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes;
 import com.egoal.darkestpixeldungeon.items.keys.IronKey;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -100,12 +101,6 @@ public class DPDPrisonBossLevel extends Level {
 
       Painter.fill(this, rmStart, 1, Terrain.EMPTY);
       map[pos(rmStart.centerFixed().x, rmStart.bottom)] = Terrain.DOOR;
-
-      int sp;
-      do {
-        sp = pointToCell(rmStart.random());
-      } while (map[sp] != Terrain.EMPTY);
-      map[sp] = Terrain.SIGN;
     }
 
     // link start-> hall
@@ -446,6 +441,10 @@ public class DPDPrisonBossLevel extends Level {
     // give a torch, torches is necessary to fight tengu
     int torchpos  = pointToCell(Random.element(rmOnTheLeft).random());
     drop(new Torch(), torchpos);
+    
+    // warden's notes
+    int notespos = pointToCell(Random.element(rmOnTheLeft).random());
+    drop(new WardenSmithNotes(), notespos);
   }
 
   @Override

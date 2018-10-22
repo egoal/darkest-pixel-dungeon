@@ -180,6 +180,7 @@ public enum HeroClass {
     new WandOfCorruption().upgrade(10).identify().collect();
     new WandOfDisintegration().upgrade(2).identify().collect();
     
+    // rings
     new HandOfTheElder().identify().collect();
     new RingOfEvasion().identify().collect();
     new RingOfForce().identify().collect();
