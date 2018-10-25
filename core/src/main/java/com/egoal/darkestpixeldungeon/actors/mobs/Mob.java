@@ -192,7 +192,7 @@ public abstract class Mob extends Char {
       newEnemy = true;
       //We are corrupted, and current enemy is either the hero or another 
       // corrupted character.
-    else if (buff(Corruption.class) != null && (enemy == Dungeon.hero || 
+    else if (buff(Corruption.class) != null && (enemy == Dungeon.hero ||
             enemy.buff(Corruption.class) != null))
       newEnemy = true;
       //We are amoked and current enemy is the hero
@@ -320,7 +320,7 @@ public abstract class Mob extends Char {
         //if the new target is adjacent to the end of the path, adjust for that
         //rather than scrapping the whole path. Unless the path is very long,
         //in which case re-checking will likely result in a much better path
-        if (Dungeon.level.adjacent(target, path.getLast()) && path.size() < 
+        if (Dungeon.level.adjacent(target, path.getLast()) && path.size() <
                 viewDistance) {
           int last = path.removeLast();
 
@@ -546,7 +546,9 @@ public abstract class Mob extends Char {
   }
 
   public int exp() {
-    return Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+    int dlvl = Dungeon.hero.lvl - maxLvl;
+    if (dlvl < 0) return EXP;
+    return EXP / (2 + dlvl);
   }
 
   @Override
@@ -675,7 +677,7 @@ public abstract class Mob extends Char {
 
     @Override
     public boolean act(boolean enemyInFOV, boolean justAlerted) {
-      if (enemyInFOV && (justAlerted || Random.Int(distance(enemy) / 2 + 
+      if (enemyInFOV && (justAlerted || Random.Int(distance(enemy) / 2 +
               enemy.stealth()) == 0)) {
 
         enemySeen = true;
@@ -754,7 +756,8 @@ public abstract class Mob extends Char {
     public boolean act(boolean enemyInFOV, boolean justAlerted) {
       enemySeen = enemyInFOV;
       //loses target when 0-dist rolls a 6 or greater.
-      if (enemy == null || !enemyInFOV && 1 + Random.Int(Dungeon.level.distance(pos, target)) >= 6) {
+      if (enemy == null || !enemyInFOV && 1 + Random.Int(Dungeon.level
+              .distance(pos, target)) >= 6) {
         target = -1;
       } else {
         target = enemy.pos;

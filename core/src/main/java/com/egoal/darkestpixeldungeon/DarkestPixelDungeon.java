@@ -38,6 +38,7 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
 import javax.microedition.khronos.opengles.GL10;
+
 import java.util.Locale;
 
 public class DarkestPixelDungeon extends Game {
@@ -191,7 +192,7 @@ public class DarkestPixelDungeon extends Game {
     instance.getWindowManager().getDefaultDisplay().getMetrics(metrics);
     boolean landscape = metrics.widthPixels > metrics.heightPixels;
 
-    if (Preferences.INSTANCE.getBoolean(Preferences.KEY_LANDSCAPE, false) != 
+    if (Preferences.INSTANCE.getBoolean(Preferences.KEY_LANDSCAPE, false) !=
             landscape) {
       landscape(!landscape);
     }
@@ -249,8 +250,8 @@ public class DarkestPixelDungeon extends Game {
             Assets.SND_BEE,
             Assets.SND_DEGRADE,
             Assets.SND_MIMIC,
-            
-            Assets.SND_ASTROLABE, 
+
+            Assets.SND_ASTROLABE,
             Assets.SND_CRITICAL);
 
     if (classicFont()) {
@@ -274,7 +275,7 @@ public class DarkestPixelDungeon extends Game {
     switchNoFade(c, null);
   }
 
-  public static void switchNoFade(Class<? extends PixelScene> c, 
+  public static void switchNoFade(Class<? extends PixelScene> c,
                                   SceneChangeCallback callback) {
     PixelScene.noFade = true;
     switchScene(c, callback);
@@ -290,6 +291,15 @@ public class DarkestPixelDungeon extends Game {
 
   public static boolean debug() {
     return Preferences.INSTANCE.getBoolean(Preferences.KEY_DEBUG, false);
+  }
+
+  public static void changeListChecked(boolean value) {
+    Preferences.INSTANCE.put(Preferences.KEY_CHANGE_LIST_CHECKED, value);
+  }
+
+  public static boolean changeListChecked() {
+    return Preferences.INSTANCE.getBoolean(Preferences
+            .KEY_CHANGE_LIST_CHECKED, false);
   }
 
   public static void landscape(boolean value) {
@@ -466,7 +476,7 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static int challenges() {
-    return Preferences.INSTANCE.getInt(Preferences.KEY_CHALLENGES, 0, 0, 
+    return Preferences.INSTANCE.getInt(Preferences.KEY_CHALLENGES, 0, 0,
             Challenges.MAX_VALUE);
   }
 
@@ -499,7 +509,8 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static String toolbarMode() {
-    return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape() ? "SPLIT" : "GROUP");
+    return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape
+            () ? "SPLIT" : "GROUP");
   }
 
   public static void intro(boolean value) {
@@ -517,7 +528,7 @@ public class DarkestPixelDungeon extends Game {
   public static int version() {
     return Preferences.INSTANCE.getInt(Preferences.KEY_VERSION, 0);
   }
-	
+  
 	/*
 	 * <--- Preferences
 	 */

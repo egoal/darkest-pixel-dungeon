@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.MagicMissile;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.food.Humanity;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
@@ -33,7 +34,7 @@ public class MadMan extends Mob implements Callback {
     maxLvl = Dungeon.depth + 3;
 
     loot = new Humanity();
-    lootChance = 0.2f;
+    lootChance = 0.25f; // default chance, check create loot
 
     addResistances(Damage.Element.SHADOW, 2f);
     addResistances(Damage.Element.HOLY, .5f);
@@ -55,10 +56,10 @@ public class MadMan extends Mob implements Callback {
   }
 
   @Override
-  protected float attackDelay(){
+  protected float attackDelay() {
     return 1.25f;
   }
-  
+
   @Override
   public int attackSkill(Char target) {
     return 10 + Dungeon.depth;
@@ -121,6 +122,14 @@ public class MadMan extends Mob implements Callback {
   @Override
   public void call() {
     next();
+  }
+
+  @Override
+  protected Item createLoot() {
+    Dungeon.limitedDrops.madManHumanity.drop();
+    lootChance = 2f / (8 + Dungeon.limitedDrops.madManHumanity.count);
+
+    return super.createLoot();
   }
 
   // sprite

@@ -84,6 +84,7 @@ public class Dungeon {
     warlockHP,
     scorpioHP,
     cookingHP,
+    madManHumanity,
     //blandfruit, which can technically be an unlimited health potion source
     blandfruitSeed,
 
@@ -221,7 +222,7 @@ public class Dungeon {
         level = new PrisonLevel();
         break;
       case 10:
-        level = new DPDPrisonBossLevel(); // new PrisonBossLevel();
+        level = new DPDPrisonBossLevel(); 
         break;
       case 11:
       case 12:

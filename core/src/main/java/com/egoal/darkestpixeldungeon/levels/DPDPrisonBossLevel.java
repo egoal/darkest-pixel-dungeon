@@ -80,10 +80,10 @@ public class DPDPrisonBossLevel extends Level {
     Dungeon.observe();
   }
 
-  public int hallCenter(){
+  public int hallCenter() {
     return pointToCell(rmHall.centerFixed());
   }
-  
+
   @Override
   protected boolean build() {
     Arrays.fill(map, Terrain.WALL);
@@ -227,7 +227,7 @@ public class DPDPrisonBossLevel extends Level {
 
     // give buff
     Buff.prolong(hero, Ignorant.class, 1000);
-    
+
   }
 
   @Override
@@ -437,11 +437,11 @@ public class DPDPrisonBossLevel extends Level {
     int keypos = pointToCell(Random.element(rmOnTheLeft).random());
     IronKey ik = new IronKey(Dungeon.depth);
     drop(ik, keypos);
-    
+
     // give a torch, torches is necessary to fight tengu
-    int torchpos  = pointToCell(Random.element(rmOnTheLeft).random());
+    int torchpos = pointToCell(Random.element(rmOnTheLeft).random());
     drop(new Torch(), torchpos);
-    
+
     // warden's notes
     int notespos = pointToCell(Random.element(rmOnTheLeft).random());
     drop(new WardenSmithNotes(), notespos);
@@ -464,6 +464,10 @@ public class DPDPrisonBossLevel extends Level {
         return Messages.get(PrisonLevel.class, "empty_deco_desc");
       case Terrain.BOOKSHELF:
         return Messages.get(PrisonLevel.class, "book_self_desc");
+      case Terrain.EXIT:
+        return Messages.get(DPDPrisonBossLevel.class, "exit_desc");
+      case Terrain.LOCKED_EXIT:
+        return Messages.get(DPDPrisonBossLevel.class, "locked_exit_desc");
       default:
         return super.tileDesc(tile);
     }
@@ -471,7 +475,7 @@ public class DPDPrisonBossLevel extends Level {
 
   private static final String ENTERED = "entered";
   private static final String HALL = "hall";
-  private static final String LIGHTED  = "lighted";
+  private static final String LIGHTED = "lighted";
 
   @Override
   public void storeInBundle(Bundle bundle) {

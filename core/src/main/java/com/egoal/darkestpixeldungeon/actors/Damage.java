@@ -7,7 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
  */
 
 // data structure of Damage
-// my work truely start from here
+// my works truely start from here
 
 public class Damage {
 

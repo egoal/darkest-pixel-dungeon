@@ -48,20 +48,23 @@ public class Splash {
     emitter.burst(FACTORY, n);
   }
 
-  public static void at(PointF p, final float dir, final float cone, final 
+  public static void at(PointF p, final float dir, final float cone, final
   int color, int n) {
+    at(p, dir, cone, 1f, color, n);
+  }
 
-    if (n <= 0) {
-      return;
-    }
-
-    Emitter emitter = GameScene.emitter();
-    emitter.pos(p);
-
+  public static void at(PointF p, final float dir, final float cone,
+                        final float velocity, final int color, int n) {
+    if(n<=0) return;
+    
+    Emitter e = GameScene.emitter();
+    e.pos(p);
+    
     FACTORY.color = color;
     FACTORY.dir = dir;
     FACTORY.cone = cone;
-    emitter.burst(FACTORY, n);
+    FACTORY.velocity = velocity;
+    e.burst(FACTORY, n);
   }
 
   private static final SplashFactory FACTORY = new SplashFactory();
@@ -71,6 +74,7 @@ public class Splash {
     public int color;
     public float dir;
     public float cone;
+    public float velocity;
 
     @Override
     public void emit(Emitter emitter, int index, float x, float y) {
@@ -79,7 +83,7 @@ public class Splash {
 
       p.reset(x, y, color, 4, Random.Float(0.5f, 1.0f));
       p.speed.polar(Random.Float(dir - cone / 2, dir + cone / 2), Random
-              .Float(40, 80));
+              .Float(40, 80)).scale(velocity);
       p.acc.set(0, +100);
     }
   }

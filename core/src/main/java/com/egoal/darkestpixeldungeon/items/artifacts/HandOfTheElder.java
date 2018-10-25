@@ -75,6 +75,7 @@ public class HandOfTheElder extends Artifact {
   private static final String AC_POINT = "point";
 
   private ArrayList<Class> rings = new ArrayList<>();
+  private static final int MAX_RINGS_TO_WEAR = 5;
 
   private static final HashMap<Class<? extends Ring>,
           Class<? extends FlavourBuff>> RingsToBuffs = new HashMap<>();
@@ -94,7 +95,7 @@ public class HandOfTheElder extends Artifact {
     ArrayList<String> actions = super.actions(hero);
 
     if (isEquipped(hero)) {
-      if (level() < levelCap)
+      if (level() < levelCap && rings.size()< MAX_RINGS_TO_WEAR)
         actions.add(AC_WEAR);
       if (charge > 0)
         actions.add(AC_POINT);
@@ -129,7 +130,7 @@ public class HandOfTheElder extends Artifact {
   }
 
   private void wearRing(Ring ring) {
-    upgrade(2);
+    upgrade(ring.level()+1);
 
     if (ring.cursed) {
       cursed = true;

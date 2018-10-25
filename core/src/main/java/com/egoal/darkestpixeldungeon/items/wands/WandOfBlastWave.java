@@ -82,7 +82,7 @@ public class WandOfBlastWave extends DamageWand {
                 (Damage.Type.MAGICAL));
 
         if (ch.isAlive()) {
-          Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, 
+          Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i,
                   Ballistica.MAGIC_BOLT);
           int strength = 1 + Math.round(level() / 2f);
           throwChar(ch, trajectory, strength);
@@ -109,7 +109,7 @@ public class WandOfBlastWave extends DamageWand {
     }
   }
 
-  public static void throwChar(final Char ch, final Ballistica trajectory, 
+  public static void throwChar(final Char ch, final Ballistica trajectory,
                                int power) {
     int dist = Math.min(trajectory.dist, power);
 
@@ -138,11 +138,9 @@ public class WandOfBlastWave extends DamageWand {
         }
         ch.pos = newPos;
         if (ch.pos == trajectory.collisionPos) {
-          // ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist),
-          // this);
           ch.takeDamage(new Damage(Random.NormalIntRange((finalDist + 1) / 2,
-                  finalDist),
-                  null, ch).type(Damage.Type.MAGICAL));
+                  finalDist), Char.Nobody.create(), ch).type(Damage.Type
+                  .MAGICAL));
 
           Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange(
                   (finalDist + 1) / 2, finalDist) + 1);
@@ -160,12 +158,12 @@ public class WandOfBlastWave extends DamageWand {
     // lvl 0 - 25%
     // lvl 1 - 40%
     // lvl 2 - 50%
-    Char attacker = (Char)damage.from; 
-    Char defender = (Char)damage.to;
-    
+    Char attacker = (Char) damage.from;
+    Char defender = (Char) damage.to;
+
     if (Random.Int(level + 4) >= 3) {
       int oppositeHero = defender.pos + (defender.pos - attacker.pos);
-      Ballistica trajectory = new Ballistica(defender.pos, oppositeHero, 
+      Ballistica trajectory = new Ballistica(defender.pos, oppositeHero,
               Ballistica.MAGIC_BOLT);
       throwChar(defender, trajectory, 2);
     }
@@ -202,9 +200,9 @@ public class WandOfBlastWave extends DamageWand {
     public void reset(int pos) {
       revive();
 
-      x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE + 
+      x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE +
               (DungeonTilemap.SIZE - width) / 2;
-      y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE + 
+      y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE +
               (DungeonTilemap.SIZE - height) / 2;
 
       time = TIME_TO_FADE;

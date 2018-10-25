@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.ui;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.scenes.ChangesScene;
 import com.egoal.darkestpixeldungeon.Assets;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
@@ -30,6 +31,8 @@ import com.watabou.noosa.ui.Button;
 public class ChangesButton extends Button {
 
   protected Image image;
+  private float time = 0f;
+  private boolean blink = false;
 
   public ChangesButton() {
     super();
@@ -63,6 +66,18 @@ public class ChangesButton extends Button {
   @Override
   protected void onTouchUp() {
     image.resetColor();
+  }
+
+  public void setBlink(boolean b) {
+    blink = b;
+  }
+
+  @Override
+  public void update() {
+    super.update();
+
+    if (blink)
+      image.am = (float) Math.sin((time += 3 * Game.elapsed)) / 2f + .5f + .2f;
   }
 
   @Override

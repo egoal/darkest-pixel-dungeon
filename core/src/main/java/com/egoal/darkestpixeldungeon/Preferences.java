@@ -49,6 +49,7 @@ enum Preferences {
   public static final String KEY_VERSION = "version";
 
   public static final String KEY_DEBUG = "debug";
+  public static final String KEY_CHANGE_LIST_CHECKED = "change_list_checked";
 
   private SharedPreferences prefs;
 

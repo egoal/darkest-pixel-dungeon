@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.sprites;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.FloatingText;
 import com.egoal.darkestpixeldungeon.effects.TorchHalo;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
@@ -261,6 +262,24 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
       PointF c = center();
       int n = (int) Math.min(9 * Math.sqrt((double) damage / ch.HT), 9);
       Splash.at(c, PointF.angle(from, c), 3.1415926f / 2, blood(), n);
+    }
+  }
+  
+  public void bloodBurstA(PointF from, Damage damage){
+    if(visible){
+      boolean crit = damage.isFeatured(Damage.Feature.CRITCIAL);
+      PointF c  = center();
+      
+      int n = (int)Math.min(9*Math.sqrt((double)damage.value/ ch.HT), 9);
+      float dir = 3.1415926f / 2f;
+      float velocity = 1f;
+      
+      if(crit) {
+        n = n * 2+1;
+        dir /= 2;
+        velocity *= 2;
+      }
+      Splash.at(c, PointF.angle(from, c), dir, velocity, blood(), n);
     }
   }
 

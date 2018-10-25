@@ -21,8 +21,10 @@
 package com.egoal.darkestpixeldungeon.scenes;
 
 import android.opengl.GLES20;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.effects.BannerSprites;
 import com.egoal.darkestpixeldungeon.effects.Fireball;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -150,7 +152,7 @@ public class TitleScene extends PixelScene {
 
         int col = i / btnRows;
         int row = i % btnRows;
-        btnsMain[i].setPos((w / 2 - btnWidth) / 2 + w / 2 * col, topRegion + 
+        btnsMain[i].setPos((w / 2 - btnWidth) / 2 + w / 2 * col, topRegion +
                 2 + (btnHeight + btnGap) * row);
       }
     }
@@ -164,7 +166,7 @@ public class TitleScene extends PixelScene {
     sdpVersion.y = h - sdpVersion.height();
     add(sdpVersion);
 
-    BitmapText version = new BitmapText("version " + Game.version + "", 
+    BitmapText version = new BitmapText("version " + Game.version + "",
             pixelFont);
     version.measure();
     version.hardlight(0xCCCCCC);
@@ -172,10 +174,15 @@ public class TitleScene extends PixelScene {
     version.y = h - sdpVersion.height() - version.height();
     add(version);
 
-    Button changes = new ChangesButton();
-    changes.setPos(w - changes.width(), h - sdpVersion.height() -
-            version.height() - changes.height());
+    ChangesButton changes = new ChangesButton();
+    changes.setPos(w - changes.width() -1, h - sdpVersion.height() -
+            version.height() - changes.height() -1);
     add(changes);
+
+    changes.setBlink(
+            DarkestPixelDungeon.version() != DarkestPixelDungeon.versionCode ||
+                    !DarkestPixelDungeon.changeListChecked()
+    );
 
     // exit
     ExitButton btnExit = new ExitButton();
@@ -205,7 +212,7 @@ public class TitleScene extends PixelScene {
     public DashboardItem(String text, int index) {
       super();
 
-      image.frame(image.texture.uvRect(index * IMAGE_SIZE, 0, (index + 1) * 
+      image.frame(image.texture.uvRect(index * IMAGE_SIZE, 0, (index + 1) *
               IMAGE_SIZE, IMAGE_SIZE));
       this.label.text(text);
 

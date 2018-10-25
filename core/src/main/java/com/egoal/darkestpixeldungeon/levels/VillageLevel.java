@@ -111,7 +111,7 @@ public class VillageLevel extends RegularLevel {
       for (int i = 0; i < 1000 && rooms.size() < numRooms; ++i) {
         int w = Random.Int(4, 9);
         int h = Random.Int(4, 9);
-        int x = Random.Int(0, width - w);
+        int x = Random.Int(0, width - w - 1);
         int y = Random.Int(4, height - 3 - h);
         Room newRoom = (Room) new Room().set(new Rect(x, y, x + w, y + h));
 
@@ -319,14 +319,14 @@ public class VillageLevel extends RegularLevel {
               .pos] == Terrain.SIGN);
       mobs.add(sodan);
     }
-           
+
     // scholar
     {
       // scholar is on the right side of the map
       Scholar s = new Scholar();
       Room theRoom = (Room) new Room().set(-1, -1, -1, -1);
       for (Room rm : rooms) {
-        if (rm.right > theRoom.right && rm!=roomExit)
+        if (rm.right > theRoom.right && rm != roomExit)
           theRoom = rm;
       }
       do {
@@ -334,46 +334,46 @@ public class VillageLevel extends RegularLevel {
       } while (findMob(s.pos) != null || !passable[s.pos]);
       mobs.add(s);
     }
-    
+
     // minstrel
     {
       Minstrel m = new Minstrel();
       Room rm = null;
-      do{
+      do {
         rm = Random.element(rooms);
-      }while(rm==roomEntrance || rm==roomExit);
-      
-      do{
+      } while (rm == roomEntrance || rm == roomExit);
+
+      do {
         m.pos = pointToCell(rm.random(1));
-      }while(findMob(m.pos)!=null || !passable[m.pos]);
+      } while (findMob(m.pos) != null || !passable[m.pos]);
       map[m.pos] = Terrain.GRASS; // stand on grass...
       mobs.add(m);
     }
-    
-    
+
+
     // test 
     if (DarkestPixelDungeon.debug()) {
       Questioner q = new Questioner().hold(roomExit);
-      do{
+      do {
         q.pos = pointToCell(roomExit.random());
-      }while(findMob(q.pos)!=null);
+      } while (findMob(q.pos) != null);
       map[q.pos] = Terrain.SECRET_DOOR;
       mobs.add(q);
 
       PotionSeller ps = new PotionSeller();
       ps.initSellItems();
-      do{
+      do {
         ps.pos = pointToCell(roomExit.random());
-      }while(findMob(ps.pos)!=null);
+      } while (findMob(ps.pos) != null);
       mobs.add(ps);
 
       ScrollSeller ss = new ScrollSeller();
       ss.initSellItems();
-      do{
+      do {
         ss.pos = pointToCell(roomExit.random());
-      }while(findMob(ss.pos)!=null);
+      } while (findMob(ss.pos) != null);
       mobs.add(ss);
-      
+
       drop(Generator.random(Generator.Category.BOOK), entrance);
     }
 

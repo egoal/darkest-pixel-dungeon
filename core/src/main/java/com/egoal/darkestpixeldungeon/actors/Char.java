@@ -203,7 +203,7 @@ public abstract class Char extends Actor {
 
       // effects
       // burst blood
-      enemy.sprite.bloodBurstA(sprite.center(), dmg.value);
+      enemy.sprite.bloodBurstA(sprite.center(), dmg);
       enemy.sprite.flash();
 
 
@@ -388,7 +388,7 @@ public abstract class Char extends Actor {
       dmg.value = 0;
       return dmg;
     }
-
+    
     for (Class<?> im : immunizedBuffs())
       if (dmg.from.getClass() == im) {
         dmg.value = 0;
@@ -615,5 +615,13 @@ public abstract class Char extends Actor {
     DEMONIC,
     MACHINE,
     IMMOVABLE
+  }
+  
+  
+  // used on damage attacker, avoid null usage...
+  public static class Nobody extends Char{
+    public static Nobody create(){
+      return new Nobody();
+    }
   }
 }

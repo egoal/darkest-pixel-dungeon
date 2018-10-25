@@ -37,6 +37,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
+import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.food.Food;
@@ -53,6 +54,7 @@ import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -173,10 +175,8 @@ public enum HeroClass {
     
     (new TomeOfMastery()).identify().collect();
     (new ArmorKit()).identify().collect();
-
-    (new SeedPouch()).identify().collect();
     
-    new WandOfBlastWave().identify().collect();
+    new WandOfBlastWave().upgrade(5).identify().collect();
     new WandOfCorruption().upgrade(10).identify().collect();
     new WandOfDisintegration().upgrade(2).identify().collect();
     
@@ -186,8 +186,11 @@ public enum HeroClass {
     new RingOfForce().identify().collect();
     new RingOfForce().identify().collect();
     new RingOfAccuracy().identify().collect();
-    
-    new MasterThievesArmband().identify().collect();
+    new RingOfWealth().identify().upgrade().collect();
+
+    (new SeedPouch()).identify().collect();
+    (new PotionBandolier()).identify().collect();
+
   }
 
   public Badges.Badge masteryBadge() {

@@ -251,11 +251,11 @@ public abstract class RegularLevel extends Level {
             r.type = Type.MAGIC_WELL;
 
           } else {
-
+            
             int n = specials.size();
             // r.type = specials.get( Math.min( Random.Int( n ), Random.Int( 
             // n ) ) );
-            r.type = specials.get(Random.Int(n));
+            r.type = Type.POOL;// specials.get(Random.Int(n));
             if (r.type == Type.WEAK_FLOOR) {
               weakFloorCreated = true;
             }

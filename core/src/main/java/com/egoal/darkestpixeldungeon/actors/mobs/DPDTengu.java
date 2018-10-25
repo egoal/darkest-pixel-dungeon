@@ -365,7 +365,7 @@ public class DPDTengu extends Mob {
 
       // self
       sprite.move(pos, arr[cntphantoms]);
-      sprite.turnTo(pos, enemy.pos);
+      sprite.turnTo(pos, enemypos);
       move(arr[cntphantoms]);
 
       float jumptime = Random.Float(.01f, .03f);

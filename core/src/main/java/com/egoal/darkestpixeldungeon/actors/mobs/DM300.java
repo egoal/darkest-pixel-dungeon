@@ -238,6 +238,9 @@ public class DM300 extends Mob {
 
     sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "overload"));
     sprite.emitter().burst(Speck.factory(Speck.WOOL), 5);
+
+    GLog.w(Messages.get(this, "overload_warning"));
+    spend(1f);
   }
 
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

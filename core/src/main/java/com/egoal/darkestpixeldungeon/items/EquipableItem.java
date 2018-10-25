@@ -94,7 +94,7 @@ public abstract class EquipableItem extends Item {
     Sample.INSTANCE.play(Assets.SND_CURSED);
 
     //warning: a null is used here
-    hero.takeDamage(new Damage(Random.Int(4, 10), null, hero).type(Damage
+    hero.takeDamage(new Damage(Random.Int(4, 10), Char.Nobody.create(), hero).type(Damage
             .Type.MENTAL));
   }
 

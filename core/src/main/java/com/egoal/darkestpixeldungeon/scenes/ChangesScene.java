@@ -143,6 +143,8 @@ public class ChangesScene extends PixelScene {
     archs.setSize(Camera.main.width, Camera.main.height);
     addToBack(archs);
 
+    DarkestPixelDungeon.changeListChecked(true);
+    
     fadeIn();
   }
 
