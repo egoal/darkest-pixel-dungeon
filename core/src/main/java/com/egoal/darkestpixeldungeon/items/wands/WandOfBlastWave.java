@@ -139,7 +139,7 @@ public class WandOfBlastWave extends DamageWand {
         ch.pos = newPos;
         if (ch.pos == trajectory.collisionPos) {
           ch.takeDamage(new Damage(Random.NormalIntRange((finalDist + 1) / 2,
-                  finalDist), Char.Nobody.create(), ch).type(Damage.Type
+                  finalDist), Char.Nobody.INSTANCE, ch).type(Damage.Type
                   .MAGICAL));
 
           Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange(

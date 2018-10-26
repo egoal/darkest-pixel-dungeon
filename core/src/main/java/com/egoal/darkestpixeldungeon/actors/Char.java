@@ -248,7 +248,7 @@ public abstract class Char extends Actor {
 
     // shocked, must miss
     if (attacker.buff(Shock.class) != null) return false;
-    
+
     // must dodge, cannot hit
     MustDodge md = defender.buff(MustDodge.class);
     if (md != null && md.canDodge(dmg))
@@ -263,7 +263,7 @@ public abstract class Char extends Actor {
 
     float acuRoll = Random.Float(attacker.attackSkill(defender));
     float defRoll = Random.Float(defender.defenseSkill(attacker));
-    
+
     // buff fix
     if (attacker.buffs(Bless.class) != null) acuRoll *= 1.2f;
     if (defender.buffs(Bless.class) != null) defRoll *= 1.2f;
@@ -388,7 +388,7 @@ public abstract class Char extends Actor {
       dmg.value = 0;
       return dmg;
     }
-    
+
     for (Class<?> im : immunizedBuffs())
       if (dmg.from.getClass() == im) {
         dmg.value = 0;
@@ -616,12 +616,10 @@ public abstract class Char extends Actor {
     MACHINE,
     IMMOVABLE
   }
-  
-  
+
+
   // used on damage attacker, avoid null usage...
-  public static class Nobody extends Char{
-    public static Nobody create(){
-      return new Nobody();
-    }
+  public static class Nobody extends Char {
+    public static Nobody INSTANCE = new Nobody();
   }
 }

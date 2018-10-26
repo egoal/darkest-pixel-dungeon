@@ -165,7 +165,7 @@ public class Pressure extends Buff implements Hero.Doom {
       if (Dungeon.depth > 0) {
         // chance to increase, not in the village
         if (Random.Int(10) == 0) {
-          int val = Random.Int(1, 3 + Dungeon.depth / 5);
+          int val = Random.Int(1, 2 + Dungeon.depth / 5);
 //          MaskOfMadness.Madness mm = Dungeon.hero.buff(MaskOfMadness.Madness
 //                  .class);
 //          if (mm != null)

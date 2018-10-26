@@ -251,11 +251,11 @@ public abstract class RegularLevel extends Level {
             r.type = Type.MAGIC_WELL;
 
           } else {
-            
+
             int n = specials.size();
             // r.type = specials.get( Math.min( Random.Int( n ), Random.Int( 
             // n ) ) );
-            r.type = Type.POOL;// specials.get(Random.Int(n));
+            r.type = specials.get(Random.Int(n));
             if (r.type == Type.WEAK_FLOOR) {
               weakFloorCreated = true;
             }
@@ -365,19 +365,7 @@ public abstract class RegularLevel extends Level {
 
     for (int i = 0; i < length(); i++) {
       if (map[i] == Terrain.EMPTY) {
-
-				/*
-        if(Dungeon.depth == 1){
-					//extra check to prevent annoying inactive traps in hallways on 
-					floor 1
-					Room r = room(i);
-					if (r != null && r.type != Type.TUNNEL){
-						validCells.add(i);
-					}
-				} else
-					validCells.add(i);
-				*/
-
+        
         // add room tile
         Room r = room(i);
         if (r != null && r.type != Type.NULL) {
@@ -393,7 +381,6 @@ public abstract class RegularLevel extends Level {
     }
 
     //no more than one trap every 5 valid tiles.
-    // nTraps = Math.min(nTraps, validCells.size()/5);
     nTraps = Math.min(nTraps(), (int) (validCells.size() * 0.12f));
 
     Collections.shuffle(validCells);
@@ -515,7 +502,7 @@ public abstract class RegularLevel extends Level {
       for (int y = r.top; y < r.bottom + 1; ++y) {
         int pos = width * y + x;
         // NEIGHBOUR 4
-        if (map[pos] == Terrain.WALL && findMob(pos)==null) {
+        if (map[pos] == Terrain.WALL && findMob(pos) == null) {
           for (int dp : PathFinder.NEIGHBOURS4) {
             int np = pos + dp;
             if (np >= 0 && np < length && r.inside(cellToPoint(np)) &&
@@ -580,7 +567,7 @@ public abstract class RegularLevel extends Level {
             map[door] = Terrain.DOOR;
           } else {
             boolean secret = (Dungeon.depth < 6 ?
-                    Random.Int(14 - Dungeon.depth) : Random.Int(8)) == 0;
+                    Random.Int(16 - Dungeon.depth) : Random.Int(10)) == 0;
             map[door] = secret ? Terrain.SECRET_DOOR : Terrain.DOOR;
             if (secret) {
               secretDoors++;

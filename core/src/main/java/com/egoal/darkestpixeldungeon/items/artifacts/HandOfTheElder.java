@@ -254,7 +254,9 @@ public class HandOfTheElder extends Artifact {
 
         wearRing((Ring) item);
 
-        item.detach(hero.belongings.backpack);
+        if(item.isEquipped(hero))
+          ((Ring) item).doUnequip(hero, false);
+        item.detachAll(hero.belongings.backpack);
       }
     }
   };

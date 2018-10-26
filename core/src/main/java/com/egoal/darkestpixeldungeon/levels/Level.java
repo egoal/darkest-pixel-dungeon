@@ -272,7 +272,8 @@ public abstract class Level implements Bundlable {
           case 3:
           case 4:
             feeling = Feeling.DARK;
-            viewDistance /= 2;
+            // viewDistance /= 2;
+            // viewDistance and feeling processed in hero::viewDistance
             break;
         }
 

@@ -244,7 +244,7 @@ public class Generator {
     Category.SCROLL.probs = new float[]{30, 10, 20, 0, 
             15, 15, 12, 8, 
             8, 6, 4, 10, 
-            4, 4};
+            4, 6};
 
     Category.POTION.classes = new Class<?>[]{
             PotionOfHealing.class,

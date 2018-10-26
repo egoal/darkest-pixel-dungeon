@@ -275,9 +275,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
       float velocity = 1f;
       
       if(crit) {
-        n = n * 2+1;
+        n = 9;
         dir /= 2;
-        velocity *= 2;
+        velocity *= 1.5;
       }
       Splash.at(c, PointF.angle(from, c), dir, velocity, blood(), n);
     }
