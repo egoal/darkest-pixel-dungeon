@@ -1,15 +1,17 @@
-Darkest Pixel Dungeon
-=======================
+## Darkest Pixel Dungeon(dpd)
 
-A Roguelike RPG, with randomly generated levels, items, enemies, and traps!
+a rougelike rpg, with randomly generated levels, items, enemies, and traps.
 
-Based on the source code of Pixel Dungeon & Shattered Pixel Dungeon. 
+based on the source code of [pixel dungeon](https://github.com/watabou/pixel-dungeon) and [shattered pixel dungeon](https://github.com/00-Evan/shattered-pixel-dungeon).
 
 ---
-dpd develop details in: [dev-notes](./dev/dev-notes)
+current features & highlights:
+* pressure system.
+* battle system overhauled.
+* new items.
+* new npc, quests.
 
-source code of Shattered Pixel Dungeon
-https://github.com/00-Evan/shattered-pixel-dungeon
+develop journal (in chinese) in [dev/dev-notes](./dev/dev-notes)
 
-Source code of original Pixel Dungeon:
-https://github.com/watabou/pixel-dungeon
+---
+feel free to contact me, english& chinese is okay.
