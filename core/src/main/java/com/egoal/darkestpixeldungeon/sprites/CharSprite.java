@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.sprites;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.effects.CriticalShock;
 import com.egoal.darkestpixeldungeon.effects.FloatingText;
 import com.egoal.darkestpixeldungeon.effects.TorchHalo;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
@@ -50,6 +51,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.PosTweener;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -264,22 +266,20 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
       Splash.at(c, PointF.angle(from, c), 3.1415926f / 2, blood(), n);
     }
   }
-  
-  public void bloodBurstA(PointF from, Damage damage){
-    if(visible){
-      boolean crit = damage.isFeatured(Damage.Feature.CRITCIAL);
-      PointF c  = center();
-      
-      int n = (int)Math.min(9*Math.sqrt((double)damage.value/ ch.HT), 9);
-      float dir = 3.1415926f / 2f;
-      float velocity = 1f;
-      
-      if(crit) {
-        n = 9;
-        dir /= 2;
-        velocity *= 1.5;
-      }
-      Splash.at(c, PointF.angle(from, c), dir, velocity, blood(), n);
+
+  // critical blood burst
+  public void bloodBurstB(PointF from, int damage) {
+    if (visible) {
+      PointF c = center();
+      Splash.at(c, PointF.angle(from, c), 3.1415926f / 2, blood(), 12);
+    }
+  }
+
+  public void spriteBurst(PointF from, int damage) {
+    if (visible) {
+      float str = GameMath.clampf(
+              (float) Math.sqrt((double) damage / ch.HT) * 1.5f, 1f, 1.5f);
+      CriticalShock.show(ch, PointF.angle(from, center()), str);
     }
   }
 

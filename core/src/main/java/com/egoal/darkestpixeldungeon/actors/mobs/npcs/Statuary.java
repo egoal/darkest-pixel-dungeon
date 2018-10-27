@@ -149,7 +149,7 @@ public class Statuary extends NPC {
       return false;
 
     // add journal
-    switch (type){
+    switch (type) {
       case ANGEL:
         Journal.add(Journal.Feature.STATUARY_ANGEL);
         break;
@@ -160,7 +160,7 @@ public class Statuary extends NPC {
         Journal.add(Journal.Feature.STATUARY_MONSTER);
         break;
     }
-    
+
     GameScene.show(new WndStatuary(this));
 
     return false;
@@ -178,10 +178,10 @@ public class Statuary extends NPC {
         isActive = !answerMonster(agree, Dungeon.hero);
         break;
     }
-    
-    if(!isActive){
+
+    if (!isActive) {
       // remove journal
-      switch (type){
+      switch (type) {
         case ANGEL:
           Journal.remove(Journal.Feature.STATUARY_ANGEL);
           break;
@@ -250,7 +250,7 @@ public class Statuary extends NPC {
         if (hero.belongings.misc3 != null)
           itemToCurse.add(hero.belongings.misc3);
 
-        if(itemToCurse.size()>0) {
+        if (itemToCurse.size() > 0) {
           Item item = Random.element(itemToCurse);
           item.cursed = item.cursedKnown = true;
           if (item instanceof Weapon) {
@@ -407,11 +407,12 @@ public class Statuary extends NPC {
       Generator.Category gc = Random.Float() < .4 ? Generator.Category
               .WEAPON : Generator.Category.ARMOR;
       Item item = Generator.random(gc);
-      item.upgrade(Random.Float()<.1? 2: 1);
       if (item instanceof Armor) {
         ((Armor) item).inscribe(Armor.Glyph.randomCurse());
+        item.upgrade(Random.Float() < .1 ? 2 : 1);
       } else if (item instanceof Weapon) {
         ((Weapon) item).enchant(Weapon.Enchantment.randomCurse());
+        item.upgrade(Random.Float() < .1 ? 2 : 1);
       }
       item.cursed = true;
       Dungeon.level.drop(item, hero.pos);
