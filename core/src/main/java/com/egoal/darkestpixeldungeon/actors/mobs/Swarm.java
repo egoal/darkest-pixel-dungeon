@@ -79,8 +79,10 @@ public class Swarm extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(1, 4), this, target).type(
-            Random.Int(3)==0? Damage.Type.MENTAL: Damage.Type.NORMAL);
+    return Random.Int(3) == 0 ?
+            new Damage(Random.NormalIntRange(1, 3), this, target).type(Damage
+                    .Type.MENTAL) :
+            new Damage(Random.NormalIntRange(1, 4), this, target);
   }
 
   @Override
@@ -91,7 +93,7 @@ public class Swarm extends Mob {
       ArrayList<Integer> candidates = new ArrayList<>();
       boolean[] passable = Level.passable;
 
-      int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos 
+      int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos
               - Dungeon.level.width()};
       for (int n : neighbours) {
         if (passable[n] && Actor.findChar(n) == null) {
@@ -144,7 +146,7 @@ public class Swarm extends Mob {
   @Override
   public void die(Object cause) {
     //sets drop chance
-    lootChance = 1f / ((6 + 2 * Dungeon.limitedDrops.swarmHP.count) * 
+    lootChance = 1f / ((6 + 2 * Dungeon.limitedDrops.swarmHP.count) *
             (generation + 1));
     super.die(cause);
   }

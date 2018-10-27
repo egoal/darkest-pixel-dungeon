@@ -74,11 +74,11 @@ public class Dewdrop extends Item {
     return true;
   }
 
-  @Override
-  //max of one dew in a stack
-  public Item quantity(int value) {
-    quantity = Math.min(value, 1);
-    return this;
-  }
+//  @Override
+//  //max of one dew in a stack
+//  public Item quantity(int value) {
+//    quantity = Math.min(value, 1);
+//    return this;
+//  }
 
 }

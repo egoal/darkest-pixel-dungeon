@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Shock;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.effects.CriticalShock;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -57,6 +58,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.lang.reflect.Array;
@@ -203,9 +205,14 @@ public abstract class Char extends Actor {
 
       // effects
       // burst blood
-      enemy.sprite.bloodBurstA(sprite.center(), dmg);
-      enemy.sprite.flash();
-
+      if(dmg.isFeatured(Damage.Feature.CRITCIAL)){
+        enemy.sprite.bloodBurstB(sprite.center(), dmg.value);
+        enemy.sprite.spriteBurst(sprite.center(), dmg.value);
+        enemy.sprite.flash(); 
+      }else{
+        enemy.sprite.bloodBurstA(sprite.center(), dmg.value);        
+        enemy.sprite.flash();
+      }
 
       if (!enemy.isAlive() && visibleFight) {
         if (enemy == Dungeon.hero) {

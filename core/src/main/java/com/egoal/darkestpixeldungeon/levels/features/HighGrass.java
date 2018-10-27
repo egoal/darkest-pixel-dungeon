@@ -44,7 +44,7 @@ public class HighGrass {
 
   public static void trample(Level level, int pos, Char ch) {
 
-    if (level.map[pos] == Terrain.HIGH_GRASS_COLLECTED) {
+    if (level.map[pos] != Terrain.HIGH_GRASS) {
       // already collected,
     } else {
       int newTile = Terrain.HIGH_GRASS_COLLECTED;

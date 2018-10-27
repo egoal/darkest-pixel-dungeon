@@ -56,7 +56,7 @@ public class PotionOfHealing extends Potion {
     Buff.detach(hero, Bleeding.class);
 
     if (reinforced) {
-      hero.HP = hero.HT;
+      hero.HP = Math.min(2 * hero.HT, hero.HT + hero.HP);
 
       Buff.detach(hero, Poison.class);
       Buff.detach(hero, Cripple.class);
@@ -65,7 +65,7 @@ public class PotionOfHealing extends Potion {
 
       GLog.p(Messages.get(this, "heal"));
     } else {
-      int value = hero.HT - hero.HP;
+      int value = hero.HT;
       // directly recover some health, since buff is act later than chars
       int directRecover = value / 3;
       hero.HP = Math.min(hero.HT, hero.HP + directRecover);
@@ -94,6 +94,7 @@ public class PotionOfHealing extends Potion {
 
   @Override
   public int price() {
-    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super
+            .price();
   }
 }
