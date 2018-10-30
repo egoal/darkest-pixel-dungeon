@@ -114,7 +114,7 @@ public class Blacksmith extends NPC {
         DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
         if (pick == null) {
           tell(Messages.get(this, "lost_pick"));
-        } else if (gold == null || gold.quantity() < 15) {
+        } else if (gold == null || gold.quantity() < 12) {
           tell(Messages.get(this, "gold_2"));
         } else {
           if (pick.isEquipped(Dungeon.hero)) {

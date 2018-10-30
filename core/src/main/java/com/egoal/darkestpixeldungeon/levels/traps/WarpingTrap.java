@@ -57,7 +57,7 @@ public class WarpingTrap extends Trap {
       //each depth has 1 more weight than the previous depth.
       float[] depths = new float[Dungeon.depth - 1];
       for (int i = 1; i < Dungeon.depth; i++) depths[i - 1] = i;
-      int depth = 1 + Random.chances(depths);
+      int depth = 1 + Math.max(Random.chances(depths), Random.chances(depths));
 
       Heap heap = Dungeon.level.heaps.get(pos);
       if (heap != null) {

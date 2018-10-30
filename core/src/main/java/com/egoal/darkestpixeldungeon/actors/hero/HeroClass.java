@@ -144,6 +144,9 @@ public enum HeroClass {
     if (!Dungeon.isChallenged(Challenges.DARKNESS))
       new Torch().identify().collect();
 
+    // the seed pouch is carried.
+    (new SeedPouch()).identify().collect();
+
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
@@ -188,7 +191,6 @@ public enum HeroClass {
     new RingOfAccuracy().identify().collect();
     new RingOfWealth().identify().upgrade().collect();
 
-    (new SeedPouch()).identify().collect();
     (new PotionBandolier()).identify().collect();
 
   }

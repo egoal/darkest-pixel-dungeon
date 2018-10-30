@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import android.database.DatabaseUtils;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -187,6 +188,7 @@ public class Mimic extends Mob {
 
   static {
     IMMUNITIES.add(ScrollOfPsionicBlast.class);
+    IMMUNITIES.add(Bleeding.class);
   }
 
   @Override

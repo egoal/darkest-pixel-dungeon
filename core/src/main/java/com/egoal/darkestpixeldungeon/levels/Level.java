@@ -108,6 +108,7 @@ public abstract class Level implements Bundlable {
   protected int length;
 
   protected static final float TIME_TO_RESPAWN = 40;
+  protected static final float TIME_TO_RESPAWN_DARK = 30;
 
   public int version;
   public int[] map;
@@ -611,7 +612,7 @@ public abstract class Level implements Bundlable {
           }
         }
         spend(Dungeon.level.feeling == Feeling.DARK || Statistics
-                .amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN);
+                .amuletObtained ? TIME_TO_RESPAWN_DARK : TIME_TO_RESPAWN);
         return true;
       }
     };

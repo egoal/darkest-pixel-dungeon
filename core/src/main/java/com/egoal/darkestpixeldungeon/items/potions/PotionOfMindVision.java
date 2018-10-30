@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.potions;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
+import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -41,14 +42,17 @@ public class PotionOfMindVision extends Potion {
   @Override
   public void apply(Hero hero) {
     setKnown();
-    Buff.affect(hero, MindVision.class, MindVision.DURATION * (reinforced ? 2
-            : 1));
+    Buff.affect(hero, MindVision.class, MindVision.DURATION);
     Dungeon.observe();
 
     if (Dungeon.level.mobs.size() > 0) {
       GLog.i(Messages.get(this, "see_mobs"));
     } else {
       GLog.i(Messages.get(this, "see_none"));
+    }
+    
+    if(reinforced){
+      Buff.prolong(hero, SharpVision.class, SharpVision.DURATION);
     }
   }
 

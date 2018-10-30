@@ -84,7 +84,7 @@ public class HandOfTheElder extends Artifact {
     RingsToBuffs.put(RingOfAccuracy.class, Shock.class);
     RingsToBuffs.put(RingOfCritical.class, Weakness.class);
     RingsToBuffs.put(RingOfElements.class, Frost.class);
-    RingsToBuffs.put(RingOfEvasion.class, Paralysis.class);
+    // RingsToBuffs.put(RingOfEvasion.class, Paralysis.class);
     RingsToBuffs.put(RingOfForce.class, Vertigo.class);
     RingsToBuffs.put(RingOfHaste.class, Slow.class);
     RingsToBuffs.put(RingOfWealth.class, Blindness.class);
@@ -130,7 +130,7 @@ public class HandOfTheElder extends Artifact {
   }
 
   private void wearRing(Ring ring) {
-    upgrade(ring.level()+1);
+    upgrade(Math.max(1, ring.level()+1));
 
     if (ring.cursed) {
       cursed = true;
@@ -183,9 +183,9 @@ public class HandOfTheElder extends Artifact {
                       buff = Cripple.class;
 
                     if (buff == Vulnerable.class)
-                      Buff.append(c, Vulnerable.class, duration).ratio = 1.5f;
+                      Buff.prolong(c, Vulnerable.class, duration).ratio = 1.5f;
                     else
-                      Buff.append(c, buff, duration);
+                      Buff.prolong(c, buff, duration);
                   }
                 }
 
@@ -194,6 +194,7 @@ public class HandOfTheElder extends Artifact {
             });
 
     Sample.INSTANCE.play(Assets.SND_ASTROLABE, 1, 1, .8f);
+    updateQuickslot();
   }
 
   @Override

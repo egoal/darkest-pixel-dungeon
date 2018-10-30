@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
+import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
@@ -210,6 +211,8 @@ public class Hero extends Char {
   // view control
   @Override
   public int viewDistance(){
+    if(buff(SharpVision.class)!=null) return seeDistance();
+    
     int vd = Dungeon.level.viewDistance;
     if(Dungeon.level.feeling == Level.Feeling.DARK)
       vd /= 2;

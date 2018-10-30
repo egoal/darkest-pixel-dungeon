@@ -5,6 +5,8 @@ import android.database.DatabaseUtils;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.food.Humanity;
@@ -71,14 +73,17 @@ public class SkeletonKnight extends Mob {
     return 18;
   }
 
+  private boolean canCounter() {
+    return buff(Paralysis.class) == null;
+  }
+
   @Override
   public Damage defenseProc(Damage damage) {
     Char enemy = (Char) damage.from;
     if (damage.type == Damage.Type.MAGICAL || damage.isFeatured(Damage
-            .Feature.RANGED) ||
-            enemy == null || !Dungeon.level.adjacent(pos, enemy.pos))
+            .Feature.RANGED) || enemy == null ||
+            !Dungeon.level.adjacent(pos, enemy.pos) || !canCounter())
       return super.defenseProc(damage);
-
 
     if (Random.Float() < COUNTER) {
       sprite.showStatus(CharSprite.WARNING, Messages.get(this, "counter"));
@@ -103,13 +108,13 @@ public class SkeletonKnight extends Mob {
 
   @Override
   protected Item createLoot() {
-    if(!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float()<0.25f) {
+    if (!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float() < 0.25f) {
       Dungeon.limitedDrops.handOfElder.drop();
       return new HandOfTheElder().random();
     }
     return super.createLoot();
   }
-  
+
   private static final String COOLDOWN_COMBO = "cooldown_combo";
 
   @Override
