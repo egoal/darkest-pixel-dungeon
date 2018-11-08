@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -38,6 +39,8 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ThiefSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import java.util.HashSet;
 
 public class Thief extends Mob {
 
@@ -181,6 +184,13 @@ public class Thief extends Mob {
     return desc;
   }
 
+  private static final HashSet<Class<?>> IMMUS = new HashSet<>();
+
+  public HashSet<Class<?>> immunizedBuffs() {
+    IMMUS.add(Roots.class);
+    return IMMUS;
+  }
+  
   private class Fleeing extends Mob.Fleeing {
     @Override
     protected void nowhereToRun() {

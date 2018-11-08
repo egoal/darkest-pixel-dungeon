@@ -77,6 +77,7 @@ public class Skeleton extends Mob {
       if (ch != null && ch.isAlive()) {
         Damage dmg = new Damage(Random.NormalIntRange(4, 12),
                 this, ch).addElement(Damage.Element.SHADOW);
+        dmg = ch.defendDamage(dmg);
         ch.takeDamage(dmg);
         if (ch == Dungeon.hero && !ch.isAlive()) {
           heroKilled = true;

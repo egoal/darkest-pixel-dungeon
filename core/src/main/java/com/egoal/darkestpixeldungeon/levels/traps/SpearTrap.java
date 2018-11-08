@@ -62,7 +62,7 @@ public class SpearTrap extends Trap {
     Char ch = Actor.findChar(pos);
     if (ch != null && !ch.flying) {
       int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth * 2);
-      ch.takeDamage(ch.defendDamage(new Damage(Math.max(damage, 0), this, ch)));
+      ch.takeDamage(ch.defendDamage(new Damage(damage, this, ch)));
       if (!ch.isAlive() && ch == Dungeon.hero) {
         Dungeon.fail(getClass());
         GLog.n(Messages.get(this, "ondeath"));

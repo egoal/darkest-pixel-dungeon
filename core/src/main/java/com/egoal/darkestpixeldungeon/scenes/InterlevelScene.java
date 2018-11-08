@@ -175,7 +175,7 @@ public class InterlevelScene extends PixelScene {
             errorMsg = Messages.get(this, "file_not_found");
           else if (error instanceof IOException)
             errorMsg = Messages.get(this, "io_error");
-
+ 
           else
             throw new RuntimeException("fatal error occured while moving " +
                     "between floors", error);

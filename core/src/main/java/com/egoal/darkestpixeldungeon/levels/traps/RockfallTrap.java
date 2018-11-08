@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -85,5 +86,11 @@ public class RockfallTrap extends Trap {
         }
       }
     }
+    
+    for(Mob mob: Dungeon.level.mobs.toArray(new Mob[0])){
+      if(Dungeon.level.distance(mob.pos, pos)< 12)
+        mob.beckon(pos);
+    }
+    GLog.n(Messages.get(RockfallTrap.class, "roar"));
   }
 }

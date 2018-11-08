@@ -99,9 +99,7 @@ public class Dungeon {
     seedBag,
     scrollBag,
     potionBag,
-    wandBag,
-    
-    ;
+    wandBag,;
 
     public int count = 0;
 
@@ -222,7 +220,7 @@ public class Dungeon {
         level = new PrisonLevel();
         break;
       case 10:
-        level = new DPDPrisonBossLevel(); 
+        level = new DPDPrisonBossLevel();
         break;
       case 11:
       case 12:
@@ -447,7 +445,8 @@ public class Dungeon {
     }
   }
 
-  public static void saveGame(String fileName) throws IOException {
+  public static void saveGame(String fileName, String backupFileName) throws
+          IOException {
     try {
       Bundle bundle = new Bundle();
 
