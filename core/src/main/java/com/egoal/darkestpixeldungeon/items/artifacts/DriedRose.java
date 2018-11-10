@@ -307,13 +307,30 @@ public class DriedRose extends Artifact {
     }
 
     public void saySpawned() {
-      if (Messages.lang() != Languages.ENGLISH)
-        return; //don't say anything if not on english
-      int i = (Dungeon.depth - 1) / 5;
-      if (chooseEnemy() == null)
-        yell(Random.element(VOICE_AMBIENT[i]));
-      else
-        yell(Random.element(VOICE_ENEMIES[i][Dungeon.bossLevel() ? 1 : 0]));
+      if (Messages.lang() != Languages.ENGLISH) {
+        int i = (Dungeon.depth - 1) / 5;
+        if (chooseEnemy() == null)
+          yell(Random.element(VOICE_AMBIENT[i]));
+        else
+          yell(Random.element(VOICE_ENEMIES[i][Dungeon.bossLevel() ? 1 : 0]));
+      } else {
+        // now i add chinese support
+        int i = (Dungeon.depth - 1) / 5;
+        if (chooseEnemy() == null) {
+          if (i == 5)
+            yell(Messages.get(this, "voice_ambient_5_0"));
+          else
+            yell(Messages.get(this, Messages.format("voice_ambient_%d_%d", i,
+                    Random.Int(3))));
+        } else {
+          if (i == 5)
+            yell(Messages.get(this, "voice_enemies_5_0"));
+          else
+            yell(Messages.get(this, Messages.format(Dungeon.bossLevel() ? 
+                    "voice_bosses_%d_%d" : "voice_enemies_%d_%d", i, Random
+                    .Int(3))));
+        }
+      }
       Sample.INSTANCE.play(Assets.SND_GHOST);
     }
 
@@ -343,8 +360,6 @@ public class DriedRose extends Artifact {
 
     @Override
     protected boolean act() {
-      if (Random.Int(10) == 0)
-        takeDamage(new Damage(1, this, this).addFeature(Damage.Feature.PURE));
       if (!isAlive())
         return true;
       if (!Dungeon.hero.isAlive()) {
@@ -546,7 +561,8 @@ public class DriedRose extends Artifact {
             {
                     "What the heck is that thing?...",
                     "This place is terrifying...",
-                    "What were the dwarves thinking, toying with power like this?..."
+                    "What were the dwarves thinking, toying with power like " +
+                            "this?..."
             }, {
             "Oh.... this doesn't look good...",
             "So that's what a god looks like?...",
@@ -554,9 +570,11 @@ public class DriedRose extends Artifact {
     }
     }, {
             {
-                    "I don't like this place... we should leave as soon as we can..."
+                    "I don't like this place... we should leave as soon as we" +
+                            " can..."
             }, {
-            "Hello source viewer, I'm writing this here as this line should never trigger. Have a nice day!"
+            "Hello source viewer, I'm writing this here as this line should " +
+                    "never trigger. Have a nice day!"
     }
     }
     };

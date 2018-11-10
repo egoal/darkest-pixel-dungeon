@@ -360,7 +360,7 @@ public abstract class Char extends Actor {
     if (buff(Ignorant.class) == null) {
       if (dmg.value > 0 || dmg.from instanceof Char) {
         String number = Integer.toString(dmg.value);
-        int color = HP > HT / 2 ? CharSprite.WARNING : CharSprite.NEGATIVE;
+        int color = HP > HT / 4 ? CharSprite.WARNING : CharSprite.NEGATIVE;
 
         if (dmg.isFeatured(Damage.Feature.CRITCIAL))
           number += "!";

@@ -22,8 +22,14 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.CellSelector;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.MobSprite;
+import com.egoal.darkestpixeldungeon.ui.RedButton;
+import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.utils.GLog;
+import com.egoal.darkestpixeldungeon.windows.IconTitle;
+import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -44,16 +50,11 @@ public class Astrolabe extends Artifact {
 
     exp = 0;
     levelCap = 10;
-    // cooldown	=	0;
-
-    charge = 3;
-    partialCharge = 0;
-    chargeCap = 4;
+    cooldown = 0;
   }
 
   private static float TIME_TO_INVOKE = .5f;
-  // private static int NORMAL_COOLDOWN	=	8;
-  private static final float NORMAL_CHARGE_SPEED = 1f / 20f;
+  private static int NORMAL_COOLDOWN = 20;
 
   private static final String AC_INVOKE = "INVOKE";
 
@@ -72,10 +73,8 @@ public class Astrolabe extends Artifact {
     if (action.equals(AC_INVOKE)) {
       if (!isEquipped(hero))
         GLog.i(Messages.get(Artifact.class, "need_to_equip"));
-        // else if(cooldown>0) GLog.i(Messages.get(this, "cooldown", cooldown));
-      else if (charge <= 0) GLog.i(Messages.get(this, "no_charge"));
       else {
-        invokeMagic();
+        GameScene.show(new WndInvoke(this));
 
         updateQuickslot();
       }
@@ -84,20 +83,26 @@ public class Astrolabe extends Artifact {
 
   private boolean blockNextNegative = false;
   private boolean nextNegativeIsImprison = false;
-  private float chargeSpeed = NORMAL_CHARGE_SPEED;
+
+  Invoker cachedInvoker_1 = null;
+  Invoker cachedInvoker_2 = null;
 
   // invoke logic
   private void invokeMagic() {
-    --charge;
+    if (cooldown > 0) {
+      GLog.i(Messages.get(this, "cooldown", cooldown));
+      return;
+    }
+
+    cooldown = NORMAL_COOLDOWN;
     Sample.INSTANCE.play(Assets.SND_ASTROLABE);
 
-    boolean invokePositive = Random.Float() < (cursed ? .5f : .85f);
+    boolean invokePositive = Random.Float() < (cursed ? .5f : .75f);
 
     if (!invokePositive && blockNextNegative) {
       blockNextNegative = false;
-      // cooldown	=	NORMAL_COOLDOWN;
 
-      curUser.sprite.showStatus(0x420000, Messages.get(Invoker.class, 
+      curUser.sprite.showStatus(0x420000, Messages.get(Invoker.class,
               "extremely_lucky_block"));
       return;
     }
@@ -107,13 +112,39 @@ public class Astrolabe extends Artifact {
       ivk = new imprison();
     } else {
       ivk = invokePositive ? randomPositiveInvoke() : randomNegativeInvoke();
-
     }
 
-    final int color = invokePositive ? 0xCC5252 : 0x000026;
+    curUser.sprite.showStatus(ivk.color(), ivk.status());
 
-    curUser.sprite.showStatus(color, ivk.status());
-    ivk.invoke(curUser, this);
+    if (ivk.positive) {
+      // positive invoker will cached
+      if (cachedInvoker_1 == null)
+        cachedInvoker_1 = ivk;
+      else if (cachedInvoker_2 == null)
+        cachedInvoker_2 = ivk;
+      else {
+        // replace
+        cachedInvoker_1 = cachedInvoker_2;
+        cachedInvoker_2 = ivk;
+      }
+    } else {
+      ivk.invoke(curUser, this);
+    }
+  }
+
+  //fixme: bad parameter, index should be 1 or 2, bad logical 
+  private void invoke(int index) {
+    if (index == 1 && cachedInvoker_1 != null) {
+      cachedInvoker_1.invoke(curUser, this);
+
+      cachedInvoker_1 = cachedInvoker_2;
+      cachedInvoker_2 = null;
+    } else if (index == 2 && cachedInvoker_2 != null) {
+      cachedInvoker_2.invoke(curUser, this);
+      cachedInvoker_2 = null;
+    }
+    
+    updateQuickslot();
   }
 
   private static Class<?>[] positiveInvokers = new Class<?>[]{
@@ -151,27 +182,44 @@ public class Astrolabe extends Artifact {
     }
   }
 
-  // private static final String COOLDOWN	=	"cooldown";
+  private static final String COOLDOWN = "cooldown";
   private static final String BLOCK_NEXT_NEGATIVE = "block_next_negative";
   private static final String NEXT_IS_IMPRISON = "next_negative_is_imprison";
-  private static final String CHARGE_SPEED = "charge_speed";
+
+  private static final String CACHED_INVOKER_1 = "cached_invoker_1";
+  private static final String CACHED_INVOKER_2 = "cached_invoker_2";
 
   @Override
   public void storeInBundle(Bundle bundle) {
     super.storeInBundle(bundle);
-    // bundle.put( COOLDOWN, cooldown );
+    bundle.put(COOLDOWN, cooldown);
     bundle.put(BLOCK_NEXT_NEGATIVE, blockNextNegative);
     bundle.put(NEXT_IS_IMPRISON, nextNegativeIsImprison);
-    bundle.put(CHARGE_SPEED, chargeSpeed);
+
+    if (cachedInvoker_1 != null)
+      bundle.put(CACHED_INVOKER_1, cachedInvoker_1.getClass());
+    if (cachedInvoker_2 != null)
+      bundle.put(CACHED_INVOKER_2, cachedInvoker_2.getClass());
   }
 
   @Override
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
-    // cooldown	=	bundle.getInt( COOLDOWN );
+    cooldown = bundle.getInt(COOLDOWN);
     blockNextNegative = bundle.getBoolean(BLOCK_NEXT_NEGATIVE);
     nextNegativeIsImprison = bundle.getBoolean(NEXT_IS_IMPRISON);
-    chargeSpeed = bundle.getFloat(CHARGE_SPEED);
+
+    try {
+      Class c = bundle.getClass(CACHED_INVOKER_1);
+      if (c != null)
+        cachedInvoker_1 = (Invoker) c.newInstance();
+
+      c = bundle.getClass(CACHED_INVOKER_2);
+      if (c != null)
+        cachedInvoker_2 = (Invoker) c.newInstance();
+
+    } catch (Exception e) {
+    } 
   }
 
   @Override
@@ -186,21 +234,8 @@ public class Astrolabe extends Artifact {
 
   public class AstrolabeRecharge extends ArtifactBuff {
     public boolean act() {
-      if (charge < chargeCap) {
-        partialCharge += chargeSpeed;
-
-        if (partialCharge >= 1) {
-          ++charge;
-          --partialCharge;
-          chargeSpeed = NORMAL_CHARGE_SPEED;
-          if (charge == chargeCap)
-            partialCharge = 0f;
-        }
-      } else {
-        partialCharge = 0f;
-      }
-
-      // --cooldown;
+      if (cooldown > 0)
+        --cooldown;
 
       updateQuickslot();
       spend(TICK);
@@ -209,24 +244,115 @@ public class Astrolabe extends Artifact {
 
   }
 
+  public class WndInvoke extends Window {
+    private static final int WIDTH = 120;
+    private static final int MARGIN = 2;
+    private static final int BTN_HEIGHT = 20;
+
+    private static final int WIDTH_HELP_BUTTON = 15;
+
+    Astrolabe astrolabe_;
+
+    public WndInvoke(Astrolabe a) {
+      astrolabe_ = a;
+
+      IconTitle ic = new IconTitle(new ItemSprite(a.image(), null),
+              Messages.get(Astrolabe.class, "select_invoker"));
+      ic.setRect(0, 0, WIDTH, 0);
+      add(ic);
+
+      float pos = ic.bottom() + MARGIN;
+
+      int index = 0;
+      pos = addInvoker(pos, WIDTH, Messages.get(Astrolabe.class, "ac_invoke")
+              , "", 0xFFFFFF, index++);
+
+      if (a.cachedInvoker_1 != null)
+        pos = addInvoker(pos, WIDTH, a.cachedInvoker_1.status(),
+                a.cachedInvoker_1.desc(), a.cachedInvoker_1.color(), index++);
+
+      if (a.cachedInvoker_2 != null)
+        pos = addInvoker(pos, WIDTH, a.cachedInvoker_2.status(),
+                a.cachedInvoker_2.desc(), a.cachedInvoker_2.color(), index++);
+
+      resize(WIDTH, (int) pos);
+    }
+
+    float addInvoker(float pos, int width, final String name, final
+    String help, int
+                             color, final int idx) {
+      RedButton btn = new RedButton(name) {
+        @Override
+        protected void onClick() {
+          hide();
+          onSelect(idx);
+        }
+      };
+      btn.textColor(color);
+
+      if (help.length() != 0) {
+        RedButton btnHelp = new RedButton("?") {
+          @Override
+          protected void onClick() {
+            GameScene.show(new WndOptions(name, help));
+          }
+        };
+        btnHelp.textColor(color);
+
+        btn.setRect(MARGIN, pos, width - MARGIN * 3 - WIDTH_HELP_BUTTON,
+                BTN_HEIGHT);
+        add(btn);
+        btnHelp.setRect(width - MARGIN - WIDTH_HELP_BUTTON, pos,
+                WIDTH_HELP_BUTTON, BTN_HEIGHT);
+        add(btnHelp);
+      } else {
+        btn.setRect(MARGIN, pos, width - MARGIN * 2, BTN_HEIGHT);
+        add(btn);
+      }
+
+      return pos + BTN_HEIGHT + MARGIN;
+    }
+
+    protected void onSelect(int index) {
+      GLog.i("selected: " + index);
+      switch (index) {
+        case 1:
+          invoke(1);
+          break;
+        case 2:
+          invoke(2);
+          break;
+        default:
+          invokeMagic();
+          break;
+      }
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
   //* invokers
   public static class Invoker {
     protected String name_ = "invoker";
     protected boolean needTarget_ = false;
-    // protected int cooldown_	=	NORMAL_COOLDOWN;
     private Hero user_ = null;
     private Astrolabe a_ = null;
-    protected float chargeSpeed_ = NORMAL_CHARGE_SPEED;
+    public boolean positive = true;
 
     public String status() {
       return Messages.get(Invoker.class, name_);
     }
 
+    public String desc() {
+      return Messages.get(Invoker.class, name_ + "_desc");
+    }
+
+    public int color() {
+      return positive ? 0xCC5252 : 0x000026;
+    }
+
     public final void invoke(Hero user, Astrolabe a) {
       user_ = user;
       a_ = a;
-      a.chargeSpeed = chargeSpeed_;
-      // a.cooldown	=	cooldown_;
       if (needTarget_) {
         GameScene.selectCell(caster);
       } else {
@@ -257,7 +383,7 @@ public class Astrolabe extends Artifact {
       @Override
       public void onSelect(Integer cell) {
         if (cell != null) {
-          final Ballistica shot = new Ballistica(curUser.pos, cell, 
+          final Ballistica shot = new Ballistica(curUser.pos, cell,
                   Ballistica.MAGIC_BOLT);
           Char c = Actor.findChar(shot.collisionPos);
 
@@ -299,7 +425,7 @@ public class Astrolabe extends Artifact {
       if (check_is_other(c)) {
         int dmg = (int) ((c.HT - c.HP) * .6f) + 1;
         //todo: add effect
-        c.takeDamage(new Damage(dmg, user, c).addFeature(Damage.Feature.PURE 
+        c.takeDamage(new Damage(dmg, user, c).addFeature(Damage.Feature.PURE
                 | Damage.Feature.ACCURATE));
       }
     }
@@ -358,13 +484,12 @@ public class Astrolabe extends Artifact {
   public static class faith extends Invoker {
     {
       name_ = "faith";
-      // cooldown_	=	NORMAL_COOLDOWN*3/5;
-      chargeSpeed_ = NORMAL_CHARGE_SPEED * 2f;
     }
 
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
       user.recoverSanity(Random.Int(1, 4));
+      a.cooldown -= NORMAL_COOLDOWN/2;
     }
   }
 
@@ -401,7 +526,7 @@ public class Astrolabe extends Artifact {
                 .MAGIC_BOLT);
         if (shot.path.size() > shot.dist + 1)
           WandOfBlastWave.throwChar(c,
-                  new Ballistica(c.pos, shot.path.get(shot.dist + 1), 
+                  new Ballistica(c.pos, shot.path.get(shot.dist + 1),
                           Ballistica.MAGIC_BOLT), 3);
       }
     }
@@ -428,6 +553,7 @@ public class Astrolabe extends Artifact {
   public static class punish extends Invoker {
     {
       name_ = "punish";
+      positive = false;
     }
 
     @Override
@@ -440,6 +566,7 @@ public class Astrolabe extends Artifact {
   public static class vain extends Invoker {
     {
       name_ = "vain";
+      positive = false;
     }
 
     @Override
@@ -452,11 +579,13 @@ public class Astrolabe extends Artifact {
   public static class feedback extends Invoker {
     {
       name_ = "feedback";
+      positive = false;
     }
 
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
-      user.takeDamage(new Damage(Random.Int(4, 8), this, user).type(Damage.Type.MENTAL)
+      user.takeDamage(new Damage(Random.Int(4, 8), this, user).type(Damage
+              .Type.MENTAL)
               .addFeature(Damage.Feature.ACCURATE));
     }
   }
@@ -464,14 +593,13 @@ public class Astrolabe extends Artifact {
   public static class imprison extends Invoker {
     {
       name_ = "imprison";
-      // cooldown_	=	NORMAL_COOLDOWN*2;
-      chargeSpeed_ = NORMAL_CHARGE_SPEED * .6f;
+      positive = false;
     }
 
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
-      // Buff.prolong(user, Cripple.class, Cripple.DURATION/2);
       Buff.prolong(user, Roots.class, 3f);
+      a.cooldown  += NORMAL_COOLDOWN;
     }
   }
 }

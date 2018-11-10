@@ -37,6 +37,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class InterlevelScene extends PixelScene {
   private static final float TIME_TO_FADE = 0.3f;
 
   public enum Mode {
-    DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE
+    DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE, REFLUX, 
   }
 
   public static Mode mode;
@@ -102,6 +103,9 @@ public class InterlevelScene extends PixelScene {
               break;
             case CONTINUE:
               restore();
+              break;
+            case REFLUX:
+              reflux();
               break;
             case RESURRECT:
               resurrect();
@@ -175,7 +179,6 @@ public class InterlevelScene extends PixelScene {
             errorMsg = Messages.get(this, "file_not_found");
           else if (error instanceof IOException)
             errorMsg = Messages.get(this, "io_error");
- 
           else
             throw new RuntimeException("fatal error occured while moving " +
                     "between floors", error);
@@ -183,7 +186,10 @@ public class InterlevelScene extends PixelScene {
           add(new WndError(errorMsg) {
             public void onBackPressed() {
               super.onBackPressed();
-              Game.switchScene(StartScene.class);
+              // Game.switchScene(StartScene.class);
+              
+              InterlevelScene.mode = Mode.REFLUX;
+              Game.switchScene(InterlevelScene.class);
             }
           });
           error = null;
@@ -204,7 +210,7 @@ public class InterlevelScene extends PixelScene {
       GameLog.wipe();
     } else {
       Dungeon.hero.holdFollowers(Dungeon.level);
-      Dungeon.saveAll();
+      Dungeon.saveAll(true);
     }
 
     Level level;
@@ -221,7 +227,7 @@ public class InterlevelScene extends PixelScene {
 
     Actor.fixTime();
     Dungeon.hero.holdFollowers(Dungeon.level);
-    Dungeon.saveAll();
+    Dungeon.saveAll(true);
 
     Level level;
     if (Dungeon.depth >= Statistics.deepestFloor) {
@@ -238,7 +244,7 @@ public class InterlevelScene extends PixelScene {
     Actor.fixTime();
     Dungeon.hero.holdFollowers(Dungeon.level);
 
-    Dungeon.saveAll();
+    Dungeon.saveAll(true);
     Dungeon.depth--;
     Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
     Dungeon.switchLevel(level, level.exit);
@@ -249,7 +255,7 @@ public class InterlevelScene extends PixelScene {
     Actor.fixTime();
     Dungeon.hero.holdFollowers(Dungeon.level);
 
-    Dungeon.saveAll();
+    Dungeon.saveAll(true);
     Dungeon.depth = returnDepth;
     Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
     Dungeon.switchLevel(level, returnPos);
@@ -272,6 +278,16 @@ public class InterlevelScene extends PixelScene {
     }
   }
 
+  private void reflux() throws IOException{
+    Actor.fixTime();
+    
+    GameLog.wipe();
+    
+    Dungeon.loadBackupGame(StartScene.curClass);
+    Level level = Dungeon.loadBackupLevel(StartScene.curClass);
+    Dungeon.switchLevel(level, Dungeon.hero.pos);
+  }
+  
   private void resurrect() throws IOException {
 
     Actor.fixTime();

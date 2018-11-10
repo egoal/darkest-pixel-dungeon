@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
@@ -146,6 +147,7 @@ public enum HeroClass {
 
     // the seed pouch is carried.
     (new SeedPouch()).identify().collect();
+    Dungeon.limitedDrops.seedBag.drop();
 
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
@@ -154,6 +156,9 @@ public enum HeroClass {
   }
 
   private static void initDebug(Hero hero) {
+    (new DriedRose()).identify().collect();
+    if(true)
+      return;
     hero.HP = 1000;
     hero.HT = 1000;
     hero.STR  = 18;
@@ -178,6 +183,7 @@ public enum HeroClass {
     
     (new TomeOfMastery()).identify().collect();
     (new ArmorKit()).identify().collect();
+    (new DriedRose()).identify().collect();
     
     new WandOfBlastWave().upgrade(5).identify().collect();
     new WandOfCorruption().upgrade(10).identify().collect();

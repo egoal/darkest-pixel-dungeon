@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon;
 
+import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
@@ -310,7 +312,8 @@ public class Dungeon {
 
     observe();
     try {
-      saveAll();
+      // saveAll();
+      saveAll(true);
     } catch (IOException e) {
       DarkestPixelDungeon.reportException(e);
       /*This only catches IO errors. Yes, this means things can go wrong, and 
@@ -430,6 +433,14 @@ public class Dungeon {
     }
   }
 
+  public static String backupGameFile(HeroClass cl) {
+    return "backup_game_" + gameFile(cl);
+  }
+
+  public static String backupLevelFile(HeroClass cl) {
+    return "backup_level_" + gameFile(cl);
+  }
+
   private static String depthFile(HeroClass cl) {
     switch (cl) {
       case WARRIOR:
@@ -445,7 +456,31 @@ public class Dungeon {
     }
   }
 
-  public static void saveGame(String fileName, String backupFileName) throws
+  public static void saveAll() throws IOException {
+    saveAll(false);
+  }
+
+  public static void saveAll(boolean doBackup) throws IOException {
+    if(doBackup)
+      Log.d("dpd", "saving with backup.");
+    
+    if (hero.isAlive()) {
+
+      Actor.fixTime();
+      saveGame(gameFile(hero.heroClass), doBackup ? backupGameFile(hero
+              .heroClass) : null);
+      saveLevel(doBackup ? backupLevelFile(hero.heroClass) : null);
+
+      GamesInProgress.set(hero.heroClass, depth, hero.lvl, challenges != 0);
+
+    } else if (WndResurrect.instance != null) {
+
+      WndResurrect.instance.hide();
+      Hero.reallyDie(WndResurrect.causeOfDeath);
+    }
+  }
+
+  private static void saveGame(String fileName, String backupFile) throws
           IOException {
     try {
       Bundle bundle = new Bundle();
@@ -509,13 +544,20 @@ public class Dungeon {
       Bundle.write(bundle, output);
       output.close();
 
+      if (backupFile != null) {
+        OutputStream os = Game.instance.openFileOutput(backupFile, Game
+                .MODE_PRIVATE);
+        Bundle.write(bundle, os);
+        os.close();
+      }
+
     } catch (IOException e) {
       GamesInProgress.setUnknown(hero.heroClass);
       DarkestPixelDungeon.reportException(e);
     }
   }
 
-  public static void saveLevel() throws IOException {
+  private static void saveLevel(String backupFile) throws IOException {
     Bundle bundle = new Bundle();
     bundle.put(LEVEL, level);
 
@@ -524,22 +566,12 @@ public class Dungeon {
                     .MODE_PRIVATE);
     Bundle.write(bundle, output);
     output.close();
-  }
 
-  public static void saveAll() throws IOException {
-    if (hero.isAlive()) {
-
-      Actor.fixTime();
-      saveGame(gameFile(hero.heroClass));
-      saveLevel();
-
-      GamesInProgress.set(hero.heroClass, depth, hero.lvl, challenges != 0);
-
-    } else if (WndResurrect.instance != null) {
-
-      WndResurrect.instance.hide();
-      Hero.reallyDie(WndResurrect.causeOfDeath);
-
+    if (backupFile != null) {
+      OutputStream os = Game.instance.openFileOutput(backupFile, Game
+              .MODE_PRIVATE);
+      Bundle.write(bundle, os);
+      os.close();
     }
   }
 
@@ -547,10 +579,10 @@ public class Dungeon {
     loadGame(gameFile(cl), true);
   }
 
-  public static void loadGame(String fileName) throws IOException {
-    loadGame(fileName, false);
+  public static void loadBackupGame(HeroClass cl) throws IOException{
+    loadGame(backupGameFile(cl), true);
   }
-
+  
   public static void loadGame(String fileName, boolean fullLoad) throws
           IOException {
 
@@ -644,17 +676,23 @@ public class Dungeon {
     }
   }
 
+  public static Level loadBackupLevel(HeroClass cl) throws IOException {
+    return loadLevelFromFile(backupLevelFile(cl));
+  }
+  
   public static Level loadLevel(HeroClass cl) throws IOException {
-
+    return loadLevelFromFile(Messages.format(depthFile(cl), depth));
+  }
+  
+  private static Level loadLevelFromFile(String filename) throws IOException{
     Dungeon.level = null;
     Actor.clear();
-
-    InputStream input = Game.instance.openFileInput(Messages.format(depthFile
-            (cl), depth));
-    Bundle bundle = Bundle.read(input);
-    input.close();
-
-    return (Level) bundle.get("level");
+    
+    InputStream is = Game.instance.openFileInput(filename);
+    Bundle bundle = Bundle.read(is);
+    is.close();
+    
+    return (Level)bundle.get("level");
   }
 
   public static void deleteGame(HeroClass cl, boolean deleteLevels) {
