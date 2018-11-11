@@ -312,8 +312,7 @@ public class Dungeon {
 
     observe();
     try {
-      // saveAll();
-      saveAll(true);
+       saveAll();
     } catch (IOException e) {
       DarkestPixelDungeon.reportException(e);
       /*This only catches IO errors. Yes, this means things can go wrong, and 

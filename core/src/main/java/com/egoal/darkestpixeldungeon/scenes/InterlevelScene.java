@@ -47,7 +47,7 @@ public class InterlevelScene extends PixelScene {
   private static final float TIME_TO_FADE = 0.3f;
 
   public enum Mode {
-    DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE, REFLUX, 
+    DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE, REFLUX,
   }
 
   public static Mode mode;
@@ -163,7 +163,7 @@ public class InterlevelScene extends PixelScene {
       case FADE_OUT:
         message.alpha(p);
 
-        if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && Dungeon.depth 
+        if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && Dungeon.depth
                 == 1)) {
           Music.INSTANCE.volume(p * (DarkestPixelDungeon.musicVol() / 10f));
         }
@@ -186,10 +186,12 @@ public class InterlevelScene extends PixelScene {
           add(new WndError(errorMsg) {
             public void onBackPressed() {
               super.onBackPressed();
-              // Game.switchScene(StartScene.class);
-              
-              InterlevelScene.mode = Mode.REFLUX;
-              Game.switchScene(InterlevelScene.class);
+              if (InterlevelScene.mode == Mode.REFLUX)
+                Game.switchScene(StartScene.class);
+              else {
+                InterlevelScene.mode = Mode.REFLUX;
+                Game.switchScene(InterlevelScene.class);
+              }
             }
           });
           error = null;
@@ -244,7 +246,7 @@ public class InterlevelScene extends PixelScene {
     Actor.fixTime();
     Dungeon.hero.holdFollowers(Dungeon.level);
 
-    Dungeon.saveAll(true);
+    Dungeon.saveAll();
     Dungeon.depth--;
     Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
     Dungeon.switchLevel(level, level.exit);
@@ -255,7 +257,7 @@ public class InterlevelScene extends PixelScene {
     Actor.fixTime();
     Dungeon.hero.holdFollowers(Dungeon.level);
 
-    Dungeon.saveAll(true);
+    Dungeon.saveAll();
     Dungeon.depth = returnDepth;
     Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
     Dungeon.switchLevel(level, returnPos);
@@ -278,16 +280,16 @@ public class InterlevelScene extends PixelScene {
     }
   }
 
-  private void reflux() throws IOException{
+  private void reflux() throws IOException {
     Actor.fixTime();
-    
+
     GameLog.wipe();
-    
+
     Dungeon.loadBackupGame(StartScene.curClass);
     Level level = Dungeon.loadBackupLevel(StartScene.curClass);
     Dungeon.switchLevel(level, Dungeon.hero.pos);
   }
-  
+
   private void resurrect() throws IOException {
 
     Actor.fixTime();

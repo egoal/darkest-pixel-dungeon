@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -294,6 +295,8 @@ public class DriedRose extends Artifact {
       ally = true;
     }
 
+    private float timeLeft_;
+
     public GhostHero() {
       super();
 
@@ -304,10 +307,33 @@ public class DriedRose extends Artifact {
     public GhostHero(int roseLevel) {
       this();
       HP = HT = 10 + roseLevel * 4;
+      timeLeft_ = 30 * roseLevel + 100;
     }
 
+    private final String TIME_LEFT = "time_left";
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+      super.storeInBundle(bundle);
+      bundle.put(TIME_LEFT, timeLeft_);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+      super.restoreFromBundle(bundle);
+      timeLeft_ = bundle.getFloat(TIME_LEFT);
+    }
+
+    public static GhostHero instance() {
+      for (Mob mob : Dungeon.level.mobs)
+        if (mob instanceof GhostHero)
+          return (GhostHero) mob;
+      return null;
+    }
+
+    // voice---
     public void saySpawned() {
-      if (Messages.lang() != Languages.ENGLISH) {
+      if (Messages.lang() == Languages.ENGLISH) {
         int i = (Dungeon.depth - 1) / 5;
         if (chooseEnemy() == null)
           yell(Random.element(VOICE_AMBIENT[i]));
@@ -326,7 +352,7 @@ public class DriedRose extends Artifact {
           if (i == 5)
             yell(Messages.get(this, "voice_enemies_5_0"));
           else
-            yell(Messages.get(this, Messages.format(Dungeon.bossLevel() ? 
+            yell(Messages.get(this, Messages.format(Dungeon.bossLevel() ?
                     "voice_bosses_%d_%d" : "voice_enemies_%d_%d", i, Random
                     .Int(3))));
         }
@@ -335,31 +361,53 @@ public class DriedRose extends Artifact {
     }
 
     public void sayAnhk() {
-      yell(Random.element(VOICE_BLESSEDANKH));
+      if (Messages.lang() == Languages.ENGLISH)
+        yell(Random.element(VOICE_BLESSEDANKH));
+      else
+        yell(Messages.get(this, Messages.format("voice_blessedankh_%d", 
+                Random.Int(3))));
+
       Sample.INSTANCE.play(Assets.SND_GHOST);
     }
 
     public void sayDefeated() {
-      if (Messages.lang() != Languages.ENGLISH)
-        return; //don't say anything if not on english
-      yell(Random.element(VOICE_DEFEATED[Dungeon.bossLevel() ? 1 : 0]));
+      if (Messages.lang() == Languages.ENGLISH) {
+        yell(Random.element(VOICE_DEFEATED[Dungeon.bossLevel() ? 1 : 0]));
+      } else {
+        int i = Dungeon.bossLevel() ? 1 : 0;
+        yell(Messages.get(this, Messages.format("voice_defeated_%d_%d", i, 
+                Random.Int(3))));
+      }
       Sample.INSTANCE.play(Assets.SND_GHOST);
     }
 
     public void sayHeroKilled() {
-      if (Messages.lang() != Languages.ENGLISH)
-        return; //don't say anything if not on english
-      yell(Random.element(VOICE_HEROKILLED));
+      if (Messages.lang() == Languages.ENGLISH)
+        yell(Random.element(VOICE_HEROKILLED));
+      else {
+        yell(Messages.get(this, Messages.format("voice_herokilled_%d", Random
+                .Int(3))));
+      }
       Sample.INSTANCE.play(Assets.SND_GHOST);
     }
 
     public void sayBossBeaten() {
-      yell(Random.element(VOICE_BOSSBEATEN[Dungeon.depth == 25 ? 1 : 0]));
+      if (Messages.lang() == Languages.ENGLISH) {
+        yell(Random.element(VOICE_BOSSBEATEN[Dungeon.depth == 25 ? 1 : 0]));
+      } else {
+        int i = Dungeon.depth == 25 ? 1 : 0;
+        yell(Messages.get(this, Messages.format("voice_bossbeaten_%d_%d", i, 
+                Random.Int(2))));
+      }
       Sample.INSTANCE.play(Assets.SND_GHOST);
     }
 
     @Override
     protected boolean act() {
+      // time up, die...
+      if ((timeLeft_ -= TICK) <= 0)
+        HP = 0;
+
       if (!isAlive())
         return true;
       if (!Dungeon.hero.isAlive()) {

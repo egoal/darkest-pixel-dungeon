@@ -476,6 +476,7 @@ public class DPDPrisonBossLevel extends Level {
   private static final String ENTERED = "entered";
   private static final String HALL = "hall";
   private static final String LIGHTED = "lighted";
+  private static final String HALL_LIGHTS = "hall_lights";
 
   @Override
   public void storeInBundle(Bundle bundle) {
@@ -484,6 +485,7 @@ public class DPDPrisonBossLevel extends Level {
     bundle.put(ENTERED, enteredMainHall);
     bundle.put(HALL, rmHall);
     bundle.put(LIGHTED, isLighted);
+    bundle.put(HALL_LIGHTS, hallLights);
   }
 
   @Override
@@ -494,5 +496,6 @@ public class DPDPrisonBossLevel extends Level {
     isLighted = bundle.getBoolean(LIGHTED);
     rmHall = new Room();
     rmHall.restoreFromBundle(bundle.getBundle(HALL));
+    hallLights = bundle.getIntArray(HALL_LIGHTS);
   }
 }

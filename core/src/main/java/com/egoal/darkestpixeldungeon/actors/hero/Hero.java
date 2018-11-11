@@ -1686,6 +1686,10 @@ public class Hero extends Char {
       GLog.w(Messages.get(this, "revive"));
       Statistics.ankhsUsed++;
 
+      DriedRose.GhostHero gh = DriedRose.GhostHero.instance();
+      if(gh!=null)
+        gh.sayAnhk();
+      
       return;
     }
 
@@ -1822,6 +1826,13 @@ public class Hero extends Char {
     UrnOfShadow uos = belongings.getItem(UrnOfShadow.class);
     if (uos != null) {
       uos.collectSoul(mob);
+    }
+    
+    if(mob.properties().contains(Property.BOSS)){
+      // slay a boss
+      DriedRose.GhostHero gh = DriedRose.GhostHero.instance();
+      if(gh!=null)
+        gh.sayBossBeaten();
     }
   }
 

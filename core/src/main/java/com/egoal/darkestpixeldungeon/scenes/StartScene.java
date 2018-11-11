@@ -144,6 +144,13 @@ public class StartScene extends PixelScene {
         InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
         Game.switchScene(InterlevelScene.class);
       }
+      
+      @Override
+      protected boolean onLongClick(){
+        InterlevelScene.mode = InterlevelScene.Mode.REFLUX;
+        Game.switchScene(InterlevelScene.class);
+        return false;
+      }
     };
     add(btnLoad);
 
@@ -312,9 +319,9 @@ public class StartScene extends PixelScene {
   protected void onBackPressed() {
     DarkestPixelDungeon.switchNoFade(TitleScene.class);
   }
-
+  
   private static class GameButton extends RedButton {
-
+    
     private static final int SECONDARY_COLOR_N = 0xCACFC2;
     private static final int SECONDARY_COLOR_H = 0xFFFF88;
 
