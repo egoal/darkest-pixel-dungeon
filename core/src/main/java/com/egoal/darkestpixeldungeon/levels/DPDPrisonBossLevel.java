@@ -226,7 +226,7 @@ public class DPDPrisonBossLevel extends Level {
     tengu.notice();
 
     // give buff
-    Buff.prolong(hero, Ignorant.class, 1000);
+    Buff.affect(hero, Ignorant.class);
 
   }
 

@@ -66,7 +66,7 @@ public class DevilGhost extends Wraith {
       Dungeon.limitedDrops.demonicSkull.drop();
       return super.createLoot();
     } else
-      return new Gold(Random.NormalIntRange(100, 200));
+      return new Gold(Random.NormalIntRange(80, 150));
   }
 
   public static DevilGhost spawnAt(int pos) {

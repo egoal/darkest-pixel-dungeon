@@ -22,6 +22,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -410,8 +411,8 @@ public class Statuary extends NPC {
       if (item instanceof Armor) {
         ((Armor) item).inscribe(Armor.Glyph.randomCurse());
         item.upgrade(Random.Float() < .1 ? 2 : 1);
-      } else if (item instanceof Weapon) {
-        ((Weapon) item).enchant(Weapon.Enchantment.randomCurse());
+      } else if (item instanceof MeleeWeapon) {
+        ((MeleeWeapon) item).enchant(Weapon.Enchantment.randomCurse());
         item.upgrade(Random.Float() < .1 ? 2 : 1);
       }
       item.cursed = true;

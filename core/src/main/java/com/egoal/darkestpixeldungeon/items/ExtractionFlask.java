@@ -193,6 +193,7 @@ public class ExtractionFlask extends Item {
                 wpn.enchant();
                 break;
             }
+            GLog.w(Messages.get(ExtractionFlask.class, "inscribed"));
           }
 
         } else {

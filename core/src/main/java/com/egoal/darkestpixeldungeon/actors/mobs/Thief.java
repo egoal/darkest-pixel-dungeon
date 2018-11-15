@@ -109,7 +109,7 @@ public class Thief extends Mob {
       Dungeon.limitedDrops.armband.drop();
       return super.createLoot();
     } else
-      return new Gold(Random.NormalIntRange(100, 250));
+      return new Gold(Random.NormalIntRange(80, 200));
   }
 
   @Override

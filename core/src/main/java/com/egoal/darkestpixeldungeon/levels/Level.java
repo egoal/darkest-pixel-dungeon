@@ -411,8 +411,6 @@ public abstract class Level implements Bundlable {
     }
 
     feeling = bundle.getEnum(FEELING, Feeling.class);
-    if (feeling == Feeling.DARK)
-      viewDistance = (int) Math.ceil(viewDistance / 2f);
 
     buildFlagMaps();
     cleanWalls();

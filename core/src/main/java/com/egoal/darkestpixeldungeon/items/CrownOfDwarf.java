@@ -23,6 +23,6 @@ public class CrownOfDwarf extends Item {
   }
   
   @Override
-  public int price(){ return 1000*quantity(); }
+  public int price(){ return 750*quantity(); }
 
 }

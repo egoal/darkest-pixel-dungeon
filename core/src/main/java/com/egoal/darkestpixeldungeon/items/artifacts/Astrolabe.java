@@ -314,7 +314,6 @@ public class Astrolabe extends Artifact {
     }
 
     protected void onSelect(int index) {
-      GLog.i("selected: " + index);
       switch (index) {
         case 1:
           invoke(1);

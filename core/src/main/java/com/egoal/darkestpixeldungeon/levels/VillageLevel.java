@@ -48,7 +48,7 @@ public class VillageLevel extends RegularLevel {
     length = width * height;
   }
 
-
+  @Override
   protected boolean build() {
     if (!initRooms() || rooms.size() < 2)
       return false;

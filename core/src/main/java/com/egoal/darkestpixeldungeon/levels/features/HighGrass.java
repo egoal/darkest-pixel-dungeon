@@ -47,7 +47,8 @@ public class HighGrass {
     if (level.map[pos] != Terrain.HIGH_GRASS) {
       // already collected,
     } else {
-      int newTile = Terrain.HIGH_GRASS_COLLECTED;
+      //!!! always set terrain before drop
+      Level.set(pos, Terrain.HIGH_GRASS_COLLECTED);
 
       if (!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
         // the sandals artifact effect
@@ -71,6 +72,8 @@ public class HighGrass {
           // in the village level, more unlikely to drop seed
           int chance = Dungeon.depth == 0 ? 30 : (16 - naturalismLevel * 3);
           if (Random.Int(chance) == 0) {
+            Level.set(pos, Terrain.GRASS);
+            
             Item seed = Generator.random(Generator.Category.SEED);
 
             if (seed instanceof BlandfruitBush.Seed) {
@@ -83,19 +86,19 @@ public class HighGrass {
               level.drop(seed, pos).sprite.drop();
 
             // if seed dropped, remove the high grass
-            newTile = Terrain.GRASS;
           }
 
           // Dew, scales from 1/6 to 1/3
           // now it's 1/5->1/3, and can drop more than one!
           if (Random.Int(10 - naturalismLevel) < 2) {
-            int q = 0;
+            int q;
             switch (Random.Int(10)) {
               case 0:
               case 1:
+              case 2:
                 q = 2;
                 break;
-              case 2:
+              case 3:
                 q = 3;
                 break;
               default:
@@ -107,7 +110,7 @@ public class HighGrass {
         }
       }
 
-      Level.set(pos, newTile);
+      
       GameScene.updateMap(pos);
     }
 
