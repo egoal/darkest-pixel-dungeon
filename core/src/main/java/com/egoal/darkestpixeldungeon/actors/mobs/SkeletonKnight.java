@@ -81,7 +81,7 @@ public class SkeletonKnight extends Mob {
   public Damage defenseProc(Damage damage) {
     Char enemy = (Char) damage.from;
     if (damage.type == Damage.Type.MAGICAL || damage.isFeatured(Damage
-            .Feature.RANGED) || enemy == null ||
+            .Feature.RANGED | Damage.Feature.ACCURATE) || enemy == null ||
             !Dungeon.level.adjacent(pos, enemy.pos) || !canCounter())
       return super.defenseProc(damage);
 

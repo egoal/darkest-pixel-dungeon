@@ -583,7 +583,7 @@ public class Astrolabe extends Artifact {
 
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
-      user.takeDamage(new Damage(Random.Int(4, 8), this, user).type(Damage
+      user.takeDamage(new Damage(Random.Int(1, 10), this, user).type(Damage
               .Type.MENTAL)
               .addFeature(Damage.Feature.ACCURATE));
     }

@@ -183,6 +183,9 @@ public class InterlevelScene extends PixelScene {
             throw new RuntimeException("fatal error occured while moving " +
                     "between floors", error);
 
+          if(InterlevelScene.mode==Mode.REFLUX)
+            errorMsg = "no backup file found, return.";
+          
           add(new WndError(errorMsg) {
             public void onBackPressed() {
               super.onBackPressed();

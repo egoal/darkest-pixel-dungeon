@@ -260,8 +260,8 @@ public class Dungeon {
         level = new DeadEndLevel();
         Statistics.deepestFloor--;
     }
-    if(DarkestPixelDungeon.debug())
-      level = new DPDTestLevel();
+//    if(DarkestPixelDungeon.debug())
+//      level = new DPDTestLevel();
     
     visible = new boolean[level.length()];
     level.create();
@@ -696,7 +696,7 @@ public class Dungeon {
     return (Level)bundle.get("level");
   }
 
-  public static void deleteGame(HeroClass cl, boolean deleteLevels) {
+  public static void deleteGame(HeroClass cl, boolean deleteLevels, boolean deleteBackup) {
 
     Game.instance.deleteFile(gameFile(cl));
 
@@ -705,6 +705,10 @@ public class Dungeon {
       while (Game.instance.deleteFile(Messages.format(depthFile(cl), depth))) {
         depth++;
       }
+    }
+    
+    if(deleteBackup){
+      Game.instance.deleteFile(backupGameFile(cl));
     }
 
     GamesInProgress.delete(cl);

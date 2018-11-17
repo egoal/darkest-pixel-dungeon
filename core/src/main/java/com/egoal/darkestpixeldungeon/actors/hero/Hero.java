@@ -453,11 +453,14 @@ public class Hero extends Char {
     if (dmg.type == Damage.Type.MENTAL) {
       // do nothing, todo: mental defense
     } else {
+      CapeOfThorns.Thorns thorns = buff(CapeOfThorns.Thorns.class);
+      if (thorns != null)
+        dmg = thorns.proc(dmg);
+      
       if (belongings.weapon != null)
         dmg = belongings.weapon.defendDamage(dmg);
 
       int dr = 0;
-
       if (belongings.armor != null) {
         dr = Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor
                 .DRMax());
@@ -474,6 +477,7 @@ public class Hero extends Char {
 
       dmg.value -= dr;
     }
+    if(dmg.value<0) dmg.value = 0;
 
     return dmg;
   }
@@ -1048,7 +1052,7 @@ public class Hero extends Char {
         } else {
           // end game
           Dungeon.win(Amulet.class);
-          Dungeon.deleteGame(Dungeon.hero.heroClass, true);
+          Dungeon.deleteGame(Dungeon.hero.heroClass, true, true);
           Game.switchScene(SurfaceScene.class);
         }
 
@@ -1179,10 +1183,6 @@ public class Hero extends Char {
       Buff.detach(this, Drowsy.class);
       GLog.w(Messages.get(this, "pain_resist"));
     }
-
-    CapeOfThorns.Thorns thorns = buff(CapeOfThorns.Thorns.class);
-    if (thorns != null)
-      dmg = thorns.proc(dmg);
 
     MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
     if (madness != null)
@@ -1702,7 +1702,7 @@ public class Hero extends Char {
 
     } else {
 
-      Dungeon.deleteGame(Dungeon.hero.heroClass, false);
+      Dungeon.deleteGame(Dungeon.hero.heroClass, false, true);
       GameScene.show(new WndResurrect(ankh, cause));
 
     }
@@ -1764,7 +1764,7 @@ public class Hero extends Char {
       ((Hero.Doom) cause).onDeath();
     }
 
-    Dungeon.deleteGame(Dungeon.hero.heroClass, true);
+    Dungeon.deleteGame(Dungeon.hero.heroClass, true, true);
   }
 
   @Override
@@ -1838,6 +1838,9 @@ public class Hero extends Char {
 
   // called when killed a char by attack
   public void onKillChar(Char ch) {
+    if(ch.properties().contains(Property.PHANTOM))
+      return;
+    
     // may recover pressure
     if (ch.properties().contains(Property.BOSS))
       recoverSanity(Random.IntRange(6, 12));

@@ -205,12 +205,12 @@ public abstract class Char extends Actor {
 
       // effects
       // burst blood
-      if(dmg.isFeatured(Damage.Feature.CRITCIAL)){
+      if (dmg.isFeatured(Damage.Feature.CRITCIAL)) {
         enemy.sprite.bloodBurstB(sprite.center(), dmg.value);
         enemy.sprite.spriteBurst(sprite.center(), dmg.value);
-        enemy.sprite.flash(); 
-      }else{
-        enemy.sprite.bloodBurstA(sprite.center(), dmg.value);        
+        enemy.sprite.flash();
+      } else {
+        enemy.sprite.bloodBurstA(sprite.center(), dmg.value);
         enemy.sprite.flash();
       }
 
@@ -621,7 +621,8 @@ public abstract class Char extends Actor {
     UNDEAD,
     DEMONIC,
     MACHINE,
-    IMMOVABLE
+    IMMOVABLE,
+    PHANTOM,
   }
 
 

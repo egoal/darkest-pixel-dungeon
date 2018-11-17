@@ -41,7 +41,7 @@ public class CapeOfThorns extends Artifact {
 
     levelCap = 10;
 
-    charge = 99;
+    charge = 0;
     chargeCap = 100;
     cooldown = 0;
 
@@ -85,6 +85,7 @@ public class CapeOfThorns extends Artifact {
 
     public Damage proc(Damage dmg){
       if(cooldown==0){
+        // getting charged
         charge  +=  dmg.value*(.5+level()*.05);
         if(charge>=chargeCap){
           charge  = 0;
@@ -92,9 +93,7 @@ public class CapeOfThorns extends Artifact {
           GLog.p(Messages.get(this, "radiating"));
           BuffIndicator.refreshHero();
         }
-      }
-      
-      if(cooldown!=0){
+      }else{
         // has the buff
         int deflected = Random.NormalIntRange(0, dmg.value);
         dmg.value -=  deflected;

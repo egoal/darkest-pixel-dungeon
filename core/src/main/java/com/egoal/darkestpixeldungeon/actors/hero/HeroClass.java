@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
@@ -157,6 +158,7 @@ public enum HeroClass {
 
   private static void initDebug(Hero hero) {
     (new DriedRose()).identify().collect();
+    (new CapeOfThorns()).identify().collect();
     if(true)
       return;
     hero.HP = 1000;
