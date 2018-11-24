@@ -37,6 +37,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.function.DoubleUnaryOperator;
 
 /**
  * Created by 93942 on 9/16/2018.
@@ -62,6 +63,13 @@ public class DPDTengu extends Mob {
   private int attackStage = 0;
   private HashSet<Phantom> phantoms = new HashSet<>();
 
+  @Override
+  public void onAdd(){
+    for(Mob m: Dungeon.level.mobs)
+      if(m instanceof Phantom)
+        phantoms.add((Phantom)m);
+  }
+  
   @Override
   protected boolean canAttack(Char enemy) {
     return new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE).collisionPos
@@ -400,9 +408,9 @@ public class DPDTengu extends Mob {
     BossHealthBar.assignBoss(this);
     if (HP <= HT / 2) BossHealthBar.bleed(true);
 
-    for (Mob m : Dungeon.level.mobs)
-      if (m instanceof Phantom)
-        phantoms.add((Phantom) m);
+//    for (Mob m : Dungeon.level.mobs)
+//      if (m instanceof Phantom)
+//        phantoms.add((Phantom) m);
   }
 
   // tengu is always hunting..

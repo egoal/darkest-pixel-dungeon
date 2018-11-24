@@ -84,7 +84,7 @@ public class HandOfTheElder extends Artifact {
     RingsToBuffs.put(RingOfAccuracy.class, Shock.class);
     RingsToBuffs.put(RingOfCritical.class, Weakness.class);
     RingsToBuffs.put(RingOfElements.class, Frost.class);
-    // RingsToBuffs.put(RingOfEvasion.class, Paralysis.class);
+    RingsToBuffs.put(RingOfEvasion.class, Shock.class);
     RingsToBuffs.put(RingOfForce.class, Vertigo.class);
     RingsToBuffs.put(RingOfHaste.class, Slow.class);
     RingsToBuffs.put(RingOfWealth.class, Blindness.class);
@@ -95,7 +95,7 @@ public class HandOfTheElder extends Artifact {
     ArrayList<String> actions = super.actions(hero);
 
     if (isEquipped(hero)) {
-      if (level() < levelCap && rings.size()< MAX_RINGS_TO_WEAR)
+      if (level() < levelCap && rings.size() < MAX_RINGS_TO_WEAR)
         actions.add(AC_WEAR);
       if (charge > 0)
         actions.add(AC_POINT);
@@ -130,7 +130,7 @@ public class HandOfTheElder extends Artifact {
   }
 
   private void wearRing(Ring ring) {
-    upgrade(Math.max(1, ring.level()+1));
+    upgrade(GameMath.clamp(ring.level() + 1, 1, levelCap - level()));
 
     if (ring.cursed) {
       cursed = true;
@@ -255,7 +255,7 @@ public class HandOfTheElder extends Artifact {
 
         wearRing((Ring) item);
 
-        if(item.isEquipped(hero))
+        if (item.isEquipped(hero))
           ((Ring) item).doUnequip(hero, false);
         item.detachAll(hero.belongings.backpack);
       }

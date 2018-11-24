@@ -37,9 +37,9 @@ public class Stone extends Armor.Glyph {
 
   @Override
   public float tierSTRAdjust() {
-    return 1.5f;
+    return 1f;
   }
-
+  
   @Override
   public ItemSprite.Glowing glowing() {
     return GREY;

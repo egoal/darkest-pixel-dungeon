@@ -10,6 +10,10 @@ import com.watabou.utils.Bundle;
 
 public class ViewMark extends FlavourBuff {
 
+  {
+    type = buffType.NEGATIVE;
+  }
+  
   public int observer = 0;
 
   private static final String OBSERVER = "observer";

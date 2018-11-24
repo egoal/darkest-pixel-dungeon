@@ -307,7 +307,7 @@ public class DriedRose extends Artifact {
     public GhostHero(int roseLevel) {
       this();
       HP = HT = 10 + roseLevel * 4;
-      timeLeft_ = 30 * roseLevel + 100;
+      timeLeft_ = 20 * roseLevel + 50;
     }
 
     private final String TIME_LEFT = "time_left";
@@ -364,7 +364,7 @@ public class DriedRose extends Artifact {
       if (Messages.lang() == Languages.ENGLISH)
         yell(Random.element(VOICE_BLESSEDANKH));
       else
-        yell(Messages.get(this, Messages.format("voice_blessedankh_%d", 
+        yell(Messages.get(this, Messages.format("voice_blessedankh_%d",
                 Random.Int(3))));
 
       Sample.INSTANCE.play(Assets.SND_GHOST);
@@ -375,9 +375,15 @@ public class DriedRose extends Artifact {
         yell(Random.element(VOICE_DEFEATED[Dungeon.bossLevel() ? 1 : 0]));
       } else {
         int i = Dungeon.bossLevel() ? 1 : 0;
-        yell(Messages.get(this, Messages.format("voice_defeated_%d_%d", i, 
+        yell(Messages.get(this, Messages.format("voice_defeated_%d_%d", i,
                 Random.Int(3))));
       }
+      Sample.INSTANCE.play(Assets.SND_GHOST);
+    }
+
+    void sayTimeOut() {
+      yell(Messages.get(this, Messages.format("voice_timeout_%d", 
+              Random.Int(3))));
       Sample.INSTANCE.play(Assets.SND_GHOST);
     }
 
@@ -396,7 +402,7 @@ public class DriedRose extends Artifact {
         yell(Random.element(VOICE_BOSSBEATEN[Dungeon.depth == 25 ? 1 : 0]));
       } else {
         int i = Dungeon.depth == 25 ? 1 : 0;
-        yell(Messages.get(this, Messages.format("voice_bossbeaten_%d_%d", i, 
+        yell(Messages.get(this, Messages.format("voice_bossbeaten_%d_%d", i,
                 Random.Int(2))));
       }
       Sample.INSTANCE.play(Assets.SND_GHOST);
@@ -405,11 +411,13 @@ public class DriedRose extends Artifact {
     @Override
     protected boolean act() {
       // time up, die...
-      if ((timeLeft_ -= TICK) <= 0)
-        HP = 0;
-
-      if (!isAlive())
+      if ((timeLeft_ -= TICK) <= 0) {
+        sayTimeOut();
+        sprite.die();
+        destroy();
         return true;
+      }
+
       if (!Dungeon.hero.isAlive()) {
         sayHeroKilled();
         sprite.die();

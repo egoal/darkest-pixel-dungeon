@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.items.ArmorKit;
 import com.egoal.darkestpixeldungeon.items.CrownOfDwarf;
 import com.egoal.darkestpixeldungeon.items.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
@@ -38,6 +39,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
@@ -54,6 +56,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfElements;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
@@ -157,10 +160,6 @@ public enum HeroClass {
   }
 
   private static void initDebug(Hero hero) {
-    (new DriedRose()).identify().collect();
-    (new CapeOfThorns()).identify().collect();
-    if(true)
-      return;
     hero.HP = 1000;
     hero.HT = 1000;
     hero.STR  = 18;
@@ -186,19 +185,21 @@ public enum HeroClass {
     (new TomeOfMastery()).identify().collect();
     (new ArmorKit()).identify().collect();
     (new DriedRose()).identify().collect();
+    (new RiemannianManifoldShield()).upgrade(9).identify().collect();
+    new HandOfTheElder().identify().collect();
     
     new WandOfBlastWave().upgrade(5).identify().collect();
-    new WandOfCorruption().upgrade(10).identify().collect();
+    new WandOfCorruption().upgrade(7).identify().collect();
     new WandOfDisintegration().upgrade(2).identify().collect();
     
     // rings
-    new HandOfTheElder().identify().collect();
     new RingOfEvasion().identify().collect();
-    new RingOfForce().identify().collect();
+    new RingOfForce().identify().upgrade(3).collect();
     new RingOfForce().identify().collect();
     new RingOfAccuracy().identify().collect();
-    new RingOfWealth().identify().upgrade().collect();
-
+    new RingOfWealth().identify().upgrade(3).collect();
+    new RingOfElements().identify().upgrade(3).collect();
+    
     (new PotionBandolier()).identify().collect();
 
   }

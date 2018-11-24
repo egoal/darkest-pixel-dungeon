@@ -293,7 +293,7 @@ public class Generator {
             Dart.class,
             BattleGloves.class,
     };
-    Category.WEP_T1.probs = new float[]{0, 1, 1, 0, 0, 1, 1};
+    Category.WEP_T1.probs = new float[]{0, 1, 1, 0, 0, 0.5f, 1};
 
     Category.WEP_T2.classes = new Class<?>[]{
             NewShortsword.class,

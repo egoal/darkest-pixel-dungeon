@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
  * Created by 93942 on 10/20/2018.
  */
 
+// see Char::checkHit
 public class Shock extends FlavourBuff{
 
   @Override

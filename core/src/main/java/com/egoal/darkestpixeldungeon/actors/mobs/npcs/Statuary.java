@@ -411,11 +411,12 @@ public class Statuary extends NPC {
       if (item instanceof Armor) {
         ((Armor) item).inscribe(Armor.Glyph.randomCurse());
         item.upgrade(Random.Float() < .1 ? 2 : 1);
+        item.cursed = true;
       } else if (item instanceof MeleeWeapon) {
         ((MeleeWeapon) item).enchant(Weapon.Enchantment.randomCurse());
         item.upgrade(Random.Float() < .1 ? 2 : 1);
+        item.cursed = true;
       }
-      item.cursed = true;
       Dungeon.level.drop(item, hero.pos);
 
       // effects

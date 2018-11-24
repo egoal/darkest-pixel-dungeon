@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Effects;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
@@ -146,6 +147,9 @@ public class WandOfBlastWave extends DamageWand {
                   (finalDist + 1) / 2, finalDist) + 1);
         }
         Dungeon.level.press(ch.pos, ch);
+        // when hero is moved, update vision.
+        if(ch instanceof Hero)
+          Dungeon.observe();
       }
     }), -1);
   }

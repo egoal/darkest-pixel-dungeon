@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
+import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -84,8 +85,8 @@ public class Succubus extends Mob {
     Char enemy = (Char) damage.to;
 
     if (Random.Int(3) == 0) {
-      Buff.affect(enemy, Charm.class, Charm.durationFactor(enemy) * Random
-              .IntRange(3, 7)).object = id();
+      new Charm.Attacher(id(), Random.IntRange(3, 7)).attachTo(enemy);
+      
       enemy.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
       Sample.INSTANCE.play(Assets.SND_CHARMS);
     }
@@ -95,7 +96,7 @@ public class Succubus extends Mob {
 
   @Override
   protected boolean getCloser(int target) {
-    if (Level.fieldOfView[target] && Dungeon.level.distance(pos, target) > 2 
+    if (Level.fieldOfView[target] && Dungeon.level.distance(pos, target) > 2
             && delay <= 0) {
 
       blink(target);

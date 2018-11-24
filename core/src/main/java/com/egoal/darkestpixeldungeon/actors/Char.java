@@ -321,7 +321,9 @@ public abstract class Char extends Actor {
       Buff.detach(this, Frost.class);
     if (this.buff(MagicalSleep.class) != null)
       Buff.detach(this, MagicalSleep.class);
-
+    if(dmg.from instanceof Char && isCharmedBy((Char)dmg.from))
+        Buff.detach(this, Charm.class);
+    
     // immunities, resistance 
     if (!dmg.isFeatured(Damage.Feature.PURE))
       dmg = resistDamage(dmg);

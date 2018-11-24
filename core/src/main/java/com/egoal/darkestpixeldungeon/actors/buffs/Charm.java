@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfElements.Resistance;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Charm extends FlavourBuff {
 
@@ -71,5 +72,27 @@ public class Charm extends FlavourBuff {
   @Override
   public String desc() {
     return Messages.get(this, "desc", dispTurns());
+  }
+
+  // charm attach should be delayed to avoid detach in Char::takeDamage 
+  public static class Attacher extends FlavourBuff {
+    {
+      actPriority = Integer.MIN_VALUE;
+    }
+
+    int charmer = -1;
+    int charm_duration = 0;
+
+    public Attacher(int charmer_id, int charmDuration) {
+      charmer = charmer_id;
+      charm_duration = charmDuration;
+    }
+
+    @Override
+    public boolean act() {
+      Buff.affect(target, Charm.class, Charm.durationFactor(target) * 
+              charm_duration).object = charmer;
+      return super.act();
+    }
   }
 }
