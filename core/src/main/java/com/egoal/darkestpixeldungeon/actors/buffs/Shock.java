@@ -10,6 +10,10 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 // see Char::checkHit
 public class Shock extends FlavourBuff{
 
+  {
+    type = buffType.NEGATIVE;
+  }
+  
   @Override
   public int icon() {
     return BuffIndicator.SHOCK;

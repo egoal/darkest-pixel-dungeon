@@ -101,6 +101,7 @@ public class Shaman extends Mob implements Callback {
         if (Level.water[enemy.pos] && !enemy.flying) {
           dmg.value *= 1.5f;
         }
+        enemy.defendDamage(dmg);
         enemy.takeDamage(dmg);
 
         enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);

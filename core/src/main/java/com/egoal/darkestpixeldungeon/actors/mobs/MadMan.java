@@ -51,8 +51,7 @@ public class MadMan extends Mob implements Callback {
               (Damage.Type.MENTAL).addFeature(Damage.Feature.ACCURATE);
     } else
       return new Damage(1, this, target).addFeature(Damage.Feature.PURE)
-              .addFeature(Damage
-                      .Feature.ACCURATE);
+              .addFeature(Damage.Feature.ACCURATE);
   }
 
   @Override
@@ -77,12 +76,9 @@ public class MadMan extends Mob implements Callback {
 
   @Override
   protected boolean canAttack(Char enemy) {
-    if (enemy instanceof Hero)
-      return Dungeon.level.distance(pos, enemy.pos) <= SHOUT_RANGE &&
-              new Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT)
-                      .collisionPos == enemy.pos;
-
-    return super.canAttack(enemy);
+    return Dungeon.level.distance(pos, enemy.pos) <= SHOUT_RANGE && new 
+            Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos ==
+            enemy.pos;
   }
 
   @Override

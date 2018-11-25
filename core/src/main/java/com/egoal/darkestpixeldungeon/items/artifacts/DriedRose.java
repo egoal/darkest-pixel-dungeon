@@ -306,8 +306,8 @@ public class DriedRose extends Artifact {
 
     public GhostHero(int roseLevel) {
       this();
-      HP = HT = 10 + roseLevel * 4;
-      timeLeft_ = 20 * roseLevel + 50;
+      HP = HT = 10 + roseLevel * 5;
+      timeLeft_ = 30 * roseLevel + 60;
     }
 
     private final String TIME_LEFT = "time_left";

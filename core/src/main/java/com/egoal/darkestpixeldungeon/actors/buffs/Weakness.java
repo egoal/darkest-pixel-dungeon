@@ -58,7 +58,8 @@ public class Weakness extends FlavourBuff {
   @Override
   public void detach() {
     super.detach();
-    ((Hero) target).weakened = false;
+    if(target instanceof Hero)
+      ((Hero) target).weakened = false;
   }
 
   public static float duration(Char ch) {

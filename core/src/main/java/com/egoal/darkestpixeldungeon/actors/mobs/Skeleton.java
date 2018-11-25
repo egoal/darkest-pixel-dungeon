@@ -97,7 +97,7 @@ public class Skeleton extends Mob {
 
   @Override
   protected Item createLoot() {
-    if(!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float()<0.05f) {
+    if(!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float()<0.04f) {
       Dungeon.limitedDrops.handOfElder.drop();
       return new HandOfTheElder().random();
     }

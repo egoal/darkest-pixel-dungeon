@@ -51,8 +51,12 @@ public class Bat extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(5, 18), this, target).addElement
-            (Damage.Element.SHADOW);
+    if (Random.Int(4) == 0)
+      return new Damage(Random.NormalIntRange(1, 5), this, target).type
+              (Damage.Type.MENTAL);
+    else
+      return new Damage(Random.NormalIntRange(5, 15), this, target).addElement
+              (Damage.Element.SHADOW);
   }
 
   @Override
@@ -68,17 +72,13 @@ public class Bat extends Mob {
 
   @Override
   public Damage attackProc(Damage damage) {
+    if (damage.type != Damage.Type.MENTAL) {
+      int reg = (int) (Math.min(damage.value, HT - HP) * .3f);
 
-    if (Random.Int(4) == 0) {
-      damage.value = Math.max(3, damage.value / 2);
-      return damage.type(Damage.Type.MENTAL);
-    }
-
-    int reg = (int) (Math.min(damage.value, HT - HP) * .4f);
-
-    if (reg > 0) {
-      HP += reg;
-      sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+      if (reg > 0) {
+        HP += reg;
+        sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+      }
     }
 
     return damage;

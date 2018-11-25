@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
@@ -298,7 +300,8 @@ public class Hero extends Char {
     belongings.restoreFromBundle(bundle);
   }
 
-  public void holdFollowers(Level level) {
+  public void holdFollowers(Level level) {    
+    Log.d("dpd", "holding followers.");
     followers_.clear();
 
     // bring the ghost
@@ -322,7 +325,8 @@ public class Hero extends Char {
   }
 
   public void restoreFollowers(Level level, int heropos) {
-    final int MAX_TRAILS = 1000;  // avoid hang...
+    Log.d("dpd", Messages.format("restoring followers: %d", followers_.size()));
+    final int MAX_TRAILS = 100;  // avoid hang...
     int cntTrails = 0;
     for (Char c : followers_) {
       if (c != null) {
@@ -331,7 +335,7 @@ public class Hero extends Char {
           c.pos = heropos + PathFinder.NEIGHBOURS8[Random.Int(8)];
           if (++cntTrails >= MAX_TRAILS)
             break;
-        } while (level.solid[c.pos] || level.findMob(c.pos) != null);
+        } while (Level.solid[c.pos] || level.findMob(c.pos) != null);
       }
     }
     followers_.clear();

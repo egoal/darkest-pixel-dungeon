@@ -78,6 +78,7 @@ public class Charm extends FlavourBuff {
   public static class Attacher extends FlavourBuff {
     {
       actPriority = Integer.MIN_VALUE;
+      type = buffType.NEGATIVE;
     }
 
     int charmer = -1;

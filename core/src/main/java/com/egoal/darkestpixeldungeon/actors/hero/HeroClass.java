@@ -56,9 +56,11 @@ import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfElements;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfHaste;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
@@ -153,6 +155,8 @@ public enum HeroClass {
     (new SeedPouch()).identify().collect();
     Dungeon.limitedDrops.seedBag.drop();
 
+    // new ScrollOfMagicMapping().identify().collect();
+    
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
@@ -171,9 +175,9 @@ public enum HeroClass {
     
     new PotionOfHealing().quantity(9).identify().collect();
     new PotionOfMindVision().quantity(9).identify().collect();
-    new PotionOfLiquidFlame().quantity(2).identify().collect();
-    new PotionOfToxicGas().quantity(3).identify().collect();
-    new PotionOfInvisibility().quantity(3).identify().collect();
+//    new PotionOfLiquidFlame().quantity(2).identify().collect();
+//    new PotionOfToxicGas().quantity(3).identify().collect();
+//    new PotionOfInvisibility().quantity(3).identify().collect();
     
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
@@ -182,10 +186,11 @@ public enum HeroClass {
     
     new Earthroot.Seed().quantity(3).identify().collect();
     
-    (new TomeOfMastery()).identify().collect();
-    (new ArmorKit()).identify().collect();
+//    (new TomeOfMastery()).identify().collect();
+//    (new ArmorKit()).identify().collect();
     (new DriedRose()).identify().collect();
-    (new RiemannianManifoldShield()).upgrade(9).identify().collect();
+    (new UrnOfShadow()).volume(10).identify().collect();
+//    (new RiemannianManifoldShield()).upgrade(9).identify().collect();
     new HandOfTheElder().identify().collect();
     
     new WandOfBlastWave().upgrade(5).identify().collect();
@@ -199,6 +204,9 @@ public enum HeroClass {
     new RingOfAccuracy().identify().collect();
     new RingOfWealth().identify().upgrade(3).collect();
     new RingOfElements().identify().upgrade(3).collect();
+    new RingOfAccuracy().identify().collect();
+    new RingOfCritical().identify().collect();
+    new RingOfHaste().identify().collect();
     
     (new PotionBandolier()).identify().collect();
 

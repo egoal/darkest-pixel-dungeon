@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.scenes.AmuletScene;
 import com.watabou.noosa.Game;
+import com.watabou.utils.Bundle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class Amulet extends Item {
 
   private static final String AC_END = "END";
 
+  private boolean everPicked = false;
+  
   {
     image = ItemSpriteSheet.AMULET;
 
@@ -65,7 +68,9 @@ public class Amulet extends Item {
   public boolean doPickUp(Hero hero) {
     if (super.doPickUp(hero)) {
       // recover all sanity
-      hero.recoverSanity((int) Pressure.MAX_PRESSURE);
+      if(!everPicked)
+        hero.recoverSanity((int) Pressure.MAX_PRESSURE);
+      everPicked = true;
 
       if (!Statistics.amuletObtained) {
         Statistics.amuletObtained = true;
@@ -109,4 +114,17 @@ public class Amulet extends Item {
     return false;
   }
 
+  private final String EVER_PICKED = "ever-picked";
+  @Override
+  public void storeInBundle(Bundle bundle){
+    super.storeInBundle(bundle);
+    bundle.put(EVER_PICKED, everPicked);
+  }
+  
+  @Override
+  public void restoreFromBundle(Bundle bundle){
+    super.restoreFromBundle(bundle);
+    everPicked = bundle.getBoolean(EVER_PICKED);
+  }
+  
 }

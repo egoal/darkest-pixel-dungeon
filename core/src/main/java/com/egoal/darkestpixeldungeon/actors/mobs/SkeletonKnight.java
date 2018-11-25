@@ -108,7 +108,7 @@ public class SkeletonKnight extends Mob {
 
   @Override
   protected Item createLoot() {
-    if (!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float() < 0.2f) {
+    if (!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float() < 0.15f) {
       Dungeon.limitedDrops.handOfElder.drop();
       return new HandOfTheElder().random();
     }

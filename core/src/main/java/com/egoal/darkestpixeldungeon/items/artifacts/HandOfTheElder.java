@@ -10,6 +10,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
+import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
+import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
@@ -31,8 +33,11 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfElements;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfFuror;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfHaste;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfMight;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfTenacity;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.CellSelector;
@@ -83,11 +88,15 @@ public class HandOfTheElder extends Artifact {
   static {
     RingsToBuffs.put(RingOfAccuracy.class, Shock.class);
     RingsToBuffs.put(RingOfCritical.class, Weakness.class);
-    RingsToBuffs.put(RingOfElements.class, Frost.class);
+    RingsToBuffs.put(RingOfElements.class, Chill.class);
     RingsToBuffs.put(RingOfEvasion.class, Shock.class);
     RingsToBuffs.put(RingOfForce.class, Vertigo.class);
+    RingsToBuffs.put(RingOfFuror.class, Slow.class);
     RingsToBuffs.put(RingOfHaste.class, Slow.class);
-    RingsToBuffs.put(RingOfWealth.class, Blindness.class);
+    // RingsToBuffs.put(RingOfMight.class, )
+    RingsToBuffs.put(RingOfSharpshooting.class, Blindness.class);
+    RingsToBuffs.put(RingOfTenacity.class, Vertigo.class);
+    RingsToBuffs.put(RingOfWealth.class, Charm.Attacher.class);
   }
 
   @Override
