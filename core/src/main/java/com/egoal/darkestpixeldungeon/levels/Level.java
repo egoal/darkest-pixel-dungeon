@@ -782,7 +782,7 @@ public abstract class Level implements Bundlable {
 
   protected void cleanWalls() {
     discoverable = new boolean[length()];
-    if (DarkestPixelDungeon.debug())
+    if (false && DarkestPixelDungeon.debug())
       // can reveal all
       Arrays.fill(discoverable, true);
     else {

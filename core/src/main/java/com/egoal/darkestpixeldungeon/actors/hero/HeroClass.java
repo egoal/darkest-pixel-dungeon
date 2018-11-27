@@ -169,15 +169,14 @@ public enum HeroClass {
     hero.STR  = 18;
     hero.lvl  = 20;
     
-    new ScrollOfMagicMapping().quantity(9).identify().collect();
+    ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
+    somm.quantity(9).identify().collect();
+    Dungeon.quickslot.setSlot(3, somm);
     new ScrollOfLight().quantity(3).identify().collect();
     new ScrollOfCurse().quantity(3).identify().collect();
     
     new PotionOfHealing().quantity(9).identify().collect();
     new PotionOfMindVision().quantity(9).identify().collect();
-//    new PotionOfLiquidFlame().quantity(2).identify().collect();
-//    new PotionOfToxicGas().quantity(3).identify().collect();
-//    new PotionOfInvisibility().quantity(3).identify().collect();
     
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
@@ -186,30 +185,12 @@ public enum HeroClass {
     
     new Earthroot.Seed().quantity(3).identify().collect();
     
-//    (new TomeOfMastery()).identify().collect();
-//    (new ArmorKit()).identify().collect();
-    (new DriedRose()).identify().collect();
-    (new UrnOfShadow()).volume(10).identify().collect();
-//    (new RiemannianManifoldShield()).upgrade(9).identify().collect();
-    new HandOfTheElder().identify().collect();
-    
     new WandOfBlastWave().upgrade(5).identify().collect();
     new WandOfCorruption().upgrade(7).identify().collect();
     new WandOfDisintegration().upgrade(2).identify().collect();
     
     // rings
-    new RingOfEvasion().identify().collect();
-    new RingOfForce().identify().upgrade(3).collect();
-    new RingOfForce().identify().collect();
-    new RingOfAccuracy().identify().collect();
-    new RingOfWealth().identify().upgrade(3).collect();
-    new RingOfElements().identify().upgrade(3).collect();
-    new RingOfAccuracy().identify().collect();
-    new RingOfCritical().identify().collect();
-    new RingOfHaste().identify().collect();
-    
     (new PotionBandolier()).identify().collect();
-
   }
 
   public Badges.Badge masteryBadge() {
