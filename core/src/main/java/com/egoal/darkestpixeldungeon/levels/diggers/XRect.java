@@ -38,4 +38,13 @@ public class XRect {
     return new Point(Random.IntRange(x1 + inner, x2 - inner),
             Random.IntRange(y1 + inner, y2 - inner));
   }
+
+  public XRect overlap(XRect rect) {
+    return new XRect(Math.max(x1, rect.x1), Math.min(x2, rect.x2),
+            Math.max(y1, rect.y1), Math.min(y2, rect.y2));
+  }
+
+  public boolean isValid() {
+    return x1 <= x2 && y1 <= y2;
+  }
 }

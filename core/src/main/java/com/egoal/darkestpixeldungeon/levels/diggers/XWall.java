@@ -13,9 +13,13 @@ public class XWall extends XRect{
     this.direction = direction;
     isRoomWall = roomWall;
   }
-
+  
   public XWall(int x1, int x2, int y1, int y2, int direction){
     this(x1, x2, y1, y2, direction, true);
+  }
+  
+  public XWall(int x, int y, int direction){
+    this(x, x, y, y, direction, true);
   }
   
 }

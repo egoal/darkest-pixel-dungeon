@@ -1,9 +1,10 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.levels.diggers.*;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -45,24 +46,48 @@ public class DPDTestLevel extends Level {
     digFirstRoom();
 
     int rooms = 20;
-    while(rooms>0){
-      if(Random.Float()<0.35){
-        if(digARoom())
-          --rooms;
-        else
-          break;
-      }else if(!digACorridor())
-        break;
+    TunnelDigger tunnelDigger = new TunnelDigger();
+    NormalRoomDigger normalRoomDigger = new NormalRoomDigger();
+    boolean digok = true;
+    while (rooms > 0 && digok) {
+      if (Random.Float() < 0.4) {
+        digok = dig(normalRoomDigger);
+        --rooms;
+      } else {
+        digok = dig(tunnelDigger);
+      }
     }
-    Log.d("dpd", String.format("%d rooms digged.", 20-rooms));
-    
-    paintCorridor();
+    Log.d("dpd", String.format("%d rooms digged.", 20 - rooms));
+    if (rooms < 12) return false;
 
-    entrance = xy2cell(width / 2, height / 2);
+    int lc = makeLoopClosure(6);
+    Log.d("dpd", String.format("%d loop closures linked.", lc));
+    if (lc < 3) return false;
+    
+    // place entrance and exit
+    ArrayList<XRoom> normalRooms = new ArrayList<>();
+    for (XRoom room : diggedRooms) {
+      if (room.type == XRoom.Type.NORMAL)
+        normalRooms.add(room);
+    }
+    XRoom roomEnter = Random.element(normalRooms);
+    XRoom roomExit;
+    int trials = 0;
+    do {
+      if (++trials == 100)
+        return false;
+
+      roomExit = Random.element(normalRooms);
+    } while (roomExit == roomEnter || distance(pointToCell(roomExit.cen()),
+            pointToCell(roomEnter.cen())) < 12);
+
+    entrance = pointToCell(roomEnter.random(1));
     map[entrance] = Terrain.ENTRANCE;
-    exit = xy2cell(width / 2, height / 2 + 4);
+    exit = pointToCell(roomExit.random(1));
     map[exit] = Terrain.EXIT;
 
+    // do some painting
+    
     return true;
   }
 
@@ -83,6 +108,7 @@ public class DPDTestLevel extends Level {
   // my digging algorithm
   // ArrayList<XRoom> rooms;
   ArrayList<XWall> digableWalls = new ArrayList<>();
+  ArrayList<XRoom> diggedRooms = new ArrayList<>(); // only the rect info counts
 
   private void digFirstRoom() {
     int w = Random.IntRange(3, 6);
@@ -90,115 +116,42 @@ public class DPDTestLevel extends Level {
     int x = Random.IntRange(width / 4, width / 4 * 3 - w);
     int y = Random.IntRange(height / 4, height / 4 * 3 - h);
 
-    Digger.fill(this, x, y, w, h, Terrain.EMPTY);
+    Digger.Fill(this, x, y, w, h, Terrain.EMPTY);
     XRect room = XRect.create(x, y, w, h);
     digableWalls.add(new XWall(room.x1 - 1, room.x1 - 1, room.y1, room.y2,
             Digger.LEFT));
-    digableWalls.add(new XWall(room.x2 + 1, room.x2 + 1, room.y1, room.y2, 
+    digableWalls.add(new XWall(room.x2 + 1, room.x2 + 1, room.y1, room.y2,
             Digger.RIGHT));
-    digableWalls.add(new XWall(room.x1, room.x2, room.y1 - 1, room.y1 - 1, 
+    digableWalls.add(new XWall(room.x1, room.x2, room.y1 - 1, room.y1 - 1,
             Digger.UP));
-    digableWalls.add(new XWall(room.x1, room.x2, room.y2 + 1, room.y2 + 1, 
+    digableWalls.add(new XWall(room.x1, room.x2, room.y2 + 1, room.y2 + 1,
             Digger.DOWN));
+
+    diggedRooms.add(new XRoom(room.x1, room.x2, room.y1, room.y2,
+            new XWall(room.cen().x, room.cen().y, Digger.NONE), new Point()));
   }
 
-  private boolean digARoom() {
+  private boolean dig(Digger digger) {
     if (digableWalls.isEmpty()) return false;
 
     // try 100 times to dig a room
     for (int i = 0; i < 100; ++i) {
+      // select a wall, choose a init dig position
       int index = Random.Int(digableWalls.size());
       XWall wall = digableWalls.get(index);
-      Point door = wall.random(0);
 
-      // get a rect to place room
-      int w = Random.IntRange(3, 6);
-      int h = Random.IntRange(3, 6);
-      int x = -1;
-      int y = -1;
-      switch (wall.direction) {
-        case Digger.LEFT:
-          x = wall.x1 - w;
-          y = Random.IntRange(door.y - h + 1, door.y);
-          break;
-        case Digger.RIGHT:
-          x = wall.x2 + 1;
-          y = Random.IntRange(door.y - h + 1, door.y);
-          break;
-        case Digger.UP:
-          x = Random.IntRange(door.x - w + 1, door.x);
-          y = wall.y1 - h;
-          break;
-        case Digger.DOWN:
-          x = Random.IntRange(door.x - w + 1, door.x);
-          y = wall.y2 + 1;
-          break;
-      }
+      // determine place to dig
+      XRoom newRoom = digger.desireDigRoom(wall);
 
-      XRoom newroom = XRoom.create(x, y, w, h, wall, door);
-      if (canDigAt(newroom)) {
-        // dig!
-        digableWalls.addAll(new NormalRectRoomDigger(newroom).dig(this));
-
-        Digger.set(this, door, Terrain.DOOR);
-
+      if (canDigAt(newRoom)) {
+        // dig! door type is set in the digger
+        digableWalls.addAll(digger.dig(this, newRoom));
         digableWalls.remove(index);
-        return true;
-      }
-    }
 
-    return false;
-  }
+        //! set room type!!!
+        Digger.AssignRoomType(newRoom, digger);
+        diggedRooms.add(newRoom);
 
-  private boolean digACorridor() {
-    if (digableWalls.isEmpty()) return false;
-
-    for (int i = 0; i < 100; ++i) {
-      int index = Random.Int(digableWalls.size());
-      XWall wall = digableWalls.get(index);
-      Point door = wall.random(0);
-
-      // get a rect to place room
-      int len = Random.IntRange(2, 5);
-      int w = -1;
-      int h = -1;
-      int x = -1;
-      int y = -1;
-      if (Random.Int(2) == 0) {
-        w = 1;
-        h = len;
-      } else {
-        w = len;
-        h = 1;
-      }
-
-      switch (wall.direction) {
-        case Digger.LEFT:
-          x = wall.x1 - w;
-          y = Random.IntRange(door.y - h + 1, door.y);
-          break;
-        case Digger.RIGHT:
-          x = wall.x2 + 1;
-          y = Random.IntRange(door.y - h + 1, door.y);
-          break;
-        case Digger.UP:
-          x = Random.IntRange(door.x - w + 1, door.x);
-          y = wall.y1 - h;
-          break;
-        case Digger.DOWN:
-          x = Random.IntRange(door.x - w + 1, door.x);
-          y = wall.y2 + 1;
-          break;
-      }
-
-      XRoom newroom = XRoom.create(x, y, w, h, wall, door);
-      if (canDigCorridorAt(newroom)) {
-        // dig!
-        digableWalls.addAll(new CorridorDigger(newroom).dig(this));
-
-        Digger.set(this, door, wall.isRoomWall ? Terrain.DOOR : Terrain.EMPTY);
-
-        digableWalls.remove(index);
         return true;
       }
     }
@@ -220,25 +173,45 @@ public class DPDTestLevel extends Level {
     return false;
   }
 
-  private boolean canDigCorridorAt(XRect rect) {
-    if (rect.x1 > 0 && rect.x2 < width - 1 && rect.y1 > 0 && rect.y2 < height
-            - 1) {
-      for (int x = rect.x1 - 1; x <= rect.x2 + 1; ++x)
-        for (int y = rect.y1 - 1; y <= rect.y2 + 1; ++y) {
-          int t = map[xy2cell(x, y)];
-          if (t != Terrain.WALL && t != CorridorDigger.CORRIDOR)
-            return false;
-        }
+  private int makeLoopClosure(int maxLoops) {
+    int loops = 0;
 
-      return true;
+    // simply dig a door when there's overlapped wall
+    ArrayList<Pair<XWall, XWall>> overlappedWalls = new ArrayList<>();
+
+    int cntWalls = digableWalls.size();
+    for (int i = 0; i < cntWalls; ++i) {
+      XWall wi = digableWalls.get(i);
+      for (int j = i + 1; j < cntWalls; ++j) {
+        XWall wj = digableWalls.get(j);
+
+        if (wi.overlap(wj).isValid())
+          overlappedWalls.add(new Pair<XWall, XWall>(wi, wj));
+      }
     }
 
-    return false;
-  }
+    while (!overlappedWalls.isEmpty()) {
+      int i = Random.Int(overlappedWalls.size());
+      Pair<XWall, XWall> pr = overlappedWalls.get(i);
+      Point dp = pr.first.overlap(pr.second).random(0);
 
-  private void paintCorridor() {
-    for (int i = 0; i < length; ++i)
-      if (map[i] == CorridorDigger.CORRIDOR)
-        map[i] = Terrain.EMPTY;
+      overlappedWalls.remove(i);
+      if (map[xy2cell(dp.x, dp.y)] == Terrain.WALL) {
+        // dig!
+        Digger.Set(this, dp, pr.first.isRoomWall || pr.second.isRoomWall ?
+                Terrain.DOOR : Terrain.EMPTY);
+        digableWalls.remove(pr.first);
+        digableWalls.remove(pr.second);
+
+        if (++loops >= maxLoops)
+          break;
+      }
+    }
+
+    // not enough, random select two wall and dig between them
+    if (loops < maxLoops && digableWalls.size() >= 2) {
+    }
+
+    return loops;
   }
 }

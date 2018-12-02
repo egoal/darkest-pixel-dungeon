@@ -50,9 +50,18 @@ public class Random {
     return min + (int) (Math.random() * (max - min + 1));
   }
 
+  public static int HighIntRange(int low, int high) {
+    return Math.max(IntRange(low, high), IntRange(low, high));
+  }
+
   public static int NormalIntRange(int min, int max) {
     return min + (int) ((Math.random() + Math.random()) * (max - min + 1) / 2f);
   }
+
+  public static int LowIntRange(int low, int high) {
+    return Math.min(IntRange(low, high), IntRange(low, high));
+  }
+
 
   public static int chances(float[] chances) {
 
