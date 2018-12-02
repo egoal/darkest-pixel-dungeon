@@ -21,5 +21,4 @@ public class XWall extends XRect{
   public XWall(int x, int y, int direction){
     this(x, x, y, y, direction, true);
   }
-  
 }

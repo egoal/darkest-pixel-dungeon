@@ -2,11 +2,9 @@ package com.egoal.darkestpixeldungeon.levels.diggers;
 
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * Created by 93942 on 11/11/2018.
@@ -105,61 +103,55 @@ public abstract class Digger {
   }
 
   // class digger
+  protected DigPattern pattern;
+  protected XWall wall;
 
-  // interface
-  public abstract ArrayList<XWall> dig(Level level, XRoom room);
-
-  public XRoom desireDigRoom(XWall wall) {
-    // choose a door
-    Point door = desireDigDoor(wall);
-
-    // default random, just link
-    Point size = desireDigSize();
-    int w = size.x;
-    int h = size.y;
-    int x = -1;
-    int y = -1;
-    switch (wall.direction) {
-      case Digger.LEFT:
-        x = wall.x1 - w;
-        y = Random.IntRange(door.y - h + 1, door.y);
-        break;
-      case Digger.RIGHT:
-        x = wall.x2 + 1;
-        y = Random.IntRange(door.y - h + 1, door.y);
-        break;
-      case Digger.UP:
-        x = Random.IntRange(door.x - w + 1, door.x);
-        y = wall.y1 - h;
-        break;
-      case Digger.DOWN:
-        x = Random.IntRange(door.x - w + 1, door.x);
-        y = wall.y2 + 1;
-        break;
-    }
-
-    return XRoom.create(x, y, w, h, wall, door);
+  // this must be called before dig!
+  public Digger wall(XWall wall) {
+    this.wall = wall;
+    return this;
   }
 
-  protected Point desireDigDoor(XWall wall) {
-    return wall.random(0);
+  public static class DigResult {
+    public DigPattern pattern;
+    public ArrayList<XWall> walls;
   }
 
-  protected Point desireDigSize() {
-    return new Point(1, 1);
+  public XRect desireDigSpace() {
+    if (pattern == null)
+      createPattern();
+    return pattern;
   }
 
-  private final static HashMap<Class<? extends Digger>, XRoom.Type> DiggerType =
-          new HashMap<>();
+  public DigResult dig(Level level) {
+    if (pattern == null)
+      createPattern();
+    
+    // copy dig pattern
+    digPattern(level);
+    digWall(level);
 
-  {
-    DiggerType.put(TunnelDigger.class, XRoom.Type.TUNNEL);
+    DigResult dr = new DigResult();
+    dr.pattern = pattern;
+    dr.walls = newDigableWalls();
+    return dr;
   }
 
-  //! check in Level::dig
-  public static void AssignRoomType(XRoom room, Digger digger) {
-    room.type(DiggerType.containsKey(digger.getClass()) ?
-            DiggerType.get(digger.getClass()) : XRoom.Type.NORMAL);
+  // interface.
+  protected abstract void createPattern();
+  
+  protected void digPattern(Level level){
+    for (int x = pattern.x1; x <= pattern.x2; ++x)
+      for (int y = pattern.y1; y <= pattern.y2; ++y)
+        level.map[level.xy2cell(x, y)] = pattern.data[pattern.xy2cell(x, y)];
+  }
+  protected void digWall(Level level){
+    
+  }
+  
+  
+  protected ArrayList<XWall> newDigableWalls() {
+    return new ArrayList<>();
   }
 
 }

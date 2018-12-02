@@ -43,51 +43,52 @@ public class DPDTestLevel extends Level {
 
   @Override
   protected boolean build() {
-    digFirstRoom();
-
-    int rooms = 20;
-    TunnelDigger tunnelDigger = new TunnelDigger();
-    NormalRoomDigger normalRoomDigger = new NormalRoomDigger();
-    boolean digok = true;
-    while (rooms > 0 && digok) {
-      if (Random.Float() < 0.4) {
-        digok = dig(normalRoomDigger);
-        --rooms;
-      } else {
-        digok = dig(tunnelDigger);
+    // dig rooms
+    {
+      digFirstRoom();
+      
+      int roomsToDig = 20;
+      for(int i=0; i<1000; ++i) {
+        if(digableWalls.isEmpty())
+          break;
+        XWall wall = Random.element(digableWalls);
+        if(digAt(new NormalRoomDigger().wall(wall))){
+          digableWalls.remove(wall);
+          
+          if(--roomsToDig==0)
+            break;
+        }
       }
+      Log.d("dpd", String.format("%d rooms digged.", 20-roomsToDig));
+      
+      int lc = makeLoopClosure(6);
+      Log.d("dpd", String.format("%d loop closures made.", lc));
     }
-    Log.d("dpd", String.format("%d rooms digged.", 20 - rooms));
-    if (rooms < 12) return false;
-
-    int lc = makeLoopClosure(6);
-    Log.d("dpd", String.format("%d loop closures linked.", lc));
-    if (lc < 3) return false;
     
     // place entrance and exit
-    ArrayList<XRoom> normalRooms = new ArrayList<>();
-    for (XRoom room : diggedRooms) {
-      if (room.type == XRoom.Type.NORMAL)
-        normalRooms.add(room);
+    ArrayList<DigPattern> normalPatterns = new ArrayList<>();
+    for (DigPattern pattern : diggedPatterns) {
+      if (pattern.type == DigPattern.Type.NORMAL)
+        normalPatterns.add(pattern);
     }
-    XRoom roomEnter = Random.element(normalRooms);
-    XRoom roomExit;
-    int trials = 0;
-    do {
-      if (++trials == 100)
-        return false;
-
-      roomExit = Random.element(normalRooms);
-    } while (roomExit == roomEnter || distance(pointToCell(roomExit.cen()),
-            pointToCell(roomEnter.cen())) < 12);
-
-    entrance = pointToCell(roomEnter.random(1));
+    Log.d("dpd", String.format("%d/%d normal patterns.", 
+            normalPatterns.size(), diggedPatterns.size()));
+    
+    DigPattern patternEnter = Random.element(normalPatterns);
+    DigPattern patternExit = null;
+    for(int i=0; i<100; ++i){
+      patternExit = Random.element(normalPatterns);
+      if(patternEnter!=patternExit)
+        break;
+    }
+    
+    entrance = pointToCell(patternEnter.random(1));
     map[entrance] = Terrain.ENTRANCE;
-    exit = pointToCell(roomExit.random(1));
+    exit = pointToCell(patternExit.random(1));
     map[exit] = Terrain.EXIT;
 
     // do some painting
-    
+
     return true;
   }
 
@@ -106,9 +107,8 @@ public class DPDTestLevel extends Level {
 
   //////////////////////////////////////////////////////////////////////////////
   // my digging algorithm
-  // ArrayList<XRoom> rooms;
   ArrayList<XWall> digableWalls = new ArrayList<>();
-  ArrayList<XRoom> diggedRooms = new ArrayList<>(); // only the rect info counts
+  ArrayList<DigPattern> diggedPatterns = new ArrayList<>();
 
   private void digFirstRoom() {
     int w = Random.IntRange(3, 6);
@@ -116,47 +116,20 @@ public class DPDTestLevel extends Level {
     int x = Random.IntRange(width / 4, width / 4 * 3 - w);
     int y = Random.IntRange(height / 4, height / 4 * 3 - h);
 
-    Digger.Fill(this, x, y, w, h, Terrain.EMPTY);
-    XRect room = XRect.create(x, y, w, h);
-    digableWalls.add(new XWall(room.x1 - 1, room.x1 - 1, room.y1, room.y2,
-            Digger.LEFT));
-    digableWalls.add(new XWall(room.x2 + 1, room.x2 + 1, room.y1, room.y2,
-            Digger.RIGHT));
-    digableWalls.add(new XWall(room.x1, room.x2, room.y1 - 1, room.y1 - 1,
-            Digger.UP));
-    digableWalls.add(new XWall(room.x1, room.x2, room.y2 + 1, room.y2 + 1,
-            Digger.DOWN));
-
-    diggedRooms.add(new XRoom(room.x1, room.x2, room.y1, room.y2,
-            new XWall(room.cen().x, room.cen().y, Digger.NONE), new Point()));
+    digAt(new InitRoomDigger().wall(
+            new XWall(x, x + w - 1, y, y + h - 1, Digger.NONE)));
   }
 
-  private boolean dig(Digger digger) {
-    if (digableWalls.isEmpty()) return false;
+  private boolean digAt(Digger digger) {
+    if (!canDigAt(digger.desireDigSpace()))
+      return false;
 
-    // try 100 times to dig a room
-    for (int i = 0; i < 100; ++i) {
-      // select a wall, choose a init dig position
-      int index = Random.Int(digableWalls.size());
-      XWall wall = digableWalls.get(index);
+    Digger.DigResult dr = digger.dig(this);
 
-      // determine place to dig
-      XRoom newRoom = digger.desireDigRoom(wall);
+    digableWalls.addAll(dr.walls);
+    diggedPatterns.add(dr.pattern);
 
-      if (canDigAt(newRoom)) {
-        // dig! door type is set in the digger
-        digableWalls.addAll(digger.dig(this, newRoom));
-        digableWalls.remove(index);
-
-        //! set room type!!!
-        Digger.AssignRoomType(newRoom, digger);
-        diggedRooms.add(newRoom);
-
-        return true;
-      }
-    }
-
-    return false;
+    return true;
   }
 
   private boolean canDigAt(XRect rect) {
