@@ -3,6 +3,8 @@ package com.egoal.darkestpixeldungeon.levels.diggers;
 import com.watabou.utils.Random;
 import com.watabou.utils.Point;
 
+import java.util.HashSet;
+
 /**
  * Created by 93942 on 11/27/2018.
  */
@@ -39,6 +41,14 @@ public class XRect {
             Random.IntRange(y1 + inner, y2 - inner));
   }
 
+  public Point random() {
+    return random(0);
+  }
+
+  public XRect inner(int i) {
+    return new XRect(x1 + i, x2 - i, y1 + i, y2 - i);
+  }
+
   public XRect overlap(XRect rect) {
     return new XRect(Math.max(x1, rect.x1), Math.min(x2, rect.x2),
             Math.max(y1, rect.y1), Math.min(y2, rect.y2));
@@ -46,5 +56,14 @@ public class XRect {
 
   public boolean isValid() {
     return x1 <= x2 && y1 <= y2;
+  }
+
+  public HashSet<Point> getAllPoints() {
+    HashSet<Point> points = new HashSet<>(w() * h());
+    for (int x = x1; x <= x2; ++x)
+      for (int y = y1; y <= y2; ++y)
+        points.add(new Point(x, y));
+
+    return points;
   }
 }

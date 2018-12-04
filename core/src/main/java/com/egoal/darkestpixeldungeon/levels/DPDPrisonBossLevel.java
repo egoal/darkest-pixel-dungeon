@@ -167,11 +167,7 @@ public class DPDPrisonBossLevel extends Level {
     // entrance && exit
     entrance = pointToCell(rmStart.centerFixed());
     exit = pointToCell(rmExit.centerFixed());
-
-//    do {
-//      entrance = pointToCell(rmHall.random(1));
-//    } while (map[entrance] != Terrain.EMPTY);
-
+    
     map[entrance] = Terrain.ENTRANCE;
     map[exit] = Terrain.EXIT;
 

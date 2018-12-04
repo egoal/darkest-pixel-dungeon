@@ -4,12 +4,22 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.Bones;
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
+import com.egoal.darkestpixeldungeon.items.Heap;
+import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.diggers.*;
+import com.egoal.darkestpixeldungeon.levels.painters.Painter;
+import com.egoal.darkestpixeldungeon.levels.painters.TreasuryPainter;
+import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by 93942 on 11/11/2018.
@@ -44,47 +54,14 @@ public class DPDTestLevel extends Level {
   @Override
   protected boolean build() {
     // dig rooms
-    {
-      digFirstRoom();
-      
-      int roomsToDig = 20;
-      for(int i=0; i<1000; ++i) {
-        if(digableWalls.isEmpty())
-          break;
-        XWall wall = Random.element(digableWalls);
-        if(digAt(new NormalRoomDigger().wall(wall))){
-          digableWalls.remove(wall);
-          
-          if(--roomsToDig==0)
-            break;
-        }
-      }
-      Log.d("dpd", String.format("%d rooms digged.", 20-roomsToDig));
-      
-      int lc = makeLoopClosure(6);
-      Log.d("dpd", String.format("%d loop closures made.", lc));
-    }
-    
+    if (!digLevel())
+      return false;
+
     // place entrance and exit
-    ArrayList<DigPattern> normalPatterns = new ArrayList<>();
-    for (DigPattern pattern : diggedPatterns) {
-      if (pattern.type == DigPattern.Type.NORMAL)
-        normalPatterns.add(pattern);
-    }
-    Log.d("dpd", String.format("%d/%d normal patterns.", 
-            normalPatterns.size(), diggedPatterns.size()));
-    
-    DigPattern patternEnter = Random.element(normalPatterns);
-    DigPattern patternExit = null;
-    for(int i=0; i<100; ++i){
-      patternExit = Random.element(normalPatterns);
-      if(patternEnter!=patternExit)
-        break;
-    }
-    
-    entrance = pointToCell(patternEnter.random(1));
+
+    entrance = xy2cell(width / 2, height / 2);
+    exit = entrance + 4;
     map[entrance] = Terrain.ENTRANCE;
-    exit = pointToCell(patternExit.random(1));
     map[exit] = Terrain.EXIT;
 
     // do some painting
@@ -103,33 +80,114 @@ public class DPDTestLevel extends Level {
 
   @Override
   protected void createItems() {
+    // drop the items
+    for (Item item : itemsToSpawn) {
+      int cell = randomDropCell();
+      // don't drop scroll on fire trap
+      if (item instanceof Scroll) {
+        while (map[cell] == Terrain.TRAP || map[cell] == Terrain.SECRET_TRAP &&
+                traps.get(cell) instanceof FireTrap)
+          cell = randomDropCell();
+      }
+
+      drop(item, cell).type = Heap.Type.HEAP;
+    }
+
+    // drop the hero bones
+    Item item = Bones.get();
+    if (item != null) {
+      drop(item, randomDropCell()).type = Heap.Type.REMAINS;
+    }
+  }
+
+  protected int randomDropCell() {
+    while (true){
+      int cell = pointToCell(Random.element(normalSpaces).random());
+      if(passable[cell])
+        return cell;
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////////
   // my digging algorithm
-  ArrayList<XWall> digableWalls = new ArrayList<>();
-  ArrayList<DigPattern> diggedPatterns = new ArrayList<>();
+  private ArrayList<XWall> digableWalls = new ArrayList<>();
+  
+  // keep in mind that the normal spaces is always rectangle.
+  //todo: may track the space type.
+  private ArrayList<XRect> normalSpaces = new ArrayList<>();
+
+  private boolean digLevel() {
+    digFirstRoom();
+
+    ArrayList<Digger> diggers = chooseDiaggers();
+
+    while (!diggers.isEmpty() && !digableWalls.isEmpty()) {
+      // choose a digger
+      Digger digger = Random.element(diggers);
+
+      // dig a room
+      boolean digged = false;
+      for (int i = 0; i < 100; ++i) {
+        XWall wall = Random.element(digableWalls);
+        XRect rect = digger.chooseDigArea(wall);
+        if (canDigAt(rect)) {
+          // free to dig, dig!
+          digged = true;
+
+          Digger.DigResult dr = digger.dig(this, wall, rect);
+
+          digableWalls.remove(wall);
+          digableWalls.addAll(dr.walls);
+          if(dr.type== Digger.DigResult.Type.NORMAL)
+            normalSpaces.add(rect);
+          break;
+        }
+      }
+
+      if (!digged) return false;
+
+      diggers.remove(digger);
+    }
+    Log.d("dpd", String.format("%d diggers left...", diggers.size()));
+
+    int lc = makeLoopClosure(6);
+    Log.d("dpd", String.format("%d loop linked.", lc));
+
+    if (lc <= 2)
+      return false;
+
+    return true;
+  }
 
   private void digFirstRoom() {
     int w = Random.IntRange(3, 6);
     int h = Random.IntRange(3, 6);
-    int x = Random.IntRange(width / 4, width / 4 * 3 - w);
-    int y = Random.IntRange(height / 4, height / 4 * 3 - h);
+    int x1 = Random.IntRange(width / 4, width / 4 * 3 - w);
+    int y1 = Random.IntRange(height / 4, height / 4 * 3 - h);
+    int x2 = x1 + w - 1;
+    int y2 = y1 + h - 1;
 
-    digAt(new InitRoomDigger().wall(
-            new XWall(x, x + w - 1, y, y + h - 1, Digger.NONE)));
+    Digger.Fill(this, x1, y1, w, h, Terrain.EMPTY);
+    digableWalls.add(new XWall(x1 - 1, x1 - 1, y1, y2, Digger.LEFT));
+    digableWalls.add(new XWall(x2 + 1, x2 + 1, y1, y2, Digger.RIGHT));
+    digableWalls.add(new XWall(x1, x2, y1 - 1, y1 - 1, Digger.UP));
+    digableWalls.add(new XWall(x1, x2, y2 + 1, y2 + 1, Digger.DOWN));
   }
 
-  private boolean digAt(Digger digger) {
-    if (!canDigAt(digger.desireDigSpace()))
-      return false;
+  protected ArrayList<Digger> chooseDiaggers() {
+    ArrayList<Digger> diggers = new ArrayList<>();
+    diggers.add(new LaboratoryDigger());
+    for (int i = 0; i < 19; ++i) {
+//      float f = Random.Float();
+//      if(f<0.7)
+//        diggers.add(new NormalRoomDigger());
+//      else
+//        diggers.add(new TunnelDigger());
+      diggers.add(new NormalRoomDigger());
+    }
 
-    Digger.DigResult dr = digger.dig(this);
-
-    digableWalls.addAll(dr.walls);
-    diggedPatterns.add(dr.pattern);
-
-    return true;
+    // no need to shuffle.
+    return diggers;
   }
 
   private boolean canDigAt(XRect rect) {
@@ -158,21 +216,26 @@ public class DPDTestLevel extends Level {
       for (int j = i + 1; j < cntWalls; ++j) {
         XWall wj = digableWalls.get(j);
 
-        if (wi.overlap(wj).isValid())
-          overlappedWalls.add(new Pair<XWall, XWall>(wi, wj));
+        if (wi.direction == -wj.direction && wi.overlap(wj).isValid())
+          overlappedWalls.add(new Pair<>(wi, wj));
       }
     }
 
-    while (!overlappedWalls.isEmpty()) {
-      int i = Random.Int(overlappedWalls.size());
-      Pair<XWall, XWall> pr = overlappedWalls.get(i);
-      Point dp = pr.first.overlap(pr.second).random(0);
+    Collections.shuffle(overlappedWalls);
+    for (Pair<XWall, XWall> pr : overlappedWalls) {
+      int dp = pointToCell(pr.first.overlap(pr.second).random(0));
 
-      overlappedWalls.remove(i);
-      if (map[xy2cell(dp.x, dp.y)] == Terrain.WALL) {
-        // dig!
-        Digger.Set(this, dp, pr.first.isRoomWall || pr.second.isRoomWall ?
-                Terrain.DOOR : Terrain.EMPTY);
+      boolean canBeDoor = map[dp] == Terrain.WALL;
+      if (canBeDoor) {
+        for (int i : PathFinder.NEIGHBOURS8)
+          if (map[dp + i] == Terrain.DOOR) {
+            canBeDoor = false;
+            break;
+          }
+      }
+
+      if (canBeDoor) {
+        Digger.Set(this, dp, Terrain.DOOR);
         digableWalls.remove(pr.first);
         digableWalls.remove(pr.second);
 

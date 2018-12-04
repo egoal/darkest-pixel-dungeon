@@ -17,13 +17,13 @@ public abstract class Digger {
   public static final int UP = -2;
   public static final int DOWN = 2;
 
-  public static int[] directions = new int[4];
+  public static int[] Directions = new int[4];
 
   {
-    directions[0] = LEFT;
-    directions[1] = RIGHT;
-    directions[2] = UP;
-    directions[3] = DOWN;
+    Directions[0] = LEFT;
+    Directions[1] = RIGHT;
+    Directions[2] = UP;
+    Directions[3] = DOWN;
   }
 
   public static void Set(Level level, int cell, int tile) {
@@ -35,7 +35,7 @@ public abstract class Digger {
   }
 
   public static void Set(Level level, Point pos, int tile) {
-    Set(level, pos.x, pos.y, tile);
+    Set(level, level.pointToCell(pos), tile);
   }
 
   public static void Fill(Level level, int x, int y, int w, int h, int tile) {
@@ -102,56 +102,33 @@ public abstract class Digger {
     return true;
   }
 
-  // class digger
-  protected DigPattern pattern;
-  protected XWall wall;
-
-  // this must be called before dig!
-  public Digger wall(XWall wall) {
-    this.wall = wall;
-    return this;
-  }
-
+  // class Digger
   public static class DigResult {
-    public DigPattern pattern;
-    public ArrayList<XWall> walls;
+    // space type
+    public enum Type {
+      NORMAL,
+      SPECIAL, 
+      LOCKED,
+      TUNNEL,
+    }
+
+    public Type type = Type.NORMAL;
+    public ArrayList<XWall> walls = new ArrayList<>();
+
+    public DigResult type(Type type) {
+      this.type = type;
+      return this;
+    }
+
+    public DigResult walls(ArrayList<XWall> walls) {
+      this.walls = walls;
+      return this;
+    }
   }
 
-  public XRect desireDigSpace() {
-    if (pattern == null)
-      createPattern();
-    return pattern;
-  }
+  // determine where to place the room on the digWall
+  public abstract XRect chooseDigArea(XWall wall);
 
-  public DigResult dig(Level level) {
-    if (pattern == null)
-      createPattern();
-    
-    // copy dig pattern
-    digPattern(level);
-    digWall(level);
-
-    DigResult dr = new DigResult();
-    dr.pattern = pattern;
-    dr.walls = newDigableWalls();
-    return dr;
-  }
-
-  // interface.
-  protected abstract void createPattern();
-  
-  protected void digPattern(Level level){
-    for (int x = pattern.x1; x <= pattern.x2; ++x)
-      for (int y = pattern.y1; y <= pattern.y2; ++y)
-        level.map[level.xy2cell(x, y)] = pattern.data[pattern.xy2cell(x, y)];
-  }
-  protected void digWall(Level level){
-    
-  }
-  
-  
-  protected ArrayList<XWall> newDigableWalls() {
-    return new ArrayList<>();
-  }
+  public abstract DigResult dig(Level level, XWall wall, XRect rect);
 
 }
