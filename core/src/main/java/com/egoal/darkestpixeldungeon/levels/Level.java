@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
@@ -299,6 +301,7 @@ public abstract class Level implements Bundlable {
 
     boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
 
+    int _trails = 0;
     do {
       Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
 
@@ -312,8 +315,10 @@ public abstract class Level implements Bundlable {
       traps = new SparseArray<>();
       customTiles = new HashSet<>();
 
+      ++_trails;
     } while (!build());
-
+    Log.d("dpd", String.format("level build okay after %d trails.", _trails));
+    
     decorate();
 
     buildFlagMaps();

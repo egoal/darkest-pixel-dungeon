@@ -24,10 +24,12 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
+import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
@@ -257,6 +259,8 @@ public class King extends Mob {
     IMMUNITIES.add(Paralysis.class);
     IMMUNITIES.add(Vertigo.class);
     IMMUNITIES.add(Corruption.class);
+    IMMUNITIES.add(Terror.class);
+    IMMUNITIES.add(Charm.class);
   }
 
   @Override

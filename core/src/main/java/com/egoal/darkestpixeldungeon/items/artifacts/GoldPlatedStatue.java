@@ -41,7 +41,7 @@ public class GoldPlatedStatue extends Artifact {
       if (!isEquipped(hero))
         GLog.i(Messages.get(Artifact.class, "need_to_equip"));
       else {
-        int goldRequired = (int) (100 * Math.pow(1.25, level()));
+        int goldRequired = (int) (100 * Math.pow(1.27, level()));
         if (Dungeon.gold < goldRequired)
           GLog.w(Messages.get(GoldPlatedStatue.class, "no_enough_gold",
                   goldRequired));

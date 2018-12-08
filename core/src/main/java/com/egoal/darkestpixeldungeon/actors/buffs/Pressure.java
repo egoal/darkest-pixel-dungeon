@@ -183,7 +183,7 @@ public class Pressure extends Buff implements Hero.Doom {
                 this, target).type(Damage.Type.MAGICAL).addFeature(Damage
                 .Feature.PURE));
 
-        if (target == Dungeon.hero) {
+        if (target == Dungeon.hero && target.isAlive()) {
           Dungeon.hero.interrupt();
           GLog.n(Messages.get(this, "onhurt"));
         }

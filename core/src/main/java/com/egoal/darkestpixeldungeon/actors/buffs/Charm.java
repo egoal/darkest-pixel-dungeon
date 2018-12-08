@@ -91,9 +91,15 @@ public class Charm extends FlavourBuff {
 
     @Override
     public boolean act() {
-      Buff.affect(target, Charm.class, Charm.durationFactor(target) * 
+      Buff.affect(target, Charm.class, Charm.durationFactor(target) *
               charm_duration).object = charmer;
       return super.act();
     }
+
+    @Override
+    public String toString() {
+      return "";
+    }
+
   }
 }

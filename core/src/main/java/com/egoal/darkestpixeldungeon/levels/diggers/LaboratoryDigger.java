@@ -75,7 +75,7 @@ public class LaboratoryDigger extends RectDigger {
     }
 
     //todo: this room can NOT be linked!
-    return new DigResult().type(DigResult.Type.LOCKED);
+    return new DigResult(DigResult.Type.LOCKED);
   }
 
   private static Item prize(Level level) {

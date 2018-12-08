@@ -12,6 +12,11 @@ import java.util.ArrayList;
  */
 
 public abstract class RectDigger extends Digger {
+
+  protected Point chooseRoomSize(XWall wall) {
+    return new Point(Random.IntRange(3, 8), Random.IntRange(3, 8));
+  }
+  
   @Override
   public XRect chooseDigArea(XWall wall) {
     Point size = chooseRoomSize(wall);
@@ -37,10 +42,6 @@ public abstract class RectDigger extends Digger {
     }
 
     return XRect.create(x, y, size.x, size.y);
-  }
-
-  protected Point chooseRoomSize(XWall wall) {
-    return new Point(Random.IntRange(3, 6), Random.IntRange(3, 6));
   }
 
   protected ArrayList<XWall> walls(XRect rect, int... directions) {

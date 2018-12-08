@@ -162,9 +162,14 @@ public class UnstableSpellbook extends Artifact {
     if (level() < levelCap)
       if (scrolls.size() > 0) {
         desc += "\n\n" + Messages.get(this, "desc_index");
-        desc += "\n" + Messages.get(scrolls.get(0), "name");
-        if (scrolls.size() > 1)
-          desc += "\n" + Messages.get(scrolls.get(1), "name");
+        for(int i=0; i<3 && i<scrolls.size(); ++i){
+          desc += "\n"+ Messages.get(scrolls.get(i), "name");
+        }
+        
+//        desc += "\n" + Messages.get(scrolls.get(0), "name");
+//        if (scrolls.size() > 1) {
+//          desc += "\n" + Messages.get(scrolls.get(1), "name");
+//        }
       }
 
     return desc;
@@ -221,7 +226,7 @@ public class UnstableSpellbook extends Artifact {
     public void onSelect(Item item) {
       if (item != null && item instanceof Scroll && item.isIdentified()) {
         Hero hero = Dungeon.hero;
-        for (int i = 0; (i <= 1 && i < scrolls.size()); i++) {
+        for (int i = 0; (i <= 2 && i < scrolls.size()); i++) {
           if (scrolls.get(i).equals(item.getClass())) {
             hero.sprite.operate(hero.pos);
             hero.busy();

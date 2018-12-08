@@ -5,17 +5,12 @@ import android.util.Pair;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
-import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.diggers.*;
-import com.egoal.darkestpixeldungeon.levels.painters.Painter;
-import com.egoal.darkestpixeldungeon.levels.painters.TreasuryPainter;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -58,9 +53,8 @@ public class DPDTestLevel extends Level {
       return false;
 
     // place entrance and exit
-
     entrance = xy2cell(width / 2, height / 2);
-    exit = entrance + 4;
+    exit = entrance + 1;
     map[entrance] = Terrain.ENTRANCE;
     map[exit] = Terrain.EXIT;
 
@@ -101,25 +95,29 @@ public class DPDTestLevel extends Level {
   }
 
   protected int randomDropCell() {
-    while (true){
+    while (true) {
       int cell = pointToCell(Random.element(normalSpaces).random());
-      if(passable[cell])
+      if (passable[cell])
         return cell;
     }
   }
 
   //////////////////////////////////////////////////////////////////////////////
   // my digging algorithm
-  private ArrayList<XWall> digableWalls = new ArrayList<>();
-  
+  private ArrayList<XWall> digableWalls; // = new ArrayList<>();
+
   // keep in mind that the normal spaces is always rectangle.
   //todo: may track the space type.
-  private ArrayList<XRect> normalSpaces = new ArrayList<>();
+  private ArrayList<XRect> normalSpaces; // = new ArrayList<>();
 
   private boolean digLevel() {
+    digableWalls = new ArrayList<>();
+    normalSpaces = new ArrayList<>();
+
     digFirstRoom();
 
     ArrayList<Digger> diggers = chooseDiaggers();
+    Log.d("dpd", String.format("%d rooms to dig.", diggers.size()));
 
     while (!diggers.isEmpty() && !digableWalls.isEmpty()) {
       // choose a digger
@@ -138,13 +136,14 @@ public class DPDTestLevel extends Level {
 
           digableWalls.remove(wall);
           digableWalls.addAll(dr.walls);
-          if(dr.type== Digger.DigResult.Type.NORMAL)
+          if (dr.type == Digger.DigResult.Type.NORMAL)
             normalSpaces.add(rect);
           break;
         }
       }
 
       if (!digged) return false;
+
 
       diggers.remove(digger);
     }
@@ -177,12 +176,18 @@ public class DPDTestLevel extends Level {
   protected ArrayList<Digger> chooseDiaggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
     diggers.add(new LaboratoryDigger());
-    for (int i = 0; i < 19; ++i) {
-//      float f = Random.Float();
-//      if(f<0.7)
-//        diggers.add(new NormalRoomDigger());
-//      else
-//        diggers.add(new TunnelDigger());
+    diggers.add(new GardenDigger());
+    diggers.add(new StatuaryDigger());
+    diggers.add(new LibraryDigger());
+    diggers.add(new PitDigger());
+    diggers.add(new PoolDigger());
+    diggers.add(new ShopDigger());
+    diggers.add(new StorageDigger());
+    diggers.add(new TrapsDigger());
+    diggers.add(new VaultDigger());
+    diggers.add(new TreasuryDigger());
+    int n = 20 - diggers.size();
+    for (int i = 0; i < n; ++i) {
       diggers.add(new NormalRoomDigger());
     }
 

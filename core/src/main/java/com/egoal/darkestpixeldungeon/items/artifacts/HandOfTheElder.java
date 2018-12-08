@@ -193,7 +193,10 @@ public class HandOfTheElder extends Artifact {
 
                     if (buff == Vulnerable.class)
                       Buff.prolong(c, Vulnerable.class, duration).ratio = 1.5f;
-                    else
+                    else if (buff == Charm.Attacher.class) {
+                      new Charm.Attacher(curUser.id(), (int) duration)
+                              .attachTo(c);
+                    } else
                       Buff.prolong(c, buff, duration);
                   }
                 }

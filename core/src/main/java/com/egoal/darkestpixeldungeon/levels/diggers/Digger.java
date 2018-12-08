@@ -107,13 +107,21 @@ public abstract class Digger {
     // space type
     public enum Type {
       NORMAL,
-      SPECIAL, 
+      SPECIAL,
       LOCKED,
       TUNNEL,
     }
 
-    public Type type = Type.NORMAL;
-    public ArrayList<XWall> walls = new ArrayList<>();
+    public Type type;
+    public ArrayList<XWall> walls;
+
+    DigResult() {
+      this(Type.NORMAL);
+    }
+    DigResult(Type type){
+      this.type = type;
+      walls = new ArrayList<>();
+    }
 
     public DigResult type(Type type) {
       this.type = type;

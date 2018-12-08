@@ -40,6 +40,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
+import com.egoal.darkestpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
@@ -62,6 +63,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfHaste;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -154,8 +156,6 @@ public enum HeroClass {
     // the seed pouch is carried.
     (new SeedPouch()).identify().collect();
     Dungeon.limitedDrops.seedBag.drop();
-
-    // new ScrollOfMagicMapping().identify().collect();
     
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
