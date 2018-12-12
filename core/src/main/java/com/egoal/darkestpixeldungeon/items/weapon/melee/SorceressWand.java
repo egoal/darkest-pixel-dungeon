@@ -24,6 +24,11 @@ public class SorceressWand extends MeleeWeapon {
     enchant(new Unstable());
   }
 
+  @Override
+  public int min(int lvl) {
+    return super.min(lvl) + 1;
+  }
+
   // 1~7
   @Override
   public int max(int lvl) {

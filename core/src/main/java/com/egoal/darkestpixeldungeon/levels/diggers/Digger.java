@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers;
 
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -139,4 +140,29 @@ public abstract class Digger {
 
   public abstract DigResult dig(Level level, XWall wall, XRect rect);
 
+  protected XRect chooseCenteredBox(XWall wall, int hs){
+    // the door is centered
+    int size = hs * 2 + 1;
+    int x = -1, y = -1;
+    switch (wall.direction) {
+      case LEFT:
+        x = wall.x1 - size;
+        y = Random.IntRange(wall.y1, wall.y2) - hs;
+        break;
+      case RIGHT:
+        x = wall.x2 + 1;
+        y = Random.IntRange(wall.y1, wall.y2) - hs;
+        break;
+      case UP:
+        x = Random.IntRange(wall.x1, wall.x2) - hs;
+        y = wall.y1 - size;
+        break;
+      case DOWN:
+        x = Random.IntRange(wall.x1, wall.x2) - hs;
+        y = wall.y2 + 1;
+        break;
+    }
+
+    return XRect.create(x, y, size, size);
+  }
 }

@@ -206,8 +206,10 @@ public abstract class Level implements Bundlable {
     mapped = new boolean[length()];
     Arrays.fill(mapped, false);
 
+    ArrayList<Item> stationaryItems = new ArrayList<>();
+
     if (Dungeon.depth > 0 && (!(Dungeon.bossLevel() || Dungeon.depth == 21))) {
-      addItemToSpawn(Generator.random(Generator.Category.FOOD));
+      stationaryItems.add(Generator.random(Generator.Category.FOOD));
 
       // special items
       int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth
@@ -215,31 +217,31 @@ public abstract class Level implements Bundlable {
 
       if (Dungeon.posNeeded()) {
         if (Random.Float() > Math.pow(0.925, bonus))
-          addItemToSpawn(new PotionOfMight());
+          stationaryItems.add(new PotionOfMight());
         else
-          addItemToSpawn(new PotionOfStrength());
+          stationaryItems.add(new PotionOfStrength());
         Dungeon.limitedDrops.strengthPotions.count++;
       }
       if (Dungeon.souNeeded()) {
-        addItemToSpawn(new ScrollOfUpgrade());
+        stationaryItems.add(new ScrollOfUpgrade());
         Dungeon.limitedDrops.upgradeScrolls.count++;
       }
       if (Dungeon.asNeeded()) {
         if (Random.Float() > Math.pow(0.925, bonus))
-          addItemToSpawn(new Stylus());
-        addItemToSpawn(new Stylus());
+          stationaryItems.add(new Stylus());
+        stationaryItems.add(new Stylus());
         Dungeon.limitedDrops.arcaneStyli.count++;
       }
       if (Dungeon.wineNeeded()) {
         if (Random.Float() > Math.pow(0.925, bonus))
-          addItemToSpawn(new Wine());
-        addItemToSpawn(new Wine());
+          stationaryItems.add(new Wine());
+        stationaryItems.add(new Wine());
         Dungeon.limitedDrops.wine.count++;
       }
       if (Dungeon.scrollOfLullabyNeed()) {
         if (Random.Float() > Math.pow(0.925, bonus))
-          addItemToSpawn(new ScrollOfLullaby());
-        addItemToSpawn(new ScrollOfLullaby());
+          stationaryItems.add(new ScrollOfLullaby());
+        stationaryItems.add(new ScrollOfLullaby());
         Dungeon.limitedDrops.lullabyScrolls.count++;
       }
 
@@ -253,7 +255,7 @@ public abstract class Level implements Bundlable {
         for (int i = 1; i <= petalsNeeded; i++) {
           //the player may miss a single petal and still max their rose.
           if (rose.droppedPetals < 11) {
-            addItemToSpawn(new DriedRose.Petal());
+            stationaryItems.add(new DriedRose.Petal());
             rose.droppedPetals++;
           }
         }
@@ -263,7 +265,7 @@ public abstract class Level implements Bundlable {
         switch (Random.Int(10)) {
           case 0:
             if (!Dungeon.bossLevel(Dungeon.depth + 1)) {
-              feeling = Feeling.CHASM;
+              // feeling = Feeling.CHASM;
             }
             break;
           case 1:
@@ -275,8 +277,6 @@ public abstract class Level implements Bundlable {
           case 3:
           case 4:
             feeling = Feeling.DARK;
-            // viewDistance /= 2;
-            // viewDistance and feeling processed in hero::viewDistance
             break;
         }
 
@@ -288,14 +288,14 @@ public abstract class Level implements Bundlable {
                   (Dungeon.depth + 1) * Dungeon.depth / 20;
           // now the expectation is 1.3->0.2 with 1->25
           if (Random.Int(PROB_NUM) == 0) {
-            addItemToSpawn(new Torch());
+            stationaryItems.add(new Torch());
             ++torchCount;
           }
         }
 
         // extra wine
         if (Random.Int(10) == 0)
-          addItemToSpawn(new Wine());
+          stationaryItems.add(new Wine());
       }
     }
 
@@ -303,8 +303,10 @@ public abstract class Level implements Bundlable {
 
     int _trails = 0;
     do {
-      Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
-
+      itemsToSpawn = (ArrayList<Item>) stationaryItems.clone();
+      // Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
+      Arrays.fill(map, Terrain.WALL);
+      
       pitRoomNeeded = pitNeeded;
       weakFloorCreated = false;
 
@@ -318,7 +320,7 @@ public abstract class Level implements Bundlable {
       ++_trails;
     } while (!build());
     Log.d("dpd", String.format("level build okay after %d trails.", _trails));
-    
+
     decorate();
 
     buildFlagMaps();
@@ -856,7 +858,8 @@ public abstract class Level implements Bundlable {
                     instanceof Plant.Seed || item instanceof Dewdrop || item
                     instanceof SeedPouch)) ||
             (Dungeon.isChallenged(Challenges.NO_SCROLLS) && ((item instanceof
-                    Scroll && !(item instanceof ScrollOfUpgrade)) || item instanceof
+                    Scroll && !(item instanceof ScrollOfUpgrade)) || item
+                    instanceof
                     ScrollHolder)) ||
             item == null) {
 
@@ -919,7 +922,7 @@ public abstract class Level implements Bundlable {
 
     return heap;
   }
-  
+
   public Plant plant(Plant.Seed seed, int pos) {
 
     Plant plant = plants.get(pos);

@@ -7,8 +7,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-import java.io.FileInputStream;
-
 /**
  * Created by 93942 on 2018/12/5.
  */
@@ -16,30 +14,7 @@ import java.io.FileInputStream;
 public class StatuaryDigger extends Digger {
   @Override
   public XRect chooseDigArea(XWall wall) {
-    int hs = Random.NormalIntRange(2, 5);
-    // the door is centered
-    int size = hs * 2 + 1;
-    int x = -1, y = -1;
-    switch (wall.direction) {
-      case LEFT:
-        x = wall.x1 - size;
-        y = Random.IntRange(wall.y1, wall.y2) - hs;
-        break;
-      case RIGHT:
-        x = wall.x2 + 1;
-        y = Random.IntRange(wall.y1, wall.y2) - hs;
-        break;
-      case UP:
-        x = Random.IntRange(wall.x1, wall.x2) - hs;
-        y = wall.y1 - size;
-        break;
-      case DOWN:
-        x = Random.IntRange(wall.x1, wall.x2) - hs;
-        y = wall.y2 + 1;
-        break;
-    }
-
-    return XRect.create(x, y, size, size);
+    return super.chooseCenteredBox(wall, Random.NormalIntRange(2, 5));
   }
 
   @Override

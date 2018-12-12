@@ -46,9 +46,12 @@ public class MadMan extends Mob implements Callback {
   @Override
   public Damage giveDamage(Char target) {
     if (target instanceof Hero) {
+      //fixme: bad design
+      int lvl = (maxLvl-3)/5;
       int dis = Dungeon.level.distance(pos, enemy.pos);
-      return new Damage(Random.Int(4 - dis, 6 - dis), this, target).type
-              (Damage.Type.MENTAL).addFeature(Damage.Feature.ACCURATE);
+      int value = Math.max(1, Random.IntRange(2, 4)+lvl-dis);
+      return new Damage(value, this, target).type(Damage.Type.MENTAL)
+              .addFeature(Damage.Feature.ACCURATE);
     } else
       return new Damage(1, this, target).addFeature(Damage.Feature.PURE)
               .addFeature(Damage.Feature.ACCURATE);

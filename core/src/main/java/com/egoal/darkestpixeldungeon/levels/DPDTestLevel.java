@@ -5,16 +5,24 @@ import android.util.Pair;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
+import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
+import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.diggers.*;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.Trap;
+import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by 93942 on 11/11/2018.
@@ -59,6 +67,9 @@ public class DPDTestLevel extends Level {
     map[exit] = Terrain.EXIT;
 
     // do some painting
+    paintWater();
+    paintGrass();
+    placeTraps();
 
     return true;
   }
@@ -67,9 +78,70 @@ public class DPDTestLevel extends Level {
   protected void decorate() {
   }
 
+  @Override
+  public int nMobs() {
+    switch (Dungeon.depth) {
+      case 0:
+      case 1:
+        return 0;
+      default:
+        return (3 + Dungeon.depth % 5 + Random.Int(6));
+    }
+  }
+
+  protected void createSellers() {
+  }
 
   @Override
   protected void createMobs() {
+    createSellers();
+
+    int mobsToSpawn = Dungeon.depth == 1 ? 10 : nMobs();
+
+    // well distributed in each rooms
+    Iterator<XRect> iter = normalSpaces.iterator();
+    while (mobsToSpawn > 0) {
+      if (!iter.hasNext())
+        iter = normalSpaces.iterator();
+      XRect rect = iter.next();
+      Mob mob = Bestiary.mob(Dungeon.depth);
+      mob.pos = pointToCell(rect.random());
+
+      if (findMob(mob.pos) == null && passable[mob.pos]) {
+        --mobsToSpawn;
+        mobs.add(mob);
+        if (mobsToSpawn > 0 && Random.Int(4) == 0) {
+          mob = Bestiary.mob(Dungeon.depth);
+          mob.pos = pointToCell(rect.random());
+          if (findMob(mob.pos) == null && passable[mob.pos]) {
+            --mobsToSpawn;
+            mobs.add(mob);
+          }
+        }
+      }
+
+    }
+  }
+
+  @Override
+  public int randomRespawnCell() {
+    for (int i = 0; i < 30; ++i) {
+      int pos = pointToCell(Random.element(normalSpaces).random());
+
+      if (!Dungeon.visible[pos] && Actor.findChar(pos) == null && passable[pos])
+        return pos;
+    }
+
+    return -1;
+  }
+
+  @Override
+  public int randomDestination() {
+    while (true) {
+      int pos = Random.Int(length());
+      if (passable[pos])
+        return pos;
+    }
   }
 
   @Override
@@ -100,6 +172,73 @@ public class DPDTestLevel extends Level {
       if (passable[cell])
         return cell;
     }
+  }
+
+  protected void paintWater() {
+    boolean[] waters = Patch.generate(this, 0.45f, 5);
+    for (int i = 0; i < length(); ++i)
+      if (map[i] == Terrain.EMPTY && waters[i])
+        map[i] = Terrain.WATER;
+  }
+
+  protected void paintGrass() {
+    boolean[] grass = Patch.generate(this, 0.4f, 4);
+
+    for (int i = width() + 1; i < length() - width() - 1; i++) {
+      if (map[i] == Terrain.EMPTY && grass[i]) {
+        int count = 1;
+        for (int n : PathFinder.NEIGHBOURS8) {
+          if (grass[i + n]) {
+            count++;
+          }
+        }
+        map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS :
+                Terrain.GRASS;
+      }
+    }
+  }
+
+  // traps
+  protected int nTraps() {
+    return Random.NormalIntRange(1, 3 + Dungeon.depth / 2);
+  }
+
+  protected Class<?>[] trapClasses() {
+    return new Class<?>[]{WornTrap.class};
+  }
+
+  protected float[] trapChances() {
+    return new float[]{1};
+  }
+
+  protected void placeTraps() {
+    float[] trapChances = trapChances();
+    Class<?>[] trapClasses = trapClasses();
+
+    LinkedList<Integer> validCells = new LinkedList<Integer>();
+
+    for (int i = 0; i < length(); ++i) {
+      if (map[i] == Terrain.EMPTY)
+        validCells.add(i);
+    }
+
+    int ntraps = Math.min(nTraps(), (int) (validCells.size() * 0.15));
+    Collections.shuffle(validCells);
+
+    for (int i = 0; i < ntraps; ++i) {
+      int tp = validCells.removeFirst();
+      try {
+        Trap trap = ((Trap) trapClasses[Random.chances(trapChances)]
+                .newInstance()).hide();
+        setTrap(trap, tp);
+        // some traps would not be hidden
+        map[tp] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    Log.d("dpd", String.format("%d traps added.", ntraps));
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -175,17 +314,22 @@ public class DPDTestLevel extends Level {
 
   protected ArrayList<Digger> chooseDiaggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
-    diggers.add(new LaboratoryDigger());
+    diggers.add(new ArmoryDigger());
     diggers.add(new GardenDigger());
-    diggers.add(new StatuaryDigger());
+    diggers.add(new LaboratoryDigger());
     diggers.add(new LibraryDigger());
-    diggers.add(new PitDigger());
+    diggers.add(new MagicWellDigger());
+    if(pitRoomNeeded)
+      diggers.add(new PitDigger());
     diggers.add(new PoolDigger());
     diggers.add(new ShopDigger());
+    diggers.add(new StatuaryDigger());
+    diggers.add(new StatueDigger());
     diggers.add(new StorageDigger());
     diggers.add(new TrapsDigger());
-    diggers.add(new VaultDigger());
     diggers.add(new TreasuryDigger());
+    diggers.add(new VaultDigger());
+    diggers.add(new WeakFloorDigger());
     int n = 20 - diggers.size();
     for (int i = 0; i < n; ++i) {
       diggers.add(new NormalRoomDigger());

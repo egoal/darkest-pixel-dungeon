@@ -159,8 +159,8 @@ public class Mimic extends Mob {
 
       // surprise hero
       if (Dungeon.level.adjacent(pos, Dungeon.hero.pos)) {
-        Dungeon.hero.takeDamage(new Damage(Math.min(Random.Int(Dungeon.depth)
-                , 15), m, Dungeon.hero).type(Damage.Type.MENTAL));
+        Dungeon.hero.takeDamage(new Damage(Math.max(Random.Int(Dungeon.depth/2)
+                , 5), m, Dungeon.hero).type(Damage.Type.MENTAL));
       }
     }
 
