@@ -1,39 +1,17 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2016 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
 package com.egoal.darkestpixeldungeon.levels;
 
-import com.egoal.darkestpixeldungeon.DungeonTilemap;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
-import com.egoal.darkestpixeldungeon.effects.Ripple;
-import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
-import com.egoal.darkestpixeldungeon.levels.traps.ChillingTrap;
-import com.egoal.darkestpixeldungeon.levels.traps.TeleportationTrap;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.DungeonTilemap;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
+import com.egoal.darkestpixeldungeon.effects.Ripple;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.ChillingTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.FlockTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.OozeTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.SummoningTrap;
+import com.egoal.darkestpixeldungeon.levels.traps.TeleportationTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ToxicTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -46,18 +24,16 @@ import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class SewerLevel extends RegularLevel {
+/**
+ * Created by 93942 on 2018/12/13.
+ */
 
+public class DPDSewerLevel extends DPDRegularLevel {
   {
     color1 = 0x48763c;
     color2 = 0x59994a;
-  }
-
-  @Override
-  protected void setupSize() {
-    if (width == 0 || height == 0)
-      width = height = 32;
-    length = width * height;
+    viewDistance = 4;
+    seeDistance = 8;
   }
 
   @Override
@@ -70,88 +46,38 @@ public class SewerLevel extends RegularLevel {
     return Assets.WATER_SEWERS;
   }
 
+  @Override
   protected boolean[] water() {
     return Patch.generate(this, feeling == Feeling.WATER ? 0.60f : 0.45f, 5);
   }
 
+  @Override
   protected boolean[] grass() {
     return Patch.generate(this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 4);
   }
 
   @Override
   protected Class<?>[] trapClasses() {
-    return Dungeon.depth == 1 ?
-            new Class<?>[]{WornTrap.class} :
+    return Dungeon.depth == 1 ? new Class<?>[]{WornTrap.class} :
             new Class<?>[]{ChillingTrap.class, ToxicTrap.class, WornTrap.class,
-                    AlarmTrap.class, OozeTrap.class,
-                    FlockTrap.class, SummoningTrap.class, TeleportationTrap
-                    .class,};
+                    AlarmTrap.class, OozeTrap.class, FlockTrap.class,
+                    SummoningTrap.class, TeleportationTrap.class};
   }
 
   @Override
   protected float[] trapChances() {
-    return Dungeon.depth == 1 ?
-            new float[]{1} :
-            new float[]{4, 4, 4,
-                    2, 2,
-                    1, 1, 1};
+    return Dungeon.depth == 1 ? new float[]{1} :
+            new float[]{4, 4, 4, 2, 2, 1, 1, 1};
   }
 
   @Override
   protected void decorate() {
-
-    for (int i = 0; i < width(); i++) {
-      if (map[i] == Terrain.WALL &&
-              map[i + width()] == Terrain.WATER &&
-              Random.Int(4) == 0) {
-
-        map[i] = Terrain.WALL_DECO;
-      }
-    }
-
-    for (int i = width(); i < length() - width(); i++) {
-      if (map[i] == Terrain.WALL &&
-              map[i - width()] == Terrain.WALL &&
-              map[i + width()] == Terrain.WATER &&
-              Random.Int(2) == 0) {
-
-        map[i] = Terrain.WALL_DECO;
-      }
-    }
-
-    for (int i = width() + 1; i < length() - width() - 1; i++) {
-      if (map[i] == Terrain.EMPTY) {
-
-        int count =
-                (map[i + 1] == Terrain.WALL ? 1 : 0) +
-                        (map[i - 1] == Terrain.WALL ? 1 : 0) +
-                        (map[i + width()] == Terrain.WALL ? 1 : 0) +
-                        (map[i - width()] == Terrain.WALL ? 1 : 0);
-
-        if (Random.Int(16) < count * count) {
-          map[i] = Terrain.EMPTY_DECO;
-        }
-      }
-    }
-
-    //hides all doors in the entrance room on floor 2, teaches the player to 
-    // search.
-//    if (Dungeon.depth == 2)
-//      for (Room r : roomEntrance.connected.keySet()) {
-//        Room.Door d = roomEntrance.connected.get(r);
-//        if (d.type == Room.Door.Type.REGULAR)
-//          map[d.x + d.y * width()] = Terrain.SECRET_DOOR;
-//      }
-
-    placeSign();
   }
 
   @Override
   protected void createItems() {
-    // drop vial in the first floor
+    // dew vial
     if (Dungeon.depth == 1 && !Dungeon.limitedDrops.dewVial.dropped()) {
-//		if (!Dungeon.limitedDrops.dewVial.dropped() && Random.Int( 4 - Dungeon
-// .depth ) == 0) {
       addItemToSpawn(new DewVial());
       Dungeon.limitedDrops.dewVial.drop();
     }
@@ -164,18 +90,17 @@ public class SewerLevel extends RegularLevel {
   @Override
   public Group addVisuals() {
     super.addVisuals();
-    addSewerVisuals(this, visuals);
+    AddSewerVisuals(this, visuals);
     return visuals;
   }
 
-  public static void addSewerVisuals(Level level, Group group) {
-    for (int i = 0; i < level.length(); i++) {
-      if (level.map[i] == Terrain.WALL_DECO) {
+  public static void AddSewerVisuals(Level level, Group group) {
+    for (int i = 0; i < level.length(); ++i)
+      if (level.map[i] == Terrain.WALL_DECO)
         group.add(new Sink(i));
-      }
-    }
   }
 
+  //todo: tileName, tileDesc
   @Override
   public String tileName(int tile) {
     switch (tile) {
@@ -263,4 +188,5 @@ public class SewerLevel extends RegularLevel {
       left = lifespan = 0.5f;
     }
   }
+
 }

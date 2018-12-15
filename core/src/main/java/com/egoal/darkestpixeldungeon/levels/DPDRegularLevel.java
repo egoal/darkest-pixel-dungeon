@@ -5,21 +5,27 @@ import android.util.Pair;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.diggers.*;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,22 +34,12 @@ import java.util.LinkedList;
  * Created by 93942 on 11/11/2018.
  */
 
-public class DPDTestLevel extends Level {
+public abstract class DPDRegularLevel extends Level {
   {
     color1 = 0x48763c;
     color2 = 0x59994a;
     viewDistance = 8;
     seeDistance = 8;
-  }
-
-  @Override
-  public String tilesTex() {
-    return Assets.TILES_SEWERS;
-  }
-
-  @Override
-  public String waterTex() {
-    return Assets.WATER_SEWERS;
   }
 
   @Override
@@ -61,8 +57,19 @@ public class DPDTestLevel extends Level {
       return false;
 
     // place entrance and exit
-    entrance = xy2cell(width / 2, height / 2);
-    exit = entrance + 1;
+    Space spaceEntrance = randomSpace(Digger.DigResult.Type.NORMAL, -1);
+    do {
+      entrance = pointToCell(spaceEntrance.rect.random(1));
+    } while (map[entrance] != Terrain.EMPTY);
+    spaceEntrance.type = Digger.DigResult.Type.ENTRANCE;
+
+    Space spaceExit;
+    do {
+      spaceExit = randomSpace(Digger.DigResult.Type.NORMAL, 10);
+      exit = pointToCell(spaceExit.rect.random(1));
+    } while (map[exit] != Terrain.EMPTY || distance(entrance, exit) < 12);
+    spaceExit.type = Digger.DigResult.Type.EXIT;
+
     map[entrance] = Terrain.ENTRANCE;
     map[exit] = Terrain.EXIT;
 
@@ -72,10 +79,6 @@ public class DPDTestLevel extends Level {
     placeTraps();
 
     return true;
-  }
-
-  @Override
-  protected void decorate() {
   }
 
   @Override
@@ -99,20 +102,22 @@ public class DPDTestLevel extends Level {
     int mobsToSpawn = Dungeon.depth == 1 ? 10 : nMobs();
 
     // well distributed in each rooms
-    Iterator<XRect> iter = normalSpaces.iterator();
+    Iterator<Space> iter = spaces.iterator();
     while (mobsToSpawn > 0) {
       if (!iter.hasNext())
-        iter = normalSpaces.iterator();
-      XRect rect = iter.next();
+        iter = spaces.iterator();
+      Space space = iter.next();
+      if (space.type != Digger.DigResult.Type.NORMAL) continue;
+
       Mob mob = Bestiary.mob(Dungeon.depth);
-      mob.pos = pointToCell(rect.random());
+      mob.pos = pointToCell(space.rect.random());
 
       if (findMob(mob.pos) == null && passable[mob.pos]) {
         --mobsToSpawn;
         mobs.add(mob);
         if (mobsToSpawn > 0 && Random.Int(4) == 0) {
           mob = Bestiary.mob(Dungeon.depth);
-          mob.pos = pointToCell(rect.random());
+          mob.pos = pointToCell(space.rect.random());
           if (findMob(mob.pos) == null && passable[mob.pos]) {
             --mobsToSpawn;
             mobs.add(mob);
@@ -123,10 +128,21 @@ public class DPDTestLevel extends Level {
     }
   }
 
+  protected Space randomSpace(Digger.DigResult.Type type, int tries) {
+    for (int i = 0; i != tries; ++i) {
+      Space space = Random.element(spaces);
+      if (space.type == type)
+        return space;
+    }
+    return null;
+  }
+
   @Override
   public int randomRespawnCell() {
     for (int i = 0; i < 30; ++i) {
-      int pos = pointToCell(Random.element(normalSpaces).random());
+      Space space = randomSpace(Digger.DigResult.Type.NORMAL, 10);
+
+      int pos = pointToCell(space.rect.random());
 
       if (!Dungeon.visible[pos] && Actor.findChar(pos) == null && passable[pos])
         return pos;
@@ -146,6 +162,37 @@ public class DPDTestLevel extends Level {
 
   @Override
   protected void createItems() {
+    int nItems = 3;
+    {
+      // bonus from wealth
+      int bonus = RingOfWealth.getBonus(Dungeon.hero,
+              RingOfWealth.Wealth.class);
+      bonus = Math.min(bonus, 10);
+      while (Random.Float() < 0.3f + bonus * 0.05f)
+        ++nItems;
+    }
+
+    for (int i = 0; i < nItems; ++i) {
+      Heap.Type type = null;
+      switch (Random.Int(20)) {
+        case 0:
+          type = Heap.Type.SKELETON;
+          break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+          type = Heap.Type.CHEST;
+          break;
+        case 5:
+          type = Dungeon.depth > 1 ? Heap.Type.MIMIC : Heap.Type.CHEST;
+          break;
+        default:
+          type = Heap.Type.HEAP;
+      }
+      drop(Generator.random(), randomDropCell()).type = type;
+    }
+
     // drop the items
     for (Item item : itemsToSpawn) {
       int cell = randomDropCell();
@@ -168,21 +215,38 @@ public class DPDTestLevel extends Level {
 
   protected int randomDropCell() {
     while (true) {
-      int cell = pointToCell(Random.element(normalSpaces).random());
-      if (passable[cell])
-        return cell;
+      Space space = randomSpace(Digger.DigResult.Type.NORMAL, 1);
+      if (space != null) {
+        int cell = pointToCell(space.rect.random());
+        if (passable[cell])
+          return cell;
+      }
     }
   }
 
+  protected abstract boolean[] water();
+
+  protected abstract boolean[] grass();
+
   protected void paintWater() {
-    boolean[] waters = Patch.generate(this, 0.45f, 5);
+    boolean[] waters = water();
     for (int i = 0; i < length(); ++i)
       if (map[i] == Terrain.EMPTY && waters[i])
         map[i] = Terrain.WATER;
   }
 
   protected void paintGrass() {
-    boolean[] grass = Patch.generate(this, 0.4f, 4);
+    boolean[] grass = grass();
+
+    if (feeling == Feeling.GRASS) {
+      for (Space space : spaces) {
+        XRect rect = space.rect;
+        grass[xy2cell(rect.x1, rect.y1)] = true;
+        grass[xy2cell(rect.x2, rect.y1)] = true;
+        grass[xy2cell(rect.x1, rect.y2)] = true;
+        grass[xy2cell(rect.x2, rect.y2)] = true;
+      }
+    }
 
     for (int i = width() + 1; i < length() - width() - 1; i++) {
       if (map[i] == Terrain.EMPTY && grass[i]) {
@@ -245,13 +309,12 @@ public class DPDTestLevel extends Level {
   // my digging algorithm
   private ArrayList<XWall> digableWalls; // = new ArrayList<>();
 
-  // keep in mind that the normal spaces is always rectangle.
-  //todo: may track the space type.
-  private ArrayList<XRect> normalSpaces; // = new ArrayList<>();
+  // space dug, keep in mind that not all type of spaces is rectangle.
+  private ArrayList<Space> spaces;
 
   private boolean digLevel() {
     digableWalls = new ArrayList<>();
-    normalSpaces = new ArrayList<>();
+    spaces = new ArrayList<>();
 
     digFirstRoom();
 
@@ -275,14 +338,12 @@ public class DPDTestLevel extends Level {
 
           digableWalls.remove(wall);
           digableWalls.addAll(dr.walls);
-          if (dr.type == Digger.DigResult.Type.NORMAL)
-            normalSpaces.add(rect);
+          spaces.add(new Space(rect, dr.type));
           break;
         }
       }
 
       if (!digged) return false;
-
 
       diggers.remove(digger);
     }
@@ -312,25 +373,43 @@ public class DPDTestLevel extends Level {
     digableWalls.add(new XWall(x1, x2, y2 + 1, y2 + 1, Digger.DOWN));
   }
 
+  protected static final Class<?>[] SPECIAL_DIGGERS = new Class<?>[]{
+          ArmoryDigger.class, GardenDigger.class, LaboratoryDigger.class,
+          LibraryDigger.class, MagicWellDigger.class, PoolDigger.class,
+          ShopDigger.class, StatuaryDigger.class, StatueDigger.class,
+          StorageDigger.class, TrapsDigger.class, TreasuryDigger.class,
+          VaultDigger.class, WeakFloorDigger.class,
+  };
+  protected static final float[] PROBABILITIES_DIGGERS = new float[]{
+          1, 1, 1,
+          1, 1, 1,
+          1, 1, 1,
+          1, 1, 1,
+          1, 1,
+  };
+
   protected ArrayList<Digger> chooseDiaggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
-    diggers.add(new ArmoryDigger());
-    diggers.add(new GardenDigger());
-    diggers.add(new LaboratoryDigger());
-    diggers.add(new LibraryDigger());
-    diggers.add(new MagicWellDigger());
-    if(pitRoomNeeded)
-      diggers.add(new PitDigger());
-    diggers.add(new PoolDigger());
-    diggers.add(new ShopDigger());
-    diggers.add(new StatuaryDigger());
-    diggers.add(new StatueDigger());
-    diggers.add(new StorageDigger());
-    diggers.add(new TrapsDigger());
-    diggers.add(new TreasuryDigger());
-    diggers.add(new VaultDigger());
-    diggers.add(new WeakFloorDigger());
-    int n = 20 - diggers.size();
+    {
+      // special diggers
+      int specials = Random.NormalIntRange(6, 9);
+      float[] probs = PROBABILITIES_DIGGERS.clone();
+
+      for (int i = 0; i < specials; ++i) {
+        int index = Random.chances(probs);
+        probs[index] = 0;
+        try {
+          diggers.add((Digger) SPECIAL_DIGGERS[index].newInstance());
+        } catch (Exception e) {
+          DarkestPixelDungeon.reportException(e);
+          return null;
+        }
+      }
+    }
+    Log.d("dpd", String.format("%d special diggers added", diggers.size()));
+
+    // normal diggers
+    int n = 18 - diggers.size();
     for (int i = 0; i < n; ++i) {
       diggers.add(new NormalRoomDigger());
     }
@@ -393,10 +472,65 @@ public class DPDTestLevel extends Level {
       }
     }
 
-    // not enough, random select two wall and dig between them
+    //todo: not enough, random select two wall and dig between them
     if (loops < maxLoops && digableWalls.size() >= 2) {
     }
 
     return loops;
+  }
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
+    bundle.put("spaces", spaces);
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
+
+    Collection<Bundlable> blds = bundle.getCollection("spaces");
+
+    spaces = new ArrayList<>((Collection<Space>) (Collection<?>)
+            bundle.getCollection("spaces"));
+    for (Space s : spaces) {
+      //todo: update flags and others...
+      if (s == null)
+        Log.d("dpd", String.format("null space restored."));
+    }
+    Log.d("dpd", String.format("%d spaces restored.", spaces.size()));
+  }
+
+  public static class Space implements Bundlable {
+    public XRect rect;
+    public Digger.DigResult.Type type;
+
+    // default constructor for deserialization only
+    public Space() {
+    }
+
+    public Space(XRect rect, Digger.DigResult.Type type) {
+      this.rect = rect;
+      this.type = type;
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+      bundle.put("x1", rect.x1);
+      bundle.put("x2", rect.x2);
+      bundle.put("y1", rect.y1);
+      bundle.put("y2", rect.y2);
+      bundle.put("type", type.toString());
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+      rect = new XRect(0, 0, 0, 0);
+      rect.x1 = bundle.getInt("x1");
+      rect.x2 = bundle.getInt("x2");
+      rect.y1 = bundle.getInt("y1");
+      rect.y2 = bundle.getInt("y2");
+      type = Digger.DigResult.Type.valueOf(bundle.getString("type"));
+    }
   }
 }

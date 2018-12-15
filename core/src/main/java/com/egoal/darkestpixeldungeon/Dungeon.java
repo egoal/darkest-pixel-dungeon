@@ -26,11 +26,9 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness;
-import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*;
 import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -210,7 +208,7 @@ public class Dungeon {
       case 2:
       case 3:
       case 4:
-        level = new SewerLevel();
+        level = new DPDSewerLevel();
         break;
       case 5:
         level = new SewerBossLevel();
@@ -260,9 +258,9 @@ public class Dungeon {
         level = new DeadEndLevel();
         Statistics.deepestFloor--;
     }
-    if(DarkestPixelDungeon.debug())
-      level = new DPDTestLevel();
-    
+//    if (DarkestPixelDungeon.debug())
+//      level = new DPDSewerLevel();
+
     visible = new boolean[level.length()];
     level.create();
 
@@ -314,7 +312,7 @@ public class Dungeon {
 
     observe();
     try {
-       saveAll();
+      saveAll();
     } catch (IOException e) {
       DarkestPixelDungeon.reportException(e);
       /*This only catches IO errors. Yes, this means things can go wrong, and 
@@ -462,9 +460,9 @@ public class Dungeon {
   }
 
   public static void saveAll(boolean doBackup) throws IOException {
-    if(doBackup)
+    if (doBackup)
       Log.d("dpd", "saving with backup.");
-    
+
     if (hero.isAlive()) {
 
       Actor.fixTime();
@@ -580,10 +578,10 @@ public class Dungeon {
     loadGame(gameFile(cl), true);
   }
 
-  public static void loadBackupGame(HeroClass cl) throws IOException{
+  public static void loadBackupGame(HeroClass cl) throws IOException {
     loadGame(backupGameFile(cl), true);
   }
-  
+
   public static void loadGame(String fileName, boolean fullLoad) throws
           IOException {
 
@@ -680,23 +678,24 @@ public class Dungeon {
   public static Level loadBackupLevel(HeroClass cl) throws IOException {
     return loadLevelFromFile(backupLevelFile(cl));
   }
-  
+
   public static Level loadLevel(HeroClass cl) throws IOException {
     return loadLevelFromFile(Messages.format(depthFile(cl), depth));
   }
-  
-  private static Level loadLevelFromFile(String filename) throws IOException{
+
+  private static Level loadLevelFromFile(String filename) throws IOException {
     Dungeon.level = null;
     Actor.clear();
-    
+
     InputStream is = Game.instance.openFileInput(filename);
     Bundle bundle = Bundle.read(is);
     is.close();
-    
-    return (Level)bundle.get("level");
+
+    return (Level) bundle.get("level");
   }
 
-  public static void deleteGame(HeroClass cl, boolean deleteLevels, boolean deleteBackup) {
+  public static void deleteGame(HeroClass cl, boolean deleteLevels, boolean 
+          deleteBackup) {
 
     Game.instance.deleteFile(gameFile(cl));
 
@@ -706,8 +705,8 @@ public class Dungeon {
         depth++;
       }
     }
-    
-    if(deleteBackup){
+
+    if (deleteBackup) {
       Game.instance.deleteFile(backupGameFile(cl));
     }
 

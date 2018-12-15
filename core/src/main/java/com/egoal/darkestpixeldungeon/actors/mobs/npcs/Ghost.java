@@ -31,6 +31,8 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
+import com.egoal.darkestpixeldungeon.levels.DPDSewerLevel;
+import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.windows.WndSadGhost;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -45,7 +47,6 @@ import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.armor.ScaleArmor;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.NewShortsword;
-import com.egoal.darkestpixeldungeon.levels.SewerLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.GhostSprite;
@@ -266,77 +267,26 @@ public class Ghost extends NPC {
       }
     }
 
-    public static void spawn(SewerLevel level) {
-      if (!spawned && Dungeon.depth > 1 && Random.Int(5 - Dungeon.depth) == 0) {
+    public static void Spawn(Level level) {
+      if (spawned || Dungeon.depth <= 1 || Random.Int(5 - Dungeon.depth) != 0)
+        return;
 
-        Ghost ghost = new Ghost();
-        do {
-          ghost.pos = level.randomRespawnCell();
-        } while (ghost.pos == -1);
-        level.mobs.add(ghost);
+      // spawn
+      Ghost ghost = new Ghost();
+      do {
+        ghost.pos = level.randomRespawnCell();
+      } while (ghost.pos == -1);
+      level.mobs.add(ghost);
 
-        spawned = true;
-        //dungeon depth determines type of quest.
-        //depth2=fetid rat, 3=gnoll trickster, 4=great crab
-        type = Dungeon.depth - 1;
+      spawned = true;
+      // 2: fetid rat, 3: gnoll trickster, 4: great crab
+      type = Dungeon.depth - 1;
 
-        given = false;
-        processed = false;
-        depth = Dungeon.depth;
+      given = false;
+      processed = false;
+      depth = Dungeon.depth;
 
-        //50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
-        float itemTierRoll = Random.Float();
-        int wepTier;
-
-        if (itemTierRoll < 0.5f) {
-          wepTier = 2;
-          armor = new LeatherArmor();
-        } else if (itemTierRoll < 0.8f) {
-          wepTier = 3;
-          armor = new MailArmor();
-        } else if (itemTierRoll < 0.95f) {
-          wepTier = 4;
-          armor = new ScaleArmor();
-        } else {
-          wepTier = 5;
-          armor = new PlateArmor();
-        }
-
-        try {
-          do {
-            weapon = (Weapon) Generator.wepTiers[wepTier - 1].classes[Random
-                    .chances(Generator.wepTiers[wepTier - 1].probs)]
-                    .newInstance();
-          } while (!(weapon instanceof MeleeWeapon));
-        } catch (Exception e) {
-          DarkestPixelDungeon.reportException(e);
-          weapon = new NewShortsword();
-        }
-
-        //50%:+0, 30%:+1, 15%:+2, 5%:+3
-        float itemLevelRoll = Random.Float();
-        int itemLevel;
-        if (itemLevelRoll < 0.5f) {
-          itemLevel = 0;
-        } else if (itemLevelRoll < 0.8f) {
-          itemLevel = 1;
-        } else if (itemLevelRoll < 0.95f) {
-          itemLevel = 2;
-        } else {
-          itemLevel = 3;
-        }
-        weapon.upgrade(itemLevel);
-        armor.upgrade(itemLevel);
-
-        //10% to be enchanted
-        if (Random.Int(10) == 0) {
-          weapon.enchant();
-          armor.inscribe();
-        }
-
-        weapon.identify();
-        armor.identify();
-      }
+      PreparePrize();
     }
 
     public static void process() {
@@ -344,7 +294,8 @@ public class Ghost extends NPC {
         GLog.n(Messages.get(Ghost.class, "find_me"));
         Sample.INSTANCE.play(Assets.SND_GHOST);
         processed = true;
-        Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as spawnable.
+        Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as 
+        // spawnable.
       }
     }
 
@@ -357,6 +308,61 @@ public class Ghost extends NPC {
 
     public static boolean completed() {
       return spawned && processed;
+    }
+
+    private static void PreparePrize() {
+      //50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
+      float itemTierRoll = Random.Float();
+      int wepTier;
+
+      if (itemTierRoll < 0.5f) {
+        wepTier = 2;
+        armor = new LeatherArmor();
+      } else if (itemTierRoll < 0.8f) {
+        wepTier = 3;
+        armor = new MailArmor();
+      } else if (itemTierRoll < 0.95f) {
+        wepTier = 4;
+        armor = new ScaleArmor();
+      } else {
+        wepTier = 5;
+        armor = new PlateArmor();
+      }
+
+      try {
+        do {
+          weapon = (Weapon) Generator.wepTiers[wepTier - 1].classes[Random
+                  .chances(Generator.wepTiers[wepTier - 1].probs)]
+                  .newInstance();
+        } while (!(weapon instanceof MeleeWeapon));
+      } catch (Exception e) {
+        DarkestPixelDungeon.reportException(e);
+        weapon = new NewShortsword();
+      }
+
+      //50%:+0, 30%:+1, 15%:+2, 5%:+3
+      float itemLevelRoll = Random.Float();
+      int itemLevel;
+      if (itemLevelRoll < 0.5f) {
+        itemLevel = 0;
+      } else if (itemLevelRoll < 0.8f) {
+        itemLevel = 1;
+      } else if (itemLevelRoll < 0.95f) {
+        itemLevel = 2;
+      } else {
+        itemLevel = 3;
+      }
+      weapon.upgrade(itemLevel);
+      armor.upgrade(itemLevel);
+
+      //10% to be enchanted
+      if (Random.Int(10) == 0) {
+        weapon.enchant();
+        armor.inscribe();
+      }
+
+      weapon.identify();
+      armor.identify();
     }
   }
 }

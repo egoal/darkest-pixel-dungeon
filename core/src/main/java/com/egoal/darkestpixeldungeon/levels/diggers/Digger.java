@@ -111,6 +111,8 @@ public abstract class Digger {
       SPECIAL,
       LOCKED,
       TUNNEL,
+      
+      EXIT, ENTRANCE, 
     }
 
     public Type type;
