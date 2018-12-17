@@ -34,7 +34,7 @@ import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.*;
-import com.egoal.darkestpixeldungeon.levels.DPDPrisonBossLevel;
+import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
@@ -217,16 +217,16 @@ public class Dungeon {
       case 7:
       case 8:
       case 9:
-        level = new PrisonLevel();
+        level = new DPDPrisonLevel();
         break;
       case 10:
-        level = new DPDPrisonBossLevel();
+        level = new PrisonBossLevel();
         break;
       case 11:
       case 12:
       case 13:
       case 14:
-        level = new CavesLevel();
+        level = new DPDCavesLevel();
         break;
       case 15:
         level = new CavesBossLevel();

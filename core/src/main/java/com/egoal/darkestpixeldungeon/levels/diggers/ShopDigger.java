@@ -143,7 +143,8 @@ public class ShopDigger extends RectDigger {
         break;
     }
 
-    // ItemsToSpawn.add(new MerchantsBeacon());
+    ChooseBag(Dungeon.hero.belongings);
+    
     ItemsToSpawn.add(new OverpricedRation());
     ItemsToSpawn.add(new OverpricedRation());
     ItemsToSpawn.add(new Wine());

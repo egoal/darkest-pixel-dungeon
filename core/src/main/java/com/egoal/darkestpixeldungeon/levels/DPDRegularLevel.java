@@ -3,13 +3,13 @@ package com.egoal.darkestpixeldungeon.levels;
 import android.util.Log;
 import android.util.Pair;
 
-import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Questioner;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -22,13 +22,17 @@ import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Created by 93942 on 11/11/2018.
@@ -74,6 +78,7 @@ public abstract class DPDRegularLevel extends Level {
     map[exit] = Terrain.EXIT;
 
     // do some painting
+    paintLuminary();
     paintWater();
     paintGrass();
     placeTraps();
@@ -224,6 +229,45 @@ public abstract class DPDRegularLevel extends Level {
     }
   }
 
+  @Override
+  public int pitCell() {
+    for (Space s : spaces)
+      if (s.type == Digger.DigResult.Type.PIT)
+        return pointToCell(s.rect.random(1));
+
+    return super.pitCell();
+  }
+
+  protected void paintLuminary() {
+    // put on wall
+    HashSet<Integer> availableWalls = new HashSet<>();
+    for (Space s : spaces) {
+      for (Point p : s.rect.inner(-1).getAllPoints()) {
+        int c = pointToCell(p);
+        // check if visible
+        if (map[c] == Terrain.WALL) {
+          for (int n : PathFinder.NEIGHBOURS4) {
+            int np = n + c;
+            if (np >= 0 && np < length && (map[np] == Terrain.EMPTY ||
+                    map[np] == Terrain.EMPTY_SP ||
+                    map[np] == Terrain.EMPTY_DECO)) {
+              availableWalls.add(c);
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    final float LIGHT_RATIO = Dungeon.depth < 10 ? 0.15f : 0.1f;
+    final float LIGHT_ON_RATIO = feeling == Feeling.DARK ? 0.45f : 0.7f;
+    for (int i : availableWalls) {
+      if (Random.Float() < LIGHT_RATIO)
+        map[i] = Random.Float() < LIGHT_ON_RATIO ?
+                Terrain.WALL_LIGHT_ON : Terrain.WALL_LIGHT_OFF;
+    }
+  }
+
   protected abstract boolean[] water();
 
   protected abstract boolean[] grass();
@@ -282,7 +326,7 @@ public abstract class DPDRegularLevel extends Level {
     LinkedList<Integer> validCells = new LinkedList<Integer>();
 
     for (int i = 0; i < length(); ++i) {
-      if (map[i] == Terrain.EMPTY)
+      if (map[i] == Terrain.EMPTY && findMob(i) == null)
         validCells.add(i);
     }
 
@@ -311,6 +355,7 @@ public abstract class DPDRegularLevel extends Level {
 
   // space dug, keep in mind that not all type of spaces is rectangle.
   private ArrayList<Space> spaces;
+  private ArrayList<Digger> chosenDiggers = null;
 
   private boolean digLevel() {
     digableWalls = new ArrayList<>();
@@ -318,7 +363,10 @@ public abstract class DPDRegularLevel extends Level {
 
     digFirstRoom();
 
-    ArrayList<Digger> diggers = chooseDiaggers();
+    if (chosenDiggers == null)
+      chosenDiggers = chooseDiaggers();
+
+    ArrayList<Digger> diggers = (ArrayList<Digger>) chosenDiggers.clone();
     Log.d("dpd", String.format("%d rooms to dig.", diggers.size()));
 
     while (!diggers.isEmpty() && !digableWalls.isEmpty()) {
@@ -373,48 +421,98 @@ public abstract class DPDRegularLevel extends Level {
     digableWalls.add(new XWall(x1, x2, y2 + 1, y2 + 1, Digger.DOWN));
   }
 
-  protected static final Class<?>[] SPECIAL_DIGGERS = new Class<?>[]{
-          ArmoryDigger.class, GardenDigger.class, LaboratoryDigger.class,
-          LibraryDigger.class, MagicWellDigger.class, PoolDigger.class,
-          ShopDigger.class, StatuaryDigger.class, StatueDigger.class,
-          StorageDigger.class, TrapsDigger.class, TreasuryDigger.class,
-          VaultDigger.class, WeakFloorDigger.class,
-  };
-  protected static final float[] PROBABILITIES_DIGGERS = new float[]{
-          1, 1, 1,
-          1, 1, 1,
-          1, 1, 1,
-          1, 1, 1,
-          1, 1,
-  };
+  // all diggers
+  protected static final HashMap<Class<? extends Digger>, Float>
+          SPECIAL_DIGGERS = new HashMap<>();
+  protected static final HashMap<Class<? extends Digger>, Float>
+          NORMAL_DIGGERS = new HashMap<>();
+
+  {
+    SPECIAL_DIGGERS.put(ArmoryDigger.class, 1f);
+    SPECIAL_DIGGERS.put(GardenDigger.class, 1f);
+    SPECIAL_DIGGERS.put(LaboratoryDigger.class, 1f);
+    SPECIAL_DIGGERS.put(LibraryDigger.class, 1f);
+    SPECIAL_DIGGERS.put(MagicWellDigger.class, 1f);
+    SPECIAL_DIGGERS.put(PitDigger.class, 0f);
+    SPECIAL_DIGGERS.put(PoolDigger.class, 1f);
+    SPECIAL_DIGGERS.put(QuestionerDigger.class, 1f);
+    SPECIAL_DIGGERS.put(ShopDigger.class, 0f);
+    SPECIAL_DIGGERS.put(StatuaryDigger.class, 1f);
+    SPECIAL_DIGGERS.put(StatueDigger.class, 1f);
+    SPECIAL_DIGGERS.put(StorageDigger.class, 1f);
+    SPECIAL_DIGGERS.put(TrapsDigger.class, 1f);
+    SPECIAL_DIGGERS.put(TreasuryDigger.class, 1f);
+    SPECIAL_DIGGERS.put(VaultDigger.class, 1f);
+    SPECIAL_DIGGERS.put(WeakFloorDigger.class, 1f);
+
+    NORMAL_DIGGERS.put(NormalRoomDigger.class, 1f);
+    NORMAL_DIGGERS.put(NormalCircleDigger.class, .2f);
+    NORMAL_DIGGERS.put(LatticeDigger.class, .2f);
+  }
 
   protected ArrayList<Digger> chooseDiaggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
+    int specials = Random.NormalIntRange(4, 8);
+    if (Dungeon.shopOnLevel()) {
+      diggers.add(new ShopDigger());
+      --specials;
+    }
+      
+    return selectDiggers(specials, 18);
+  }
+
+  protected ArrayList<Digger> selectDiggers(int specials, int total) {
+    ArrayList<Digger> diggers = new ArrayList<>();
     {
-      // special diggers
-      int specials = Random.NormalIntRange(6, 9);
-      float[] probs = PROBABILITIES_DIGGERS.clone();
+      // special diggers, avoid duplicate
+      HashMap<Class<? extends Digger>, Float> probs =
+              (HashMap<Class<? extends Digger>, Float>) SPECIAL_DIGGERS.clone();
+
+      if (pitRoomNeeded) {
+        // a pit digger is need, remove all other iron key diggers
+        diggers.add(new PitDigger());
+        --specials;
+
+        probs.remove(ArmoryDigger.class);
+        probs.remove(LibraryDigger.class);
+        probs.remove(StatueDigger.class);
+        probs.remove(TreasuryDigger.class);
+        probs.remove(VaultDigger.class);
+        probs.remove(WeakFloorDigger.class);
+      }
 
       for (int i = 0; i < specials; ++i) {
-        int index = Random.chances(probs);
-        probs[index] = 0;
+        Class<? extends Digger> cls = Random.chances(probs);
+        if (cls == null) break;
+
+        probs.put(cls, 0f);
         try {
-          diggers.add((Digger) SPECIAL_DIGGERS[index].newInstance());
+          diggers.add(cls.newInstance());
         } catch (Exception e) {
           DarkestPixelDungeon.reportException(e);
           return null;
         }
       }
     }
-    Log.d("dpd", String.format("%d special diggers added", diggers.size()));
+    // weak floor
+    for (Digger d : diggers)
+      if (d instanceof WeakFloorDigger) {
+        weakFloorCreated = true;
+        break;
+      }
 
-    // normal diggers
-    int n = 18 - diggers.size();
+    // normal diggers, random draft
+    int n = total - diggers.size();
     for (int i = 0; i < n; ++i) {
-      diggers.add(new NormalRoomDigger());
+      Class<? extends Digger> cls = Random.chances(NORMAL_DIGGERS);
+      try {
+        diggers.add(cls.newInstance());
+      } catch (Exception e) {
+        DarkestPixelDungeon.reportException(e);
+        return null;
+      }
     }
 
-    // no need to shuffle.
     return diggers;
   }
 
@@ -489,14 +587,14 @@ public abstract class DPDRegularLevel extends Level {
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
 
-    Collection<Bundlable> blds = bundle.getCollection("spaces");
-
     spaces = new ArrayList<>((Collection<Space>) (Collection<?>)
             bundle.getCollection("spaces"));
     for (Space s : spaces) {
       //todo: update flags and others...
-      if (s == null)
-        Log.d("dpd", String.format("null space restored."));
+      if (s.type == Digger.DigResult.Type.WEAK_FLOOR) {
+        weakFloorCreated = true;
+        break;
+      }
     }
     Log.d("dpd", String.format("%d spaces restored.", spaces.size()));
   }
@@ -516,20 +614,13 @@ public abstract class DPDRegularLevel extends Level {
 
     @Override
     public void storeInBundle(Bundle bundle) {
-      bundle.put("x1", rect.x1);
-      bundle.put("x2", rect.x2);
-      bundle.put("y1", rect.y1);
-      bundle.put("y2", rect.y2);
+      bundle.put("rect", rect);
       bundle.put("type", type.toString());
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle) {
-      rect = new XRect(0, 0, 0, 0);
-      rect.x1 = bundle.getInt("x1");
-      rect.x2 = bundle.getInt("x2");
-      rect.y1 = bundle.getInt("y1");
-      rect.y2 = bundle.getInt("y2");
+      rect = (XRect) bundle.get("rect");
       type = Digger.DigResult.Type.valueOf(bundle.getString("type"));
     }
   }

@@ -1,75 +1,50 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2016 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
 package com.egoal.darkestpixeldungeon.levels;
 
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
-import com.egoal.darkestpixeldungeon.actors.Char;
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
-import com.egoal.darkestpixeldungeon.plants.Plant;
-import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
-import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
+import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.mobs.Tengu;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes;
 import com.egoal.darkestpixeldungeon.items.keys.IronKey;
-import com.egoal.darkestpixeldungeon.levels.painters.MazePainter;
+import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
+import com.egoal.darkestpixeldungeon.levels.painters.Painter;
+import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.SpearTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
-import com.egoal.darkestpixeldungeon.ui.HealthIndicator;
-import com.watabou.noosa.Group;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+/**
+ * Created by 93942 on 9/13/2018.
+ */
 
 public class PrisonBossLevel extends Level {
-
   {
     color1 = 0x6a723d;
     color2 = 0x88924c;
+
+    viewDistance = 3;
   }
 
-  private enum State {
-    START,
-    FIGHT_START,
-    MAZE,
-    FIGHT_ARENA,
-    WON
-  }
-
-  private State state;
-  private Tengu tengu;
-
-  //keep track of that need to be removed as the level is changed. We dump 
-  // 'em back into the level at the end.
-  private ArrayList<Item> storedItems = new ArrayList<>();
+  public Room rmStart, rmHall, rmExit;
+  private ArrayList<Room> rmPrisonCells;
+  private int[] hallLights;
+  private boolean enteredMainHall = false;
+  public boolean isLighted = true;
 
   @Override
   public String tilesTex() {
@@ -81,128 +56,386 @@ public class PrisonBossLevel extends Level {
     return Assets.WATER_PRISON;
   }
 
-  private static final String STATE = "state";
-  private static final String TENGU = "tengu";
-  private static final String STORED_ITEMS = "storeditems";
+  public void turnLights(boolean on) {
+    if (on == isLighted) return;
 
-  @Override
-  public void storeInBundle(Bundle bundle) {
-    super.storeInBundle(bundle);
-    bundle.put(STATE, state);
-    bundle.put(TENGU, tengu);
-    bundle.put(STORED_ITEMS, storedItems);
-  }
+    isLighted = on;
+    for (int i : hallLights) {
+      map[i] = on ? Terrain.WALL_LIGHT_ON : Terrain.WALL_LIGHT_OFF;
 
-  @Override
-  public void restoreFromBundle(Bundle bundle) {
-    super.restoreFromBundle(bundle);
-    state = bundle.getEnum(STATE, State.class);
-
-    //in some states tengu won't be in the world, in others he will be.
-    if (state == State.START || state == State.MAZE) {
-      tengu = (Tengu) bundle.get(TENGU);
-    } else {
-      for (Mob mob : mobs) {
-        if (mob instanceof Tengu) {
-          tengu = (Tengu) mob;
-          break;
-        }
-      }
+      GameScene.updateMap(i);
     }
 
-    for (Bundlable item : bundle.getCollection(STORED_ITEMS)) {
-      storedItems.add((Item) item);
+    if (!on) {
+      for (int i : hallLights)
+        removeLightVisualAt(i);
     }
+
+    buildFlagMaps();
+    Dungeon.observe();
   }
 
-  @Override
-  protected void setupSize() {
-    if (width == 0 || height == 0)
-      width = height = 32;
-    length = width * height;
+  public int hallCenter() {
+    return pointToCell(rmHall.centerFixed());
   }
 
   @Override
   protected boolean build() {
+    Arrays.fill(map, Terrain.WALL);
 
-    map = MAP_START.clone();
-    decorate();
+    buildHall();
 
-    buildFlagMaps();
-    cleanWalls();
+    // place the entrance
+    {
+      int w = Random.Int(4, 6);
+      int h = Random.Int(4, 6);
+      int x = Random.Int(0, rmHall.left - w);
+      int y = Random.Int(0, height / 3);
 
-    state = State.START;
-    entrance = 5 + 2 * 32;
-    exit = 0;
+      rmStart = (Room) new Room().set(x, y, x + w, y + h);
 
-    resetTraps();
+      Painter.fill(this, rmStart, 1, Terrain.EMPTY);
+      map[pos(rmStart.centerFixed().x, rmStart.bottom)] = Terrain.DOOR;
+    }
+
+    // link start-> hall
+    Painter.linkV(this, rmStart.centerFixed().x, rmStart.bottom + 1, rmHall
+            .bottom - 1, Terrain.EMPTY);
+    Painter.linkH(this, rmHall.bottom - 1, rmStart.centerFixed().x, rmHall
+                    .left - 1,
+            Terrain.EMPTY);
+
+    // place the exit
+    {
+      int w = Random.Int(4, 6);
+      int h = Random.Int(4, 6);
+      int x = Random.Int(rmHall.right, width - w);
+      int y = Random.Int(height * 2 / 3, height) - h;
+
+      rmExit = (Room) new Room().set(x, y, x + w, y + h);
+
+      Painter.fill(this, rmExit, 1, Terrain.EMPTY);
+      map[pos(rmExit.centerFixed().x, rmExit.top)] = Terrain.DOOR;
+    }
+
+    // link hall-> exit
+    Painter.linkH(this, rmHall.top + 1, rmHall.right + 1, rmExit.centerFixed
+                    ().x,
+            Terrain.EMPTY);
+    Painter.linkV(this, rmExit.centerFixed().x, rmHall.top + 1, rmExit.top -
+            1, Terrain.EMPTY);
+
+    // now add some prison cells on the lane side
+    rmPrisonCells = new ArrayList<>();
+
+    // prison cell is 3x3 inner space
+    if (rmStart.centerFixed().x >= 5)
+      placePrisonCellsBesideLaneV(rmStart.centerFixed().x, rmStart.bottom + 1,
+              rmHall.bottom - 2, true);
+    if (rmHall.left - rmStart.centerFixed().x >= 5)
+      placePrisonCellsBesideLaneV(rmStart.centerFixed().x, rmStart.bottom + 1,
+              rmHall.bottom - 2, false);
+
+    if (rmPrisonCells.isEmpty())
+      return false;
+
+    if (width - rmExit.centerFixed().x >= 5)
+      placePrisonCellsBesideLaneV(rmExit.centerFixed().x, rmHall.top + 2,
+              rmExit.top - 1, false);
+    if (rmExit.centerFixed().x - rmHall.right >= 5)
+      placePrisonCellsBesideLaneV(rmExit.centerFixed().x, rmHall.top + 2,
+              rmExit.top - 1, true);
+
+    if (height - rmHall.bottom >= 5)
+      placePrisonCellsBesideLaneH(rmHall.bottom - 1, rmStart.centerFixed().x,
+              rmHall.right, false);
+    if (rmHall.top >= 5)
+      placePrisonCellsBesideLaneH(rmHall.top + 1, rmHall.left, rmExit
+              .centerFixed().x, true);
+
+    // at last, check the door pos
+    for (int i : PathFinder.NEIGHBOURS4)
+      if (map[hallEntrance() + i] == Terrain.DOOR || map[hallExit() + i] ==
+              Terrain.DOOR)
+        return false;
+
+    // entrance && exit
+    entrance = pointToCell(rmStart.centerFixed());
+    exit = pointToCell(rmExit.centerFixed());
+    
+    map[entrance] = Terrain.ENTRANCE;
+    map[exit] = Terrain.EXIT;
 
     return true;
   }
 
   @Override
   protected void decorate() {
-    //do nothing, all decorations are hard-coded.
+    // some blood on floor
+    for (Room r : rmPrisonCells)
+      if (Random.Int(2) == 0)
+        map[pointToCell(r.random())] = Terrain.EMPTY_DECO;
+
+    int cntblood = Random.Int(6, 15);
+    while (cntblood > 0) {
+      int pos = pointToCell(rmHall.random());
+      if (map[pos] == Terrain.EMPTY) {
+        map[pos] = Terrain.EMPTY_DECO;
+        --cntblood;
+      }
+    }
+
+    // some book shelves on the side
+  }
+
+  @Override
+  public void press(int cell, Char ch) {
+    super.press(cell, ch);
+
+    // when hero enter the main hall, lock the level, let tengu in
+    if (ch == Dungeon.hero && !enteredMainHall && rmHall.inside(cellToPoint
+            (cell))) {
+      enteredMainHall = true;
+      onHeroEnteredHall(ch);
+    }
+  }
+
+  private void onHeroEnteredHall(Char hero) {
+    seal();
+
+    // lock the hall exit
+    set(hallEntrance(), Terrain.LOCKED_DOOR);
+    GameScene.updateMap(hallEntrance());
+    Dungeon.observe();
+
+    // add dpd tengu
+    Mob tengu = new Tengu();
+    tengu.pos = pointToCell(rmHall.centerFixed());
+    GameScene.add(tengu);
+    tengu.state = tengu.HUNTING;
+
+    tengu.notice();
+
+    // give buff
+    Buff.affect(hero, Ignorant.class);
+
+  }
+
+  @Override
+  public Heap drop(Item item, int cell) {
+    if (item instanceof SkeletonKey) {
+      // tengu is dead...
+      unseal();
+
+      set(hallEntrance(), Terrain.DOOR);
+      GameScene.updateMap(hallEntrance());
+      Dungeon.observe();
+    }
+
+    return super.drop(item, cell);
+  }
+
+  // place rooms beside a vertical lane
+  private void placePrisonCellsBesideLaneV(int x, int y1, int y2, boolean
+          atLeft) {
+    int s = y1 < y2 ? y1 : y2;
+    int e = y1 < y2 ? y2 : y1;
+
+    int left = atLeft ? x - 5 : x + 1;
+    int currentTop = s;
+
+    while (currentTop + 4 <= e) {
+      if (Random.Int(2) == 0) {
+        // skip to next row
+        ++currentTop;
+        continue;
+      }
+
+      Room r = placePrisonCell(left, currentTop, atLeft ? 1 : 0);
+      rmPrisonCells.add(r);
+      currentTop += 4;
+    }
+  }
+
+  private void placePrisonCellsBesideLaneH(int y, int x1, int x2, boolean up) {
+    int s = x1 < x2 ? x1 : x2;
+    int e = x1 < x2 ? x2 : x1;
+
+    int top = up ? y - 5 : y + 1;
+    int currentLeft = s;
+    while (currentLeft + 4 < e) {
+      if (Random.Int(2) == 0) {
+        ++currentLeft;
+        continue;
+      }
+
+      Room r = placePrisonCell(currentLeft, top, up ? 3 : 2);
+      rmPrisonCells.add(r);
+      currentLeft += 4;
+    }
+  }
+
+  // door: 0, 1, 2, 3: left, right, top, bottom
+  private Room placePrisonCell(int left, int top, int doordir) {
+    // size is fixed 3x3
+    int w = 4;
+    int h = 4;
+
+    Room r = (Room) new Room().set(left, top, left + w, top + h);
+
+    Painter.fill(this, r, Terrain.WALL);
+    Painter.fill(this, r.shrink(1), Terrain.EMPTY);
+
+    int door = -1;
+    int light = -1;
+    switch (doordir) {
+      case 0:
+        door = pos(left, top + 2);
+        light = pos(left + w, top + 2);
+        break;
+      case 1:
+        door = pos(left + w, top + 2);
+        light = pos(left, top + 2);
+        break;
+      case 2:
+        door = pos(left + 2, top);
+        light = pos(left + 2, top + h);
+        break;
+      case 3:
+        door = pos(left + 2, top + h);
+        light = pos(left + 2, top);
+        break;
+    }
+
+    if (door > 0)
+      map[door] = Terrain.DOOR;
+    if (light > 0)
+      map[light] = Terrain.WALL_LIGHT_ON;
+
+    return r;
+  }
+
+  private void buildHall() {
+    int width = Random.Int(16, 20);
+    int height = Random.Int(16, 20);
+    int left = Random.Int(8, this.width - 8 - width);
+    int top = Random.Int(8, this.height - 8 - height);
+
+    rmHall = (Room) new Room().set(left, top, left + width, top + height);
+
+    // paint
+    Painter.fill(this, rmHall.shrink(), Terrain.EMPTY);
+
+    // center
+    int cx = rmHall.centerFixed().x;
+    int cy = rmHall.centerFixed().y;
+    Painter.fill(this, cx - 1, cy - 1, 3, 3, Terrain.EMPTY_SP);
+
+    // centroid is water, to avoid fire damage
+    map[pos(cx, cy)] = Terrain.WATER;
+
+    // 8 lights
+    hallLights = new int[12];
+    {
+      hallLights[0] = randomPos(rmHall.left, cx - 3, rmHall.top, cy - 3, 1);
+      hallLights[1] = randomPos(cx - 3, cx + 4, rmHall.top, cy - 3, 1);
+      hallLights[2] = randomPos(cx + 4, rmHall.right, rmHall.top, cy - 3, 1);
+
+      hallLights[3] = randomPos(rmHall.left, cx - 3, cy - 3, cy + 4, 1);
+      hallLights[4] = randomPos(cx + 4, rmHall.right, cy - 3, cy + 4, 1);
+
+      hallLights[5] = randomPos(rmHall.left, cx - 3, cy + 4, rmHall.bottom, 1);
+      hallLights[6] = randomPos(cx - 3, cx + 4, cy + 4, rmHall.bottom, 1);
+      hallLights[7] = randomPos(cx + 4, rmHall.right, cy + 4, rmHall.bottom, 1);
+
+      // put in the corners
+      hallLights[8] = pos(cx - 3, cy - 3);
+      hallLights[9] = pos(cx + 3, cy - 3);
+      hallLights[10] = pos(cx - 3, cy + 3);
+      hallLights[11] = pos(cx + 3, cy + 3);
+    }
+    for (int i : hallLights)
+      map[i] = Terrain.WALL_LIGHT_ON;
+
+    // surround by traps
+    for (int x = cx - 3; x <= cx + 3; ++x) {
+      for (int y = cy - 3; y <= cy + 3; ++y) {
+        int pos = pos(x, y);
+        if (map[pos] == Terrain.EMPTY) {
+          Trap t = new SpearTrap().reveal();
+          setTrap(t, pos);
+          map[pos] = Terrain.TRAP;
+        }
+      }
+    }
+
+    // an alarm trap at left bottom,
+    {
+      Trap t = new AlarmTrap().hide();
+      int pos = pos(rmHall.left + 1, rmHall.bottom - 1);
+      setTrap(t, pos);
+
+      map[pos] = Terrain.SECRET_TRAP;
+      map[pos(rmHall.left + 1, rmHall.bottom - 2)] = Terrain.WALL;
+    }
+
+    // door
+    // enter
+    map[pos(rmHall.left, rmHall.bottom - 1)] = Terrain.LOCKED_DOOR;
+    // exit
+    map[pos(rmHall.right, rmHall.top + 1)] = Terrain.LOCKED_EXIT;
+  }
+
+  private int hallEntrance() {
+    return pos(rmHall.left, rmHall.bottom - 1);
+  }
+
+  private int hallExit() {
+    return pos(rmHall.right, rmHall.top + 1);
+  }
+
+  private int pos(int x, int y) {
+    return x + y * width;
+  }
+
+  private int randomPos(int xl, int xr, int yt, int yb, int inner) {
+    return pos(Random.Int(xl + inner, xr - inner), Random.Int(yt + inner, yb
+            - inner));
   }
 
   @Override
   protected void createMobs() {
-    tengu = new Tengu(); //We want to keep track of tengu independently of 
-    // other mobs, he's not always in the level.
   }
 
+  @Override
   public Actor respawner() {
     return null;
   }
 
   @Override
   protected void createItems() {
+    // dead body's bone
     Item item = Bones.get();
-    if (item != null) {
+    if (item != null)
       drop(item, randomRespawnCell()).type = Heap.Type.REMAINS;
+
+    // drop the key to the entrance
+    ArrayList<Room> rmOnTheLeft = new ArrayList<>();
+    for (Room rm : rmPrisonCells) {
+      if (rm.right <= rmHall.left)
+        rmOnTheLeft.add(rm);
     }
-    drop(new IronKey(10), randomPrisonCell());
-  }
+    int keypos = pointToCell(Random.element(rmOnTheLeft).random());
+    IronKey ik = new IronKey(Dungeon.depth);
+    drop(ik, keypos);
 
-  private int randomPrisonCell() {
-    int pos = 1 + 8 * 32; //initial position at top-left room
+    // give a torch, torches is necessary to fight tengu
+    int torchpos = pointToCell(Random.element(rmOnTheLeft).random());
+    drop(new Torch(), torchpos);
 
-    //randomly assign a room.
-    pos += Random.Int(4) * (4 * 32); //one of the 4 rows
-    pos += Random.Int(2) * 6; // one of the 2 columns
-
-    //and then a certain tile in that room.
-    pos += Random.Int(3) + Random.Int(3) * 32;
-
-    return pos;
-  }
-
-  @Override
-  public void press(int cell, Char ch) {
-
-    super.press(cell, ch);
-
-    if (ch == Dungeon.hero) {
-      //hero enters tengu's chamber
-      if (state == State.START
-              && ((Room) new Room().set(2, 25, 8, 32)).inside(cellToPoint
-              (cell))) {
-        progress();
-      }
-
-      //hero finishes the maze
-      else if (state == State.MAZE
-              && ((Room) new Room().set(4, 0, 7, 4)).inside(cellToPoint(cell)
-      )) {
-        progress();
-      }
-    }
-  }
-
-  @Override
-  public int randomRespawnCell() {
-    return 5 + 2 * 32 + PathFinder.NEIGHBOURS8[Random.Int(8)]; //random cell 
-    // adjacent to the entrance.
+    // warden's notes
+    int notespos = pointToCell(Random.element(rmOnTheLeft).random());
+    drop(new WardenSmithNotes(), notespos);
   }
 
   @Override
@@ -221,472 +454,39 @@ public class PrisonBossLevel extends Level {
       case Terrain.EMPTY_DECO:
         return Messages.get(PrisonLevel.class, "empty_deco_desc");
       case Terrain.BOOKSHELF:
-        return Messages.get(PrisonLevel.class, "bookshelf_desc");
+        return Messages.get(PrisonLevel.class, "book_self_desc");
+      case Terrain.EXIT:
+        return Messages.get(PrisonBossLevel.class, "exit_desc");
+      case Terrain.LOCKED_EXIT:
+        return Messages.get(PrisonBossLevel.class, "locked_exit_desc");
       default:
         return super.tileDesc(tile);
     }
   }
 
-  private void resetTraps() {
-    for (Trap trap : traps.values()) {
-      trap.sprite.kill();
-    }
-    traps.clear();
+  private static final String ENTERED = "entered";
+  private static final String HALL = "hall";
+  private static final String LIGHTED = "lighted";
+  private static final String HALL_LIGHTS = "hall_lights";
 
-    for (int i = 0; i < length(); i++) {
-      if (map[i] == Terrain.INACTIVE_TRAP) {
-        Trap t = new SpearTrap().reveal();
-        t.active = false;
-        setTrap(t, i);
-        map[i] = Terrain.INACTIVE_TRAP;
-      }
-    }
-  }
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    super.storeInBundle(bundle);
 
-  private void changeMap(int[] map) {
-    this.map = map.clone();
-    buildFlagMaps();
-    cleanWalls();
-
-    exit = entrance = 0;
-    for (int i = 0; i < length(); i++)
-      if (map[i] == Terrain.ENTRANCE)
-        entrance = i;
-      else if (map[i] == Terrain.EXIT)
-        exit = i;
-
-    visited = mapped = new boolean[length()];
-    for (Blob blob : blobs.values()) {
-      blob.fullyClear();
-    }
-    addVisuals(); //this also resets existing visuals
-    resetTraps();
-
-
-    GameScene.resetMap();
-    Dungeon.observe();
-  }
-
-  private void clearEntities(Room safeArea) {
-    for (Heap heap : heaps.values()) {
-      if (safeArea == null || !safeArea.inside(cellToPoint(heap.pos))) {
-        for (Item item : heap.items)
-          storedItems.add(item);
-        heap.destroy();
-      }
-    }
-    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size
-            ()])) {
-      if (mob != tengu && (safeArea == null || !safeArea.inside(cellToPoint
-              (mob.pos)))) {
-        mob.destroy();
-        if (mob.sprite != null)
-          mob.sprite.killAndErase();
-      }
-    }
-    for (Plant plant : plants.values()) {
-      if (safeArea == null || !safeArea.inside(cellToPoint(plant.pos))) {
-        plants.remove(plant.pos);
-        plant.sprite.kill();
-      }
-    }
-  }
-
-  public void progress() {
-    switch (state) {
-      //moving to the beginning of the fight
-      case START:
-        seal();
-        set(5 + 25 * 32, Terrain.LOCKED_DOOR);
-        GameScene.updateMap(5 + 25 * 32);
-
-        tengu.state = tengu.HUNTING;
-        tengu.pos = 5 + 28 * 32; //in the middle of the fight room
-        GameScene.add(tengu);
-        tengu.notice();
-
-        state = State.FIGHT_START;
-        break;
-
-      //halfway through, move to the maze
-      case FIGHT_START:
-
-        changeMap(MAP_MAZE);
-        clearEntities((Room) new Room().set(0, 5, 8, 32)); //clear all but 
-        // the entrance
-
-        Actor.remove(tengu);
-        mobs.remove(tengu);
-        HealthIndicator.instance.target(null);
-        tengu.sprite.kill();
-
-        Room maze = new Room();
-        maze.set(10, 1, 31, 29);
-        maze.connected.put(null, new Room.Door(10, 2));
-        maze.connected.put(maze, new Room.Door(20, 29));
-        MazePainter.paint(this, maze);
-        buildFlagMaps();
-        cleanWalls();
-        GameScene.resetMap();
-
-        GameScene.flash(0xFFFFFF);
-        Sample.INSTANCE.play(Assets.SND_BLAST);
-
-        state = State.MAZE;
-        break;
-
-      //maze beaten, moving to the arena
-      case MAZE:
-        Dungeon.hero.interrupt();
-        Dungeon.hero.pos += 9 + 3 * 32;
-        Dungeon.hero.sprite.interruptMotion();
-        Dungeon.hero.sprite.place(Dungeon.hero.pos);
-
-        changeMap(MAP_ARENA);
-        clearEntities(null);
-
-        tengu.state = tengu.HUNTING;
-        do {
-          tengu.pos = Random.Int(length());
-        } while (solid[tengu.pos] || distance(tengu.pos, Dungeon.hero.pos) < 8);
-        GameScene.add(tengu);
-        tengu.notice();
-
-        state = State.FIGHT_ARENA;
-        break;
-
-      //arena ended, fight over.
-      case FIGHT_ARENA:
-        unseal();
-
-        CustomTileVisual vis = new exitVisual();
-        vis.pos(7, 7);
-        customTiles.add(vis);
-        ((GameScene) DarkestPixelDungeon.scene()).addCustomTile(vis);
-
-        Dungeon.hero.interrupt();
-        Dungeon.hero.pos = 5 + 27 * 32;
-        Dungeon.hero.sprite.interruptMotion();
-        Dungeon.hero.sprite.place(Dungeon.hero.pos);
-
-        tengu.pos = 5 + 28 * 32;
-        tengu.sprite.place(5 + 28 * 32);
-
-        changeMap(MAP_END);
-        clearEntities(null);
-
-        tengu.die(Dungeon.hero);
-
-        for (Item item : storedItems)
-          drop(item, randomPrisonCell());
-
-        state = State.WON;
-        break;
-    }
+    bundle.put(ENTERED, enteredMainHall);
+    bundle.put(HALL, rmHall);
+    bundle.put(LIGHTED, isLighted);
+    bundle.put(HALL_LIGHTS, hallLights);
   }
 
   @Override
-  public Group addVisuals() {
-    super.addVisuals();
-    PrisonLevel.addPrisonVisuals(this, visuals);
-    return visuals;
-  }
+  public void restoreFromBundle(Bundle bundle) {
+    super.restoreFromBundle(bundle);
 
-  private static final int W = Terrain.WALL;
-  private static final int D = Terrain.DOOR;
-  private static final int L = Terrain.LOCKED_DOOR;
-  private static final int e = Terrain.EMPTY;
-  private static final int S = Terrain.SIGN;
-
-  private static final int T = Terrain.INACTIVE_TRAP;
-
-  private static final int E = Terrain.ENTRANCE;
-  private static final int X = Terrain.EXIT;
-
-  private static final int M = Terrain.WALL_DECO;
-  private static final int P = Terrain.PEDESTAL;
-
-  //TODO if I ever need to store more static maps I should externalize them 
-  // instead of hard-coding
-  //Especially as I means I won't be limited to legal identifiers
-  private static final int[] MAP_START =
-          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, e, E, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, S, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, M, W, L, W, M, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W};
-
-  private static final int[] MAP_MAZE =
-          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, e, e, e, W, W, M, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  e, e, e, D, e, e, e, D, e, e, e, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, W, e, e, e, W, W, M, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, W, W, M, W, W, W, W, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, W, W, D, W, W, W, W, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, W, W, e, W, W, W, W, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, M, W, W, e, W, W, M, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, W, W, e, W, W, W, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, M, W, D, W, M, W, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, T, T, T, T, T, W, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, T, T, T, T, T, W, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, T, T, T, T, T, W, e, W, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, e, e, e, e, W, W,
-                  W, W, W, T, T, T, T, T, W, e, W, W, W, W, W, W, W, W, W, W,
-                  e, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, e, e, e, e, e, e, e, e, e, e, e,
-                  e, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W};
-
-  private static final int[] MAP_ARENA =
-          {W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, W, W, W, W, W, W,
-                  W, W, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e,
-                  e, e, e, e, e, e, e, W, W, W, W, W,
-                  W, e, e, e, e, e, W, e, e, e, e, e, W, W, M, W, W, e, e, e,
-                  e, e, W, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, W, e, e, e, e, W, W, e, e, e, W, W, e, e,
-                  e, e, W, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, M, W, e, e, e, e, e, D, e, e, e, D, e, e, e,
-                  e, e, W, M, e, e, e, e, W, W, W, W,
-                  W, e, e, W, W, W, W, e, e, e, e, W, W, e, e, e, W, W, e, e,
-                  e, e, W, W, W, W, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, e, e, e, W, W, M, W, W, e, e, e,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, e, W, e, e, e, e, e, e, e, W, e,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, W, W, e, e, e, e, e, e, e, W, W,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, e, e, e, e,
-                  e, e, W, e, W, e, e, e, W, W, W, W,
-                  W, e, e, W, W, D, W, W, e, e, e, e, W, e, e, e, W, e, e, e,
-                  e, W, W, D, W, W, e, e, W, W, W, W,
-                  W, e, W, W, e, e, e, W, W, e, e, e, e, e, e, e, e, e, e, e,
-                  W, W, e, e, e, W, W, e, W, W, W, W,
-                  W, e, W, M, e, e, e, M, W, e, e, e, e, e, M, e, e, e, e, e,
-                  W, M, e, e, e, M, W, e, W, W, W, W,
-                  W, e, W, W, e, e, e, W, W, e, e, e, e, e, e, e, e, e, e, e,
-                  W, W, e, e, e, W, W, e, W, W, W, W,
-                  W, e, e, W, W, D, W, W, e, e, e, e, W, e, e, e, W, e, e, e,
-                  e, W, W, D, W, W, e, e, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, e, e, e, e,
-                  e, e, W, e, W, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, W, W, e, e, e, e, e, e, e, W, W,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, e, W, e, e, e, e, e, e, e, W, e,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, e, e, e, e, e, e, W, W, M, W, W, e, e, e,
-                  e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, e, e, W, W, W, W, e, e, e, e, W, W, e, e, e, W, W, e, e,
-                  e, e, W, W, W, W, e, e, W, W, W, W,
-                  W, e, e, e, e, M, W, e, e, e, e, e, D, e, e, e, D, e, e, e,
-                  e, e, W, M, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, W, e, e, e, e, W, W, e, e, e, W, W, e, e,
-                  e, e, W, e, e, e, e, e, W, W, W, W,
-                  W, e, e, e, e, e, W, e, e, e, e, e, W, W, M, W, W, e, e, e,
-                  e, e, W, e, e, e, e, e, W, W, W, W,
-                  W, W, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e,
-                  e, e, e, e, e, e, e, W, W, W, W, W,
-                  W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e,
-                  e, e, e, e, e, e, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W};
-
-  private static final int[] MAP_END =
-          {W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, e, E, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, S, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, e, e, e, e, e, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, e, W, e, e, e, e, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, e, e, e, e, e, e, e, e, e, e, e, e,
-                  e, X, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, e, e, e, e, e, e,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, W, e, e, e, e, e, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, e, e, e, e, e, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, e, W, e, e, e, e, e, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, W, e, e, e, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, D, e, D, e, e, e, e, e, e, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, e, e, e, W, e, W, e, e, e, e, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, M, W, W, e, W, W, M, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, M, W, D, W, M, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, P, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-                  W, W, W, W, W, W, W, W, W, W, W, W};
-
-
-  public static class exitVisual extends CustomTileVisual {
-
-    {
-      name = "prison exit";
-
-      tx = Assets.PRISON_EXIT;
-      txX = txY = 0;
-      tileW = tileH = 16;
-    }
-
-    @Override
-    public String desc() {
-      return super.desc();
-    }
+    enteredMainHall = bundle.getBoolean(ENTERED);
+    isLighted = bundle.getBoolean(LIGHTED);
+    rmHall = new Room();
+    rmHall.restoreFromBundle(bundle.getBundle(HALL));
+    hallLights = bundle.getIntArray(HALL_LIGHTS);
   }
 }

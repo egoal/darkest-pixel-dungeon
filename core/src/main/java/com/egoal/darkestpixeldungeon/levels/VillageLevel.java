@@ -353,13 +353,6 @@ public class VillageLevel extends RegularLevel {
 
     // test 
     if (DarkestPixelDungeon.debug()) {
-      Questioner q = new Questioner().hold(roomExit);
-      do {
-        q.pos = pointToCell(roomExit.random());
-      } while (findMob(q.pos) != null);
-      map[q.pos] = Terrain.SECRET_DOOR;
-      mobs.add(q);
-
       PotionSeller ps = new PotionSeller();
       ps.initSellItems();
       do {

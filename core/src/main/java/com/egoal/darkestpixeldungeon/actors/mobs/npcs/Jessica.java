@@ -47,7 +47,7 @@ public class Jessica extends NPC {
     sprite.turnTo(pos, Dungeon.hero.pos);
     if (!Quest.completed_) {
       CallysDiary cd = Dungeon.hero.belongings.getItem(CallysDiary.class);
-      if(cd==null){
+      if (cd == null) {
         tell(Messages.get(this, "please"));
         Quest.given_ = true;
       } else {
@@ -150,7 +150,8 @@ public class Jessica extends NPC {
       return true;
     }
 
-    public static boolean spawnBook(PrisonLevel level) {
+    // prison level indeed
+    public static boolean spawnBook(Level level) {
       if (!given_ || spawned_)
         return true;
 
@@ -161,9 +162,9 @@ public class Jessica extends NPC {
         heap.drop(new CallysDiary());
         heap.drop(Generator.random(Generator.Category.RING).random());
 
-        heap.pos  = level.randomRespawnCell();
+        heap.pos = level.randomRespawnCell();
         level.heaps.put(heap.pos, heap);
-        
+
 //        level.heaps.put(level.randomRespawnCell(), heap);
         spawned_ = true;
       }

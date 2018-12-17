@@ -18,9 +18,9 @@ public class QuestionerPainter extends Painter {
     set(level, room.entrance(), Terrain.WALL);
     room.entrance().set(Room.Door.Type.USER_DEFINED);
 
-    Questioner q = new Questioner().random().hold(room);
-    q.pos = level.pointToCell(room.entrance());
-    level.mobs.add(q);
+//    Questioner q = new Questioner().random().hold(room);
+//    q.pos = level.pointToCell(room.entrance());
+//    level.mobs.add(q);
   }
   
 }

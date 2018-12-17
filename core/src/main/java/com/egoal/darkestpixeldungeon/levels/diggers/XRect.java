@@ -1,5 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels.diggers;
 
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Point;
 
@@ -10,8 +12,12 @@ import java.util.HashSet;
  */
 
 // aabb box, 
-public class XRect {
+public class XRect implements Bundlable {
   public int x1, x2, y1, y2;
+
+  // default constructor for deserialization only 
+  public XRect() {
+  }
 
   public XRect(int _x1, int _x2, int _y1, int _y2) {
     x1 = _x1;
@@ -65,5 +71,21 @@ public class XRect {
         points.add(new Point(x, y));
 
     return points;
+  }
+
+  @Override
+  public void restoreFromBundle(Bundle bundle) {
+    x1 = bundle.getInt("x1");
+    x2 = bundle.getInt("x2");
+    y1 = bundle.getInt("y1");
+    y2 = bundle.getInt("y2");
+  }
+
+  @Override
+  public void storeInBundle(Bundle bundle) {
+    bundle.put("x1", x1);
+    bundle.put("x2", x2);
+    bundle.put("y1", y1);
+    bundle.put("y2", y2);
   }
 }

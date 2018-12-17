@@ -110,7 +110,9 @@ public abstract class Digger {
       NORMAL,
       SPECIAL,
       LOCKED,
-      TUNNEL,
+      
+      PIT, // pit room only, fall from weak floor
+      WEAK_FLOOR, 
       
       EXIT, ENTRANCE, 
     }

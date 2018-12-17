@@ -59,7 +59,7 @@ public class PitDigger extends RectDigger {
     for(int i=0; i<n; ++i)
       level.drop(prize(level), remains);
 
-    return new DigResult(DigResult.Type.LOCKED);
+    return new DigResult(DigResult.Type.PIT);
   }
 
   private static Item prize(Level level) {

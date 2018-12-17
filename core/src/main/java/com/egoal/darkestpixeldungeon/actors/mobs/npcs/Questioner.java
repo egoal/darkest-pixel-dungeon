@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Room;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
 import com.egoal.darkestpixeldungeon.levels.traps.RockfallTrap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -22,6 +23,7 @@ import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -36,11 +38,11 @@ public class Questioner extends NPC {
     properties.add(Property.IMMOVABLE);
   }
 
-  private Room heldRoom = null;
   private String question = "pain";
+  private XRect heldRect = null;
 
-  public Questioner hold(Room rm) {
-    heldRoom = rm;
+  public Questioner hold(XRect rect) {
+    heldRect = rect;
     return this;
   }
 
@@ -48,8 +50,8 @@ public class Questioner extends NPC {
   public boolean interact() {
     String content = Messages.get(this, question);
     String[] answers = new String[]{
-            Messages.get(this, question+"_0"),
-            Messages.get(this, question+"_1"),
+            Messages.get(this, question + "_0"),
+            Messages.get(this, question + "_1"),
             Messages.get(this, "attack")
     };
     GameScene.show(new WndOptions(new Sprite(), name, content, answers) {
@@ -66,23 +68,24 @@ public class Questioner extends NPC {
     question = Random.oneOf("pain", "goal", "honour", "fear");
     return this;
   }
-  
+
   private void onAnswered(int index) {
     if (index == 2) {
       yell(Messages.get(this, "silly"));
       RockfallTrap.fallRocks(pos);
     } else {
-      yell(Messages.get(this, question+ "_pass"));
-      Dungeon.hero.takeDamage(new Damage(Random.Int(2, 6), this, Dungeon.hero).type(Damage
+      yell(Messages.get(this, question + "_pass"));
+      Dungeon.hero.takeDamage(new Damage(Random.Int(2, 6), this, Dungeon
+              .hero).type(Damage
               .Type.MENTAL));
       GLog.n(Messages.get(this, "tough"));
     }
 
     // paint the room
-    if (heldRoom != null) {
-      float mimicratio = index==2? .3f: .2f;
-      randomPlaceItem(new Gold().random(), Random.Float()<mimicratio);
-      
+    if (heldRect != null) {
+      float mimicratio = index == 2 ? .3f : .2f;
+      randomPlaceItem(new Gold().random(), Random.Float() < mimicratio);
+
       Item sp = null;
       switch (index) {
         case 0:
@@ -97,10 +100,10 @@ public class Questioner extends NPC {
           sp = new Gold().random();
           break;
       }
-      randomPlaceItem(sp, Random.Float()<mimicratio);
-      
-      if (index == 2 && Random.Float()<.5) {
-        randomPlaceItem(Generator.random(Random.oneOf(Generator.Category.WAND, 
+      randomPlaceItem(sp, Random.Float() < mimicratio);
+
+      if (index == 2 && Random.Float() < .5) {
+        randomPlaceItem(Generator.random(Random.oneOf(Generator.Category.WAND,
                 Generator.Category.ARTIFACT)), true);
       }
     }
@@ -110,13 +113,15 @@ public class Questioner extends NPC {
 
   private void randomPlaceItem(Item item, boolean mimic) {
     Heap heap = new Heap();
-    heap.type = mimic? Heap.Type.MIMIC: Heap.Type.CHEST;
-    heap.drop(item);    
-    
-    do{
-      heap.pos = Dungeon.level.pointToCell(heldRoom.random());
-    }while(!Level.passable[heap.pos] || Dungeon.level.heaps.get(heap.pos)!=null);
-    
+    heap.type = mimic ? Heap.Type.MIMIC : Heap.Type.CHEST;
+    heap.drop(item);
+
+    do {
+      heap.pos = Dungeon.level.pointToCell(heldRect.random());
+    }
+    while (!Level.passable[heap.pos] || Dungeon.level.heaps.get(heap.pos) !=
+            null);
+
     Dungeon.level.heaps.put(heap.pos, heap);
     GameScene.add(heap);
   }
@@ -137,10 +142,10 @@ public class Questioner extends NPC {
   @Override
   public void storeInBundle(Bundle bundle) {
     super.storeInBundle(bundle);
-    
+
     bundle.put(QUESTION, question);
-    if(heldRoom!=null)
-      bundle.put(THE_ROOM, heldRoom);
+    if (heldRect != null)
+      bundle.put(THE_ROOM, heldRect);
   }
 
   @Override
@@ -148,11 +153,9 @@ public class Questioner extends NPC {
     super.restoreFromBundle(bundle);
 
     question = bundle.getString(QUESTION);
-    Bundle bdlRoom = bundle.getBundle(THE_ROOM);
-    if(!bdlRoom.isNull()) {
-      heldRoom = new Room();
-      heldRoom.restoreFromBundle(bdlRoom);
-    }
+    Bundlable b = bundle.get(THE_ROOM);
+    if (b != null)
+      heldRect = (XRect) b;
   }
 
   // unbreakable
@@ -175,7 +178,7 @@ public class Questioner extends NPC {
   @Override
   public void add(Buff buff) {
   }
-  
+
   public static class Sprite extends MobSprite {
     public Sprite() {
       super();

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public abstract class RectDigger extends Digger {
 
   protected Point chooseRoomSize(XWall wall) {
-    return new Point(Random.IntRange(3, 9), Random.IntRange(3, 9));
+    return new Point(Random.IntRange(4, 9), Random.IntRange(4, 9));
   }
   
   @Override

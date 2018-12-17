@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
 import com.egoal.darkestpixeldungeon.effects.Ripple;
 import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ChillingTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.FlockTrap;
@@ -24,6 +25,8 @@ import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 /**
  * Created by 93942 on 2018/12/13.
  */
@@ -32,10 +35,13 @@ public class DPDSewerLevel extends DPDRegularLevel {
   {
     color1 = 0x48763c;
     color2 = 0x59994a;
-    viewDistance = 4;
-    seeDistance = 8;
   }
 
+  // smaller size
+  protected ArrayList<Digger> chooseDiaggers() {
+    return selectDiggers(Random.NormalIntRange(3, 6), 15);
+  }
+  
   @Override
   public String tilesTex() {
     return Assets.TILES_SEWERS;
@@ -72,6 +78,39 @@ public class DPDSewerLevel extends DPDRegularLevel {
 
   @Override
   protected void decorate() {
+    for (int i = 0; i < width(); i++) {
+      if (map[i] == Terrain.WALL &&
+              map[i + width()] == Terrain.WATER &&
+              Random.Int(4) == 0) {
+
+        map[i] = Terrain.WALL_DECO;
+      }
+    }
+
+    for (int i = width(); i < length() - width(); i++) {
+      if (map[i] == Terrain.WALL &&
+              map[i - width()] == Terrain.WALL &&
+              map[i + width()] == Terrain.WATER &&
+              Random.Int(2) == 0) {
+
+        map[i] = Terrain.WALL_DECO;
+      }
+    }
+
+    for (int i = width() + 1; i < length() - width() - 1; i++) {
+      if (map[i] == Terrain.EMPTY) {
+
+        int count =
+                (map[i + 1] == Terrain.WALL ? 1 : 0) +
+                        (map[i - 1] == Terrain.WALL ? 1 : 0) +
+                        (map[i + width()] == Terrain.WALL ? 1 : 0) +
+                        (map[i - width()] == Terrain.WALL ? 1 : 0);
+
+        if (Random.Int(16) < count * count) {
+          map[i] = Terrain.EMPTY_DECO;
+        }
+      }
+    }
   }
 
   @Override

@@ -1,32 +1,8 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2016 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
 package com.egoal.darkestpixeldungeon.levels;
 
-import com.egoal.darkestpixeldungeon.DungeonTilemap;
-import com.egoal.darkestpixeldungeon.levels.traps.*;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Blacksmith;
-import com.egoal.darkestpixeldungeon.levels.Room.Type;
-import com.egoal.darkestpixeldungeon.levels.painters.Painter;
+import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.levels.traps.ConfusionTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ExplosiveTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
@@ -52,10 +28,12 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
 
-public class CavesLevel extends RegularLevel {
+/**
+ * Created by 93942 on 2018/12/17.
+ */
 
+public class DPDCavesLevel extends DPDRegularLevel {
   {
     color1 = 0x534f3e;
     color2 = 0xb9d661;
@@ -81,12 +59,12 @@ public class CavesLevel extends RegularLevel {
 
   @Override
   protected Class<?>[] trapClasses() {
-    return new Class[]{FireTrap.class, FrostTrap.class, PoisonTrap.class, 
+    return new Class[]{FireTrap.class, FrostTrap.class, PoisonTrap.class,
             SpearTrap.class, VenomTrap.class,
-            ExplosiveTrap.class, FlashingTrap.class, GrippingTrap.class, 
-            ParalyticTrap.class, LightningTrap.class, RockfallTrap.class, 
+            ExplosiveTrap.class, FlashingTrap.class, GrippingTrap.class,
+            ParalyticTrap.class, LightningTrap.class, RockfallTrap.class,
             OozeTrap.class,
-            ConfusionTrap.class, FlockTrap.class, GuardianTrap.class, 
+            ConfusionTrap.class, FlockTrap.class, GuardianTrap.class,
             PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
             WarpingTrap.class};
   }
@@ -99,135 +77,14 @@ public class CavesLevel extends RegularLevel {
             1};
   }
 
-  @Override
-  protected boolean assignRoomType() {
-    if (!super.assignRoomType()) return false;
-
-    // black smith must spawned before 14th floor
-    if (!Blacksmith.Quest.spawn(rooms) && Dungeon.depth == 14)
-      return false;
-
-    return true;
-  }
-
+  //todo: spawn blacksmith, affect the diggers.
+//  protected ArrayList<Digger> chooseDiaggers() {
+//    return selectDiggers(Random.NormalIntRange(4, 8), 18);
+//  }
+  
   @Override
   protected void decorate() {
-
-    for (Room room : rooms) {
-      if (room.type != Room.Type.STANDARD) {
-        continue;
-      }
-
-      if (room.width() <= 3 || room.height() <= 3) {
-        continue;
-      }
-
-      int s = room.square();
-
-      if (Random.Int(s) > 8) {
-        int corner = (room.left + 1) + (room.top + 1) * width();
-        if (map[corner - 1] == Terrain.WALL && map[corner - width()] == 
-                Terrain.WALL) {
-          map[corner] = Terrain.WALL;
-          traps.remove(corner);
-        }
-      }
-
-      if (Random.Int(s) > 8) {
-        int corner = (room.right - 1) + (room.top + 1) * width();
-        if (map[corner + 1] == Terrain.WALL && map[corner - width()] == 
-                Terrain.WALL) {
-          map[corner] = Terrain.WALL;
-          traps.remove(corner);
-        }
-      }
-
-      if (Random.Int(s) > 8) {
-        int corner = (room.left + 1) + (room.bottom - 1) * width();
-        if (map[corner - 1] == Terrain.WALL && map[corner + width()] == 
-                Terrain.WALL) {
-          map[corner] = Terrain.WALL;
-          traps.remove(corner);
-        }
-      }
-
-      if (Random.Int(s) > 8) {
-        int corner = (room.right - 1) + (room.bottom - 1) * width();
-        if (map[corner + 1] == Terrain.WALL && map[corner + width()] == 
-                Terrain.WALL) {
-          map[corner] = Terrain.WALL;
-          traps.remove(corner);
-        }
-      }
-
-      for (Room n : room.connected.keySet()) {
-        if ((n.type == Room.Type.STANDARD || n.type == Room.Type.TUNNEL) && 
-                Random.Int(3) == 0) {
-          Painter.set(this, room.connected.get(n), Terrain.EMPTY_DECO);
-        }
-      }
-    }
-
-    for (int i = width() + 1; i < length() - width(); i++) {
-      if (map[i] == Terrain.EMPTY) {
-        int n = 0;
-        if (map[i + 1] == Terrain.WALL) {
-          n++;
-        }
-        if (map[i - 1] == Terrain.WALL) {
-          n++;
-        }
-        if (map[i + width()] == Terrain.WALL) {
-          n++;
-        }
-        if (map[i - width()] == Terrain.WALL) {
-          n++;
-        }
-        if (Random.Int(6) <= n) {
-          map[i] = Terrain.EMPTY_DECO;
-        }
-      }
-    }
-
-    for (int i = 0; i < length(); i++) {
-      if (map[i] == Terrain.WALL && Random.Int(12) == 0) {
-        map[i] = Terrain.WALL_DECO;
-      }
-    }
-
-    placeSign();
-
-    if (Dungeon.bossLevel(Dungeon.depth + 1)) {
-      return;
-    }
-
-    for (Room r : rooms) {
-      if (r.type == Type.STANDARD) {
-        for (Room n : r.neigbours) {
-          if (n.type == Type.STANDARD && !r.connected.containsKey(n)) {
-            Rect w = r.intersect(n);
-            if (w.left == w.right && w.bottom - w.top >= 5) {
-
-              w.top += 2;
-              w.bottom -= 1;
-
-              w.right++;
-
-              Painter.fill(this, w.left, w.top, 1, w.height(), Terrain.CHASM);
-
-            } else if (w.top == w.bottom && w.right - w.left >= 5) {
-
-              w.left += 2;
-              w.right -= 1;
-
-              w.bottom++;
-
-              Painter.fill(this, w.left, w.top, w.width(), 1, Terrain.CHASM);
-            }
-          }
-        }
-      }
-    }
+    //todo: this should be reworked.
   }
 
   @Override
@@ -265,11 +122,11 @@ public class CavesLevel extends RegularLevel {
   @Override
   public Group addVisuals() {
     super.addVisuals();
-    addCavesVisuals(this, visuals);
+    AddCavesVisuals(this, visuals);
     return visuals;
   }
 
-  public static void addCavesVisuals(Level level, Group group) {
+  public static void AddCavesVisuals(Level level, Group group) {
     for (int i = 0; i < level.length(); i++) {
       if (level.map[i] == Terrain.WALL_DECO) {
         group.add(new Vein(i));
@@ -336,4 +193,5 @@ public class CavesLevel extends RegularLevel {
       size((am = p < 0.5f ? p * 2 : (1 - p) * 2) * 2);
     }
   }
+
 }

@@ -115,7 +115,7 @@ public class Bestiary {
 
       case 10:
         chances = new float[]{1};
-        classes = new Class<?>[]{DPDTengu.class};
+        classes = new Class<?>[]{Tengu.class};
         break;
       case 11:
         chances = new float[]{1, .5f, 0.2f};
