@@ -27,8 +27,16 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
 import com.egoal.darkestpixeldungeon.items.quest.Embers;
+import com.egoal.darkestpixeldungeon.levels.DPDPrisonLevel;
+import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
+import com.egoal.darkestpixeldungeon.levels.diggers.MassGraveDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.NormalRoomDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.RitualSiteDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.RotGardenDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
 import com.egoal.darkestpixeldungeon.windows.WndWandmaker;
 import com.egoal.darkestpixeldungeon.Challenges;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -44,6 +52,7 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Wandmaker extends NPC {
@@ -256,9 +265,9 @@ public class Wandmaker extends NPC {
       }
     }
 
-    public static boolean spawn(PrisonLevel level, Room room, 
+    public static boolean spawn(PrisonLevel level, Room room,
                                 Collection<Room> rooms) {
-      if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int(10 - 
+      if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int(10 -
               Dungeon.depth) == 0))) {
         // decide between 1,2, or 3 for quest type.
         // but if the no herbalism challenge is enabled, only pick 1 or 2, no
@@ -304,6 +313,58 @@ public class Wandmaker extends NPC {
       }
     }
 
+    // new spawn function, in two stages!
+    public static Digger GiveDigger() {
+      if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int(10 -
+              Dungeon.depth) == 0))) {
+        // now spawn
+        if (type == 0)
+          type = Random.Int(
+                  Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3) + 1;
+
+        // give digger
+        switch (type) {
+          case 1:
+            return new MassGraveDigger();
+          case 2:
+            return new RitualSiteDigger();
+          case 3:
+            return new RotGardenDigger();
+          default:
+            return null;
+        }
+
+        // remember to add wand maker outside!
+      }
+
+      return null;
+    }
+
+    public static void Spawn(DPDPrisonLevel level, XRect rect) {
+      Wandmaker w = new Wandmaker();
+      do {
+        w.pos = level.pointToCell(rect.random());
+      } while (level.map[w.pos] == Terrain.ENTRANCE ||
+              level.map[w.pos] == Terrain.SIGN);
+      level.mobs.add(w);
+      
+      spawned = true;
+      given = false;
+      wand1 = (Wand) Generator.random(Generator.Category.WAND);
+      wand1.cursed = false;
+      wand1.identify();
+      wand1.upgrade();
+
+      do {
+        wand2 = (Wand) Generator.random(Generator.Category.WAND);
+      } while (wand2.getClass().equals(wand1.getClass()));
+      wand2.cursed = false;
+      wand2.identify();
+      wand2.upgrade();
+    }
+    
+    //
+    
     private static boolean setRoom(Collection<Room> rooms) {
       Room questRoom = null;
       for (Room r : rooms) {

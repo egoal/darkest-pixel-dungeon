@@ -9,7 +9,6 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Questioner;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -32,7 +31,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * Created by 93942 on 11/11/2018.
@@ -354,7 +352,7 @@ public abstract class DPDRegularLevel extends Level {
   private ArrayList<XWall> digableWalls; // = new ArrayList<>();
 
   // space dug, keep in mind that not all type of spaces is rectangle.
-  private ArrayList<Space> spaces;
+  protected ArrayList<Space> spaces;
   private ArrayList<Digger> chosenDiggers = null;
 
   private boolean digLevel() {
@@ -364,7 +362,7 @@ public abstract class DPDRegularLevel extends Level {
     digFirstRoom();
 
     if (chosenDiggers == null)
-      chosenDiggers = chooseDiaggers();
+      chosenDiggers = chooseDiggers();
 
     ArrayList<Digger> diggers = (ArrayList<Digger>) chosenDiggers.clone();
     Log.d("dpd", String.format("%d rooms to dig.", diggers.size()));
@@ -450,15 +448,17 @@ public abstract class DPDRegularLevel extends Level {
     NORMAL_DIGGERS.put(LatticeDigger.class, .2f);
   }
 
-  protected ArrayList<Digger> chooseDiaggers() {
+  protected ArrayList<Digger> chooseDiggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
     int specials = Random.NormalIntRange(4, 8);
     if (Dungeon.shopOnLevel()) {
       diggers.add(new ShopDigger());
       --specials;
     }
-      
-    return selectDiggers(specials, 18);
+
+    diggers.addAll(selectDiggers(specials, 18));
+
+    return diggers;
   }
 
   protected ArrayList<Digger> selectDiggers(int specials, int total) {

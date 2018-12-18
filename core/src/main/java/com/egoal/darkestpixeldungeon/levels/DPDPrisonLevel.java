@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.egoal.darkestpixeldungeon.effects.Halo;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
@@ -37,7 +38,12 @@ public class DPDPrisonLevel extends DPDRegularLevel {
   {
     color1 = 0x6a723d;
     color2 = 0x88924c;
+
+    viewDistance = 4;
   }
+
+  // temp variable
+  private boolean shouldAddWandmaker = false;
 
   @Override
   public String tilesTex() {
@@ -74,10 +80,18 @@ public class DPDPrisonLevel extends DPDRegularLevel {
             1, 1, 1, 1};
   }
 
-  //todo: spawn wand maker, affect the diggers.
-//  protected ArrayList<Digger> chooseDiaggers() {
-//    return selectDiggers(Random.NormalIntRange(4, 8), 18);
-//  }
+  protected ArrayList<Digger> chooseDiggers() {
+    ArrayList<Digger> diggers = super.chooseDiggers();
+
+    // wand maker
+    Digger digger = Wandmaker.Quest.GiveDigger();
+    if (digger != null) {
+      shouldAddWandmaker = true;
+      diggers.add(digger);
+    }
+
+    return diggers;
+  }
 
   @Override
   protected void decorate() {
@@ -131,6 +145,19 @@ public class DPDPrisonLevel extends DPDRegularLevel {
     Jessica.Quest.spawnBook(this);
 
     super.createItems();
+  }
+
+  @Override
+  public void createMobs() {
+    if (shouldAddWandmaker) {
+      for (Space s : spaces)
+        if (s.type == Digger.DigResult.Type.ENTRANCE) {
+          Wandmaker.Quest.Spawn(this, s.rect);
+          break;
+        }
+    }
+
+    super.createMobs();
   }
 
   @Override

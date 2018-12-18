@@ -35,13 +35,15 @@ public class DPDSewerLevel extends DPDRegularLevel {
   {
     color1 = 0x48763c;
     color2 = 0x59994a;
+
+    viewDistance = 4;
   }
 
   // smaller size
-  protected ArrayList<Digger> chooseDiaggers() {
+  protected ArrayList<Digger> chooseDiggers() {
     return selectDiggers(Random.NormalIntRange(3, 6), 15);
   }
-  
+
   @Override
   public String tilesTex() {
     return Assets.TILES_SEWERS;

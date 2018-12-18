@@ -23,6 +23,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.levels.diggers.BlackSmithDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.windows.WndBlacksmith;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -301,6 +303,21 @@ public class Blacksmith extends NPC {
         }
       }
       return spawned;
+    }
+
+    // call these like you did with wand maker
+    public static Digger GiveDigger() {
+      if (!spawned && Dungeon.depth > 11 &&
+              Random.Int(15 - Dungeon.depth) == 0) {
+        return new BlackSmithDigger();
+      }
+      return null;
+    }
+
+    public static void Spawn() {
+      spawned = true;
+      alternative = Random.Int(2) == 0;
+      given = false;
     }
   }
 }

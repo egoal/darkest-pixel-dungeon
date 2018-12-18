@@ -3,6 +3,8 @@ package com.egoal.darkestpixeldungeon.levels;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.traps.ConfusionTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ExplosiveTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
@@ -29,6 +31,8 @@ import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 /**
  * Created by 93942 on 2018/12/17.
  */
@@ -37,8 +41,12 @@ public class DPDCavesLevel extends DPDRegularLevel {
   {
     color1 = 0x534f3e;
     color2 = 0xb9d661;
+    
+    viewDistance = 4;
   }
 
+  private boolean shouldAddBlackSmith = false;
+  
   @Override
   public String tilesTex() {
     return Assets.TILES_CAVES;
@@ -78,15 +86,32 @@ public class DPDCavesLevel extends DPDRegularLevel {
   }
 
   //todo: spawn blacksmith, affect the diggers.
-//  protected ArrayList<Digger> chooseDiaggers() {
-//    return selectDiggers(Random.NormalIntRange(4, 8), 18);
-//  }
+  protected ArrayList<Digger> chooseDiggers() {
+    ArrayList<Digger> diggers = super.chooseDiggers();
+
+    // wand maker
+    Digger digger = Blacksmith.Quest.GiveDigger();
+    if (digger != null) {
+      shouldAddBlackSmith = true;
+      diggers.add(digger);
+    }
+
+    return diggers;
+  }
   
   @Override
   protected void decorate() {
     //todo: this should be reworked.
   }
 
+  @Override
+  public void createMobs() {
+    if (shouldAddBlackSmith) 
+      Blacksmith.Quest.Spawn();
+
+    super.createMobs();
+  }
+  
   @Override
   public String tileName(int tile) {
     switch (tile) {

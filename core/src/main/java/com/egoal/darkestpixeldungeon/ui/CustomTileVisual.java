@@ -21,7 +21,9 @@
 package com.egoal.darkestpixeldungeon.ui;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.levels.Room;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -61,7 +63,7 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
   public CustomTileVisual create() {
     texture(tx);
     frame(texture.uvRect((txX + ofsX) * TILE_SIZE, (txY + ofsY) * TILE_SIZE,
-            (txX + ofsX + tileW) * TILE_SIZE, (txY + ofsY + tileH) * 
+            (txX + ofsX + tileW) * TILE_SIZE, (txY + ofsY + tileH) *
                     TILE_SIZE));
 
     x = tileX * TILE_SIZE;
@@ -97,6 +99,14 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
     }
 
     return result;
+  }
+
+  public static ArrayList<CustomTileVisual> CustomTilesForRect(XRect r,
+                                                               Class<? extends CustomTileVisual> cls) {
+    Room room = new Room();
+    room.set(r.x1, r.y1, r.x2+1, r.y2+1);
+    
+    return CustomTilesForRoom(room, cls);
   }
 
   private static final String TILE_X = "tileX";
