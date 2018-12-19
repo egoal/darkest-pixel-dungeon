@@ -59,7 +59,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-  public static int initialDepth_ = -1;
+  public static int initialDepth_ = 15;
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -235,7 +235,7 @@ public class Dungeon {
       case 17:
       case 18:
       case 19:
-        level = new CityLevel();
+        level = new DPDCityLevel();
         break;
       case 20:
         level = new CityBossLevel();

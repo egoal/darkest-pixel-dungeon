@@ -91,21 +91,22 @@ public class HighGrass {
           // Dew, scales from 1/6 to 1/3
           // now it's 1/5->1/3, and can drop more than one!
           if (Random.Int(10 - naturalismLevel) < 2) {
-            int q;
-            switch (Random.Int(10)) {
-              case 0:
-              case 1:
-              case 2:
-                q = 2;
-                break;
-              case 3:
-                q = 3;
-                break;
-              default:
-                q = 1;
-            }
-
-            level.drop(new Dewdrop().quantity(q), pos);
+//            int q;
+//            switch (Random.Int(10)) {
+//              case 0:
+//              case 1:
+//              case 2:
+//                q = 2;
+//                break;
+//              case 3:
+//                q = 3;
+//                break;
+//              default:
+//                q = 1;
+//            }
+//
+//            level.drop(new Dewdrop().quantity(q), pos);
+            level.drop(new Dewdrop(), pos);
           }
         }
       }

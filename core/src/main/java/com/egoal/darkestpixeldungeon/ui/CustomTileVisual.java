@@ -104,7 +104,7 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
   public static ArrayList<CustomTileVisual> CustomTilesForRect(XRect r,
                                                                Class<? extends CustomTileVisual> cls) {
     Room room = new Room();
-    room.set(r.x1, r.y1, r.x2+1, r.y2+1);
+    room.set(r.x1-1, r.y1-1, r.x2+1, r.y2+1);
     
     return CustomTilesForRoom(room, cls);
   }

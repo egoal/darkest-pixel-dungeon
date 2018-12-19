@@ -101,7 +101,7 @@ public class DPDCavesLevel extends DPDRegularLevel {
   
   @Override
   protected void decorate() {
-    //todo: this should be reworked.
+    //todo: rework this.
   }
 
   @Override

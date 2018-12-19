@@ -17,7 +17,7 @@ import com.watabou.utils.Random;
 public class ArmoryDigger extends RectDigger {
   @Override
   protected Point chooseRoomSize(XWall wall) {
-    return new Point(Random.IntRange(4, 8), Random.IntRange(4, 8));
+    return new Point(Random.IntRange(4, 6), Random.IntRange(4, 6));
   }
 
   @Override

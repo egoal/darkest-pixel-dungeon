@@ -1,32 +1,9 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2016 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp;
-import com.egoal.darkestpixeldungeon.levels.traps.*;
-import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.levels.Room.Type;
 import com.egoal.darkestpixeldungeon.levels.traps.BlazingTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.CursingTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.DisarmingTrap;
@@ -45,18 +22,23 @@ import com.egoal.darkestpixeldungeon.levels.traps.TeleportationTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.VenomTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.WarpingTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.WeakeningTrap;
+import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class CityLevel extends RegularLevel {
+/**
+ * Created by 93942 on 2018/12/19.
+ */
+
+public class DPDCityLevel extends DPDRegularLevel {
 
   {
     color1 = 0x4b6636;
     color2 = 0xf2f2f2;
-    
+
     viewDistance = 4;
   }
 
@@ -80,11 +62,11 @@ public class CityLevel extends RegularLevel {
 
   @Override
   protected Class<?>[] trapClasses() {
-    return new Class[]{BlazingTrap.class, FrostTrap.class, SpearTrap.class, 
+    return new Class[]{BlazingTrap.class, FrostTrap.class, SpearTrap.class,
             VenomTrap.class,
-            ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, 
+            ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class,
             RockfallTrap.class, OozeTrap.class, WeakeningTrap.class,
-            CursingTrap.class, FlockTrap.class, GuardianTrap.class, 
+            CursingTrap.class, FlockTrap.class, GuardianTrap.class,
             PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
             DisarmingTrap.class, WarpingTrap.class};
   }
@@ -98,19 +80,6 @@ public class CityLevel extends RegularLevel {
   }
 
   @Override
-  protected boolean assignRoomType() {
-    if (!super.assignRoomType()) return false;
-
-    for (Room r : rooms) {
-      if (r.type == Type.TUNNEL) {
-        r.type = Type.PASSAGE;
-      }
-    }
-
-    return true;
-  }
-
-  @Override
   protected void decorate() {
 
     for (int i = 0; i < length(); i++) {
@@ -120,8 +89,6 @@ public class CityLevel extends RegularLevel {
         map[i] = Terrain.WALL_DECO;
       }
     }
-
-    placeSign();
   }
 
   @Override
@@ -168,16 +135,14 @@ public class CityLevel extends RegularLevel {
   @Override
   public Group addVisuals() {
     super.addVisuals();
-    addCityVisuals(this, visuals);
+    AddCityVisuals(this, visuals);
     return visuals;
   }
 
-  public static void addCityVisuals(Level level, Group group) {
-    for (int i = 0; i < level.length(); i++) {
-      if (level.map[i] == Terrain.WALL_DECO) {
+  public static void AddCityVisuals(Level level, Group group) {
+    for (int i = 0; i < level.length(); ++i)
+      if (level.map[i] == Terrain.WALL_LIGHT_ON)
         group.add(new Smoke(i));
-      }
-    }
   }
 
   private static class Smoke extends Emitter {

@@ -7,7 +7,6 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
 import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.MerchantsBeacon;
 import com.egoal.darkestpixeldungeon.items.Stylus;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.items.Weightstone;
@@ -52,7 +51,7 @@ import java.util.ArrayList;
 
 public class ShopDigger extends RectDigger {
 
-  private static ArrayList<Item> ItemsToSpawn;
+  private ArrayList<Item> itemsToSpawn;
 
   protected Point chooseRoomSize(XWall wall) {
     return new Point(Random.IntRange(3, 6), Random.IntRange(3, 6));
@@ -67,8 +66,8 @@ public class ShopDigger extends RectDigger {
       Set(level, enter.random(), Terrain.SIGN);
 
     // generate items, place shopkeeper
-    if (ItemsToSpawn == null)
-      GenerateItems();
+    if (itemsToSpawn == null)
+      itemsToSpawn = GenerateItems();
 
     DPDShopKeeper dsk = level instanceof LastShopLevel ?
             new DPDImpShopkeeper() : new DPDShopKeeper();
@@ -79,83 +78,84 @@ public class ShopDigger extends RectDigger {
       for (int i : PathFinder.NEIGHBOURS9)
         Set(level, ((DPDImpShopkeeper) dsk).pos + i, Terrain.WATER);
 
-    for (Item item : ItemsToSpawn)
+    for (Item item : itemsToSpawn)
       dsk.addItemToSell(item);
-    ItemsToSpawn = null;
 
     return new DigResult(DigResult.Type.SPECIAL);
   }
 
-  private static void GenerateItems() {
-    ItemsToSpawn = new ArrayList<>();
+  private static ArrayList<Item> GenerateItems() {
+    ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
     // potion of healing and scroll of remove curse is preferred if identified
     {
       ScrollOfRemoveCurse s = new ScrollOfRemoveCurse();
       if (s.isKnown() && Random.Float() < .5f)
-        ItemsToSpawn.add(s);
+        itemsToSpawn.add(s);
       else
-        ItemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
+        itemsToSpawn.add(Generator.random(Generator.Category.SCROLL));
 
       PotionOfHealing p = new PotionOfHealing();
       if (p.isKnown() && Random.Float() < .5f)
-        ItemsToSpawn.add(p);
+        itemsToSpawn.add(p);
       else
-        ItemsToSpawn.add(Generator.random(Generator.Category.POTION));
+        itemsToSpawn.add(Generator.random(Generator.Category.POTION));
     }
 
     // armors and weapons 
     switch (Dungeon.depth) {
       case 6:
-        ItemsToSpawn.add((Random.Int(2) == 0 ? new NewShortsword().identify()
+        itemsToSpawn.add((Random.Int(2) == 0 ? new NewShortsword().identify()
                 : new HandAxe()).identify());
-        ItemsToSpawn.add(Random.Int(2) == 0 ?
+        itemsToSpawn.add(Random.Int(2) == 0 ?
                 new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
                 new CurareDart().quantity(Random.NormalIntRange(1, 3)));
-        ItemsToSpawn.add(new LeatherArmor().identify());
-        ItemsToSpawn.add(new Torch());
+        itemsToSpawn.add(new LeatherArmor().identify());
+        itemsToSpawn.add(new Torch());
         if (Random.Int(5) == 0)
-          ItemsToSpawn.add(new Torch());
+          itemsToSpawn.add(new Torch());
         break;
 
       case 11:
-        ItemsToSpawn.add((Random.Int(2) == 0 ? new Sword().identify() : new
+        itemsToSpawn.add((Random.Int(2) == 0 ? new Sword().identify() : new
                 Mace()).identify());
-        ItemsToSpawn.add(Random.Int(2) == 0 ?
+        itemsToSpawn.add(Random.Int(2) == 0 ?
                 new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
                 new Shuriken().quantity(Random.NormalIntRange(3, 6)));
-        ItemsToSpawn.add(new MailArmor().identify());
-        ItemsToSpawn.add(new Torch());
+        itemsToSpawn.add(new MailArmor().identify());
+        itemsToSpawn.add(new Torch());
         if (Random.Int(6) == 0)
-          ItemsToSpawn.add(new Torch());
+          itemsToSpawn.add(new Torch());
         break;
 
       case 16:
-        ItemsToSpawn.add((Random.Int(2) == 0 ? new Longsword().identify() :
+        itemsToSpawn.add((Random.Int(2) == 0 ? new Longsword().identify() :
                 new BattleAxe()).identify());
-        ItemsToSpawn.add(Random.Int(2) == 0 ?
+        itemsToSpawn.add(Random.Int(2) == 0 ?
                 new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
                 new Javelin().quantity(Random.NormalIntRange(3, 6)));
-        ItemsToSpawn.add(new ScaleArmor().identify());
-        ItemsToSpawn.add(new Torch());
+        itemsToSpawn.add(new ScaleArmor().identify());
+        itemsToSpawn.add(new Torch());
         if (Random.Int(10) == 0)
-          ItemsToSpawn.add(new Torch());
+          itemsToSpawn.add(new Torch());
         break;
     }
 
-    ChooseBag(Dungeon.hero.belongings);
-    
-    ItemsToSpawn.add(new OverpricedRation());
-    ItemsToSpawn.add(new OverpricedRation());
-    ItemsToSpawn.add(new Wine());
+    Item bag = ChooseBag(Dungeon.hero.belongings);
+    if (bag != null)
+      itemsToSpawn.add(bag);
+
+    itemsToSpawn.add(new OverpricedRation());
+    itemsToSpawn.add(new OverpricedRation());
+    itemsToSpawn.add(new Wine());
 
     // no bombs anymore
 
     if (Dungeon.depth == 6) {
-      ItemsToSpawn.add(new Ankh());
-      ItemsToSpawn.add(new Weightstone());
+      itemsToSpawn.add(new Ankh());
+      itemsToSpawn.add(new Weightstone());
     } else {
-      ItemsToSpawn.add(Random.Int(2) == 0 ? new Ankh() : new Weightstone());
+      itemsToSpawn.add(Random.Int(2) == 0 ? new Ankh() : new Weightstone());
     }
 
     // specials
@@ -173,7 +173,7 @@ public class ShopDigger extends RectDigger {
         rare = new Stylus();
     }
     rare.cursed = rare.cursedKnown = false;
-    ItemsToSpawn.add(rare);
+    itemsToSpawn.add(rare);
 
     TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem
             (TimekeepersHourglass.class);
@@ -197,13 +197,15 @@ public class ShopDigger extends RectDigger {
       }
 
       for (int i = 1; i <= bags; i++) {
-        ItemsToSpawn.add(new TimekeepersHourglass.sandBag());
+        itemsToSpawn.add(new TimekeepersHourglass.sandBag());
         hourglass.sandBags++;
       }
     }
+
+    return itemsToSpawn;
   }
 
-  private static void ChooseBag(Belongings pack) {
+  private static Item ChooseBag(Belongings pack) {
     int seeds = 0, scrolls = 0, potions = 0, wands = 0;
 
     for (Item item : pack.backpack.items) {
@@ -224,20 +226,22 @@ public class ShopDigger extends RectDigger {
     if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon
             .limitedDrops.seedBag.dropped()) {
       Dungeon.limitedDrops.seedBag.drop();
-      ItemsToSpawn.add(new SeedPouch());
+      return new SeedPouch();
 
     } else if (scrolls >= potions && scrolls >= wands && !Dungeon
             .limitedDrops.scrollBag.dropped()) {
       Dungeon.limitedDrops.scrollBag.drop();
-      ItemsToSpawn.add(new ScrollHolder());
+      return new ScrollHolder();
 
     } else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
       Dungeon.limitedDrops.potionBag.drop();
-      ItemsToSpawn.add(new PotionBandolier());
+      return new PotionBandolier();
 
     } else if (!Dungeon.limitedDrops.wandBag.dropped()) {
       Dungeon.limitedDrops.wandBag.drop();
-      ItemsToSpawn.add(new WandHolster());
+      return new WandHolster();
     }
+
+    return null;
   }
 }

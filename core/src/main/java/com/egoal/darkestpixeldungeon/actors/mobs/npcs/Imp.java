@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.mobs.Monk;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.windows.WndImp;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.Journal;
@@ -32,7 +33,6 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Golem;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.quest.DwarfToken;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;
-import com.egoal.darkestpixeldungeon.levels.CityLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ImpSprite;
@@ -181,7 +181,8 @@ public class Imp extends NPC {
       }
     }
 
-    public static void spawn(CityLevel level) {
+    // actually in city level
+    public static void Spawn(Level level) {
       if (!spawned && Dungeon.depth > 16 && Random.Int(20 - Dungeon.depth) ==
               0) {
 

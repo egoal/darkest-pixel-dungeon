@@ -41,7 +41,7 @@ public class DPDSewerLevel extends DPDRegularLevel {
 
   // smaller size
   protected ArrayList<Digger> chooseDiggers() {
-    return selectDiggers(Random.NormalIntRange(3, 6), 15);
+    return selectDiggers(Random.NormalIntRange(3, 5), 14);
   }
 
   @Override

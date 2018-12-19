@@ -110,11 +110,11 @@ public abstract class Digger {
       NORMAL,
       SPECIAL,
       LOCKED,
-      
+
       PIT, // pit room only, fall from weak floor
-      WEAK_FLOOR, 
-      
-      EXIT, ENTRANCE, 
+      WEAK_FLOOR,
+
+      EXIT, ENTRANCE,
     }
 
     public Type type;
@@ -123,7 +123,8 @@ public abstract class Digger {
     DigResult() {
       this(Type.NORMAL);
     }
-    DigResult(Type type){
+
+    DigResult(Type type) {
       this.type = type;
       walls = new ArrayList<>();
     }
@@ -144,29 +145,33 @@ public abstract class Digger {
 
   public abstract DigResult dig(Level level, XWall wall, XRect rect);
 
-  protected XRect chooseCenteredBox(XWall wall, int hs){
+  protected XRect chooseCenteredBox(XWall wall, int hs) {
     // the door is centered
-    int size = hs * 2 + 1;
+    return chooseCenteredRect(wall, hs*2+1, hs*2+1);
+  }
+
+  protected XRect chooseCenteredRect(XWall wall, int w, int h) {
+    // the door is centered
     int x = -1, y = -1;
     switch (wall.direction) {
       case LEFT:
-        x = wall.x1 - size;
-        y = Random.IntRange(wall.y1, wall.y2) - hs;
+        x = wall.x1 - w;
+        y = Random.IntRange(wall.y1, wall.y2) - h / 2;
         break;
       case RIGHT:
         x = wall.x2 + 1;
-        y = Random.IntRange(wall.y1, wall.y2) - hs;
+        y = Random.IntRange(wall.y1, wall.y2) - h / 2;
         break;
       case UP:
-        x = Random.IntRange(wall.x1, wall.x2) - hs;
-        y = wall.y1 - size;
+        x = Random.IntRange(wall.x1, wall.x2) - w / 2;
+        y = wall.y1 - h;
         break;
       case DOWN:
-        x = Random.IntRange(wall.x1, wall.x2) - hs;
+        x = Random.IntRange(wall.x1, wall.x2) - w / 2;
         y = wall.y2 + 1;
         break;
     }
 
-    return XRect.create(x, y, size, size);
+    return XRect.create(x, y, w, h);
   }
 }

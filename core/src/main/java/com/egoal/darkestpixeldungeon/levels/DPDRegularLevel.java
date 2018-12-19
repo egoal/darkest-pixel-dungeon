@@ -444,13 +444,15 @@ public abstract class DPDRegularLevel extends Level {
     SPECIAL_DIGGERS.put(WeakFloorDigger.class, 1f);
 
     NORMAL_DIGGERS.put(NormalRoomDigger.class, 1f);
-    NORMAL_DIGGERS.put(NormalCircleDigger.class, .2f);
+    NORMAL_DIGGERS.put(NormalCircleDigger.class, .1f);
     NORMAL_DIGGERS.put(LatticeDigger.class, .2f);
+    NORMAL_DIGGERS.put(CellDigger.class, .1f);
+    NORMAL_DIGGERS.put(BrightDigger.class, .1f);
   }
 
   protected ArrayList<Digger> chooseDiggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
-    int specials = Random.NormalIntRange(4, 8);
+    int specials = Random.NormalIntRange(3, 6);
     if (Dungeon.shopOnLevel()) {
       diggers.add(new ShopDigger());
       --specials;

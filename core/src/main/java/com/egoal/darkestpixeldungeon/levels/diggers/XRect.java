@@ -38,6 +38,8 @@ public class XRect implements Bundlable {
     return y2 - y1 + 1;
   }
 
+  public int area(){ return w()*h(); }
+  
   public Point cen() {
     return new Point((x1 + x2) / 2, (y1 + y2) / 2);
   }
