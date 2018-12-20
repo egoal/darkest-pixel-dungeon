@@ -328,7 +328,7 @@ public abstract class DPDRegularLevel extends Level {
         validCells.add(i);
     }
 
-    int ntraps = Math.min(nTraps(), (int) (validCells.size() * 0.15));
+    int ntraps = Math.min(nTraps(), (int) (validCells.size() * 0.175));
     Collections.shuffle(validCells);
 
     for (int i = 0; i < ntraps; ++i) {
@@ -443,19 +443,21 @@ public abstract class DPDRegularLevel extends Level {
     SPECIAL_DIGGERS.put(VaultDigger.class, 1f);
     SPECIAL_DIGGERS.put(WeakFloorDigger.class, 1f);
 
-    NORMAL_DIGGERS.put(NormalRoomDigger.class, 1f);
+    NORMAL_DIGGERS.put(NormalRectDigger.class, 1f);
     NORMAL_DIGGERS.put(NormalCircleDigger.class, .1f);
-    NORMAL_DIGGERS.put(LatticeDigger.class, .2f);
-    NORMAL_DIGGERS.put(CellDigger.class, .1f);
+    NORMAL_DIGGERS.put(NormalDiamondDigger.class, .075f);
+    NORMAL_DIGGERS.put(NormalRoundDigger.class, .075f);
+    NORMAL_DIGGERS.put(LatticeDigger.class, .1f);
+    NORMAL_DIGGERS.put(NormalCellDigger.class, .075f);
     NORMAL_DIGGERS.put(BrightDigger.class, .1f);
   }
 
   protected ArrayList<Digger> chooseDiggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
-    int specials = Random.NormalIntRange(3, 6);
+    int specials = Random.NormalIntRange(3, 5);
     if (Dungeon.shopOnLevel()) {
       diggers.add(new ShopDigger());
-      --specials;
+      // --specials;
     }
 
     diggers.addAll(selectDiggers(specials, 18));

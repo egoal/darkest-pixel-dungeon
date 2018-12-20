@@ -28,12 +28,10 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
 import com.egoal.darkestpixeldungeon.items.quest.Embers;
 import com.egoal.darkestpixeldungeon.levels.DPDPrisonLevel;
-import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.diggers.MassGraveDigger;
-import com.egoal.darkestpixeldungeon.levels.diggers.NormalRoomDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.RitualSiteDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.RotGardenDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
@@ -52,7 +50,6 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class Wandmaker extends NPC {

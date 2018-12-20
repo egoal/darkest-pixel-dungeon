@@ -9,7 +9,7 @@ import com.watabou.utils.Random;
  * Created by 93942 on 11/27/2018.
  */
 
-public class NormalRoomDigger extends RectDigger {
+public class NormalRectDigger extends RectDigger {
 
   @Override
   public DigResult dig(Level level, XWall wall, XRect rect) {

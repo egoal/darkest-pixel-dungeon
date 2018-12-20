@@ -8,7 +8,7 @@ import com.watabou.utils.Random
 /**
  * Created by 93942 on 2018/12/19.
  */
-class CellDigger : NormalRoomDigger() {
+class NormalCellDigger : NormalRectDigger() {
     override fun chooseRoomSize(wall: XWall?): Point {
         return Point(Random.IntRange(5, 9), Random.IntRange(5, 9))
     }
