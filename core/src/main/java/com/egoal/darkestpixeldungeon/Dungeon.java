@@ -297,8 +297,10 @@ public class Dungeon {
     if (pos < 0 || pos >= level.length()) {
       pos = level.exit;
     }
-    Actor.init();
+    
+    // add into level.mobs, then into actor.
     hero.restoreFollowers(level, pos);
+    Actor.init();
 
     PathFinder.setMapSize(level.width(), level.height());
     visible = new boolean[level.length()];

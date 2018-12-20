@@ -38,8 +38,10 @@ public class XRect implements Bundlable {
     return y2 - y1 + 1;
   }
 
-  public int area(){ return w()*h(); }
-  
+  public int area() {
+    return w() * h();
+  }
+
   public Point cen() {
     return new Point((x1 + x2) / 2, (y1 + y2) / 2);
   }
@@ -64,6 +66,10 @@ public class XRect implements Bundlable {
 
   public boolean isValid() {
     return x1 <= x2 && y1 <= y2;
+  }
+
+  public boolean inside(Point p) {
+    return p.x >= x1 && p.x <= x2 && p.y >= y1 && p.y <= y2;
   }
 
   public HashSet<Point> getAllPoints() {

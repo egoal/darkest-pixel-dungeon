@@ -133,7 +133,10 @@ public class ItemSpriteSheet {
   public static final int ARMOR_ROGUE = ARMOR + 7;
   public static final int ARMOR_HUNTRESS = ARMOR + 8;
 
-  //32 free slots
+  private static final int HELMET = xy(1, 12);
+  public static final int HELMET_CRUSADER = HELMET + 0;
+
+  //16 free slots
 
   private static final int WANDS = xy(1, 14);  //16 slots
   public static final int WAND_MAGIC_MISSILE = WANDS + 0;
@@ -204,8 +207,8 @@ public class ItemSpriteSheet {
   public static final int SCROLL_BERKANAN = SCROLLS + 9;
   public static final int SCROLL_ODAL = SCROLLS + 10;
   public static final int SCROLL_TIWAZ = SCROLLS + 11;
-  public static final int SCROLL_QI = SCROLLS+12;
-  public static final int SCROLL_LINGEL = SCROLLS+13;
+  public static final int SCROLL_QI = SCROLLS + 12;
+  public static final int SCROLL_LINGEL = SCROLLS + 13;
 
   private static final int POTIONS = xy(1, 21);  //16 slots
   public static final int POTION_CRIMSON = POTIONS + 0;
@@ -286,5 +289,5 @@ public class ItemSpriteSheet {
   public static final int DPD_WINE = FOOD + 9;
 
   public static final int DPD_BOOKS = xy(1, 23);
-  public static final int DPD_NOTES = DPD_BOOKS+1;
+  public static final int DPD_NOTES = DPD_BOOKS + 1;
 }

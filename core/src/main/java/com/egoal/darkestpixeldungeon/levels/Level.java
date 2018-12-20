@@ -299,16 +299,18 @@ public abstract class Level implements Bundlable {
       }
     }
 
-    boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
-
+    // now these two variables only set one once, so move outside
+    pitRoomNeeded = Dungeon.depth> 1 && weakFloorCreated;
+    weakFloorCreated = false;
+    // boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
     int _trails = 0;
     do {
       itemsToSpawn = (ArrayList<Item>) stationaryItems.clone();
       // Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
       Arrays.fill(map, Terrain.WALL);
       
-      pitRoomNeeded = pitNeeded;
-      weakFloorCreated = false;
+      // pitRoomNeeded = pitNeeded;
+      // weakFloorCreated = false;
 
       mobs = new HashSet<>();
       heaps = new SparseArray<>();

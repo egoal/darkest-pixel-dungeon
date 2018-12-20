@@ -224,8 +224,12 @@ public class Thief extends Mob {
 
           }
 
-          if (item != null)
+          if (item != null) {
             GLog.n(Messages.get(Thief.class, "escapes", item.name()));
+            if(Dungeon.hero.isAlive())
+              Dungeon.hero.takeDamage(new Damage(Random.IntRange(3, 5), this, Dungeon.hero).
+                    type(Damage.Type.MENTAL).addFeature(Damage.Feature.PURE));
+          }
           item = null;
           state = WANDERING;
         }

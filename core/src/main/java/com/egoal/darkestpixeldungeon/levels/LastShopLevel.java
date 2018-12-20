@@ -32,6 +32,7 @@ import com.watabou.noosa.Group;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class LastShopLevel extends RegularLevel {
@@ -53,8 +54,10 @@ public class LastShopLevel extends RegularLevel {
 
   @Override
   protected boolean build() {
-
+    // chasm 
     feeling = Feeling.CHASM;
+    Arrays.fill(map, Terrain.CHASM);
+    
     viewDistance = 4;
 
     initRooms();

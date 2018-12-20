@@ -56,11 +56,11 @@ public class DPDPrisonLevel extends DPDRegularLevel {
   }
 
   protected boolean[] water() {
-    return Patch.generate(this, feeling == Feeling.WATER ? 0.65f : 0.45f, 4);
+    return Patch.generate(this, feeling == Feeling.WATER ? 0.55f : 0.45f, 4);
   }
 
   protected boolean[] grass() {
-    return Patch.generate(this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 3);
+    return Patch.generate(this, feeling == Feeling.GRASS ? 0.55f : 0.40f, 3);
   }
 
   @Override

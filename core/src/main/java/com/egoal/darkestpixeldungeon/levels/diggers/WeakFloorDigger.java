@@ -30,7 +30,7 @@ public class WeakFloorDigger extends RectDigger {
     Fill(level, rect, Terrain.CHASM);
     Set(level, overlapedWall(wall, rect).random(), Terrain.DOOR);
 
-    DigResult dr = new DigResult(DigResult.Type.NORMAL);
+    DigResult dr = new DigResult(DigResult.Type.WEAK_FLOOR);
 
     Point well = rect.cen();
     switch (wall.direction) {

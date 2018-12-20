@@ -191,6 +191,8 @@ public enum HeroClass {
     
     // rings
     (new PotionBandolier()).identify().collect();
+    
+    (new DriedRose()).identify().collect();
   }
 
   public Badges.Badge masteryBadge() {

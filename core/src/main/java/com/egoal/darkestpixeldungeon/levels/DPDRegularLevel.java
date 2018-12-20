@@ -140,6 +140,15 @@ public abstract class DPDRegularLevel extends Level {
     return null;
   }
 
+  //!!! this function's behaviour can be undefined!!!
+  public Space space(int pos) {
+    for (Space s : spaces)
+      if (s.rect.inside(cellToPoint(pos)))
+        return s;
+
+    return null;
+  }
+
   @Override
   public int randomRespawnCell() {
     for (int i = 0; i < 30; ++i) {
@@ -283,10 +292,10 @@ public abstract class DPDRegularLevel extends Level {
     if (feeling == Feeling.GRASS) {
       for (Space space : spaces) {
         XRect rect = space.rect;
-        grass[xy2cell(rect.x1, rect.y1)] = true;
-        grass[xy2cell(rect.x2, rect.y1)] = true;
-        grass[xy2cell(rect.x1, rect.y2)] = true;
-        grass[xy2cell(rect.x2, rect.y2)] = true;
+        grass[xy2cell(rect.x1, rect.y1)] = Random.Int(2) == 0;
+        grass[xy2cell(rect.x2, rect.y1)] = Random.Int(2) == 0;
+        grass[xy2cell(rect.x1, rect.y2)] = Random.Int(2) == 0;
+        grass[xy2cell(rect.x2, rect.y2)] = Random.Int(2) == 0;
       }
     }
 

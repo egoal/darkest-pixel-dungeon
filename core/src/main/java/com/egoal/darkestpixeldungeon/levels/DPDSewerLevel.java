@@ -56,12 +56,12 @@ public class DPDSewerLevel extends DPDRegularLevel {
 
   @Override
   protected boolean[] water() {
-    return Patch.generate(this, feeling == Feeling.WATER ? 0.60f : 0.45f, 5);
+    return Patch.generate(this, feeling == Feeling.WATER ? 0.55f : 0.45f, 5);
   }
 
   @Override
   protected boolean[] grass() {
-    return Patch.generate(this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 4);
+    return Patch.generate(this, feeling == Feeling.GRASS ? 0.55f : 0.40f, 4);
   }
 
   @Override

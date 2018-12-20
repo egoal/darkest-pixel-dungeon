@@ -33,8 +33,10 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.egoal.darkestpixeldungeon.levels.DPDRegularLevel;
 import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.levels.Room;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.InterlevelScene;
@@ -88,6 +90,11 @@ public class Chasm {
         Room room = ((RegularLevel) Dungeon.level).room(pos);
         InterlevelScene.fallIntoPit = room != null && room.type == Room.Type
                 .WEAK_FLOOR;
+      } else if (Dungeon.level instanceof DPDRegularLevel) {
+        DPDRegularLevel.Space s = ((DPDRegularLevel) Dungeon.level).space(pos);
+
+        InterlevelScene.fallIntoPit = s != null &&
+                s.type == Digger.DigResult.Type.WEAK_FLOOR;
       } else {
         InterlevelScene.fallIntoPit = false;
       }
@@ -106,7 +113,7 @@ public class Chasm {
 
     Buff.prolong(hero, Cripple.class, Cripple.DURATION);
     Buff.affect(hero, Bleeding.class).set(hero.HT / 8);
-    hero.takeDamage(new Damage(Random.NormalIntRange(hero.HP / 4, hero.HT / 
+    hero.takeDamage(new Damage(Random.NormalIntRange(hero.HP / 4, hero.HT /
             4), new Hero.Doom() {
       @Override
       public void onDeath() {
