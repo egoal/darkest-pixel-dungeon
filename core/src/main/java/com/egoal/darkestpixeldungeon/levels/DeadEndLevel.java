@@ -46,7 +46,7 @@ public class DeadEndLevel extends Level {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
 
     Arrays.fill(map, Terrain.WALL);
 

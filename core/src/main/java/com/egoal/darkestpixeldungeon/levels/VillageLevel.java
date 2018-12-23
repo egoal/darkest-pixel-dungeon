@@ -49,7 +49,7 @@ public class VillageLevel extends RegularLevel {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
     if (!initRooms() || rooms.size() < 2)
       return false;
 

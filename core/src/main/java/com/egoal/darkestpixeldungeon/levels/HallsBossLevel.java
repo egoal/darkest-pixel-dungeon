@@ -103,7 +103,7 @@ public class HallsBossLevel extends Level {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
 
     for (int i = 0; i < 5; i++) {
 

@@ -16,7 +16,7 @@ public abstract class RectDigger extends Digger {
   protected Point chooseRoomSize(XWall wall) {
     return new Point(Random.IntRange(4, 9), Random.IntRange(4, 9));
   }
-  
+
   @Override
   public XRect chooseDigArea(XWall wall) {
     Point size = chooseRoomSize(wall);
@@ -49,15 +49,15 @@ public abstract class RectDigger extends Digger {
     for (int dir : directions)
       switch (dir) {
         case LEFT:
-          walls.add(new XWall(rect.x1 - 1, rect.x1 - 1, rect.y1, rect.y2, 
+          walls.add(new XWall(rect.x1 - 1, rect.x1 - 1, rect.y1, rect.y2,
                   LEFT));
         case RIGHT:
-          walls.add(new XWall(rect.x2 + 1, rect.x2 + 1, rect.y1, rect.y2, 
+          walls.add(new XWall(rect.x2 + 1, rect.x2 + 1, rect.y1, rect.y2,
                   RIGHT));
         case UP:
           walls.add(new XWall(rect.x1, rect.x2, rect.y1 - 1, rect.y1 - 1, UP));
         case DOWN:
-          walls.add(new XWall(rect.x1, rect.x2, rect.y2 + 1, rect.y2 + 1, 
+          walls.add(new XWall(rect.x1, rect.x2, rect.y2 + 1, rect.y2 + 1,
                   DOWN));
       }
 
@@ -71,7 +71,7 @@ public abstract class RectDigger extends Digger {
     for (int d : Directions)
       if (d != direction)
         directions[i++] = d;
-    
+
     return walls(rect, directions);
   }
 

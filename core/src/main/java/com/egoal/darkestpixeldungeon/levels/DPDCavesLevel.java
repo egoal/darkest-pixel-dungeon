@@ -41,12 +41,12 @@ public class DPDCavesLevel extends DPDRegularLevel {
   {
     color1 = 0x534f3e;
     color2 = 0xb9d661;
-    
+
     viewDistance = 4;
   }
 
   private boolean shouldAddBlackSmith = false;
-  
+
   @Override
   public String tilesTex() {
     return Assets.TILES_CAVES;
@@ -98,20 +98,93 @@ public class DPDCavesLevel extends DPDRegularLevel {
 
     return diggers;
   }
-  
-  @Override
-  protected void decorate() {
-    //todo: rework this.
+
+  // in decorate
+  private boolean _normal(int c) {
+    // questioner can be on the wall, perhaps i should use a new Terrain type
+    // ^ yes, i did.
+    return map[c] == Terrain.WALL; // && findMob(c) == null;
   }
 
   @Override
+  protected void decorate() {
+    // may remove corner, be cave-like
+    for (Space s : spaces) {
+      if (s.type != Digger.DigResult.Type.NORMAL) continue;
+
+      int a = s.rect.area();
+
+      if (Random.Int(a) > 8) {
+        int corner = xy2cell(s.rect.x1, s.rect.y1);
+        if (_normal(corner - 1) && _normal(corner - width())) {
+          map[corner] = Terrain.WALL;
+          traps.remove(corner);
+        }
+      }
+
+      if (Random.Int(a) > 8) {
+        int corner = xy2cell(s.rect.x2, s.rect.y1);
+        if (_normal(corner + 1) && _normal(corner - width())) {
+          map[corner] = Terrain.WALL;
+          traps.remove(corner);
+        }
+      }
+
+      if (Random.Int(a) > 8) {
+        int corner = xy2cell(s.rect.x1, s.rect.y2);
+        if (_normal(corner - 1) && _normal(corner + width())) {
+          map[corner] = Terrain.WALL;
+          traps.remove(corner);
+        }
+      }
+
+      if (Random.Int(a) > 8) {
+        int corner = xy2cell(s.rect.x2, s.rect.y2);
+        if (_normal(corner + 1) && _normal(corner + width())) {
+          map[corner] = Terrain.WALL;
+          traps.remove(corner);
+        }
+      }
+    }
+
+    // gold mine
+    for (int i = width() + 1; i < length() - width(); i++) {
+      if (map[i] == Terrain.EMPTY) {
+        int n = 0;
+        if (map[i + 1] == Terrain.WALL) {
+          n++;
+        }
+        if (map[i - 1] == Terrain.WALL) {
+          n++;
+        }
+        if (map[i + width()] == Terrain.WALL) {
+          n++;
+        }
+        if (map[i - width()] == Terrain.WALL) {
+          n++;
+        }
+        if (Random.Int(6) <= n) {
+          map[i] = Terrain.EMPTY_DECO;
+        }
+      }
+    }
+
+    for (int i = 0; i < length(); i++) {
+      if (map[i] == Terrain.WALL && Random.Int(12) == 0) {
+        map[i] = Terrain.WALL_DECO;
+      }
+    }
+  }
+
+
+  @Override
   public void createMobs() {
-    if (shouldAddBlackSmith) 
+    if (shouldAddBlackSmith)
       Blacksmith.Quest.Spawn();
 
     super.createMobs();
   }
-  
+
   @Override
   public String tileName(int tile) {
     switch (tile) {

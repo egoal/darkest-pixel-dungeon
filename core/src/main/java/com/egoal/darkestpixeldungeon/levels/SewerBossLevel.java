@@ -60,7 +60,7 @@ public class SewerBossLevel extends RegularLevel {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
 
     initRooms();
 

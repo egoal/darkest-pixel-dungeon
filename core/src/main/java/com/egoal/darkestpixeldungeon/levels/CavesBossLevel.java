@@ -103,7 +103,7 @@ public class CavesBossLevel extends Level {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
 
     int topMost = Integer.MAX_VALUE;
 

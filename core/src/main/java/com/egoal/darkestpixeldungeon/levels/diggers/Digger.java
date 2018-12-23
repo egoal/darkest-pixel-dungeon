@@ -147,7 +147,7 @@ public abstract class Digger {
 
   protected XRect chooseCenteredBox(XWall wall, int hs) {
     // the door is centered
-    return chooseCenteredRect(wall, hs*2+1, hs*2+1);
+    return chooseCenteredRect(wall, hs * 2 + 1, hs * 2 + 1);
   }
 
   protected XRect chooseCenteredRect(XWall wall, int w, int h) {

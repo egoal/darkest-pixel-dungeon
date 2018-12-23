@@ -145,7 +145,7 @@ public class Goo extends Mob {
   public Damage attackProc(Damage damage) {
     Char enemy = (Char) damage.to;
     if (Random.Int(3) == 0) {
-      Buff.prolong(enemy, Vulnerable.class, 3).ratio  = 1.25f;
+      Buff.prolong(enemy, Vulnerable.class, 3).ratio = 1.25f;
       enemy.sprite.burst(0xFF0000, 5);
     }
 
@@ -158,11 +158,12 @@ public class Goo extends Mob {
 
   @Override
   public Damage defenseProc(Damage dmg) {
-    if(pumpedUp==0 && Random.Int(4)==0 && !dmg.isFeatured(Damage.Feature.RANGED)){
-      Buff.affect(enemy, Ooze.class);
-      enemy.sprite.burst(0x000000, 5);
+    if (pumpedUp == 0 && dmg.from instanceof Char &&
+            !dmg.isFeatured(Damage.Feature.RANGED) && Random.Int(4) == 0) {
+      Buff.affect((Char) dmg.from, Ooze.class);
+      ((Char) dmg.from).sprite.burst(0x000000, 5);
     }
-    
+
     return super.defenseProc(dmg);
   }
 

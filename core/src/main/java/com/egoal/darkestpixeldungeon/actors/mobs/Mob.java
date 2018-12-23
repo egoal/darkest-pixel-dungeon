@@ -548,7 +548,7 @@ public abstract class Mob extends Char {
   public int exp() {
     int dlvl = Dungeon.hero.lvl - maxLvl;
     if (dlvl < 0) return EXP;
-    return EXP / (2 + dlvl);
+    return EXP / (2 + 2 * dlvl);
   }
 
   @Override

@@ -170,13 +170,13 @@ public enum HeroClass {
     hero.lvl  = 20;
     
     ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
-    somm.quantity(9).identify().collect();
+    somm.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(3, somm);
+    
     new ScrollOfLight().quantity(3).identify().collect();
     new ScrollOfCurse().quantity(3).identify().collect();
     
     new PotionOfHealing().quantity(9).identify().collect();
-    new PotionOfMindVision().quantity(9).identify().collect();
     
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
@@ -191,6 +191,10 @@ public enum HeroClass {
     
     // rings
     (new PotionBandolier()).identify().collect();
+
+    PotionOfMindVision pomv = new PotionOfMindVision();
+    pomv.quantity(30).identify().collect();
+    Dungeon.quickslot.setSlot(4, pomv);
     
     (new DriedRose()).identify().collect();
   }

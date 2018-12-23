@@ -16,6 +16,7 @@ public class QuestionerDigger extends RectDigger {
     // no door
     Questioner q = new Questioner().random().hold(rect);
     q.pos = level.pointToCell(overlapedWall(wall, rect).random());
+    Set(level, q.pos, Terrain.WALL_SPECIAL);
     level.mobs.add(q);
 
     return new DigResult(DigResult.Type.LOCKED);

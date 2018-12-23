@@ -53,7 +53,7 @@ public class LastShopLevel extends RegularLevel {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
     // chasm 
     feeling = Feeling.CHASM;
     Arrays.fill(map, Terrain.CHASM);

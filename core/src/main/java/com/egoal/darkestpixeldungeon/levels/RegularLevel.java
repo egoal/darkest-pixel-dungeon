@@ -70,7 +70,7 @@ public abstract class RegularLevel extends Level {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iteration) {
 
     if (!initRooms()) {
       return false;
@@ -365,7 +365,7 @@ public abstract class RegularLevel extends Level {
 
     for (int i = 0; i < length(); i++) {
       if (map[i] == Terrain.EMPTY) {
-        
+
         // add room tile
         Room r = room(i);
         if (r != null && r.type != Type.NULL) {

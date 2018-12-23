@@ -81,6 +81,23 @@ public class XRect implements Bundlable {
     return points;
   }
 
+  public XRect randomSegment() {
+    Point x = RandomSegment(x1, x2);
+    Point y = RandomSegment(y1, y2);
+
+    return new XRect(x.x, x.y, y.x, y.y);
+  }
+
+  private static Point RandomSegment(int min, int max) {
+    if (min == max)
+      return new Point(min, max);
+
+    Point p = new Point();
+    p.x = Random.IntRange(min, max - 1);
+    p.y = Random.IntRange(p.x, max);
+    return p;
+  }
+
   @Override
   public void restoreFromBundle(Bundle bundle) {
     x1 = bundle.getInt("x1");

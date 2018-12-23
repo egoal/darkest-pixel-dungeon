@@ -75,7 +75,7 @@ public class LastLevel extends Level {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
 
     Arrays.fill(map, Terrain.CHASM);
 

@@ -300,17 +300,13 @@ public abstract class Level implements Bundlable {
     }
 
     // now these two variables only set one once, so move outside
-    pitRoomNeeded = Dungeon.depth> 1 && weakFloorCreated;
+    pitRoomNeeded = Dungeon.depth > 1 && weakFloorCreated;
     weakFloorCreated = false;
-    // boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
-    int _trails = 0;
-    do {
+
+    for (int i = 0; ; ++i) {
       itemsToSpawn = (ArrayList<Item>) stationaryItems.clone();
-      // Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
+      // no chasm feeling
       Arrays.fill(map, Terrain.WALL);
-      
-      // pitRoomNeeded = pitNeeded;
-      // weakFloorCreated = false;
 
       mobs = new HashSet<>();
       heaps = new SparseArray<>();
@@ -319,9 +315,11 @@ public abstract class Level implements Bundlable {
       traps = new SparseArray<>();
       customTiles = new HashSet<>();
 
-      ++_trails;
-    } while (!build());
-    Log.d("dpd", String.format("level build okay after %d trails.", _trails));
+      if (build(i)) {
+        Log.d("dpd", String.format("level build okay after %d trails.", i));
+        break;
+      }
+    }
 
     decorate();
 
@@ -475,7 +473,7 @@ public abstract class Level implements Bundlable {
     return null;
   }
 
-  abstract protected boolean build();
+  abstract protected boolean build(int iteration);
 
   abstract protected void decorate();
 

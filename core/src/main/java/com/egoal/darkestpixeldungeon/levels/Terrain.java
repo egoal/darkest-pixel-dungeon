@@ -75,6 +75,7 @@ public class Terrain {
   public static final int WALL_LIGHT_OFF = 34;
   public static final int ENCHANTING_STATION = 35;
   public static final int HIGH_GRASS_COLLECTED = 36;
+  public static final int WALL_SPECIAL = 37; // actually wall
 
   public static final int WATER_TILES = 48;
   public static final int WATER = 63;

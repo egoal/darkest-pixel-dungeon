@@ -9,6 +9,9 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -53,8 +56,15 @@ public abstract class DPDRegularLevel extends Level {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iteration) {
     // dig rooms
+    if (iteration % 30 == 0) {
+      // reset diggers after each 30 failures.
+      chosenDiggers = chooseDiggers();
+      Log.d("dpd", String.format("reset diggers, %d now chosen.", 
+              chosenDiggers.size()));
+    }
+
     if (!digLevel())
       return false;
 
@@ -90,12 +100,38 @@ public abstract class DPDRegularLevel extends Level {
       case 0:
       case 1:
         return 0;
+      case 2:
+      case 3:
+      case 4:
+        return (3 + Dungeon.depth % 5 + Random.Int(5));
       default:
-        return (3 + Dungeon.depth % 5 + Random.Int(6));
+        return (3 + Dungeon.depth % 5 + Random.Int(8));
     }
   }
 
   protected void createSellers() {
+    // random spawn seller
+    if (Dungeon.depth > 0 && Dungeon.depth < 20) {
+      float psratio = Dungeon.shopOnLevel() ? .1f : .2f;
+      if (Random.Float() < psratio) {
+        DPDShopKeeper ps = new PotionSeller().initSellItems();
+        Space s = randomSpace(Digger.DigResult.Type.NORMAL, -1);
+        do {
+          ps.pos = pointToCell(s.rect.random());
+        } while (findMob(ps.pos) != null || !passable[ps.pos]);
+        mobs.add(ps);
+      }
+
+      float ssratio = Dungeon.shopOnLevel() ? .08f : .18f;
+      if (Random.Float() < ssratio) {
+        DPDShopKeeper ps = new ScrollSeller().initSellItems();
+        Space s = randomSpace(Digger.DigResult.Type.NORMAL, -1);
+        do {
+          ps.pos = pointToCell(s.rect.random());
+        } while (findMob(ps.pos) != null || !passable[ps.pos]);
+        mobs.add(ps);
+      }
+    }
   }
 
   @Override
@@ -267,7 +303,7 @@ public abstract class DPDRegularLevel extends Level {
     }
 
     final float LIGHT_RATIO = Dungeon.depth < 10 ? 0.15f : 0.1f;
-    final float LIGHT_ON_RATIO = feeling == Feeling.DARK ? 0.45f : 0.7f;
+    final float LIGHT_ON_RATIO = feeling == Feeling.DARK ? 0.5f : 0.7f;
     for (int i : availableWalls) {
       if (Random.Float() < LIGHT_RATIO)
         map[i] = Random.Float() < LIGHT_ON_RATIO ?
@@ -315,7 +351,7 @@ public abstract class DPDRegularLevel extends Level {
 
   // traps
   protected int nTraps() {
-    return Random.NormalIntRange(1, 3 + Dungeon.depth / 2);
+    return Random.NormalIntRange(1, 5 + Dungeon.depth / 2);
   }
 
   protected Class<?>[] trapClasses() {
@@ -374,23 +410,20 @@ public abstract class DPDRegularLevel extends Level {
       chosenDiggers = chooseDiggers();
 
     ArrayList<Digger> diggers = (ArrayList<Digger>) chosenDiggers.clone();
-    Log.d("dpd", String.format("%d rooms to dig.", diggers.size()));
+    Collections.shuffle(diggers);
 
-    while (!diggers.isEmpty() && !digableWalls.isEmpty()) {
-      // choose a digger
-      Digger digger = Random.element(diggers);
+    for (Digger d : diggers) {
+      if (digableWalls.isEmpty()) break;
 
-      // dig a room
-      boolean digged = false;
+      // dig once
+      boolean dag = false;
       for (int i = 0; i < 100; ++i) {
         XWall wall = Random.element(digableWalls);
-        XRect rect = digger.chooseDigArea(wall);
+        XRect rect = d.chooseDigArea(wall);
         if (canDigAt(rect)) {
-          // free to dig, dig!
-          digged = true;
-
-          Digger.DigResult dr = digger.dig(this, wall, rect);
-
+          //! dig
+          dag = true;
+          Digger.DigResult dr = d.dig(this, wall, rect);
           digableWalls.remove(wall);
           digableWalls.addAll(dr.walls);
           spaces.add(new Space(rect, dr.type));
@@ -398,10 +431,10 @@ public abstract class DPDRegularLevel extends Level {
         }
       }
 
-      if (!digged) return false;
-
-      diggers.remove(digger);
+      if (!dag)
+        return false;
     }
+
     Log.d("dpd", String.format("%d diggers left...", diggers.size()));
 
     int lc = makeLoopClosure(6);
@@ -469,7 +502,7 @@ public abstract class DPDRegularLevel extends Level {
       // --specials;
     }
 
-    diggers.addAll(selectDiggers(specials, 18));
+    diggers.addAll(selectDiggers(specials, 16));
 
     return diggers;
   }
@@ -493,6 +526,10 @@ public abstract class DPDRegularLevel extends Level {
         probs.remove(VaultDigger.class);
         probs.remove(WeakFloorDigger.class);
       }
+
+      // do not create weak floor if next floor is boss level.
+      if (Dungeon.bossLevel(Dungeon.depth + 1))
+        probs.remove(WeakFloorDigger.class);
 
       for (int i = 0; i < specials; ++i) {
         Class<? extends Digger> cls = Random.chances(probs);

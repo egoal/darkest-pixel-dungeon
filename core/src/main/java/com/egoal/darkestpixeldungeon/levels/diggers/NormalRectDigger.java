@@ -19,7 +19,7 @@ public class NormalRectDigger extends RectDigger {
       // some times no door, dig the whole wall 
       Fill(level, overlapedWall(wall, rect), Terrain.EMPTY);
     } else {
-      Point door = overlapedWall(wall, rect).random(0);
+      Point door = overlapedWall(wall, rect).random();
       Set(level, door, Terrain.DOOR);
     }
     
@@ -29,5 +29,4 @@ public class NormalRectDigger extends RectDigger {
 
     return dr;
   }
-
 }

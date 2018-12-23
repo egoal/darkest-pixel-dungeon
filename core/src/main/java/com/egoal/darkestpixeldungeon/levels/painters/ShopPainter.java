@@ -212,19 +212,23 @@ public class ShopPainter extends Painter {
     itemsToSpawn.add(new OverpricedRation());
     itemsToSpawn.add(new Wine());
 
-    itemsToSpawn.add(new Bomb().random());
-    switch (Random.Int(5)) {
-      case 1:
-        itemsToSpawn.add(new Bomb());
-        break;
-      case 2:
-        itemsToSpawn.add(new Bomb().random());
-        break;
-      case 3:
-      case 4:
-        itemsToSpawn.add(new Honeypot());
-        break;
-    }
+    if(Random.Int(3)==0)
+      itemsToSpawn.add(new Honeypot());
+    
+    // no bombs anymore.
+//    itemsToSpawn.add(new Bomb().random());
+//    switch (Random.Int(5)) {
+//      case 1:
+//        itemsToSpawn.add(new Bomb());
+//        break;
+//      case 2:
+//        itemsToSpawn.add(new Bomb().random());
+//        break;
+//      case 3:
+//      case 4:
+//        itemsToSpawn.add(new Honeypot());
+//        break;
+//    }
 
 
     if (Dungeon.depth == 6) {

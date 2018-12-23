@@ -93,7 +93,7 @@ public class CityBossLevel extends Level {
   }
 
   @Override
-  protected boolean build() {
+  protected boolean build(int iterations) {
     loadMapDataFromFile(MAP_FILE);
 
     // entrance and exit already assigned in loading

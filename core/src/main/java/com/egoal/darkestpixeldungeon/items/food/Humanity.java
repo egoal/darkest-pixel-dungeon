@@ -65,4 +65,9 @@ public class Humanity extends Item {
     }
   }
 
+  @Override
+  public boolean isUpgradable() {
+    return false;
+  }
+
 }

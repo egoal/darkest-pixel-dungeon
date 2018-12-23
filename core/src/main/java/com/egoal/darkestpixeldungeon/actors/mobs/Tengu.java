@@ -254,6 +254,7 @@ public class Tengu extends Mob {
 
   @Override
   public void die(Object cause) {
+    clearPhantoms();
     Buff.detach(Dungeon.hero, Ignorant.class);
 
     if (Dungeon.hero.subClass == HeroSubClass.NONE) {

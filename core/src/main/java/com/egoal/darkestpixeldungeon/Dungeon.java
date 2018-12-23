@@ -258,8 +258,9 @@ public class Dungeon {
         level = new DeadEndLevel();
         Statistics.deepestFloor--;
     }
-//    if (DarkestPixelDungeon.debug())
-//      level = new DPDSewerLevel();
+    
+    if (DarkestPixelDungeon.debug())
+      level = new DPDEmptyLevel();
 
     visible = new boolean[level.length()];
     level.create();

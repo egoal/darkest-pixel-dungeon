@@ -100,7 +100,7 @@ public class Statuary extends NPC {
       spawnChance = node.getIntArray(SPAWN_CHANCE);
     }
   }
-
+  
   public Statuary random() {
     float[] chances = new float[3];
     for (int i = 0; i < 3; ++i) chances[i] = spawnChance[i];
@@ -118,6 +118,7 @@ public class Statuary extends NPC {
         break;
     }
     // adjust chances, 
+    // 0.3 no effects 
     for (int i = 0; i < 3; ++i) {
       if (i != c)
         spawnChance[i] *= 3;
