@@ -23,7 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.levels.diggers.BlackSmithDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.BlackSmithDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.windows.WndBlacksmith;
 import com.egoal.darkestpixeldungeon.Assets;

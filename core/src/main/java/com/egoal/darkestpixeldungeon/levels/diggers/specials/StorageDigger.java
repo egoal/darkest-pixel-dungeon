@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Honeypot;
@@ -6,6 +6,10 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 

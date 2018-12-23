@@ -103,43 +103,6 @@ public abstract class Digger {
     return true;
   }
 
-  // class Digger
-  public static class DigResult {
-    // space type
-    public enum Type {
-      NORMAL,
-      SPECIAL,
-      LOCKED,
-
-      PIT, // pit room only, fall from weak floor
-      WEAK_FLOOR,
-
-      EXIT, ENTRANCE,
-    }
-
-    public Type type;
-    public ArrayList<XWall> walls;
-
-    DigResult() {
-      this(Type.NORMAL);
-    }
-
-    DigResult(Type type) {
-      this.type = type;
-      walls = new ArrayList<>();
-    }
-
-    public DigResult type(Type type) {
-      this.type = type;
-      return this;
-    }
-
-    public DigResult walls(ArrayList<XWall> walls) {
-      this.walls = walls;
-      return this;
-    }
-  }
-
   // determine where to place the room on the digWall
   public abstract XRect chooseDigArea(XWall wall);
 

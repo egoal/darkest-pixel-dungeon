@@ -1,8 +1,12 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Questioner;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 
 /**
  * Created by 93942 on 2018/12/17.

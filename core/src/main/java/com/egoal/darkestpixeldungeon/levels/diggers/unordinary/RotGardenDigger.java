@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.unordinary;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
@@ -7,6 +7,10 @@ import com.egoal.darkestpixeldungeon.actors.mobs.RotLasher;
 import com.egoal.darkestpixeldungeon.items.keys.IronKey;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;

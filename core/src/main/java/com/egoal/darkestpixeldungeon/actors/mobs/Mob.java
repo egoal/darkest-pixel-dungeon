@@ -51,6 +51,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -320,8 +321,8 @@ public abstract class Mob extends Char {
         //if the new target is adjacent to the end of the path, adjust for that
         //rather than scrapping the whole path. Unless the path is very long,
         //in which case re-checking will likely result in a much better path
-        if (Dungeon.level.adjacent(target, path.getLast()) && path.size() <
-                viewDistance) {
+        if (Dungeon.level.adjacent(target, path.getLast()) &&
+                path.size() < Dungeon.level.distance(pos, target)) {
           int last = path.removeLast();
 
           if (path.isEmpty()) {
@@ -359,13 +360,15 @@ public abstract class Mob extends Char {
 
       if (!newPath) {
         //checks the next 4 cells in the path for validity
-        for (int i = 0; i < Math.min(path.size(), 4); i++) {
-          int cell = path.get(i);
-          if (!Level.passable[cell] || ((i != path.size() - 1) && Dungeon
-                  .visible[cell] && Actor.findChar(cell) != null)) {
+        int lookAhead = GameMath.clamp(path.size() - 1, 1, 4);
+        for (int i = 0; i < lookAhead; ++i) {
+          int c = path.get(i);
+          if (!Level.passable[c] ||
+                  (Dungeon.visible[c] && Actor.findChar(c) != null)) {
             newPath = true;
             break;
           }
+
         }
       }
 
@@ -375,7 +378,9 @@ public abstract class Mob extends Char {
                 Level.fieldOfView);
       }
 
-      if (path == null)
+      // if the path is too long, don't go there
+      if (path == null || (state == HUNTING && path.size() >
+              Math.max(10, 2 * Dungeon.level.distance(pos, target))))
         return false;
 
       step = path.removeFirst();

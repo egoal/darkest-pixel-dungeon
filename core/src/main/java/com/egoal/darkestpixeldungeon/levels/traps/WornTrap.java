@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.levels.traps;
 
+import com.egoal.darkestpixeldungeon.effects.CellEmitter;
+import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
@@ -39,6 +41,7 @@ public class WornTrap extends Trap {
 
   @Override
   public void activate() {
+    CellEmitter.get(pos).burst(Speck.factory(Speck.STEAM), 6);
     GLog.i(Messages.get(this, "nothing"));
   }
 }

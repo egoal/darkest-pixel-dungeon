@@ -209,36 +209,36 @@ public class Hero extends Char {
 
     return weakened ? STR - 2 : STR;
   }
-  
+
   // view control
   @Override
-  public int viewDistance(){
-    if(buff(SharpVision.class)!=null) return seeDistance();
-    
+  public int viewDistance() {
+    if (buff(SharpVision.class) != null) return seeDistance();
+
     int vd = Dungeon.level.viewDistance;
-    if(Dungeon.level.feeling == Level.Feeling.DARK)
+    if (Dungeon.level.feeling == Level.Feeling.DARK)
       vd /= 2;
-    
-    if(buff(Light.class)!=null){
+
+    if (buff(Light.class) != null) {
       vd = Math.max(vd, Light.DISTANCE);
     }
-    
-    if(heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
+
+    if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
       vd += 1;
-    
+
     return GameMath.clamp(vd, 1, 9);
   }
 
   @Override
-  public int seeDistance(){
+  public int seeDistance() {
     int sd = Dungeon.level.seeDistance;
-    
-    if(heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
+
+    if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
       sd += 1;
 
     return GameMath.clamp(sd, 1, 9);
   }
-  
+
   private static final String ATTACK = "attackSkill";
   private static final String DEFENSE = "defenseSkill";
   private static final String STRENGTH = "STR";
@@ -300,7 +300,7 @@ public class Hero extends Char {
     belongings.restoreFromBundle(bundle);
   }
 
-  public void holdFollowers(Level level) {    
+  public void holdFollowers(Level level) {
     Log.d("dpd", "holding followers.");
     followers_.clear();
 
@@ -460,7 +460,7 @@ public class Hero extends Char {
       CapeOfThorns.Thorns thorns = buff(CapeOfThorns.Thorns.class);
       if (thorns != null)
         dmg = thorns.proc(dmg);
-      
+
       if (belongings.weapon != null)
         dmg = belongings.weapon.defendDamage(dmg);
 
@@ -481,7 +481,7 @@ public class Hero extends Char {
 
       dmg.value -= dr;
     }
-    if(dmg.value<0) dmg.value = 0;
+    if (dmg.value < 0) dmg.value = 0;
 
     return dmg;
   }
@@ -1232,7 +1232,7 @@ public class Hero extends Char {
 
         // not greater than 10
         dmgMental.value = Math.min(10, dmgMental.value);
-        
+
         takeMentalDamage(dmgMental);
       }
 
@@ -1406,14 +1406,16 @@ public class Hero extends Char {
         //checks 2 cells ahead for validity.
         //Note that this is shorter than for mobs, so that mobs usually yield
         // to the hero
-        for (int i = 0; i < Math.min(path.size(), 2); i++) {
+        int lookAhead = GameMath.clamp(path.size() - 1, 0, 2);
+        for (int i = 0; i < lookAhead; i++) {
           int cell = path.get(i);
-          if (!Level.passable[cell] || ((i != path.size() - 1) && Dungeon
-                  .visible[cell] && Actor.findChar(cell) != null)) {
+          if (!Level.passable[cell] ||
+                  (Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
             newPath = true;
             break;
           }
         }
+
       }
 
       if (newPath) {
@@ -1586,7 +1588,8 @@ public class Hero extends Char {
     criticalChance_ += 0.4f / 100f;
 
     // recover sanity
-    recoverSanity(Math.min(Random.NormalIntRange(1, lvl*3/4), (int) (buff(Pressure
+    recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4), (int) (buff
+            (Pressure
             .class).pressure * 0.3f)));
   }
 
@@ -1691,9 +1694,9 @@ public class Hero extends Char {
       Statistics.ankhsUsed++;
 
       DriedRose.GhostHero gh = DriedRose.GhostHero.instance();
-      if(gh!=null)
+      if (gh != null)
         gh.sayAnhk();
-      
+
       return;
     }
 
@@ -1831,20 +1834,20 @@ public class Hero extends Char {
     if (uos != null) {
       uos.collectSoul(mob);
     }
-    
-    if(mob.properties().contains(Property.BOSS)){
+
+    if (mob.properties().contains(Property.BOSS)) {
       // slay a boss
       DriedRose.GhostHero gh = DriedRose.GhostHero.instance();
-      if(gh!=null)
+      if (gh != null)
         gh.sayBossBeaten();
     }
   }
 
   // called when killed a char by attack
   public void onKillChar(Char ch) {
-    if(ch.properties().contains(Property.PHANTOM))
+    if (ch.properties().contains(Property.PHANTOM))
       return;
-    
+
     // may recover pressure
     if (ch.properties().contains(Property.BOSS))
       recoverSanity(Random.IntRange(6, 12));

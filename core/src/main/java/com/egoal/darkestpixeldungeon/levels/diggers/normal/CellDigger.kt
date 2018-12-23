@@ -1,23 +1,26 @@
-package com.egoal.darkestpixeldungeon.levels.diggers
+package com.egoal.darkestpixeldungeon.levels.diggers.normal
 
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
 /**
  * Created by 93942 on 2018/12/19.
  */
-class NormalCellDigger : NormalRectDigger() {
+class CellDigger : NormalRectDigger() {
     override fun chooseRoomSize(wall: XWall?): Point {
-        return Point(Random.IntRange(5, 9), Random.IntRange(5, 9))
+        return Point(Random.NormalIntRange(5, 9), Random.NormalIntRange(5, 9))
     }
 
     override fun dig(level: Level?, wall: XWall?, rect: XRect): DigResult {
         val dr = super.dig(level, wall, rect)
 
         val maxInner = (Math.min(rect.w(), rect.h()) - 3) / 2
-        val i = Random.LowIntRange(1, maxInner)
+        val i = Random.NormalIntRange(1, maxInner)
         Fill(level, rect.inner(i), Terrain.WALL)
 
         val innerSpace = rect.inner(i + 1)

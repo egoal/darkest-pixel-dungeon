@@ -1,22 +1,24 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.blobs.WaterOfAwareness;
 import com.egoal.darkestpixeldungeon.actors.blobs.WaterOfHealth;
 import com.egoal.darkestpixeldungeon.actors.blobs.WaterOfTransmutation;
 import com.egoal.darkestpixeldungeon.actors.blobs.WellWater;
-import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RoundDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 /**
  * Created by 93942 on 2018/12/12.
  */
 
-public class MagicWellDigger extends NormalRoundDigger {
+public class MagicWellDigger extends RoundDigger {
   @Override
   public DigResult dig(Level level, XWall wall, XRect rect) {
     DigResult dr = super.dig(level, wall, rect);

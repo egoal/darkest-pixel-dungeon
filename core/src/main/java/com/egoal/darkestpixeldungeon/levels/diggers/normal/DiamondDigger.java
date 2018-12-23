@@ -1,7 +1,11 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.normal;
 
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -9,7 +13,7 @@ import com.watabou.utils.Random;
  * Created by 93942 on 2018/12/20.
  */
 
-public class NormalDiamondDigger extends Digger {
+public class DiamondDigger extends Digger {
   @Override
   public XRect chooseDigArea(XWall wall) {
     return super.chooseCenteredBox(wall, Random.NormalIntRange(2, 5));

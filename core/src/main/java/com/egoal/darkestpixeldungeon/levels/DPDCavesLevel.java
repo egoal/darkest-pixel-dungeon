@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Blacksmith;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.traps.ConfusionTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ExplosiveTrap;
@@ -110,7 +111,7 @@ public class DPDCavesLevel extends DPDRegularLevel {
   protected void decorate() {
     // may remove corner, be cave-like
     for (Space s : spaces) {
-      if (s.type != Digger.DigResult.Type.NORMAL) continue;
+      if (s.type != DigResult.Type.NORMAL) continue;
 
       int a = s.rect.area();
 

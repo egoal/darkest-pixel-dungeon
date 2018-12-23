@@ -18,6 +18,30 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.diggers.*;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.BrightDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.LatticeDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.CellDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.CircleDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.DiamondDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.NormalRectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RoundDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.StripDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.ArmoryDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.GardenDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.LaboratoryDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.LibraryDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.MagicWellDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.PitDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.PoolDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.QuestionerDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.ShopDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.StatuaryDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.StatueDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.StorageDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.TrapsDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.TreasuryDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.VaultDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.WeakFloorDigger;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap;
@@ -58,32 +82,23 @@ public abstract class DPDRegularLevel extends Level {
   @Override
   protected boolean build(int iteration) {
     // dig rooms
-    if (iteration % 30 == 0) {
-      // reset diggers after each 30 failures.
+    if (iteration % 100 == 0) {
+      // reset diggers after each 100 failures.
       chosenDiggers = chooseDiggers();
-      Log.d("dpd", String.format("reset diggers, %d now chosen.", 
-              chosenDiggers.size()));
+      Log.d("dpd", String.format("%d] reset diggers, %d now chosen.",
+              iteration, chosenDiggers.size()));
     }
 
     if (!digLevel())
       return false;
 
+    Log.d("dpd", "level dag.");
+
     // place entrance and exit
-    Space spaceEntrance = randomSpace(Digger.DigResult.Type.NORMAL, -1);
-    do {
-      entrance = pointToCell(spaceEntrance.rect.random(1));
-    } while (map[entrance] != Terrain.EMPTY);
-    spaceEntrance.type = Digger.DigResult.Type.ENTRANCE;
+    if (!setStairs())
+      return false;
 
-    Space spaceExit;
-    do {
-      spaceExit = randomSpace(Digger.DigResult.Type.NORMAL, 10);
-      exit = pointToCell(spaceExit.rect.random(1));
-    } while (map[exit] != Terrain.EMPTY || distance(entrance, exit) < 12);
-    spaceExit.type = Digger.DigResult.Type.EXIT;
-
-    map[entrance] = Terrain.ENTRANCE;
-    map[exit] = Terrain.EXIT;
+    Log.d("dpd", "stairs setting done.");
 
     // do some painting
     paintLuminary();
@@ -92,6 +107,36 @@ public abstract class DPDRegularLevel extends Level {
     placeTraps();
 
     return true;
+  }
+
+  private boolean setStairs() {
+    for (int i = 0; i < 10; ++i) {
+      // set entrance
+      Space spaceEntrance;
+      do {
+        spaceEntrance = randomSpace(DigResult.Type.NORMAL, -1);
+        entrance = pointToCell(spaceEntrance.rect.random(1));
+      } while (map[entrance] != Terrain.EMPTY);
+
+      // exit, but relate to the entrance 
+      for (int j = 0; j < 30; ++j) {
+        Space spaceExit = randomSpace(DigResult.Type.NORMAL, 10);
+        if (spaceExit == null || spaceExit == spaceEntrance) continue;
+
+        exit = pointToCell(spaceExit.rect.random(1));
+
+        if (map[exit] == Terrain.EMPTY && distance(entrance, exit) >= 12) {
+          // okay, assign space type and terrain.
+          spaceEntrance.type = DigResult.Type.ENTRANCE;
+          spaceExit.type = DigResult.Type.EXIT;
+          map[entrance] = Terrain.ENTRANCE;
+          map[exit] = Terrain.EXIT;
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   @Override
@@ -115,7 +160,7 @@ public abstract class DPDRegularLevel extends Level {
       float psratio = Dungeon.shopOnLevel() ? .1f : .2f;
       if (Random.Float() < psratio) {
         DPDShopKeeper ps = new PotionSeller().initSellItems();
-        Space s = randomSpace(Digger.DigResult.Type.NORMAL, -1);
+        Space s = randomSpace(DigResult.Type.NORMAL, -1);
         do {
           ps.pos = pointToCell(s.rect.random());
         } while (findMob(ps.pos) != null || !passable[ps.pos]);
@@ -125,7 +170,7 @@ public abstract class DPDRegularLevel extends Level {
       float ssratio = Dungeon.shopOnLevel() ? .08f : .18f;
       if (Random.Float() < ssratio) {
         DPDShopKeeper ps = new ScrollSeller().initSellItems();
-        Space s = randomSpace(Digger.DigResult.Type.NORMAL, -1);
+        Space s = randomSpace(DigResult.Type.NORMAL, -1);
         do {
           ps.pos = pointToCell(s.rect.random());
         } while (findMob(ps.pos) != null || !passable[ps.pos]);
@@ -146,7 +191,7 @@ public abstract class DPDRegularLevel extends Level {
       if (!iter.hasNext())
         iter = spaces.iterator();
       Space space = iter.next();
-      if (space.type != Digger.DigResult.Type.NORMAL) continue;
+      if (space.type != DigResult.Type.NORMAL) continue;
 
       Mob mob = Bestiary.mob(Dungeon.depth);
       mob.pos = pointToCell(space.rect.random());
@@ -167,7 +212,7 @@ public abstract class DPDRegularLevel extends Level {
     }
   }
 
-  protected Space randomSpace(Digger.DigResult.Type type, int tries) {
+  protected Space randomSpace(DigResult.Type type, int tries) {
     for (int i = 0; i != tries; ++i) {
       Space space = Random.element(spaces);
       if (space.type == type)
@@ -188,7 +233,7 @@ public abstract class DPDRegularLevel extends Level {
   @Override
   public int randomRespawnCell() {
     for (int i = 0; i < 30; ++i) {
-      Space space = randomSpace(Digger.DigResult.Type.NORMAL, 10);
+      Space space = randomSpace(DigResult.Type.NORMAL, 10);
 
       int pos = pointToCell(space.rect.random());
 
@@ -263,7 +308,7 @@ public abstract class DPDRegularLevel extends Level {
 
   protected int randomDropCell() {
     while (true) {
-      Space space = randomSpace(Digger.DigResult.Type.NORMAL, 1);
+      Space space = randomSpace(DigResult.Type.NORMAL, 1);
       if (space != null) {
         int cell = pointToCell(space.rect.random());
         if (passable[cell])
@@ -275,7 +320,7 @@ public abstract class DPDRegularLevel extends Level {
   @Override
   public int pitCell() {
     for (Space s : spaces)
-      if (s.type == Digger.DigResult.Type.PIT)
+      if (s.type == DigResult.Type.PIT)
         return pointToCell(s.rect.random(1));
 
     return super.pitCell();
@@ -423,7 +468,7 @@ public abstract class DPDRegularLevel extends Level {
         if (canDigAt(rect)) {
           //! dig
           dag = true;
-          Digger.DigResult dr = d.dig(this, wall, rect);
+          DigResult dr = d.dig(this, wall, rect);
           digableWalls.remove(wall);
           digableWalls.addAll(dr.walls);
           spaces.add(new Space(rect, dr.type));
@@ -485,13 +530,14 @@ public abstract class DPDRegularLevel extends Level {
     SPECIAL_DIGGERS.put(VaultDigger.class, 1f);
     SPECIAL_DIGGERS.put(WeakFloorDigger.class, 1f);
 
-    NORMAL_DIGGERS.put(NormalRectDigger.class, 1f);
-    NORMAL_DIGGERS.put(NormalCircleDigger.class, .1f);
-    NORMAL_DIGGERS.put(NormalDiamondDigger.class, .075f);
-    NORMAL_DIGGERS.put(NormalRoundDigger.class, .075f);
-    NORMAL_DIGGERS.put(LatticeDigger.class, .1f);
-    NORMAL_DIGGERS.put(NormalCellDigger.class, .075f);
     NORMAL_DIGGERS.put(BrightDigger.class, .1f);
+    NORMAL_DIGGERS.put(CellDigger.class, .075f);
+    NORMAL_DIGGERS.put(CircleDigger.class, .1f);
+    NORMAL_DIGGERS.put(DiamondDigger.class, .075f);
+    NORMAL_DIGGERS.put(LatticeDigger.class, .1f);
+    NORMAL_DIGGERS.put(NormalRectDigger.class, 1f);
+    NORMAL_DIGGERS.put(RoundDigger.class, .075f);
+    NORMAL_DIGGERS.put(StripDigger.class, .1f);
   }
 
   protected ArrayList<Digger> chooseDiggers() {
@@ -502,7 +548,7 @@ public abstract class DPDRegularLevel extends Level {
       // --specials;
     }
 
-    diggers.addAll(selectDiggers(specials, 16));
+    diggers.addAll(selectDiggers(specials, 18));
 
     return diggers;
   }
@@ -544,7 +590,9 @@ public abstract class DPDRegularLevel extends Level {
         }
       }
     }
-    // weak floor
+    
+    // weak floor check
+    weakFloorCreated = false;
     for (Digger d : diggers)
       if (d instanceof WeakFloorDigger) {
         weakFloorCreated = true;
@@ -641,7 +689,7 @@ public abstract class DPDRegularLevel extends Level {
             bundle.getCollection("spaces"));
     for (Space s : spaces) {
       //todo: update flags and others...
-      if (s.type == Digger.DigResult.Type.WEAK_FLOOR) {
+      if (s.type == DigResult.Type.WEAK_FLOOR) {
         weakFloorCreated = true;
         break;
       }
@@ -651,13 +699,13 @@ public abstract class DPDRegularLevel extends Level {
 
   public static class Space implements Bundlable {
     public XRect rect;
-    public Digger.DigResult.Type type;
+    public DigResult.Type type;
 
     // default constructor for deserialization only
     public Space() {
     }
 
-    public Space(XRect rect, Digger.DigResult.Type type) {
+    public Space(XRect rect, DigResult.Type type) {
       this.rect = rect;
       this.type = type;
     }
@@ -671,7 +719,7 @@ public abstract class DPDRegularLevel extends Level {
     @Override
     public void restoreFromBundle(Bundle bundle) {
       rect = (XRect) bundle.get("rect");
-      type = Digger.DigResult.Type.valueOf(bundle.getString("type"));
+      type = DigResult.Type.valueOf(bundle.getString("type"));
     }
   }
 }

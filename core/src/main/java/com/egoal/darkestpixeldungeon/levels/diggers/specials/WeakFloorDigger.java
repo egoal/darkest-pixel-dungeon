@@ -1,9 +1,13 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
 import com.watabou.utils.Point;
@@ -52,7 +56,7 @@ public class WeakFloorDigger extends RectDigger {
       case UP:
         int cy = rect.y2 - rect.h() / 2 + 1;
         Fill(level, rect.x1, cy, rect.w(), rect.h() / 2, Terrain.EMPTY_SP);
-        well.y = rect.y1;
+        well.y = rect.y1+1; // +1: better visual 
         dr.walls.add(new XWall(rect.x1 - 1, rect.x1 - 1, cy, rect.y2, LEFT));
         dr.walls.add(new XWall(rect.x2 + 1, rect.x2 + 1, cy, rect.y2, RIGHT));
         break;

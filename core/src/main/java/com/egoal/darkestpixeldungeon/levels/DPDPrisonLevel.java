@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.egoal.darkestpixeldungeon.effects.Halo;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ChillingTrap;
@@ -151,7 +152,7 @@ public class DPDPrisonLevel extends DPDRegularLevel {
   public void createMobs() {
     if (shouldAddWandmaker) {
       for (Space s : spaces)
-        if (s.type == Digger.DigResult.Type.ENTRANCE) {
+        if (s.type == DigResult.Type.ENTRANCE) {
           Wandmaker.Quest.Spawn(this, s.rect);
           break;
         }

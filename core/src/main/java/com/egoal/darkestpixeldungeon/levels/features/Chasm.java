@@ -23,9 +23,7 @@ package com.egoal.darkestpixeldungeon.levels.features;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Barkskin;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
@@ -36,7 +34,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.levels.DPDRegularLevel;
 import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.levels.Room;
-import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.InterlevelScene;
@@ -47,8 +45,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
-
-import javax.microedition.khronos.opengles.GL;
 
 public class Chasm {
 
@@ -94,7 +90,7 @@ public class Chasm {
         DPDRegularLevel.Space s = ((DPDRegularLevel) Dungeon.level).space(pos);
 
         InterlevelScene.fallIntoPit = s != null &&
-                s.type == Digger.DigResult.Type.WEAK_FLOOR;
+                s.type == DigResult.Type.WEAK_FLOOR;
       } else {
         InterlevelScene.fallIntoPit = false;
       }

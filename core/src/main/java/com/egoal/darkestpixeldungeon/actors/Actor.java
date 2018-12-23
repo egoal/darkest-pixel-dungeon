@@ -229,7 +229,7 @@ public abstract class Actor implements Bundlable {
       } else {
         doNext = false;
       }
-
+      
     } while (doNext);
   }
 

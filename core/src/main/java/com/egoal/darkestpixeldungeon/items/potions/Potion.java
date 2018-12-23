@@ -288,7 +288,8 @@ public class Potion extends Item {
       super.onThrow(cell);
 
     } else {
-
+      // now press the level.
+      Dungeon.level.press(cell, null);
       shatter(cell);
 
     }

@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.mobs.Piranha;
@@ -9,6 +9,10 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfInvisibility;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -20,14 +24,14 @@ public class PoolDigger extends RectDigger {
   private static final int NUM_PIRANHAS = 3;
 
   protected Point chooseRoomSize(XWall wall) {
-    if(Random.Int(3)==0)
+    if (Random.Int(3) == 0)
       return new Point(Random.IntRange(7, 9), Random.IntRange(7, 9));
     return super.chooseRoomSize(wall);
   }
-  
+
   @Override
   public DigResult dig(Level level, XWall wall, XRect rect) {
-    if (rect.w()>=7 && rect.h() >= 7)
+    if (rect.w() >= 7 && rect.h() >= 7)
       return digBig(level, wall, rect);
 
     Fill(level, rect, Terrain.WATER);
@@ -57,7 +61,7 @@ public class PoolDigger extends RectDigger {
             Random.Int(3) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
 
     level.addItemToSpawn(new PotionOfInvisibility());
-    
+
     // piranhas
     for (int i = 0; i < NUM_PIRANHAS; ++i) {
       Piranha p = new Piranha();
@@ -77,13 +81,17 @@ public class PoolDigger extends RectDigger {
     Fill(level, rect.inner(1), Terrain.EMPTY_SP);
     Fill(level, rect.inner(2), Terrain.WATER);
 
+    // door
+    Point door = overlapedWall(wall, rect).random();
+    Set(level, door, Terrain.DOOR);
+
     int ccen = level.pointToCell(rect.cen());
     Set(level, ccen, Terrain.PEDESTAL);
     level.drop(prize(level), ccen).type =
             Random.Int(3) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
 
     level.addItemToSpawn(new PotionOfInvisibility());
-    
+
     // piranhas
     for (int i = 0; i < NUM_PIRANHAS; ++i) {
       Piranha p = new Piranha();
@@ -94,11 +102,8 @@ public class PoolDigger extends RectDigger {
       level.mobs.add(p);
     }
 
-    DigResult dr =
-            new DigResult(DigResult.Type.SPECIAL);
-
-    dr.walls = wallsBut(rect, -wall.direction);
-    return dr;
+    return new DigResult(DigResult.Type.SPECIAL).walls(
+            wallsBut(rect, -wall.direction));
   }
 
   private static Item prize(Level level) {

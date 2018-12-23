@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
@@ -38,6 +38,10 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.Shuriken;
 import com.egoal.darkestpixeldungeon.levels.LastShopLevel;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;

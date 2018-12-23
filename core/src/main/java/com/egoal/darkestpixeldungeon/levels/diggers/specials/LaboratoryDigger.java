@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy;
@@ -8,6 +8,10 @@ import com.egoal.darkestpixeldungeon.items.keys.IronKey;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -23,7 +27,7 @@ public class LaboratoryDigger extends RectDigger {
   }
 
   @Override
-  public Digger.DigResult dig(Level level, XWall wall, XRect rect) {
+  public DigResult dig(Level level, XWall wall, XRect rect) {
     Fill(level, rect, Terrain.EMPTY_SP);
 
     // lock the door

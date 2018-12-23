@@ -1,7 +1,10 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.normal;
 
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -51,14 +54,18 @@ public abstract class RectDigger extends Digger {
         case LEFT:
           walls.add(new XWall(rect.x1 - 1, rect.x1 - 1, rect.y1, rect.y2,
                   LEFT));
+          break;
         case RIGHT:
           walls.add(new XWall(rect.x2 + 1, rect.x2 + 1, rect.y1, rect.y2,
                   RIGHT));
+          break;
         case UP:
           walls.add(new XWall(rect.x1, rect.x2, rect.y1 - 1, rect.y1 - 1, UP));
+          break;
         case DOWN:
           walls.add(new XWall(rect.x1, rect.x2, rect.y2 + 1, rect.y2 + 1,
                   DOWN));
+          break;
       }
 
     return walls;

@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.specials;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -8,6 +8,10 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLevitation;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.egoal.darkestpixeldungeon.levels.traps.BlazingTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ConfusionTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.DisintegrationTrap;
@@ -107,7 +111,7 @@ public class TrapsDigger extends RectDigger {
 
     level.addItemToSpawn(new PotionOfLevitation());
 
-    return new DigResult(DigResult.Type.LOCKED).walls(
+    return new DigResult(DigResult.Type.SPECIAL).walls(
             wallsBut(rect, -wall.direction));
   }
 

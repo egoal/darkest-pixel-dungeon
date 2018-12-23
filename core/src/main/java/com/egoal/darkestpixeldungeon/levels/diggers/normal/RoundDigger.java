@@ -1,20 +1,19 @@
-package com.egoal.darkestpixeldungeon.levels.diggers;
+package com.egoal.darkestpixeldungeon.levels.diggers.normal;
 
-import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.items.quest.CeremonialCandle;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
-import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
-import com.watabou.utils.PathFinder;
+import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
+import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.XWall;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 /**
- * Created by 93942 on 2018/12/18.
+ * Created by 93942 on 2018/12/20.
  */
 
-public class RitualSiteDigger extends Digger {
+public class RoundDigger extends Digger {
   @Override
   public XRect chooseDigArea(XWall wall) {
     return chooseCenteredBox(wall, Random.IntRange(3, 5));
@@ -28,19 +27,6 @@ public class RitualSiteDigger extends Digger {
     for (Point p : rect.getAllPoints())
       if (Point.DistanceL22(cen, p) <= hs2)
         Set(level, p, Terrain.EMPTY);
-
-    RitualMarker rm = new RitualMarker();
-    rm.pos(cen.x - 1, cen.y - 1);
-    level.customTiles.add(rm);
-
-    int ccen = level.pointToCell(cen);
-    for (int i : PathFinder.NEIGHBOURS9)
-      Set(level, ccen + i, Terrain.EMPTY_DECO);
-
-    for (int i = 0; i < 4; ++i)
-      level.addItemToSpawn(new CeremonialCandle());
-
-    CeremonialCandle.ritualPos = ccen;
 
     //
     Point door = rect.cen();
@@ -62,21 +48,5 @@ public class RitualSiteDigger extends Digger {
       dr.walls.add(new XWall(cen.x, rect.y2 + 1, DOWN));
 
     return dr;
-  }
-
-  public static class RitualMarker extends CustomTileVisual {
-
-    {
-      name = Messages.get(this, "name");
-
-      tx = Assets.PRISON_QUEST;
-      txX = txY = 0;
-      tileW = tileH = 3;
-    }
-
-    @Override
-    public String desc() {
-      return Messages.get(this, "desc");
-    }
   }
 }
