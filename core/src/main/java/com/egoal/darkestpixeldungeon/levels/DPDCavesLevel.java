@@ -86,7 +86,6 @@ public class DPDCavesLevel extends DPDRegularLevel {
             1};
   }
 
-  //todo: spawn blacksmith, affect the diggers.
   protected ArrayList<Digger> chooseDiggers() {
     ArrayList<Digger> diggers = super.chooseDiggers();
 

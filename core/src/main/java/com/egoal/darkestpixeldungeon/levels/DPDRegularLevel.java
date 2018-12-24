@@ -82,10 +82,10 @@ public abstract class DPDRegularLevel extends Level {
   @Override
   protected boolean build(int iteration) {
     // dig rooms
-    if (iteration % 100 == 0) {
+    if (iteration == 0 || chosenDiggers == null) {
       // reset diggers after each 100 failures.
       chosenDiggers = chooseDiggers();
-      Log.d("dpd", String.format("%d] reset diggers, %d now chosen.",
+      Log.d("dpd", String.format("%d] %d diggers chosen.",
               iteration, chosenDiggers.size()));
     }
 
@@ -98,7 +98,8 @@ public abstract class DPDRegularLevel extends Level {
     if (!setStairs())
       return false;
 
-    Log.d("dpd", "stairs setting done.");
+    Log.d("dpd", String.format("%d] stairs setting done. level generation okay",
+            iteration));
 
     // do some painting
     paintLuminary();
@@ -451,9 +452,6 @@ public abstract class DPDRegularLevel extends Level {
 
     digFirstRoom();
 
-    if (chosenDiggers == null)
-      chosenDiggers = chooseDiggers();
-
     ArrayList<Digger> diggers = (ArrayList<Digger>) chosenDiggers.clone();
     Collections.shuffle(diggers);
 
@@ -548,7 +546,7 @@ public abstract class DPDRegularLevel extends Level {
       // --specials;
     }
 
-    diggers.addAll(selectDiggers(specials, 18));
+    diggers.addAll(selectDiggers(specials, 16));
 
     return diggers;
   }
@@ -590,7 +588,7 @@ public abstract class DPDRegularLevel extends Level {
         }
       }
     }
-    
+
     // weak floor check
     weakFloorCreated = false;
     for (Digger d : diggers)

@@ -141,7 +141,6 @@ public class DPDSewerLevel extends DPDRegularLevel {
         group.add(new Sink(i));
   }
 
-  //todo: tileName, tileDesc
   @Override
   public String tileName(int tile) {
     switch (tile) {

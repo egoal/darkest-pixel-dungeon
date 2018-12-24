@@ -14,6 +14,8 @@ import com.watabou.utils.PathFinder;
  */
 
 public class StatuaryDigger extends DiamondDigger {
+  private Statuary s = new Statuary().random();
+
   @Override
   public DigResult dig(Level level, XWall wall, XRect rect) {
     DigResult dr = super.dig(level, wall, rect);
@@ -22,7 +24,6 @@ public class StatuaryDigger extends DiamondDigger {
     for (int i : PathFinder.NEIGHBOURS9)
       Set(level, ccen + i, Terrain.EMPTY_SP);
 
-    Statuary s = new Statuary().random();
     s.pos = ccen;
     level.mobs.add(s);
 
