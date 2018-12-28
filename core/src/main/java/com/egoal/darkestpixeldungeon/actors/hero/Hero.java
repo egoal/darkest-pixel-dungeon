@@ -1594,7 +1594,7 @@ public class Hero extends Char {
   }
 
   public int maxExp() {
-    return 5 + lvl * 5;
+    return 4 + lvl * 6;
   }
 
   void updateAwareness() {
@@ -1653,10 +1653,10 @@ public class Hero extends Char {
 
     stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
 
-    if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation
-            .class)) {
+    if (belongings.armor != null && 
+            belongings.armor.hasGlyph(Obfuscation.class)) 
       stealth += belongings.armor.level();
-    }
+    
     return stealth;
   }
 

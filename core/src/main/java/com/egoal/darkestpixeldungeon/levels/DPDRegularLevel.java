@@ -19,6 +19,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.diggers.*;
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.BrightDigger;
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.CrossDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.LatticeDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.CellDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.CircleDigger;
@@ -483,6 +484,9 @@ public abstract class DPDRegularLevel extends Level {
     int lc = makeLoopClosure(6);
     Log.d("dpd", String.format("%d loop linked.", lc));
 
+//    for(XWall w: digableWalls)
+//      Digger.Fill(this, w, Terrain.EMPTY_SP);
+    
     if (lc <= 2)
       return false;
 
@@ -526,27 +530,28 @@ public abstract class DPDRegularLevel extends Level {
     SPECIAL_DIGGERS.put(TrapsDigger.class, 1f);
     SPECIAL_DIGGERS.put(TreasuryDigger.class, 1f);
     SPECIAL_DIGGERS.put(VaultDigger.class, 1f);
-    SPECIAL_DIGGERS.put(WeakFloorDigger.class, 1f);
+    SPECIAL_DIGGERS.put(WeakFloorDigger.class, .75f);
 
     NORMAL_DIGGERS.put(BrightDigger.class, .1f);
     NORMAL_DIGGERS.put(CellDigger.class, .075f);
     NORMAL_DIGGERS.put(CircleDigger.class, .1f);
-    NORMAL_DIGGERS.put(DiamondDigger.class, .075f);
-    NORMAL_DIGGERS.put(LatticeDigger.class, .1f);
+    NORMAL_DIGGERS.put(DiamondDigger.class, .05f);
+    NORMAL_DIGGERS.put(LatticeDigger.class, .075f);
     NORMAL_DIGGERS.put(NormalRectDigger.class, 1f);
     NORMAL_DIGGERS.put(RoundDigger.class, .075f);
     NORMAL_DIGGERS.put(StripDigger.class, .1f);
+    NORMAL_DIGGERS.put(CrossDigger.class, .1f);
   }
 
   protected ArrayList<Digger> chooseDiggers() {
     ArrayList<Digger> diggers = new ArrayList<>();
-    int specials = Random.NormalIntRange(3, 5);
+    int specials = Random.NormalIntRange(2, 4);
     if (Dungeon.shopOnLevel()) {
       diggers.add(new ShopDigger());
       // --specials;
     }
 
-    diggers.addAll(selectDiggers(specials, 16));
+    diggers.addAll(selectDiggers(specials, 15));
 
     return diggers;
   }

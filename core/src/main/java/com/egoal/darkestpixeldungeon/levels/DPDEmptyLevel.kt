@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.CrossDigger
 import com.watabou.utils.Random
 import java.util.ArrayList
 
@@ -15,6 +16,9 @@ class DPDEmptyLevel: DPDSewerLevel() {
     override fun createMobs() {}
 
     override fun chooseDiggers(): ArrayList<Digger> {
-        return selectDiggers(Random.NormalIntRange(3, 5), 16)
+        val diggers = selectDiggers(Random.NormalIntRange(2, 4), 15)
+        diggers.add(CrossDigger())
+        
+        return diggers
     }
 }

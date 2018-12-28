@@ -13,7 +13,7 @@ import com.watabou.utils.Random
  */
 class CellDigger : NormalRectDigger() {
     override fun chooseRoomSize(wall: XWall?): Point {
-        return Point(Random.NormalIntRange(5, 9), Random.NormalIntRange(5, 9))
+        return Point(Random.HighIntRange(6, 10), Random.HighIntRange(6, 10))
     }
 
     override fun dig(level: Level?, wall: XWall?, rect: XRect): DigResult {
