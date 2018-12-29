@@ -2,28 +2,25 @@ package com.egoal.darkestpixeldungeon.levels.diggers.normal
 
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
-import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
-import com.egoal.darkestpixeldungeon.levels.diggers.XRect
-import com.egoal.darkestpixeldungeon.levels.diggers.XWall
+import com.egoal.darkestpixeldungeon.levels.diggers.*
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
 /**
  * Created by 93942 on 2018/12/19.
  */
-class CellDigger : NormalRectDigger() {
-    override fun chooseRoomSize(wall: XWall?): Point {
-        return Point(Random.HighIntRange(6, 10), Random.HighIntRange(6, 10))
-    }
+class CellDigger : RectDigger() {
+    override fun chooseRoomSize(wall: Wall) =
+            Point(Random.HighIntRange(6, 10), Random.HighIntRange(6, 10))
 
-    override fun dig(level: Level?, wall: XWall?, rect: XRect): DigResult {
+    override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         val dr = super.dig(level, wall, rect)
 
-        val maxInner = (Math.min(rect.w(), rect.h()) - 3) / 2
+        val maxInner = (Math.min(rect.width, rect.height) - 3) / 2
         val i = Random.NormalIntRange(1, maxInner)
-        Fill(level, rect.inner(i), Terrain.WALL)
+        Fill(level, rect.shrink(i), Terrain.WALL)
 
-        val innerSpace = rect.inner(i + 1)
+        val innerSpace = rect.shrink(i + 1)
         Fill(level, innerSpace, Terrain.EMPTY)
         val innerDoor = innerSpace.random()
         when (Random.Int(4)) {
