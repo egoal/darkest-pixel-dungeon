@@ -5,7 +5,7 @@ import com.watabou.utils.Point
 import com.watabou.utils.Random
 import kotlin.collections.ArrayList
 
-data class DigResult(var rect: Rect, var walls: List<Wall>, val type: Type = Type.Normal) {
+data class DigResult(var rect: Rect, var walls: List<Wall>, var type: Type = Type.Normal) {
     constructor(rect: Rect, type: Type) : this(rect, listOf(), type)
     
     enum class Type {

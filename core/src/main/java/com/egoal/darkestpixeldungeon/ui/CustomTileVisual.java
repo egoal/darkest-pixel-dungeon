@@ -21,9 +21,8 @@
 package com.egoal.darkestpixeldungeon.ui;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.levels.Room;
-import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.Rect;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -74,7 +73,7 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
 
   //returns a number of 1x1 tiles to fill a room, based on a 3x3 texture, not
   // dissimilar to a ninepatch.
-  public static ArrayList<CustomTileVisual> CustomTilesForRoom(Room r, 
+  public static ArrayList<CustomTileVisual> CustomTilesForRoom(Room r,
                                                                Class<? extends CustomTileVisual> c) {
     ArrayList<CustomTileVisual> result = new ArrayList<>();
 
@@ -101,11 +100,11 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
     return result;
   }
 
-  public static ArrayList<CustomTileVisual> CustomTilesForRect(XRect r,
+  public static ArrayList<CustomTileVisual> CustomTilesForRect(Rect r,
                                                                Class<? extends CustomTileVisual> cls) {
     Room room = new Room();
-    room.set(r.x1-1, r.y1-1, r.x2+1, r.y2+1);
-    
+    room.set(r.getX1() - 1, r.getY1() - 1, r.getX2() + 1, r.getY2() + 1);
+
     return CustomTilesForRoom(room, cls);
   }
 

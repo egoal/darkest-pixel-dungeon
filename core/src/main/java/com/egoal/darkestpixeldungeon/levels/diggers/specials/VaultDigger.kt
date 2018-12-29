@@ -7,31 +7,29 @@ import com.egoal.darkestpixeldungeon.items.keys.GoldenKey
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
-import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
-import com.egoal.darkestpixeldungeon.levels.diggers.XRect
-import com.egoal.darkestpixeldungeon.levels.diggers.XWall
+import com.egoal.darkestpixeldungeon.levels.diggers.*
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
 class VaultDigger : RectDigger() {
-    override fun chooseRoomSize(wall: XWall) = Point(Random.IntRange(4, 6), Random.IntRange(4, 6))
+    override fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(4, 6), Random.IntRange(4, 6))
 
-    override fun dig(level: Level, wall: XWall, rect: XRect): DigResult {
+    override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         Fill(level, rect, Terrain.EMPTY_SP)
-        Fill(level, rect.inner(1), Terrain.EMPTY)
+        Fill(level, rect.shrink(1), Terrain.EMPTY)
 
         // door
-        val dp = level.pointToCell(overlapedWall(wall, rect).random())
+        val dp = level.pointToCell(overlappedWall(wall, rect).random())
         Set(level, dp, Terrain.LOCKED_DOOR)
         level.addItemToSpawn(IronKey(Dungeon.depth))
 
         // prize
-        val c = level.pointToCell(rect.cen())
+        val c = level.pointToCell(rect.center)
         when (Random.Int(3)) {
             0 -> {
-                level.drop(Prize(level), c).type = Heap.Type.LOCKED_CHEST
+                level.drop(prize(level), c).type = Heap.Type.LOCKED_CHEST
                 level.addItemToSpawn(GoldenKey(Dungeon.depth))
             }
             1 -> {
@@ -50,21 +48,19 @@ class VaultDigger : RectDigger() {
                 level.drop(i2, c + PathFinder.NEIGHBOURS4[Random.Int(4)]).type = Heap.Type.CRYSTAL_CHEST
                 level.addItemToSpawn(GoldenKey(Dungeon.depth))
             }
-            2->{
-                level.drop(Prize(level), c)
+            2 -> {
+                level.drop(prize(level), c)
                 Set(level, c, Terrain.PEDESTAL)
             }
         }
 
-        return DigResult(DigResult.Type.LOCKED)
+        return DigResult(rect, DigResult.Type.Locked)
     }
 
-    companion object {
-        private fun Prize(level: Level) = Generator.random(Random.oneOf(
-                Generator.Category.WAND,
-                Generator.Category.RING,
-                Generator.Category.ARTIFACT))
-    }
+    private fun prize(level: Level) = Generator.random(Random.oneOf(
+            Generator.Category.WAND,
+            Generator.Category.RING,
+            Generator.Category.ARTIFACT))
 
 
 }

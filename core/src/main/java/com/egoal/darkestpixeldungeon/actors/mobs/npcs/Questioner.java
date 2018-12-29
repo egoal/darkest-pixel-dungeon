@@ -11,9 +11,8 @@ import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.levels.Level;
-import com.egoal.darkestpixeldungeon.levels.Room;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
-import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
+import com.egoal.darkestpixeldungeon.levels.diggers.Rect;
 import com.egoal.darkestpixeldungeon.levels.traps.RockfallTrap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -39,9 +38,9 @@ public class Questioner extends NPC {
   }
 
   private String question = "pain";
-  private XRect heldRect = null;
+  private Rect heldRect = null;
 
-  public Questioner hold(XRect rect) {
+  public Questioner hold(Rect rect) {
     heldRect = rect;
     return this;
   }
@@ -117,9 +116,8 @@ public class Questioner extends NPC {
     heap.drop(item);
 
     do {
-      heap.pos = Dungeon.level.pointToCell(heldRect.random());
-    }
-    while (!Level.passable[heap.pos] || Dungeon.level.heaps.get(heap.pos) !=
+      heap.pos = Dungeon.level.pointToCell(heldRect.random(0));
+    } while (!Level.passable[heap.pos] || Dungeon.level.heaps.get(heap.pos) !=
             null);
 
     Dungeon.level.heaps.put(heap.pos, heap);
@@ -155,7 +153,7 @@ public class Questioner extends NPC {
     question = bundle.getString(QUESTION);
     Bundlable b = bundle.get(THE_ROOM);
     if (b != null)
-      heldRect = (XRect) b;
+      heldRect = (Rect) b;
   }
 
   // unbreakable
