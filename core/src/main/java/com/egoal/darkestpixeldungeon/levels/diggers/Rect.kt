@@ -5,7 +5,7 @@ import com.watabou.utils.*
 open class Rect(var x1: Int = 0, var x2: Int = 0, var y1: Int = 0, var y2: Int = 0) : Bundlable {
 
     val width: Int get() = x2 - x1 + 1
-    val height: Int get() = y2 - y2 + 1
+    val height: Int get() = y2 - y1 + 1
     val area: Int get() = width * height
     val center: Point get() = Point((x1 + x2) / 2, (y1 + y2) / 2)
 
@@ -92,7 +92,7 @@ class Wall(x1: Int, x2: Int, y1: Int, y2: Int, val direction: Direction) : Rect(
                         Direction.Left -> Left(rect.x1 - 1, rect.y1, rect.y2)
                         Direction.Right -> Right(rect.x2 + 1, rect.y1, rect.y2)
                         Direction.Up -> Up(rect.y1 - 1, rect.x1, rect.x2)
-                        Direction.Down -> Up(rect.y2 + 1, rect.x1, rect.x2)
+                        Direction.Down -> Down(rect.y2 + 1, rect.x1, rect.x2)
                     }
                 }
 

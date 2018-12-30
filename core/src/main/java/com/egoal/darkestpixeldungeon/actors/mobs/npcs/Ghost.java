@@ -31,7 +31,6 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
-import com.egoal.darkestpixeldungeon.levels.DPDSewerLevel;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.windows.WndSadGhost;
 import com.egoal.darkestpixeldungeon.Assets;

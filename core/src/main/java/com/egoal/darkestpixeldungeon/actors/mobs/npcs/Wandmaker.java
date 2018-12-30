@@ -27,14 +27,14 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
 import com.egoal.darkestpixeldungeon.items.quest.Embers;
-import com.egoal.darkestpixeldungeon.levels.DPDPrisonLevel;
+import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
+import com.egoal.darkestpixeldungeon.levels.diggers.Rect;
 import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.MassGraveDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.RitualSiteDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.RotGardenDigger;
-import com.egoal.darkestpixeldungeon.levels.diggers.XRect;
 import com.egoal.darkestpixeldungeon.windows.WndWandmaker;
 import com.egoal.darkestpixeldungeon.Challenges;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -337,14 +337,14 @@ public class Wandmaker extends NPC {
       return null;
     }
 
-    public static void Spawn(DPDPrisonLevel level, XRect rect) {
+    public static void Spawn(Level level, Rect rect) {
       Wandmaker w = new Wandmaker();
       do {
-        w.pos = level.pointToCell(rect.random());
+        w.pos = level.pointToCell(rect.random(0));
       } while (level.map[w.pos] == Terrain.ENTRANCE ||
               level.map[w.pos] == Terrain.SIGN);
       level.mobs.add(w);
-      
+
       spawned = true;
       given = false;
       wand1 = (Wand) Generator.random(Generator.Category.WAND);

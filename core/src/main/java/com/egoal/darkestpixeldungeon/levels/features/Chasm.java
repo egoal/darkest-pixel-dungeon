@@ -31,10 +31,11 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.egoal.darkestpixeldungeon.levels.DPDRegularLevel;
+import com.egoal.darkestpixeldungeon.levels.KRegularLevel;
 import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.levels.Room;
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult;
+import com.egoal.darkestpixeldungeon.levels.diggers.Space;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.InterlevelScene;
@@ -86,11 +87,11 @@ public class Chasm {
         Room room = ((RegularLevel) Dungeon.level).room(pos);
         InterlevelScene.fallIntoPit = room != null && room.type == Room.Type
                 .WEAK_FLOOR;
-      } else if (Dungeon.level instanceof DPDRegularLevel) {
-        DPDRegularLevel.Space s = ((DPDRegularLevel) Dungeon.level).space(pos);
+      } else if (Dungeon.level instanceof KRegularLevel) {
+         Space s = ((KRegularLevel) Dungeon.level).spaceAt(pos);
 
         InterlevelScene.fallIntoPit = s != null &&
-                s.type == DigResult.Type.WEAK_FLOOR;
+                s.getType() == DigResult.Type.WeakFloor;
       } else {
         InterlevelScene.fallIntoPit = false;
       }

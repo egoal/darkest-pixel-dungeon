@@ -51,10 +51,9 @@ class GardenDigger : RectDigger() {
                 }
             }
         }
-
-        var light: Foliage? = level.blobs[Foliage::class.java] as Foliage
-        if (light == null)
-            light = Foliage()
+        
+        val l = level.blobs[Foliage::class.java]
+        val light: Foliage = if(l==null) Foliage() else l as Foliage
 
         for (p in rect.getAllPoints())
             light.seed(level, level.pointToCell(p), 1)

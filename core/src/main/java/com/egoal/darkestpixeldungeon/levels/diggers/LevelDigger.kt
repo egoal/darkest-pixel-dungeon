@@ -29,7 +29,6 @@ class LevelDigger(val level: Level) {
     fun dig(chosenDiggers: ArrayList<Digger>): Boolean {
         reset()
         diggers.addAll(chosenDiggers)
-        Log.d("dpd", "${diggers.size} diggers got.")
 
         // init
         digFirstRoom()
@@ -38,7 +37,7 @@ class LevelDigger(val level: Level) {
         diggers.shuffle()
         for (digger in diggers) {
             if (walls.isEmpty()) {
-                Log.d("dpd", "no walls to dig, left diggers")
+                Log.d("dpd", "no walls to dig.")
                 return false
             }
 
@@ -61,17 +60,17 @@ class LevelDigger(val level: Level) {
         }
 
         val lc = makeLoopClosure(6)
-        if (lc <= 2) {
-            Log.d("dpd", "too less loop closures: $lc")
+        if (lc <= 2) 
             return false
-        }
 
+        Log.d("dpd", "$lc extra loops.")
+        
         return true
     }
 
     private fun reset() {
-        this.diggers.clear()
-        this.walls.clear()
+        diggers.clear()
+        walls.clear()
         spaces.clear()
     }
 
@@ -116,16 +115,23 @@ class LevelDigger(val level: Level) {
         overlaps.shuffle()
 
         for (pr in overlaps) {
-            val dp = level.pointToCell(Rect.Overlap(pr.first, pr.second).random())
+            val seg = Rect.Overlap(pr.first, pr.second)
+            // Digger.Fill(level, seg, Terrain.EMPTY_SP)
+            for(i in 1..3) {
+                val dp = level.pointToCell(seg.random())
 
-            if(PathFinder.NEIGHBOURS8.all { level.map[dp + it] == Terrain.DOOR }){
-                Digger.Set(level, dp, Terrain.DOOR)
-                walls.remove(pr.first)
-                walls.remove(pr.second)
-                
-                if(++loops>= maxLoops)
+                if (PathFinder.NEIGHBOURS9.all { level.map[dp + it] != Terrain.DOOR }) {
+                    Digger.Set(level, dp, Terrain.DOOR)
+                    walls.remove(pr.first)
+                    walls.remove(pr.second)
+
+                    ++loops
                     break
+                }
             }
+            
+            if(loops>maxLoops)
+                break
         }
         
         //todo: extra strategy to handle more loops 

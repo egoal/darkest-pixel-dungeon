@@ -29,17 +29,10 @@ class MagicWellDigger : RoundDigger() {
 
         val cls = Random.element(WATERS) as Class<out WellWater>
 
-        var ww: WellWater? = level.blobs[cls] as WellWater
-        if (ww == null) {
-            try {
-                ww = cls.newInstance()
-            } catch (e: Exception) {
-                DarkestPixelDungeon.reportException(e)
-                return dr
-            }
-
-        }
-        ww!!.seed(level, cen, 1)
+        val l = level.blobs[cls]
+        val ww = if(l==null) cls.newInstance() else l as WellWater
+        
+        ww.seed(level, cen, 1)
         level.blobs[cls] = ww
 
         return dr

@@ -208,7 +208,7 @@ public class Dungeon {
       case 2:
       case 3:
       case 4:
-        level = new DPDSewerLevel();
+        level = new KSewerLevel();
         break;
       case 5:
         level = new SewerBossLevel();
@@ -217,7 +217,7 @@ public class Dungeon {
       case 7:
       case 8:
       case 9:
-        level = new DPDPrisonLevel();
+        level = new KPrisonLevel();
         break;
       case 10:
         level = new PrisonBossLevel();
@@ -226,7 +226,7 @@ public class Dungeon {
       case 12:
       case 13:
       case 14:
-        level = new DPDCavesLevel();
+        level = new KCavesLevel();
         break;
       case 15:
         level = new CavesBossLevel();
@@ -235,7 +235,7 @@ public class Dungeon {
       case 17:
       case 18:
       case 19:
-        level = new DPDCityLevel();
+        level = new KCityLevel();
         break;
       case 20:
         level = new CityBossLevel();
@@ -246,7 +246,7 @@ public class Dungeon {
       case 22:
       case 23:
       case 24:
-        level = new DPDHallsLevel();
+        level = new KHallsLevel();
         break;
       case 25:
         level = new HallsBossLevel();
@@ -259,8 +259,8 @@ public class Dungeon {
         Statistics.deepestFloor--;
     }
     
-    if (DarkestPixelDungeon.debug())
-      level = new DPDEmptyLevel();
+    if (level==null)
+      level = new KSewerLevel();
 
     visible = new boolean[level.length()];
     level.create();
