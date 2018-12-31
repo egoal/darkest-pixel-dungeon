@@ -3,6 +3,8 @@ package com.egoal.darkestpixeldungeon.items.food;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.Drunk;
+import com.egoal.darkestpixeldungeon.actors.buffs.DrunkKt;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -61,7 +63,8 @@ public class Wine extends Item {
       } else {
         hero.recoverSanity(value);
         // get drunk
-        Buff.prolong(hero, Vertigo.class, Math.min(20, value));
+        Buff.prolong(hero, Drunk.class, Drunk.Companion.duration(hero));
+        // Buff.prolong(hero, Vertigo.class, Math.min(20, value));
         hero.takeDamage(new Damage(hero.HP / 4, this, hero).type(Damage.Type
                 .MAGICAL).addFeature(Damage.Feature.PURE));
       }

@@ -27,6 +27,8 @@ class KSewerLevel : KRegularLevel() {
         viewDistance = 4
     }
 
+    override fun trackMusic(): String = Assets.TRACK_CHAPTER_1
+    
     override fun tilesTex(): String = Assets.TILES_SEWERS
 
     override fun waterTex(): String = Assets.WATER_SEWERS

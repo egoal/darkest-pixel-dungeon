@@ -103,7 +103,7 @@ public class Assets {
   public static final String TILES_CAVES = LEVELS + "tiles2.png";
   public static final String TILES_CITY = LEVELS + "tiles3.png";
   public static final String TILES_HALLS = LEVELS + "tiles4.png";
-  
+
   // water
   public static final String WATER_VILLAGE = LEVELS + "water_village.png";
   public static final String WATER_SEWERS = LEVELS + "water0.png";
@@ -111,10 +111,10 @@ public class Assets {
   public static final String WATER_CAVES = LEVELS + "water2.png";
   public static final String WATER_CITY = LEVELS + "water3.png";
   public static final String WATER_HALLS = LEVELS + "water4.png";
-  
+
   // traps
   public static final String TRAPS = LEVELS + "traps.png";
-  
+
   // plants
   public static final String PLANTS = LEVELS + "plants.png";
 
@@ -139,11 +139,11 @@ public class Assets {
   public static final String BUFFS_SMALL = MISCS + "buffs.png";
   public static final String BUFFS_LARGE = MISCS + "large_buffs.png";
   public static final String SPELL_ICONS = MISCS + "spell_icons.png";
-  
+
   // effects
   public static final String SPECKS = MISCS + "specks.png";
   public static final String EFFECTS = MISCS + "effects.png";
-  
+
   // other
   public static final String ARCS_BG = MISCS + "arcs1.png";
   public static final String ARCS_FG = MISCS + "arcs2.png";
@@ -156,15 +156,24 @@ public class Assets {
 
   // sounds=====================================================================
   // music
-  public static final String THEME = SOUNDS + "theme.mp3";
-  public static final String TUNE = SOUNDS + "game.mp3";
-  public static final String HAPPY = SOUNDS + "surface.mp3";
+  // public static final String THEME = SOUNDS + "theme.mp3";
+  public static final String TRACK_MAIN_THEME	= SOUNDS +"track_theme.ogg";
+  public static final String TRACK_CHAPTER_1	= SOUNDS +"track_chapter_1.ogg";
+  public static final String TRACK_CHAPTER_2	= SOUNDS +"track_chapter_2.ogg";
+  public static final String TRACK_CHAPTER_3	= SOUNDS +"track_chapter_3.ogg";
+  public static final String TRACK_CHAPTER_4	= SOUNDS +"track_chapter_4.ogg";
+  public static final String TRACK_CHAPTER_5	= SOUNDS +"track_chapter_5.ogg";
+  public static final String TRACK_BOSS_INTRO = SOUNDS +"track_boss_intro.ogg";
+  public static final String TRACK_BOSS_LOOP  = SOUNDS +"track_boss_loop.ogg";
+  public static final String TRACK_FINAL_INTRO= SOUNDS +"track_final_intro.ogg";
+  public static final String TRACK_FINAL_LOOP	= SOUNDS +"track_final_loop.ogg";
+  public static final String TRACK_HAPPY_END	= SOUNDS +"track_surface.mp3";
   
   // ui
   public static final String SND_CLICK = SOUNDS + "snd_click.mp3";
   public static final String SND_BADGE = SOUNDS + "snd_badge.mp3";
   public static final String SND_GOLD = SOUNDS + "snd_gold.mp3";
-  
+
   // sfx
   public static final String SND_OPEN = "sounds/snd_door_open.mp3";
   public static final String SND_UNLOCK = "sounds/snd_unlock.mp3";

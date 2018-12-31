@@ -47,7 +47,7 @@ public class Skeleton extends Mob {
     maxLvl = 10;
 
     loot = Generator.Category.WEAPON;
-    lootChance = 0.2f;
+    lootChance = 0.175f;
 
     properties.add(Property.UNDEAD);
 

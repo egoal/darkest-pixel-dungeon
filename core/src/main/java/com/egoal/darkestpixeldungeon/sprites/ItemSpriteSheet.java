@@ -110,6 +110,7 @@ public class ItemSpriteSheet {
   public static final int GLAIVE = WEP_TIER5 + 2;
   public static final int GREATAXE = WEP_TIER5 + 3;
   public static final int GREATSHIELD = WEP_TIER5 + 4;
+  public static final int PAIR_SWORDS = WEP_TIER5 + 5;
 
   //8 free slots
 

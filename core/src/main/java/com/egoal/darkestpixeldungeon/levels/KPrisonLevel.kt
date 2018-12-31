@@ -23,6 +23,8 @@ class KPrisonLevel : KRegularLevel() {
         seeDistance = 4
     }
 
+    override fun trackMusic(): String = Assets.TRACK_CHAPTER_2
+    
     override fun tilesTex() = Assets.TILES_PRISON
 
     override fun waterTex() = Assets.WATER_PRISON

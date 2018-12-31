@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.items.scrolls;
 
+import android.util.Pair;
+
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.artifacts.UnstableSpellbook;
@@ -148,10 +150,11 @@ public abstract class Scroll extends Item {
               && !(this instanceof ScrollOfRemoveCurse)) {
         GLog.n(Messages.get(this, "cursed"));
       } else {
-        Pressure.Level plvl = hero.buff(Pressure.class).getLevel();
-        if (plvl == Pressure.Level.COLLAPSE || plvl == Pressure.Level.NERVOUS) {
-          GLog.n(Messages.get(this, "nervous"));
-        } else {
+        // want read
+        Pair<Boolean, String> pr = hero.canRead();
+        if (!pr.first)
+          GLog.n(pr.second);
+        else {
           curUser = hero;
           curItem = detach(hero.belongings.backpack);
           doRead();

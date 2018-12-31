@@ -96,6 +96,7 @@ public class BuffIndicator extends Component {
   public static final int IGNORANT = 51;
   public static final int SHOCK = 52;
   public static final int LIFE_LINK = 53;
+  public static final int DRUNK = 54;
 
   public static final int SIZE = 7;
 

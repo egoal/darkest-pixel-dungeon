@@ -345,6 +345,11 @@ public abstract class Level implements Bundlable {
     createMobs();
   }
 
+  // background music 
+  public String trackMusic() {
+    return Assets.TRACK_CHAPTER_1;
+  }
+
   @Override
   public void restoreFromBundle(Bundle bundle) {
 

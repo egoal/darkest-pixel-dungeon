@@ -258,9 +258,6 @@ public class Dungeon {
         level = new DeadEndLevel();
         Statistics.deepestFloor--;
     }
-    
-    if (level==null)
-      level = new KSewerLevel();
 
     visible = new boolean[level.length()];
     level.create();

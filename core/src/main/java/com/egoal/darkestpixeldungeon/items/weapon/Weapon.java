@@ -243,7 +243,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     return this;
   }
-
+  
   public Weapon enchant(Enchantment ench) {
     enchantment = ench;
     return this;

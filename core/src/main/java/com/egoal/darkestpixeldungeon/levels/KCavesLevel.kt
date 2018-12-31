@@ -24,6 +24,8 @@ class KCavesLevel : KRegularLevel() {
         viewDistance = 3
     }
 
+    override fun trackMusic(): String = Assets.TRACK_CHAPTER_3
+    
     override fun tilesTex() = Assets.TILES_CAVES
 
     override fun waterTex() = Assets.WATER_CAVES

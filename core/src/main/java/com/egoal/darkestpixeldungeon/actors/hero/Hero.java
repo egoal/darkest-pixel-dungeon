@@ -21,11 +21,13 @@
 package com.egoal.darkestpixeldungeon.actors.hero;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Drunk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
@@ -219,9 +221,11 @@ public class Hero extends Char {
     if (Dungeon.level.feeling == Level.Feeling.DARK)
       vd /= 2;
 
-    if (buff(Light.class) != null) {
+    if (buff(Drunk.class) != null)
+      vd -= 1;
+
+    if (buff(Light.class) != null)
       vd = Math.max(vd, Light.DISTANCE);
-    }
 
     if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
       vd += 1;
@@ -237,6 +241,18 @@ public class Hero extends Char {
       sd += 1;
 
     return GameMath.clamp(sd, 1, 9);
+  }
+
+  // <able, why>
+  public Pair<Boolean, String> canRead() {
+    Pressure.Level plvl = buff(Pressure.class).getLevel();
+    if (plvl == Pressure.Level.COLLAPSE || plvl == Pressure.Level.NERVOUS)
+      return Pair.create(false, Messages.get(this, "nervous_to_read"));
+
+    if (buff(Drunk.class) != null)
+      return Pair.create(false, Messages.get(this, "drunk_to_read"));
+
+    return Pair.create(true, "");
   }
 
   private static final String ATTACK = "attackSkill";
@@ -397,6 +413,10 @@ public class Hero extends Char {
         break;
     }
 
+    // drunk
+    if (buff(Drunk.class) != null)
+      accuracy *= .75f;
+
     KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
     if (wep != null) {
       return (int) (attackSkill * accuracy * wep.accuracyFactor(this));
@@ -523,24 +543,10 @@ public class Hero extends Char {
     }
 
     // pressure
-    Pressure p = buff(Pressure.class);
-    switch (p.getLevel()) {
-      case CONFIDENT:
-        if (!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Int(10) == 0) {
-          // critical, 
-          dmg.value *= 1.5;
-          dmg.addFeature(Damage.Feature.CRITCIAL);
-        } else
-          dmg.value *= 1.1;
-        break;
-      case NORMAL:
-        break;
-      case NERVOUS:
-        break;
-      case COLLAPSE:
-        dmg.value *= .5f;
-        break;
-    }
+    dmg = buff(Pressure.class).procOutcomingDamage(dmg);
+
+    if (buff(Drunk.class) != null)
+      dmg = Drunk.Companion.procOutcomingDamage(dmg);
 
     MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
     if (madness != null)
@@ -1590,7 +1596,7 @@ public class Hero extends Char {
     // recover sanity
     recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4), (int) (buff
             (Pressure
-            .class).pressure * 0.3f)));
+                    .class).pressure * 0.3f)));
   }
 
   public int maxExp() {
@@ -1653,10 +1659,10 @@ public class Hero extends Char {
 
     stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
 
-    if (belongings.armor != null && 
-            belongings.armor.hasGlyph(Obfuscation.class)) 
+    if (belongings.armor != null &&
+            belongings.armor.hasGlyph(Obfuscation.class))
       stealth += belongings.armor.level();
-    
+
     return stealth;
   }
 

@@ -73,7 +73,7 @@ public class SurfaceScene extends PixelScene {
 
     super.create();
 
-    Music.INSTANCE.play(Assets.HAPPY, true);
+    Music.INSTANCE.play(Assets.TRACK_HAPPY_END, true);
     Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
 
     uiCamera.visible = false;

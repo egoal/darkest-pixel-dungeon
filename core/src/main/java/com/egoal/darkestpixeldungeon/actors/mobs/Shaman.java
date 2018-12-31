@@ -49,7 +49,7 @@ public class Shaman extends Mob implements Callback {
     maxLvl = 14;
 
     loot = Generator.Category.SCROLL;
-    lootChance = 0.33f;
+    lootChance = 0.25f;
 
     addResistances(Damage.Element.LIGHT, 1.25f);
   }

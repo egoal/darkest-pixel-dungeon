@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.scenes;
 
 import android.content.Intent;
 import android.net.Uri;
+
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
@@ -46,18 +47,11 @@ public class AboutScene extends PixelScene {
 
   private static final String TTL_SHPX = "Shattered Pixel Dungeon";
 
-  private static final String TXT_SHPX =
-          "Design, Code, & Graphics: Evan";
-
-  private static final String LNK_SHPX = "ShatteredPixel.com";
-
   private static final String TTL_WATA = "Pixel Dungeon";
 
-  private static final String TXT_WATA =
-          "Code & Graphics: Watabou\n" +
-                  "Music: Cube_Code";
-
-  private static final String LNK_WATA = "pixeldungeon.watabou.ru";
+  private static final String TTL_THANKS = "Some sound tracks borrowed from " +
+          "(and thanks to): ";
+  private static final String TTL_YA = "Yet Another Pixel Dungeon";
 
   @Override
   public void create() {
@@ -120,7 +114,7 @@ public class AboutScene extends PixelScene {
       shpx.x = lix.x + colWidth;
     } else {
       shpx.x = (colWidth - shpx.width()) / 2;
-      shpx.y = dpdhotArea.y + dpdhotArea.height() + 30;
+      shpx.y = dpdhotArea.y + dpdhotArea.height() + 20;
     }
     align(shpx);
     add(shpx);
@@ -137,31 +131,10 @@ public class AboutScene extends PixelScene {
     shpxtitle.y = shpx.y + shpx.height + 5;
     align(shpxtitle);
 
-    RenderedTextMultiline shpxlink = renderMultiline(LNK_SHPX, 8);
-    shpxlink.maxWidth(dpdText.maxWidth());
-    shpxlink.hardlight(Window.SHPX_COLOR);
-    add(shpxlink);
-
-    shpxlink.setPos((DarkestPixelDungeon.landscape() ? colWidth : 0) +
-            (colWidth - shpxlink.width()) / 2, shpxtitle.y + shpxtitle.height
-            () + 6);
-    align(shpxlink);
-
-    TouchArea shpxhotArea = new TouchArea(shpxlink.left(), shpxlink.top(), 
-            shpxlink.width(), shpxlink.height()) {
-      @Override
-      protected void onClick(Touch touch) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + 
-                LNK_SHPX));
-        Game.instance.startActivity(intent);
-      }
-    };
-    add(shpxhotArea);
-
     // pixel dungeon
     Image wata = Icons.WATA.get();
     wata.x = wataOffset + (colWidth - wata.width()) / 2;
-    wata.y = shpxlink.bottom() + 8;
+    wata.y = shpxtitle.y + shpxtitle.height() + 8;
     align(wata);
     add(wata);
 
@@ -175,26 +148,24 @@ public class AboutScene extends PixelScene {
     wataTitle.y = wata.y + wata.height + 8;
     align(wataTitle);
 
-    RenderedTextMultiline wataLink = renderMultiline(LNK_WATA, 8);
-    wataLink.maxWidth((int) Math.min(colWidth, 120));
-    wataLink.hardlight(Window.TITLE_COLOR);
-    add(wataLink);
+    // assets pick cite
+    RenderedTextMultiline thanksTitle = renderMultiline(TTL_THANKS, 6);
+    thanksTitle.maxWidth((int) Math.min(colWidth, 120));
+    thanksTitle.hardlight(Window.DPD_COLOR);
+    add(thanksTitle);
 
-    wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2, wataTitle
-            .y + wataTitle.height() + 6);
-    align(wataLink);
+    thanksTitle.setPos(wataOffset + (colWidth - thanksTitle.width()) / 2,
+            wataTitle.y + wataTitle.height() + 8);
+    align(thanksTitle);
 
-    TouchArea hotArea = new TouchArea(wataLink.left(), wataLink.top(), 
-            wataLink.width(), wataLink.height()) {
-      @Override
-      protected void onClick(Touch touch) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + 
-                LNK_WATA));
-        Game.instance.startActivity(intent);
-      }
-    };
-    add(hotArea);
+    // yet another pixel dungeon
+    RenderedText yaTitle = renderText(TTL_YA, 8);
+    yaTitle.hardlight(Window.TITLE_COLOR);
+    add(yaTitle);
 
+    yaTitle.x = wataOffset + (colWidth - yaTitle.width()) / 2;
+    yaTitle.y = thanksTitle.bottom() + 8;
+    align(yaTitle);
 
     Archs archs = new Archs();
     archs.setSize(Camera.main.width, Camera.main.height);

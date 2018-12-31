@@ -20,6 +20,8 @@ class KCityLevel : KRegularLevel() {
         viewDistance = 4
     }
 
+    override fun trackMusic(): String = Assets.TRACK_CHAPTER_4
+    
     override fun tilesTex(): String = Assets.TILES_CITY
 
     override fun waterTex(): String = Assets.WATER_CITY

@@ -147,8 +147,8 @@ public class GameScene extends PixelScene {
 
   @Override
   public void create() {
+    Music.INSTANCE.play(Dungeon.level.trackMusic(), true);
 
-    Music.INSTANCE.play(Assets.TUNE, true);
     Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
 
     DarkestPixelDungeon.lastClass(Dungeon.hero.heroClass.ordinal());
@@ -274,7 +274,7 @@ public class GameScene extends PixelScene {
 
     toolbar = new Toolbar();
     toolbar.camera = uiCamera;
-    toolbar.setRect(0, uiCamera.height - toolbar.height(), uiCamera.width, 
+    toolbar.setRect(0, uiCamera.height - toolbar.height(), uiCamera.width,
             toolbar.height());
     add(toolbar);
 
@@ -478,7 +478,7 @@ public class GameScene extends PixelScene {
 
     if (scene == null) return;
 
-    float tagLeft = DarkestPixelDungeon.flipTags() ? 0 : uiCamera.width - 
+    float tagLeft = DarkestPixelDungeon.flipTags() ? 0 : uiCamera.width -
             scene.attack.width();
 
     if (DarkestPixelDungeon.flipTags()) {
@@ -587,7 +587,7 @@ public class GameScene extends PixelScene {
         }
       };
       prompt.camera = uiCamera;
-      prompt.setPos((uiCamera.width - prompt.width()) / 2, uiCamera.height - 
+      prompt.setPos((uiCamera.width - prompt.width()) / 2, uiCamera.height -
               60);
       add(prompt);
     }
@@ -776,7 +776,7 @@ public class GameScene extends PixelScene {
   }
 
   private static boolean cancelCellSelector() {
-    if (cellSelector.listener != null && cellSelector.listener != 
+    if (cellSelector.listener != null && cellSelector.listener !=
             defaultCellListener) {
       cellSelector.cancel();
       return true;
@@ -796,12 +796,12 @@ public class GameScene extends PixelScene {
                             WndBag.getBag(ScrollHolder.class, listener, mode,
                                     title) :
                             mode == WndBag.Mode.POTION ?
-                                    WndBag.getBag(PotionBandolier.class, 
+                                    WndBag.getBag(PotionBandolier.class,
                                             listener, mode, title) :
                                     mode == WndBag.Mode.WAND ?
-                                            WndBag.getBag(WandHolster.class, 
+                                            WndBag.getBag(WandHolster.class,
                                                     listener, mode, title) :
-                                            WndBag.lastBag(listener, mode, 
+                                            WndBag.lastBag(listener, mode,
                                                     title);
 
     scene.addToFront(wnd);
@@ -835,7 +835,7 @@ public class GameScene extends PixelScene {
 
     if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level
             .visited[cell] && !Dungeon.level.mapped[cell])) {
-      GameScene.show(new WndMessage(Messages.get(GameScene.class, 
+      GameScene.show(new WndMessage(Messages.get(GameScene.class,
               "dont_know")));
       return;
     }
@@ -879,8 +879,10 @@ public class GameScene extends PixelScene {
     } else if (objects.size() == 1) {
       examineObject(objects.get(0));
     } else {
-      GameScene.show(new WndOptions(Messages.get(GameScene.class, "choose_examine"),
-              Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])) {
+      GameScene.show(new WndOptions(Messages.get(GameScene.class, 
+              "choose_examine"),
+              Messages.get(GameScene.class, "multiple_examine"), names
+              .toArray(new String[names.size()])) {
         @Override
         protected void onSelect(int index) {
           examineObject(objects.get(index));
@@ -897,7 +899,8 @@ public class GameScene extends PixelScene {
       GameScene.show(new WndInfoMob((Mob) o));
     } else if (o instanceof Heap) {
       Heap heap = (Heap) o;
-      if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
+      if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek()
+              .price() > 0) {
         GameScene.show(new WndTradeItem(heap, false));
       } else {
         GameScene.show(new WndInfoItem(heap));
@@ -907,12 +910,14 @@ public class GameScene extends PixelScene {
     } else if (o instanceof Trap) {
       GameScene.show(new WndInfoTrap((Trap) o));
     } else {
-      GameScene.show(new WndMessage(Messages.get(GameScene.class, "dont_know")));
+      GameScene.show(new WndMessage(Messages.get(GameScene.class, 
+              "dont_know")));
     }
   }
 
 
-  private static final CellSelector.Listener defaultCellListener = new CellSelector.Listener() {
+  private static final CellSelector.Listener defaultCellListener = new 
+          CellSelector.Listener() {
     @Override
     public void onSelect(Integer cell) {
       if (Dungeon.hero.handle(cell)) {

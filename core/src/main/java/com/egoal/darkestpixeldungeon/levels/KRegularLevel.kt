@@ -73,7 +73,7 @@ open abstract class KRegularLevel : Level() {
 
     private var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
-        val diggers = selectDiggers(Random.NormalIntRange(2, 4), 15)
+        val diggers = selectDiggers(Random.NormalIntRange(1, 4), 15)
         if (Dungeon.shopOnLevel())
             diggers.add(ShopDigger())
 
@@ -217,7 +217,7 @@ open abstract class KRegularLevel : Level() {
 
         // bonus from wealth
         val bonus = Math.min(10, RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
-        while (Random.Float() < .3f + bonus * 0.05f)
+        while (Random.Float() < .25f + bonus * 0.05f)
             ++nItems
 
         for (i in 1..nItems) {

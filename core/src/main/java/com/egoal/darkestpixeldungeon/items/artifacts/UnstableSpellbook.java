@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
+import android.util.Pair;
+
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -107,10 +109,9 @@ public class UnstableSpellbook extends Artifact {
       else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
       else if (cursed) GLog.i(Messages.get(this, "cursed"));
       else {
-        // pressure
-        Pressure.Level plvl = hero.buff(Pressure.class).getLevel();
-        if (plvl == Pressure.Level.COLLAPSE || plvl == Pressure.Level.NERVOUS)
-          GLog.n(Messages.get(Scroll.class, "nervous"));
+        Pair<Boolean, String> pr = hero.canRead();
+        if (!pr.first)
+          GLog.n(pr.second);
         else {
           charge--;
 
@@ -162,10 +163,10 @@ public class UnstableSpellbook extends Artifact {
     if (level() < levelCap)
       if (scrolls.size() > 0) {
         desc += "\n\n" + Messages.get(this, "desc_index");
-        for(int i=0; i<3 && i<scrolls.size(); ++i){
-          desc += "\n"+ Messages.get(scrolls.get(i), "name");
+        for (int i = 0; i < 3 && i < scrolls.size(); ++i) {
+          desc += "\n" + Messages.get(scrolls.get(i), "name");
         }
-        
+
 //        desc += "\n" + Messages.get(scrolls.get(0), "name");
 //        if (scrolls.size() > 1) {
 //          desc += "\n" + Messages.get(scrolls.get(1), "name");

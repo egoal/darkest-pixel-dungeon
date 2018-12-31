@@ -75,10 +75,9 @@ public class Hunger extends Buff implements Hero.Doom {
 
       if (isStarving()) {
 
-        partialDamage += target.HT / 100f;
+        partialDamage += target.HT / 50f;
 
         if (partialDamage > 1) {
-          // target.damage( (int)partialDamage, this);
           target.takeDamage(new Damage((int) partialDamage,
                   this, target).type(Damage.Type.MAGICAL).addFeature(Damage
                   .Feature.PURE));

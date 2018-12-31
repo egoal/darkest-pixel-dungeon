@@ -124,6 +124,27 @@ public class Pressure extends Buff implements Hero.Doom {
     return level;
   }
 
+  public Damage procOutcomingDamage(Damage dmg) {
+    switch (level) {
+      case CONFIDENT:
+        if (!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Int(10) == 0) {
+          dmg.value *= 1.5;
+          dmg.addFeature(Damage.Feature.CRITCIAL);
+        } else
+          dmg.value *= 1.1;
+        break;
+      case NORMAL:
+        break;
+      case NERVOUS:
+        break;
+      case COLLAPSE:
+        dmg.value *= .5f;
+        break;
+    }
+
+    return dmg;
+  }
+
   @Override
   public int icon() {
     switch (level) {

@@ -24,6 +24,8 @@ class KHallsLevel : KRegularLevel() {
         viewDistance = Math.max(25 - Dungeon.depth, 1)
     }
 
+    override fun trackMusic(): String = Assets.TRACK_CHAPTER_5
+    
     override fun tilesTex(): String = Assets.TILES_HALLS
 
     override fun waterTex(): String = Assets.WATER_HALLS
@@ -45,7 +47,7 @@ class KHallsLevel : KRegularLevel() {
 
     override fun chooseDiggers(): ArrayList<Digger> {
         // less diggers, but more specials
-        val diggers = selectDiggers(Random.NormalIntRange(2, 4), 12)
+        val diggers = selectDiggers(Random.NormalIntRange(2, 3), 12)
         if (Dungeon.shopOnLevel())
             diggers.add(ShopDigger())
 

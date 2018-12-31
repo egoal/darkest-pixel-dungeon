@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
+import android.util.Pair;
+
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.ArmorKit;
@@ -83,6 +85,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.CrystalsSwords;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.PairSwords;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
@@ -156,46 +159,44 @@ public enum HeroClass {
     // the seed pouch is carried.
     (new SeedPouch()).identify().collect();
     Dungeon.limitedDrops.seedBag.drop();
-    
+
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
-    
+
   }
 
   private static void initDebug(Hero hero) {
     hero.HP = 1000;
     hero.HT = 1000;
-    hero.STR  = 18;
-    hero.lvl  = 20;
-    
+    hero.STR = 18;
+    hero.lvl = 20;
+
     ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
     somm.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(3, somm);
-    
+
+    new Wine().quantity(2).collect();
+
     new ScrollOfLight().quantity(3).identify().collect();
-    new ScrollOfCurse().quantity(3).identify().collect();
-    
+    new ScrollOfUpgrade().quantity(10).identify().collect();
+
     new PotionOfHealing().quantity(9).identify().collect();
-    
+
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
     new MailArmor().upgrade(1).identify().collect();
+
     new Sword().upgrade(1).identify().collect();
-    
-    new Earthroot.Seed().quantity(3).identify().collect();
-    
-    new WandOfBlastWave().upgrade(5).identify().collect();
-    new WandOfCorruption().upgrade(7).identify().collect();
-    new WandOfDisintegration().upgrade(2).identify().collect();
-    
+    new Sword().identify().collect();
+
     // rings
     (new PotionBandolier()).identify().collect();
 
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);
-    
+
     (new DriedRose()).identify().collect();
   }
 
@@ -221,7 +222,7 @@ public enum HeroClass {
     darts.identify().collect();
 
     new Wine().collect();
-    
+
     if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
       if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
         hero.belongings.armor.affixSeal(new BrokenSeal());
@@ -239,7 +240,7 @@ public enum HeroClass {
     hero.heroPerk.add(HeroPerk.Perk.DRUNKARD);
 
     new PotionOfHealing().setKnown();
-    
+
     // resists
     hero.addResistances(Damage.Element.FIRE, 1.1f);
     hero.addResistances(Damage.Element.LIGHT, .9f);
@@ -262,7 +263,7 @@ public enum HeroClass {
     Dungeon.quickslot.setSlot(0, staff);
 
     new ScrollOfUpgrade().setKnown();
-    
+
     hero.addResistances(Damage.Element.FIRE, 1f, 1.2f);
     hero.addResistances(Damage.Element.POISON, .8f);
     hero.addResistances(Damage.Element.LIGHT, 1.1f);
@@ -285,7 +286,7 @@ public enum HeroClass {
     hero.heroPerk.add(HeroPerk.Perk.KEEN);
 
     new ScrollOfMagicMapping().setKnown();
-    
+
     hero.addResistances(Damage.Element.POISON, 1.2f);
     hero.addResistances(Damage.Element.ICE, .8f, .9f);
     hero.addResistances(Damage.Element.SHADOW, .9f, 1.1f);
@@ -303,7 +304,7 @@ public enum HeroClass {
     hero.heroPerk.add(HeroPerk.Perk.SHOOTER);
 
     new PotionOfMindVision().setKnown();
-    
+
     hero.addResistances(Damage.Element.POISON, 1.2f);
     hero.addResistances(Damage.Element.ICE, .9f);
     hero.addResistances(Damage.Element.ACID, .9f);
@@ -333,7 +334,7 @@ public enum HeroClass {
     for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
       hero.addResistances(1 << i, 1.25f, 1f);
     }
-    hero.addResistances(Damage.Element.POISON, 2f);    
+    hero.addResistances(Damage.Element.POISON, 2f);
   }
 
   private static void initPerks(Hero hero) {

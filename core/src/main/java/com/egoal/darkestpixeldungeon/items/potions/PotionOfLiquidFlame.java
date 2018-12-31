@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.potions;
 import com.egoal.darkestpixeldungeon.actors.blobs.RoaringFire;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
+import com.egoal.darkestpixeldungeon.items.Bomb;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -54,24 +55,25 @@ public class PotionOfLiquidFlame extends Potion {
       Sample.INSTANCE.play(Assets.SND_SHATTER);
     }
 
-    for (int offset : PathFinder.NEIGHBOURS9) {
-      if (Level.flamable[cell + offset]
-              || Actor.findChar(cell + offset) != null
-              || Dungeon.level.heaps.get(cell + offset) != null) {
+    if (reinforced) {
+      new Bomb().explode(cell);
+    } else {
+      for (int offset : PathFinder.NEIGHBOURS9) {
+        if (Level.flamable[cell + offset]
+                || Actor.findChar(cell + offset) != null
+                || Dungeon.level.heaps.get(cell + offset) != null) {
 
-        GameScene.add(Blob.seed(cell + offset, 2, reinforced ? RoaringFire
-                .class : Fire.class));
-
-      } else {
-
-        CellEmitter.get(cell + offset).burst(FlameParticle.FACTORY, 2);
-
+          GameScene.add(Blob.seed(cell + offset, 2, Fire.class));
+        } else {
+          CellEmitter.get(cell + offset).burst(FlameParticle.FACTORY, 2);
+        }
       }
     }
   }
 
   @Override
   public int price() {
-    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super.price();
+    return isKnown() ? (int) (30 * quantity * (reinforced ? 1.5 : 1)) : super
+            .price();
   }
 }

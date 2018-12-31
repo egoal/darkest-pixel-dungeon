@@ -58,7 +58,7 @@ public class RankingsScene extends PixelScene {
 
     super.create();
 
-    Music.INSTANCE.play(Assets.THEME, true);
+    Music.INSTANCE.play(Assets.TRACK_MAIN_THEME, true);
     Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
 
     uiCamera.visible = false;
