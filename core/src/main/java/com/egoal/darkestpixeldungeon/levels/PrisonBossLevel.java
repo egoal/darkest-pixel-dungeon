@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -21,6 +22,7 @@ import com.egoal.darkestpixeldungeon.levels.traps.SpearTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -45,6 +47,15 @@ public class PrisonBossLevel extends Level {
   private int[] hallLights;
   private boolean enteredMainHall = false;
   public boolean isLighted = true;
+
+  private boolean bossAppeared = false;
+  private boolean bossDefeated = false;
+
+  @Override
+  public String trackMusic() {
+    return (bossAppeared && !bossDefeated) ? Assets.TRACK_BOSS_LOOP :
+            Assets.TRACK_CHAPTER_2;
+  }
 
   @Override
   public String tilesTex() {
@@ -162,7 +173,7 @@ public class PrisonBossLevel extends Level {
     // entrance && exit
     entrance = pointToCell(rmStart.centerFixed());
     exit = pointToCell(rmExit.centerFixed());
-    
+
     map[entrance] = Terrain.ENTRANCE;
     map[exit] = Terrain.EXIT;
 
@@ -219,6 +230,9 @@ public class PrisonBossLevel extends Level {
     // give buff
     Buff.affect(hero, Ignorant.class);
 
+    bossAppeared = true;
+    Music.INSTANCE.play(trackMusic(), true);
+    Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
   }
 
   @Override
@@ -230,6 +244,10 @@ public class PrisonBossLevel extends Level {
       set(hallEntrance(), Terrain.DOOR);
       GameScene.updateMap(hallEntrance());
       Dungeon.observe();
+
+      bossDefeated = true;
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
 
     return super.drop(item, cell);
@@ -468,6 +486,8 @@ public class PrisonBossLevel extends Level {
   private static final String HALL = "hall";
   private static final String LIGHTED = "lighted";
   private static final String HALL_LIGHTS = "hall_lights";
+  private static final String BOSS_APPEARED = "boss-appeared";
+  private static final String BOSS_DEFEATED = "boss-defeated";
 
   @Override
   public void storeInBundle(Bundle bundle) {
@@ -477,6 +497,8 @@ public class PrisonBossLevel extends Level {
     bundle.put(HALL, rmHall);
     bundle.put(LIGHTED, isLighted);
     bundle.put(HALL_LIGHTS, hallLights);
+    bundle.put(BOSS_APPEARED, bossAppeared);
+    bundle.put(BOSS_DEFEATED, bossDefeated);
   }
 
   @Override
@@ -488,5 +510,7 @@ public class PrisonBossLevel extends Level {
     rmHall = new Room();
     rmHall.restoreFromBundle(bundle.getBundle(HALL));
     hallLights = bundle.getIntArray(HALL_LIGHTS);
+    bossAppeared = bundle.getBoolean(BOSS_APPEARED);
+    bossDefeated = bundle.getBoolean(BOSS_DEFEATED);
   }
 }

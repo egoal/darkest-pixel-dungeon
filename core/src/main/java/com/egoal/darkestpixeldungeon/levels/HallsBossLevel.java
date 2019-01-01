@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
@@ -37,6 +38,7 @@ import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -70,6 +72,12 @@ public class HallsBossLevel extends Level {
   @Override
   public String waterTex() {
     return Assets.WATER_HALLS;
+  }
+
+  @Override
+  public String trackMusic() {
+    return (enteredArena && !keyDropped) ? Assets.TRACK_FINAL_INTRO :
+            Assets.TRACK_CHAPTER_5;
   }
 
   private static final String STAIRS = "stairs";
@@ -218,12 +226,15 @@ public class HallsBossLevel extends Level {
                       Dungeon.visible[boss.pos]);
       GameScene.add(boss);
       boss.spawnFists();
-      
+
       // give an observer
-      Buff.prolong(hero, ViewMark.class, 1000).observer  = boss.id();
+      Buff.prolong(hero, ViewMark.class, 1000).observer = boss.id();
 
       stairs = entrance;
       entrance = -1;
+
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
   }
 
@@ -242,6 +253,9 @@ public class HallsBossLevel extends Level {
       entrance = stairs;
       set(entrance, Terrain.ENTRANCE);
       GameScene.updateMap(entrance);
+
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
 
     return super.drop(item, cell);

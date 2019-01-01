@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
@@ -39,6 +40,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -73,6 +75,12 @@ public class CavesBossLevel extends Level {
   @Override
   public String waterTex() {
     return Assets.WATER_CAVES;
+  }
+
+  @Override
+  public String trackMusic() {
+    return (enteredArena && !keyDropped) ? Assets.TRACK_BOSS_LOOP :
+            Assets.TRACK_CHAPTER_3;
   }
 
   private static final String DOOR = "door";
@@ -265,6 +273,9 @@ public class CavesBossLevel extends Level {
       CellEmitter.get(arenaDoor).start(Speck.factory(Speck.ROCK), 0.07f, 10);
       Camera.main.shake(3, 0.7f);
       Sample.INSTANCE.play(Assets.SND_ROCKS);
+
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
   }
 
@@ -281,6 +292,9 @@ public class CavesBossLevel extends Level {
       set(arenaDoor, Terrain.EMPTY_DECO);
       GameScene.updateMap(arenaDoor);
       Dungeon.observe();
+
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
 
     return super.drop(item, cell);

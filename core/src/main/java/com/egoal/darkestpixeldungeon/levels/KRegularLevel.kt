@@ -17,6 +17,10 @@ import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.diggers.LevelDigger
 import com.egoal.darkestpixeldungeon.levels.diggers.Space
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.*
+import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretGuardianDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretLibraryDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretSummoningDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretTreasuryDigger
 import com.egoal.darkestpixeldungeon.levels.diggers.specials.*
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
@@ -83,6 +87,12 @@ open abstract class KRegularLevel : Level() {
     protected fun selectDiggers(specials: Int, total: Int): ArrayList<Digger> {
         val diggers = ArrayList<Digger>()
 
+        // as most 1 secret per level
+        if (specials > 1 && Random.Int(3) == 0) {
+            Log.d("dpd", "a secret digger chosen.")
+            diggers.add(Random.chances(SecretDiggers).newInstance())
+        }
+
         // specials
         val probs = HashMap<Class<out Digger>, Float>(SpecialDiggers)
         if (pitRoomNeeded) {
@@ -125,30 +135,30 @@ open abstract class KRegularLevel : Level() {
         val normalSpaces = spaces.filter { it.type == DigResult.Type.Normal }
 
         for (_i in 1..10) {
-            var spaceEntrance: Space 
+            var spaceEntrance: Space
             do {
                 spaceEntrance = Random.element(normalSpaces)
                 entrance = pointToCell(spaceEntrance.rect.random(1))
             } while (map[entrance] != Terrain.EMPTY)
-            
-            for(_j in 1..30){
+
+            for (_j in 1..30) {
                 var spaceExit = Random.element(normalSpaces)
-                if(spaceExit==spaceEntrance) continue
-                
+                if (spaceExit == spaceEntrance) continue
+
                 exit = pointToCell(spaceExit.rect.random(1))
-                
-                if(map[exit]==Terrain.EMPTY && distance(entrance, exit)>=12){
+
+                if (map[exit] == Terrain.EMPTY && distance(entrance, exit) >= 12) {
                     // gotcha
                     spaceEntrance.type = DigResult.Type.Entrance
                     spaceExit.type = DigResult.Type.Exit
                     map[entrance] = Terrain.ENTRANCE
                     map[exit] = Terrain.EXIT
-                    
+
                     return true
                 }
             }
         }
-        
+
         return false
     }
 
@@ -411,16 +421,25 @@ open abstract class KRegularLevel : Level() {
                 WeakFloorDigger::class.java to 0.75f
         )
 
+        val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(
+                SecretGuardianDigger::class.java to 1f,
+                SecretLibraryDigger::class.java to 1f,
+                SecretSummoningDigger::class.java to 1f,
+                SecretTreasuryDigger::class.java to 1f,
+                SecretGuardianDigger::class.java to 1f
+        )
+
         val NormalDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(
                 BrightDigger::class.java to .1f,
                 CellDigger::class.java to .1f,
-                CircleDigger::class.java to .1f,
-                DiamondDigger::class.java to .075f,
+                CircleDigger::class.java to .075f,
+                DiamondDigger::class.java to .05f,
                 LatticeDigger::class.java to .1f,
                 RectDigger::class.java to 1f,
-                RoundDigger::class.java to .075f,
+                RoundDigger::class.java to .05f,
                 StripDigger::class.java to .1f,
-                CrossDigger::class.java to .075f
+                CrossDigger::class.java to .05f,
+                PatchDigger::class.java to .075f
         )
     }
 }

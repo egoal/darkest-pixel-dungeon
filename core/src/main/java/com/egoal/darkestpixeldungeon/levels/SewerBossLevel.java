@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Bones;
@@ -32,6 +33,7 @@ import com.egoal.darkestpixeldungeon.levels.Room.Type;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
@@ -48,6 +50,16 @@ public class SewerBossLevel extends RegularLevel {
   }
 
   private int stairs = 0;
+
+  // flag for music 
+  private boolean bossAppeared = false;
+  private boolean bossDefeated = false;
+
+  @Override
+  public String trackMusic() {
+    return (bossAppeared && !bossDefeated) ? Assets.TRACK_BOSS_LOOP :
+            Assets.TRACK_CHAPTER_1;
+  }
 
   @Override
   public String tilesTex() {
@@ -78,7 +90,7 @@ public class SewerBossLevel extends RegularLevel {
       }
       roomEntrance = Random.element(rooms);
     }
-    while (roomEntrance.width() != 8 || roomEntrance.height() < 5 || 
+    while (roomEntrance.width() != 8 || roomEntrance.height() < 5 ||
             roomEntrance.top == 0 || roomEntrance.top >= 8);
 
     roomEntrance.type = Type.ENTRANCE;
@@ -259,7 +271,6 @@ public class SewerBossLevel extends RegularLevel {
   // lock until the boos down
   public void seal() {
     if (entrance != 0) {
-
       super.seal();
 
       set(entrance, Terrain.WATER_TILES);
@@ -268,6 +279,10 @@ public class SewerBossLevel extends RegularLevel {
 
       stairs = entrance;
       entrance = 0;
+
+      bossAppeared = true;
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
   }
 
@@ -282,15 +297,22 @@ public class SewerBossLevel extends RegularLevel {
       set(entrance, Terrain.ENTRANCE);
       GameScene.updateMap(entrance);
 
+      bossDefeated = true;
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
   }
 
   private static final String STAIRS = "stairs";
+  private static final String BOSS_APPEARED = "boss-appeared";
+  private static final String BOSS_DEFEATED = "boss-defeated";
 
   @Override
   public void storeInBundle(Bundle bundle) {
     super.storeInBundle(bundle);
     bundle.put(STAIRS, stairs);
+    bundle.put(BOSS_APPEARED, bossAppeared);
+    bundle.put(BOSS_DEFEATED, bossDefeated);
   }
 
   @Override
@@ -298,6 +320,9 @@ public class SewerBossLevel extends RegularLevel {
     super.restoreFromBundle(bundle);
     stairs = bundle.getInt(STAIRS);
     roomExit = roomEntrance;
+
+    bossAppeared = bundle.getBoolean(BOSS_APPEARED);
+    bossDefeated = bundle.getBoolean(BOSS_DEFEATED);
   }
 
   @Override

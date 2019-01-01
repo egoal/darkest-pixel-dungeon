@@ -7,11 +7,12 @@ import kotlin.collections.ArrayList
 
 data class DigResult(var rect: Rect, var walls: List<Wall>, var type: Type = Type.Normal) {
     constructor(rect: Rect, type: Type) : this(rect, listOf(), type)
-    
+
     enum class Type {
         Normal, Special, Locked,
         Pit, WeakFloor,
         Exit, Entrance,
+        Secret,
     }
 }
 
@@ -36,9 +37,28 @@ abstract class Digger {
                     Set(level, x, y, tile)
         }
 
-        fun Fill(level: Level, x: Int, y: Int, w: Int, h: Int, tile: Int) {
-            Fill(level, Rect.Create(x, y, w, h), tile)
+        fun Fill(level: Level, x: Int, y: Int, w: Int, h: Int, tile: Int) =
+                Fill(level, Rect.Create(x, y, w, h), tile)
+
+        fun FillEllipse(level: Level, x: Int, y: Int, w: Int, h: Int, tile: Int) {
+            val rh = h.toDouble() / 2.0
+            val rw = w.toDouble() / 2.0
+
+            // row by row
+            for (i in 0 until h) {
+                // shift 0.5: to the tile center
+                val ry = -rh + 0.5 + i.toDouble()
+
+                var rowWidth = Math.sqrt(1f - ry * ry / (rh * rh)) * rw
+                rowWidth = if (w % 2 == 0) Math.round(rowWidth) * 2.0 else (Math.floor(rowWidth) * 2.0 + 1.0)
+
+                var rx = x + (w - rowWidth.toInt()) / 2 + ((y + i) * level.width())
+                LinkHorizontal(level, y + i, rx, rx + rowWidth.toInt(), tile)
+            }
         }
+
+        fun FillEllipse(level: Level, rect: Rect, tile: Int) =
+                FillEllipse(level, rect.x1, rect.y1, rect.width, rect.height, tile)
 
         fun LinkVertical(level: Level, x: Int, y1: Int, y2: Int, tile: Int) {
             when {
@@ -69,6 +89,7 @@ abstract class Digger {
 
             var x = x1
             var y = y1
+            Set(level, x, y, tile)
             for (p in steps) {
                 x += p.x
                 y += p.y

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.mobs.King;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
@@ -37,6 +38,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
@@ -67,6 +69,12 @@ public class CityBossLevel extends Level {
   @Override
   public String waterTex() {
     return Assets.WATER_CITY;
+  }
+
+  @Override
+  public String trackMusic() {
+    return (enteredArena && !keyDropped) ? Assets.TRACK_BOSS_LOOP :
+            Assets.TRACK_CHAPTER_4;
   }
 
   private static final String DOOR = "door";
@@ -174,6 +182,9 @@ public class CityBossLevel extends Level {
       Dungeon.observe();
 
       boss.yell(Messages.get(boss, "greeting"));
+
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
   }
 
@@ -187,8 +198,8 @@ public class CityBossLevel extends Level {
     for (int ix = x - DISTANCE; ix <= x + DISTANCE; ++ix) {
       for (int iy = y - DISTANCE; iy <= y + DISTANCE; ++iy) {
         int i = xy2cell(ix, iy);
-        if(i<0 || i>=length) continue;
-        
+        if (i < 0 || i >= length) continue;
+
         if (map[i] == Terrain.STATUE_SP) {
           // active
           map[i] = Terrain.EMPTY_SP;
@@ -196,14 +207,14 @@ public class CityBossLevel extends Level {
 
           ++actives;
 
-          King.Undead ku  = new King.Undead();
-          ku.state  = ku.HUNTING;
-          ku.pos  = i;
+          King.Undead ku = new King.Undead();
+          ku.state = ku.HUNTING;
+          ku.pos = i;
           GameScene.add(ku, 1f);  // delay a turn
-          
+
           ku.yell(Messages.get(ku, "awaken"));
-          
-          if(Dungeon.visible[i]){
+
+          if (Dungeon.visible[i]) {
             ku.sprite.emitter().start(ShadowParticle.CURSE, .05f, 10);
             Sample.INSTANCE.play(Assets.SND_BONES);
           }
@@ -211,8 +222,8 @@ public class CityBossLevel extends Level {
       }
     }
 
-    remainStatuaries  -=  actives;
-    
+    remainStatuaries -= actives;
+
     if (actives > 0) {
       buildFlagMaps();
       Dungeon.observe();
@@ -230,6 +241,9 @@ public class CityBossLevel extends Level {
       set(arenaDoor, Terrain.DOOR);
       GameScene.updateMap(arenaDoor);
       Dungeon.observe();
+
+      Music.INSTANCE.play(trackMusic(), true);
+      Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
     }
 
     return super.drop(item, cell);

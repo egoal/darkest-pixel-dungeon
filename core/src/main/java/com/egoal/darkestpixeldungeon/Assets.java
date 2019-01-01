@@ -156,7 +156,6 @@ public class Assets {
 
   // sounds=====================================================================
   // music
-  // public static final String THEME = SOUNDS + "theme.mp3";
   public static final String TRACK_MAIN_THEME	= SOUNDS +"track_theme.ogg";
   public static final String TRACK_CHAPTER_1	= SOUNDS +"track_chapter_1.ogg";
   public static final String TRACK_CHAPTER_2	= SOUNDS +"track_chapter_2.ogg";
@@ -226,7 +225,7 @@ public class Assets {
   public static final String PRISON_QUEST = "custom_tiles/prison_quests.png";
   public static final String PRISON_EXIT = "custom_tiles/prison_exit.png";
 
-  //
+  // others
   public static final String PIXELFONT = "pixel_font.png";
   public static final String FONT1X = "font1x.png";
   public static final String FONT2X = "font2x.png";

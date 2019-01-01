@@ -68,7 +68,7 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
 
     override fun desc(): String {
         var desc = super.desc()
-        desc += "\n\n${left.name()}+${left.level()} # ${right.name()}+${right.level()}"
+        desc += "\n\n${left.name()}+${left.level()} \n ${right.name()}+${right.level()}"
 
         return desc
     }
