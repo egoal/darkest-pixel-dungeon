@@ -17,10 +17,7 @@ import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.diggers.LevelDigger
 import com.egoal.darkestpixeldungeon.levels.diggers.Space
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.*
-import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretGuardianDigger
-import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretLibraryDigger
-import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretSummoningDigger
-import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretTreasuryDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.secret.*
 import com.egoal.darkestpixeldungeon.levels.diggers.specials.*
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
@@ -88,7 +85,7 @@ open abstract class KRegularLevel : Level() {
         val diggers = ArrayList<Digger>()
 
         // as most 1 secret per level
-        if (specials > 1 && Random.Int(3) == 0) {
+        if (Random.IntRange(2, 5) <= specials) {
             Log.d("dpd", "a secret digger chosen.")
             diggers.add(Random.chances(SecretDiggers).newInstance())
         }
@@ -426,7 +423,7 @@ open abstract class KRegularLevel : Level() {
                 SecretLibraryDigger::class.java to 1f,
                 SecretSummoningDigger::class.java to 1f,
                 SecretTreasuryDigger::class.java to 1f,
-                SecretGuardianDigger::class.java to 1f
+                SecretGardenDigger::class.java to 1f
         )
 
         val NormalDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(

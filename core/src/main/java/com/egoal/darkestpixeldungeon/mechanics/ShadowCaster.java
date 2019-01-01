@@ -164,32 +164,32 @@ public final class ShadowCaster {
       limit = length;
     }
   }
-
-  //! algorithm picked from spd, perhaps i would switch to this someday.
-  public static void castShadow( int x, int y, boolean[] fieldOfView, int distance ) {
+  
+  public static void castShadowRecursively( int x, int y, boolean[] fieldOfView,
+                                            int viewDistance, int seeDistance) {
 
     BArray.setFalse(fieldOfView);
 
     //set source cell to true
     fieldOfView[y * Dungeon.level.width() + x] = true;
 
-    boolean[] losBlocking = Dungeon.level.losBlocking;
+    boolean[] losBlocking = Level.losBlocking;
 
     //scans octants, clockwise
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, false);
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, true);
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, true);
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, false);
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, false);
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, true);
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, true);
-    scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, false);
 
   }
   
   //scans a single 45 degree octant of the FOV.
   //This can add up to a whole FOV by mirroring in X(mX), Y(mY), and X=Y(mXY)
-  private static void scanOctant(int distance, boolean[] fov,
+  private static void scanOctant(int viewDistance, int seeDistance, boolean[] fov,
                                  boolean[] blocking, int row, int x, int y, 
                                  double lSlope, double rSlope,
                                  int mX, int mY, boolean mXY) {
@@ -202,15 +202,15 @@ public final class ShadowCaster {
     // the source cell
 
     //for each row, starting with the current one
-    for (; row <= distance; row++) {
+    for (; row <= seeDistance; row++) {
 
       //we offset by slightly less than 0.5 to account for slopes just 
       // touching a cell
       if (lSlope == 0) start = 0;
       else start = (int) Math.floor((row - 0.5) * lSlope + 0.499);
 
-      if (rSlope == 1) end = rounding[distance][row];
-      else end = Math.min(rounding[distance][row],
+      if (rSlope == 1) end = rounding[seeDistance][row];
+      else end = Math.min(rounding[seeDistance][row],
               (int) Math.ceil((row + 0.5) * rSlope - 0.499));
 
       //coordinates of source
@@ -223,7 +223,8 @@ public final class ShadowCaster {
       //for each column in this row, which
       for (col = start; col <= end; col++) {
 
-        fov[cell] = true;
+        if(row<=viewDistance || Level.lighted[cell])
+          fov[cell] = true;
 
         if (blocking[cell]) {
           if (!inBlocking) {
@@ -232,7 +233,7 @@ public final class ShadowCaster {
             //start a new scan, 1 row deeper, ending at the left side of 
             // current cell
             if (col != start) {
-              scanOctant(distance, fov, blocking, row + 1, x, y, lSlope,
+              scanOctant(viewDistance, seeDistance, fov, blocking, row + 1, x, y, lSlope,
                       //change in x over change in y
                       (col - 0.5) / (row + 0.5),
                       mX, mY, mXY);

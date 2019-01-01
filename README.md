@@ -8,6 +8,7 @@ based on the source code of [pixel dungeon](https://github.com/watabou/pixel-dun
 current features & highlights:
 * pressure system.
 * battle system overhauled.
+* new enemies.
 * new items.
 * new npc, quests.
 

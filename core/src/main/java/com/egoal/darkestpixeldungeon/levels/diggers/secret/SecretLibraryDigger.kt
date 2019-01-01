@@ -20,7 +20,9 @@ val scrollChances = floatArrayOf(1f, 1f, 3f, 0f, 1f, 3f, 1f, 1f, 2f, 2f, 4f, 1f,
 
 class SecretLibraryDigger : RoundDigger() {
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
-        FillEllipse(level, rect, Terrain.EMPTY)
+        FillEllipse(level, rect, Terrain.BOOKSHELF)
+        FillEllipse(level, rect.shrink(1), Terrain.EMPTY)
+        Set(level, rect.center, Terrain.WALL_LIGHT_ON)
 
         val door = rect.center
         if (wall.direction.horizontal)

@@ -37,7 +37,7 @@ class SecretGuardianDigger : Digger() {
 
         val cen = rect.center
         val plat = rect.center
-        val guard = plat
+        val guard = plat.clone()
         when (wall.direction) {
             Direction.Left -> {
                 Fill(level, Rect(cen.x + 1, rect.x2, rect.y1, rect.y2), Terrain.STATUE_SP)

@@ -14,7 +14,7 @@ import com.watabou.utils.Point
 import com.watabou.utils.Random
 
 class SecretGardenDigger : PatchDigger() {
-    override fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(6, 8), Random.IntRange(6, 8))
+    override fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(4, 8), Random.IntRange(4, 8))
 
     override fun patchTile(): Int = Terrain.GRASS
 

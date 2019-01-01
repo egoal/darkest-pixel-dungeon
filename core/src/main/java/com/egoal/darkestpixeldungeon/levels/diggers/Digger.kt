@@ -40,25 +40,19 @@ abstract class Digger {
         fun Fill(level: Level, x: Int, y: Int, w: Int, h: Int, tile: Int) =
                 Fill(level, Rect.Create(x, y, w, h), tile)
 
-        fun FillEllipse(level: Level, x: Int, y: Int, w: Int, h: Int, tile: Int) {
-            val rh = h.toDouble() / 2.0
-            val rw = w.toDouble() / 2.0
+        fun FillEllipse(level: Level, rect: Rect, tile: Int) {
+            // rect dimensions shall be odd
+            val rh = rect.height.toDouble() / 2.0
+            val rw = rect.width.toDouble() / 2.0
 
-            // row by row
-            for (i in 0 until h) {
-                // shift 0.5: to the tile center
-                val ry = -rh + 0.5 + i.toDouble()
-
-                var rowWidth = Math.sqrt(1f - ry * ry / (rh * rh)) * rw
-                rowWidth = if (w % 2 == 0) Math.round(rowWidth) * 2.0 else (Math.floor(rowWidth) * 2.0 + 1.0)
-
-                var rx = x + (w - rowWidth.toInt()) / 2 + ((y + i) * level.width())
-                LinkHorizontal(level, y + i, rx, rx + rowWidth.toInt(), tile)
+            val cen = rect.center
+            for (p in rect.getAllPoints()) {
+                val rx = (p.x - cen.x).toDouble() / rw
+                val ry = (p.y - cen.y).toDouble() / rh
+                if(rx*rx+ry*ry<=1.0)
+                    Set(level, p, tile)
             }
         }
-
-        fun FillEllipse(level: Level, rect: Rect, tile: Int) =
-                FillEllipse(level, rect.x1, rect.y1, rect.width, rect.height, tile)
 
         fun LinkVertical(level: Level, x: Int, y1: Int, y2: Int, tile: Int) {
             when {

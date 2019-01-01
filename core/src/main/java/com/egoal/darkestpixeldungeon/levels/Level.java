@@ -1094,8 +1094,9 @@ public abstract class Level implements Bundlable {
             && c.buff(TimekeepersHourglass.timeStasis.class) == null && c
             .isAlive();
     if (sighted) {
-      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance(), c
-              .seeDistance());
+//      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance(), c
+//              .seeDistance());
+      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(), c.seeDistance());
     } else {
       BArray.setFalse(fieldOfView);
     }
