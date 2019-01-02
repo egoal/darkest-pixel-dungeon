@@ -22,10 +22,9 @@ class SecretGardenDigger : PatchDigger() {
         super.dig(level, wall, rect)
 
         // make secret
-        //fixme: remove this bad design. i may set a door type in Diggers,  
-        for (cell in overlappedWall(wall, rect).getAllPoints().map { level.pointToCell(it) })
-            if (level.map[cell] == Terrain.DOOR)
-                level.map[cell] = Terrain.SECRET_DOOR
+        val ow = overlappedWall(wall, rect)
+        Fill(level, ow, Terrain.WALL)
+        Set(level, ow.random(), Terrain.SECRET_DOOR)
 
         // give plant
         val randomPlant = { seed: Plant.Seed ->

@@ -32,7 +32,6 @@ import com.egoal.darkestpixeldungeon.ui.Toolbar;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
@@ -162,7 +161,7 @@ public class WndSettings extends WndTabbed {
       add(chkImmersive);
 
 
-      boolean enableDebug = !false;
+      boolean enableDebug = false;
       if (!enableDebug)
         DarkestPixelDungeon.debug(false);
       // add debug checkbox
@@ -180,21 +179,6 @@ public class WndSettings extends WndTabbed {
       chkDebug.checked(DarkestPixelDungeon.debug());
       chkDebug.enable(enableDebug);
       add(chkDebug);
-
-      // disable landscape
-      // RedButton btnOrientation = new RedButton( DarkestPixelDungeon
-      // .landscape() ?
-      // 		Messages.get(this, "portrait")
-      // 		: Messages.get(this, "landscape") ) {
-      // 	@Override
-      // 	protected void onClick() {
-      // 		DarkestPixelDungeon.landscape(!DarkestPixelDungeon.landscape());
-      // 	}
-      // };
-      // btnOrientation.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, 
-      // BTN_HEIGHT);
-      // add( btnOrientation );
-
     }
   }
 

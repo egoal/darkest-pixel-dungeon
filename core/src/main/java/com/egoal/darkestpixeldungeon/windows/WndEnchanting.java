@@ -72,7 +72,7 @@ public class WndEnchanting extends Window {
                 Messages.get(WndEnchanting.class, "select_target"));
       }
     };
-    btnItemTgt_.setRect(btnItemSrc_.right() + BTN_GAP, btnItemSrc_.top(), 
+    btnItemTgt_.setRect(btnItemSrc_.right() + BTN_GAP, btnItemSrc_.top(),
             BTN_SIZE, BTN_SIZE);
     add(btnItemTgt_);
 
@@ -124,7 +124,7 @@ public class WndEnchanting extends Window {
         // take from the backpack
         // the equipped item showed be take off, in case lack of room space
         if (item instanceof EquipableItem && item.isEquipped(Dungeon.hero)) {
-          GameScene.show(new WndMessage(Messages.get(WndEnchanting.class, 
+          GameScene.show(new WndMessage(Messages.get(WndEnchanting.class,
                   "first_unequip")));
           return;
         }
@@ -132,7 +132,7 @@ public class WndEnchanting extends Window {
         btnPressed_.item(item.detach(Dungeon.hero.belongings.backpack));
 
         if (btnItemSrc_.item != null && btnItemTgt_.item != null) {
-          String result = EnchantingStation.canTransform(btnItemSrc_.item, 
+          String result = EnchantingStation.canTransform(btnItemSrc_.item,
                   btnItemTgt_.item);
           if (result == null)
             btnDone_.enable(true);
@@ -185,8 +185,6 @@ public class WndEnchanting extends Window {
     protected void onClick() {
     }
 
-    ;
-
     @Override
     protected void layout() {
       super.layout();
@@ -197,8 +195,6 @@ public class WndEnchanting extends Window {
 
       slot.setRect(x + 2, y + 2, width - 4, height - 4);
     }
-
-    ;
 
     public void item(Item item) {
       slot.item(this.item = item);

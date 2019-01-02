@@ -393,8 +393,6 @@ public class ExtractionFlask extends Item {
       protected void onClick() {
       }
 
-      ;
-
       @Override
       protected void layout() {
         super.layout();

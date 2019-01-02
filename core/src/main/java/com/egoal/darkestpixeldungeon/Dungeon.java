@@ -259,6 +259,9 @@ public class Dungeon {
         Statistics.deepestFloor--;
     }
 
+    if (DarkestPixelDungeon.debug())
+      level = new KEmptyLevel();
+
     visible = new boolean[level.length()];
     level.create();
 
@@ -295,7 +298,7 @@ public class Dungeon {
     if (pos < 0 || pos >= level.length()) {
       pos = level.exit;
     }
-    
+
     // add into level.mobs, then into actor.
     hero.restoreFollowers(level, pos);
     Actor.init();
@@ -694,7 +697,7 @@ public class Dungeon {
     return (Level) bundle.get("level");
   }
 
-  public static void deleteGame(HeroClass cl, boolean deleteLevels, boolean 
+  public static void deleteGame(HeroClass cl, boolean deleteLevels, boolean
           deleteBackup) {
 
     Game.instance.deleteFile(gameFile(cl));

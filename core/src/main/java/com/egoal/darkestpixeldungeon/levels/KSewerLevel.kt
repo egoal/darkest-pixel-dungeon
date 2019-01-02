@@ -146,7 +146,8 @@ class KSewerLevel : KRegularLevel() {
 
         }
 
-        private class WaterParticle : PixelParticle() {
+        // for out new instance, shall be public 
+        class WaterParticle : PixelParticle() {
             init {
                 acc.y = 50f
                 am = .5f

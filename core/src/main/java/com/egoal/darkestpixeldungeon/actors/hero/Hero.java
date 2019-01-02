@@ -847,16 +847,13 @@ public class Hero extends Char {
 
   private boolean actCook(HeroAction.Cook action) {
     int dst = action.dst;
-    if (Dungeon.visible[dst]) {
-
+    if(Dungeon.level.adjacent(dst, pos)){
       ready();
       AlchemyPot.operate(this, dst);
+      
       return false;
-
     } else if (getCloser(dst)) {
-
       return true;
-
     } else {
       ready();
       return false;

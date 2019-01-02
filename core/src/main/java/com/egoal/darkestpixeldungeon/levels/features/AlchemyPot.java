@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.levels.features;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
+import com.egoal.darkestpixeldungeon.windows.WndAlchemy;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
 import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -41,7 +42,7 @@ public class AlchemyPot {
   public static Item curItem = null;
 
   public static void operate(Hero hero, int pos) {
-
+    // GameScene.show(new WndAlchemy());
     AlchemyPot.hero = hero;
     AlchemyPot.pos = pos;
 

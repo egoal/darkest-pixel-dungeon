@@ -164,9 +164,9 @@ public final class ShadowCaster {
       limit = length;
     }
   }
-  
-  public static void castShadowRecursively( int x, int y, boolean[] fieldOfView,
-                                            int viewDistance, int seeDistance) {
+
+  public static void castShadowRecursively(int x, int y, boolean[] fieldOfView,
+                                           int viewDistance, int seeDistance) {
 
     BArray.setFalse(fieldOfView);
 
@@ -176,21 +176,30 @@ public final class ShadowCaster {
     boolean[] losBlocking = Level.losBlocking;
 
     //scans octants, clockwise
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, false);
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, true);
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, true);
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, false);
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, false);
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, true);
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, true);
-    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, +1, -1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, -1, +1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, +1, +1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, +1, +1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, -1, +1, false);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, +1, -1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, -1, -1, true);
+    scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
+            0.0, 1.0, -1, -1, false);
 
   }
-  
+
   //scans a single 45 degree octant of the FOV.
   //This can add up to a whole FOV by mirroring in X(mX), Y(mY), and X=Y(mXY)
-  private static void scanOctant(int viewDistance, int seeDistance, boolean[] fov,
-                                 boolean[] blocking, int row, int x, int y, 
+  private static void scanOctant(int viewDistance, int seeDistance, boolean[]
+          fov,
+                                 boolean[] blocking, int row, int x, int y,
                                  double lSlope, double rSlope,
                                  int mX, int mY, boolean mXY) {
 
@@ -220,10 +229,12 @@ public final class ShadowCaster {
       if (mXY) cell += mX * start * Dungeon.level.width() + mY * row;
       else cell += mX * start + mY * row * Dungeon.level.width();
 
+      if (cell < 0 || cell >= Dungeon.level.length()) return;
+
       //for each column in this row, which
       for (col = start; col <= end; col++) {
 
-        if(row<=viewDistance || Level.lighted[cell])
+        if (row <= viewDistance || Level.lighted[cell])
           fov[cell] = true;
 
         if (blocking[cell]) {
@@ -233,7 +244,8 @@ public final class ShadowCaster {
             //start a new scan, 1 row deeper, ending at the left side of 
             // current cell
             if (col != start) {
-              scanOctant(viewDistance, seeDistance, fov, blocking, row + 1, x, y, lSlope,
+              scanOctant(viewDistance, seeDistance, fov, blocking, row + 1, 
+                      x, y, lSlope,
                       //change in x over change in y
                       (col - 0.5) / (row + 0.5),
                       mX, mY, mXY);
