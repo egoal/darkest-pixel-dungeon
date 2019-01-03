@@ -47,6 +47,9 @@ import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.books.Book;
+import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
+import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes;
+import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -96,6 +99,7 @@ import com.egoal.darkestpixeldungeon.plants.Blindweed;
 import com.egoal.darkestpixeldungeon.plants.Earthroot;
 import com.egoal.darkestpixeldungeon.plants.Firebloom;
 import com.egoal.darkestpixeldungeon.plants.Sorrowmoss;
+import com.egoal.darkestpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Bundle;
 
 public enum HeroClass {
@@ -190,9 +194,16 @@ public enum HeroClass {
     new Sword().upgrade(1).identify().collect();
     new Sword().identify().collect();
 
-    // rings
     (new PotionBandolier()).identify().collect();
 
+    new Sungrass.Seed().quantity(10).collect();
+    new Blandfruit().quantity(10).collect();
+    new Earthroot.Seed().quantity(10).collect();
+    new Firebloom.Seed().quantity(10).collect();
+    
+    new CallysDiary().collect();
+    new WardenSmithNotes().collect();
+    
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);

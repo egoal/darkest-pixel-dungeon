@@ -20,6 +20,7 @@ public class HeroPerk {
     SHREWD("shrewd", 0x0040),  // 精打细算：商店打折
     POSITIVE("positive", 0x0080),  // 乐观：一定几率抵挡精神伤害
     ASSASSIN("assassin", 0x0100),  // 刺客：偷袭加成
+    ALCHEMIST("alchemist", 0x0200), // 炼金术士：炼药加成
     ;
 
     public String title;

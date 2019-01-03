@@ -57,7 +57,6 @@ public class ExtractionFlask extends Item {
   public static final String AC_REFINE = "refine";
   public static final String AC_STRENGTHEN = "strengthen";
 
-  // private static final int REFINE_MIN_DEW	=	5;
   private static final float TIME_TO_EXTRACT = 2;
 
   private int refinedTimes_ = 0;

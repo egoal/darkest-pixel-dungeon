@@ -24,9 +24,11 @@ import android.graphics.RectF;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
+import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
@@ -76,7 +78,8 @@ public class WndBag extends WndTabbed {
     POTION,
     SCROLL,
     RING,
-    EQUIPMENT
+    EQUIPMENT,
+    ALCHEMY
   }
 
   protected static final int COLS_P = 4 + 1;
@@ -404,6 +407,9 @@ public class WndBag extends WndTabbed {
                           mode == Mode.EQUIPMENT && (item instanceof
                                   EquipableItem) ||
                           mode == Mode.RING && (item instanceof Ring) ||
+                          mode == Mode.ALCHEMY && (item instanceof Plant.Seed || 
+                                  (item instanceof Blandfruit && ((Blandfruit)item).potionAttrib==null) ||
+                                  (Dungeon.hero.subClass==HeroSubClass.WITCH && item instanceof Potion && ((Potion) item).canBeReinforced())) ||
                           mode == Mode.ALL
           );
           //extra logic for cursed weapons or armor

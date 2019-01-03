@@ -39,7 +39,6 @@ import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Bones;
@@ -847,10 +846,10 @@ public class Hero extends Char {
 
   private boolean actCook(HeroAction.Cook action) {
     int dst = action.dst;
-    if(Dungeon.level.adjacent(dst, pos)){
+    if (Dungeon.level.adjacent(dst, pos)) {
       ready();
-      AlchemyPot.operate(this, dst);
-      
+      AlchemyPot.INSTANCE.operate(this, dst);
+
       return false;
     } else if (getCloser(dst)) {
       return true;
