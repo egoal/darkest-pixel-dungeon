@@ -113,6 +113,7 @@ public class Ring extends KindofMisc {
     gem = handler.label(this);
   }
 
+  @Override
   public void activate(Char ch) {
     buff = buff();
     buff.attachTo(ch);

@@ -51,7 +51,7 @@ public class Warlock extends Mob implements Callback {
     maxLvl = 21;
 
     loot = Generator.Category.POTION;
-    lootChance = 0.83f;
+    lootChance = 0.75f;
 
     addResistances(Damage.Element.SHADOW, 1.25f);
     addResistances(Damage.Element.HOLY, .667f);
@@ -60,7 +60,7 @@ public class Warlock extends Mob implements Callback {
   @Override
   public Damage giveDamage(Char target) {
     return new Damage(Random.NormalIntRange(16, 22), this, target).addElement
-            (Damage.Element.SHADOW);
+            (Damage.Element.SHADOW).addFeature(Damage.Feature.RANGED);
   }
 
   @Override

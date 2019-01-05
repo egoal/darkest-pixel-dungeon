@@ -31,7 +31,7 @@ public class SkeletonKnight extends Mob {
     defenseSkill = 0;  // no dodge
 
     EXP = 10;
-    maxLvl = 18;
+    maxLvl = 16;
 
     loot = new Wine();
     lootChance = .1f;

@@ -58,7 +58,7 @@ public class Scorpio extends Mob {
   @Override
   public Damage giveDamage(Char target) {
     return new Damage(Random.NormalIntRange(26, 36), this, target).addElement
-            (Damage.Element.POISON);
+            (Damage.Element.POISON).addFeature(Damage.Feature.RANGED);
   }
 
   @Override

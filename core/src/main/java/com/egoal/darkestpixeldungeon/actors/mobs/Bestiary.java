@@ -94,22 +94,22 @@ public class Bestiary {
 
       case 6:
         chances = new float[]{3, 1, 1, 0.2f};
-        classes = new Class<?>[]{Skeleton.class, Thief.class, Swarm.class, 
+        classes = new Class<?>[]{Skeleton.class, Thief.class, Swarm.class,
                 Shaman.class};
         break;
       case 7:
         chances = new float[]{3, 1, 1, 1, .2f};
-        classes = new Class<?>[]{Skeleton.class, Shaman.class, Thief.class, 
+        classes = new Class<?>[]{Skeleton.class, Shaman.class, Thief.class,
                 Guard.class, MadMan.class};
         break;
       case 8:
         chances = new float[]{3, 2, 2, 1, .5f, 0.02f};
-        classes = new Class<?>[]{Skeleton.class, Shaman.class, Guard.class, 
+        classes = new Class<?>[]{Skeleton.class, Shaman.class, Guard.class,
                 Thief.class, MadMan.class, Bat.class};
         break;
       case 9:
         chances = new float[]{3, 2, 2, 1, 1, 0.02f};
-        classes = new Class<?>[]{Skeleton.class, Guard.class, Shaman.class, 
+        classes = new Class<?>[]{Skeleton.class, Guard.class, Shaman.class,
                 Thief.class, Bat.class, SkeletonKnight.class,};
         break;
 
@@ -127,15 +127,15 @@ public class Bestiary {
                 .class, MadMan.class};
         break;
       case 13:
-        chances = new float[]{1, .5f, .2f, 3, 1, 1, 0.02f, .02f};
+        chances = new float[]{1, .5f, .2f, 3, 1, 1, 0.3f, 0.02f, .02f};
         classes = new Class<?>[]{Bat.class, SkeletonKnight.class, MadMan
-                .class, Brute.class, Shaman.class, Spinner.class, Elemental
-                .class, Monk.class};
+                .class, Brute.class, Shaman.class, Spinner.class,
+                Ballista.class, Elemental.class, Monk.class};
         break;
       case 14:
-        chances = new float[]{1, .5f, 3, 1, 4, 0.02f, 0.01f};
+        chances = new float[]{1, .75f, 3, 4, 1f, 0.02f, 0.01f};
         classes = new Class<?>[]{Bat.class, SkeletonKnight.class, Brute
-                .class, Shaman.class, Spinner.class, Elemental.class, Monk
+                .class, Spinner.class, Ballista.class, Elemental.class, Monk
                 .class};
         break;
 
@@ -150,17 +150,17 @@ public class Bestiary {
         break;
       case 17:
         chances = new float[]{1, 1, 1, .25f};
-        classes = new Class<?>[]{Elemental.class, Monk.class, Warlock.class, 
+        classes = new Class<?>[]{Elemental.class, Monk.class, Warlock.class,
                 MadMan.class};
         break;
       case 18:
         chances = new float[]{1, 2, 1, 1, .25f};
-        classes = new Class<?>[]{Elemental.class, Monk.class, Golem.class, 
+        classes = new Class<?>[]{Elemental.class, Monk.class, Golem.class,
                 Warlock.class, MadMan.class};
         break;
       case 19:
         chances = new float[]{1, 2, 3, 1, 0.02f};
-        classes = new Class<?>[]{Elemental.class, Monk.class, Golem.class, 
+        classes = new Class<?>[]{Elemental.class, Monk.class, Golem.class,
                 Warlock.class, Succubus.class};
         break;
 
@@ -175,7 +175,7 @@ public class Bestiary {
         break;
       case 23:
         chances = new float[]{1, 2, 1, .1f};
-        classes = new Class<?>[]{Succubus.class, Eye.class, Scorpio.class, 
+        classes = new Class<?>[]{Succubus.class, Eye.class, Scorpio.class,
                 MadMan.class};
         break;
       case 24:

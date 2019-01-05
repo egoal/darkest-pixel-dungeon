@@ -60,6 +60,7 @@ import com.egoal.darkestpixeldungeon.items.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
+import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.potions.*;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
@@ -70,6 +71,7 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfHaste;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
@@ -94,6 +96,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.SmokeSparks;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.plants.Blindweed;
 import com.egoal.darkestpixeldungeon.plants.Earthroot;
@@ -201,8 +204,8 @@ public enum HeroClass {
     new Earthroot.Seed().quantity(10).collect();
     new Firebloom.Seed().quantity(10).collect();
     
-    new CallysDiary().collect();
-    new WardenSmithNotes().collect();
+    new HelmetCrusader().collect();
+    new ScrollOfIdentify().quantity(10).collect();
     
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
@@ -287,11 +290,11 @@ public enum HeroClass {
     (hero.belongings.misc1 = cloak).identify();
     hero.belongings.misc1.activate(hero);
 
-    Dart darts = new Dart(8);
-    darts.identify().collect();
+    SmokeSparks ss = new SmokeSparks();
+    ss.quantity(5).identify().collect();
 
     Dungeon.quickslot.setSlot(0, cloak);
-    Dungeon.quickslot.setSlot(1, darts);
+    Dungeon.quickslot.setSlot(1, ss);
 
     hero.heroPerk.add(HeroPerk.Perk.CRITICAL_STRIKE);
     hero.heroPerk.add(HeroPerk.Perk.KEEN);

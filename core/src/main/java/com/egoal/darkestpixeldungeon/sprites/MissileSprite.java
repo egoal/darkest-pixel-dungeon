@@ -29,7 +29,7 @@ import com.watabou.utils.PointF;
 
 public class MissileSprite extends ItemSprite implements Tweener.Listener {
 
-  private static final float SPEED = 240f;
+  private static final float SPEED = 300f;
 
   private Callback callback;
 

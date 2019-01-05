@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
 import com.egoal.darkestpixeldungeon.items.books.textbook
         .HeadlessKnightsLengend;
+import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
@@ -67,6 +68,7 @@ import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.food.Pasty;
+import com.egoal.darkestpixeldungeon.items.helmets.Helmet;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfExperience;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfFrost;
@@ -162,6 +164,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+
 public class Generator {
 
   public static enum Category {
@@ -180,7 +183,8 @@ public class Generator {
     SEED(50, Plant.Seed.class),
     FOOD(0, Food.class),
     GOLD(500, Gold.class),
-    BOOK(0, Book.class);
+    BOOK(0, Book.class),
+    HELMET(5, Helmet.class);
 
     public Class<?>[] classes;
     public float[] probs;
@@ -241,9 +245,9 @@ public class Generator {
             ScrollOfPsionicBlast.class, ScrollOfMirrorImage.class,
             ScrollOfCurse.class, ScrollOfLight.class,
     };
-    Category.SCROLL.probs = new float[]{30, 10, 20, 0, 
-            15, 15, 12, 8, 
-            8, 6, 4, 10, 
+    Category.SCROLL.probs = new float[]{30, 10, 20, 0,
+            15, 15, 12, 8,
+            8, 6, 4, 10,
             4, 6};
 
     Category.POTION.classes = new Class<?>[]{
@@ -405,6 +409,11 @@ public class Generator {
             Starflower.Seed.class};
     Category.SEED.probs = new float[]{12, 12, 12, 12, 12, 12, 12, 0, 2, 12,
             12, 1};
+
+    Category.HELMET.classes = new Class<?>[]{
+            HelmetCrusader.class,
+    };
+    Category.HELMET.probs = new float[]{1f,};
 
     Category.BOOK.classes = new Class<?>[]{
             CallysDiary.class,

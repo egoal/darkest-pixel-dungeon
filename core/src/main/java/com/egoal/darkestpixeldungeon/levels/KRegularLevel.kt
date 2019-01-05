@@ -436,7 +436,8 @@ open abstract class KRegularLevel : Level() {
                 RoundDigger::class.java to .05f,
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
-                PatchDigger::class.java to .075f
+                PatchDigger::class.java to .075f, 
+                GraveyardDigger::class.java to .5f
         )
     }
 }

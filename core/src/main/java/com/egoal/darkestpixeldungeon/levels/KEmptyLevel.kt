@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.actors.mobs.Ballista
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 
 class KEmptyLevel : KRegularLevel() {
@@ -11,7 +12,7 @@ class KEmptyLevel : KRegularLevel() {
         seeDistance = 8
         viewDistance = 8
     }
-    
+
     override fun tilesTex(): String = Assets.TILES_SEWERS
 
     override fun waterTex(): String = Assets.WATER_SEWERS
@@ -22,7 +23,12 @@ class KEmptyLevel : KRegularLevel() {
 
     override fun decorate() {}
 
-    override fun createMobs() {}
+    override fun createMobs() {
+        for (i in 1..8)
+            mobs.add(Ballista().apply {
+                pos = xy2cell(width / 2 + i, height / 2 - 4)
+            })
+    }
 
     override fun createItems() {}
 

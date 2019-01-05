@@ -94,6 +94,7 @@ public class Assets {
   public static final String DEVIL_GHOST = ACTORS + "devil_ghost.png";
   public static final String SKELETON_KNIGHT = ACTORS + "skeleton_knight.png";
   public static final String MADMAN = ACTORS + "madman.png";
+  public static final String BALLISTA = ACTORS + "ballista.png";
 
   // levels=====================================================================
   // tile
@@ -169,6 +170,7 @@ public class Assets {
   public static final String TRACK_FINAL_LOOP = SOUNDS + "track_final_loop.ogg";
   public static final String TRACK_HAPPY_END = SOUNDS + "track_surface.ogg";
 
+  // keep in mind that the sfx should be preloaded
   // ui
   public static final String SND_CLICK = SOUNDS + "snd_click.ogg";
   public static final String SND_BADGE = SOUNDS + "snd_badge.ogg";
@@ -220,6 +222,7 @@ public class Assets {
   public static final String SND_MIMIC = SOUNDS + "snd_mimic.ogg";
   public static final String SND_ASTROLABE = SOUNDS + "snd_astrolabe.ogg";
   public static final String SND_CRITICAL = SOUNDS + "snd_critical.ogg";
+  public static final String SND_RELOAD = SOUNDS + "snd_reload.mp3";
 
   // spd legacy=================================================================
   public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";

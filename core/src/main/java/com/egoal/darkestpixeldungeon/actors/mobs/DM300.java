@@ -182,7 +182,7 @@ public class DM300 extends Mob {
   @Override
   public Damage attackProc(Damage dmg) {
     // chance to knock back
-    if (dmg.to instanceof Char && Random.Float() < .25f) {
+    if (dmg.to instanceof Char && Random.Float() < .3f) {
       Char tgt = (Char) dmg.to;
       int opposite = tgt.pos + (tgt.pos - pos);
       Ballistica shot = new Ballistica(tgt.pos, opposite, Ballistica

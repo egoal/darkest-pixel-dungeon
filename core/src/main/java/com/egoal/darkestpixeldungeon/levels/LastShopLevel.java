@@ -43,6 +43,11 @@ public class LastShopLevel extends RegularLevel {
   }
 
   @Override
+  public String trackMusic() {
+    return Assets.TRACK_CHAPTER_5;
+  }
+
+  @Override
   public String tilesTex() {
     return Assets.TILES_CITY;
   }
@@ -57,7 +62,7 @@ public class LastShopLevel extends RegularLevel {
     // chasm 
     feeling = Feeling.CHASM;
     Arrays.fill(map, Terrain.CHASM);
-    
+
     viewDistance = 4;
 
     initRooms();

@@ -49,7 +49,7 @@ object AlchemyPot {
 
     const val MAX_INPUTS = 3
 
-    //todo: refactor this, perhaps in version 0.4+
+    //todo: refactor all this, perhaps in version 0.4+
     // succeed? : result
     fun verifyRefinement(items: List<Item>): Pair<Boolean, Item?> {
         return when (items.size) {
@@ -81,7 +81,7 @@ object AlchemyPot {
         if (!result.collect())
             Dungeon.level.drop(result, Dungeon.hero.pos)
 
-        if (result is Potion && Dungeon.hero.heroClass == HeroClass.SORCERESS) {
+        if (result is Potion && !result.reinforced && Dungeon.hero.heroClass == HeroClass.SORCERESS) {
             // sorceress perk: affect weapon
             val wep = Dungeon.hero.belongings.weapon as Weapon?
             if (wep != null) {

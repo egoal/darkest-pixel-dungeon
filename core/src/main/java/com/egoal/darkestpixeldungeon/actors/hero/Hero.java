@@ -38,6 +38,7 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
+import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -229,6 +230,9 @@ public class Hero extends Char {
     if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
       vd += 1;
 
+    if (buff(HelmetCrusader.Protect.class) != null)
+      vd -= 1;
+
     return GameMath.clamp(vd, 1, 9);
   }
 
@@ -238,6 +242,9 @@ public class Hero extends Char {
 
     if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
       sd += 1;
+
+    if (buff(HelmetCrusader.Protect.class) != null)
+      sd -= 1;
 
     return GameMath.clamp(sd, 1, 9);
   }
@@ -483,6 +490,11 @@ public class Hero extends Char {
       if (belongings.weapon != null)
         dmg = belongings.weapon.defendDamage(dmg);
 
+      if (dmg.isFeatured(Damage.Feature.RANGED) &&
+              buff(HelmetCrusader.Protect.class) != null && Random.Float() < 
+              0.15f)
+        dmg.value = 0;
+
       int dr = 0;
       if (belongings.armor != null) {
         dr = Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor
@@ -602,7 +614,7 @@ public class Hero extends Char {
   }
 
   public boolean canSurpriseAttack() {
-    if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))
+    if (!(belongings.weapon instanceof Weapon))
       return true;
 
     if (STR() < ((Weapon) belongings.weapon).STRReq())
