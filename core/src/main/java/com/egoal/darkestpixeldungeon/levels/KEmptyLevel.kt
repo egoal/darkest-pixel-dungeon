@@ -1,7 +1,9 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Ballista
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 
 class KEmptyLevel : KRegularLevel() {
@@ -23,14 +25,18 @@ class KEmptyLevel : KRegularLevel() {
 
     override fun decorate() {}
 
-    override fun createMobs() {
-        for (i in 1..8)
-            mobs.add(Ballista().apply {
-                pos = xy2cell(width / 2 + i, height / 2 - 4)
-            })
-    }
+    override fun createMobs() {}
 
-    override fun createItems() {}
+    override fun respawner(): Actor? = null
+
+    override fun createItems() {
+        for(i in 1..20) drop(KGenerator.ARTIFACE.generate(), xy2cell(5, 5+i))
+        for(i in 1..20) drop(KGenerator.WEAPON.generate(), xy2cell(6, 5+i))
+        for(i in 1..20) drop(KGenerator.ARMOR.generate(), xy2cell(7, 5+i))
+        for(i in 1..20) drop(KGenerator.WAND.generate(), xy2cell(8, 5+i))
+        for(i in 1..20) drop(KGenerator.RING.generate(), xy2cell(9, 5+i))
+        
+    }
 
     override fun build(iteration: Int): Boolean {
         Digger.Fill(this, 1, 1, width - 2, height - 2, Terrain.EMPTY)

@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*;
 import com.egoal.darkestpixeldungeon.items.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.*;
 import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
@@ -530,6 +531,7 @@ public class Dungeon {
       Statistics.storeInBundle(bundle);
       Journal.storeInBundle(bundle);
       Generator.storeInBundle(bundle);
+      KGenerator.ARTIFACE.INSTANCE.storeInBundle(bundle);
 
       Scroll.save(bundle);
       Potion.save(bundle);
@@ -665,6 +667,7 @@ public class Dungeon {
     Statistics.restoreFromBundle(bundle);
     Journal.restoreFromBundle(bundle);
     Generator.restoreFromBundle(bundle);
+    KGenerator.ARTIFACE.INSTANCE.restoreFromBundle(bundle);
 
     droppedItems = new SparseArray<ArrayList<Item>>();
     for (int i = 2; i <= Statistics.deepestFloor + 1; i++) {

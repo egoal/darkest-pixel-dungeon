@@ -38,6 +38,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.CrystalsSwords;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Whip;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin;
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.SmokeSparks;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Tamahawk;
 import com.egoal.darkestpixeldungeon.plants.Fadeleaf;
 import com.egoal.darkestpixeldungeon.plants.Plant;
@@ -163,6 +164,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+
+import kotlin.UnsafeVariance;
 
 
 public class Generator {
@@ -296,8 +299,9 @@ public class Generator {
             Boomerang.class,
             Dart.class,
             BattleGloves.class,
+            SmokeSparks.class
     };
-    Category.WEP_T1.probs = new float[]{0, 1, 1, 0, 0, 0.5f, 1};
+    Category.WEP_T1.probs = new float[]{0, 1, 1, 0, 0, 0.5f, 1, 0.5f};
 
     Category.WEP_T2.classes = new Class<?>[]{
             NewShortsword.class,
@@ -305,9 +309,10 @@ public class Generator {
             Spear.class,
             Quarterstaff.class,
             Dirk.class,
-            IncendiaryDart.class
+            IncendiaryDart.class, 
+            SmokeSparks.class
     };
-    Category.WEP_T2.probs = new float[]{6, 5, 5, 4, 4, 6};
+    Category.WEP_T2.probs = new float[]{6, 5, 5, 4, 4, 6, 5};
 
     Category.WEP_T3.classes = new Class<?>[]{
             Sword.class,
@@ -319,8 +324,9 @@ public class Generator {
             Shuriken.class,
             CurareDart.class,
             CrystalsSwords.class,
+            SmokeSparks.class
     };
-    Category.WEP_T3.probs = new float[]{6, 5, 5, 4, 4, 4, 6, 6, 4};
+    Category.WEP_T3.probs = new float[]{6, 5, 5, 4, 4, 4, 6, 6, 4, 5};
 
     Category.WEP_T4.classes = new Class<?>[]{
             Longsword.class,
@@ -425,6 +431,27 @@ public class Generator {
   public static void reset() {
     for (Category cat : Category.values()) {
       categoryProbs.put(cat, cat.prob);
+    }
+  }
+
+  //todo: rework this
+  // actually, the only states need to track is the artifacts
+  private static ArrayList<String> lastSpawnedArtifacts = new ArrayList<>();
+
+  public static void push() {
+    lastSpawnedArtifacts = (ArrayList<String>) spawnedArtifacts.clone();
+  }
+
+  public static void pop() {
+    initArtifacts();
+
+    spawnedArtifacts = (ArrayList<String>) lastSpawnedArtifacts.clone();
+
+    Category cat = Category.ARTIFACT;
+    for (int i = 0; i < cat.classes.length; ++i) {
+      for (String s : spawnedArtifacts)
+        if (cat.classes[i].getSimpleName().equals(s))
+          cat.probs[i] = 0f;
     }
   }
 

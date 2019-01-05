@@ -81,7 +81,7 @@ public class Scorpio extends Mob {
 
   @Override
   public Damage attackProc(Damage dmg) {
-    if (Random.Int(2) == 0)
+    if (Random.Int(3) == 0)
       Buff.prolong((Char) dmg.to, Cripple.class, Cripple.DURATION);
 
     return dmg;

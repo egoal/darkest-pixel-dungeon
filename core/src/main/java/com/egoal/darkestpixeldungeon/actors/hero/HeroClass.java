@@ -207,6 +207,8 @@ public enum HeroClass {
     new HelmetCrusader().collect();
     new ScrollOfIdentify().quantity(10).collect();
     
+    (new TomeOfMastery()).collect();
+    
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);
@@ -332,15 +334,15 @@ public enum HeroClass {
 
     (hero.belongings.weapon = new SorceressWand()).identify();
 
-    ExtractionFlask flask = new ExtractionFlask();
-    flask.identify().collect();
+//    ExtractionFlask flask = new ExtractionFlask();
+//    flask.identify().collect();
 
     // ranged weapon
     Dart darts = new Dart(6);
     darts.identify().collect();
 
-    Dungeon.quickslot.setSlot(0, flask);
-    Dungeon.quickslot.setSlot(1, darts);
+//    Dungeon.quickslot.setSlot(0, flask);
+    Dungeon.quickslot.setSlot(0, darts);
 
     new PotionOfToxicGas().identify().collect();
 

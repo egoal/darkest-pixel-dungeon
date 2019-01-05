@@ -302,6 +302,8 @@ public abstract class Level implements Bundlable {
     pitRoomNeeded = Dungeon.depth > 1 && weakFloorCreated;
     weakFloorCreated = false;
 
+    Generator.push(); // push generator states
+    
     for (int i = 0; ; ++i) {
       itemsToSpawn = (ArrayList<Item>) stationaryItems.clone();
       // no chasm feeling
@@ -318,6 +320,8 @@ public abstract class Level implements Bundlable {
         Log.d("dpd", String.format("level build okay after %d trails.", i));
         break;
       }
+      
+      Generator.pop(); // failed, pop states...
     }
 
     decorate();

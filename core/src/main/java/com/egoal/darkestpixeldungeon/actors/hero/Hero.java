@@ -442,7 +442,7 @@ public class Hero extends Char {
     }
 
     if (heroClass == HeroClass.SORCERESS)
-      evasion *= 0.75;
+      evasion *= 0.8;
 
     // pressure
     Pressure p = buff(Pressure.class);
