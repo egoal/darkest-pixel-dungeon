@@ -350,26 +350,6 @@ public class VillageLevel extends RegularLevel {
       mobs.add(m);
     }
 
-
-    // test 
-    if (DarkestPixelDungeon.debug()) {
-      PotionSeller ps = new PotionSeller();
-      ps.initSellItems();
-      do {
-        ps.pos = pointToCell(roomExit.random());
-      } while (findMob(ps.pos) != null);
-      mobs.add(ps);
-
-      ScrollSeller ss = new ScrollSeller();
-      ss.initSellItems();
-      do {
-        ss.pos = pointToCell(roomExit.random());
-      } while (findMob(ss.pos) != null);
-      mobs.add(ss);
-
-      drop(Generator.random(Generator.Category.BOOK), entrance);
-    }
-
     super.createMobs();
   }
 
@@ -384,14 +364,4 @@ public class VillageLevel extends RegularLevel {
     // does not generate anything
   }
 
-  @Override
-  public void storeInBundle(Bundle bundle) {
-    super.storeInBundle(bundle);
-
-  }
-
-  @Override
-  public void restoreFromBundle(Bundle bundle) {
-    super.restoreFromBundle(bundle);
-  }
 }

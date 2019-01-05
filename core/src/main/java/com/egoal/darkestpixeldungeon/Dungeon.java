@@ -202,7 +202,7 @@ public class Dungeon {
     Level level;
     switch (depth) {
       case 0:
-        level = new VillageLevel();
+        level = new KVillageLevel();
         break;
       case 1:
       case 2:
