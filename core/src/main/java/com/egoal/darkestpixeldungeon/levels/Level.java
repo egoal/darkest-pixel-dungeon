@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Halo;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.egoal.darkestpixeldungeon.items.food.Food;
@@ -108,7 +109,7 @@ public abstract class Level implements Bundlable {
   protected int height;
   protected int length;
 
-  protected static final float TIME_TO_RESPAWN = 40;
+  protected static final float TIME_TO_RESPAWN = 45;
   protected static final float TIME_TO_RESPAWN_DARK = 30;
 
   public int version;
@@ -303,7 +304,9 @@ public abstract class Level implements Bundlable {
     weakFloorCreated = false;
 
     Generator.push(); // push generator states
-    
+    KGenerator.ARTIFACT.INSTANCE.push(); // artifacts probabilities can be 
+    // modified in building
+
     for (int i = 0; ; ++i) {
       itemsToSpawn = (ArrayList<Item>) stationaryItems.clone();
       // no chasm feeling
@@ -320,8 +323,9 @@ public abstract class Level implements Bundlable {
         Log.d("dpd", String.format("level build okay after %d trails.", i));
         break;
       }
-      
+
       Generator.pop(); // failed, pop states...
+      KGenerator.ARTIFACT.INSTANCE.pop();
     }
 
     decorate();
@@ -602,6 +606,11 @@ public abstract class Level implements Bundlable {
     return null;
   }
 
+  protected float respawnTime() {
+    return Dungeon.level.feeling == Feeling.DARK || Statistics.amuletObtained ? 
+            TIME_TO_RESPAWN_DARK : TIME_TO_RESPAWN;
+  }
+
   public Actor respawner() {
     return new Actor() {
 
@@ -624,8 +633,7 @@ public abstract class Level implements Bundlable {
             }
           }
         }
-        spend(Dungeon.level.feeling == Feeling.DARK || Statistics
-                .amuletObtained ? TIME_TO_RESPAWN_DARK : TIME_TO_RESPAWN);
+        spend(respawnTime());
         return true;
       }
     };
@@ -1100,7 +1108,8 @@ public abstract class Level implements Bundlable {
     if (sighted) {
 //      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance(), c
 //              .seeDistance());
-      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(), c.seeDistance());
+      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance
+              (), c.seeDistance());
     } else {
       BArray.setFalse(fieldOfView);
     }

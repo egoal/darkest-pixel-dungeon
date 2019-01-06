@@ -49,7 +49,7 @@ public class UrnOfShadow extends Artifact {
   }
 
   private static final int MAX_VOLUME = 10;
-  private static final float COLLECT_RANGE = 4;
+  private static final float COLLECT_RANGE = 6;
   private int volume = 0;
 
   private static final String AC_CONSUME = "CONSUME";

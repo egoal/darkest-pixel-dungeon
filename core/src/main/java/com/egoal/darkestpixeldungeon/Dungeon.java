@@ -531,7 +531,7 @@ public class Dungeon {
       Statistics.storeInBundle(bundle);
       Journal.storeInBundle(bundle);
       Generator.storeInBundle(bundle);
-      KGenerator.ARTIFACE.INSTANCE.storeInBundle(bundle);
+      KGenerator.INSTANCE.storeInBundle(bundle);
 
       Scroll.save(bundle);
       Potion.save(bundle);
@@ -667,8 +667,8 @@ public class Dungeon {
     Statistics.restoreFromBundle(bundle);
     Journal.restoreFromBundle(bundle);
     Generator.restoreFromBundle(bundle);
-    KGenerator.ARTIFACE.INSTANCE.restoreFromBundle(bundle);
-
+    KGenerator.INSTANCE.restoreFromBundle(bundle);
+    
     droppedItems = new SparseArray<ArrayList<Item>>();
     for (int i = 2; i <= Statistics.deepestFloor + 1; i++) {
       ArrayList<Item> dropped = new ArrayList<Item>();

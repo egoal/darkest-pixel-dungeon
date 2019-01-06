@@ -142,7 +142,7 @@ public class Guard extends Mob {
 
   @Override
   public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 8);
+    dmg.value -= Random.NormalIntRange(0, 6);
     return dmg;
   }
 

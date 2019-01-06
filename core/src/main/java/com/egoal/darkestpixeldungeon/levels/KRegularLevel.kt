@@ -74,7 +74,7 @@ open abstract class KRegularLevel : Level() {
 
     private var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
-        val diggers = selectDiggers(Random.NormalIntRange(1, 4), 15)
+        val diggers = selectDiggers(Random.NormalIntRange(2, 4), 15)
         if (Dungeon.shopOnLevel())
             diggers.add(ShopDigger())
 
@@ -161,8 +161,8 @@ open abstract class KRegularLevel : Level() {
 
     override fun nMobs(): Int = when (Dungeon.depth) {
         0, 1 -> 0
-        in 2..4 -> 3 + Dungeon.depth % 5 + Random.Int(5)
-        else -> 3 + Dungeon.depth % 5 + Random.Int(8)
+        in 2..4 -> 2 + Dungeon.depth % 5 + Random.Int(5)
+        else -> 3 + Dungeon.depth % 5 + Random.Int(6)
     }
 
     protected fun createSellers() {
@@ -437,7 +437,7 @@ open abstract class KRegularLevel : Level() {
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
                 PatchDigger::class.java to .075f, 
-                GraveyardDigger::class.java to .5f
+                GraveyardDigger::class.java to .05f
         )
     }
 }

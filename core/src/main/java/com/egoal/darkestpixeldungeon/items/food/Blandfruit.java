@@ -48,10 +48,6 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
 public class Blandfruit extends Food {
-  {
-    energy = Hunger.STARVING / 2;
-  }
-
   public Potion potionAttrib = null;
   public ItemSprite.Glowing potionGlow = null;
 
@@ -60,7 +56,7 @@ public class Blandfruit extends Food {
     image = ItemSpriteSheet.BLANDFRUIT;
 
     //only applies when blandfruit is cooked
-    energy = Hunger.STARVING;
+    energy = Hunger.STARVING / 2;
     hornValue = 6;
 
     bones = true;

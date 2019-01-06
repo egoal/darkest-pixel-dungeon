@@ -31,8 +31,10 @@ class GraveyardDigger : Digger() {
         val tryPlaceATomb = { item: Item ->
             for (i in 1..30) {
                 val cell = level.pointToCell(rect.random(1))
-                if (level.map[cell] == Terrain.GRASS && level.heaps.get(cell) == null)
+                if (level.map[cell] == Terrain.GRASS && level.heaps.get(cell) == null) {
                     level.drop(item, cell).type = Heap.Type.TOMB
+                    break
+                }
             }
         }
 

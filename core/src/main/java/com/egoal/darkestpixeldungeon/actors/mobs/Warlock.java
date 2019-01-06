@@ -102,9 +102,8 @@ public class Warlock extends Mob implements Callback {
   private void zap() {
     spend(TIME_TO_ZAP);
 
-    Damage dmg = new Damage(Random.Int(12, 18),
-            this, enemy).type(Damage.Type.MAGICAL).addElement(Damage.Element
-            .SHADOW);
+    Damage dmg = new Damage(Random.Int(12, 18), this, enemy).
+            type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
 
     if (enemy.checkHit(dmg)) {
       if (enemy == Dungeon.hero && Random.Int(2) == 0) {

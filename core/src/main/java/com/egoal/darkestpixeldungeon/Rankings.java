@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Tengu;
 import com.egoal.darkestpixeldungeon.actors.mobs.Goo;
 import com.egoal.darkestpixeldungeon.actors.mobs.King;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
@@ -182,6 +183,7 @@ public enum Rankings {
     Dungeon.hero = null;
     Dungeon.level = null;
     Generator.reset();
+    KGenerator.INSTANCE.reset();
     Dungeon.quickslot.reset();
     QuickSlotButton.reset();
 

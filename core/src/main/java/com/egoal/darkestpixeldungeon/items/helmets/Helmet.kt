@@ -40,4 +40,8 @@ open class Helmet : KindofMisc() {
     protected open fun buff(): HelmetBuff = HelmetBuff()
 
     open class HelmetBuff : Buff()
+
+    override fun isUpgradable(): Boolean = false
+    
+    override fun price(): Int = if(cursedKnown && cursed) 20 else 40
 }

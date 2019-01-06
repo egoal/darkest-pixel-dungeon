@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.GameLog;
@@ -121,9 +122,8 @@ public class InterlevelScene extends PixelScene {
               break;
           }
 
-          if ((Dungeon.depth % 5) == 0) {
+          if (Dungeon.bossLevel())
             Sample.INSTANCE.load(Assets.SND_BOSS);
-          }
 
         } catch (Exception e) {
 
@@ -183,9 +183,9 @@ public class InterlevelScene extends PixelScene {
             throw new RuntimeException("fatal error occured while moving " +
                     "between floors", error);
 
-          if(InterlevelScene.mode==Mode.REFLUX)
+          if (InterlevelScene.mode == Mode.REFLUX)
             errorMsg = "no backup file found, return.";
-          
+
           add(new WndError(errorMsg) {
             public void onBackPressed() {
               super.onBackPressed();

@@ -214,7 +214,7 @@ object KGenerator {
     ))
 
     // artifact is uniquely dropping
-    object ARTIFACE : ClassMapGenerator<Artifact>(hashMapOf(
+    val INITIAL_ARTIFACT_PROBS = hashMapOf(
             CapeOfThorns::class.java to 1f,
             ChaliceOfBlood::class.java to 0f,  // removed from drop, by statuary
             CloakOfShadows::class.java to 1f,
@@ -231,8 +231,14 @@ object KGenerator {
             RiemannianManifoldShield::class.java to 1f,
             GoldPlatedStatue::class.java to 1f,
             HandOfTheElder::class.java to 0f // by undead
-    )), Bundlable {
+    )
+
+    object ARTIFACT : ClassMapGenerator<Artifact>(HashMap()), Bundlable {
         private val spawned = ArrayList<String>()
+
+        init {
+            updateProbabilities()
+        }
 
         override fun generate(): Item {
             // run out of artifacts, give a ring
@@ -243,20 +249,38 @@ object KGenerator {
             spawned.add(cls.simpleName)
             return cls.newInstance().random()
         }
-        
+
+        private val lastProbMap = HashMap<Class<out Artifact>, Float>()
+        fun push() {
+            probMap.toMap(lastProbMap)
+        }
+
+        fun pop() {
+            lastProbMap.toMap(probMap)
+        }
+
+        fun reset() {
+            spawned.clear()
+            updateProbabilities()
+        }
+
+        private fun updateProbabilities() {
+            probMap.clear()
+            for (pr in INITIAL_ARTIFACT_PROBS)
+                probMap[pr.key] = if (spawned.contains(pr.key.simpleName)) 0f else pr.value
+        }
+
         // save the probs
         private const val SPAWNED_ARTIFACTS = "spawned-artifacts"
 
         override fun restoreFromBundle(bundle: Bundle) {
             if (Ghost.Quest.completed())
                 probMap[DriedRose::class.java] = 1f
-            
+
             if (bundle.contains(SPAWNED_ARTIFACTS)) {
                 spawned.addAll(bundle.getStringArray(SPAWNED_ARTIFACTS))
 
-                for (pr in probMap)
-                    if (spawned.contains(pr.key.simpleName))
-                        probMap[pr.key] = 0f
+                updateProbabilities()
             }
         }
 
@@ -282,7 +306,7 @@ object KGenerator {
             SCROLL to 400f,
             WAND to 40f,
             RING to 15f,
-            ARTIFACE to 15f,
+            ARTIFACT to 15f,
             SEED to 50f,
             FOOD to 0f,
             GOLD to 500f,
@@ -291,6 +315,18 @@ object KGenerator {
     )
 
     fun generate(): Item = Random.chances(categoryMap).generate()
+
+    fun reset() {
+        ARTIFACT.reset()
+    }
+
+    fun restoreFromBundle(bundle: Bundle) {
+        ARTIFACT.restoreFromBundle(bundle)
+    }
+
+    fun storeInBundle(bundle: Bundle) {
+        ARTIFACT.storeInBundle(bundle)
+    }
 }
 
 

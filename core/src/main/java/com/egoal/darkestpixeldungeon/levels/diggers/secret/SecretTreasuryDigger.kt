@@ -35,7 +35,7 @@ class SecretTreasuryDigger : RectDigger() {
 
         for (i in 1..golds) {
             var pos = level.pointToCell(rect.random())
-            while (level.heaps.get(pos) != null)
+            while (level.heaps.get(pos) != null || level.map[pos] != Terrain.EMPTY)
                 pos = level.pointToCell(rect.random())
 
             val gold = Gold().random()

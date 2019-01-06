@@ -38,13 +38,21 @@ open class RectDigger : Digger() {
 
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         Fill(level, rect, Terrain.EMPTY)
-        
-        if(Random.Int(8)==0)
+
+        var walls = Wall.ArroundBut(rect, wall.direction.opposite)
+
+        if (Random.Int(8) == 0)
             Fill(level, overlappedWall(wall, rect), Terrain.EMPTY)
-        else
+        else {
             Set(level, overlappedWall(wall, rect).random(), Terrain.DOOR)
-        
-        return DigResult(rect, Wall.ArroundBut(rect, wall.direction.opposite)) 
+
+            // add remain wall is longer enough
+            val remainWall = unoverlappedWall(wall, rect)
+            if (remainWall.width >= 3)
+                walls = walls.plus(remainWall)
+        }
+
+        return DigResult(rect, walls)
     }
 
     protected fun overlappedWall(wall: Wall, rect: Rect) =
@@ -52,5 +60,19 @@ open class RectDigger : Digger() {
                 Rect(wall.x1, wall.x2, Math.max(wall.y1, rect.y1), Math.min(wall.y2, rect.y2))
             else
                 Rect(Math.max(wall.x1, rect.x1), Math.min(wall.x2, rect.x2), wall.y1, wall.y2)
+
+    // only return the longer one
+    protected fun unoverlappedWall(wall: Wall, rect: Rect): Wall = when {
+        wall.direction.horizontal -> {
+            val rleft = Wall(wall.x1, rect.x1 - 1, wall.y1, wall.y2, wall.direction)
+            val rright = Wall(rect.x2 + 1, wall.x2, wall.y1, wall.y2, wall.direction)
+            if (rleft.width > rright.width) rleft else rright
+        }
+        else -> {
+            val rlow = Wall(wall.x1, wall.x2, wall.y1, rect.y1 - 1, wall.direction)
+            val rhigh = Wall(wall.x1, wall.x2, rect.y2 + 1, wall.y2, wall.direction)
+            if (rlow.height > rhigh.height) rlow else rhigh
+        }
+    }
 
 }

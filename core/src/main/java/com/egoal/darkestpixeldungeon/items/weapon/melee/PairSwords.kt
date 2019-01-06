@@ -94,9 +94,11 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
                 doUnequip(hero, false)
             detach(hero.belongings.backpack)
 
-            GLog.i(Messages.get(this, "splited"));
+            GLog.i(Messages.get(this, "splited"))
         }
     }
+
+    override fun price(): Int = left.price() + right.price()
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

@@ -32,7 +32,7 @@ class KVillageLevel : KRegularLevel() {
         for (i in 0 until length) {
             when (map[i]) {
                 Terrain.EMBERS -> map[i] = Terrain.WATER // water flag
-                Terrain.LOCKED_DOOR -> map[i] = Terrain.EMPTY // npc pos flag
+                // Terrain.LOCKED_DOOR -> map[i] = Terrain.EMPTY // npc pos flag
             }
         }
 
