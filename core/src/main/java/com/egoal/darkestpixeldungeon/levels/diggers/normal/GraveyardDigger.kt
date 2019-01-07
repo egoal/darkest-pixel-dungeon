@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.diggers.Rect
 import com.egoal.darkestpixeldungeon.levels.diggers.Wall
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
 class GraveyardDigger : Digger() {
@@ -31,7 +32,7 @@ class GraveyardDigger : Digger() {
         val tryPlaceATomb = { item: Item ->
             for (i in 1..30) {
                 val cell = level.pointToCell(rect.random(1))
-                if (level.map[cell] == Terrain.GRASS && level.heaps.get(cell) == null) {
+                if (level.map[cell] == Terrain.GRASS && PathFinder.NEIGHBOURS9.all { level.heaps.get(cell + it) == null }) {
                     level.drop(item, cell).type = Heap.Type.TOMB
                     break
                 }

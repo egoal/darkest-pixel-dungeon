@@ -296,10 +296,7 @@ public abstract class Mob extends Char {
   }
 
   protected boolean getCloser(int target) {
-
-    if (rooted || target == pos) {
-      return false;
-    }
+    if (rooted || target == pos) return false;
 
     int step = -1;
 
@@ -307,54 +304,43 @@ public abstract class Mob extends Char {
 
       path = null;
 
-      if (Actor.findChar(target) == null && Level.passable[target]) {
+      if (Actor.findChar(target) == null && Level.passable[target])
         step = target;
-      }
 
     } else {
 
       boolean newPath = false;
-      if (path == null || path.isEmpty() || !Dungeon.level.adjacent(pos, path
-              .getFirst()))
+      if (path == null || path.isEmpty() ||
+              !Dungeon.level.adjacent(pos, path.getFirst()) ||
+              path.size() > 2 * Dungeon.level.distance(pos, target))
         newPath = true;
       else if (path.getLast() != target) {
         //if the new target is adjacent to the end of the path, adjust for that
         //rather than scrapping the whole path. Unless the path is very long,
         //in which case re-checking will likely result in a much better path
-        if (Dungeon.level.adjacent(target, path.getLast()) &&
-                path.size() < Dungeon.level.distance(pos, target)) {
+        if (Dungeon.level.adjacent(target, path.getLast())) {
           int last = path.removeLast();
 
           if (path.isEmpty()) {
-
-            //shorten for a closer one
-            if (Dungeon.level.adjacent(target, pos)) {
+            if (Dungeon.level.adjacent(target, pos))
               path.add(target);
-              //extend the path for a further target
-            } else {
+            else {
               path.add(last);
               path.add(target);
             }
-
-          } else if (!path.isEmpty()) {
-            //if the new target is simply 1 earlier in the path shorten the path
+          } else {
             if (path.getLast() == target) {
-
-              //if the new target is closer/same, need to modify end of path
-            } else if (Dungeon.level.adjacent(target, path.getLast())) {
+            } else if (Dungeon.level.adjacent(target, path.getLast()))
               path.add(target);
-
-              //if the new target is further away, need to extend the path
-            } else {
+            else {
               path.add(last);
               path.add(target);
             }
-          }
 
+          }
         } else {
           newPath = true;
         }
-
       }
 
 
@@ -368,19 +354,16 @@ public abstract class Mob extends Char {
             newPath = true;
             break;
           }
-
         }
       }
 
-      if (newPath) {
-        path = Dungeon.findPath(this, pos, target,
-                Level.passable,
+      if (newPath) 
+        path = Dungeon.findPath(this, pos, target, Level.passable, 
                 Level.fieldOfView);
-      }
 
       // if the path is too long, don't go there
       if (path == null || (state == HUNTING && path.size() >
-              Math.max(10, 2 * Dungeon.level.distance(pos, target))))
+              Math.max(9, 2 * Dungeon.level.distance(pos, target))))
         return false;
 
       step = path.removeFirst();
@@ -394,9 +377,7 @@ public abstract class Mob extends Char {
   }
 
   protected boolean getFurther(int target) {
-    int step = Dungeon.flee(this, pos, target,
-            Level.passable,
-            Level.fieldOfView);
+    int step = Dungeon.flee(this, pos, target, Level.passable, Level.fieldOfView);
     if (step != -1) {
       move(step);
       return true;

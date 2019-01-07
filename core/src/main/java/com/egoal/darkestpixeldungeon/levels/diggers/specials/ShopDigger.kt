@@ -31,10 +31,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.Longsword
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Mace
 import com.egoal.darkestpixeldungeon.items.weapon.melee.NewShortsword
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.CurareDart
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.IncendiaryDart
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Shuriken
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.levels.LastShopLevel
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -135,6 +132,9 @@ class ShopDigger : RectDigger() {
             }
         }
 
+        if (Random.Float() < (Dungeon.depth / 5) * 0.2f)
+            itemsToSpawn.add(SmokeSparks().quantity(Random.NormalIntRange(1, 4)))
+
         val bag = ChooseBag(Dungeon.hero.belongings)
         if (bag != null)
             itemsToSpawn.add(bag)
@@ -157,11 +157,11 @@ class ShopDigger : RectDigger() {
             0 -> Generator.random(Generator.Category.WAND)
             1 -> Generator.random(Generator.Category.RING).upgrade(1)
             else -> Stylus()
-        }.apply { 
+        }.apply {
             cursedKnown = false
             cursed = cursedKnown
         }
-        
+
         itemsToSpawn.add(rare)
 
         val hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass::class.java)

@@ -13,7 +13,8 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 
-class SmokeSparks : MissileWeapon() {
+class 
+SmokeSparks : MissileWeapon() {
     init {
         image = ItemSpriteSheet.SMOKE_SPARKS
     }

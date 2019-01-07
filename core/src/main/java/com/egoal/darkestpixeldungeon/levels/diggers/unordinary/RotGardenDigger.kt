@@ -55,7 +55,7 @@ class RotGardenDigger : RectDigger() {
 
     private fun isValidPlantPos(level: Level, pos: Int): Boolean {
         return level.map[pos] == Terrain.GRASS &&
-                PathFinder.NEIGHBOURS8.all { level.findMob(pos + it) == null }
+                PathFinder.NEIGHBOURS9.all { level.findMob(pos + it) == null }
     }
 
     private fun placePlant(level: Level, pos: Int, plant: Mob) {

@@ -70,7 +70,7 @@ public class HighGrass {
         if (naturalismLevel >= 0) {
           // Seed, scales from 1/16 to 1/4
           // in the village level, more unlikely to drop seed
-          int chance = Dungeon.depth == 0 ? 30 : (15 - naturalismLevel * 3);
+          int chance = Dungeon.depth == 0 ? 30 : (18 - naturalismLevel * 3);
           if (Random.Int(chance) == 0) {
             Level.set(pos, Terrain.GRASS);
             
@@ -84,33 +84,14 @@ public class HighGrass {
               }
             } else
               level.drop(seed, pos).sprite.drop();
-
-            // if seed dropped, remove the high grass
+              // if seed dropped, remove the high grass
           }
 
-          // Dew, scales from 1/6 to 1/3
-          // now it's 1/5->1/3, and can drop more than one!
-          if (Random.Int(10 - naturalismLevel) < 2) {
-//            int q;
-//            switch (Random.Int(10)) {
-//              case 0:
-//              case 1:
-//              case 2:
-//                q = 2;
-//                break;
-//              case 3:
-//                q = 3;
-//                break;
-//              default:
-//                q = 1;
-//            }
-//
-//            level.drop(new Dewdrop().quantity(q), pos);
+          // dew, scales from 1/5 to 1/3, and can drop more than one!
+          if (Random.Int(12 - naturalismLevel) < 2) 
             level.drop(new Dewdrop(), pos);
-          }
         }
       }
-
       
       GameScene.updateMap(pos);
     }

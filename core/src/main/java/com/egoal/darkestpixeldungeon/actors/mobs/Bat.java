@@ -87,7 +87,7 @@ public class Bat extends Mob {
   @Override
   public void die(Object cause) {
     //sets drop chance
-    lootChance = 1f / ((6 + Dungeon.limitedDrops.batHP.count));
+    lootChance = 1f / (8 + Dungeon.limitedDrops.batHP.count);
     super.die(cause);
   }
 

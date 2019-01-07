@@ -161,7 +161,7 @@ public class Guard extends Mob {
       // potions dropped))
       //with 0 potions dropped that simplifies to 1/8
     } else {
-      if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 7) {
+      if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 6) {
         Dungeon.limitedDrops.guardHP.drop();
         return new PotionOfHealing();
       }

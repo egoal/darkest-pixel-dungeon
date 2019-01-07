@@ -402,7 +402,7 @@ open abstract class KRegularLevel : Level() {
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
                 ArmoryDigger::class.java to 1f,
                 GardenDigger::class.java to 1f,
-                LaboratoryDigger::class.java to 1f,
+                LaboratoryDigger::class.java to 1.25f,
                 LibraryDigger::class.java to 1f,
                 MagicWellDigger::class.java to 1f,
                 PitDigger::class.java to 0f,
@@ -413,8 +413,8 @@ open abstract class KRegularLevel : Level() {
                 StatueDigger::class.java to 1f,
                 StorageDigger::class.java to 1f,
                 TrapsDigger::class.java to 1f,
-                TreasuryDigger::class.java to 1f,
-                VaultDigger::class.java to 1f,
+                TreasuryDigger::class.java to 0.75f,
+                VaultDigger::class.java to 0.75f,
                 WeakFloorDigger::class.java to 0.75f
         )
 
@@ -427,16 +427,16 @@ open abstract class KRegularLevel : Level() {
         )
 
         val NormalDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(
-                BrightDigger::class.java to .1f,
+                BrightDigger::class.java to .075f,
                 CellDigger::class.java to .1f,
-                CircleDigger::class.java to .075f,
+                CircleDigger::class.java to .05f,
                 DiamondDigger::class.java to .05f,
-                LatticeDigger::class.java to .1f,
+                LatticeDigger::class.java to .075f,
                 RectDigger::class.java to 1f,
                 RoundDigger::class.java to .05f,
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
-                PatchDigger::class.java to .075f, 
+                PatchDigger::class.java to .05f, 
                 GraveyardDigger::class.java to .05f
         )
     }

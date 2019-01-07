@@ -25,7 +25,7 @@ class BrightDigger : Digger() {
         val cen = level.pointToCell(rect.center)
         Set(level, cen, Terrain.WALL_LIGHT_ON)
         for (i in PathFinder.NEIGHBOURS8)
-            Set(level, cen + i, Terrain.EMPTY_SP)
+            Set(level, cen + i, if (Random.Int(3) == 0) Terrain.EMPTY_SP else Terrain.CHASM)
 
         return dr
     }
