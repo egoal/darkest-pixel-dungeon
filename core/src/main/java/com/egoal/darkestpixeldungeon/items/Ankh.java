@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class Ankh extends Item {
 
   public static final String AC_BLESS = "BLESS";
-  private static int BLESS_CONSUME = 15;
+  private static int BLESS_CONSUME = 20;
 
   {
     image = ItemSpriteSheet.ANKH;

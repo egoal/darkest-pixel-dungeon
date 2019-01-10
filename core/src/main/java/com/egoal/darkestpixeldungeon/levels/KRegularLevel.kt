@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
@@ -22,6 +23,7 @@ import com.egoal.darkestpixeldungeon.levels.diggers.specials.*
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap
+import com.egoal.darkestpixeldungeon.plants.Plant
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
@@ -74,7 +76,7 @@ open abstract class KRegularLevel : Level() {
 
     private var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
-        val diggers = selectDiggers(Random.NormalIntRange(2, 4), 15)
+        val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
         if (Dungeon.shopOnLevel())
             diggers.add(ShopDigger())
 
@@ -102,6 +104,7 @@ open abstract class KRegularLevel : Level() {
             probs.remove(TreasuryDigger::class.java)
             probs.remove(VaultDigger::class.java)
             probs.remove(WeakFloorDigger::class.java)
+            probs.remove(LaboratoryDigger::class.java)
         }
 
         // never fall to boss
@@ -162,7 +165,7 @@ open abstract class KRegularLevel : Level() {
     override fun nMobs(): Int = when (Dungeon.depth) {
         0, 1 -> 0
         in 2..4 -> 2 + Dungeon.depth % 5 + Random.Int(5)
-        else -> 3 + Dungeon.depth % 5 + Random.Int(6)
+        else -> 2 + Dungeon.depth % 5 + Random.Int(8)
     }
 
     protected fun createSellers() {
@@ -300,7 +303,15 @@ open abstract class KRegularLevel : Level() {
             if (map[i] == Terrain.EMPTY && grass[i]) {
                 val count = PathFinder.NEIGHBOURS8.count { grass[i + it] }
 
-                map[i] = if (Random.Float() < count / 12f) Terrain.HIGH_GRASS else Terrain.GRASS
+                map[i] = if (Random.Float() < count / 12f) {
+                    if (Random.Float() < 0.015) {
+                        plant(KGenerator.SEED.generate() as Plant.Seed, i)
+                        Terrain.GRASS
+                    } else if (Random.Float() < 0.05)
+                        Terrain.HIGH_GRASS_COLLECTED
+                    else
+                        Terrain.HIGH_GRASS
+                } else Terrain.GRASS
             }
         }
     }
@@ -436,7 +447,7 @@ open abstract class KRegularLevel : Level() {
                 RoundDigger::class.java to .05f,
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
-                PatchDigger::class.java to .05f, 
+                PatchDigger::class.java to .05f,
                 GraveyardDigger::class.java to .05f
         )
     }

@@ -129,9 +129,11 @@ public class Heap implements Bundlable {
         }
         break;
       case TOMB:
-        Wraith.spawnAround(hero.pos);
-        hero.takeDamage(new Damage(Random.Int(2, 6), this, hero).type(Damage
-                .Type.MENTAL));
+        if (Random.Int(2) != 0) {
+          Wraith.spawnAround(hero.pos);
+          hero.takeDamage(new Damage(Random.Int(3, 6), this, hero).type(Damage
+                  .Type.MENTAL));
+        }
         break;
       case REMAINS:
       case SKELETON:
@@ -324,7 +326,7 @@ public class Heap implements Bundlable {
     if (type == Type.MIMIC) {
       Mimic m = Mimic.spawnAt(pos, items);
       if (m != null) {
-        Buff.prolong(m, Frost.class, Frost.duration(m) * Random.Float(1.0f, 
+        Buff.prolong(m, Frost.class, Frost.duration(m) * Random.Float(1.0f,
                 1.5f));
         destroy();
       }
@@ -340,7 +342,7 @@ public class Heap implements Bundlable {
         replace(item, FrozenCarpaccio.cook((MysteryMeat) item));
         frozen = true;
       } else if (item instanceof Potion
-              && !(item instanceof PotionOfStrength || item instanceof 
+              && !(item instanceof PotionOfStrength || item instanceof
               PotionOfMight)) {
         items.remove(item);
         ((Potion) item).shatter(pos);
@@ -513,13 +515,13 @@ public class Heap implements Bundlable {
         return Messages.get(this, "locked_chest_desc");
       case CRYSTAL_CHEST:
         if (peek() instanceof Artifact)
-          return Messages.get(this, "crystal_chest_desc", Messages.get(this, 
+          return Messages.get(this, "crystal_chest_desc", Messages.get(this,
                   "artifact"));
         else if (peek() instanceof Wand)
-          return Messages.get(this, "crystal_chest_desc", Messages.get(this, 
+          return Messages.get(this, "crystal_chest_desc", Messages.get(this,
                   "wand"));
         else
-          return Messages.get(this, "crystal_chest_desc", Messages.get(this, 
+          return Messages.get(this, "crystal_chest_desc", Messages.get(this,
                   "ring"));
       case TOMB:
         return Messages.get(this, "tomb_desc");
@@ -543,7 +545,8 @@ public class Heap implements Bundlable {
     pos = bundle.getInt(POS);
     seen = bundle.getBoolean(SEEN);
     type = Type.valueOf(bundle.getString(TYPE));
-    items = new LinkedList<Item>((Collection<Item>) ((Collection<?>) bundle.getCollection(ITEMS)));
+    items = new LinkedList<Item>((Collection<Item>) ((Collection<?>) bundle
+            .getCollection(ITEMS)));
     items.removeAll(Collections.singleton(null));
   }
 

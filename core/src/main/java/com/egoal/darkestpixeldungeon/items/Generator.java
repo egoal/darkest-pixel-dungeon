@@ -177,17 +177,17 @@ public class Generator {
     WEP_T3(0, Weapon.class),
     WEP_T4(0, Weapon.class),
     WEP_T5(0, Weapon.class),
-    ARMOR(55, Armor.class),
+    ARMOR(60, Armor.class),
     POTION(500, Potion.class),
     SCROLL(400, Scroll.class),
     WAND(40, Wand.class), 
     RING(15, Ring.class),
-    ARTIFACT(15, Artifact.class),
+    ARTIFACT(12, Artifact.class),
     SEED(50, Plant.Seed.class),
     FOOD(0, Food.class),
     GOLD(500, Gold.class),
     BOOK(0, Book.class),
-    HELMET(5, Helmet.class);
+    HELMET(3, Helmet.class);
 
     public Class<?>[] classes;
     public float[] probs;

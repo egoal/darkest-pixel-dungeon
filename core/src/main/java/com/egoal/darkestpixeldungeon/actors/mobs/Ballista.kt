@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.items.Gold
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.MissileSprite
@@ -37,7 +38,7 @@ class Ballista : Mob() {
         EXP = 12
         maxLvl = 22
 
-        lootChance = 0.4f
+        lootChance = 0.3f
 
         properties.add(Property.MACHINE)
 
@@ -75,12 +76,12 @@ class Ballista : Mob() {
 
     override fun attackProc(dmg: Damage): Damage {
         // chance to knock back
-        val chance = when(Dungeon.level.distance((dmg.from as Char).pos, (dmg.to as Char).pos)){
+        val chance = when (Dungeon.level.distance((dmg.from as Char).pos, (dmg.to as Char).pos)) {
             0, 1 -> 0.4f
             in 2..5 -> 0.25f
             else -> 0f
         }
-        
+
         if (dmg.to is Char && Random.Float() < chance) {
             val tgt = dmg.to as Char
             val opposite = tgt.pos + (tgt.pos - pos)
@@ -94,15 +95,24 @@ class Ballista : Mob() {
 
     override fun getCloser(target: Int): Boolean {
         return if (!loaded) {
-            loaded = true
-            Sample.INSTANCE.play(Assets.SND_RELOAD)
-            sprite.showStatus(0xffffff, Messages.get(this, "loaded"))
+            reload()
             true
         } else
             super.getCloser(target)
     }
 
-    override fun createLoot(): Item = if (Random.Float() < 0.75f) Dart(Random.IntRange(1, 5)) else Gold().random()
+    private fun reload() {
+        loaded = true
+        sprite.showStatus(0xffffff, Messages.get(this, "loaded"))
+        if (Dungeon.visible[pos])
+            Sample.INSTANCE.play(Assets.SND_RELOAD)
+    }
+
+    override fun createLoot(): Item = when (Random.Int(4)) {
+        0 -> Dart(Random.IntRange(2, 5))
+        1 -> Javelin(Random.IntRange(1, 3))
+        else -> Gold().random()
+    }
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
@@ -115,7 +125,7 @@ class Ballista : Mob() {
     }
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-    
+
     companion object {
         val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java, Sleep::class.java)
 

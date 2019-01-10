@@ -170,7 +170,6 @@ public enum HeroClass {
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
-
   }
 
   private static void initDebug(Hero hero) {

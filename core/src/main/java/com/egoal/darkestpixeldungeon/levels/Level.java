@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
+import android.graphics.RadialGradient;
 import android.util.Log;
 
 import com.egoal.darkestpixeldungeon.*;
@@ -262,23 +263,13 @@ public abstract class Level implements Bundlable {
       }
 
       if (Dungeon.depth > 1) {
-        switch (Random.Int(10)) {
-          case 0:
-            if (!Dungeon.bossLevel(Dungeon.depth + 1)) {
-              // feeling = Feeling.CHASM;
-            }
-            break;
-          case 1:
-            feeling = Feeling.WATER;
-            break;
-          case 2:
-            feeling = Feeling.GRASS;
-            break;
-          case 3:
-          case 4:
-            feeling = Feeling.DARK;
-            break;
-        }
+        float p = Random.Float();
+        if (p < 0.2)
+          feeling = Feeling.DARK;
+        else if (p < 0.275)
+          feeling = Feeling.WATER;
+        else if (p < 0.35)
+          feeling = Feeling.GRASS;
 
         // give extra torches
         int torchCount = 0;
@@ -607,7 +598,7 @@ public abstract class Level implements Bundlable {
   }
 
   protected float respawnTime() {
-    return Dungeon.level.feeling == Feeling.DARK || Statistics.amuletObtained ? 
+    return Dungeon.level.feeling == Feeling.DARK || Statistics.amuletObtained ?
             TIME_TO_RESPAWN_DARK : TIME_TO_RESPAWN;
   }
 

@@ -53,6 +53,7 @@ public class Wraith extends Mob {
     flying = true;
 
     properties.add(Property.UNDEAD);
+    
     addResistances(Damage.Element.SHADOW, 1.25f);
     addResistances(Damage.Element.HOLY, .667f);
   }
@@ -74,7 +75,7 @@ public class Wraith extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, 
+    return new Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this,
             target);
   }
 

@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
@@ -50,13 +51,20 @@ class KVillageLevel : KRegularLevel() {
                 val nGrass = PathFinder.NEIGHBOURS4.count { map[i + it] == Terrain.GRASS }
                 if (Random.Int(5) < nGrass)
                     map[i] = Terrain.WALL_DECO
-            }
-            else if(map[i]==Terrain.EMPTY){
+            } else if (map[i] == Terrain.EMPTY) {
                 val nWall = PathFinder.NEIGHBOURS4.count { map[i + it] == Terrain.WALL }
-                if(Random.Int(16)< nWall* nWall)
+                if (Random.Int(16) < nWall * nWall)
                     map[i] = Terrain.EMPTY_DECO
             }
         }
+    }
+
+    override fun randomRespawnCell(): Int {
+        var cell: Int
+        do {
+            cell = Random.Int(length())
+        } while (!passable[cell] || Dungeon.visible[cell] || Actor.findChar(cell) != null)
+        return cell
     }
 
     override fun nMobs(): Int = 0
@@ -84,6 +92,8 @@ class KVillageLevel : KRegularLevel() {
 
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
+        
+        // putMobAt(ScrollSeller::class.java, 16, 29)
     }
 
     override fun respawner(): Actor? = null

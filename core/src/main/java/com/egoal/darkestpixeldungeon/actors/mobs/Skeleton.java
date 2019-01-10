@@ -47,7 +47,7 @@ public class Skeleton extends Mob {
     maxLvl = 10;
 
     loot = Generator.Category.WEAPON;
-    lootChance = 0.175f;
+    lootChance = 0.2f;
 
     properties.add(Property.UNDEAD);
 
@@ -62,7 +62,7 @@ public class Skeleton extends Mob {
 
   @Override
   public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 5);
+    dmg.value -= Random.NormalIntRange(1, 2);
     return dmg;
   }
 

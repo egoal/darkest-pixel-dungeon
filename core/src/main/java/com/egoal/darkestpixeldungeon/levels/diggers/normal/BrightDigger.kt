@@ -24,8 +24,14 @@ class BrightDigger : Digger() {
         // put light centered
         val cen = level.pointToCell(rect.center)
         Set(level, cen, Terrain.WALL_LIGHT_ON)
+
+        val tile = if (rect.width > 5 && rect.height > 5) {
+            if (Random.Int(2) == 0) Terrain.EMPTY_SP else Terrain.CHASM
+        } else if (Random.Int(3) != 0) Terrain.EMPTY_SP
+        else Terrain.EMPTY
+        
         for (i in PathFinder.NEIGHBOURS8)
-            Set(level, cen + i, if (Random.Int(3) == 0) Terrain.EMPTY_SP else Terrain.CHASM)
+            Set(level, cen + i, tile)
 
         return dr
     }

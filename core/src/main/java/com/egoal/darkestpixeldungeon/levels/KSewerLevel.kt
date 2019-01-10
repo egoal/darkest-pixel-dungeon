@@ -64,7 +64,7 @@ class KSewerLevel : KRegularLevel() {
 
     override fun chooseDiggers(): ArrayList<Digger> {
         // less diggers
-        val diggers = selectDiggers(Random.NormalIntRange(1, 3), 12)
+        val diggers = selectDiggers(Random.NormalIntRange(1, 3), Random.IntRange(11, 13))
         if (Dungeon.shopOnLevel())
             diggers.add(ShopDigger())
 
