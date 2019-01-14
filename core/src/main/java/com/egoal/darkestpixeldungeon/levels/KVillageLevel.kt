@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
+import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -92,7 +93,7 @@ class KVillageLevel : KRegularLevel() {
 
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
-        
+
         // putMobAt(ScrollSeller::class.java, 16, 29)
     }
 
@@ -104,5 +105,16 @@ class KVillageLevel : KRegularLevel() {
         val mob = cls.newInstance().apply { pos = xy2cell(x, y) }
         mobs.add(mob)
         return mob
+    }
+
+    override fun tileName(tile: Int): String = when (tile) {
+        Terrain.WATER -> Messages.get(KVillageLevel::class.java, "water_name")
+        else -> super.tileName(tile)
+    }
+
+    override fun tileDesc(tile: Int) = when (tile) {
+        Terrain.EMPTY_DECO -> Messages.get(SewerLevel::class.java, "empty_deco_desc")
+        Terrain.BOOKSHELF -> Messages.get(SewerLevel::class.java, "bookshelf_desc")
+        else -> super.tileDesc(tile)
     }
 }

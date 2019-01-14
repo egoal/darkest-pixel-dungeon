@@ -60,8 +60,13 @@ class Ballista : Mob() {
         return trace.collisionPos == enemy.pos && loaded
     }
 
-    override fun onAttackComplete() {
+    override fun attack(enemy: Char): Boolean {
         loaded = false
+        return super.attack(enemy)
+    }
+    
+    override fun onAttackComplete() {
+        // loaded = false
         if (Dungeon.level.adjacent(enemy.pos, pos))
             super.onAttackComplete()
         else {

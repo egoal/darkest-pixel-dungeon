@@ -227,7 +227,7 @@ open abstract class KRegularLevel : Level() {
 
         // bonus from wealth
         val bonus = Math.min(10, RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
-        while (Random.Float() < .25f + bonus * 0.05f)
+        while (Random.Float() < .2f + bonus * 0.05f)
             ++nItems
 
         for (i in 1..nItems) {
@@ -317,7 +317,7 @@ open abstract class KRegularLevel : Level() {
     }
 
     // traps
-    protected fun nTraps() = Random.NormalIntRange(1, 5 + Dungeon.depth / 2)
+    protected fun nTraps() = Random.NormalIntRange(2, 3 + Dungeon.depth / 2)
 
     protected open fun trapClasses(): Array<Class<out Trap>> = arrayOf(WornTrap::class.java)
 
@@ -328,7 +328,7 @@ open abstract class KRegularLevel : Level() {
         val trapClasses = trapClasses()
 
         val validCells = (1 until length).filter { map[it] == Terrain.EMPTY && findMob(it) == null }.shuffled()
-        var traps = Math.min(nTraps(), (validCells.size * 0.175).toInt())
+        var traps = Math.min(nTraps(), (validCells.size * 0.15).toInt())
 
         Log.d("dpd", "would add $traps traps.")
 
@@ -413,7 +413,7 @@ open abstract class KRegularLevel : Level() {
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
                 ArmoryDigger::class.java to 1f,
                 GardenDigger::class.java to 1f,
-                LaboratoryDigger::class.java to 1.25f,
+                LaboratoryDigger::class.java to 1.5f,
                 LibraryDigger::class.java to 1f,
                 MagicWellDigger::class.java to 1f,
                 PitDigger::class.java to 0f,
@@ -443,7 +443,7 @@ open abstract class KRegularLevel : Level() {
                 CircleDigger::class.java to .05f,
                 DiamondDigger::class.java to .05f,
                 LatticeDigger::class.java to .075f,
-                RectDigger::class.java to 1f,
+                RectDigger::class.java to 1.25f,
                 RoundDigger::class.java to .05f,
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,

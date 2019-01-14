@@ -1231,7 +1231,7 @@ public class Hero extends Char {
         if (dmg.from instanceof Char && !Dungeon.visible[((Char) dmg.from)
                 .pos]) {
           // when hit from nowhere
-          dmgMental.value += Random.Int(1, 4);
+          dmgMental.value += Random.Int(2, 5);
         }
         if (dmg.isFeatured(Damage.Feature.CRITCIAL)) {
           // when take critical damage, up pressure

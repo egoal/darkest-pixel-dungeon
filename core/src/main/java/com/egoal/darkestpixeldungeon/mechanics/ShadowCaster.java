@@ -233,7 +233,8 @@ public final class ShadowCaster {
 
       //for each column in this row, which
       for (col = start; col <= end; col++) {
-
+        if (cell < 0 || cell >= Dungeon.level.length()) continue;
+        
         if (row <= viewDistance || Level.lighted[cell])
           fov[cell] = true;
 
@@ -266,7 +267,6 @@ public final class ShadowCaster {
 
         if (!mXY) cell += mX;
         else cell += mX * Dungeon.level.width();
-
       }
 
       //if the row ends in a blocking cell, this scan is finished.
