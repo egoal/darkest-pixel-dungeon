@@ -187,7 +187,7 @@ public class Generator {
     FOOD(0, Food.class),
     GOLD(500, Gold.class),
     BOOK(0, Book.class),
-    HELMET(1, Helmet.class);
+    HELMET(0.5f, Helmet.class);
 
     public Class<?>[] classes;
     public float[] probs;

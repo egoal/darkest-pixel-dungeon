@@ -24,6 +24,8 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.items.Heap;
+import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -54,4 +56,8 @@ public abstract class NPC extends Mob {
   }
 
   abstract public boolean interact();
+
+  protected void tell(String text) {
+    GameScene.show(new WndQuest(this, text));
+  }
 }

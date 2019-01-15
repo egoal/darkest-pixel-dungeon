@@ -73,10 +73,6 @@ public class Minstrel extends NPC{
   public void add(Buff buff) {
   }
 
-  private void tell(String text) {
-    GameScene.show(new WndQuest(this, text));
-  }
-
   private void onSelectHello(int index){
     // 0 sing, 1 leave
     switch (index){

@@ -114,11 +114,6 @@ public class Imp extends NPC {
     return false;
   }
 
-  private void tell(String text) {
-    GameScene.show(
-            new WndQuest(this, text));
-  }
-
   public void flee() {
 
     yell(Messages.get(this, "cya", Dungeon.hero.givenName()));

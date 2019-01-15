@@ -69,6 +69,7 @@ public class HighGrass {
 
         if (naturalismLevel >= 0) {
           // Seed, scales from 1/16 to 1/4
+          // now 1/18 -> 1/6
           // in the village level, more unlikely to drop seed
           int chance = Dungeon.depth == 0 ? 30 : (18 - naturalismLevel * 3);
           if (Random.Int(chance) == 0) {

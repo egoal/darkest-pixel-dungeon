@@ -21,9 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatLix;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica;
 import com.egoal.darkestpixeldungeon.effects.Ripple;
 import com.egoal.darkestpixeldungeon.levels.traps.AlarmTrap;
 import com.egoal.darkestpixeldungeon.levels.traps.ChillingTrap;

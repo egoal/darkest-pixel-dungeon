@@ -41,7 +41,7 @@ public class AboutScene extends PixelScene {
 
   private static final String TTL_DPD = "Darkest Pixel Dungeon";
 
-  private static final String TXT_DPD = "Design, Code, & Graphics: Lix";
+  private static final String TXT_DPD = "Design, Code, & Graphics: Egoal";
 
   private static final String LNK_DPD = "github.com/egoal";
 

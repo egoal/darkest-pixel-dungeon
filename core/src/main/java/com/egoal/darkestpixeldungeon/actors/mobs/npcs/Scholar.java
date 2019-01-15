@@ -55,12 +55,4 @@ public class Scholar extends NPC {
   @Override
   public void add(Buff buff) {
   }
-
-  private void tell(String text) {
-    GameScene.show(new WndQuest(this, text));
-  }
-
-  // others
-
-
 }

@@ -8,7 +8,9 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.items.Amulet
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.egoal.darkestpixeldungeon.windows.WndQuest
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
@@ -16,6 +18,8 @@ import com.watabou.noosa.TextureFilm
 class SPDBattleMage : NPC() {
     init {
         spriteClass = Sprite::class.java
+
+        properties.add(Property.IMMOVABLE)
     }
 
     override fun interact(): Boolean {
@@ -25,11 +29,23 @@ class SPDBattleMage : NPC() {
         } else {
         }
         
-        tell(Messages.get(this, "greetings"))
-
+        GameScene.show(object : WndOptions(Sprite(), name, 
+                Messages.get(SPDBattleMage::class.java, "greetings"), 
+                Messages.get(SPDBattleMage::class.java, "ac_yourself")){
+            override fun onSelect(index: Int) {
+                onSelectHero(index)
+            }
+        })
+        
         return false
     }
 
+    private fun onSelectHero(index: Int) {
+        when (index) {
+            0 -> tell(Messages.get(this, "introduction"))
+        }
+    }
+    
     companion object {
         class Sprite : MobSprite() {
             init {
@@ -48,11 +64,17 @@ class SPDBattleMage : NPC() {
 
                 play(idle)
             }
+
+            override fun link(ch: Char) {
+                super.link(ch)
+                
+                add(CharSprite.State.CHILLED)
+            }
         }
     }
 
     // unbreakable
-    override fun reset(): Boolean = true
+    override fun reset() = true
 
     override fun act(): Boolean {
         throwItem()
@@ -65,7 +87,4 @@ class SPDBattleMage : NPC() {
 
     override fun add(buff: Buff) = Unit
 
-    private fun tell(text: String) {
-        GameScene.show(WndQuest(this, text))
-    }
 }

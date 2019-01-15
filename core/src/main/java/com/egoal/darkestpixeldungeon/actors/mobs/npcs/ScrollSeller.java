@@ -64,7 +64,7 @@ public class ScrollSeller extends DPDShopKeeper {
   }
 
   private int feeClean() {
-    return (int) (45 * (Dungeon.depth + 4) *
+    return (int) (40 * (Dungeon.depth + 4) *
             (Dungeon.hero.heroPerk.contain(HeroPerk.Perk.SHREWD) ? .75 : 1.));
   }
 
@@ -93,7 +93,7 @@ public class ScrollSeller extends DPDShopKeeper {
       if (item != null) {
         --availableCleanTimes;
         Dungeon.gold -= feeClean();
-        
+
         new Flare(6, 32).show(Dungeon.hero.sprite, 2f);
         boolean procced = ScrollOfRemoveCurse.uncurse(Dungeon.hero, item);
 
@@ -118,8 +118,10 @@ public class ScrollSeller extends DPDShopKeeper {
         @Override
         protected void onClick() {
           super.onClick();
-          ss.onPlayerClean();
-          enable(ss.availableCleanTimes > 0 && Dungeon.gold >= fee);
+          boolean canClean = ss.availableCleanTimes > 0 && Dungeon.gold >= fee;
+          enable(canClean);
+          if(canClean)
+            ss.onPlayerClean();
         }
       };
       btnClean.setRect(0, height + 2f, width, 20f);

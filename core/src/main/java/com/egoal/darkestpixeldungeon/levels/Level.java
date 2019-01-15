@@ -1218,6 +1218,8 @@ public abstract class Level implements Bundlable {
     if (tile >= Terrain.WATER_TILES) {
       return tileName(Terrain.WATER);
     }
+    if(tile==Terrain.HIGH_GRASS_COLLECTED)
+      return tileName(Terrain.HIGH_GRASS);
 
     if (tile != Terrain.CHASM && (Terrain.flags[tile] & Terrain.PIT) != 0) {
       return tileName(Terrain.CHASM);
@@ -1256,7 +1258,6 @@ public abstract class Level implements Bundlable {
       case Terrain.BARRICADE:
         return Messages.get(Level.class, "barricade_name");
       case Terrain.HIGH_GRASS:
-      case Terrain.HIGH_GRASS_COLLECTED:
         return Messages.get(Level.class, "high_grass_name");
       case Terrain.LOCKED_EXIT:
         return Messages.get(Level.class, "locked_exit_name");

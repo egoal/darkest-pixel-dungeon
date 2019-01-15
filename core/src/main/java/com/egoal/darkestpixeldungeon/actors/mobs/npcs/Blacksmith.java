@@ -144,10 +144,6 @@ public class Blacksmith extends NPC {
     return false;
   }
 
-  private void tell(String text) {
-    GameScene.show(new WndQuest(this, text));
-  }
-
   public static String verify(Item item1, Item item2) {
 
     if (item1 == item2) {

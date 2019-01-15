@@ -129,7 +129,7 @@ public class Heap implements Bundlable {
         }
         break;
       case TOMB:
-        if (Random.Int(2) != 0) {
+        if (Random.Int(3) != 0) {
           Wraith.spawnAround(hero.pos);
           hero.takeDamage(new Damage(Random.Int(3, 6), this, hero).type(Damage
                   .Type.MENTAL));

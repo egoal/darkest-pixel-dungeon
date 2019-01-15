@@ -9,15 +9,15 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-private const val MAP_FILE = "data/VillageLevel.map"
-
-class KVillageLevel : KRegularLevel() {
+class VillageLevel : KRegularLevel() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a
         viewDistance = 8
         seeDistance = 8
     }
+
+    private val MAP_FILE = "data/VillageLevel.map"
 
     override fun tilesTex(): String = Assets.TILES_VILLAGE
 
@@ -71,8 +71,8 @@ class KVillageLevel : KRegularLevel() {
     override fun nMobs(): Int = 0
 
     override fun createMobs() {
-        // lix
-        putMobAt(CatLix::class.java, 15, 29)
+        // egoal
+        putMobAt(CatEgoal::class.java, 15, 29)
 
         // old alchemist
         putMobAt(Alchemist::class.java, 18, 6)
@@ -108,7 +108,7 @@ class KVillageLevel : KRegularLevel() {
     }
 
     override fun tileName(tile: Int): String = when (tile) {
-        Terrain.WATER -> Messages.get(KVillageLevel::class.java, "water_name")
+        Terrain.WATER -> Messages.get(VillageLevel::class.java, "water_name")
         else -> super.tileName(tile)
     }
 

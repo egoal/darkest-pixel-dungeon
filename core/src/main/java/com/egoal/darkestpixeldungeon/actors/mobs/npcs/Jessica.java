@@ -89,10 +89,6 @@ public class Jessica extends NPC {
   public void add(Buff buff) {
   }
 
-  private void tell(String text) {
-    GameScene.show(new WndQuest(this, text));
-  }
-
   @Override
   public String description() {
     return Messages.get(this, Quest.completed_ ? "desc_2" : "desc");

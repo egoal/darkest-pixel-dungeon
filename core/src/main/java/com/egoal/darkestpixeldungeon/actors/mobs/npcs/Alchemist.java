@@ -145,10 +145,6 @@ public class Alchemist extends NPC {
   public void add(Buff buff) {
   }
 
-  private void tell(String text) {
-    GameScene.show(new WndQuest(this, text));
-  }
-
   public static class Quest {
     private static boolean hasGiven_ = false;
     private static boolean hasCompleted_ = false;
