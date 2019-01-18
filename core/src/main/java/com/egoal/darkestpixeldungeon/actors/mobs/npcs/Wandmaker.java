@@ -341,8 +341,8 @@ public class Wandmaker extends NPC {
       Wandmaker w = new Wandmaker();
       do {
         w.pos = level.pointToCell(rect.random(0));
-      } while (level.map[w.pos] == Terrain.ENTRANCE ||
-              level.map[w.pos] == Terrain.SIGN);
+      } while (level.map[w.pos] == Terrain.ENTRANCE || 
+              (Terrain.flags[level.map[w.pos]] & Terrain.PASSABLE) ==0);
       level.mobs.add(w);
 
       spawned = true;
