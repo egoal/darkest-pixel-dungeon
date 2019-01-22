@@ -21,10 +21,6 @@ public class PotionTestPaper extends Item {
   private static final float TIME_TO_TEST = 1;
   private static final String AC_TEST = "TEST";
 
-  // the target potion
-  // private Class<Potion> targetPotion_;
-  // private Potion targetPotion_	=	null;
-
   {
     image = ItemSpriteSheet.DPD_TEST_PAPER;
     unique = false;
@@ -32,17 +28,6 @@ public class PotionTestPaper extends Item {
     defaultAction = AC_TEST;
     stackable = true;
   }
-
-//	public<T extends Potion> void setTarget(Class<T> target){
-//		try{
-//			targetPotion_	=	target.newInstance();
-//		}catch(Exception e){}
-//	}
-
-//	@Override
-//	public String desc(){
-//		return Messages.get(this, "desc", targetPotion_.trueName());
-//	}
 
   @Override
   public ArrayList<String> actions(Hero hero) {
@@ -107,19 +92,4 @@ public class PotionTestPaper extends Item {
       }
     }
   };
-
-  private static final String TARGET = "target";
-
-  @Override
-  public void storeInBundle(Bundle bundle) {
-    super.storeInBundle(bundle);
-    // bundle.put(TARGET, targetPotion_);
-  }
-
-  @Override
-  public void restoreFromBundle(Bundle bundle) {
-    super.restoreFromBundle(bundle);
-//		if(bundle.contains(TARGET))
-//			targetPotion_   =   (Potion)(bundle.get(TARGET));
-  }
 }

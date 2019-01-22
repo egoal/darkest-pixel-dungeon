@@ -100,9 +100,9 @@ public class Belongings implements Iterable<Item> {
       if (item instanceof Key) {
         item.detachAll(backpack);
         if (item instanceof IronKey)
-          ironKeys[((Key) item).depth] += item.quantity();
+          ironKeys[((Key) item).getDepth()] += item.quantity();
         else
-          specialKeys[((Key) item).depth] += item.quantity();
+          specialKeys[((Key) item).getDepth()] += item.quantity();
       }
     }
 
@@ -203,7 +203,7 @@ public class Belongings implements Iterable<Item> {
 
     for (Item item : backpack.items.toArray(new Item[0])) {
       if (item instanceof Key) {
-        if (((Key) item).depth == depth) {
+        if (((Key) item).getDepth() == depth) {
           item.detachAll(backpack);
         }
       } else if (item.unique) {

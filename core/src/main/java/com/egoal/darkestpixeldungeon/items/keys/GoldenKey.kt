@@ -18,31 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.keys;
+package com.egoal.darkestpixeldungeon.items.keys
 
-import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class GoldenKey extends Key {
+class GoldenKey(_depth: Int = 0) : Key(_depth) {
+    init {
+        image = ItemSpriteSheet.GOLDEN_KEY
+    }
 
-  {
-    image = ItemSpriteSheet.GOLDEN_KEY;
-  }
-
-  @Override
-  public boolean doPickUp(Hero hero) {
-    Dungeon.hero.belongings.specialKeys[depth] += quantity();
-    return super.doPickUp(hero);
-  }
-
-  public GoldenKey() {
-    this(0);
-  }
-
-  public GoldenKey(int depth) {
-    super();
-    this.depth = depth;
-  }
-
+    override fun doPickUp(hero: Hero): Boolean {
+        Dungeon.hero.belongings.specialKeys[depth] += quantity()
+        return super.doPickUp(hero)
+    }
 }

@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
+import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
@@ -168,7 +169,7 @@ public class Hero extends Char {
   private static final int MAX_FOLLOWERS = 3;
   private ArrayList<Char> followers_ = new ArrayList<Char>();
 
-  private Item theKey;
+  // private Item theKey;
 
   public boolean resting = false;
 
@@ -180,6 +181,7 @@ public class Hero extends Char {
 
   public float awareness;
   public float criticalChance_;
+  private float regeneration = 0.1f; // regeneration per turn
 
   public int lvl = 1;
   public int exp = 0;
@@ -261,12 +263,28 @@ public class Hero extends Char {
     return Pair.create(true, "");
   }
 
+  public float regenerateSpeed(){
+    if(isStarving()) return 0f;
+
+    float reg = regeneration;
+    ChaliceOfBlood.chaliceRegen cr = Dungeon.hero.buff(ChaliceOfBlood.chaliceRegen.class);
+    if(cr!=null) {
+      if (!cr.isCursed())
+        reg += HT * 0.004 * Math.pow(1.075, cr.itemLevel());
+      else
+        reg /= 2;
+    }
+    
+    return reg;
+  }
+  
   private static final String ATTACK = "attackSkill";
   private static final String DEFENSE = "defenseSkill";
   private static final String STRENGTH = "STR";
   private static final String LEVEL = "lvl";
   private static final String EXPERIENCE = "exp";
   private static final String CRITICAL = "critical";
+  private static final String REGENERATION = "regeneration";
 
   private static final String RESISTANCE_MAGICAL = "resistance_magical";
   private static final String RESISTANCE_NORMAL = "resistance_normal";
@@ -289,8 +307,8 @@ public class Hero extends Char {
     bundle.put(EXPERIENCE, exp);
 
     bundle.put(CRITICAL, criticalChance_);
+    bundle.put(REGENERATION, regeneration);
 
-    // bundle.put(FOLLOWERS, followers_);
     bundle.put(RESISTANCE_MAGICAL, resistanceMagical);
     bundle.put(RESISTANCE_NORMAL, resistanceNormal);
 
@@ -315,6 +333,7 @@ public class Hero extends Char {
     exp = bundle.getInt(EXPERIENCE);
 
     criticalChance_ = bundle.getFloat(CRITICAL);
+    regeneration = bundle.getFloat(REGENERATION);
 
     resistanceMagical = bundle.getFloatArray(RESISTANCE_MAGICAL);
     resistanceNormal = bundle.getFloatArray(RESISTANCE_NORMAL);
@@ -969,7 +988,7 @@ public class Hero extends Char {
             Sample.INSTANCE.play(Assets.SND_UNLOCK);
         }
 
-        spend(Key.TIME_TO_UNLOCK);
+        spend(Key.Companion.getTIME_TO_UNLOCK());
         sprite.operate(dst);
 
       } else {
@@ -1009,7 +1028,7 @@ public class Hero extends Char {
 
       if (hasKey) {
 
-        spend(Key.TIME_TO_UNLOCK);
+        spend(Key.Companion.getTIME_TO_UNLOCK());
         sprite.operate(doorCell);
 
         Sample.INSTANCE.play(Assets.SND_UNLOCK);
@@ -1600,6 +1619,7 @@ public class Hero extends Char {
     defenseSkill++;
 
     criticalChance_ += 0.4f / 100f;
+    regeneration += 0.01f;
 
     // recover sanity
     recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4), (int) (buff

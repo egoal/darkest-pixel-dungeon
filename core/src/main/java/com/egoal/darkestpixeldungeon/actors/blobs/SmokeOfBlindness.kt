@@ -24,7 +24,7 @@ class SmokeOfBlindness : Blob() {
     override fun use(emitter: BlobEmitter) {
         super.use(emitter)
 
-        emitter.pour(Speck.factory(Speck.DPD_FOG), .4f)
+        emitter.pour(Speck.factory(Speck.DPD_FOG), .25f)
     }
 
     override fun tileDesc(): String = Messages.get(this, "desc")

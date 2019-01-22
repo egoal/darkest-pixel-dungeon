@@ -18,38 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.keys;
+package com.egoal.darkestpixeldungeon.items.keys
 
-import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class SkeletonKey extends Key {
+class SkeletonKey(_depth: Int = 0) : Key(_depth) {
 
-  {
-    image = ItemSpriteSheet.SKELETON_KEY;
-    stackable = false;
-  }
+    init {
+        image = ItemSpriteSheet.SKELETON_KEY
+        stackable = false
+    }
+    
+    override fun doPickUp(hero: Hero): Boolean {
+        Dungeon.hero.belongings.specialKeys[depth]++
+        return super.doPickUp(hero)
+    }
 
-  public SkeletonKey() {
-    this(0);
-  }
-
-  public SkeletonKey(int depth) {
-    super();
-    this.depth = depth;
-  }
-
-  @Override
-  public boolean doPickUp(Hero hero) {
-    Dungeon.hero.belongings.specialKeys[depth]++;
-    return super.doPickUp(hero);
-  }
-
-  @Override
-  public boolean isSimilar(Item item) {
-    return false;
-  }
-
+    override fun isSimilar(item: Item) = false
 }
