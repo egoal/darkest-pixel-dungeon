@@ -595,6 +595,7 @@ public class Dungeon {
     version = bundle.getInt(VERSION);
 
     Generator.reset();
+    KGenerator.INSTANCE.reset();
 
     Actor.restoreNextID(bundle);
 

@@ -1,10 +1,8 @@
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
-import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -15,7 +13,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 
 public class MaskOfMadness extends Artifact {
   {
-    image = ItemSpriteSheet.DPD_MASK_OF_MADNESS;
+    image = ItemSpriteSheet.MASK_OF_MADNESS;
     unique = true;
 
     levelCap = 10;

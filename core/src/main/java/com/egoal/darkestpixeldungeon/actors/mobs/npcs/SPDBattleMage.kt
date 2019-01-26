@@ -59,7 +59,7 @@ class SPDBattleMage : NPC() {
                 run = Animation(20, true)
                 run.frames(frames, 0)
 
-                die = MovieClip.Animation(20, true)
+                die = Animation(20, true)
                 die.frames(frames, 0)
 
                 play(idle)

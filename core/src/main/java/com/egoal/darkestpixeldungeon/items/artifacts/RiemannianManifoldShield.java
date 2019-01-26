@@ -18,7 +18,7 @@ import com.watabou.utils.Random;
 //* buff used in Hero::resistDamage
 public class RiemannianManifoldShield extends Artifact {
   {
-    image = ItemSpriteSheet.DPD_RIEMANNIAN_SHIELD;
+    image = ItemSpriteSheet.RIEMANNIAN_SHIELD;
 
     levelCap = 10;
     exp = 0;

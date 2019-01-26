@@ -345,21 +345,12 @@ public class Hero extends Char {
     Log.d("dpd", "holding followers.");
     followers_.clear();
 
-    // bring the ghost
     for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-      if (mob instanceof DriedRose.GhostHero) {
+      if (mob.isFollower()) {
         level.mobs.remove(mob);
         followers_.add(mob);
-        break;
-      }
-    }
-
-    // bring the controlled
-    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-      if (mob.buff(Dementage.class) != null) {
-        level.mobs.remove(mob);
-        followers_.add(mob);
-        if (followers_.size() == MAX_FOLLOWERS)
+        
+        if(followers_.size()==MAX_FOLLOWERS)
           break;
       }
     }
@@ -1505,7 +1496,7 @@ public class Hero extends Char {
     } else if (Level.fieldOfView[cell] && (ch = Actor.findChar(cell))
             instanceof Mob) {
 
-      if (ch instanceof NPC) {
+      if (ch instanceof NPC && !((NPC) ch).hostile) {
         curAction = new HeroAction.Interact((NPC) ch);
       } else {
         curAction = new HeroAction.Attack(ch);

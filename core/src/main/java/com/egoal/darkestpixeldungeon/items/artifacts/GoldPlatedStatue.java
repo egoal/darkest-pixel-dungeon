@@ -2,10 +2,7 @@ package com.egoal.darkestpixeldungeon.items.artifacts;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
 import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.scenes.GameScene;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 
@@ -18,7 +15,7 @@ import java.util.ArrayList;
 // check Gold::doPickUp
 public class GoldPlatedStatue extends Artifact {
   {
-    image = ItemSpriteSheet.DPD_GOLD_PLATE_STATUE;
+    image = ItemSpriteSheet.GOLD_PLATE_STATUE;
 
     levelCap = 10;
   }

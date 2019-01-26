@@ -18,7 +18,7 @@ public class DemonicSkull extends Item {
   private static final String AC_SMEAR = "SMEAR";
 
   {
-    image = ItemSpriteSheet.DPD_DEMONIC_SKULL;
+    image = ItemSpriteSheet.DEMONIC_SKULL;
 
     cursedKnown = levelKnown = true;
     unique = true;

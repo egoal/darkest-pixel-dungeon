@@ -295,8 +295,7 @@ public abstract class Level implements Bundlable {
     weakFloorCreated = false;
 
     Generator.push(); // push generator states
-    KGenerator.ARTIFACT.INSTANCE.push(); // artifacts probabilities can be 
-    // modified in building
+    KGenerator.INSTANCE.stash(); // some status may be modified during building
 
     for (int i = 0; ; ++i) {
       itemsToSpawn = (ArrayList<Item>) stationaryItems.clone();
@@ -316,7 +315,7 @@ public abstract class Level implements Bundlable {
       }
 
       Generator.pop(); // failed, pop states...
-      KGenerator.ARTIFACT.INSTANCE.pop();
+      KGenerator.INSTANCE.recover();
     }
 
     decorate();

@@ -48,7 +48,7 @@ import javax.microedition.khronos.opengles.GL;
 public class ExtractionFlask extends Item {
 
   {
-    image = ItemSpriteSheet.DPD_EXTRACTION_FLASK;
+    image = ItemSpriteSheet.EXTRACTION_FLASK;
 
     defaultAction = AC_REFINE;
     unique = true;

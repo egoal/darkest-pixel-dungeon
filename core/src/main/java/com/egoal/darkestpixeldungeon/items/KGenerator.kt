@@ -319,6 +319,13 @@ object KGenerator {
     fun reset() {
         ARTIFACT.reset()
     }
+    
+    fun stash(){
+        ARTIFACT.push()
+    }
+    fun recover(){
+        ARTIFACT.pop()
+    }
 
     fun restoreFromBundle(bundle: Bundle) {
         ARTIFACT.restoreFromBundle(bundle)

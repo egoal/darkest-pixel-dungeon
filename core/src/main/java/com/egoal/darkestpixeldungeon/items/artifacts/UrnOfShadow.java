@@ -41,7 +41,7 @@ import java.util.ArrayList;
 public class UrnOfShadow extends Artifact {
 
   {
-    image = ItemSpriteSheet.DPD_URN_OF_SHADOW;
+    image = ItemSpriteSheet.URN_OF_SHADOW;
     unique = true;
     defaultAction = AC_CONSUME;
 

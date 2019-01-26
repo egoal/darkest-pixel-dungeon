@@ -20,6 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.sprites;
 
+import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
+
 public class ItemSpriteSheet {
 
   private static final int WIDTH = 16;
@@ -193,7 +196,18 @@ public class ItemSpriteSheet {
   public static final int ARTIFACT_ROSE1 = ARTIFACTS + 20;
   public static final int ARTIFACT_ROSE2 = ARTIFACTS + 21;
   public static final int ARTIFACT_ROSE3 = ARTIFACTS + 22;
-
+  public static final int EXTRACTION_FLASK = ARTIFACTS + 23;
+  public static final int URN_OF_SHADOW = ARTIFACTS + 24;
+  public static final int DEMONIC_SKULL = ARTIFACTS + 25;
+  public static final int UNHOLY_BLOOD = ARTIFACTS + 26;
+  public static final int MASK_OF_MADNESS = ARTIFACTS + 27;
+  public static final int ASTROLABE = ARTIFACTS + 28;
+  public static final int RIEMANNIAN_SHIELD = ARTIFACTS + 29;
+  public static final int GOLD_PLATE_STATUE = ARTIFACTS + 30;
+  public static final int BONE_HAND = ARTIFACTS + 31;
+  public static final int HANDLE_OF_ABYSS = ARTIFACTS + 32;
+  
+  
   //32 free slots
 
   private static final int SCROLLS = xy(1, 20);  //16 slots
@@ -273,17 +287,9 @@ public class ItemSpriteSheet {
   public static final int DPD_CAT_GIFT = CONTAINERS + 7;
   public static final int DPD_TEST_PAPER = SINGLE_USE + 15;
   public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
-  public static final int DPD_EXTRACTION_FLASK = ARTIFACTS + 23;
   public static final int DPD_ARMOR_SORCERESS = ARMOR + 9;
   public static final int DPD_HIGHLY_TOXIC_POTION = POTIONS + 12;
-  public static final int DPD_URN_OF_SHADOW = ARTIFACTS + 24;
-  public static final int DPD_DEMONIC_SKULL = ARTIFACTS + 25;
-  public static final int DPD_UNHOLY_BLOOD = ARTIFACTS + 26;
-  public static final int DPD_MASK_OF_MADNESS = ARTIFACTS + 27;
-  public static final int DPD_ASTROLABE = ARTIFACTS + 28;
-  public static final int DPD_RIEMANNIAN_SHIELD = ARTIFACTS + 29;
-  public static final int DPD_GOLD_PLATE_STATUE = ARTIFACTS + 30;
-  public static final int DPD_BONE_HAND = ARTIFACTS + 31;
+
 
   public static final int DPD_DWARF_CROWN = SINGLE_USE + 16;
 

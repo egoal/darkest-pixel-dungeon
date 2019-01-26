@@ -409,6 +409,11 @@ public class DriedRose extends Artifact {
     }
 
     @Override
+    public boolean isFollower() {
+      return true;
+    }
+
+    @Override
     protected boolean act() {
       // time up, die...
       if ((timeLeft_ -= TICK) <= 0) {

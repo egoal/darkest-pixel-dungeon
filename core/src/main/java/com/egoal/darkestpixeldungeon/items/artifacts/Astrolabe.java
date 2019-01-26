@@ -6,7 +6,6 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
-import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
@@ -24,7 +23,6 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
-import com.egoal.darkestpixeldungeon.sprites.MobSprite;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -43,7 +41,7 @@ import java.util.ArrayList;
 
 public class Astrolabe extends Artifact {
   {
-    image = ItemSpriteSheet.DPD_ASTROLABE;
+    image = ItemSpriteSheet.ASTROLABE;
     unique = true;
     bones = false;
     defaultAction = AC_INVOKE;

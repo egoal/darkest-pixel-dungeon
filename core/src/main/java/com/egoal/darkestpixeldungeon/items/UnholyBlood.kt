@@ -8,7 +8,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
 class UnholyBlood : Item() {
     init {
-        image = ItemSpriteSheet.DPD_UNHOLY_BLOOD
+        image = ItemSpriteSheet.UNHOLY_BLOOD
         unique = true
     }
 

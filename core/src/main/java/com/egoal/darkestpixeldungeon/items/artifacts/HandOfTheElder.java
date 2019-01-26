@@ -5,18 +5,12 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.blobs.ConfusionGas;
-import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
-import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff;
-import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
-import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shock;
 import com.egoal.darkestpixeldungeon.actors.buffs.Slow;
@@ -35,14 +29,12 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfFuror;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfHaste;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfMight;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfTenacity;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.CellSelector;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -57,15 +49,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import javax.microedition.khronos.opengles.GL;
-
 /**
  * Created by 93942 on 10/17/2018.
  */
 
 public class HandOfTheElder extends Artifact {
   {
-    image = ItemSpriteSheet.DPD_BONE_HAND;
+    image = ItemSpriteSheet.BONE_HAND;
 
     levelCap = 10;
 

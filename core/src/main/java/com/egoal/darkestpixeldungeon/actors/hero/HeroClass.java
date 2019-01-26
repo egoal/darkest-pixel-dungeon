@@ -40,6 +40,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
+import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UnstableSpellbook;
@@ -170,6 +171,8 @@ public enum HeroClass {
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
+
+    (new HandleOfAbyss()).random().collect();
   }
 
   private static void initDebug(Hero hero) {

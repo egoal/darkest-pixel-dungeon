@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.effects.Wound;
@@ -357,8 +358,8 @@ public abstract class Mob extends Char {
         }
       }
 
-      if (newPath) 
-        path = Dungeon.findPath(this, pos, target, Level.passable, 
+      if (newPath)
+        path = Dungeon.findPath(this, pos, target, Level.passable,
                 Level.fieldOfView);
 
       // if the path is too long, don't go there
@@ -377,7 +378,8 @@ public abstract class Mob extends Char {
   }
 
   protected boolean getFurther(int target) {
-    int step = Dungeon.flee(this, pos, target, Level.passable, Level.fieldOfView);
+    int step = Dungeon.flee(this, pos, target, Level.passable, Level
+            .fieldOfView);
     if (step != -1) {
       move(step);
       return true;
@@ -481,6 +483,10 @@ public abstract class Mob extends Char {
     return !enemySeen && enemy == Dungeon.hero;
   }
 
+  public boolean isFollower() {
+    return buff(Dementage.class) != null;
+  }
+  
   public void aggro(Char ch) {
     enemy = ch;
     if (state != PASSIVE) {

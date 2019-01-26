@@ -51,6 +51,7 @@ public class Assets {
   public static final String MINSTREL = ACTORS + "minstrel.png";
   public static final String QUESTIONER = ACTORS + "questioner.png";
   public static final String SPD_BATTLE_MAGE = ACTORS + "spd_battle_mage.png";
+  public static final String ABYSS_HERO = ACTORS+ "abyss_hero.png";
 
   // shop keeper
   public static final String KEEPER = ACTORS + "shopkeeper.png";

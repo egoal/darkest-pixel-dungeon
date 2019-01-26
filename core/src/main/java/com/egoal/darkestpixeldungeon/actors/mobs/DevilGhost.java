@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
@@ -88,6 +89,11 @@ public class DevilGhost extends Wraith {
     }
   }
 
+  @Override
+  public void add(Buff buff) {
+    //in other words, can't be directly affected by buffs/debuffs.
+  }
+  
   // sprite
   public static class DevilGhostSprite extends MobSprite {
 
