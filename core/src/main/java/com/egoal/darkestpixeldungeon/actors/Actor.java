@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors;
 
 import android.util.SparseArray;
+
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
@@ -120,9 +121,8 @@ public abstract class Actor implements Bundlable {
 
   public static void fixTime() {
 
-    if (Dungeon.hero != null && all.contains(Dungeon.hero)) {
-      Statistics.duration += now;
-    }
+    if (Dungeon.hero != null && all.contains(Dungeon.hero))
+      Statistics.INSTANCE.setDuration(Statistics.INSTANCE.getDuration() + now);
 
     float min = Float.MAX_VALUE;
     for (Actor a : all) {
@@ -139,9 +139,6 @@ public abstract class Actor implements Bundlable {
   public static void init() {
 
     add(Dungeon.hero);
-    // add hero followers
-//		for(Char c: Dungeon.hero.followers_)
-//			add(c);
 
     for (Mob mob : Dungeon.level.mobs) {
       add(mob);
@@ -229,7 +226,7 @@ public abstract class Actor implements Bundlable {
       } else {
         doNext = false;
       }
-      
+
     } while (doNext);
   }
 

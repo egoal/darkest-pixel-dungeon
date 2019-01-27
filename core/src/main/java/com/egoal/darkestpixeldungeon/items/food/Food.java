@@ -103,7 +103,7 @@ public class Food extends Item {
 
       hero.spend(TIME_TO_EAT);
 
-      Statistics.foodEaten++;
+      Statistics.INSTANCE.setFoodEaten(Statistics.INSTANCE.getFoodEaten()+1);
       Badges.validateFoodEaten();
 
     }

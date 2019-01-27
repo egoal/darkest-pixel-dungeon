@@ -115,7 +115,7 @@ public class Piranha extends Mob {
     Dungeon.level.drop(new MysteryMeat(), pos).sprite.drop();
     super.die(cause);
 
-    Statistics.piranhasKilled++;
+    Statistics.INSTANCE.setPiranhasKilled(Statistics.INSTANCE.getPiranhasKilled()+1);
     Badges.validatePiranhasKilled();
   }
 

@@ -143,13 +143,13 @@ public class UnstableSpellbook extends Artifact {
 
   @Override
   public Item upgrade() {
+    super.upgrade();
+
     chargeCap = (((level() + 1) / 2) + 3);
+    if (level() >= levelCap)
+      scrolls.clear();
 
-    //for artifact transmutation.
-    while (scrolls.size() > (levelCap - 1 - level()))
-      scrolls.remove(0);
-
-    return super.upgrade();
+    return this;
   }
 
   @Override
@@ -166,11 +166,6 @@ public class UnstableSpellbook extends Artifact {
         for (int i = 0; i < 3 && i < scrolls.size(); ++i) {
           desc += "\n" + Messages.get(scrolls.get(i), "name");
         }
-
-//        desc += "\n" + Messages.get(scrolls.get(0), "name");
-//        if (scrolls.size() > 1) {
-//          desc += "\n" + Messages.get(scrolls.get(1), "name");
-//        }
       }
 
     return desc;

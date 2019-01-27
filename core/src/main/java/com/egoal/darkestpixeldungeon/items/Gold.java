@@ -71,9 +71,10 @@ public class Gold extends Item {
       if (greedyCollect == 0)
         greedyCollect = 1;
     }
-    
-    Dungeon.gold += quantity+greedyCollect;
-    Statistics.goldCollected += quantity+greedyCollect;
+
+    Dungeon.gold += quantity + greedyCollect;
+    Statistics.INSTANCE.setGoldCollected(Statistics.INSTANCE.getGoldCollected
+            () + quantity + greedyCollect);
     Badges.validateGoldCollected();
 
     MasterThievesArmband.Thievery thievery = hero.buff(MasterThievesArmband
@@ -82,11 +83,12 @@ public class Gold extends Item {
       thievery.collect(quantity);
 
     GameScene.pickUp(this);
-    
-    
-    if(greedyCollect!=0) {
-      hero.sprite.showStatus(CharSprite.NEUTRAL, "%+d(%+d)", quantity, greedyCollect);
-    }else{
+
+
+    if (greedyCollect != 0) {
+      hero.sprite.showStatus(CharSprite.NEUTRAL, "%+d(%+d)", quantity, 
+              greedyCollect);
+    } else {
       hero.sprite.showStatus(CharSprite.NEUTRAL, TXT_VALUE, quantity);
     }
     hero.spendAndNext(TIME_TO_PICK_UP);

@@ -119,7 +119,7 @@ public enum Rankings {
   }
 
   private int score(boolean win) {
-    return (Statistics.goldCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon
+    return (Statistics.INSTANCE.getGoldCollected() + Dungeon.hero.lvl * (win ? 26 : Dungeon
             .depth) * 100) * (win ? 2 : 1);
   }
 
@@ -151,7 +151,7 @@ public enum Rankings {
 
     //save stats
     Bundle stats = new Bundle();
-    Statistics.storeInBundle(stats);
+    Statistics.INSTANCE.storeInBundle(stats);
     rec.gameData.put(STATS, stats);
 
     //save badges
@@ -196,7 +196,7 @@ public enum Rankings {
 
     Dungeon.hero = (Hero) data.get(HERO);
 
-    Statistics.restoreFromBundle(data.getBundle(STATS));
+    Statistics.INSTANCE.restoreFromBundle(data.getBundle(STATS));
 
   }
 

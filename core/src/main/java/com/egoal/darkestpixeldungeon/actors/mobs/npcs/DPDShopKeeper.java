@@ -475,7 +475,7 @@ public class DPDShopKeeper extends NPC {
 
         final MasterThievesArmband.Thievery t = Dungeon.hero.buff
                 (MasterThievesArmband.Thievery.class);
-        if (t != null) {
+        if (t != null && !t.isCursed()) {
           final float chance = t.stealChance(price);
           RedButton btnSteal = new RedButton(Messages.get(DPDShopKeeper
                           .class, "steal",

@@ -416,7 +416,7 @@ public class Heap implements Bundlable {
 
         destroy();
 
-        Statistics.potionsCooked++;
+        Statistics.INSTANCE.setPotionsCooked(Statistics.INSTANCE.getPotionsCooked()+1); 
         Badges.validatePotionsCooked();
 
         potion = Generator.random(Generator.Category.POTION);
@@ -427,8 +427,8 @@ public class Heap implements Bundlable {
         Class<? extends Item> itemClass = proto.alchemyClass;
 
         destroy();
-
-        Statistics.potionsCooked++;
+        
+        Statistics.INSTANCE.setPotionsCooked(Statistics.INSTANCE.getPotionsCooked()+1);
         Badges.validatePotionsCooked();
 
         if (itemClass == null) {

@@ -110,9 +110,6 @@ public abstract class Level implements Bundlable {
   protected int height;
   protected int length;
 
-  protected static final float TIME_TO_RESPAWN = 45;
-  protected static final float TIME_TO_RESPAWN_DARK = 30;
-
   public int version;
   public int[] map;
   public boolean[] visited;
@@ -270,7 +267,7 @@ public abstract class Level implements Bundlable {
           feeling = Feeling.WATER;
         else if (p < 0.35)
           feeling = Feeling.GRASS;
-
+        
         // give extra torches
         int torchCount = 0;
         int torchSpawnTime = 10;
@@ -596,9 +593,20 @@ public abstract class Level implements Bundlable {
     return null;
   }
 
-  protected float respawnTime() {
-    return Dungeon.level.feeling == Feeling.DARK || Statistics.amuletObtained ?
-            TIME_TO_RESPAWN_DARK : TIME_TO_RESPAWN;
+  protected static final float TIME_TO_RESPAWN = 45;
+  protected static final float TIME_TO_RESPAWN_DARK = 30;
+
+  private float respawnTime() {
+    switch (Statistics.INSTANCE.getClock().getState()) {
+      case Day:
+        return 50;
+      case Night:
+        return 40;
+      case MidNight:
+        return 30;
+      default:
+        return 10; // never come here
+    }
   }
 
   public Actor respawner() {
@@ -618,7 +626,7 @@ public abstract class Level implements Bundlable {
           if (Dungeon.hero.isAlive() && mob.pos != -1 && distance(Dungeon
                   .hero.pos, mob.pos) >= 4) {
             GameScene.add(mob);
-            if (Statistics.amuletObtained) {
+            if (Statistics.INSTANCE.getAmuletObtained()) {
               mob.beckon(Dungeon.hero.pos);
             }
           }
@@ -1217,7 +1225,7 @@ public abstract class Level implements Bundlable {
     if (tile >= Terrain.WATER_TILES) {
       return tileName(Terrain.WATER);
     }
-    if(tile==Terrain.HIGH_GRASS_COLLECTED)
+    if (tile == Terrain.HIGH_GRASS_COLLECTED)
       return tileName(Terrain.HIGH_GRASS);
 
     if (tile != Terrain.CHASM && (Terrain.flags[tile] & Terrain.PIT) != 0) {

@@ -52,7 +52,8 @@ public class Bones {
 
     //heroes which have won the game, who die far above their farthest depth,
     // or who are challenged drop no bones.
-    if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth 
+    if (Statistics.INSTANCE.getAmuletObtained() || 
+            (Statistics.INSTANCE.getDeepestFloor() - 5) >= depth 
             || Dungeon.challenges > 0) {
       depth = -1;
       return;

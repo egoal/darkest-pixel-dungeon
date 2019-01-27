@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss
@@ -33,7 +34,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         else
             imitateHeroStatus()
 
-        Instance = this // assign instance 
+        addResistances(Damage.Element.LIGHT, 0.5f)
+        addResistances(Damage.Element.SHADOW, 1.25f)
     }
 
     private var timeLeft = 0f
@@ -50,8 +52,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     private fun imitateHeroStatus() {
         level = Dungeon.hero.lvl / 2
-        defenseSkill = 10 + Dungeon.hero.lvl
-        HT = Dungeon.hero.HT
+        defenseSkill = 5 + Dungeon.hero.lvl
+        HT = Math.max(Dungeon.hero.HT / 2, Dungeon.hero.HP)
         HP = HT
 
         timeLeft = Float.MAX_VALUE // infinity
@@ -62,7 +64,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     }
 
     override fun isFollower(): Boolean = true
-    
+
     override fun attackSkill(target: Char): Int = 10 + level * 2
 
     override fun giveDamage(enemy: Char): Damage {
@@ -76,7 +78,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     }
 
     override fun defendDamage(dmg: Damage): Damage {
-        dmg.value -= Random.NormalIntRange(0, level * 2)
+        dmg.value -= Random.NormalIntRange(0, level)
         return dmg
     }
 
@@ -123,7 +125,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     // strengthen
     override fun attackProc(dmg: Damage): Damage {
         if (!hostile) {
-            val porton = dmg.value.toFloat() / HT.toFloat()
+            val porton = dmg.value.toFloat() / 2 / HT.toFloat()
             Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(porton)
         }
 
@@ -143,24 +145,29 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(TIME_LEFT, timeLeft)
+        bundle.put(ALLY, ally)
+        bundle.put(HOSTILE, hostile)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         timeLeft = bundle.getFloat(TIME_LEFT)
+        ally = bundle.getBoolean(ALLY)
+        hostile = bundle.getBoolean(HOSTILE)
     }
 
     override fun die(cause: Any?) {
         super.die(cause)
 
         HandleOfAbyss.setDefeated()
-        Instance = null // clear instance
     }
 
     companion object {
         private const val TIME_LEFT = "time-left"
+        private const val ALLY = "ally"
+        private const val HOSTILE = "hostile"
 
-        var Instance: AbyssHero? = null
+        fun Instance(): AbyssHero? = Dungeon.level.mobs.find { it is AbyssHero } as AbyssHero?
 
         class Sprite : MobSprite() {
             init {

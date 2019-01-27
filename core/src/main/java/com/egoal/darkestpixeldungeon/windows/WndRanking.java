@@ -184,25 +184,25 @@ public class WndRanking extends WndTabbed {
       pos += GAP;
 
       pos = statSlot(this, Messages.get(this, "duration"), Integer.toString(
-              (int) Statistics.duration), pos);
+              (int) Statistics.INSTANCE.getDuration()), pos);
 
       pos += GAP;
 
       pos = statSlot(this, Messages.get(this, "depth"), Integer.toString
-              (Statistics.deepestFloor), pos);
+              (Statistics.INSTANCE.getDeepestFloor()), pos);
       pos = statSlot(this, Messages.get(this, "enemies"), Integer.toString
-              (Statistics.enemiesSlain), pos);
+              (Statistics.INSTANCE.getEnemiesSlain()), pos);
       pos = statSlot(this, Messages.get(this, "gold"), Integer.toString
-              (Statistics.goldCollected), pos);
+              (Statistics.INSTANCE.getGoldCollected()), pos);
 
       pos += GAP;
 
       pos = statSlot(this, Messages.get(this, "food"), Integer.toString
-              (Statistics.foodEaten), pos);
+              (Statistics.INSTANCE.getFoodEaten()), pos);
       pos = statSlot(this, Messages.get(this, "alchemy"), Integer.toString
-              (Statistics.potionsCooked), pos);
+              (Statistics.INSTANCE.getPotionsCooked()), pos);
       pos = statSlot(this, Messages.get(this, "ankhs"), Integer.toString
-              (Statistics.ankhsUsed), pos);
+              (Statistics.INSTANCE.getAnkhsUsed()), pos);
     }
 
     private float statSlot(Group parent, String label, String value, float 

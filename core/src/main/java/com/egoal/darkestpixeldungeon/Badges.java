@@ -263,22 +263,23 @@ public class Badges {
   public static void validateMonstersSlain() {
     Badge badge = null;
 
-    if (!local.contains(Badge.MONSTERS_SLAIN_1) && Statistics.enemiesSlain >=
+    if (!local.contains(Badge.MONSTERS_SLAIN_1) && Statistics.INSTANCE
+            .getEnemiesSlain() >=
             10) {
       badge = Badge.MONSTERS_SLAIN_1;
       local.add(badge);
     }
-    if (!local.contains(Badge.MONSTERS_SLAIN_2) && Statistics.enemiesSlain >=
+    if (!local.contains(Badge.MONSTERS_SLAIN_2) && Statistics.INSTANCE.getEnemiesSlain() >=
             50) {
       badge = Badge.MONSTERS_SLAIN_2;
       local.add(badge);
     }
-    if (!local.contains(Badge.MONSTERS_SLAIN_3) && Statistics.enemiesSlain >=
+    if (!local.contains(Badge.MONSTERS_SLAIN_3) && Statistics.INSTANCE.getEnemiesSlain() >=
             150) {
       badge = Badge.MONSTERS_SLAIN_3;
       local.add(badge);
     }
-    if (!local.contains(Badge.MONSTERS_SLAIN_4) && Statistics.enemiesSlain >=
+    if (!local.contains(Badge.MONSTERS_SLAIN_4) && Statistics.INSTANCE.getEnemiesSlain() >=
             250) {
       badge = Badge.MONSTERS_SLAIN_4;
       local.add(badge);
@@ -290,22 +291,22 @@ public class Badges {
   public static void validateGoldCollected() {
     Badge badge = null;
 
-    if (!local.contains(Badge.GOLD_COLLECTED_1) && Statistics.goldCollected 
+    if (!local.contains(Badge.GOLD_COLLECTED_1) && Statistics.INSTANCE.getGoldCollected() 
             >= 100) {
       badge = Badge.GOLD_COLLECTED_1;
       local.add(badge);
     }
-    if (!local.contains(Badge.GOLD_COLLECTED_2) && Statistics.goldCollected 
+    if (!local.contains(Badge.GOLD_COLLECTED_2) && Statistics.INSTANCE.getGoldCollected() 
             >= 500) {
       badge = Badge.GOLD_COLLECTED_2;
       local.add(badge);
     }
-    if (!local.contains(Badge.GOLD_COLLECTED_3) && Statistics.goldCollected 
+    if (!local.contains(Badge.GOLD_COLLECTED_3) && Statistics.INSTANCE.getGoldCollected() 
             >= 2500) {
       badge = Badge.GOLD_COLLECTED_3;
       local.add(badge);
     }
-    if (!local.contains(Badge.GOLD_COLLECTED_4) && Statistics.goldCollected 
+    if (!local.contains(Badge.GOLD_COLLECTED_4) && Statistics.INSTANCE.getGoldCollected() 
             >= 7500) {
       badge = Badge.GOLD_COLLECTED_4;
       local.add(badge);
@@ -363,19 +364,19 @@ public class Badges {
   public static void validateFoodEaten() {
     Badge badge = null;
 
-    if (!local.contains(Badge.FOOD_EATEN_1) && Statistics.foodEaten >= 10) {
+    if (!local.contains(Badge.FOOD_EATEN_1) && Statistics.INSTANCE.getFoodEaten() >= 10) {
       badge = Badge.FOOD_EATEN_1;
       local.add(badge);
     }
-    if (!local.contains(Badge.FOOD_EATEN_2) && Statistics.foodEaten >= 20) {
+    if (!local.contains(Badge.FOOD_EATEN_2) && Statistics.INSTANCE.getFoodEaten() >= 20) {
       badge = Badge.FOOD_EATEN_2;
       local.add(badge);
     }
-    if (!local.contains(Badge.FOOD_EATEN_3) && Statistics.foodEaten >= 30) {
+    if (!local.contains(Badge.FOOD_EATEN_3) && Statistics.INSTANCE.getFoodEaten() >= 30) {
       badge = Badge.FOOD_EATEN_3;
       local.add(badge);
     }
-    if (!local.contains(Badge.FOOD_EATEN_4) && Statistics.foodEaten >= 40) {
+    if (!local.contains(Badge.FOOD_EATEN_4) && Statistics.INSTANCE.getFoodEaten() >= 40) {
       badge = Badge.FOOD_EATEN_4;
       local.add(badge);
     }
@@ -386,22 +387,22 @@ public class Badges {
   public static void validatePotionsCooked() {
     Badge badge = null;
 
-    if (!local.contains(Badge.POTIONS_COOKED_1) && Statistics.potionsCooked 
+    if (!local.contains(Badge.POTIONS_COOKED_1) && Statistics.INSTANCE.getPotionsCooked() 
             >= 3) {
       badge = Badge.POTIONS_COOKED_1;
       local.add(badge);
     }
-    if (!local.contains(Badge.POTIONS_COOKED_2) && Statistics.potionsCooked 
+    if (!local.contains(Badge.POTIONS_COOKED_2) && Statistics.INSTANCE.getPotionsCooked() 
             >= 6) {
       badge = Badge.POTIONS_COOKED_2;
       local.add(badge);
     }
-    if (!local.contains(Badge.POTIONS_COOKED_3) && Statistics.potionsCooked 
+    if (!local.contains(Badge.POTIONS_COOKED_3) && Statistics.INSTANCE.getPotionsCooked() 
             >= 9) {
       badge = Badge.POTIONS_COOKED_3;
       local.add(badge);
     }
-    if (!local.contains(Badge.POTIONS_COOKED_4) && Statistics.potionsCooked 
+    if (!local.contains(Badge.POTIONS_COOKED_4) && Statistics.INSTANCE.getPotionsCooked() 
             >= 12) {
       badge = Badge.POTIONS_COOKED_4;
       local.add(badge);
@@ -413,7 +414,7 @@ public class Badges {
   public static void validatePiranhasKilled() {
     Badge badge = null;
 
-    if (!local.contains(Badge.PIRANHAS) && Statistics.piranhasKilled >= 6) {
+    if (!local.contains(Badge.PIRANHAS) && Statistics.INSTANCE.getPiranhasKilled() >= 6) {
       badge = Badge.PIRANHAS;
       local.add(badge);
     }
@@ -877,8 +878,8 @@ public class Badges {
   }
 
   public static void validateNoKilling() {
-    if (!local.contains(Badge.NO_MONSTERS_SLAIN) && Statistics
-            .completedWithNoKilling) {
+    if (!local.contains(Badge.NO_MONSTERS_SLAIN) && Statistics.INSTANCE
+            .getCompletedWithNoKilling()) {
       Badge badge = Badge.NO_MONSTERS_SLAIN;
       local.add(badge);
       displayBadge(badge);
@@ -894,7 +895,7 @@ public class Badges {
   }
 
   public static void validateNightHunter() {
-    if (!local.contains(Badge.NIGHT_HUNTER) && Statistics.nightHunt >= 15) {
+    if (!local.contains(Badge.NIGHT_HUNTER) && Statistics.INSTANCE.getNightHunt() >= 15) {
       Badge badge = Badge.NIGHT_HUNTER;
       local.add(badge);
       displayBadge(badge);

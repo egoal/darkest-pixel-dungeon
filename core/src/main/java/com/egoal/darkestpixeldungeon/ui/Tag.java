@@ -37,11 +37,15 @@ public class Tag extends Button {
   public Tag(int color) {
     super();
 
+    setRGB(color);
+  }
+  
+  protected void setRGB(int color){
     this.r = (color >> 16) / 255f;
     this.g = ((color >> 8) & 0xFF) / 255f;
     this.b = (color & 0xFF) / 255f;
   }
-
+  
   @Override
   protected void createChildren() {
 
@@ -51,7 +55,7 @@ public class Tag extends Button {
     bg.hardlight(r, g, b);
     add(bg);
   }
-
+  
   @Override
   protected void layout() {
 

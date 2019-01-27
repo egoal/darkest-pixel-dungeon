@@ -72,8 +72,8 @@ public class Amulet extends Item {
         hero.recoverSanity((int) Pressure.MAX_PRESSURE);
       everPicked = true;
 
-      if (!Statistics.amuletObtained) {
-        Statistics.amuletObtained = true;
+      if (!Statistics.INSTANCE.getAmuletObtained()) {
+        Statistics.INSTANCE.setAmuletObtained(true);
         Badges.validateVictory();
         hero.spend(-TIME_TO_PICK_UP);
 

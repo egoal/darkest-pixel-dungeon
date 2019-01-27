@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.AbyssHero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
@@ -32,8 +33,8 @@ class HandleOfAbyss : Artifact() {
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
 
-        // if (isEquipped(hero) && charge == chargeCap && !cursed && defeated)
-        actions.add(AC_SUMMON)
+        if (isEquipped(hero) && charge == chargeCap)
+            actions.add(AC_SUMMON)
 
         return actions
     }
@@ -42,34 +43,36 @@ class HandleOfAbyss : Artifact() {
         super.execute(hero, action)
 
         if (action == AC_SUMMON) {
-            if (AbyssHero.Instance != null) {
+            if (!isEquipped(hero))
+                GLog.w(Messages.get(Artifact::class.java, "need_to_equip"))
+            else if (AbyssHero.Instance() != null)
                 GLog.w(Messages.get(this, "already-summoned"))
-                return
+            else {
+                // check pos 
+                val avpos = PathFinder.NEIGHBOURS8.map { hero.pos + it }.filter {
+                    Actor.findChar(it) == null && (Level.passable[it] || Level.avoid[it])
+                }
+
+                if (avpos.isEmpty()) {
+                    GLog.w(Messages.get(this, "cannot-summon-here"))
+                } else {
+                    val ah = AbyssHero(level(), defeated && !cursed).apply {
+                        pos = Random.element(avpos)
+                    }
+
+                    GameScene.add(ah, 1f)
+                    CellEmitter.get(ah.pos).burst(ShadowParticle.CURSE, 5)
+                    ah.onSpawned()
+                    Sample.INSTANCE.play(Assets.SND_BURNING)
+
+                    hero.spend(1f)
+                    hero.busy()
+                    hero.sprite.operate(hero.pos)
+
+                    charge = 0
+                    updateQuickslot()
+                }
             }
-
-            // check pos 
-            val avpos = PathFinder.NEIGHBOURS8.map { hero.pos + it }.filter {
-                Actor.findChar(it) == null && (Level.passable[it] || Level.avoid[it])
-            }
-
-            if (avpos.isEmpty()) {
-                GLog.w(Messages.get(this, "cannot-summon-here"))
-                return
-            }
-
-            val ah = AbyssHero(level(), defeated && !cursed).apply {
-                pos = Random.element(avpos)
-            }
-
-            GameScene.add(ah, 1f)
-            CellEmitter.get(ah.pos).burst(ShadowParticle.CURSE, 5)
-            ah.onSpawned()
-
-            hero.spend(1f)
-            hero.busy()
-            hero.sprite.operate(hero.pos)
-
-            Sample.INSTANCE.play(Assets.SND_BURNING)
         }
     }
 
@@ -107,6 +110,20 @@ class HandleOfAbyss : Artifact() {
 
     inner class Recharge : ArtifactBuff() {
         override fun act(): Boolean {
+            val lock = target.buff(LockedFloor::class.java)
+            if ((lock == null || lock.regenOn()) && charge < chargeCap && !cursed) {
+                partialCharge += 100f / 250f
+                if (partialCharge > 1f) {
+                    charge++
+                    partialCharge--
+                    if (charge == chargeCap) {
+                        partialCharge = 0f
+                        GLog.p(Messages.get(HandleOfAbyss::class.java, "charged"))
+                    }
+                }
+            }
+
+            updateQuickslot()
             spend(Actor.TICK)
 
             return true

@@ -115,7 +115,7 @@ public class HornOfPlenty extends Artifact {
         // mental
         hero.recoverSanity(Random.Int(1, chargesToUse));
 
-        Statistics.foodEaten++;
+        Statistics.INSTANCE.setFoodEaten(Statistics.INSTANCE.getFoodEaten()+1);
 
         charge -= chargesToUse;
 

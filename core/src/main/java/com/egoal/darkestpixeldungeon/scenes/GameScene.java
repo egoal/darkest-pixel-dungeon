@@ -231,7 +231,7 @@ public class GameScene extends PixelScene {
 
     for (Mob mob : Dungeon.level.mobs) {
       addMobSprite(mob);
-      if (Statistics.amuletObtained) {
+      if (Statistics.INSTANCE.getAmuletObtained()) {
         mob.beckon(Dungeon.hero.pos);
       }
     }
@@ -364,7 +364,7 @@ public class GameScene extends PixelScene {
     Camera.main.target = hero;
 
     if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
-      if (Dungeon.depth < Statistics.deepestFloor) {
+      if (Dungeon.depth < Statistics.INSTANCE.getDeepestFloor()) {
         GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth);
       } else {
         GLog.h(Messages.get(this, "welcome"), Dungeon.depth);

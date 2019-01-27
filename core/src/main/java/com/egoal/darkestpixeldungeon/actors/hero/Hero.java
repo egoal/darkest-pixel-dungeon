@@ -220,17 +220,26 @@ public class Hero extends Char {
     if (buff(SharpVision.class) != null) return seeDistance();
 
     int vd = Dungeon.level.viewDistance;
-    if (Dungeon.level.feeling == Level.Feeling.DARK)
-      vd /= 2;
 
-    if (buff(Drunk.class) != null)
-      vd -= 1;
+    switch (Statistics.INSTANCE.getClock().getState()) {
+      case Day:
+        break;
+      case Night:
+        vd /= 2;
+        if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) vd += 1;
+        break;
+      case MidNight:
+        vd /= 2;
+        vd -= 1;
+        if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) vd += 1;        
+        break;
+    }
 
     if (buff(Light.class) != null)
       vd = Math.max(vd, Light.DISTANCE);
 
-    if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
-      vd += 1;
+    if (buff(Drunk.class) != null)
+      vd -= 1;
 
     if (buff(HelmetCrusader.Protect.class) != null)
       vd -= 1;
@@ -241,9 +250,6 @@ public class Hero extends Char {
   @Override
   public int seeDistance() {
     int sd = Dungeon.level.seeDistance;
-
-    if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION))
-      sd += 1;
 
     if (buff(HelmetCrusader.Protect.class) != null)
       sd -= 1;
@@ -263,21 +269,22 @@ public class Hero extends Char {
     return Pair.create(true, "");
   }
 
-  public float regenerateSpeed(){
-    if(isStarving()) return 0f;
+  public float regenerateSpeed() {
+    if (isStarving()) return 0f;
 
     float reg = regeneration;
-    ChaliceOfBlood.chaliceRegen cr = Dungeon.hero.buff(ChaliceOfBlood.chaliceRegen.class);
-    if(cr!=null) {
+    ChaliceOfBlood.chaliceRegen cr = Dungeon.hero.buff(ChaliceOfBlood
+            .chaliceRegen.class);
+    if (cr != null) {
       if (!cr.isCursed())
         reg += HT * 0.004 * Math.pow(1.075, cr.itemLevel());
       else
         reg /= 2;
     }
-    
+
     return reg;
   }
-  
+
   private static final String ATTACK = "attackSkill";
   private static final String DEFENSE = "defenseSkill";
   private static final String STRENGTH = "STR";
@@ -349,8 +356,8 @@ public class Hero extends Char {
       if (mob.isFollower()) {
         level.mobs.remove(mob);
         followers_.add(mob);
-        
-        if(followers_.size()==MAX_FOLLOWERS)
+
+        if (followers_.size() == MAX_FOLLOWERS)
           break;
       }
     }
@@ -358,18 +365,23 @@ public class Hero extends Char {
 
   public void restoreFollowers(Level level, int heropos) {
     Log.d("dpd", Messages.format("restoring followers: %d", followers_.size()));
-    final int MAX_TRAILS = 100;  // avoid hang...
-    int cntTrails = 0;
-    for (Char c : followers_) {
+
+    ArrayList<Integer> avls = new ArrayList<>();
+    for (int i : PathFinder.NEIGHBOURS8) {
+      int cell = heropos + i;
+      if (!Level.solid[cell] && level.findMob(cell) == null)
+        avls.add(cell);
+    }
+    Collections.shuffle(avls);
+
+    for (int i = 0; i < avls.size() && i < followers_.size(); ++i) {
+      Char c = followers_.get(i);
       if (c != null) {
         level.mobs.add((Mob) c);
-        do {
-          c.pos = heropos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-          if (++cntTrails >= MAX_TRAILS)
-            break;
-        } while (Level.solid[c.pos] || level.findMob(c.pos) != null);
+        c.pos = avls.get(i);
       }
     }
+
     followers_.clear();
   }
 
@@ -501,7 +513,7 @@ public class Hero extends Char {
         dmg = belongings.weapon.defendDamage(dmg);
 
       if (dmg.isFeatured(Damage.Feature.RANGED) &&
-              buff(HelmetCrusader.Protect.class) != null && Random.Float() < 
+              buff(HelmetCrusader.Protect.class) != null && Random.Float() <
               0.15f)
         dmg.value = 0;
 
@@ -1716,7 +1728,7 @@ public class Hero extends Char {
 
       Sample.INSTANCE.play(Assets.SND_TELEPORT);
       GLog.w(Messages.get(this, "revive"));
-      Statistics.ankhsUsed++;
+      Statistics.INSTANCE.setAnkhsUsed(Statistics.INSTANCE.getAnkhsUsed() + 1);
 
       DriedRose.GhostHero gh = DriedRose.GhostHero.instance();
       if (gh != null)

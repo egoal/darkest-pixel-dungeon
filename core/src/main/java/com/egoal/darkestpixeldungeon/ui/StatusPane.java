@@ -20,8 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.ui;
 
-import android.database.DatabaseUtils;
-
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
@@ -72,6 +70,8 @@ public class StatusPane extends Component {
   private DangerIndicator danger;
   private BuffIndicator buffs;
   private Compass compass;
+
+  private ClockIndicator clock;
 
   private JournalButton btnJournal;
   private MenuButton btnMenu;
@@ -152,6 +152,9 @@ public class StatusPane extends Component {
     danger = new DangerIndicator();
     add(danger);
 
+    clock = new ClockIndicator();
+    add(clock);
+
     buffs = new BuffIndicator(Dungeon.hero);
     add(buffs);
 
@@ -188,6 +191,8 @@ public class StatusPane extends Component {
 
     danger.setPos(width - danger.width(), 20);
 
+    clock.setPos(width - clock.width(), danger.bottom() + 4);
+
     buffs.setPos(34, 12);
 
     btnJournal.setPos(width - 42, 1);
@@ -199,12 +204,12 @@ public class StatusPane extends Component {
   public void update() {
     super.update();
 
-    if(needsCompassUpdate){
+    if (needsCompassUpdate) {
       needsCompassUpdate = true;
       compass.visible = false;
       compass.update();
     }
-    
+
     float health = Dungeon.hero.HP;
     float shield = Dungeon.hero.SHLD;
     float max = Dungeon.hero.HT;

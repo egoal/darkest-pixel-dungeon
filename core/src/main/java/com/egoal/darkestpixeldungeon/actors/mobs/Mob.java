@@ -514,14 +514,14 @@ public abstract class Mob extends Char {
 
     if (Dungeon.hero.isAlive()) {
       if (hostile) {
-        Statistics.enemiesSlain++;
+        Statistics.INSTANCE.setEnemiesSlain(Statistics.INSTANCE.getEnemiesSlain()+1);
         Badges.validateMonstersSlain();
-        Statistics.qualifiedForNoKilling = false;
+        Statistics.INSTANCE.setQualifiedForNoKilling(false);
 
         if (Dungeon.level.feeling == Level.Feeling.DARK) {
-          Statistics.nightHunt++;
+          Statistics.INSTANCE.setNightHunt(Statistics.INSTANCE.getNightHunt()+1); 
         } else {
-          Statistics.nightHunt = 0;
+          Statistics.INSTANCE.setNightHunt(0);
         }
         Badges.validateNightHunter();
       }

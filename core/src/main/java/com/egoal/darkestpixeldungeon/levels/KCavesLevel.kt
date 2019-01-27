@@ -21,7 +21,7 @@ class KCavesLevel : KRegularLevel() {
         color2 = 0xb9d661
 
         seeDistance = 8
-        viewDistance = 3
+        viewDistance = 4
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_3

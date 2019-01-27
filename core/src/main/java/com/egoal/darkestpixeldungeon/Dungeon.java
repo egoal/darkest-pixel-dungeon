@@ -24,6 +24,7 @@ import android.util.Log;
 
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.Resident;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
@@ -146,7 +147,7 @@ public class Dungeon {
     Potion.initColors();
     Ring.initGems();
 
-    Statistics.reset();
+    Statistics.INSTANCE.reset();
     Journal.reset();
 
     quickslot.reset();
@@ -190,14 +191,11 @@ public class Dungeon {
     Actor.clear();
 
     depth++;
-    if (depth > Statistics.deepestFloor) {
-      Statistics.deepestFloor = depth;
+    if (depth > Statistics.INSTANCE.getDeepestFloor()) {
+      Statistics.INSTANCE.setDeepestFloor(depth);
 
-      if (Statistics.qualifiedForNoKilling) {
-        Statistics.completedWithNoKilling = true;
-      } else {
-        Statistics.completedWithNoKilling = false;
-      }
+      Statistics.INSTANCE.setCompletedWithNoKilling(depth > 1 && 
+              Statistics.INSTANCE.getQualifiedForNoKilling());
     }
 
     Level level;
@@ -257,7 +255,7 @@ public class Dungeon {
         break;
       default:
         level = new DeadEndLevel();
-        Statistics.deepestFloor--;
+        Statistics.INSTANCE.setDeepestFloor(Statistics.INSTANCE.getDeepestFloor()-1);
     }
 
     if (DarkestPixelDungeon.debug())
@@ -266,7 +264,7 @@ public class Dungeon {
     visible = new boolean[level.length()];
     level.create();
 
-    Statistics.qualifiedForNoKilling = !bossLevel();
+    Statistics.INSTANCE.setQualifiedForNoKilling(!bossLevel());
 
     return level;
   }
@@ -311,6 +309,7 @@ public class Dungeon {
     if (respawner != null) {
       Actor.add(level.respawner());
     }
+    Actor.add(new Resident());
 
     hero.pos = pos;
 
@@ -528,7 +527,7 @@ public class Dungeon {
 
       Room.storeRoomsInBundle(bundle);
 
-      Statistics.storeInBundle(bundle);
+      Statistics.INSTANCE.storeInBundle(bundle);
       Journal.storeInBundle(bundle);
       Generator.storeInBundle(bundle);
       KGenerator.INSTANCE.storeInBundle(bundle);
@@ -665,13 +664,13 @@ public class Dungeon {
     gold = bundle.getInt(GOLD);
     depth = bundle.getInt(DEPTH);
 
-    Statistics.restoreFromBundle(bundle);
+    Statistics.INSTANCE.restoreFromBundle(bundle);
     Journal.restoreFromBundle(bundle);
     Generator.restoreFromBundle(bundle);
     KGenerator.INSTANCE.restoreFromBundle(bundle);
-    
+
     droppedItems = new SparseArray<ArrayList<Item>>();
-    for (int i = 2; i <= Statistics.deepestFloor + 1; i++) {
+    for (int i = 2; i <= Statistics.INSTANCE.getDeepestFloor() + 1; i++) {
       ArrayList<Item> dropped = new ArrayList<Item>();
       for (Bundlable b : bundle.getCollection(Messages.format(DROPPED, i))) {
         dropped.add((Item) b);
