@@ -15,13 +15,10 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
 
-class KCavesLevel : KRegularLevel() {
+class CavesLevel : KRegularLevel() {
     init {
         color1 = 0x534f3e
         color2 = 0xb9d661
-
-        seeDistance = 8
-        viewDistance = 4
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_3

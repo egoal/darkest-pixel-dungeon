@@ -166,7 +166,7 @@ public class King extends Mob {
     Dungeon.level.drop(new ArmorKit(), pos).sprite.drop();
     Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
     Dungeon.level.drop(new CrownOfDwarf(), pos).sprite.drop();
-    
+
     super.die(cause);
 
     Badges.validateBossSlain();
@@ -210,7 +210,7 @@ public class King extends Mob {
     PathFinder.buildDistanceMap(pos, passable, undeadsToSummon);
     PathFinder.distance[pos] = Integer.MAX_VALUE;
     int dist = 1;
-    
+
     undeadLabel:
     for (int i = 0; i < undeadsToSummon; i++) {
       do {
@@ -220,7 +220,7 @@ public class King extends Mob {
             Undead undead = new Undead();
             undead.pos = j;
             GameScene.add(undead);
-            if(buff(LifeLink.class)==null){
+            if (buff(LifeLink.class) == null) {
               Buff.prolong(this, LifeLink.class, 10f).linker = undead.id();
             }
 
@@ -311,7 +311,7 @@ public class King extends Mob {
 
     @Override
     public Damage attackProc(Damage damage) {
-      if (Random.Int(MAX_ARMY_SIZE) == 0) {
+      if (Random.Float() < 0.15f) {
         Buff.prolong((Char) damage.to, Paralysis.class, 1);
       }
 

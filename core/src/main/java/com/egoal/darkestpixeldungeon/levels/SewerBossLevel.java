@@ -232,7 +232,7 @@ public class SewerBossLevel extends RegularLevel {
   @Override
   public Group addVisuals() {
     super.addVisuals();
-    // DPDSewerLevel.AddSewerVisuals(this, visuals);
+    SewerLevel.Companion.AddSewerVisuals(this, visuals);
     return visuals;
   }
 

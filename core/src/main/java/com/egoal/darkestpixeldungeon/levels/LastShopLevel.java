@@ -63,8 +63,6 @@ public class LastShopLevel extends RegularLevel {
     feeling = Feeling.CHASM;
     Arrays.fill(map, Terrain.CHASM);
 
-    viewDistance = 4;
-
     initRooms();
 
     int distance;
@@ -238,7 +236,7 @@ public class LastShopLevel extends RegularLevel {
   @Override
   public Group addVisuals() {
     super.addVisuals();
-    CityLevel.addCityVisuals(this, visuals);
+    CityLevel.Companion.AddCityVisuals(this, visuals);
     return visuals;
   }
 }

@@ -11,8 +11,6 @@ class LastLevel : Level() {
     init {
         color1 = 0x801500
         color2 = 0xa68521
-
-        viewDistance = 4
     }
 
     private val MAP_FILE = "data/LastLevel.map"
@@ -75,7 +73,7 @@ class LastLevel : Level() {
 
     override fun addVisuals(): Group {
         super.addVisuals()
-        KHallsLevel.AddHallsVisuals(this, visuals)
+        HallsLevel.AddHallsVisuals(this, visuals)
         return visuals
     }
 

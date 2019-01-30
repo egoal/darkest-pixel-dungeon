@@ -18,13 +18,10 @@ import com.watabou.utils.ColorMath
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-class KSewerLevel : KRegularLevel() {
+class SewerLevel : KRegularLevel() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a
-
-        seeDistance = 8
-        viewDistance = 4
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_1

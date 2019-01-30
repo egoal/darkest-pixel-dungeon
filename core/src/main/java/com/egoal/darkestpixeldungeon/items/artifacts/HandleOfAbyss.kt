@@ -45,6 +45,7 @@ class HandleOfAbyss : Artifact() {
         if (action == AC_SUMMON) {
             if (!isEquipped(hero))
                 GLog.w(Messages.get(Artifact::class.java, "need_to_equip"))
+            else if (charge != chargeCap) GLog.w(Messages.get(this, "no-charge"))
             else if (AbyssHero.Instance() != null)
                 GLog.w(Messages.get(this, "already-summoned"))
             else {

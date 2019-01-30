@@ -11,13 +11,10 @@ import com.watabou.noosa.particles.Emitter
 import com.watabou.noosa.particles.PixelParticle
 import com.watabou.utils.Random
 
-class KCityLevel : KRegularLevel() {
+class CityLevel : KRegularLevel() {
     init {
         color1 = 0x4b6636
         color2 = 0xf2f2f2
-
-        seeDistance = 8
-        viewDistance = 4
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_4

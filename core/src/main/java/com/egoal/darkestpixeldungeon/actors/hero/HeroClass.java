@@ -214,6 +214,8 @@ public enum HeroClass {
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);
+    
+    (new CallysDiary()).collect();
 
     (new DriedRose()).identify().collect();
   }

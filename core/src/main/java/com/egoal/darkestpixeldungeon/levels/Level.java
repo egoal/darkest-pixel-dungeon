@@ -114,12 +114,7 @@ public abstract class Level implements Bundlable {
   public int[] map;
   public boolean[] visited;
   public boolean[] mapped;
-
-  // public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 
-  // 3: 8;
-  public int viewDistance = 4;
-  public int seeDistance = 8;
-
+  
   //FIXME should not be static!
   public static boolean[] fieldOfView;
 

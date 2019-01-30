@@ -6,7 +6,7 @@ import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.books.Book
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary
-import com.egoal.darkestpixeldungeon.items.books.textbook.HeadlessKnightsLengend
+import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.food.Pasty
@@ -295,7 +295,7 @@ object KGenerator {
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
             CallysDiary::class.java to 0f,
-            HeadlessKnightsLengend::class.java to 1f
+            WardenSmithNotes::class.java to 0f 
     ))
 
     // 

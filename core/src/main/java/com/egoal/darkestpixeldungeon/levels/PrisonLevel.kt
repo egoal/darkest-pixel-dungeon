@@ -14,13 +14,10 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Group
 import com.watabou.utils.Random
 
-class KPrisonLevel : KRegularLevel() {
+class PrisonLevel : KRegularLevel() {
     init {
         color1 = 0x6a723d
         color2 = 0x88924c
-
-        viewDistance = 8
-        seeDistance = 4
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_2

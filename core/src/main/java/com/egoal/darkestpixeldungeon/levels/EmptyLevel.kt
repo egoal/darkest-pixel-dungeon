@@ -6,13 +6,10 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Ballista
 import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 
-class KEmptyLevel : KRegularLevel() {
+class EmptyLevel : KRegularLevel() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a
-
-        seeDistance = 8
-        viewDistance = 8
     }
 
     override fun tilesTex(): String = Assets.TILES_SEWERS

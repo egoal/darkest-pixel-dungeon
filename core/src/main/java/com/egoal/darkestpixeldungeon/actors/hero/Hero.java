@@ -219,19 +219,18 @@ public class Hero extends Char {
   public int viewDistance() {
     if (buff(SharpVision.class) != null) return seeDistance();
 
-    int vd = Dungeon.level.viewDistance;
-
+    int vd = 0;
     switch (Statistics.INSTANCE.getClock().getState()) {
       case Day:
+        vd = 6;
         break;
       case Night:
-        vd /= 2;
+        vd = 3;
         if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) vd += 1;
         break;
       case MidNight:
-        vd /= 2;
-        vd -= 1;
-        if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) vd += 1;        
+        vd = 2;
+        if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) vd += 1;
         break;
     }
 
@@ -249,7 +248,7 @@ public class Hero extends Char {
 
   @Override
   public int seeDistance() {
-    int sd = Dungeon.level.seeDistance;
+    int sd = 8;
 
     if (buff(HelmetCrusader.Protect.class) != null)
       sd -= 1;

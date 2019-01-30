@@ -134,7 +134,7 @@ object Statistics {
         }
 
         // special time point would indicate the player
-        val special: Boolean get() = minute in 0..15 && hour in listOf(2, 7, 19, 23)
+        val special: Boolean get() = minute in 0..20 && hour in listOf(2, 7, 19, 23)
         
         fun updateState() {
             val newState = when {

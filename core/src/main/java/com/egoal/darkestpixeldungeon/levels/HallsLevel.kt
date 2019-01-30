@@ -15,13 +15,10 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import javax.microedition.khronos.opengles.GL10
 
-class KHallsLevel : KRegularLevel() {
+class HallsLevel : KRegularLevel() {
     init {
         color1 = 0x801500
         color2 = 0xa68521
-
-        seeDistance = 8
-        viewDistance = Math.max(25 - Dungeon.depth, 1)
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_5

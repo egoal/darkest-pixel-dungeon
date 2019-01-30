@@ -26,8 +26,6 @@ import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
-import com.egoal.darkestpixeldungeon.items.books.textbook
-        .HeadlessKnightsLengend;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
@@ -423,9 +421,8 @@ public class Generator {
 
     Category.BOOK.classes = new Class<?>[]{
             CallysDiary.class,
-            HeadlessKnightsLengend.class,
     };
-    Category.BOOK.probs = new float[]{0, 1,};
+    Category.BOOK.probs = new float[]{0};
   }
 
   public static void reset() {

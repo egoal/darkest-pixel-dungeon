@@ -1,6 +1,5 @@
 package com.egoal.darkestpixeldungeon.actors
 
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 
 class Resident: Actor(){
@@ -21,6 +20,6 @@ class Resident: Actor(){
         lateinit var Instance: Resident
         
         private const val TICK = 1f
-        private const val TIME_SCALE = 3f
+        private const val TIME_SCALE = 1f
     }
 }

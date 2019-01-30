@@ -38,8 +38,6 @@ public class PrisonBossLevel extends Level {
   {
     color1 = 0x6a723d;
     color2 = 0x88924c;
-
-    viewDistance = 3;
   }
 
   public Room rmStart, rmHall, rmExit;
@@ -251,6 +249,15 @@ public class PrisonBossLevel extends Level {
     }
 
     return super.drop(item, cell);
+  }
+
+  @Override
+  public int randomRespawnCell() {
+    int cell;
+    do {
+      cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+    } while (!passable[cell]);
+    return cell;
   }
 
   // place rooms beside a vertical lane
