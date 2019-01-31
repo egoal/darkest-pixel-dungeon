@@ -21,9 +21,8 @@
 package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;

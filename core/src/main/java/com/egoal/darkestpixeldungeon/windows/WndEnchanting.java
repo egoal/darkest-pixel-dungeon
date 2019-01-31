@@ -5,7 +5,7 @@ import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.items.EquipableItem;
-import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
+import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;

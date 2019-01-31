@@ -26,7 +26,7 @@ import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
-import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
+import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.ui.Window;
 
 public class WndChooseWay extends Window {

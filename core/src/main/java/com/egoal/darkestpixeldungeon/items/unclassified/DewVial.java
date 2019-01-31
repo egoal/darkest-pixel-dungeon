@@ -18,20 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items;
+package com.egoal.darkestpixeldungeon.items.unclassified;
 
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
-import com.egoal.darkestpixeldungeon.actors.buffs.FireImbue;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ooze;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -192,7 +191,7 @@ public class DewVial extends Item {
   public void collectDew(Dewdrop dew) {
 
     GLog.i(Messages.get(this, "collected", dew.quantity()));
-    volume += dew.quantity;
+    volume += dew.quantity();
     if (volume >= MAX_VOLUME) {
       volume = MAX_VOLUME;
       GLog.p(Messages.get(this, "full"));

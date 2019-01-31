@@ -24,10 +24,9 @@ import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDImpShopkeeper;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper;
-import com.egoal.darkestpixeldungeon.items.Ankh;
-import com.egoal.darkestpixeldungeon.items.Bomb;
+import com.egoal.darkestpixeldungeon.items.unclassified.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Honeypot;
+import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
@@ -39,10 +38,9 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.MerchantsBeacon;
-import com.egoal.darkestpixeldungeon.items.Stylus;
-import com.egoal.darkestpixeldungeon.items.Torch;
-import com.egoal.darkestpixeldungeon.items.Weightstone;
+import com.egoal.darkestpixeldungeon.items.unclassified.Stylus;
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
+import com.egoal.darkestpixeldungeon.items.unclassified.Weightstone;
 import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.armor.ScaleArmor;
@@ -181,9 +179,6 @@ public class ShopPainter extends Painter {
           itemsToSpawn.add(new Torch());
         break;
     }
-
-    itemsToSpawn.add(new MerchantsBeacon());
-
 
     ChooseBag(Dungeon.hero.belongings);
 

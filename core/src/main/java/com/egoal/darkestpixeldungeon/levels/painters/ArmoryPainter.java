@@ -21,7 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels.painters;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.items.Bomb;
+import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.keys.IronKey;

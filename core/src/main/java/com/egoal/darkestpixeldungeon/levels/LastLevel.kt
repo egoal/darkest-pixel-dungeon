@@ -1,7 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.items.Amulet
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Group
 import com.watabou.utils.Bundle

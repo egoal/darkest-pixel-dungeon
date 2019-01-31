@@ -199,7 +199,7 @@ class CavesBossLevel : Level() {
         return cell
     }
 
-    override fun press(cell: Int, hero: Char) {
+    override fun press(cell: Int, hero: Char?) {
 
         super.press(cell, hero)
 

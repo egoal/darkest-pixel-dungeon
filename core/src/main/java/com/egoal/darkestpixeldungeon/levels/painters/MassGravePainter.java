@@ -22,7 +22,7 @@ package com.egoal.darkestpixeldungeon.levels.painters;
 
 import com.egoal.darkestpixeldungeon.actors.mobs.Skeleton;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
 import com.egoal.darkestpixeldungeon.levels.Level;

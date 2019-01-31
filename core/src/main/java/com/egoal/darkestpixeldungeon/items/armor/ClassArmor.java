@@ -22,7 +22,7 @@ package com.egoal.darkestpixeldungeon.items.armor;
 
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.BrokenSeal;
+import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;

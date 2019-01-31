@@ -39,7 +39,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
 import com.egoal.darkestpixeldungeon.actors.mobs.DM300;
 import com.egoal.darkestpixeldungeon.actors.mobs.Yog;
-import com.egoal.darkestpixeldungeon.items.Amulet;
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;

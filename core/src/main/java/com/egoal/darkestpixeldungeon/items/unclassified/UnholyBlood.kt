@@ -1,5 +1,6 @@
-package com.egoal.darkestpixeldungeon.items
+package com.egoal.darkestpixeldungeon.items.unclassified
 
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
 /**

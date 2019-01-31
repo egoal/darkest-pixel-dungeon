@@ -22,7 +22,7 @@ package com.egoal.darkestpixeldungeon;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.egoal.darkestpixeldungeon.items.Item;

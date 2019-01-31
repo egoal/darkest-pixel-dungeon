@@ -12,7 +12,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Tengu;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
 import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes;
 import com.egoal.darkestpixeldungeon.items.keys.IronKey;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;

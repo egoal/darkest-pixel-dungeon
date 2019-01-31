@@ -64,9 +64,9 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC;
 import com.egoal.darkestpixeldungeon.effects.CheckedCell;
 import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.Amulet;
-import com.egoal.darkestpixeldungeon.items.Ankh;
-import com.egoal.darkestpixeldungeon.items.Dewdrop;
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
+import com.egoal.darkestpixeldungeon.items.unclassified.Ankh;
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Heap.Type;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -1621,12 +1621,11 @@ public class Hero extends Char {
     defenseSkill++;
 
     criticalChance_ += 0.4f / 100f;
-    regeneration += 0.01f;
+    regeneration += 0.015f;
 
     // recover sanity
-    recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4), (int) (buff
-            (Pressure
-                    .class).pressure * 0.3f)));
+    recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4), 
+            (int) (buff(Pressure.class).pressure * 0.3f)));
   }
 
   public int maxExp() {

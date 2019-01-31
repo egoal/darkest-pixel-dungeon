@@ -15,7 +15,7 @@ import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
-import com.egoal.darkestpixeldungeon.items.UnholyBlood;
+import com.egoal.darkestpixeldungeon.items.unclassified.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;

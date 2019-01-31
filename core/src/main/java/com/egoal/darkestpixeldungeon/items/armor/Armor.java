@@ -31,7 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.BrokenSeal;
+import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.EquipableItem;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.curses.AntiEntropy;

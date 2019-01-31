@@ -55,11 +55,11 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.particles.FlowParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.WindParticle;
-import com.egoal.darkestpixeldungeon.items.Dewdrop;
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.Stylus;
-import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.unclassified.Stylus;
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
@@ -114,7 +114,7 @@ public abstract class Level implements Bundlable {
   public int[] map;
   public boolean[] visited;
   public boolean[] mapped;
-  
+
   //FIXME should not be static!
   public static boolean[] fieldOfView;
 
@@ -262,18 +262,12 @@ public abstract class Level implements Bundlable {
           feeling = Feeling.WATER;
         else if (p < 0.35)
           feeling = Feeling.GRASS;
-        
+
         // give extra torches
-        int torchCount = 0;
-        int torchSpawnTime = 10;
-        for (int i = 0; i < torchSpawnTime; ++i) {
-          int PROB_NUM = 4 * (torchCount + 1) * (torchCount + 1) +
-                  (Dungeon.depth + 1) * Dungeon.depth / 20;
-          // now the expectation is 1.3->0.2 with 1->25
-          if (Random.Int(PROB_NUM) == 0) {
+        {
+          float prop = 0.2f - Dungeon.depth / 5 * 0.025f;
+          while (Random.Float() < prop)
             stationaryItems.add(new Torch());
-            ++torchCount;
-          }
         }
 
         // extra wine

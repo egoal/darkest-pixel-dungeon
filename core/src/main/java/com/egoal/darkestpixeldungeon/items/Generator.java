@@ -145,6 +145,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.CurareDart;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.IncendiaryDart;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Shuriken;
+import com.egoal.darkestpixeldungeon.items.unclassified.*;
 import com.egoal.darkestpixeldungeon.plants.BlandfruitBush;
 import com.egoal.darkestpixeldungeon.plants.Blindweed;
 import com.egoal.darkestpixeldungeon.plants.Dreamfoil;
@@ -162,8 +163,6 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-
-import kotlin.UnsafeVariance;
 
 
 public class Generator {
@@ -264,7 +263,7 @@ public class Generator {
             PotionOfInvisibility.class,
             PotionOfMight.class,
             PotionOfFrost.class};
-    Category.POTION.probs = new float[]{35, 4, 15, 10, 15, 10, 0, 20, 12, 10,
+    Category.POTION.probs = new float[]{30, 4, 15, 10, 15, 10, 0, 20, 12, 10,
             0, 10};
 
     //TODO: add last ones when implemented

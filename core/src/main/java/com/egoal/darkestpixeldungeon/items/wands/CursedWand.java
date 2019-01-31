@@ -34,7 +34,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mimic;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.Bomb;
+import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;

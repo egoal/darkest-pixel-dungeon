@@ -20,11 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.sprites.BruteSprite;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;

@@ -18,9 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items;
+package com.egoal.darkestpixeldungeon.items.unclassified;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -73,12 +74,4 @@ public class Dewdrop extends Item {
 
     return true;
   }
-
-//  @Override
-//  //max of one dew in a stack
-//  public Item quantity(int value) {
-//    quantity = Math.min(value, 1);
-//    return this;
-//  }
-
 }

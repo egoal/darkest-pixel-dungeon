@@ -20,12 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
-import android.database.DatabaseUtils;
-
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;

@@ -18,11 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items;
+package com.egoal.darkestpixeldungeon.items.unclassified;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;

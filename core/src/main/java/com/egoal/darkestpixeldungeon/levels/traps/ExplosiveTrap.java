@@ -20,7 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels.traps;
 
-import com.egoal.darkestpixeldungeon.items.Bomb;
+import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
 
 public class ExplosiveTrap extends Trap {

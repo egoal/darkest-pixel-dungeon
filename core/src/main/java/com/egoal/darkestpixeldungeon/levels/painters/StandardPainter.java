@@ -21,7 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels.painters;
 
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap;

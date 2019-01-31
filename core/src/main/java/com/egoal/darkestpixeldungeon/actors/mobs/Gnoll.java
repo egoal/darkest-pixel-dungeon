@@ -22,7 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.sprites.GnollSprite;
 import com.watabou.utils.Random;
 

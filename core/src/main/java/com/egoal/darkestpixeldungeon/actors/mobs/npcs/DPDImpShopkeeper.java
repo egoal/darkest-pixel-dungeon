@@ -2,7 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;

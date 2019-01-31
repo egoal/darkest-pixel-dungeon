@@ -28,7 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
-import com.egoal.darkestpixeldungeon.items.Dewdrop;
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;

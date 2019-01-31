@@ -20,89 +20,47 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero;
 
-import android.util.Pair;
-
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.items.ArmorKit;
-import com.egoal.darkestpixeldungeon.items.CrownOfDwarf;
-import com.egoal.darkestpixeldungeon.items.DemonicSkull;
-import com.egoal.darkestpixeldungeon.items.DewVial;
-import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Gold;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
-import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe;
-import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
-import com.egoal.darkestpixeldungeon.items.UnholyBlood;
+import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
-import com.egoal.darkestpixeldungeon.items.ExtractionFlask;
-import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
-import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss;
-import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
-import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
-import com.egoal.darkestpixeldungeon.items.artifacts.UnstableSpellbook;
-import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
-import com.egoal.darkestpixeldungeon.items.books.Book;
-import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
-import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes;
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
 import com.egoal.darkestpixeldungeon.items.food.Food;
-import com.egoal.darkestpixeldungeon.items.Torch;
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Challenges;
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.items.BrokenSeal;
+import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.potions.*;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfElements;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfEvasion;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfForce;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfHaste;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfCorruption;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfDisintegration;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
-import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight;
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.CrystalsSwords;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.PairSwords;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.SmokeSparks;
 import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.plants.Blindweed;
 import com.egoal.darkestpixeldungeon.plants.Earthroot;
 import com.egoal.darkestpixeldungeon.plants.Firebloom;
-import com.egoal.darkestpixeldungeon.plants.Sorrowmoss;
 import com.egoal.darkestpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Bundle;
 
@@ -196,9 +154,6 @@ public enum HeroClass {
     (new AssassinsBlade()).upgrade(9).identify().collect();
     new MailArmor().upgrade(1).identify().collect();
 
-    new Sword().upgrade(1).identify().collect();
-    new Sword().identify().collect();
-
     (new PotionBandolier()).identify().collect();
 
     new Sungrass.Seed().quantity(10).collect();
@@ -214,8 +169,9 @@ public enum HeroClass {
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);
-    
-    (new CallysDiary()).collect();
+
+    (new HandOfTheElder()).identify().collect();
+    (new RingOfElements()).identify().collect();
 
     (new DriedRose()).identify().collect();
   }

@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items;
+package com.egoal.darkestpixeldungeon.items.unclassified;
 
 import android.text.StaticLayout;
 
@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.artifacts.GoldPlatedStatue;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;

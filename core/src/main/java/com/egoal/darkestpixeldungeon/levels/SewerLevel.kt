@@ -4,7 +4,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
-import com.egoal.darkestpixeldungeon.items.DewVial
+import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.diggers.specials.ShopDigger
 import com.egoal.darkestpixeldungeon.levels.traps.*

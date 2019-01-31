@@ -1,9 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels.features;
 
-import android.widget.ArrayAdapter;
-
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.BrokenSeal;
+import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;

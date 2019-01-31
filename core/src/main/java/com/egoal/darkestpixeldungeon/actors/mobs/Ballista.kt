@@ -8,7 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Amok
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
-import com.egoal.darkestpixeldungeon.items.Gold
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart

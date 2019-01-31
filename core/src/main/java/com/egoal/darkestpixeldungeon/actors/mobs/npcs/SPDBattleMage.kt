@@ -5,14 +5,12 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.items.Amulet
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.windows.WndOptions
-import com.egoal.darkestpixeldungeon.windows.WndQuest
-import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
 class SPDBattleMage : NPC() {

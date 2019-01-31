@@ -4,11 +4,9 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
-import com.egoal.darkestpixeldungeon.items.Amulet;
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
 import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.DisheartenedBuddySprite;
-import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 

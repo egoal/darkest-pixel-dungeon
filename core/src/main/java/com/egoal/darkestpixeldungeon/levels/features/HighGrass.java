@@ -29,7 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.LeafParticle;
-import com.egoal.darkestpixeldungeon.items.Dewdrop;
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage;

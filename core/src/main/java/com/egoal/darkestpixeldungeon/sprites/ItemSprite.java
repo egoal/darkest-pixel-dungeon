@@ -23,7 +23,7 @@ package com.egoal.darkestpixeldungeon.sprites;
 import android.graphics.Bitmap;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
-import com.egoal.darkestpixeldungeon.items.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;

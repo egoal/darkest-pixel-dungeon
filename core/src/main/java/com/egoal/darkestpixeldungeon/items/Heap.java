@@ -43,6 +43,8 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
+import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;

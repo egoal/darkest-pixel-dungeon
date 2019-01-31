@@ -10,7 +10,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.Stylus;
+import com.egoal.darkestpixeldungeon.items.unclassified.Stylus;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;

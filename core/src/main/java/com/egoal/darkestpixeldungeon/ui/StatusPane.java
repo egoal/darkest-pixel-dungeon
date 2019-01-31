@@ -24,7 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.Amulet;
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite;

@@ -31,7 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*;
-import com.egoal.darkestpixeldungeon.items.Ankh;
+import com.egoal.darkestpixeldungeon.items.unclassified.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
@@ -61,7 +61,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-  public static int initialDepth_ = -1;
+  public static int initialDepth_ = 14;
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -258,8 +258,8 @@ public class Dungeon {
         Statistics.INSTANCE.setDeepestFloor(Statistics.INSTANCE.getDeepestFloor()-1);
     }
 
-    if (DarkestPixelDungeon.debug())
-      level = new EmptyLevel();
+//    if (DarkestPixelDungeon.debug())
+//      level = new EmptyLevel();
 
     visible = new boolean[level.length()];
     level.create();

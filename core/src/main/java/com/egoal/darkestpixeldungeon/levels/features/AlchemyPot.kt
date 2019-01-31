@@ -24,7 +24,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
-import com.egoal.darkestpixeldungeon.items.ExtractionFlask
+import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.windows.WndAlchemy
 import com.egoal.darkestpixeldungeon.items.Generator

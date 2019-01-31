@@ -3,7 +3,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.unordinary
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.mobs.Skeleton
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.Gold
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame

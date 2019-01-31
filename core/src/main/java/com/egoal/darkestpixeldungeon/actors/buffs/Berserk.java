@@ -23,7 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.effects.SpellSprite;
-import com.egoal.darkestpixeldungeon.items.BrokenSeal.WarriorShield;
+import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal.WarriorShield;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;

@@ -23,7 +23,7 @@ package com.egoal.darkestpixeldungeon.scenes;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.Amulet;
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;

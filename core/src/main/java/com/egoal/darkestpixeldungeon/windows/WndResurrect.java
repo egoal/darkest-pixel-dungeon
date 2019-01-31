@@ -25,7 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.Rankings;
-import com.egoal.darkestpixeldungeon.items.Ankh;
+import com.egoal.darkestpixeldungeon.items.unclassified.Ankh;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.InterlevelScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;

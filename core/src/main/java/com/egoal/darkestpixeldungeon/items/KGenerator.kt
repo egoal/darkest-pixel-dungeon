@@ -20,6 +20,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.plants.*
+import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
@@ -129,7 +130,7 @@ object KGenerator {
     }
 
     object POTION : ClassMapGenerator<Potion>(hashMapOf(
-            PotionOfHealing::class.java to 35f,
+            PotionOfHealing::class.java to 30f,
             PotionOfExperience::class.java to 4f,
             PotionOfToxicGas::class.java to 15f,
             PotionOfParalyticGas::class.java to 10f,
@@ -295,7 +296,7 @@ object KGenerator {
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
             CallysDiary::class.java to 0f,
-            WardenSmithNotes::class.java to 0f 
+            WardenSmithNotes::class.java to 0f
     ))
 
     // 
@@ -319,11 +320,12 @@ object KGenerator {
     fun reset() {
         ARTIFACT.reset()
     }
-    
-    fun stash(){
+
+    fun stash() {
         ARTIFACT.push()
     }
-    fun recover(){
+
+    fun recover() {
         ARTIFACT.pop()
     }
 

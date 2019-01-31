@@ -21,7 +21,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.TomeOfMastery;
+import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.levels.Level;

@@ -18,39 +18,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items;
+package com.egoal.darkestpixeldungeon.items.unclassified;
 
-import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.armor.ClassArmor;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
+import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
-import com.egoal.darkestpixeldungeon.sprites.HeroSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
+import com.egoal.darkestpixeldungeon.effects.Enchanting;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
-public class ArmorKit extends Item {
+public class Stylus extends Item {
 
-  private static final float TIME_TO_UPGRADE = 2;
+  private static final float TIME_TO_INSCRIBE = 2;
 
-  private static final String AC_APPLY = "APPLY";
+  private static final String AC_INSCRIBE = "INSCRIBE";
 
   {
-    image = ItemSpriteSheet.KIT;
+    image = ItemSpriteSheet.STYLUS;
 
-    unique = true;
+    stackable = true;
+
+    bones = true;
   }
 
   @Override
   public ArrayList<String> actions(Hero hero) {
     ArrayList<String> actions = super.actions(hero);
-    actions.add(AC_APPLY);
+    actions.add(AC_INSCRIBE);
     return actions;
   }
 
@@ -59,7 +61,7 @@ public class ArmorKit extends Item {
 
     super.execute(hero, action);
 
-    if (action == AC_APPLY) {
+    if (action.equals(AC_INSCRIBE)) {
 
       curUser = hero;
       GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, Messages.get
@@ -78,38 +80,41 @@ public class ArmorKit extends Item {
     return true;
   }
 
-  private void upgrade(Armor armor) {
+  private void inscribe(Armor armor) {
+
+    if (!armor.isIdentified()) {
+      GLog.w(Messages.get(this, "identify"));
+      return;
+    } else if (armor.cursed || armor.hasCurseGlyph()) {
+      GLog.w(Messages.get(this, "cursed"));
+      return;
+    }
 
     detach(curUser.belongings.backpack);
 
-    curUser.sprite.centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, 10);
-    curUser.spend(TIME_TO_UPGRADE);
-    curUser.busy();
+    GLog.w(Messages.get(this, "inscribed"));
 
-    GLog.w(Messages.get(this, "upgraded", armor.name()));
-
-    ClassArmor classArmor = ClassArmor.upgrade(curUser, armor);
-    if (curUser.belongings.armor == armor) {
-
-      curUser.belongings.armor = classArmor;
-      ((HeroSprite) curUser.sprite).updateArmor();
-
-    } else {
-
-      armor.detach(curUser.belongings.backpack);
-      classArmor.collect(curUser.belongings.backpack);
-
-    }
+    armor.inscribe();
 
     curUser.sprite.operate(curUser.pos);
-    Sample.INSTANCE.play(Assets.SND_EVOKE);
+    curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
+    Enchanting.show(curUser, armor);
+    Sample.INSTANCE.play(Assets.SND_BURNING);
+
+    curUser.spend(TIME_TO_INSCRIBE);
+    curUser.busy();
+  }
+
+  @Override
+  public int price() {
+    return 30 * quantity;
   }
 
   private final WndBag.Listener itemSelector = new WndBag.Listener() {
     @Override
     public void onSelect(Item item) {
       if (item != null) {
-        ArmorKit.this.upgrade((Armor) item);
+        Stylus.this.inscribe((Armor) item);
       }
     }
   };

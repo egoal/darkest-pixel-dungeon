@@ -30,7 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.*;
-import com.egoal.darkestpixeldungeon.items.Honeypot;
+import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.plants.Plant;

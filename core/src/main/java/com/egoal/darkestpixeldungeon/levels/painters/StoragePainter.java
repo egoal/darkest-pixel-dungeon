@@ -21,7 +21,7 @@
 package com.egoal.darkestpixeldungeon.levels.painters;
 
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.Honeypot;
+import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.egoal.darkestpixeldungeon.levels.Level;

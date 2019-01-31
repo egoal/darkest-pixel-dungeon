@@ -31,7 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.Regrowth;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.effects.MagicMissile;
-import com.egoal.darkestpixeldungeon.items.Dewdrop;
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.Terrain;

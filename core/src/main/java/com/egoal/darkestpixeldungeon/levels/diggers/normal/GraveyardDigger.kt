@@ -1,7 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.normal
 
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.Gold
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level

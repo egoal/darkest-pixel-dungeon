@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.plants;
 
-import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -32,7 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.particles.LeafParticle;
-import com.egoal.darkestpixeldungeon.items.Dewdrop;
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.artifacts.SandalsOfNature;

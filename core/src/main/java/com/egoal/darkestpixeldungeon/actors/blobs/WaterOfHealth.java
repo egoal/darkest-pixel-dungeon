@@ -30,7 +30,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
-import com.egoal.darkestpixeldungeon.items.DewVial;
+import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.messages.Messages;

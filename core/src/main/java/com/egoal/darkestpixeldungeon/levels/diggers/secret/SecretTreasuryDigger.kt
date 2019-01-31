@@ -1,7 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.secret
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.items.Gold
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult

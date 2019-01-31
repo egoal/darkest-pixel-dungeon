@@ -20,10 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.items.potions;
 
-import com.egoal.darkestpixeldungeon.actors.blobs.RoaringFire;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
-import com.egoal.darkestpixeldungeon.items.Bomb;
+import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
