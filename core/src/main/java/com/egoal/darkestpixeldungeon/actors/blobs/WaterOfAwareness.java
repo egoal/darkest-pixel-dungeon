@@ -45,7 +45,7 @@ public class WaterOfAwareness extends WellWater {
 
     Sample.INSTANCE.play(Assets.SND_DRINK);
     emitter.parent.add(new Identification(DungeonTilemap.tileCenterToWorld
-            (pos)));
+            (getPos())));
 
     hero.belongings.observe();
 
@@ -83,7 +83,7 @@ public class WaterOfAwareness extends WellWater {
       Badges.validateItemLevelAquired(item);
 
       emitter.parent.add(new Identification(DungeonTilemap.tileCenterToWorld
-              (pos)));
+              (getPos())));
 
       Journal.remove(Journal.Feature.WELL_OF_AWARENESS);
 

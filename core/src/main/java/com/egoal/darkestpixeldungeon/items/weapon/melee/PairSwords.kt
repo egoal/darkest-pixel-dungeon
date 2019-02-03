@@ -12,10 +12,6 @@ import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.abs
 
-const val AC_SPLIT = "SPLIT"
-const val LEFT_SWORDS = "left_one"
-const val RIGHT_SWORDS = "right_one"
-
 class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeWeapon() {
     init {
         image = ItemSpriteSheet.PAIR_SWORDS
@@ -111,5 +107,11 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
 
         left = bundle.get(LEFT_SWORDS) as Sword
         right = bundle.get(RIGHT_SWORDS) as Sword
+    }
+    
+    companion object {
+        private const val AC_SPLIT = "SPLIT"
+        private const val LEFT_SWORDS = "left_one"
+        private const val RIGHT_SWORDS = "right_one"
     }
 }

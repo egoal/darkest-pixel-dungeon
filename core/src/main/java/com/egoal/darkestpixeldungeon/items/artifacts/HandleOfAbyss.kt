@@ -28,6 +28,7 @@ class HandleOfAbyss : Artifact() {
         chargeCap = 100
 
         defaultAction = AC_SUMMON
+        defeated = false
     }
 
     override fun actions(hero: Hero): ArrayList<String> {

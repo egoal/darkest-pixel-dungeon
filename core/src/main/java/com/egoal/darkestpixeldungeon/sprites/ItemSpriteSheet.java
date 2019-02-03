@@ -47,6 +47,7 @@ public class ItemSpriteSheet {
   public static final int PETAL = UNCOLLECTIBLE + 2;
   public static final int SANDBAG = UNCOLLECTIBLE + 3;
   public static final int DBL_BOMB = UNCOLLECTIBLE + 4;
+  public static final int RUNE = UNCOLLECTIBLE + 5;
 
   private static final int CONTAINERS = xy(1, 2);   //16 slots
   public static final int BONES = CONTAINERS + 0;
@@ -73,6 +74,9 @@ public class ItemSpriteSheet {
   public static final int MASTERY = SINGLE_USE + 12;
   public static final int KIT = SINGLE_USE + 13;
   public static final int AMULET = SINGLE_USE + 14;
+  public static final int DPD_TEST_PAPER = SINGLE_USE + 15;
+  public static final int DPD_DWARF_CROWN = SINGLE_USE + 16;
+  public static final int DPD_CAT_GIFT = SINGLE_USE + 17;
 
   //32 free slots
 
@@ -83,6 +87,7 @@ public class ItemSpriteSheet {
   public static final int RAPIER = WEP_TIER1 + 3;
   public static final int DAGGER = WEP_TIER1 + 4;
   public static final int MAGES_STAFF = WEP_TIER1 + 5;
+  public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
 
   private static final int WEP_TIER2 = xy(9, 7);   //8 slots
   public static final int SHORTSWORD = WEP_TIER2 + 0;
@@ -137,6 +142,7 @@ public class ItemSpriteSheet {
   public static final int ARMOR_MAGE = ARMOR + 6;
   public static final int ARMOR_ROGUE = ARMOR + 7;
   public static final int ARMOR_HUNTRESS = ARMOR + 8;
+  public static final int DPD_ARMOR_SORCERESS = ARMOR + 9;
 
   private static final int HELMET = xy(1, 12);
   public static final int HELMET_CRUSADER = HELMET + 0;
@@ -241,6 +247,7 @@ public class ItemSpriteSheet {
   public static final int POTION_CHARCOAL = POTIONS + 9;
   public static final int POTION_SILVER = POTIONS + 10;
   public static final int POTION_IVORY = POTIONS + 11;
+  public static final int DPD_HIGHLY_TOXIC_POTION = POTIONS + 12;
 
   private static final int SEEDS = xy(1, 22);  //16 slots
   public static final int SEED_ROTBERRY = SEEDS + 0;
@@ -256,7 +263,10 @@ public class ItemSpriteSheet {
   public static final int SEED_FADELEAF = SEEDS + 10;
   public static final int SEED_BLANDFRUIT = SEEDS + 11;
 
-  //32 free slots
+  public static final int DPD_BOOKS = xy(1, 23);
+  public static final int DPD_NOTES = DPD_BOOKS + 1;
+
+  //16 free slots
 
   private static final int FOOD = xy(1, 25);  //16 slots
   public static final int MEAT = FOOD + 0;
@@ -281,23 +291,12 @@ public class ItemSpriteSheet {
   public static final int TOKEN = QUEST + 6;
 
   private static final int BAGS = xy(1, 28);  //16 slots
-  public static final int VIAL = BAGS + 0;
-  public static final int POUCH = BAGS + 1;
-  public static final int HOLDER = BAGS + 2;
-  public static final int BANDOLIER = BAGS + 3;
-  public static final int HOLSTER = BAGS + 4;
+  public static final int POUCH = BAGS + 0;
+  public static final int HOLDER = BAGS + 1;
+  public static final int BANDOLIER = BAGS + 2;
+  public static final int HOLSTER = BAGS + 3;
+  public static final int VIAL = BAGS + 4;
 
   //64 free slots
-  // dpd
-  public static final int DPD_CAT_GIFT = CONTAINERS + 7;
-  public static final int DPD_TEST_PAPER = SINGLE_USE + 15;
-  public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
-  public static final int DPD_ARMOR_SORCERESS = ARMOR + 9;
-  public static final int DPD_HIGHLY_TOXIC_POTION = POTIONS + 12;
 
-
-  public static final int DPD_DWARF_CROWN = SINGLE_USE + 16;
-
-  public static final int DPD_BOOKS = xy(1, 23);
-  public static final int DPD_NOTES = DPD_BOOKS + 1;
 }

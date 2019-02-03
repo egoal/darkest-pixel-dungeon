@@ -60,7 +60,20 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     }
 
     override fun interact(): Boolean {
-        return false
+        // swap 
+        val curpos = pos
+        moveSprite(pos, Dungeon.hero.pos)
+        move(Dungeon.hero.pos)
+
+        with(Dungeon.hero) {
+            moveSprite(pos, curpos)
+            move(curpos)
+
+            spend(1 / speed())
+            busy()
+        }
+
+        return true 
     }
 
     override fun isFollower(): Boolean = true
@@ -68,7 +81,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun attackSkill(target: Char): Int = 10 + level * 2
 
     override fun giveDamage(enemy: Char): Damage {
-        val dmg = Damage(Random.NormalIntRange(5 + level, 20 + 4 * level), this, enemy).addElement(Damage.Element.SHADOW)
+        val dmg = Damage(Random.NormalIntRange(5 + level, 10 + 5 * level), this, enemy).addElement(Damage.Element.SHADOW)
         if (Random.Float() < 0.15f) {
             dmg.value = dmg.value * 5 / 4
             dmg.addFeature(Damage.Feature.CRITCIAL)
@@ -125,7 +138,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     // strengthen
     override fun attackProc(dmg: Damage): Damage {
         if (!hostile) {
-            val porton = dmg.value.toFloat() / 2 / HT.toFloat()
+            val porton = dmg.value.toFloat() / 2f / HT.toFloat()
             Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(porton)
         }
 

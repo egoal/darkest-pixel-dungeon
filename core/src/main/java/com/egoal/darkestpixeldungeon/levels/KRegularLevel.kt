@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.Bones
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
+import com.egoal.darkestpixeldungeon.actors.mobs.RotLasher
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
 import com.egoal.darkestpixeldungeon.items.Generator
@@ -305,11 +306,22 @@ open abstract class KRegularLevel : Level() {
                     if (Random.Float() < 0.015) {
                         plant(KGenerator.SEED.generate() as Plant.Seed, i)
                         Terrain.GRASS
-                    } else if (Random.Float() < 0.05)
-                        Terrain.HIGH_GRASS_COLLECTED
-                    else
+                    } else
                         Terrain.HIGH_GRASS
                 } else Terrain.GRASS
+            }
+        }
+
+        for (i in width + 1 until length - width - 1) {
+            if (map[i] == Terrain.HIGH_GRASS || map[i] == Terrain.HIGH_GRASS_COLLECTED) {
+                val count = PathFinder.NEIGHBOURS8.count { map[i + it] == Terrain.HIGH_GRASS }
+                if (Random.Float() < (count - 4) / 8f && Random.Float() < 0.1f) {
+                    mobs.add(RotLasher().apply {
+                        pos = i
+                        setLevel(Dungeon.depth)
+                    })
+                    Digger.Set(this, i, Terrain.GRASS)
+                }
             }
         }
     }
@@ -424,7 +436,8 @@ open abstract class KRegularLevel : Level() {
                 TrapsDigger::class.java to 1f,
                 TreasuryDigger::class.java to 0.75f,
                 VaultDigger::class.java to 0.75f,
-                WeakFloorDigger::class.java to 0.75f
+                WeakFloorDigger::class.java to 0.75f, 
+                AltarDigger::class.java to 0.75f 
         )
 
         val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(

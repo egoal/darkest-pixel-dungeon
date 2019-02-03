@@ -73,7 +73,7 @@ public class Tengu extends Mob {
       if(m instanceof Phantom)
         phantoms.add((Phantom)m);
   }
-  
+
   @Override
   protected boolean canAttack(Char enemy) {
     return new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE).collisionPos

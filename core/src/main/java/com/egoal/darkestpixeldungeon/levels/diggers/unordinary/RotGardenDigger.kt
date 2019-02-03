@@ -47,7 +47,7 @@ class RotGardenDigger : RectDigger() {
             do {
                 pos = level.pointToCell(rect.random())
             } while (!isValidPlantPos(level, pos))
-            placePlant(level, pos, RotLasher())
+            placePlant(level, pos, RotLasher().apply { setLevel(Dungeon.depth) })
         }
 
         return DigResult(rect, DigResult.Type.Locked)

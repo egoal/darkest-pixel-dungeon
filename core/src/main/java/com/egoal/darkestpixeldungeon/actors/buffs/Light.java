@@ -32,7 +32,7 @@ import com.watabou.utils.Bundle;
 
 public class Light extends FlavourBuff {
 
-  public static final float DURATION = 250f;
+  public static final float DURATION = 300f;
   public static final int DISTANCE = 5;
 
   @Override

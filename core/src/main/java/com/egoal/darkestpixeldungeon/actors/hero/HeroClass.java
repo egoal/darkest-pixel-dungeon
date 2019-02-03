@@ -23,7 +23,9 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
+import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
 import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
+import com.egoal.darkestpixeldungeon.items.unclassified.RegenerationRune;
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
@@ -132,15 +134,16 @@ public enum HeroClass {
     }
 
     (new HandleOfAbyss()).random().collect();
-    new MoonStone().collect();
   }
 
   private static void initDebug(Hero hero) {
     hero.HP = 1000;
     hero.HT = 1000;
     hero.STR = 18;
-    hero.lvl = 20;
+    hero.lvl = 1;
 
+    new DewVial().collect();
+    
     ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
     somm.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(3, somm);

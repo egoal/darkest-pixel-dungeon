@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.painters.Painter
 import com.egoal.darkestpixeldungeon.levels.traps.ToxicTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -94,8 +95,7 @@ class CavesBossLevel : Level() {
                 bottom = Random.Int(ROOM_TOP + 3, height() - 1)
             }
 
-            Painter.fill(this, left, top, right - left + 1, bottom - top + 1,
-                    Terrain.EMPTY)
+            Digger.Fill(this, left, top, right - left + 1, bottom - top + 1, Terrain.EMPTY)
 
             if (top < topMost) {
                 topMost = top

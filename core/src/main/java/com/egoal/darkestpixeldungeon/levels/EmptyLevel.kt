@@ -2,9 +2,14 @@ package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.mobs.Ballista
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.actors.mobs.Rat
+import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
+import com.egoal.darkestpixeldungeon.items.unclassified.RegenerationRune
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
+import com.egoal.darkestpixeldungeon.levels.diggers.Direction
+import com.egoal.darkestpixeldungeon.levels.diggers.Rect
+import com.egoal.darkestpixeldungeon.levels.diggers.Wall
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.AltarDigger
 
 class EmptyLevel : KRegularLevel() {
     init {
@@ -27,14 +32,17 @@ class EmptyLevel : KRegularLevel() {
     override fun respawner(): Actor? = null
 
     override fun createItems() {
-        for(i in 1..20) drop(KGenerator.ARTIFACT.generate(), xy2cell(5, 5+i))
-        for(i in 1..20) drop(KGenerator.WEAPON.generate(), xy2cell(6, 5+i))
-        for(i in 1..20) drop(KGenerator.ARMOR.generate(), xy2cell(7, 5+i))
-        for(i in 1..20) drop(KGenerator.WAND.generate(), xy2cell(8, 5+i))
-        for(i in 1..20) drop(KGenerator.RING.generate(), xy2cell(9, 5+i))
-        for(i in 1..20) drop(KGenerator.POTION.generate(), xy2cell(10, 5+i))
-        for(i in 1..20) drop(KGenerator.SCROLL.generate(), xy2cell(11, 5+i))
-        for(i in 1..20) drop(KGenerator.SEED.generate(), xy2cell(12, 5+i))
+//        for(i in 1..20) drop(KGenerator.ARTIFACT.generate(), xy2cell(5, 5+i))
+//        for(i in 1..20) drop(KGenerator.WEAPON.generate(), xy2cell(6, 5+i))
+//        for(i in 1..20) drop(KGenerator.ARMOR.generate(), xy2cell(7, 5+i))
+//        for(i in 1..20) drop(KGenerator.WAND.generate(), xy2cell(8, 5+i))
+//        for(i in 1..20) drop(KGenerator.RING.generate(), xy2cell(9, 5+i))
+//        for(i in 1..20) drop(KGenerator.POTION.generate(), xy2cell(10, 5+i))
+//        for(i in 1..20) drop(KGenerator.SCROLL.generate(), xy2cell(11, 5+i))
+//        for(i in 1..20) drop(KGenerator.SEED.generate(), xy2cell(12, 5+i))
+
+        drop(RegenerationRune(), xy2cell(15, 15))
+        drop(Dewdrop(), xy2cell(16, 16))
     }
 
     override fun build(iteration: Int): Boolean {
@@ -47,6 +55,13 @@ class EmptyLevel : KRegularLevel() {
 
         map[entrance + 3] = Terrain.ALCHEMY
         map[entrance + 4] = Terrain.ENCHANTING_STATION
+
+        // Digger.Fill(this, Rect(11, 16, 10, 16).shrink(-1), Terrain.WALL)
+        val ad = AltarDigger()
+        ad.dig(this, Wall(10, 10, 10, 16, Direction.Right), Rect(11, 16, 10, 16))
+
+        mobs.add(Rat().apply { pos = xy2cell(10, 10) })
+        mobs.add(Rat().apply { pos = xy2cell(11, 11) })
 
         return true
     }

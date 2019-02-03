@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.MoonNight
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import java.util.ArrayList
@@ -29,7 +30,7 @@ class MoonStone : Item() {
             hero.sprite.operate(hero.pos)
 
             detach(hero.belongings.backpack)
-            
+
             Use()
         }
     }
@@ -45,6 +46,9 @@ class MoonStone : Item() {
         fun Use(duration: Float = -1f) {
             Buff.prolong(Dungeon.hero, MoonNight::class.java, if (duration < 0) MoonNight.DURATION else duration)
             GLog.w(Messages.get(MoonStone::class.java, "used"))
+
+            Dungeon.observe()
+            GameScene.updateFog()
         }
     }
 

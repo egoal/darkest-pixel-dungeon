@@ -67,6 +67,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh;
+import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune;
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Heap.Type;
@@ -98,6 +99,8 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfTenacity;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune;
+import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail;
@@ -182,7 +185,7 @@ public class Hero extends Char {
 
   public float awareness;
   public float criticalChance_;
-  private float regeneration = 0.1f; // regeneration per turn
+  public float regeneration = 0.1f; // regeneration per turn
 
   public int lvl = 1;
   public int exp = 0;
@@ -279,8 +282,10 @@ public class Hero extends Char {
       if (!cr.isCursed())
         reg += HT * 0.004 * Math.pow(1.075, cr.itemLevel());
       else
-        reg /= 2;
+        reg /= 2f;
     }
+
+    if (buff(MendingRune.Recovery.class) != null) reg *= 2f;
 
     return reg;
   }
@@ -288,7 +293,7 @@ public class Hero extends Char {
   public float arcaneFactor() {
     if (buff(HoodApprentice.Apprentice.class) != null)
       return 1.1f;
-    
+
     return 1f;
   }
 
@@ -571,15 +576,22 @@ public class Hero extends Char {
     }
 
     // critical
-    int bonusCritical = RingOfCritical.getBonus(this, RingOfCritical.Critical
-            .class);
-    float theCriticalChance = criticalChance_ * (float) Math.pow(1.15,
-            bonusCritical);
-
-    if (!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Float() <
-            theCriticalChance) {
-      dmg.value *= 1.5f;
+    if (buff(CriticalRune.Critical.class) != null) {
+      dmg.value *= 1.4f;
       dmg.addFeature(Damage.Feature.CRITCIAL);
+    }
+
+    if (!dmg.isFeatured(Damage.Feature.CRITCIAL)) {
+
+      int bonusCritical = RingOfCritical.getBonus(this, RingOfCritical.Critical
+              .class);
+      float theCriticalChance = criticalChance_ * (float) Math.pow(1.15,
+              bonusCritical);
+
+      if (Random.Float() < theCriticalChance) {
+        dmg.value *= 1.5f;
+        dmg.addFeature(Damage.Feature.CRITCIAL);
+      }
     }
 
     // pressure
@@ -627,6 +639,8 @@ public class Hero extends Char {
         speed *= (1.5f + 0.05f * belongings.armor.level());
       }
     }
+
+    if (buff(HasteRune.Haste.class) != null) speed *= 3f;
 
     int aEnc = armor != null ? armor.STRReq() - STR() : 0;
     if (aEnc > 0) {

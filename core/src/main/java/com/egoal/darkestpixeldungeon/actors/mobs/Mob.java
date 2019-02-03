@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.effects.Wound;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
@@ -486,7 +487,7 @@ public abstract class Mob extends Char {
   public boolean isFollower() {
     return buff(Dementage.class) != null;
   }
-  
+
   public void aggro(Char ch) {
     enemy = ch;
     if (state != PASSIVE) {
@@ -514,12 +515,14 @@ public abstract class Mob extends Char {
 
     if (Dungeon.hero.isAlive()) {
       if (hostile) {
-        Statistics.INSTANCE.setEnemiesSlain(Statistics.INSTANCE.getEnemiesSlain()+1);
+        Statistics.INSTANCE.setEnemiesSlain(Statistics.INSTANCE
+                .getEnemiesSlain() + 1);
         Badges.validateMonstersSlain();
         Statistics.INSTANCE.setQualifiedForNoKilling(false);
 
         if (Dungeon.level.feeling == Level.Feeling.DARK) {
-          Statistics.INSTANCE.setNightHunt(Statistics.INSTANCE.getNightHunt()+1); 
+          Statistics.INSTANCE.setNightHunt(Statistics.INSTANCE.getNightHunt()
+                  + 1);
         } else {
           Statistics.INSTANCE.setNightHunt(0);
         }
@@ -540,7 +543,7 @@ public abstract class Mob extends Char {
   public int exp() {
     int dlvl = Dungeon.hero.lvl - maxLvl;
     if (dlvl < 0) return EXP;
-    return EXP / (2 + 2 * dlvl);
+    return EXP / (2 + dlvl);
   }
 
   @Override
@@ -573,6 +576,8 @@ public abstract class Mob extends Char {
 
       item = Generator.random((Generator.Category) loot);
 
+    } else if (loot instanceof KGenerator.ItemGenerator) {
+      item = ((KGenerator.ItemGenerator) loot).generate();
     } else if (loot instanceof Class<?>) {
 
       item = Generator.random((Class<? extends Item>) loot);

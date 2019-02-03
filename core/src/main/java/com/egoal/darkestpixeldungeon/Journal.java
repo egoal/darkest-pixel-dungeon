@@ -35,6 +35,7 @@ public class Journal {
     ALCHEMY,
     GARDEN,
     STATUE,
+    SACRIFICIAL_FIRE, 
 
     GHOST,
     WANDMAKER,

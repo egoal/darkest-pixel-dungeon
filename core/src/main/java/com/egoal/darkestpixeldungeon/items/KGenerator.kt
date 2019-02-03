@@ -303,6 +303,15 @@ object KGenerator {
             WardenSmithNotes::class.java to 0f
     ))
 
+    object RUNE: ClassMapGenerator<Rune>(hashMapOf(
+            RegenerationRune::class.java to 1f, 
+            MendingRune::class.java to 1f, 
+            CriticalRune::class.java to 0.5f, 
+            BrightRune::class.java to 1f, 
+            HasteRune::class.java to 1f, 
+            TreasureRune::class.java to 1f 
+    ))
+    
     // 
     private val categoryMap = hashMapOf(
             WEAPON to 100f,
@@ -316,7 +325,8 @@ object KGenerator {
             FOOD to 0f,
             GOLD to 500f,
             BOOK to 0f,
-            HELMET to 1f
+            HELMET to 1f, 
+            RUNE to 0f 
     )
 
     fun generate(): Item = Random.chances(categoryMap).generate()

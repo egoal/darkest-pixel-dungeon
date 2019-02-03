@@ -241,7 +241,7 @@ public class Alchemist extends NPC {
           String responds = "";
           if (vol < 5) {
             responds = Messages.get(this, "little");
-          } else if (dv.isFull()) {
+          } else if (dv.getFull()) {
             responds = Messages.get(this, "full");
           } else
             responds = Messages.get(this, "enough");
