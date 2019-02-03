@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfParalyticGas
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
@@ -28,7 +29,7 @@ class PotionTestPaper : Item() {
 
         if (action == AC_TEST) {
             curUser = hero
-
+            GameScene.selectItem(potionSelector, WndBag.Mode.POTION, Messages.get(this, "prompt"))
         }
     }
 

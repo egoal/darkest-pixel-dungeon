@@ -8,10 +8,12 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
+import com.egoal.darkestpixeldungeon.actors.buffs.MoonNight;
 import com.egoal.darkestpixeldungeon.actors.mobs.Tengu;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
 import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes;
 import com.egoal.darkestpixeldungeon.items.keys.IronKey;
@@ -227,7 +229,8 @@ public class PrisonBossLevel extends Level {
 
     // give buff
     Buff.affect(hero, Ignorant.class);
-
+    MoonStone.Companion.Use(1000f);
+    
     bossAppeared = true;
     Music.INSTANCE.play(trackMusic(), true);
     Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);

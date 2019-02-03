@@ -140,6 +140,8 @@ public class ItemSpriteSheet {
 
   private static final int HELMET = xy(1, 12);
   public static final int HELMET_CRUSADER = HELMET + 0;
+  public static final int HELMET_BARBARIAN = HELMET + 1;
+  public static final int HELMET_APPRENTICE = HELMET + 2;
 
   //16 free slots
 
@@ -206,8 +208,8 @@ public class ItemSpriteSheet {
   public static final int GOLD_PLATE_STATUE = ARTIFACTS + 30;
   public static final int BONE_HAND = ARTIFACTS + 31;
   public static final int HANDLE_OF_ABYSS = ARTIFACTS + 32;
-  
-  
+
+
   //32 free slots
 
   private static final int SCROLLS = xy(1, 20);  //16 slots
@@ -265,6 +267,9 @@ public class ItemSpriteSheet {
   public static final int RATION = FOOD + 5;
   public static final int PASTY = FOOD + 6;
   public static final int CANDY_CANE = FOOD + 7;
+  public static final int DPD_HUMANITY = FOOD + 8;
+  public static final int DPD_WINE = FOOD + 9;
+  public static final int MOON_STONE = FOOD + 10;
 
   private static final int QUEST = xy(1, 26);  //32 slots
   public static final int SKULL = QUEST + 0;
@@ -292,9 +297,6 @@ public class ItemSpriteSheet {
 
 
   public static final int DPD_DWARF_CROWN = SINGLE_USE + 16;
-
-  public static final int DPD_HUMANITY = FOOD + 8;
-  public static final int DPD_WINE = FOOD + 9;
 
   public static final int DPD_BOOKS = xy(1, 23);
   public static final int DPD_NOTES = DPD_BOOKS + 1;

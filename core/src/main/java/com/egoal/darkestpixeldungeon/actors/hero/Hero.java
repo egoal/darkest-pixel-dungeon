@@ -26,7 +26,6 @@ import android.util.Pair;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
-import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
@@ -39,7 +38,9 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
+import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
+import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -282,6 +283,13 @@ public class Hero extends Char {
     }
 
     return reg;
+  }
+
+  public float arcaneFactor() {
+    if (buff(HoodApprentice.Apprentice.class) != null)
+      return 1.1f;
+    
+    return 1f;
   }
 
   private static final String ATTACK = "attackSkill";
@@ -592,6 +600,9 @@ public class Hero extends Char {
 
     if (buff(Fury.class) != null)
       dmg.value *= 1.5f;
+
+    if (HP < HT / 2 && buff(HelmetBarbarian.HelmetBuff.class) != null)
+      dmg.value *= 1.25f;
 
     return dmg;
   }
@@ -1621,10 +1632,10 @@ public class Hero extends Char {
     defenseSkill++;
 
     criticalChance_ += 0.4f / 100f;
-    regeneration += 0.015f;
+    regeneration += 0.015;
 
     // recover sanity
-    recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4), 
+    recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4),
             (int) (buff(Pressure.class).pressure * 0.3f)));
   }
 

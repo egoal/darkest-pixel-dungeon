@@ -77,7 +77,7 @@ public class Wine extends Item {
 
   @Override
   public int price() {
-    return 15 * quantity();
+    return 20 * quantity();
   }
 
   @Override

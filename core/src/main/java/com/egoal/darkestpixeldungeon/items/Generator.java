@@ -26,7 +26,9 @@ import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
+import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
+import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfCurse;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
@@ -179,12 +181,12 @@ public class Generator {
     SCROLL(400, Scroll.class),
     WAND(40, Wand.class), 
     RING(15, Ring.class),
-    ARTIFACT(12, Artifact.class),
+    ARTIFACT(10, Artifact.class),
     SEED(50, Plant.Seed.class),
     FOOD(0, Food.class),
     GOLD(500, Gold.class),
     BOOK(0, Book.class),
-    HELMET(0.5f, Helmet.class);
+    HELMET(1f, Helmet.class);
 
     public Class<?>[] classes;
     public float[] probs;
@@ -414,9 +416,11 @@ public class Generator {
             12, 1};
 
     Category.HELMET.classes = new Class<?>[]{
+            HelmetBarbarian.class, 
             HelmetCrusader.class,
+            HoodApprentice.class, 
     };
-    Category.HELMET.probs = new float[]{1f,};
+    Category.HELMET.probs = new float[]{1f, 1f, 1f };
 
     Category.BOOK.classes = new Class<?>[]{
             CallysDiary.class,

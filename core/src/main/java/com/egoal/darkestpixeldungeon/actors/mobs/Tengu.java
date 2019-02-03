@@ -16,11 +16,13 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
+import com.egoal.darkestpixeldungeon.actors.buffs.MoonNight;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
@@ -256,10 +258,12 @@ public class Tengu extends Mob {
   public void die(Object cause) {
     clearPhantoms();
     Buff.detach(Dungeon.hero, Ignorant.class);
+    Buff.detach(Dungeon.hero, MoonNight.class);
 
     if (Dungeon.hero.subClass == HeroSubClass.NONE) {
       Dungeon.level.drop(new TomeOfMastery(), pos).sprite.drop();
     }
+    Dungeon.level.drop(new MoonStone(), pos).sprite.drop();
     Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
 
     GameScene.bossSlain();

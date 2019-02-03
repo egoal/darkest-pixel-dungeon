@@ -3,9 +3,11 @@ package com.egoal.darkestpixeldungeon.items.helmets
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindofMisc
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.watabou.utils.Random
 
 
 open class Helmet : KindofMisc() {
@@ -18,11 +20,11 @@ open class Helmet : KindofMisc() {
     }
 
     override fun doEquip(hero: Hero): Boolean {
-        if(listOf(hero.belongings.misc1, hero.belongings.misc2, hero.belongings.misc3).any{it is Helmet}){
+        if (listOf(hero.belongings.misc1, hero.belongings.misc2, hero.belongings.misc3).any { it is Helmet }) {
             GLog.w(Messages.get(Helmet::class.java, "cannot-wear-two"))
             return false
         }
-        
+
         return if (super.doEquip(hero)) {
             identify()
             true
@@ -41,7 +43,13 @@ open class Helmet : KindofMisc() {
 
     open class HelmetBuff : Buff()
 
+    override fun random(): Item {
+        cursed = Random.Float() < 0.3f
+        
+        return this
+    }
+
     override fun isUpgradable(): Boolean = false
-    
-    override fun price(): Int = if(cursedKnown && cursed) 20 else 40
+
+    override fun price(): Int = if (cursedKnown && cursed) 20 else 40
 }

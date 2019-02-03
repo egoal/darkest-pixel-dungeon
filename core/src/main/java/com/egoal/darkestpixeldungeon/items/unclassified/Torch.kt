@@ -63,7 +63,7 @@ class Torch : Item() {
 
     override fun isIdentified(): Boolean = true 
 
-    override fun price(): Int = 20 * quantity
+    override fun price(): Int = 15 * quantity
 
     companion object {
         private const val AC_LIGHT = "LIGHT"

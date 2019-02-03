@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
+import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
@@ -131,6 +132,7 @@ public enum HeroClass {
     }
 
     (new HandleOfAbyss()).random().collect();
+    new MoonStone().collect();
   }
 
   private static void initDebug(Hero hero) {

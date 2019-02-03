@@ -108,7 +108,7 @@ public class Bestiary {
                 Thief.class, MadMan.class, Bat.class};
         break;
       case 9:
-        chances = new float[]{3, 2, 2, 1, 0.6f, 0.02f};
+        chances = new float[]{3, 2, 2, 1, 0.6f, 0.2f};
         classes = new Class<?>[]{Skeleton.class, Guard.class, Shaman.class,
                 Thief.class, Bat.class, SkeletonKnight.class,};
         break;
@@ -130,8 +130,8 @@ public class Bestiary {
         chances = new float[]{1, .5f, .2f, 3, 1, 0.5f, 0.02f, .02f};
         classes = new Class<?>[]{
                 Bat.class, SkeletonKnight.class, MadMan.class,
-                Brute.class, Spinner.class,
-                Ballista.class, Elemental.class, Monk.class};
+                Brute.class, Spinner.class, Ballista.class, 
+                Elemental.class, Monk.class};
         break;
       case 14:
         chances = new float[]{1, .75f, 3, 4, .75f, 0.02f, 0.01f};

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon
 
+import com.egoal.darkestpixeldungeon.actors.buffs.MoonNight
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -134,12 +135,17 @@ object Statistics {
         }
 
         // special time point would indicate the player
-        val special: Boolean get() = minute in 0..20 && hour in listOf(2, 7, 19, 23)
+        val special: Boolean get() = minute in 0..20 && hour in listOf(2, 7, 19, 22)
         
         fun updateState() {
+            if(Dungeon.hero?.buff(MoonNight::class.java)!=null) {
+                state = State.Night
+                return
+            }
+            
             val newState = when {
                 hour in 7 until 19 -> State.Day
-                hour < 2 || hour >= 23 -> State.MidNight
+                hour < 2 || hour >= 22 -> State.MidNight
                 else -> State.Night
             }
             

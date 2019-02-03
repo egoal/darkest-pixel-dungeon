@@ -1,20 +1,20 @@
 package com.egoal.darkestpixeldungeon.items.helmets
 
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
-class HelmetCrusader : Helmet() {
+class HoodApprentice : Helmet(){
     init {
-        image = ItemSpriteSheet.HELMET_CRUSADER
+        image = ItemSpriteSheet.HELMET_APPRENTICE
     }
 
     override fun desc(): String {
         var desc = super.desc()
         if (isIdentified) {
-            desc += "\n\n" + Messages.get(this, "effect_desc")
+            desc += "\n\n" + Messages.get(this, "effect-desc")
             if (cursed)
                 desc += "\n\n" + Messages.get(Helmet::class.java, "cursed_desc")
         }
@@ -22,14 +22,13 @@ class HelmetCrusader : Helmet() {
         return desc
     }
 
-    override fun buff(): HelmetBuff = Protect()
-    
-    inner class Protect: HelmetBuff(){
-        override fun act(): Boolean {
+    inner class Apprentice: HelmetBuff(){
+        override fun act(): Boolean{
             if(cursed && Random.Int(10)==0)
-                target.takeDamage(Damage(1, com.egoal.darkestpixeldungeon.actors.Char.Nobody(), target).type(Damage.Type.MENTAL))
-                
+                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
+
             return super.act()
         }
     }
+
 }

@@ -11,7 +11,9 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.food.Pasty
 import com.egoal.darkestpixeldungeon.items.helmets.Helmet
+import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader
+import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
@@ -291,7 +293,9 @@ object KGenerator {
     }
 
     object HELMET : ClassMapGenerator<Helmet>(hashMapOf(
-            HelmetCrusader::class.java to 1f
+            HelmetBarbarian::class.java to 1f, 
+            HelmetCrusader::class.java to 1f, 
+            HoodApprentice::class.java to 1f
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
@@ -307,12 +311,12 @@ object KGenerator {
             SCROLL to 400f,
             WAND to 40f,
             RING to 15f,
-            ARTIFACT to 15f,
+            ARTIFACT to 10f,
             SEED to 50f,
             FOOD to 0f,
             GOLD to 500f,
             BOOK to 0f,
-            HELMET to 5f
+            HELMET to 1f
     )
 
     fun generate(): Item = Random.chances(categoryMap).generate()

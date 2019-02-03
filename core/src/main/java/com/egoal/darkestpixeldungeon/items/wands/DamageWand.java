@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.wands;
 
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
 
@@ -41,11 +42,11 @@ public abstract class DamageWand extends Wand {
   public abstract int max(int lvl);
 
   public int damageRoll() {
-    return Random.NormalIntRange(min(), max());
+    return Math.round(Random.NormalIntRange(min(), max())* Dungeon.hero.arcaneFactor());
   }
 
   public int damageRoll(int lvl) {
-    return Random.NormalIntRange(min(lvl), max(lvl));
+    return Math.round(Random.NormalIntRange(min(lvl), max(lvl))* Dungeon.hero.arcaneFactor());
   }
 
   @Override
