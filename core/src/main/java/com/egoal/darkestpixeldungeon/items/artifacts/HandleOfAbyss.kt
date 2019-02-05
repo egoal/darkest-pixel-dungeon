@@ -98,22 +98,10 @@ class HandleOfAbyss : Artifact() {
         defeated = bundle.getBoolean("defeated")
     }
 
-    companion object {
-        private const val AC_SUMMON = "summon"
-
-        private var defeated = false
-        fun setDefeated() {
-            if (!defeated) {
-                defeated = true
-                GLog.w(Messages.get(HandleOfAbyss::class.java, "now-you-know"))
-            }
-        }
-    }
-
     inner class Recharge : ArtifactBuff() {
         override fun act(): Boolean {
             val lock = target.buff(LockedFloor::class.java)
-            if ((lock == null || lock.regenOn()) && charge < chargeCap && !cursed) {
+            if (AbyssHero.Instance() == null && (lock == null || lock.regenOn()) && charge < chargeCap && !cursed) {
                 partialCharge += 100f / 250f
                 if (partialCharge > 1f) {
                     charge++
@@ -140,6 +128,18 @@ class HandleOfAbyss : Artifact() {
                     GLog.p(Messages.get(HandleOfAbyss::class.java, "levelup"))
                     upgrade()
                 }
+            }
+        }
+    }
+
+    companion object {
+        private const val AC_SUMMON = "summon"
+
+        private var defeated = false
+        fun SetDefeated() {
+            if (!defeated) {
+                defeated = true
+                GLog.w(Messages.get(HandleOfAbyss::class.java, "now-you-know"))
             }
         }
     }

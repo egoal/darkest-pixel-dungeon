@@ -29,6 +29,8 @@ import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.windows.WndAlchemy
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
+import com.egoal.darkestpixeldungeon.items.food.StewedMeat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
@@ -71,6 +73,10 @@ object AlchemyPot {
                     }
                 }
                 return Pair(false, null)
+            }
+            1 -> {
+                if (items[0] is MysteryMeat) return Pair(true, StewedMeat.Cook(items[0] as MysteryMeat))
+                else Pair(false, null)
             }
             else -> Pair(false, null)
         }

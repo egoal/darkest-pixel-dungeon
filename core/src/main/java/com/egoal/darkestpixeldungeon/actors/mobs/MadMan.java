@@ -47,9 +47,9 @@ public class MadMan extends Mob implements Callback {
   public Damage giveDamage(Char target) {
     if (target instanceof Hero) {
       //fixme: bad design
-      int lvl = (maxLvl-3)/5;
+      int lvl = (maxLvl - 3) / 5;
       int dis = Dungeon.level.distance(pos, enemy.pos);
-      int value = Math.max(1, Random.IntRange(2, 4)+lvl-dis);
+      int value = Math.max(1, Random.IntRange(2, 4) + lvl - dis);
       return new Damage(value, this, target).type(Damage.Type.MENTAL)
               .addFeature(Damage.Feature.ACCURATE);
     } else
@@ -79,13 +79,16 @@ public class MadMan extends Mob implements Callback {
 
   @Override
   protected boolean canAttack(Char enemy) {
-    return Dungeon.level.distance(pos, enemy.pos) <= SHOUT_RANGE && new 
+    return Dungeon.level.distance(pos, enemy.pos) <= SHOUT_RANGE && new
             Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos ==
             enemy.pos;
   }
 
   @Override
   protected boolean doAttack(Char enemy) {
+    if (Dungeon.level.distance(pos, enemy.pos) <= 1)
+      return super.doAttack(enemy);
+
     boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
 
     if (visible) {

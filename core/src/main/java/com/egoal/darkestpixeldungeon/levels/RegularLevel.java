@@ -182,7 +182,7 @@ public abstract class RegularLevel extends Level {
   }
 
   protected void placeSign() {
-    if (!Sign.showInDepth(Dungeon.depth))
+    if (!Sign.INSTANCE.ShowInDepth(Dungeon.depth))
       return;
 
     while (true) {

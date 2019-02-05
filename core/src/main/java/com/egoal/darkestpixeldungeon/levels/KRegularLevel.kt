@@ -104,6 +104,10 @@ open abstract class KRegularLevel : Level() {
             probs.remove(VaultDigger::class.java)
             probs.remove(WeakFloorDigger::class.java)
             probs.remove(LaboratoryDigger::class.java)
+        } else if (Dungeon.laboratoryNeed()) {
+            diggers.add(LaboratoryDigger())
+
+            probs.remove(LaboratoryDigger::class.java)
         }
 
         // never fall to boss
@@ -436,8 +440,8 @@ open abstract class KRegularLevel : Level() {
                 TrapsDigger::class.java to 1f,
                 TreasuryDigger::class.java to 0.75f,
                 VaultDigger::class.java to 0.75f,
-                WeakFloorDigger::class.java to 0.75f, 
-                AltarDigger::class.java to 0.75f 
+                WeakFloorDigger::class.java to 0.75f,
+                AltarDigger::class.java to 0.75f
         )
 
         val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(

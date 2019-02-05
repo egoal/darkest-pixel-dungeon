@@ -96,6 +96,9 @@ public class Dungeon {
     demonicSkull,
     handOfElder,
 
+    // rooms
+    laboratories,
+
     //containers
     dewVial,
     seedBag,
@@ -194,7 +197,7 @@ public class Dungeon {
     if (depth > Statistics.INSTANCE.getDeepestFloor()) {
       Statistics.INSTANCE.setDeepestFloor(depth);
 
-      Statistics.INSTANCE.setCompletedWithNoKilling(depth > 1 && 
+      Statistics.INSTANCE.setCompletedWithNoKilling(depth > 1 &&
               Statistics.INSTANCE.getQualifiedForNoKilling());
     }
 
@@ -255,7 +258,8 @@ public class Dungeon {
         break;
       default:
         level = new DeadEndLevel();
-        Statistics.INSTANCE.setDeepestFloor(Statistics.INSTANCE.getDeepestFloor()-1);
+        Statistics.INSTANCE.setDeepestFloor(Statistics.INSTANCE
+                .getDeepestFloor() - 1);
     }
 
     if (DarkestPixelDungeon.debug())
@@ -388,6 +392,12 @@ public class Dungeon {
     int slLeft = (depth / 10 + 1) - limitedDrops.lullabyScrolls.count;
 
     return slLeft > 0 && Random.Int(10 - depth % 10) < slLeft;
+  }
+
+  public static boolean laboratoryNeed() {
+    // 1 per 10 floors
+    int labLeft = (depth / 10 + 1) - limitedDrops.laboratories.count;
+    return labLeft > 0 && Random.Int(10 - depth % 10) < labLeft;
   }
 
   // save

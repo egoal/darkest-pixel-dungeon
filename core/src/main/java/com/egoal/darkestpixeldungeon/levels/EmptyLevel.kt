@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.levels
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat
+import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
 import com.egoal.darkestpixeldungeon.items.unclassified.RegenerationRune
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
@@ -40,6 +41,8 @@ class EmptyLevel : KRegularLevel() {
 //        for(i in 1..20) drop(KGenerator.POTION.generate(), xy2cell(10, 5+i))
 //        for(i in 1..20) drop(KGenerator.SCROLL.generate(), xy2cell(11, 5+i))
 //        for(i in 1..20) drop(KGenerator.SEED.generate(), xy2cell(12, 5+i))
+
+        for (i in 1..20) drop(DriedRose.Companion.Petal(), xy2cell(13, 5 + i))
 
         drop(RegenerationRune(), xy2cell(15, 15))
         drop(Dewdrop(), xy2cell(16, 16))

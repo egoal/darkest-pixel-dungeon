@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.levels.KRegularLevel;
@@ -78,7 +79,7 @@ public class Chasm {
     if (buff != null) buff.detach();
 
     for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-      if (mob instanceof DriedRose.GhostHero) mob.destroy();
+      if (mob instanceof GhostHero) mob.destroy();
 
     if (Dungeon.hero.isAlive()) {
       Dungeon.hero.interrupt();

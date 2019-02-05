@@ -60,6 +60,8 @@ class MendingRune : Rune() {
 }
 
 class CriticalRune : Rune() {
+    override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0x0000ff)
+    
     override fun consume(hero: Hero) {
         Buff.prolong(hero, Critical::class.java, 20f)
     }
@@ -68,13 +70,17 @@ class CriticalRune : Rune() {
 }
 
 class BrightRune : Rune() {
+    override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xffffff)
+    
     override fun consume(hero: Hero) {
-        Buff.prolong(hero, SharpVision::class.java, 60f)
-        Buff.prolong(hero, MoonNight::class.java, 60f)
+        Buff.prolong(hero, SharpVision::class.java, 80f)
+        Buff.prolong(hero, MoonNight::class.java, 80f)
     }
 }
 
 class HasteRune : Rune() {
+    override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xff0000)
+    
     override fun consume(hero: Hero) {
         Buff.prolong(hero, Haste::class.java, 40f)
     }
@@ -91,3 +97,4 @@ class TreasureRune : Rune() {
         }.collect()
     }
 }
+

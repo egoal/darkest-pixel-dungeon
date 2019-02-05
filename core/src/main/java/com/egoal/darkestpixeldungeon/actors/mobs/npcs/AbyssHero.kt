@@ -6,7 +6,6 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss
@@ -47,7 +46,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HT = 20 + level * 5
         HP = HT
 
-        timeLeft = 20f * level + 40f
+        timeLeft = 20f * level + 50f
     }
 
     private fun imitateHeroStatus() {
@@ -66,7 +65,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         move(Dungeon.hero.pos)
 
         with(Dungeon.hero) {
-            moveSprite(pos, curpos)
+            sprite.move(pos, curpos)
             move(curpos)
 
             spend(1 / speed())
@@ -81,7 +80,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun attackSkill(target: Char): Int = 10 + level * 2
 
     override fun giveDamage(enemy: Char): Damage {
-        val dmg = Damage(Random.NormalIntRange(5 + level, 10 + 5 * level), this, enemy).addElement(Damage.Element.SHADOW)
+        val dmg = Damage(Random.IntRange(1+ level, 5 + 6 * level), this, enemy).addElement(Damage.Element.SHADOW)
         if (Random.Float() < 0.15f) {
             dmg.value = dmg.value * 5 / 4
             dmg.addFeature(Damage.Feature.CRITCIAL)
@@ -122,8 +121,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     }
 
     override fun chooseEnemy(): Char? {
-        if (hostile)
-            return super.chooseEnemy()
+        if (hostile) return super.chooseEnemy()
 
         if (enemy == null || !enemy.isAlive || !Dungeon.level.mobs.contains(enemy) || state == WANDERING) {
             val avls = Dungeon.level.mobs.filter {
@@ -138,7 +136,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     // strengthen
     override fun attackProc(dmg: Damage): Damage {
         if (!hostile) {
-            val porton = dmg.value.toFloat() / 2f / HT.toFloat()
+            val porton = dmg.value.toFloat() / 4f / HT.toFloat()
             Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(porton)
         }
 
@@ -147,10 +145,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     // voice
     fun onSpawned() {
-        if (hostile)
-            yell(Messages.get(this, "defeat-me"))
-        else
-            yell(Messages.get(this, "spawned"))
+        if (hostile) yell(Messages.get(this, "defeat-me"))
+        else yell(Messages.get(this, "spawned"))
 
         Dungeon.hero.takeDamage(Damage(Random.Int(level) + 1, this, Dungeon.hero).type(Damage.Type.MENTAL))
     }
@@ -172,7 +168,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun die(cause: Any?) {
         super.die(cause)
 
-        HandleOfAbyss.setDefeated()
+        HandleOfAbyss.SetDefeated()
     }
 
     companion object {

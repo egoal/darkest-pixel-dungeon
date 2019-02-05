@@ -460,12 +460,12 @@ public abstract class Mob extends Char {
         Surprise.hit(this);
     }
 
-    //become aggro'd by a corrupted enemy
-    if (enemy.buff(Corruption.class) != null) {
+    // attack by a closer but not current enemy, switch
+    if (this.enemy == null ||
+            (enemy != this.enemy && Dungeon.level.distance(pos, enemy.pos) <
+                    Dungeon.level.distance(pos, this.enemy.pos))) {
       aggro(enemy);
-      target = enemy.pos;
-      if (state == SLEEPING || state == WANDERING)
-        state = HUNTING;
+      target = enemy.pos; // enemy set, not null 
     }
 
     // process buff: soul mark
@@ -501,7 +501,8 @@ public abstract class Mob extends Char {
 
     if (state == SLEEPING)
       state = WANDERING;
-    alerted = true;
+    if (state != HUNTING)
+      alerted = true;
 
     return super.takeDamage(dmg);
   }
@@ -674,8 +675,8 @@ public abstract class Mob extends Char {
 
     @Override
     public boolean act(boolean enemyInFOV, boolean justAlerted) {
-      if (enemyInFOV && (justAlerted || Random.Int(distance(enemy) / 2 +
-              enemy.stealth()) == 0)) {
+      if (enemyInFOV && (justAlerted || Random.Float(distance(enemy) / 2f +
+              enemy.stealth()) < 1f)) {
 
         enemySeen = true;
 
@@ -721,6 +722,10 @@ public abstract class Mob extends Char {
 
         if (enemyInFOV) {
           target = enemy.pos;
+        } else if (enemy == null) {
+          state = WANDERING;
+          target = Dungeon.level.randomDestination();
+          return true;
         }
 
         int oldPos = pos;

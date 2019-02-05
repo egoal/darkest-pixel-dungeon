@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
@@ -847,7 +848,7 @@ public class Hero extends Char {
 
     } else {
       if (Dungeon.level.map[pos] == Terrain.SIGN) {
-        Sign.read(pos);
+        Sign.INSTANCE.Read(pos);
       }
       ready();
 
@@ -944,7 +945,7 @@ public class Hero extends Char {
 
           if (item instanceof Dewdrop
                   || item instanceof TimekeepersHourglass.sandBag
-                  || item instanceof DriedRose.Petal
+                  || item instanceof DriedRose.Companion.Petal
                   || item instanceof Key) {
             //Do Nothing
           } else {
@@ -1753,7 +1754,7 @@ public class Hero extends Char {
       GLog.w(Messages.get(this, "revive"));
       Statistics.INSTANCE.setAnkhsUsed(Statistics.INSTANCE.getAnkhsUsed() + 1);
 
-      DriedRose.GhostHero gh = DriedRose.GhostHero.instance();
+      GhostHero gh = GhostHero.Companion.Instance();
       if (gh != null)
         gh.sayAnhk();
 
@@ -1897,7 +1898,7 @@ public class Hero extends Char {
 
     if (mob.properties().contains(Property.BOSS)) {
       // slay a boss
-      DriedRose.GhostHero gh = DriedRose.GhostHero.instance();
+      GhostHero gh = GhostHero.Companion.Instance();
       if (gh != null)
         gh.sayBossBeaten();
     }

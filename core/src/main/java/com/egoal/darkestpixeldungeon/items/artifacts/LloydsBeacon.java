@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -166,7 +167,7 @@ public class LloydsBeacon extends Artifact {
         if (buff != null) buff.detach();
 
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-          if (mob instanceof DriedRose.GhostHero) mob.destroy();
+          if (mob instanceof GhostHero) mob.destroy();
 
         InterlevelScene.mode = InterlevelScene.Mode.RETURN;
         InterlevelScene.returnDepth = returnDepth;

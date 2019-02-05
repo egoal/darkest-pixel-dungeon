@@ -23,12 +23,12 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
+import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
 import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
 import com.egoal.darkestpixeldungeon.items.unclassified.RegenerationRune;
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
-import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
@@ -134,6 +134,7 @@ public enum HeroClass {
     }
 
     (new HandleOfAbyss()).random().collect();
+    (new DriedRose()).random().collect();
   }
 
   private static void initDebug(Hero hero) {

@@ -243,13 +243,13 @@ public abstract class Level implements Bundlable {
         //this way if a rose is dropped later in the game, player still has a
         // chance to max it out.
         int petalsNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) -
-                rose.droppedPetals) / 3);
+                rose.getDroppedPetals()) / 3);
 
         for (int i = 1; i <= petalsNeeded; i++) {
           //the player may miss a single petal and still max their rose.
-          if (rose.droppedPetals < 11) {
-            stationaryItems.add(new DriedRose.Petal());
-            rose.droppedPetals++;
+          if (rose.getDroppedPetals() < 11) {
+            stationaryItems.add(new DriedRose.Companion.Petal());
+            rose.setDroppedPetals(rose.getDroppedPetals()+ 1);
           }
         }
       }
@@ -265,7 +265,7 @@ public abstract class Level implements Bundlable {
 
         // give extra torches
         {
-          float prop = 0.2f - Dungeon.depth / 5 * 0.025f;
+          float prop = 0.25f - Dungeon.depth / 5 * 0.025f;
           while (Random.Float() < prop)
             stationaryItems.add(new Torch());
         }
@@ -1006,11 +1006,11 @@ public abstract class Level implements Bundlable {
 
       case Terrain.HIGH_GRASS:
       case Terrain.HIGH_GRASS_COLLECTED:
-        HighGrass.trample(this, cell, ch);
+        HighGrass.INSTANCE.Trample(this, cell, ch);
         break;
 
       case Terrain.WELL:
-        WellWater.affectCell(cell);
+        WellWater.Companion.AffectCell(cell);
         break;
 
       case Terrain.ALCHEMY:

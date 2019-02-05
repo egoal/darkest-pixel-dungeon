@@ -125,7 +125,7 @@ open class WellWater : Blob() {
 
     companion object {
 
-        fun affectCell(cell: Int) {
+        fun AffectCell(cell: Int) {
 
             val waters = arrayOf<Class<*>>(WaterOfHealth::class.java, WaterOfAwareness::class.java, WaterOfTransmutation::class.java)
 

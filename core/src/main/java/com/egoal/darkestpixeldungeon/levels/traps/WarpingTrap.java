@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.Heap;
@@ -77,7 +78,7 @@ public class WarpingTrap extends Trap {
         if (buff != null) buff.detach();
 
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-          if (mob instanceof DriedRose.GhostHero) mob.destroy();
+          if (mob instanceof GhostHero) mob.destroy();
 
         InterlevelScene.mode = InterlevelScene.Mode.RETURN;
         InterlevelScene.returnDepth = depth;

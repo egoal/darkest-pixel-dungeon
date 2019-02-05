@@ -21,10 +21,14 @@
 package com.egoal.darkestpixeldungeon.sprites;
 
 import android.opengl.GLES20;
+
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
+import com.egoal.darkestpixeldungeon.effects.MagicMissile;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.particles.ShaftParticle;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -45,6 +49,8 @@ public class GhostSprite extends MobSprite {
 
     attack = new Animation(10, false);
     attack.frames(frames, 0, 2, 3);
+
+    zap = attack.clone();
 
     die = new Animation(8, false);
     die.frames(frames, 0, 4, 5, 6, 7);
@@ -69,5 +75,21 @@ public class GhostSprite extends MobSprite {
   @Override
   public int blood() {
     return 0xFFFFFF;
+  }
+
+  @Override
+  public void zap(int cell) {
+    turnTo(ch.pos, cell);
+    play(zap);
+
+    MagicMissile.whiteLight(parent, ch.pos, cell, (GhostHero)ch);
+    Sample.INSTANCE.play(Assets.SND_ZAP);
+  }
+
+  @Override
+  public void onComplete(Animation anim) {
+    if (anim == zap)
+      idle();
+    super.onComplete(anim);
   }
 }

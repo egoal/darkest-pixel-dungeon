@@ -280,6 +280,7 @@ public class ItemSpriteSheet {
   public static final int DPD_HUMANITY = FOOD + 8;
   public static final int DPD_WINE = FOOD + 9;
   public static final int MOON_STONE = FOOD + 10;
+  public static final int STEWED = FOOD + 11;
 
   private static final int QUEST = xy(1, 26);  //32 slots
   public static final int SKULL = QUEST + 0;
