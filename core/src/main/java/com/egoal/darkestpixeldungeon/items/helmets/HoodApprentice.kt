@@ -22,6 +22,8 @@ class HoodApprentice : Helmet(){
         return desc
     }
 
+    override fun buff(): HelmetBuff = Apprentice()
+
     inner class Apprentice: HelmetBuff(){
         override fun act(): Boolean{
             if(cursed && Random.Int(10)==0)

@@ -60,14 +60,15 @@ public class Ooze extends Buff {
       if (Dungeon.depth > 4)
         // target.damage( Dungeon.depth/5, this );
         target.takeDamage(new Damage(Dungeon.depth / 5, this, target)
-                .addFeature(Damage.Feature.PURE));
+                .type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
       else if (Random.Int(2) == 0)
-        target.takeDamage(new Damage(1, this, target).addFeature(Damage
-                .Feature.PURE));
+        target.takeDamage(new Damage(1, this, target)
+                .type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE));
       if (!target.isAlive() && target == Dungeon.hero) {
         Dungeon.fail(getClass());
         GLog.n(Messages.get(this, "ondeath"));
       }
+      
       spend(TICK);
     }
     if (Level.water[target.pos]) {
@@ -75,4 +76,5 @@ public class Ooze extends Buff {
     }
     return true;
   }
+
 }

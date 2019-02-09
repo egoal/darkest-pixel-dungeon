@@ -27,9 +27,9 @@ class HallsLevel : KRegularLevel() {
 
     override fun waterTex(): String = Assets.WATER_HALLS
 
-    override fun water(): BooleanArray = Patch.generate(this, if (feeling == Level.Feeling.WATER) 0.55f else 0.40f, 6)
+    override fun water(): BooleanArray = Patch.Generate(this, if (feeling == Level.Feeling.WATER) 0.55f else 0.40f, 6)
 
-    override fun grass(): BooleanArray = Patch.generate(this, if (feeling == Level.Feeling.GRASS) 0.55f else 0.30f, 3)
+    override fun grass(): BooleanArray = Patch.Generate(this, if (feeling == Level.Feeling.GRASS) 0.55f else 0.30f, 3)
 
     override fun trapClasses(): Array<Class<out Trap>> = arrayOf(
             BlazingTrap::class.java, DisintegrationTrap::class.java, FrostTrap::class.java,

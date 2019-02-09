@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -40,7 +41,5 @@ class ArmoryDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
-    private fun prize(level: Level) =
-            Generator.random(Random.oneOf<Generator.Category>(Generator.Category.ARMOR,
-                    Generator.Category.WEAPON))
+    private fun prize(level: Level) = Random.oneOf(KGenerator.ARMOR, KGenerator.WEAPON).generate()
 }

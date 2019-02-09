@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.specials
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.keys.GoldenKey
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -57,10 +58,6 @@ class VaultDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
-    private fun prize(level: Level) = Generator.random(Random.oneOf(
-            Generator.Category.WAND,
-            Generator.Category.RING,
-            Generator.Category.ARTIFACT))
-
+    private fun prize(level: Level) = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT).generate()
 
 }

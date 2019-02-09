@@ -10,10 +10,7 @@ import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.food.Pasty
-import com.egoal.darkestpixeldungeon.items.helmets.Helmet
-import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian
-import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader
-import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice
+import com.egoal.darkestpixeldungeon.items.helmets.*
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
@@ -295,7 +292,10 @@ object KGenerator {
     object HELMET : ClassMapGenerator<Helmet>(hashMapOf(
             HelmetBarbarian::class.java to 1f, 
             HelmetCrusader::class.java to 1f, 
-            HoodApprentice::class.java to 1f
+            HoodApprentice::class.java to 1f, 
+            CircletEmerald::class.java to 1f, 
+            CrownOfDwarf::class.java to 0f, 
+            HeaddressRegeneration::class.java to 1f
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
@@ -309,7 +309,7 @@ object KGenerator {
             CriticalRune::class.java to 0.5f, 
             BrightRune::class.java to 1f, 
             HasteRune::class.java to 1f, 
-            TreasureRune::class.java to 1f 
+            TreasureRune::class.java to 1f
     ))
     
     // 
@@ -325,7 +325,7 @@ object KGenerator {
             FOOD to 0f,
             GOLD to 500f,
             BOOK to 0f,
-            HELMET to 1f, 
+            HELMET to 3f, 
             RUNE to 0f 
     )
 

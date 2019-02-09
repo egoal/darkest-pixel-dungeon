@@ -39,6 +39,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
+import com.egoal.darkestpixeldungeon.items.helmets.HeaddressRegeneration;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice;
@@ -277,11 +278,16 @@ public class Hero extends Char {
     if (isStarving()) return 0f;
 
     float reg = regeneration;
+
+    HeaddressRegeneration.Regeneration hrreg = buff(HeaddressRegeneration
+            .Regeneration.class);
+    if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : 0.1;
+
     ChaliceOfBlood.chaliceRegen cr = Dungeon.hero.buff(ChaliceOfBlood
             .chaliceRegen.class);
     if (cr != null) {
       if (!cr.isCursed())
-        reg += HT * 0.004 * Math.pow(1.075, cr.itemLevel());
+        reg += HT * 0.003 * Math.pow(1.075, cr.itemLevel());
       else
         reg /= 2f;
     }
@@ -907,7 +913,7 @@ public class Hero extends Char {
     int dst = action.dst;
     if (Dungeon.level.adjacent(dst, pos)) {
       ready();
-      AlchemyPot.INSTANCE.operate(this, dst);
+      AlchemyPot.INSTANCE.Operate(this, dst);
 
       return false;
     } else if (getCloser(dst)) {
@@ -922,7 +928,7 @@ public class Hero extends Char {
     int dst = action.dst;
     if (Dungeon.level.adjacent(dst, pos)) {
       ready();
-      EnchantingStation.operate(this);
+      EnchantingStation.INSTANCE.Operate(this);
 
       return false;
     } else if (getCloser(dst)) {

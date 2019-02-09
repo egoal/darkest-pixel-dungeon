@@ -83,7 +83,7 @@ class WndAlchemy : Window() {
     var result: Item? = null
     // called then item changed
     private fun updateState() {
-        val pr = AlchemyPot.verifyRefinement(inputButtons.mapNotNull { it.item })
+        val pr = AlchemyPot.VerifyRefinement(inputButtons.mapNotNull { it.item })
         result = pr.second
         refineButton.enable(pr.first)
     }
@@ -92,7 +92,7 @@ class WndAlchemy : Window() {
         if(result==null)
             GLog.n(Messages.get(ExtractionFlask::class.java, "refine_failed"))
         else
-            AlchemyPot.onCombined(inputButtons.mapNotNull { it.item }, result!!)
+            AlchemyPot.OnCombined(inputButtons.mapNotNull { it.item }, result!!)
         for (btn in inputButtons)
             btn.item(null)
         refineButton.enable(false)

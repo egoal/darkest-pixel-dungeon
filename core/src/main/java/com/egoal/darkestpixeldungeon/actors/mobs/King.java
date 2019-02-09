@@ -33,7 +33,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.unclassified.ArmorKit;
-import com.egoal.darkestpixeldungeon.items.unclassified.CrownOfDwarf;
+import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;

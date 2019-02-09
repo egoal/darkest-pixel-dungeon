@@ -75,7 +75,7 @@ public class ItemSpriteSheet {
   public static final int KIT = SINGLE_USE + 13;
   public static final int AMULET = SINGLE_USE + 14;
   public static final int DPD_TEST_PAPER = SINGLE_USE + 15;
-  public static final int DPD_DWARF_CROWN = SINGLE_USE + 16;
+  
   public static final int DPD_CAT_GIFT = SINGLE_USE + 17;
 
   //32 free slots
@@ -148,6 +148,9 @@ public class ItemSpriteSheet {
   public static final int HELMET_CRUSADER = HELMET + 0;
   public static final int HELMET_BARBARIAN = HELMET + 1;
   public static final int HELMET_APPRENTICE = HELMET + 2;
+  public static final int HELMET_EMERALD = HELMET + 3;
+  public static final int DWARF_CROWN = HELMET + 4;
+  public static final int HEADDRESS_OF_REGENERATION = HELMET+ 5; 
 
   //16 free slots
 
@@ -263,8 +266,9 @@ public class ItemSpriteSheet {
   public static final int SEED_FADELEAF = SEEDS + 10;
   public static final int SEED_BLANDFRUIT = SEEDS + 11;
 
-  public static final int DPD_BOOKS = xy(1, 23);
-  public static final int DPD_NOTES = DPD_BOOKS + 1;
+  public static final int BOOKS = xy(1, 23);
+  public static final int DPD_BOOKS = BOOKS + 0;
+  public static final int DPD_NOTES = BOOKS + 1;
 
   //16 free slots
 

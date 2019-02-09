@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Piranha
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfInvisibility
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -21,7 +22,7 @@ const val NUM_PIRANHAS = 3
 
 class PoolDigger : RectDigger() {
 
-    override fun chooseRoomSize(wall: Wall) = if (Random.Int(3) == 0) 
+    override fun chooseRoomSize(wall: Wall) = if (Random.Int(3) == 0)
         Point(Random.IntRange(7, 9), Random.IntRange(7, 9)) else super.chooseRoomSize(wall)
 
 
@@ -94,11 +95,11 @@ class PoolDigger : RectDigger() {
         }
 
         //1 floor set higher in probability, never cursed
-        var prize = if (Random.Int(2) == 0) Generator.randomWeapon(Dungeon.depth / 5 + 1)
-        else Generator.randomArmor(Dungeon.depth / 5 + 1)
+        var prize = if (Random.Int(2) == 0) KGenerator.WEAPON.random(KGenerator.CurrentFloorSet() + 1)
+        else KGenerator.ARMOR.random(KGenerator.CurrentFloorSet() + 1)
         while (prize.cursed)
-            prize = if (Random.Int(2) == 0) Generator.randomWeapon(Dungeon.depth / 5 + 1)
-            else Generator.randomArmor(Dungeon.depth / 5 + 1)
+            prize = if (Random.Int(2) == 0) KGenerator.WEAPON.random(KGenerator.CurrentFloorSet() + 1)
+            else KGenerator.ARMOR.random(KGenerator.CurrentFloorSet() + 1)
 
         //33% chance for an extra update.
         if (prize !is MissileWeapon && Random.Int(3) == 0)
@@ -106,5 +107,5 @@ class PoolDigger : RectDigger() {
 
         return prize
     }
-    
+
 }

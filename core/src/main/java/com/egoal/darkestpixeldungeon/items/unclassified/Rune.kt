@@ -2,13 +2,16 @@ package com.egoal.darkestpixeldungeon.items.unclassified
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
 import com.egoal.darkestpixeldungeon.actors.buffs.MoonNight
 import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -20,7 +23,14 @@ abstract class Rune : Item() {
         image = ItemSpriteSheet.RUNE
     }
 
-    abstract fun consume(hero: Hero)
+    fun consume(hero: Hero) {
+        affect(hero)
+        
+        GameScene.effect(Flare(7, 32f).color(glowing()?.color ?: 0xffffff, true).show(
+                hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 2f))
+    }
+
+    protected abstract fun affect(hero: Hero)
 
     override fun doPickUp(hero: Hero): Boolean {
         val vial = hero.belongings.getItem(DewVial::class.java)
@@ -44,7 +54,7 @@ abstract class Rune : Item() {
 class RegenerationRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xa6fd4d)
 
-    override fun consume(hero: Hero) {
+    override fun affect(hero: Hero) {
         hero.regeneration += 0.1f
     }
 }
@@ -52,7 +62,7 @@ class RegenerationRune : Rune() {
 class MendingRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0x00ff00)
 
-    override fun consume(hero: Hero) {
+    override fun affect(hero: Hero) {
         Buff.prolong(hero, Recovery::class.java, 100f)
     }
 
@@ -61,8 +71,8 @@ class MendingRune : Rune() {
 
 class CriticalRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0x0000ff)
-    
-    override fun consume(hero: Hero) {
+
+    override fun affect(hero: Hero) {
         Buff.prolong(hero, Critical::class.java, 20f)
     }
 
@@ -71,8 +81,8 @@ class CriticalRune : Rune() {
 
 class BrightRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xffffff)
-    
-    override fun consume(hero: Hero) {
+
+    override fun affect(hero: Hero) {
         Buff.prolong(hero, SharpVision::class.java, 80f)
         Buff.prolong(hero, MoonNight::class.java, 80f)
     }
@@ -80,8 +90,8 @@ class BrightRune : Rune() {
 
 class HasteRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xff0000)
-    
-    override fun consume(hero: Hero) {
+
+    override fun affect(hero: Hero) {
         Buff.prolong(hero, Haste::class.java, 40f)
     }
 
@@ -91,10 +101,10 @@ class HasteRune : Rune() {
 class TreasureRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xfdd14d)
 
-    override fun consume(hero: Hero) {
+    override fun affect(hero: Hero) {
         Gold().random().apply {
-            quantity = (quantity * Random.Float(1.5f, 3f)).toInt()
-        }.collect()
+            quantity = (quantity * Random.Float(2f, 3f)).toInt()
+        }.doPickUp(hero)
     }
 }
 

@@ -41,11 +41,13 @@ open class Helmet : KindofMisc() {
 
     protected open fun buff(): HelmetBuff = HelmetBuff()
 
-    open class HelmetBuff : Buff()
+    open inner class HelmetBuff : Buff() {
+        val Cursed: Boolean get() = cursed
+    }
 
     override fun random(): Item {
         cursed = Random.Float() < 0.3f
-        
+
         return this
     }
 

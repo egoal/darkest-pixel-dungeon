@@ -31,7 +31,7 @@ class AltarDigger : DiamondDigger() {
         val sf = level.blobs[SacrificialFire::class.java]
         val fire = if (sf == null) SacrificialFire() else sf as SacrificialFire
 
-        fire.seed(level, cen, (Dungeon.depth + 1) * 3)
+        fire.seed(level, cen, (Dungeon.depth + 1) * 2)
         level.blobs[SacrificialFire::class.java] = fire
 
         return dr

@@ -70,7 +70,7 @@ class SacrificialFire : Blob() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
 
-        for (i in 0..cur.size)
+        for (i in 0 until cur.size)
             if (cur[i] > 0) {
                 pos = i
                 break
@@ -113,7 +113,8 @@ class SacrificialFire : Blob() {
                         Journal.remove(Journal.Feature.SACRIFICIAL_FIRE)
 
                         GLog.w(Messages.get(SacrificialFire::class.java, "reward"))
-                        GameScene.effect(Flare(7, 32f).color(0x66ffff, true).show(ch.sprite.parent, DungeonTilemap.tileCenterToWorld(fire.pos), 2f))
+                        GameScene.effect(Flare(7, 32f).color(0x66ffff, true).show(
+                                ch.sprite.parent, DungeonTilemap.tileCenterToWorld(fire.pos), 2f))
                         Dungeon.level.drop(Prize(), fire.pos).sprite.drop()
                     }
                 } else {

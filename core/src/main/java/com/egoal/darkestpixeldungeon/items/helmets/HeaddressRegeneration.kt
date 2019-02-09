@@ -6,9 +6,9 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
-class HelmetBarbarian: Helmet(){
+class HeaddressRegeneration: Helmet() {
     init {
-        image = ItemSpriteSheet.HELMET_BARBARIAN
+        image = ItemSpriteSheet.HEADDRESS_OF_REGENERATION
     }
 
     override fun desc(): String {
@@ -16,21 +16,14 @@ class HelmetBarbarian: Helmet(){
         if (isIdentified) {
             desc += "\n\n" + Messages.get(this, "effect-desc")
             if (cursed)
-                desc += "\n\n" + Messages.get(Helmet::class.java, "cursed_desc")
+                desc += "\n\n" + Messages.get(this, "cursed_desc")
         }
 
         return desc
     }
 
-    override fun buff(): HelmetBuff = HelmetBuff()
-    
-    inner class Anger: HelmetBuff(){
-        override fun act(): Boolean{
-            if(cursed && Random.Int(10)==0)
-                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
+    override fun buff(): HelmetBuff = Regeneration()
 
-            return super.act()
-        }
-    }
-    
+    inner class Regeneration: HelmetBuff()
+
 }

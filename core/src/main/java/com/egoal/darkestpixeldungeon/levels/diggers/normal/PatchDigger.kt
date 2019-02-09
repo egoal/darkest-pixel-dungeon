@@ -12,7 +12,7 @@ import com.watabou.utils.Random
 open class PatchDigger : RectDigger() {
     override fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(6, 10), Random.IntRange(6, 10))
 
-    open fun patch(width: Int, height: Int): BooleanArray = Patch.generate(width, height, 0.5f, 1)
+    open fun patch(width: Int, height: Int): BooleanArray = Patch.Generate(width, height, 0.5f, 1)
     open fun patchTile() = if (Random.Float() < 0.5f) Terrain.GRASS else Terrain.CHASM
     open fun unpatchTile() = Terrain.EMPTY
 

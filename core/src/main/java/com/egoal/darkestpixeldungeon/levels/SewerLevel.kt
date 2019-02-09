@@ -30,9 +30,9 @@ class SewerLevel : KRegularLevel() {
 
     override fun waterTex(): String = Assets.WATER_SEWERS
 
-    override fun water(): BooleanArray = Patch.generate(this, if (feeling == Level.Feeling.WATER) 0.60f else 0.45f, 5)
+    override fun water(): BooleanArray = Patch.Generate(this, if (feeling == Level.Feeling.WATER) 0.60f else 0.45f, 5)
 
-    override fun grass(): BooleanArray = Patch.generate(this, if (feeling == Level.Feeling.GRASS) 0.60f else 0.40f, 4)
+    override fun grass(): BooleanArray = Patch.Generate(this, if (feeling == Level.Feeling.GRASS) 0.60f else 0.40f, 4)
 
     override fun trapClasses(): Array<Class<out Trap>> = if (Dungeon.depth == 1) arrayOf(WornTrap::class.java) else
         arrayOf(ChillingTrap::class.java, ToxicTrap::class.java, WornTrap::class.java,

@@ -120,7 +120,7 @@ class CavesBossLevel : Level() {
         entrance = Random.Int(ROOM_LEFT + 1, ROOM_RIGHT - 1) + Random.Int(ROOM_TOP + 1, ROOM_BOTTOM - 1) * width()
         map[entrance] = Terrain.ENTRANCE
 
-        val patch = Patch.generate(this, 0.45f, 6)
+        val patch = Patch.Generate(this, 0.45f, 6)
         for (i in 0 until length()) {
             if (map[i] == Terrain.EMPTY && patch[i]) {
                 map[i] = Terrain.WATER

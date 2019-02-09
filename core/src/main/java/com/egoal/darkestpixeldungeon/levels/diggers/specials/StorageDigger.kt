@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.specials
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -55,8 +56,6 @@ class StorageDigger : RectDigger() {
                 return prize
         }
 
-        return Generator.random(Random.oneOf<Generator.Category>(
-                Generator.Category.POTION, Generator.Category.SCROLL,
-                Generator.Category.FOOD, Generator.Category.GOLD))
+        return Random.oneOf(KGenerator.POTION, KGenerator.SCROLL, KGenerator.FOOD, KGenerator.GOLD).generate()
     }
 }

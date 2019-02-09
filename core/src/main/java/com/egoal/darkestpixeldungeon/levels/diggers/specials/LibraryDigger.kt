@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.specials
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -79,6 +80,6 @@ class LibraryDigger : RectDigger() {
     }
 
     private fun prize(level: Level) = level.findPrizeItem(Scroll::class.java)
-            ?: Generator.random(Generator.Category.SCROLL)
+            ?: KGenerator.SCROLL.generate()
 
 }

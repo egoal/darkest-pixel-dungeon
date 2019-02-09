@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -38,10 +39,9 @@ class PitDigger : RectDigger() {
         level.drop(IronKey(Dungeon.depth), remains).type = Heap.Type.SKELETON
 
         when (Random.Int(3)) {
-            0 -> level.drop(Generator.random(Generator.Category.RING), remains)
-            1 -> level.drop(Generator.random(Generator.Category.ARTIFACT), remains)
-            else -> level.drop(Generator.random(Random.oneOf<Generator.Category>(
-                    Generator.Category.WEAPON, Generator.Category.ARMOR)), remains)
+            0 -> level.drop(KGenerator.RING.generate(), remains)
+            1 -> level.drop(KGenerator.ARTIFACT.generate(), remains)
+            else -> level.drop(Random.oneOf(KGenerator.WEAPON, KGenerator.ARMOR).generate(), remains)
         }
 
         // extra drop
@@ -57,8 +57,6 @@ class PitDigger : RectDigger() {
             if (prize != null) return prize
         }
 
-        return Generator.random(Random.oneOf<Generator.Category>(Generator.Category.POTION,
-                Generator.Category.SCROLL, Generator.Category.FOOD,
-                Generator.Category.GOLD))
+        return Random.oneOf(KGenerator.POTION, KGenerator.SCROLL, KGenerator.FOOD, KGenerator.GOLD).generate()
     }
 }

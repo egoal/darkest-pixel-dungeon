@@ -76,7 +76,7 @@ public class WndEnchanting extends Window {
     btnDone_ = new RedButton(Messages.get(this, "transform")) {
       @Override
       protected void onClick() {
-        if (EnchantingStation.transform(btnItemSrc_.item, btnItemTgt_.item)) {
+        if (EnchantingStation.INSTANCE.Transform(btnItemSrc_.item, btnItemTgt_.item)) {
           // destroy source, collect target
           btnItemSrc_.item(null);
           // btnItemTgt_.item(null);
@@ -129,8 +129,8 @@ public class WndEnchanting extends Window {
         btnPressed_.item(item.detach(Dungeon.hero.belongings.backpack));
 
         if (btnItemSrc_.item != null && btnItemTgt_.item != null) {
-          String result = EnchantingStation.canTransform(btnItemSrc_.item,
-                  btnItemTgt_.item);
+          String result = EnchantingStation.INSTANCE.CanTransform(
+                  btnItemSrc_.item, btnItemTgt_.item);
           if (result == null)
             btnDone_.enable(true);
           else {

@@ -26,9 +26,9 @@ class PrisonLevel : KRegularLevel() {
 
     override fun waterTex() = Assets.WATER_PRISON
 
-    override fun water(): BooleanArray = Patch.generate(this, if (feeling == Level.Feeling.WATER) 0.65f else 0.45f, 4)
+    override fun water(): BooleanArray = Patch.Generate(this, if (feeling == Level.Feeling.WATER) 0.65f else 0.45f, 4)
 
-    override fun grass(): BooleanArray = Patch.generate(this, if (feeling == Level.Feeling.GRASS) 0.60f else 0.40f, 3)
+    override fun grass(): BooleanArray = Patch.Generate(this, if (feeling == Level.Feeling.GRASS) 0.60f else 0.40f, 3)
 
 
     override fun trapClasses(): Array<Class<out Trap>> = arrayOf(

@@ -23,7 +23,7 @@ class VillageLevel : KRegularLevel() {
 
     override fun water(): BooleanArray = BooleanArray(length) { false }
 
-    override fun grass(): BooleanArray = Patch.generate(this, 0.5f, 8)
+    override fun grass(): BooleanArray = Patch.Generate(this, 0.5f, 8)
 
     override fun build(iteration: Int): Boolean {
         loadMapDataFromFile(MAP_FILE)

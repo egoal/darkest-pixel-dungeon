@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLevitation
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -136,13 +137,11 @@ class TrapsDigger : RectDigger() {
                 return prize
         }
 
-        var prize = Generator.random(Random.oneOf<Generator.Category>(
-                Generator.Category.WEAPON, Generator.Category.ARMOR))
+        var prize = Random.oneOf(KGenerator.WEAPON, KGenerator.ARMOR).generate()
 
         // 3 more chances.
         for (i in 0..2) {
-            val another = Generator.random(Random.oneOf<Generator.Category>(
-                    Generator.Category.WEAPON, Generator.Category.ARMOR))
+            val another = Random.oneOf(KGenerator.WEAPON, KGenerator.ARMOR).generate()
             if (another!!.level() > prize!!.level()) {
                 prize = another
             }

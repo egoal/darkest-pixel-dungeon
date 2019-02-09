@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -68,5 +69,5 @@ class LaboratoryDigger : RectDigger() {
     }
 
     private fun prize(level: Level) = level.findPrizeItem(Potion::class.java)
-            ?: Generator.random(Generator.Category.POTION)
+            ?: KGenerator.POTION.generate()
 }

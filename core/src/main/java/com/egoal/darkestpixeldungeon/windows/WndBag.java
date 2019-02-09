@@ -25,6 +25,7 @@ import android.graphics.RectF;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
+import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
@@ -407,7 +408,7 @@ public class WndBag extends WndTabbed {
                           mode == Mode.EQUIPMENT && (item instanceof
                                   EquipableItem) ||
                           mode == Mode.RING && (item instanceof Ring) ||
-                          mode == Mode.ALCHEMY && (item instanceof Plant.Seed || 
+                          mode == Mode.ALCHEMY && (item instanceof Plant.Seed || item instanceof MysteryMeat ||
                                   (item instanceof Blandfruit && ((Blandfruit)item).potionAttrib==null) ||
                                   (Dungeon.hero.subClass==HeroSubClass.WITCH && item instanceof Potion && item.isIdentified())) ||
                           mode == Mode.ALL

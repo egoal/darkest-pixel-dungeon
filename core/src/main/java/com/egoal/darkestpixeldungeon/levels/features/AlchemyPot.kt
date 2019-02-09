@@ -45,7 +45,7 @@ import com.watabou.utils.Random
 import java.lang.RuntimeException
 
 object AlchemyPot {
-    fun operate(hero: Hero, pos: Int) {
+    fun Operate(hero: Hero, pos: Int) {
         GameScene.show(WndAlchemy())
     }
 
@@ -53,20 +53,20 @@ object AlchemyPot {
 
     //todo: refactor all this, perhaps in version 0.4+
     // succeed? : result
-    fun verifyRefinement(items: List<Item>): Pair<Boolean, Item?> {
+    fun VerifyRefinement(items: List<Item>): Pair<Boolean, Item?> {
         return when (items.size) {
             // seed to potion.
             3 -> if (items.all { it is Plant.Seed }) Pair(true, Generator.random(Generator.Category.POTION)) else Pair(false, null)
             2 -> {
-                val pr = splitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
+                val pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
                 if (pr != null)
                     return Pair(true, (pr.second as Blandfruit).cook(pr.first as Plant.Seed))
 
                 if (Dungeon.hero.heroClass == HeroClass.SORCERESS && items.all { it is Plant.Seed })
-                    return Pair(true, potionMasterRefine(items[0] as Plant.Seed, items[1] as Plant.Seed))
+                    return Pair(true, PotionMasterRefine(items[0] as Plant.Seed, items[1] as Plant.Seed))
 
                 if (Dungeon.hero.subClass == HeroSubClass.WITCH) {
-                    val pr = splitTwoItem({ it is Potion && it.canBeReinforced() && it.isIdentified }, { it is Plant.Seed }, items[0], items[1])
+                    val pr = SplitTwoItem({ it is Potion && it.canBeReinforced() && it.isIdentified }, { it is Plant.Seed }, items[0], items[1])
                     if (pr != null) {
                         (pr.first as Potion).reinforce()
                         return Pair(true, pr.first)
@@ -82,7 +82,7 @@ object AlchemyPot {
         }
     }
 
-    fun onCombined(items: List<Item>, result: Item) {
+    fun OnCombined(items: List<Item>, result: Item) {
         GLog.w(Messages.get(this, "combined", result.name()))
         if (!result.collect())
             Dungeon.level.drop(result, Dungeon.hero.pos)
@@ -109,7 +109,7 @@ object AlchemyPot {
 
     // sorceress perk
     // more likely to generate toxic gas
-    fun potionMasterRefine(seed0: Plant.Seed, seed1: Plant.Seed): Item? = when {
+    fun PotionMasterRefine(seed0: Plant.Seed, seed1: Plant.Seed): Item? = when {
         seed0 is Sorrowmoss.Seed || seed1 is Sorrowmoss.Seed -> PotionOfToxicGas()
         Random.Int(15) == 0 -> null
         Random.Int(5) == 0 -> PotionOfToxicGas()
@@ -117,7 +117,7 @@ object AlchemyPot {
     }
 
 
-    private fun splitTwoItem(checker0: (Item) -> Boolean, checker1: (Item) -> Boolean,
+    private fun SplitTwoItem(checker0: (Item) -> Boolean, checker1: (Item) -> Boolean,
                              item0: Item, item1: Item): Pair<Item, Item>? = when {
         checker0(item0) && checker1(item1) -> Pair(item0, item1)
         checker0(item1) && checker1(item0) -> Pair(item1, item0)

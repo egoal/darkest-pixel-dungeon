@@ -206,11 +206,11 @@ public class SewerBossLevel extends RegularLevel {
   }
 
   protected boolean[] water() {
-    return Patch.generate(this, 0.45f, 5);
+    return Patch.INSTANCE.Generate(this, 0.45f, 5);
   }
 
   protected boolean[] grass() {
-    return Patch.generate(this, 0.4f, 4);
+    return Patch.INSTANCE.Generate(this, 0.4f, 4);
   }
 
   @Override
