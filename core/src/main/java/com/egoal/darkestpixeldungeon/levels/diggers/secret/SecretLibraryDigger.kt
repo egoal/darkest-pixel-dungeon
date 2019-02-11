@@ -10,15 +10,6 @@ import com.egoal.darkestpixeldungeon.levels.diggers.Wall
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.RoundDigger
 import com.watabou.utils.Random
 
-// modified from generator, more likely to give 'useful' scrolls.
-val scrollClasses = arrayOf(
-        ScrollOfIdentify::class.java, ScrollOfTeleportation::class.java, ScrollOfRemoveCurse::class.java,
-        ScrollOfUpgrade::class.java, ScrollOfRecharging::class.java, ScrollOfMagicMapping::class.java,
-        ScrollOfRage::class.java, ScrollOfTerror::class.java, ScrollOfLullaby::class.java,
-        ScrollOfEnchanting::class.java, ScrollOfPsionicBlast::class.java, ScrollOfMirrorImage::class.java,
-        ScrollOfCurse::class.java, ScrollOfLight::class.java)
-val scrollChances = floatArrayOf(1f, 1f, 3f, 0f, 1f, 3f, 1f, 1f, 2f, 2f, 4f, 1f, 1f, 2f)
-
 class SecretLibraryDigger : RoundDigger() {
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         FillEllipse(level, rect, Terrain.BOOKSHELF)
@@ -61,5 +52,16 @@ class SecretLibraryDigger : RoundDigger() {
         }
 
         return DigResult(rect, DigResult.Type.Secret)
+    }
+
+    companion object {
+        // modified from generator, more likely to give 'useful' scrolls.
+        val scrollClasses = arrayOf(
+                ScrollOfIdentify::class.java, ScrollOfTeleportation::class.java, ScrollOfRemoveCurse::class.java,
+                ScrollOfUpgrade::class.java, ScrollOfRecharging::class.java, ScrollOfMagicMapping::class.java,
+                ScrollOfRage::class.java, ScrollOfTerror::class.java, ScrollOfLullaby::class.java,
+                ScrollOfEnchanting::class.java, ScrollOfPsionicBlast::class.java, ScrollOfMirrorImage::class.java,
+                ScrollOfCurse::class.java, ScrollOfLight::class.java)
+        val scrollChances = floatArrayOf(1f, 1f, 3f, 0f, 1f, 3f, 1f, 1f, 2f, 2f, 4f, 1f, 1f, 2f)
     }
 }

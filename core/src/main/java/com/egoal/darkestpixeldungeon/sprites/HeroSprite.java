@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.sprites;
 
 import android.graphics.RectF;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -31,6 +32,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 
 public class HeroSprite extends CharSprite {
@@ -61,7 +63,7 @@ public class HeroSprite extends CharSprite {
 
   public void updateArmor() {
 
-    TextureFilm film = new TextureFilm(tiers(), ((Hero) ch).tier(), 
+    TextureFilm film = new TextureFilm(tiers(), ((Hero) ch).tier(),
             FRAME_WIDTH, FRAME_HEIGHT);
 
     idle = new Animation(1, true);
@@ -124,15 +126,15 @@ public class HeroSprite extends CharSprite {
   public void bloodBurstA(PointF from, int damage) {
     //Does nothing.
 
-		/*
+    /*
      * This is both for visual clarity, and also for content ratings regarding
-		  * violence
-		 * towards human characters. The heroes are the only human or human-like 
-		 * characters which
-		 * participate in combat, so removing all blood associated with them is a 
-		 * simple way to
-		 * reduce the violence rating of the game.
-		 */
+     * violence
+     * towards human characters. The heroes are the only human or human-like
+     * characters which
+     * participate in combat, so removing all blood associated with them is a
+     * simple way to
+     * reduce the violence rating of the game.
+     */
   }
 
   @Override
@@ -165,5 +167,32 @@ public class HeroSprite extends CharSprite {
     avatar.frame(frame);
 
     return avatar;
+  }
+
+  //todo: refactor this after assets ready, 
+  public static Image Portrait(HeroClass cl, int armorTier) {
+    int row = -1;
+    switch (cl) {
+      case WARRIOR:
+        row = 0;
+        break;
+      case MAGE:
+        row = 1;
+        break;
+      case ROGUE:
+        break;
+      case HUNTRESS:
+        break;
+      case SORCERESS:
+        row = 4;
+        break;
+    }
+
+    return row >= 0 ? PortraitAt(row, GameMath.clamp(armorTier, 0, 1)) : 
+            avatar(cl, armorTier);
+  }
+
+  private static Image PortraitAt(int row, int col) {
+    return new Image(Assets.PORTRAITS, 26 * col, 26 * row, 26, 26);
   }
 }

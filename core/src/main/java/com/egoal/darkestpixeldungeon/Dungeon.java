@@ -263,7 +263,7 @@ public class Dungeon {
     }
 
     if (DarkestPixelDungeon.debug())
-      level = new EmptyLevel();
+      level = new TestLevel(); // EmptyLevel();
 
     visible = new boolean[level.length()];
     level.create();

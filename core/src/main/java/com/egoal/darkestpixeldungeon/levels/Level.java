@@ -265,7 +265,7 @@ public abstract class Level implements Bundlable {
 
         // give extra torches
         {
-          float prop = 0.25f - Dungeon.depth / 5 * 0.025f;
+          float prop = 0.24f - Dungeon.depth / 5 * 0.025f;
           while (Random.Float() < prop)
             stationaryItems.add(new Torch());
         }

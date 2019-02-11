@@ -229,7 +229,7 @@ public abstract class Wand extends Item {
     return 1;
   }
 
-  protected void fx(Ballistica bolt, Callback callback) {
+  public void fx(Ballistica bolt, Callback callback) {
     MagicMissile.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt
             .collisionPos, callback);
     Sample.INSTANCE.play(Assets.SND_ZAP);

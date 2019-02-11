@@ -186,7 +186,7 @@ public class WandOfRegrowth extends Wand {
 
   }
 
-  protected void fx(Ballistica bolt, Callback callback) {
+  public void fx(Ballistica bolt, Callback callback) {
 
     affectedCells = new HashSet<>();
     visualCells = new HashSet<>();

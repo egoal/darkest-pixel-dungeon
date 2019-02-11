@@ -132,7 +132,7 @@ public class WandOfFireblast extends DamageWand {
   }
 
   @Override
-  protected void fx(Ballistica bolt, Callback callback) {
+  public void fx(Ballistica bolt, Callback callback) {
     //need to perform flame spread logic here so we can determine what cells 
     // to put flames in.
     affectedCells = new HashSet<>();

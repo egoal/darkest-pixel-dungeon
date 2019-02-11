@@ -120,7 +120,7 @@ public class WandOfLightning extends DamageWand {
   }
 
   @Override
-  protected void fx(Ballistica bolt, Callback callback) {
+  public void fx(Ballistica bolt, Callback callback) {
 
     affected.clear();
     arcs.clear();

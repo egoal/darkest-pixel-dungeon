@@ -49,7 +49,7 @@ public class Pickaxe extends Weapon {
 
   public static final String AC_MINE = "MINE";
 
-  public static final float TIME_TO_MINE = 2;
+  public static final float TIME_TO_MINE = 5;
 
   private static final ItemSprite.Glowing BLOODY = new ItemSprite.Glowing
           (0x550000);
@@ -127,7 +127,7 @@ public class Pickaxe extends Weapon {
 
               Hunger hunger = hero.buff(Hunger.class);
               if (hunger != null && !hunger.isStarving()) {
-                hunger.reduceHunger(-Hunger.STARVING / 10);
+                hunger.reduceHunger(-Hunger.STARVING / 20);
                 BuffIndicator.refreshHero();
               }
 

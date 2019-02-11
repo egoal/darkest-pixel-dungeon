@@ -70,6 +70,7 @@ class RotLasher : Mob() {
         return super.attackProc(dmg)
     }
 
+    // immovable 
     override fun getCloser(target: Int): Boolean = true
 
     override fun getFurther(target: Int): Boolean = true

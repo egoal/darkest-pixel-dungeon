@@ -126,6 +126,8 @@ object KGenerator {
             val fs = GameMath.clamp(floorSet, 0, floorSetTierProbs.size - 1)
             return Ts[Random.chances(floorSetTierProbs[fs])].generate() as Weapon
         }
+
+        fun tier(t: Int): ClassMapGenerator<Weapon> = Ts[t - 1]
     }
 
     object POTION : ClassMapGenerator<Potion>(hashMapOf(
@@ -215,9 +217,9 @@ object KGenerator {
 
     // artifact is uniquely dropping
     val INITIAL_ARTIFACT_PROBS = hashMapOf(
-            CapeOfThorns::class.java to 1f,
+            CapeOfThorns::class.java to 0f,
             ChaliceOfBlood::class.java to 0f,  // removed from drop, by statuary
-            CloakOfShadows::class.java to 1f,
+            CloakOfShadows::class.java to 0f,
             HornOfPlenty::class.java to 1f,
             MasterThievesArmband::class.java to 1f,
             SandalsOfNature::class.java to 1f,
@@ -290,11 +292,11 @@ object KGenerator {
     }
 
     object HELMET : ClassMapGenerator<Helmet>(hashMapOf(
-            HelmetBarbarian::class.java to 1f, 
-            HelmetCrusader::class.java to 1f, 
-            HoodApprentice::class.java to 1f, 
-            CircletEmerald::class.java to 1f, 
-            CrownOfDwarf::class.java to 0f, 
+            HelmetBarbarian::class.java to 1f,
+            HelmetCrusader::class.java to 1f,
+            HoodApprentice::class.java to 1f,
+            CircletEmerald::class.java to 1f,
+            CrownOfDwarf::class.java to 0f,
             HeaddressRegeneration::class.java to 1f
     ))
 
@@ -303,15 +305,15 @@ object KGenerator {
             WardenSmithNotes::class.java to 0f
     ))
 
-    object RUNE: ClassMapGenerator<Rune>(hashMapOf(
-            RegenerationRune::class.java to 1f, 
-            MendingRune::class.java to 1f, 
-            CriticalRune::class.java to 0.5f, 
-            BrightRune::class.java to 1f, 
-            HasteRune::class.java to 1f, 
+    object RUNE : ClassMapGenerator<Rune>(hashMapOf(
+            RegenerationRune::class.java to 1f,
+            MendingRune::class.java to 1f,
+            CriticalRune::class.java to 0.5f,
+            BrightRune::class.java to 1f,
+            HasteRune::class.java to 1f,
             TreasureRune::class.java to 1f
     ))
-    
+
     // 
     private val categoryMap = hashMapOf(
             WEAPON to 100f,
@@ -325,8 +327,8 @@ object KGenerator {
             FOOD to 0f,
             GOLD to 500f,
             BOOK to 0f,
-            HELMET to 3f, 
-            RUNE to 0f 
+            HELMET to 3f,
+            RUNE to 0f
     )
 
     fun generate(): Item = Random.chances(categoryMap).generate()

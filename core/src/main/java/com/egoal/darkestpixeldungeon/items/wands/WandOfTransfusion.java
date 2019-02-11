@@ -178,8 +178,8 @@ public class WandOfTransfusion extends Wand {
   private void damageHero() {
     // 15% of max hp
     int damage = (int) Math.ceil(curUser.HT * 0.15f);
-    curUser.takeDamage(new Damage(damage, curUser, curUser).type(Damage.Type
-            .MAGICAL));
+    curUser.takeDamage(new Damage(damage, curUser, curUser).
+            type(Damage.Type.MAGICAL));
 
     if (!curUser.isAlive()) {
       Dungeon.fail(getClass());
@@ -207,7 +207,7 @@ public class WandOfTransfusion extends Wand {
   }
 
   @Override
-  protected void fx(Ballistica beam, Callback callback) {
+  public void fx(Ballistica beam, Callback callback) {
     curUser.sprite.parent.add(
             new Beam.HealthRay(curUser.sprite.center(), DungeonTilemap
                     .tileCenterToWorld(beam.collisionPos)));

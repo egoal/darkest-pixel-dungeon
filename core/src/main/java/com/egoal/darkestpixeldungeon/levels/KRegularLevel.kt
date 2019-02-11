@@ -104,6 +104,7 @@ open abstract class KRegularLevel : Level() {
             probs.remove(VaultDigger::class.java)
             probs.remove(WeakFloorDigger::class.java)
             probs.remove(LaboratoryDigger::class.java)
+            probs.remove(WandDigger::class.java)
         } else if (Dungeon.laboratoryNeed()) {
             diggers.add(LaboratoryDigger())
 
@@ -316,15 +317,17 @@ open abstract class KRegularLevel : Level() {
             }
         }
 
-        for (i in width + 1 until length - width - 1) {
-            if (map[i] == Terrain.HIGH_GRASS || map[i] == Terrain.HIGH_GRASS_COLLECTED) {
-                val count = PathFinder.NEIGHBOURS8.count { map[i + it] == Terrain.HIGH_GRASS }
-                if (Random.Float() < (count - 4) / 8f && Random.Float() < 0.1f) {
-                    mobs.add(RotLasher().apply {
-                        pos = i
-                        setLevel(Dungeon.depth)
-                    })
-                    Digger.Set(this, i, Terrain.GRASS)
+        if (Dungeon.depth > 1) {
+            for (i in width + 1 until length - width - 1) {
+                if (map[i] == Terrain.HIGH_GRASS || map[i] == Terrain.HIGH_GRASS_COLLECTED) {
+                    val count = PathFinder.NEIGHBOURS8.count { map[i + it] == Terrain.HIGH_GRASS }
+                    if (Random.Float() < (count - 2) / 8f && Random.Float() < 0.1f) {
+                        mobs.add(RotLasher().apply {
+                            pos = i
+                            setLevel(Dungeon.depth)
+                        })
+                        Digger.Set(this, i, Terrain.GRASS)
+                    }
                 }
             }
         }
@@ -441,7 +444,8 @@ open abstract class KRegularLevel : Level() {
                 TreasuryDigger::class.java to 0.75f,
                 VaultDigger::class.java to 0.75f,
                 WeakFloorDigger::class.java to 0.75f,
-                AltarDigger::class.java to 0.75f
+                AltarDigger::class.java to 0.75f, 
+                WandDigger::class.java to 0.75f 
         )
 
         val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(
@@ -463,7 +467,8 @@ open abstract class KRegularLevel : Level() {
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
                 PatchDigger::class.java to .05f,
-                GraveyardDigger::class.java to .05f
+                GraveyardDigger::class.java to .05f, 
+                SmallCornerDigger::class.java to 0.075f 
         )
     }
 }

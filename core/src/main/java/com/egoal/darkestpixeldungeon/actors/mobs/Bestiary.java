@@ -93,7 +93,7 @@ public class Bestiary {
         break;
 
       case 6:
-        chances = new float[]{3, 1, 1, 0.2f};
+        chances = new float[]{2, 1, 0.5f, .5f};
         classes = new Class<?>[]{Skeleton.class, Thief.class, Swarm.class,
                 Shaman.class};
         break;
@@ -118,7 +118,7 @@ public class Bestiary {
         classes = new Class<?>[]{Tengu.class};
         break;
       case 11:
-        chances = new float[]{1, .5f, 0.2f};
+        chances = new float[]{1.5f, .5f, 0.2f};
         classes = new Class<?>[]{Bat.class, SkeletonKnight.class, Brute.class};
         break;
       case 12:
@@ -127,14 +127,14 @@ public class Bestiary {
                 .class, MadMan.class};
         break;
       case 13:
-        chances = new float[]{1, .5f, .2f, 3, 1, 0.5f, 0.02f, .02f};
+        chances = new float[]{1, 1f, .2f, 3, 1, 0.25f, 0.02f, .02f};
         classes = new Class<?>[]{
                 Bat.class, SkeletonKnight.class, MadMan.class,
                 Brute.class, Spinner.class, Ballista.class, 
                 Elemental.class, Monk.class};
         break;
       case 14:
-        chances = new float[]{1, .75f, 3, 4, .75f, 0.02f, 0.01f};
+        chances = new float[]{1, 1f, 3, 4, .75f, 0.02f, 0.01f};
         classes = new Class<?>[]{
                 Bat.class, SkeletonKnight.class, Brute.class,
                 Spinner.class, Ballista.class, Elemental.class,

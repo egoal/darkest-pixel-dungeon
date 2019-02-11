@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.ui;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
@@ -49,7 +50,8 @@ import com.watabou.utils.ColorMath;
 public class StatusPane extends Component {
 
   private NinePatch bg;
-  private Image avatar;
+  private NinePatch levelBg;
+  private Image portrait;
   private float warning;
 
   private int lastTier = 0;
@@ -81,10 +83,10 @@ public class StatusPane extends Component {
   @Override
   protected void createChildren() {
 
-    bg = new NinePatch(Assets.DPD_STATUS, 0, 0, 128, 36, 85, 0, 45, 0);
+    bg = new NinePatch(Assets.DPD_STATUS, 0, 0, 128, 32, 85, 0, 45, 0);
     add(bg);
 
-    // hero portrait
+    // hero portrait touch area
     add(new TouchArea(0, 1, 31, 31) {
       @Override
       protected void onClick(Touch touch) {
@@ -103,8 +105,8 @@ public class StatusPane extends Component {
     btnMenu = new MenuButton();
     add(btnMenu);
 
-    avatar = HeroSprite.avatar(Dungeon.hero.heroClass, lastTier);
-    add(avatar);
+    portrait = HeroSprite.Portrait(Dungeon.hero.heroClass, lastTier);
+    add(portrait);
 
     int compassTarget = Dungeon.level.exit;
     if (Dungeon.hero != null) {
@@ -139,6 +141,9 @@ public class StatusPane extends Component {
     add(bossHP);
 
     // the others
+    levelBg = new NinePatch(Assets.DPD_STATUS, 0, 32, 15, 15, 3);
+    add(levelBg);
+
     level = new BitmapText(PixelScene.pixelFont);
     level.hardlight(0xFFEBA4);
     add(level);
@@ -168,12 +173,12 @@ public class StatusPane extends Component {
 
     bg.size(width, bg.height);
 
-    avatar.x = bg.x + 15 - avatar.width / 2f;
-    avatar.y = bg.y + 16 - avatar.height / 2f;
-    PixelScene.align(avatar);
+    portrait.x = bg.x + 15 - portrait.width / 2f;
+    portrait.y = bg.y + 16 - portrait.height / 2f;
+    PixelScene.align(portrait);
 
-    compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
-    compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
+    compass.x = portrait.x + portrait.width / 2f - compass.origin.x;
+    compass.y = portrait.y + portrait.height / 2f - compass.origin.y;
     PixelScene.align(compass);
 
     hp.x = shieldedHP.x = rawShielding.x = 30;
@@ -219,23 +224,27 @@ public class StatusPane extends Component {
       san.scale.x = Math.max(0, p.pressure / Pressure.MAX_PRESSURE);
     }
 
-    // the avatar effect
+    // the portrait effect
     if (!Dungeon.hero.isAlive()) {
-      avatar.tint(0x000000, 0.5f);
+      portrait.tint(0x000000, 0.5f);
     } else if ((health / max) < 0.3f) {
       warning += Game.elapsed * 5f * (0.4f - (health / max));
       warning %= 1f;
-      avatar.tint(ColorMath.interpolate(warning, 0x660000, 0xCC0000,
+      portrait.tint(ColorMath.interpolate(warning, 0x660000, 0xCC0000,
               0x660000), 0.5f);
     } else if (p.getLevel() == Pressure.Level.NERVOUS || p.getLevel() ==
             Pressure.Level.COLLAPSE) {
       warning += Game.elapsed * 5f * (0.4f - (health / max));
       warning %= 1f;
-      avatar.tint(ColorMath.interpolate(warning, 0x333333, 0x666666,
+      portrait.tint(ColorMath.interpolate(warning, 0x333333, 0x666666,
               0x333333), 0.5f);
     } else {
-      avatar.resetColor();
+      portrait.resetColor();
     }
+
+    levelBg.x = 27.5f - levelBg.width() / 2f;
+    levelBg.y = 28f - levelBg.height() / 2f;
+    PixelScene.align(levelBg);
 
     // bars
     hp.scale.x = Math.max(0, (health - shield) / max);
@@ -265,7 +274,7 @@ public class StatusPane extends Component {
     int tier = Dungeon.hero.tier();
     if (tier != lastTier) {
       lastTier = tier;
-      avatar.copy(HeroSprite.avatar(Dungeon.hero.heroClass, tier));
+      portrait.copy(HeroSprite.Portrait(Dungeon.hero.heroClass, tier));
     }
   }
 

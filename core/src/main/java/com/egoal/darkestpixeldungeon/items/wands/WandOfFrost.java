@@ -92,7 +92,7 @@ public class WandOfFrost extends DamageWand {
   }
 
   @Override
-  protected void fx(Ballistica bolt, Callback callback) {
+  public void fx(Ballistica bolt, Callback callback) {
     MagicMissile.blueLight(curUser.sprite.parent, bolt.sourcePos, bolt
             .collisionPos, callback);
     Sample.INSTANCE.play(Assets.SND_ZAP);

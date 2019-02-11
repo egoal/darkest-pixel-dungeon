@@ -131,10 +131,10 @@ public class WandOfPrismaticLight extends DamageWand {
   }
 
   @Override
-  protected void fx(Ballistica beam, Callback callback) {
-    curUser.sprite.parent.add(
-            new Beam.LightRay(curUser.sprite.center(), DungeonTilemap
-                    .tileCenterToWorld(beam.collisionPos)));
+  public void fx(Ballistica beam, Callback callback) {
+    curUser.sprite.parent.add(new Beam.LightRay(
+            DungeonTilemap.tileCenterToWorld(beam.sourcePos),
+            DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
     callback.call();
   }
 

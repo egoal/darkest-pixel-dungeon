@@ -46,7 +46,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HT = 20 + level * 5
         HP = HT
 
-        timeLeft = 20f * level + 50f
+        timeLeft = 20f * level + 60f
     }
 
     private fun imitateHeroStatus() {
@@ -136,7 +136,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     // strengthen
     override fun attackProc(dmg: Damage): Damage {
         if (!hostile) {
-            val porton = dmg.value.toFloat() / 4f / HT.toFloat()
+            val porton = dmg.value.toFloat() / 3f / HT.toFloat()
             Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(porton)
         }
 

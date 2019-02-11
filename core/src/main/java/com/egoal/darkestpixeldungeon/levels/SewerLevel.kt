@@ -18,7 +18,7 @@ import com.watabou.utils.ColorMath
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-class SewerLevel : KRegularLevel() {
+open class SewerLevel : KRegularLevel() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a

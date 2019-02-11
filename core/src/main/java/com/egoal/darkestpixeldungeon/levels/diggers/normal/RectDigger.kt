@@ -41,7 +41,7 @@ open class RectDigger : Digger() {
 
         var walls = Wall.ArroundBut(rect, wall.direction.opposite)
 
-        if (Random.Int(8) == 0)
+        if (Random.Int(7) == 0)
             Fill(level, overlappedWall(wall, rect), Terrain.EMPTY)
         else {
             Set(level, overlappedWall(wall, rect).random(), Terrain.DOOR)
