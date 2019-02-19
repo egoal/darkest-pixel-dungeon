@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
+import com.egoal.darkestpixeldungeon.actors.buffs.Rage;
 import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
@@ -43,6 +44,7 @@ import com.egoal.darkestpixeldungeon.items.helmets.HeaddressRegeneration;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice;
+import com.egoal.darkestpixeldungeon.items.helmets.WizardHat;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
@@ -103,6 +105,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune;
 import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune;
+import com.egoal.darkestpixeldungeon.items.wands.Wand;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail;
@@ -297,10 +300,18 @@ public class Hero extends Char {
     return reg;
   }
 
+  //todo: refactor this
   public float arcaneFactor() {
     if (buff(HoodApprentice.Apprentice.class) != null)
-      return 1.1f;
+      return 1.15f;
 
+    return 1f;
+  }
+
+  public float wandChargeFactor() {
+    WizardHat.Recharge wr = buff(WizardHat.Recharge.class);
+    if (wr != null)
+      return wr.getCursed() ? 0.9f : 1.15f;
     return 1f;
   }
 
@@ -707,18 +718,20 @@ public class Hero extends Char {
   }
 
   public float attackDelay() {
+    float speed = buff(Rage.class) == null ? 1f : 0.667f;
+
     KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
-    if (wep != null) {
-
-      return wep.speedFactor(this);
-
-    } else {
+    if (wep != null)
+      speed *= wep.speedFactor(this);
+    else {
       //Normally putting furor speed on unarmed attacks would be unnecessary
       //But there's going to be that one guy who gets a furor+force ring combo
       //This is for that one guy, you shall get your fists of fury!
       int bonus = RingOfFuror.getBonus(this, RingOfFuror.Furor.class);
-      return (float) (0.25 + (1 - 0.25) * Math.pow(0.8, bonus));
+      speed *= (float) (0.25 + (1 - 0.25) * Math.pow(0.8, bonus));
     }
+
+    return speed;
   }
 
   @Override

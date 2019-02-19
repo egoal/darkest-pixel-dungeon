@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss
@@ -38,6 +39,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     }
 
     private var timeLeft = 0f
+    private var maxExp = 0f
 
     private fun initLevelStatus(lvl: Int) {
         level = lvl
@@ -47,6 +49,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HP = HT
 
         timeLeft = 20f * level + 60f
+        maxExp = 5f + 3f * level
     }
 
     private fun imitateHeroStatus() {
@@ -56,6 +59,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HP = HT
 
         timeLeft = Float.MAX_VALUE // infinity
+        maxExp = Float.MAX_VALUE
     }
 
     override fun interact(): Boolean {
@@ -72,7 +76,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
             busy()
         }
 
-        return true 
+        return true
     }
 
     override fun isFollower(): Boolean = true
@@ -80,7 +84,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun attackSkill(target: Char): Int = 10 + level * 2
 
     override fun giveDamage(enemy: Char): Damage {
-        val dmg = Damage(Random.IntRange(1+ level, 5 + 6 * level), this, enemy).addElement(Damage.Element.SHADOW)
+        val dmg = Damage(Random.IntRange(1 + level, 5 + 6 * level), this, enemy).addElement(Damage.Element.SHADOW)
         if (Random.Float() < 0.15f) {
             dmg.value = dmg.value * 5 / 4
             dmg.addFeature(Damage.Feature.CRITCIAL)
@@ -136,8 +140,10 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     // strengthen
     override fun attackProc(dmg: Damage): Damage {
         if (!hostile) {
-            val porton = dmg.value.toFloat() / 3f / HT.toFloat()
-            Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(porton)
+            (dmg.to as Mob?)?.let {
+                val expPortion = it.EXP.toFloat() * (dmg.value.toFloat() / it.HT.toFloat())
+                Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(expPortion / maxExp)
+            }
         }
 
         return super.attackProc(dmg)

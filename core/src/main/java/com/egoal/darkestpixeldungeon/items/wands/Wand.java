@@ -102,7 +102,7 @@ public abstract class Wand extends Item {
   }
 
   protected abstract void onZap(Ballistica attack);
-  
+
   public abstract void onHit(MagesStaff staff, Damage damage);
 
   @Override
@@ -425,12 +425,12 @@ public abstract class Wand extends Item {
       int missingCharges = maxCharges - curCharges;
 
       float turnsToCharge = (float) (BASE_CHARGE_DELAY
-              + (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, 
+              + (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor,
               missingCharges)));
 
       LockedFloor lock = target.buff(LockedFloor.class);
       if (lock == null || lock.regenOn())
-        partialCharge += 1f / turnsToCharge;
+        partialCharge += 1f / turnsToCharge * Dungeon.hero.wandChargeFactor();
 
       Recharging bonus = target.buff(Recharging.class);
       if (bonus != null && bonus.remainder() > 0f) {

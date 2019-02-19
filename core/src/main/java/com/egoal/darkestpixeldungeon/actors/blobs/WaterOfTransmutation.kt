@@ -1,6 +1,8 @@
 package com.egoal.darkestpixeldungeon.actors.blobs
 
 import com.egoal.darkestpixeldungeon.Journal
+import com.egoal.darkestpixeldungeon.effects.BlobEmitter
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
@@ -137,5 +139,10 @@ class WaterOfTransmutation : WellWater() {
         return n
     }
 
+    override fun use(emitter: BlobEmitter) {
+        super.use(emitter)
+        emitter.pour(Speck.factory(Speck.KIT), 0.3f)
+    }
+    
     override fun tileDesc(): String = Messages.get(this, "desc")
 }

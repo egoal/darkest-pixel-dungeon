@@ -41,5 +41,5 @@ class ArmoryDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
-    private fun prize(level: Level) = Random.oneOf(KGenerator.ARMOR, KGenerator.WEAPON).generate()
+    private fun prize(level: Level) = Random.oneOf(KGenerator.ARMOR, KGenerator.WEAPON, KGenerator.HELMET).generate()
 }

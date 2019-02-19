@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Rage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.effects.Wound;
@@ -406,7 +407,7 @@ public abstract class Mob extends Char {
   }
 
   protected float attackDelay() {
-    return 1f;
+    return buff(Rage.class)==null? 1f: 0.667f;
   }
 
   protected boolean doAttack(Char enemy) {
@@ -707,7 +708,7 @@ public abstract class Mob extends Char {
     }
   }
 
-  protected class Hunting implements AiState {
+  public class Hunting implements AiState {
 
     public static final String TAG = "HUNTING";
 

@@ -29,7 +29,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-open abstract class KRegularLevel : Level() {
+abstract class KRegularLevel : Level() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a

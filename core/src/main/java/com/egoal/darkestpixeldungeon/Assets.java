@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
+
 public class Assets {
 
   private static final String ACTORS = "actors/";
@@ -52,6 +54,7 @@ public class Assets {
   public static final String QUESTIONER = ACTORS + "questioner.png";
   public static final String SPD_BATTLE_MAGE = ACTORS + "spd_battle_mage.png";
   public static final String ABYSS_HERO = ACTORS + "abyss_hero.png";
+  public static final String YVETTE = ACTORS+ "yvette.png";
 
   // shop keeper
   public static final String KEEPER = ACTORS + "shopkeeper.png";

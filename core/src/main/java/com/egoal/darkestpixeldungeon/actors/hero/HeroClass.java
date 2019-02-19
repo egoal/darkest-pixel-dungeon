@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
+import com.egoal.darkestpixeldungeon.items.helmets.WizardHat;
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
 import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
 import com.egoal.darkestpixeldungeon.items.unclassified.RegenerationRune;
@@ -125,6 +126,8 @@ public enum HeroClass {
     if (!Dungeon.isChallenged(Challenges.DARKNESS))
       new Torch().identify().collect();
 
+    new ScrollOfIdentify().identify();
+    
     // the seed pouch is carried.
     (new SeedPouch()).identify().collect();
     Dungeon.limitedDrops.seedBag.drop();
@@ -134,7 +137,7 @@ public enum HeroClass {
     }
 
     (new HandleOfAbyss()).random().collect();
-    (new DriedRose()).random().collect();
+    (new WizardHat()).random().collect();
   }
 
   private static void initDebug(Hero hero) {

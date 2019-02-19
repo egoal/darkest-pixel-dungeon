@@ -75,7 +75,7 @@ public class ItemSpriteSheet {
   public static final int KIT = SINGLE_USE + 13;
   public static final int AMULET = SINGLE_USE + 14;
   public static final int DPD_TEST_PAPER = SINGLE_USE + 15;
-  
+
   public static final int DPD_CAT_GIFT = SINGLE_USE + 17;
 
   //32 free slots
@@ -150,7 +150,8 @@ public class ItemSpriteSheet {
   public static final int HELMET_APPRENTICE = HELMET + 2;
   public static final int HELMET_EMERALD = HELMET + 3;
   public static final int DWARF_CROWN = HELMET + 4;
-  public static final int HEADDRESS_OF_REGENERATION = HELMET+ 5; 
+  public static final int HEADDRESS_OF_REGENERATION = HELMET + 5;
+  public static final int WIZARD_HAT = HELMET + 6;
 
   //16 free slots
 
