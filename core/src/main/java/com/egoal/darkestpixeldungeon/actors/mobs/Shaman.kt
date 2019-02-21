@@ -37,6 +37,7 @@ import com.egoal.darkestpixeldungeon.sprites.ShamanSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
 
@@ -59,6 +60,9 @@ class Shaman : Mob(), Callback {
 
         addResistances(Damage.Element.LIGHT, 1.25f)
     }
+
+    private var buffcd = 0f //todo: rework skilled ai
+
 
     override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(2, 8), this, target).addElement(Damage.Element.LIGHT)
 
@@ -116,46 +120,59 @@ class Shaman : Mob(), Callback {
         next()
     }
 
+    override fun act(): Boolean {
+        if (buffcd > 0f) buffcd -= 1f
+        return super.act()
+    }
+
     inner class HuntingAI : Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
-            if (enemyInFOV && !isCharmedBy(enemy) && (!canAttack(enemy) || distance(enemy) <= 1)) {
+            if (buffcd <= 0f && enemyInFOV && !isCharmedBy(enemy) && (!canAttack(enemy) || distance(enemy) <= 1)) {
                 // ^ cannot attack or is face to face, find nearby friends to give Rage
-                var buffed: Mob? = null
-
-                val pt = Dungeon.level.cellToPoint(pos)
-                for (x in -4..4) {
-                    for (y in -4..4) {
-                        val cell = Dungeon.level.xy2cell(pt.x + x, pt.y + y)
-                        if (Level.fieldOfView[cell])
-                        //^ in vision
-                            Dungeon.level.findMob(cell)?.let { mob ->
-                                if (mob.hostile && mob.buff(Rage::class.java) == null) {
-                                    Buff.prolong(mob, Rage::class.java, 10f)
-                                    buffed = mob
-                                    if (Dungeon.visible[pos]) 
-                                        Sample.INSTANCE.play(Assets.SND_MELD)
-                                }
-                            }
-                        
-                        if (buffed != null) break
-                    }
-                    if (buffed != null) break
+                // others are preferred
+                val nearbys = Dungeon.level.mobs.filter { mob ->
+                    !(mob === this@Shaman) && mob.hostile && mob.buff(Rage::class.java) == null &&
+                            Level.fieldOfView[mob.pos] && Dungeon.level.distance(pos, mob.pos) <= 4
                 }
 
-                if (buffed != null) {
-                    GLog.n(Messages.get(Shaman::class.java, "buffed", buffed!!.name))
-                    spend(TIME_TO_BUFF)
+                if (nearbys.isNotEmpty()) {
+                    buffRage(Random.element(nearbys))
+                    return true 
+                } else if (buff(Rage::class.java) == null) {
+                    buffRage(this@Shaman)
                     return true
                 }
             }
 
             return super.act(enemyInFOV, justAlerted)
         }
+
+        private fun buffRage(mob: Mob) {
+            Buff.prolong(mob, Rage::class.java, 8f)
+            buffcd = COOLDOWN_BUFF
+
+            if (Dungeon.visible[pos]) Sample.INSTANCE.play(Assets.SND_MELD)
+            GLog.n(Messages.get(Shaman::class.java, "buffed", mob.name))
+            spend(TIME_TO_BUFF)
+        }
+    }
+
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(COOLDOWN, buffcd)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        buffcd = bundle.getFloat(COOLDOWN)
     }
 
     companion object {
         private const val TIME_TO_ZAP = 1f
         private const val TIME_TO_BUFF = 1f
+
+        private const val COOLDOWN_BUFF = 6f
+        private const val COOLDOWN = "cooldown"
     }
 
 }

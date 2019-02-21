@@ -102,7 +102,7 @@ class HandleOfAbyss : Artifact() {
         override fun act(): Boolean {
             val lock = target.buff(LockedFloor::class.java)
             if (AbyssHero.Instance() == null && (lock == null || lock.regenOn()) && charge < chargeCap && !cursed) {
-                partialCharge += 100f / 250f
+                partialCharge += 100f / (200f + level() * 10)
                 if (partialCharge > 1f) {
                     charge++
                     partialCharge--

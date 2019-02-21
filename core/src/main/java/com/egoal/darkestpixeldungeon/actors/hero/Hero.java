@@ -44,6 +44,7 @@ import com.egoal.darkestpixeldungeon.items.helmets.HeaddressRegeneration;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice;
+import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
 import com.egoal.darkestpixeldungeon.items.helmets.WizardHat;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -592,6 +593,9 @@ public class Hero extends Char {
         dmg.value = Random.NormalIntRange(1, Math.max(STR() - 8, 1));
       }
     }
+
+    if (buff(MaskOfClown.Indulge.class) != null && Random.Float() < 0.1f)
+      dmg.addFeature(Damage.Feature.PURE);
 
     // critical
     if (buff(CriticalRune.Critical.class) != null) {

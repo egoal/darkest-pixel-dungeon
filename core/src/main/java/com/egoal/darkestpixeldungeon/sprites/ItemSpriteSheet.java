@@ -152,6 +152,7 @@ public class ItemSpriteSheet {
   public static final int DWARF_CROWN = HELMET + 4;
   public static final int HEADDRESS_OF_REGENERATION = HELMET + 5;
   public static final int WIZARD_HAT = HELMET + 6;
+  public static final int HELMET_CLOWN = HELMET+ 7;
 
   //16 free slots
 

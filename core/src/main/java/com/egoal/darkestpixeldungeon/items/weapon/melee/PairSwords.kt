@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
@@ -50,6 +51,10 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
     override fun enchant(): Weapon = selectEnchantSword().enchant()
 
     override fun enchant(ench: Enchantment): Weapon = selectEnchantSword().enchant(ench)
+
+    override fun glowing(): ItemSprite.Glowing? {
+        return left.glowing() ?: right.glowing()
+    }
 
     private fun selectEnchantSword(): Weapon = when {
         left.enchantment == null -> left
@@ -108,7 +113,7 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
         left = bundle.get(LEFT_SWORDS) as Sword
         right = bundle.get(RIGHT_SWORDS) as Sword
     }
-    
+
     companion object {
         private const val AC_SPLIT = "SPLIT"
         private const val LEFT_SWORDS = "left_one"

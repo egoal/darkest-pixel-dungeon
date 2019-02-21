@@ -297,7 +297,9 @@ object KGenerator {
             HoodApprentice::class.java to 1f,
             CircletEmerald::class.java to 1f,
             CrownOfDwarf::class.java to 0f,
-            HeaddressRegeneration::class.java to 1f
+            HeaddressRegeneration::class.java to 1f, 
+            WizardHat::class.java to 1f, 
+            MaskOfClown::class.java to 1f 
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
@@ -327,7 +329,7 @@ object KGenerator {
             FOOD to 0f,
             GOLD to 500f,
             BOOK to 0f,
-            HELMET to 3f,
+            HELMET to 4f,
             RUNE to 0f
     )
 

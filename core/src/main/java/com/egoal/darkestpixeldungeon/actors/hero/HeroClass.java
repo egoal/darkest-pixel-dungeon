@@ -24,7 +24,9 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
+import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
 import com.egoal.darkestpixeldungeon.items.helmets.WizardHat;
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
 import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
 import com.egoal.darkestpixeldungeon.items.unclassified.RegenerationRune;
@@ -58,6 +60,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.SorceressWand;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart;
@@ -137,7 +140,6 @@ public enum HeroClass {
     }
 
     (new HandleOfAbyss()).random().collect();
-    (new WizardHat()).random().collect();
   }
 
   private static void initDebug(Hero hero) {
@@ -156,7 +158,9 @@ public enum HeroClass {
 
     new ScrollOfLight().quantity(3).identify().collect();
     new ScrollOfUpgrade().quantity(10).identify().collect();
-
+    new ScrollOfEnchanting().quantity(3).identify().collect();
+    new ScrollOfIdentify().quantity(10).collect();
+    
     new PotionOfHealing().quantity(9).identify().collect();
 
     (new PlateArmor()).upgrade(9).identify().collect();
@@ -170,19 +174,15 @@ public enum HeroClass {
     new Earthroot.Seed().quantity(10).collect();
     new Firebloom.Seed().quantity(10).collect();
     
-    new HelmetCrusader().collect();
-    new ScrollOfIdentify().quantity(10).collect();
-    
     (new TomeOfMastery()).collect();
     
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);
 
-    (new HandOfTheElder()).identify().collect();
-    (new RingOfElements()).identify().collect();
-
-    (new DriedRose()).identify().collect();
+    (new Sword()).identify().collect();
+    (new Sword()).identify().collect();
+    new MaskOfClown().identify().collect();
   }
 
   public Badges.Badge masteryBadge() {

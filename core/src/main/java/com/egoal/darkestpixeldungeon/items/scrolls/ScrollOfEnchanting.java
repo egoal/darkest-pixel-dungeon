@@ -49,8 +49,6 @@ public class ScrollOfEnchanting extends InventoryScroll {
 
     GLog.p(Messages.get(this, "enchant", item.name()));
 
-    Badges.validateItemLevelAquired(item);
-
     curUser.sprite.emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
     Enchanting.show(curUser, item);
   }
