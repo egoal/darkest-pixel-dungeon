@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch
 import com.egoal.darkestpixeldungeon.items.unclassified.Weightstone
@@ -90,13 +91,13 @@ class ShopDigger : RectDigger() {
             if (s.isKnown && Random.Float() < .5f)
                 itemsToSpawn.add(s)
             else
-                itemsToSpawn.add(Generator.random(Generator.Category.SCROLL))
+                itemsToSpawn.add(KGenerator.SCROLL.generate())
 
             val p = PotionOfHealing()
             if (p.isKnown && Random.Float() < .5f)
                 itemsToSpawn.add(p)
             else
-                itemsToSpawn.add(Generator.random(Generator.Category.POTION))
+                itemsToSpawn.add(KGenerator.POTION.generate())
         }
 
         // armors and weapons 
@@ -107,8 +108,6 @@ class ShopDigger : RectDigger() {
                 else CurareDart().quantity(Random.NormalIntRange(1, 3)))
                 itemsToSpawn.add(LeatherArmor().identify())
                 itemsToSpawn.add(Torch())
-                if (Random.Int(5) == 0)
-                    itemsToSpawn.add(Torch())
             }
 
             11 -> {
@@ -117,8 +116,6 @@ class ShopDigger : RectDigger() {
                 else Shuriken().quantity(Random.NormalIntRange(3, 6)))
                 itemsToSpawn.add(MailArmor().identify())
                 itemsToSpawn.add(Torch())
-                if (Random.Int(6) == 0)
-                    itemsToSpawn.add(Torch())
             }
 
             16 -> {
@@ -127,11 +124,11 @@ class ShopDigger : RectDigger() {
                 else Javelin().quantity(Random.NormalIntRange(3, 6)))
                 itemsToSpawn.add(ScaleArmor().identify())
                 itemsToSpawn.add(Torch())
-                if (Random.Int(10) == 0)
-                    itemsToSpawn.add(Torch())
             }
         }
-
+        itemsToSpawn.add(KGenerator.HELMET.generate())
+        itemsToSpawn.add(Torch().quantity(if (Random.Int(5) == 0) 2 else 1))
+        
         if (Random.Float() < (Dungeon.depth / 5) * 0.2f)
             itemsToSpawn.add(SmokeSparks().quantity(Random.NormalIntRange(1, 4)))
 

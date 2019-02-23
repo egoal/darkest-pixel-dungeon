@@ -1,9 +1,9 @@
 package com.egoal.darkestpixeldungeon.items.helmets
 
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.watabou.utils.Random
 
 class HelmetCrusader : Helmet() {
@@ -27,7 +27,7 @@ class HelmetCrusader : Helmet() {
     inner class Protect: HelmetBuff(){
         override fun act(): Boolean {
             if(cursed && Random.Int(10)==0)
-                target.takeDamage(Damage(1, com.egoal.darkestpixeldungeon.actors.Char.Nobody(), target).type(Damage.Type.MENTAL))
+                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
                 
             return super.act()
         }

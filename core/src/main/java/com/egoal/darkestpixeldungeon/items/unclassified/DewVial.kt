@@ -79,7 +79,7 @@ class DewVial : Item() {
 
                     volume -= WASH_COST
                     with(curUser) {
-                        sprite.showStatus(CharSprite.POSITIVE, Messages.get(DewVial::class.java, AC_WASH))
+                        sprite.showStatus(CharSprite.POSITIVE, Messages.get(DewVial::class.java, "ac_wash"))
                         spend(TIME_TO_WASH)
                         busy()
                         sprite.operate(pos)

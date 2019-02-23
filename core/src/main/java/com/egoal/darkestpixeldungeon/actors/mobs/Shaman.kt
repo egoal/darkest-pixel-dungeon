@@ -148,7 +148,7 @@ class Shaman : Mob(), Callback {
         }
 
         private fun buffRage(mob: Mob) {
-            Buff.prolong(mob, Rage::class.java, 8f)
+            Buff.prolong(mob, Rage::class.java, 10f)
             buffcd = COOLDOWN_BUFF
 
             if (Dungeon.visible[pos]) Sample.INSTANCE.play(Assets.SND_MELD)
@@ -171,7 +171,7 @@ class Shaman : Mob(), Callback {
         private const val TIME_TO_ZAP = 1f
         private const val TIME_TO_BUFF = 1f
 
-        private const val COOLDOWN_BUFF = 6f
+        private const val COOLDOWN_BUFF = 8f
         private const val COOLDOWN = "cooldown"
     }
 

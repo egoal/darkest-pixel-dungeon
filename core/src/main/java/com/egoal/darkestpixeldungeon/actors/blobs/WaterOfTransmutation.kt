@@ -141,7 +141,7 @@ class WaterOfTransmutation : WellWater() {
 
     override fun use(emitter: BlobEmitter) {
         super.use(emitter)
-        emitter.pour(Speck.factory(Speck.KIT), 0.3f)
+        emitter.pour(Speck.factory(Speck.CHANGE), 0.3f)
     }
     
     override fun tileDesc(): String = Messages.get(this, "desc")

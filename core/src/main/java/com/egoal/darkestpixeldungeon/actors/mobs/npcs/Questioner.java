@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -82,18 +83,18 @@ public class Questioner extends NPC {
 
     // paint the room
     if (heldRect != null) {
-      float mimicratio = index == 2 ? .3f : .2f;
+      float mimicratio = index == 2 ? .35f : .2f;
       randomPlaceItem(new Gold().random(), Random.Float() < mimicratio);
 
       Item sp = null;
       switch (index) {
         case 0:
-          sp = Generator.random(Random.oneOf(Generator.Category.POTION,
-                  Generator.Category.SCROLL));
+          sp = Random.oneOf(KGenerator.POTION.INSTANCE,
+                  KGenerator.SCROLL.INSTANCE).generate();
           break;
         case 1:
-          sp = Generator.random(Random.oneOf(Generator.Category.WEAPON,
-                  Generator.Category.ARMOR));
+          sp = Random.oneOf(KGenerator.WEAPON.INSTANCE,
+                  KGenerator.ARMOR.INSTANCE).generate();
           break;
         case 2:
           sp = new Gold().random();
@@ -101,9 +102,10 @@ public class Questioner extends NPC {
       }
       randomPlaceItem(sp, Random.Float() < mimicratio);
 
-      if (index == 2 && Random.Float() < .5) {
-        randomPlaceItem(Generator.random(Random.oneOf(Generator.Category.WAND,
-                Generator.Category.ARTIFACT)), true);
+      if (index == 2 && Random.Float() < .6f) {
+        randomPlaceItem(Random.oneOf(KGenerator.HELMET.INSTANCE, 
+                KGenerator.WAND.INSTANCE, 
+                KGenerator.ARTIFACT.INSTANCE).generate(), true);
       }
     }
 

@@ -136,7 +136,7 @@ class DriedRose : Artifact() {
         override fun act(): Boolean {
             val lock = target.buff(LockedFloor::class.java)
             if (!Spawned && charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-                partialCharge += 100f / 400f
+                partialCharge += 100f / 300f
                 if (partialCharge > 1f) {
                     charge++
                     partialCharge--

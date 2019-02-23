@@ -3,10 +3,7 @@ package com.egoal.darkestpixeldungeon.items.unclassified
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
-import com.egoal.darkestpixeldungeon.actors.buffs.MoonNight
-import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.items.Item
@@ -17,6 +14,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
+import kotlin.math.min
 
 abstract class Rune : Item() {
     init {
@@ -25,7 +23,7 @@ abstract class Rune : Item() {
 
     fun consume(hero: Hero) {
         affect(hero)
-        
+
         GameScene.effect(Flare(7, 32f).color(glowing()?.color ?: 0xffffff, true).show(
                 hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 2f))
     }
@@ -105,6 +103,15 @@ class TreasureRune : Rune() {
         Gold().random().apply {
             quantity = (quantity * Random.Float(2f, 3f)).toInt()
         }.doPickUp(hero)
+    }
+}
+
+class BloodRune : Rune() {
+    override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xd90355)
+
+    override fun affect(hero: Hero) {
+        Buff.prolong(hero, BloodSuck::class.java, 80f)
+        StaminaOverload(min(hero.HT / 2, 50)).attachTo(hero)
     }
 }
 

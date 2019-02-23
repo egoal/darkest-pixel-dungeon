@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.TenguSprite;
 import com.egoal.darkestpixeldungeon.ui.BossHealthBar;
 import com.egoal.darkestpixeldungeon.ui.HealthIndicator;
+import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -345,6 +346,7 @@ public class Tengu extends Mob {
 
     // hide the bar, avoid distinguishing from which
     HealthIndicator.instance.target(null);
+    QuickSlotButton.reset();
 
     if (availables.size() < 4) {
       // no space to spawn phantoms

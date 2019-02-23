@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.SparkParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast
@@ -26,8 +27,10 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
 import java.util.HashSet
+import kotlin.math.ceil
+import kotlin.math.min
 
-class GhostHero(roseLevel: Int = 0) : NPC(), Callback {
+class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
     private var timeLeft = 0f
 
     init {
@@ -45,6 +48,8 @@ class GhostHero(roseLevel: Int = 0) : NPC(), Callback {
         HP = HT
         timeLeft = 30f * roseLevel + 60f
     }
+
+    private var cdCure = 0f
 
     override fun isFollower(): Boolean = true
 
@@ -82,6 +87,25 @@ class GhostHero(roseLevel: Int = 0) : NPC(), Callback {
         if (!Dungeon.hero.isAlive) {
             sayHeroKilled()
             die(null)
+            return true
+        }
+
+        cdCure -= Actor.TICK //fixme: this is bad, act speed is not constant 1  
+        if (cdCure <= 0f && Dungeon.hero.HP < Dungeon.hero.HT &&
+                Dungeon.level.distance(pos, Dungeon.hero.pos) <= 2) {
+            sprite.turnTo(pos, Dungeon.hero.pos)
+            cdCure = COOLDOWN_CURE
+            // heal hero
+            with(Dungeon.hero) {
+                val ratio = 0.05f + roseLevel * 0.01f
+                val dhp = min(ceil(HT * ratio).toInt(), HT - HP)
+                HP += dhp
+                sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, Random.IntRange(1, 4))
+            }
+            sayCured()
+
+            spend(Actor.TICK)
+
             return true
         }
 
@@ -128,7 +152,7 @@ class GhostHero(roseLevel: Int = 0) : NPC(), Callback {
 
     override fun call() {
         spend(1f)
-        
+
         val dmg = giveDamage(enemy)
         if (enemy.checkHit(dmg)) {
             enemy.defendDamage(dmg)
@@ -176,11 +200,13 @@ class GhostHero(roseLevel: Int = 0) : NPC(), Callback {
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(TIME_LEFT, timeLeft)
+        bundle.put(COOLDOWN_CURE_STR, cdCure)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         timeLeft = bundle.getFloat(TIME_LEFT)
+        cdCure = bundle.getFloat(COOLDOWN_CURE_STR)
     }
 
     // voice 
@@ -220,6 +246,10 @@ class GhostHero(roseLevel: Int = 0) : NPC(), Callback {
         say(Messages.get(this, "voice_bossbeaten_${i}_${Random.Int(2)}"))
     }
 
+    fun sayCured() {
+        say(Messages.get(this, "voice_cured_${Random.Int(3)}"))
+    }
+
     private fun say(str: String) {
         yell(str)
         Sample.INSTANCE.play(Assets.SND_GHOST)
@@ -227,6 +257,8 @@ class GhostHero(roseLevel: Int = 0) : NPC(), Callback {
 
     companion object {
         private const val TIME_LEFT = "time-left"
+        private const val COOLDOWN_CURE = 15f
+        private const val COOLDOWN_CURE_STR = "cool-down"
 
         private val IMMUNITIES = hashSetOf<Class<*>>(ToxicGas::class.java, VenomGas::class.java, Burning::class.java, ScrollOfPsionicBlast::class.java)
 

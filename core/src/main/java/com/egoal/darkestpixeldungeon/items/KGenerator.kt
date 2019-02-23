@@ -232,7 +232,8 @@ object KGenerator {
             EtherealChains::class.java to 1f,
             RiemannianManifoldShield::class.java to 1f,
             GoldPlatedStatue::class.java to 1f,
-            HandOfTheElder::class.java to 0f // by undead
+            HandOfTheElder::class.java to 0f, // by undead
+            HandleOfAbyss::class.java to 1f
     )
 
     object ARTIFACT : ClassMapGenerator<Artifact>(HashMap()), Bundlable {
@@ -297,9 +298,9 @@ object KGenerator {
             HoodApprentice::class.java to 1f,
             CircletEmerald::class.java to 1f,
             CrownOfDwarf::class.java to 0f,
-            HeaddressRegeneration::class.java to 1f, 
-            WizardHat::class.java to 1f, 
-            MaskOfClown::class.java to 1f 
+            HeaddressRegeneration::class.java to 1f,
+            WizardHat::class.java to 1f,
+            MaskOfClown::class.java to 1f
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
@@ -313,7 +314,8 @@ object KGenerator {
             CriticalRune::class.java to 0.5f,
             BrightRune::class.java to 1f,
             HasteRune::class.java to 1f,
-            TreasureRune::class.java to 1f
+            TreasureRune::class.java to 1f, 
+            BloodRune::class.java to 0f // from unholy blood
     ))
 
     // 

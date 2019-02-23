@@ -52,7 +52,8 @@ class WandGuard : Mob() {
             enemy.defendDamage(dmg)
             enemy.takeDamage(dmg)
 
-            //todo: i cannot use Wand::onZap(): coupling with Hero, may find way out 
+            //todo: i cannot use Wand::onZap(): coupling with Hero, may find way out
+            //todo: fire wand performs not well
         }
 
         spend(TIME_TO_ZAP)

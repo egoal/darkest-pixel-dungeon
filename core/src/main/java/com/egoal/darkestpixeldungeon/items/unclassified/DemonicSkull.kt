@@ -52,6 +52,6 @@ class DemonicSkull : Item() {
 
     companion object {
 
-        private val AC_SMEAR = "SMEAR"
+        private const val AC_SMEAR = "SMEAR"
     }
 }

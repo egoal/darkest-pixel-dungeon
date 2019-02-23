@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
@@ -79,12 +80,11 @@ class HandleOfAbyss : Artifact() {
     }
 
     override fun desc(): String = if (isIdentified && defeated) {
-        var desc = Messages.get(this, "desc-real") + "\n" + Messages.get(this, "desc-intro") + "\n\n" + Messages.get(this, "desc-tip")
+        var desc = Messages.get(this, "desc-real") + "\n\n" + Messages.get(this, "desc-tip")
         if (cursed) desc += Messages.get(this, "desc-cursed")
         desc
     } else
-        Messages.get(this, "desc") + "\n" + Messages.get(this, "desc-intro")
-
+        Messages.get(this, "desc")
 
     override fun passiveBuff(): ArtifactBuff = Recharge()
 
@@ -110,6 +110,20 @@ class HandleOfAbyss : Artifact() {
                         partialCharge = 0f
                         GLog.p(Messages.get(HandleOfAbyss::class.java, "charged"))
                     }
+                }
+            } else if (cursed && Random.Float() < 0.01) {
+                val avpos = PathFinder.NEIGHBOURS8.map { Dungeon.hero.pos + it }.filter {
+                    Actor.findChar(it) == null && (Level.passable[it] || Level.avoid[it])
+                }
+                if (avpos.isNotEmpty()) {
+                    val ah = AbyssHero(level(), false).apply {
+                        pos = Random.element(avpos)
+                    }
+
+                    GameScene.add(ah, 1f)
+                    CellEmitter.get(ah.pos).burst(ShadowParticle.CURSE, 5)
+                    ah.onSpawned()
+                    Sample.INSTANCE.play(Assets.SND_BURNING)
                 }
             }
 

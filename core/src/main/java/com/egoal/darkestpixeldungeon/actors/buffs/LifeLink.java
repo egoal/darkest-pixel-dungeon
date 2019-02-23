@@ -10,6 +10,10 @@ import com.watabou.utils.Bundle;
 
 //* check in Char::takeDamage
 public class LifeLink extends FlavourBuff {
+  {
+    type = buffType.POSITIVE;
+  }
+  
   public int linker = 0;
 
   private static final String LINKER = "linker";

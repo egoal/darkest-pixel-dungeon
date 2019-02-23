@@ -54,6 +54,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.egoal.darkestpixeldungeon.items.unclassified.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Dagger;
@@ -138,17 +139,19 @@ public enum HeroClass {
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
-
-    (new HandleOfAbyss()).random().collect();
   }
 
   private static void initDebug(Hero hero) {
-    hero.HP = 1000;
+    hero.HP = 200;
     hero.HT = 1000;
     hero.STR = 18;
     hero.lvl = 1;
 
+    new DriedRose().identify().collect();
+    new HandleOfAbyss().identify().collect();
+    
     new DewVial().collect();
+    new UnholyBlood().collect();
     
     ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
     somm.quantity(30).identify().collect();

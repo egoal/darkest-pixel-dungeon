@@ -48,7 +48,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HT = 20 + level * 5
         HP = HT
 
-        timeLeft = 20f * level + 60f
+        timeLeft = 20f * level + 50f
         maxExp = 5f + 3f * level
     }
 

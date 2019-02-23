@@ -27,7 +27,7 @@ class ArmoryDigger : RectDigger() {
 
         Set(level, rect.random(1), Terrain.STATUE)
 
-        val n = Random.IntRange(1, 2)
+        val n = Random.IntRange(1, 3)
         for (i in 1..n) {
             var pos: Int
             do {

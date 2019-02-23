@@ -98,6 +98,8 @@ public class BuffIndicator extends Component {
   public static final int LIFE_LINK = 53;
   public static final int DRUNK = 54;
   public static final int MOON_NIGHT = 55;
+  public static final int BLOOD_SUCK = 56;
+  public static final int MENDING = 57;
 
   public static final int SIZE = 7;
 

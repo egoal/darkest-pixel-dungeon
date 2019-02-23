@@ -41,8 +41,8 @@ public class Mending extends Buff {
 
   @Override
   public boolean act() {
-    int v = (int) Math.ceil(recoveryValue / 3f);
-    recoveryValue -=  v;
+    int v = (int) Math.ceil(recoveryValue / 4f);
+    recoveryValue -= v;
     if (v <= 1) {
       detach();
     } else {
@@ -55,9 +55,11 @@ public class Mending extends Buff {
     return true;
   }
 
-//  @Override
-//  public int icon(){ return BuffIndicator.BLESS; }
-  
+  @Override
+  public int icon() {
+    return BuffIndicator.MENDING;
+  }
+
   @Override
   public String toString() {
     return Messages.get(this, "name");

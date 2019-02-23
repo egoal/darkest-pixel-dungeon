@@ -26,6 +26,7 @@ import android.util.Pair;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
+import com.egoal.darkestpixeldungeon.actors.buffs.BloodSuck;
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
@@ -1944,6 +1945,11 @@ public class Hero extends Char {
     if (madness != null)
       madness.onEmenySlayed(ch);
 
+    BloodSuck bs = buff(BloodSuck.class);
+    if(bs!=null){
+      bs.onEnemySlayed(ch);
+    }
+    
     GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", ch.name)));
   }
 
