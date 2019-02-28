@@ -217,17 +217,17 @@ object KGenerator {
 
     // artifact is uniquely dropping
     val INITIAL_ARTIFACT_PROBS = hashMapOf(
-            CapeOfThorns::class.java to 0f,
-            ChaliceOfBlood::class.java to 0f,  // removed from drop, by statuary
-            CloakOfShadows::class.java to 0f,
+            CapeOfThorns::class.java to 0f, // by DM300
+            ChaliceOfBlood::class.java to 0f,  // by statuary
+            CloakOfShadows::class.java to 0f, // for rouge
             HornOfPlenty::class.java to 1f,
             MasterThievesArmband::class.java to 1f,
             SandalsOfNature::class.java to 1f,
             TalismanOfForesight::class.java to 1f,
             TimekeepersHourglass::class.java to 1f,
             UnstableSpellbook::class.java to 1f,
-            AlchemistsToolkit::class.java to 0f, //currently removed from drop tables,
-            DriedRose::class.java to 0f, //starts with no chance of spawning, chance is set directly after beating ghost quest.
+            AlchemistsToolkit::class.java to 0f, // currently removed from drop tables,
+            DriedRose::class.java to 0f, // starts with no chance of spawning, chance is set directly after beating ghost quest.
             LloydsBeacon::class.java to 0f, // by goo
             EtherealChains::class.java to 1f,
             RiemannianManifoldShield::class.java to 1f,
@@ -297,7 +297,7 @@ object KGenerator {
             HelmetCrusader::class.java to 1f,
             HoodApprentice::class.java to 1f,
             CircletEmerald::class.java to 1f,
-            CrownOfDwarf::class.java to 0f,
+            CrownOfDwarf::class.java to 0f, // by king 
             HeaddressRegeneration::class.java to 1f,
             WizardHat::class.java to 1f,
             MaskOfClown::class.java to 1f

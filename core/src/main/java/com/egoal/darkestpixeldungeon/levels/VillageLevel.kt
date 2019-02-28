@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
+import com.egoal.darkestpixeldungeon.levels.traps.CursingTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
@@ -39,6 +40,9 @@ class VillageLevel : KRegularLevel() {
         // no luminary& traps
         paintWater()
         paintGrass()
+
+        setTrap(CursingTrap().reveal(), xy2cell(16, 28))
+        map[xy2cell(16, 28)] = Terrain.TRAP
 
         return true
     }
@@ -113,7 +117,7 @@ class VillageLevel : KRegularLevel() {
     override fun tileDesc(tile: Int) = when (tile) {
         Terrain.EMPTY_DECO -> Messages.get(SewerLevel::class.java, "empty_deco_desc")
         Terrain.BOOKSHELF -> Messages.get(SewerLevel::class.java, "bookshelf_desc")
-        Terrain.WATER-> Messages.get(VillageLevel::class.java, "water_desc")
+        Terrain.WATER -> Messages.get(VillageLevel::class.java, "water_desc")
         else -> super.tileDesc(tile)
     }
 }

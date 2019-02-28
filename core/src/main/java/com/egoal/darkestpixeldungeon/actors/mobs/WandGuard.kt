@@ -21,7 +21,6 @@ class WandGuard : Mob() {
     init {
         spriteClass = Sprite::class.java
 
-        viewDistance = 6
         EXP = 0
 
         lootChance = 1f // see createLoot 
@@ -32,10 +31,12 @@ class WandGuard : Mob() {
         state = WANDERING
         defenseSkill = 0 // cannot dodge 
 
-        addResistances(Damage.Element.all(), 1f, 1.25f)
-        addResistances(Damage.Element.POISON or Damage.Element.FIRE, 100f)
+        addResistances(Damage.Element.all(), 1.25f, 1f)
+        addResistances(Damage.Element.POISON or Damage.Element.FIRE, 100f, 1.25f)
     }
 
+    override fun viewDistance(): Int = 6
+    
     private val wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {
         level(Random.IntRange(Dungeon.depth / 4, Dungeon.depth / 3))
     }

@@ -125,6 +125,7 @@ class HandOfTheElder : Artifact() {
 
         if (ring.cursed) {
             cursed = true
+            cursedKnown = true
             Sample.INSTANCE.play(Assets.SND_CURSED)
             GLog.p(Messages.get(this, "cursed_levelup", ring.name()))
         } else {
@@ -141,8 +142,7 @@ class HandOfTheElder : Artifact() {
                 GLog.w(Messages.get(HandOfTheElder::class.java, "unknown_ring"))
             } else if (rings.contains(item::class.java))
                 GLog.w(Messages.get(HandOfTheElder::class.java, "duplicate_ring"))
-            else {
-                // okay to wear
+            else if (item.doUnequip(Dungeon.hero, false)) {
                 wearRing(item)
 
                 with(Dungeon.hero) {
@@ -151,10 +151,10 @@ class HandOfTheElder : Artifact() {
                     spend(2f)
                     sprite.emitter().burst(ElmoParticle.FACTORY, 12)
 
-                    if (item.isEquipped(this))
-                        item.doUnequip(this, false)
                     item.detachAll(belongings.backpack)
                 }
+            } else {
+                GLog.w(Messages.get(Dungeon.hero, "cant-do-this"))
             }
         }
     }

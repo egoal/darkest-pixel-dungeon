@@ -48,7 +48,6 @@ public class Eye extends Mob {
 
     HP = HT = 100;
     defenseSkill = 20;
-    viewDistance = Light.DISTANCE;
 
     EXP = 13;
     maxLvl = 25;
@@ -64,6 +63,11 @@ public class Eye extends Mob {
 
     addResistances(Damage.Element.SHADOW, 1.25f);
     addResistances(Damage.Element.HOLY, .667f);
+  }
+
+  @Override
+  public int viewDistance() {
+    return 6;
   }
 
   @Override

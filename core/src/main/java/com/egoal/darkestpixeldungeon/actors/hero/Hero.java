@@ -228,28 +228,13 @@ public class Hero extends Char {
   // view control
   @Override
   public int viewDistance() {
-    if (buff(SharpVision.class) != null) return seeDistance();
+    int vd = super.viewDistance();
 
-    int vd = 0;
-    switch (Statistics.INSTANCE.getClock().getState()) {
-      case Day:
-        vd = 6;
-        break;
-      case Night:
-        vd = 3;
-        if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) vd += 1;
-        break;
-      case MidNight:
-        vd = 2;
-        if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION)) vd += 1;
-        break;
-    }
-
-    if (buff(Light.class) != null)
-      vd = Math.max(vd, Light.DISTANCE);
-
-    if (buff(Drunk.class) != null)
-      vd -= 1;
+    // night vision perk
+    if(heroPerk.contain(HeroPerk.Perk.NIGHT_VISION) && 
+            (Statistics.INSTANCE.getClock().getState()==Statistics.ClockTime.State.Night || 
+            Statistics.INSTANCE.getClock().getState()==Statistics.ClockTime.State.MidNight))
+      vd += 1;
 
     if (buff(HelmetCrusader.Protect.class) != null)
       vd -= 1;
@@ -286,7 +271,7 @@ public class Hero extends Char {
 
     HeaddressRegeneration.Regeneration hrreg = buff(HeaddressRegeneration
             .Regeneration.class);
-    if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : 0.1;
+    if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : (0.1 + reg * 0.15);
 
     ChaliceOfBlood.chaliceRegen cr = Dungeon.hero.buff(ChaliceOfBlood
             .chaliceRegen.class);
@@ -294,10 +279,13 @@ public class Hero extends Char {
       if (!cr.isCursed())
         reg += HT * 0.003 * Math.pow(1.075, cr.itemLevel());
       else
-        reg /= 2f;
+        reg *= reg > 0f ? 0.5f : 1.5f;
     }
 
-    if (buff(MendingRune.Recovery.class) != null) reg *= 2f;
+    if (buff(MendingRune.Recovery.class) != null) {
+      reg += 0.05f;
+      if (reg > 0f) reg *= 2f;
+    }
 
     return reg;
   }
@@ -1946,10 +1934,10 @@ public class Hero extends Char {
       madness.onEmenySlayed(ch);
 
     BloodSuck bs = buff(BloodSuck.class);
-    if(bs!=null){
+    if (bs != null) {
       bs.onEnemySlayed(ch);
     }
-    
+
     GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", ch.name)));
   }
 

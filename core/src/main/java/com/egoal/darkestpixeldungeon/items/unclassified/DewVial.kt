@@ -108,7 +108,7 @@ class DewVial : Item() {
         return desc
     }
 
-    private fun dhp(hero: Hero): Int = ((if (hero.heroClass == HeroClass.HUNTRESS) 0.05f else 0.03f) * hero.HT).toInt()
+    private fun dhp(hero: Hero): Int = ((if (hero.heroClass == HeroClass.HUNTRESS) 0.05f else 0.03f) * hero.HT).toInt() + 1
 
     private fun consume(vol: Int, hero: Hero) {
         volume -= vol
@@ -125,7 +125,7 @@ class DewVial : Item() {
         }
 
         Sample.INSTANCE.play(Assets.SND_DRINK)
-        
+
         updateQuickslot()
     }
 

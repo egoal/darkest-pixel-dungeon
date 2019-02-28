@@ -262,8 +262,8 @@ public class Dungeon {
                 .getDeepestFloor() - 1);
     }
 
-    if (DarkestPixelDungeon.debug())
-      level = new TestLevel(); // EmptyLevel();
+//    if (DarkestPixelDungeon.debug())
+//      level = new TestLevel(); // EmptyLevel();
 
     visible = new boolean[level.length()];
     level.create();

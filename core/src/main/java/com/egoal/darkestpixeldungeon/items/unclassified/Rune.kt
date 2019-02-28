@@ -1,7 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.unclassified
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
@@ -110,7 +109,7 @@ class BloodRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xd90355)
 
     override fun affect(hero: Hero) {
-        Buff.prolong(hero, BloodSuck::class.java, 80f)
+        Buff.prolong(hero, BloodSuck::class.java, 40f)
         StaminaOverload(min(hero.HT / 2, 50)).attachTo(hero)
     }
 }

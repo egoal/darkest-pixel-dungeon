@@ -54,7 +54,6 @@ public class Succubus extends Mob {
 
     HP = HT = 80;
     defenseSkill = 25;
-    viewDistance = Light.DISTANCE;
 
     EXP = 12;
     maxLvl = 25;
@@ -66,6 +65,11 @@ public class Succubus extends Mob {
 
     addResistances(Damage.Element.SHADOW, 1.25f);
     addResistances(Damage.Element.HOLY, .667f);
+  }
+
+  @Override
+  public int viewDistance() {
+    return 6;
   }
 
   @Override

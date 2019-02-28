@@ -242,7 +242,7 @@ abstract class KRegularLevel : Level() {
                 else -> Heap.Type.HEAP
             }
 
-            drop(Generator.random(), randomDropCell()).type = heap
+            drop(KGenerator.generate(), randomDropCell()).type = heap
         }
 
         // inherent items

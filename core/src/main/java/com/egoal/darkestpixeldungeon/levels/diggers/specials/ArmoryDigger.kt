@@ -41,5 +41,13 @@ class ArmoryDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
-    private fun prize(level: Level) = Random.oneOf(KGenerator.ARMOR, KGenerator.WEAPON, KGenerator.HELMET).generate()
+    private fun prize(level: Level) = Random.chances(PrizeGenerators).generate()
+    
+    companion object {
+        private val PrizeGenerators =   hashMapOf(
+                KGenerator.ARMOR to 1f, 
+                KGenerator.WEAPON to 1f, 
+                KGenerator.HELMET to 0.5f
+        )
+    }
 }

@@ -62,6 +62,11 @@ public class Tengu extends Mob {
     addResistances(Damage.Element.POISON, 1.25f, 1f);
   }
 
+  @Override
+  public int viewDistance() {
+    return 6;
+  }
+
   // 0: simple jump& shot
   // 1: phantom strike, jump& shot
   //todo: use ai state instead
@@ -346,7 +351,7 @@ public class Tengu extends Mob {
 
     // hide the bar, avoid distinguishing from which
     HealthIndicator.instance.target(null);
-    QuickSlotButton.reset();
+    QuickSlotButton.target(null);
 
     if (availables.size() < 4) {
       // no space to spawn phantoms

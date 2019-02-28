@@ -50,6 +50,11 @@ public class Bat extends Mob {
   }
 
   @Override
+  public int viewDistance() {
+    return seeDistance();
+  }
+
+  @Override
   public Damage giveDamage(Char target) {
     if (Random.Int(4) == 0)
       return new Damage(Random.NormalIntRange(1, 5), this, target).type

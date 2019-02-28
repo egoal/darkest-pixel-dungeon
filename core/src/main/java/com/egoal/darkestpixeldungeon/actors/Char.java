@@ -20,14 +20,18 @@
  */
 package com.egoal.darkestpixeldungeon.actors;
 
+import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.buffs.Bless;
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill;
+import com.egoal.darkestpixeldungeon.actors.buffs.Drunk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
+import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
+import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shock;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -86,9 +90,6 @@ public abstract class Char extends Actor {
   public boolean flying = false;
   public int invisible = 0;
 
-  protected int viewDistance = 8;
-  protected int seeDistance = 8;
-
   // resistances
   public float[] resistanceMagical = new float[Damage.Element.ELEMENT_COUNT];
   public float[] resistanceNormal = new float[Damage.Element.ELEMENT_COUNT];
@@ -142,11 +143,29 @@ public abstract class Char extends Actor {
   }
 
   public int viewDistance() {
-    return viewDistance;
+    if (buff(SharpVision.class) != null) return seeDistance();
+
+    int vd = 0;
+    switch (Statistics.INSTANCE.getClock().getState()) {
+      case Day:
+        vd = 6;
+        break;
+      case Night:
+        vd = 3;
+        break;
+      case MidNight:
+        vd = 2;
+        break;
+    }
+
+    if (buff(Light.class) != null) vd = Math.max(vd, Light.DISTANCE);
+    if (buff(Drunk.class) != null) vd -= 1;
+
+    return vd;
   }
 
   public int seeDistance() {
-    return seeDistance;
+    return 8;
   }
 
   public boolean attack(Char enemy) {

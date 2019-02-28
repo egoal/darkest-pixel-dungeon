@@ -36,8 +36,6 @@ public class Bee extends Mob {
   {
     spriteClass = BeeSprite.class;
 
-    viewDistance = 4;
-
     EXP = 0;
 
     flying = true;
@@ -56,6 +54,11 @@ public class Bee extends Mob {
   private static final String LEVEL = "level";
   private static final String POTPOS = "potpos";
   private static final String POTHOLDER = "potholder";
+
+  @Override
+  public int viewDistance() {
+    return 4;
+  }
 
   @Override
   public void storeInBundle(Bundle bundle) {

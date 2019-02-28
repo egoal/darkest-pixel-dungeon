@@ -149,6 +149,7 @@ public enum HeroClass {
 
     new DriedRose().identify().collect();
     new HandleOfAbyss().identify().collect();
+    new HandOfTheElder().identify().collect();
     
     new DewVial().collect();
     new UnholyBlood().collect();

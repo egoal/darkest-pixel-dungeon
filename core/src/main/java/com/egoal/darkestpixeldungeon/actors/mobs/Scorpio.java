@@ -40,7 +40,6 @@ public class Scorpio extends Mob {
 
     HP = HT = 95;
     defenseSkill = 24;
-    viewDistance = Light.DISTANCE;
 
     EXP = 14;
     maxLvl = 25;
@@ -53,6 +52,11 @@ public class Scorpio extends Mob {
     addResistances(Damage.Element.POISON, 1.25f);
     addResistances(Damage.Element.SHADOW, 1.25f);
     addResistances(Damage.Element.HOLY, .667f);
+  }
+
+  @Override
+  public int viewDistance() {
+    return 6;
   }
 
   @Override

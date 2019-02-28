@@ -33,7 +33,6 @@ class Ballista : Mob() {
         HP = HT
 
         defenseSkill = 18
-        viewDistance = 6
 
         EXP = 12
         maxLvl = 22
@@ -45,6 +44,8 @@ class Ballista : Mob() {
         addResistances(Damage.Element.LIGHT, 0.75f)
     }
 
+    override fun viewDistance(): Int = 6
+    
     override fun giveDamage(enemy: Char): Damage =
             Damage(Random.NormalIntRange(16, 30), this, enemy).addFeature(Damage.Feature.RANGED)
 
