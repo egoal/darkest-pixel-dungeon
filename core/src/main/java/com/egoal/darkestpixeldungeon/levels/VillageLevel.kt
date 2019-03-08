@@ -96,7 +96,7 @@ class VillageLevel : KRegularLevel() {
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
-        // putMobAt(Yvette::class.java, 16, 29)
+        putMobAt(Yvette::class.java, 16, 29)
     }
 
     override fun respawner(): Actor? = null

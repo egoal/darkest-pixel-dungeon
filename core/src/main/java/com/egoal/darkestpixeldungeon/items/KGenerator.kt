@@ -233,7 +233,9 @@ object KGenerator {
             RiemannianManifoldShield::class.java to 1f,
             GoldPlatedStatue::class.java to 1f,
             HandOfTheElder::class.java to 0f, // by undead
-            HandleOfAbyss::class.java to 1f
+            HandleOfAbyss::class.java to 1f, 
+            HeartOfSatan::class.java to 0.5f, 
+            ClockOfSheep::class.java to 1f
     )
 
     object ARTIFACT : ClassMapGenerator<Artifact>(HashMap()), Bundlable {

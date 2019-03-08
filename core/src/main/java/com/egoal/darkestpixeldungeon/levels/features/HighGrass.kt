@@ -23,8 +23,28 @@ import com.watabou.utils.Random
 
 object HighGrass {
     fun Trample(level: Level, pos: Int, ch: Char?) {
-        if (level.map[pos] != Terrain.HIGH_GRASS) return
+        // called only if HIGH_GRASS, HIGH_GRASS_COLLECTED, see Level::press
+        if (level.map[pos] == Terrain.HIGH_GRASS)
+            collectGrass(level, pos, ch)
+        
+        var leaves = 4
+        if (ch is Hero) {
+            if (ch.subClass == HeroSubClass.WARDEN) {
+                Buff.affect(ch, Barkskin::class.java).level(ch.HT / 10)
+                leaves += 4
+            }
 
+            if (ch.belongings.armor?.hasGlyph(Camouflage::class.java) == true) {
+                Buff.affect(ch, Camouflage.Camo::class.java).set(2 + ch.belongings.armor.level())
+                leaves += 4
+            }
+        }
+
+        CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves)
+        if (ch != Dungeon.hero) Dungeon.observe()
+    }
+
+    private fun collectGrass(level: Level, pos: Int, ch: Char?) {
         Level.set(pos, Terrain.HIGH_GRASS_COLLECTED)
 
         if (!Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
@@ -58,22 +78,6 @@ object HighGrass {
         }
 
         GameScene.updateMap(pos)
-
-        var leaves = 4
-        if (ch is Hero) {
-            if (ch.subClass == HeroSubClass.WARDEN) {
-                Buff.affect(ch, Barkskin::class.java).level(ch.HT / 10)
-                leaves += 4
-            }
-
-            if (ch.belongings.armor?.hasGlyph(Camouflage::class.java) == true) {
-                Buff.affect(ch, Camouflage.Camo::class.java).set(2 + ch.belongings.armor.level())
-                leaves += 4
-            }
-        }
-
-        CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves)
-        if (ch != Dungeon.hero) Dungeon.observe()
     }
-    
+
 }

@@ -104,6 +104,7 @@ class PoolDigger : RectDigger() {
         //33% chance for an extra update.
         if (prize !is MissileWeapon && Random.Int(3) == 0)
             prize.upgrade()
+        prize.cursedKnown = true
 
         return prize
     }

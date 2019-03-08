@@ -30,14 +30,13 @@ import com.egoal.darkestpixeldungeon.actors.buffs.BloodSuck;
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk;
 import com.egoal.darkestpixeldungeon.actors.buffs.Fury;
 import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant;
-import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.buffs.Rage;
-import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
+import com.egoal.darkestpixeldungeon.items.artifacts.HeartOfSatan;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
 import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
@@ -107,7 +106,6 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune;
 import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune;
-import com.egoal.darkestpixeldungeon.items.wands.Wand;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail;
@@ -231,9 +229,11 @@ public class Hero extends Char {
     int vd = super.viewDistance();
 
     // night vision perk
-    if(heroPerk.contain(HeroPerk.Perk.NIGHT_VISION) && 
-            (Statistics.INSTANCE.getClock().getState()==Statistics.ClockTime.State.Night || 
-            Statistics.INSTANCE.getClock().getState()==Statistics.ClockTime.State.MidNight))
+    if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION) &&
+            (Statistics.INSTANCE.getClock().getState() == Statistics
+                    .ClockTime.State.Night ||
+                    Statistics.INSTANCE.getClock().getState() == Statistics
+                            .ClockTime.State.MidNight))
       vd += 1;
 
     if (buff(HelmetCrusader.Protect.class) != null)
@@ -273,13 +273,12 @@ public class Hero extends Char {
             .Regeneration.class);
     if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : (0.1 + reg * 0.15);
 
-    ChaliceOfBlood.chaliceRegen cr = Dungeon.hero.buff(ChaliceOfBlood
-            .chaliceRegen.class);
-    if (cr != null) {
-      if (!cr.isCursed())
-        reg += HT * 0.003 * Math.pow(1.075, cr.itemLevel());
-      else
-        reg *= reg > 0f ? 0.5f : 1.5f;
+    HeartOfSatan.Regeneration hr = buff(HeartOfSatan.Regeneration.class);
+    if (hr != null) {
+      if (hr.isCursed()) {
+        reg = reg > 0f ? -0.025f : reg * 1.25f;
+      } else
+        reg += HT * 0.004f * Math.pow(1.075, hr.itemLevel());
     }
 
     if (buff(MendingRune.Recovery.class) != null) {
@@ -1934,9 +1933,12 @@ public class Hero extends Char {
       madness.onEmenySlayed(ch);
 
     BloodSuck bs = buff(BloodSuck.class);
-    if (bs != null) {
+    if (bs != null)
       bs.onEnemySlayed(ch);
-    }
+
+    ChaliceOfBlood.Store store = buff(ChaliceOfBlood.Store.class);
+    if (store != null)
+      store.onEnemySlayed(ch);
 
     GLog.i(Messages.capitalize(Messages.get(Char.class, "defeat", ch.name)));
   }

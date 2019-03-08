@@ -36,7 +36,7 @@ class WandGuard : Mob() {
     }
 
     override fun viewDistance(): Int = 6
-    
+
     private val wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {
         level(Random.IntRange(Dungeon.depth / 4, Dungeon.depth / 3))
     }
@@ -81,6 +81,9 @@ class WandGuard : Mob() {
     override fun createLoot(): Item = wand.apply {
         level(0)
         random()
+        // never be cursed
+        cursed = false
+        cursedKnown = true
     }
 
     // immovable 

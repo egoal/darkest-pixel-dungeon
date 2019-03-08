@@ -100,7 +100,7 @@ public class Statuary extends NPC {
       spawnChance = node.getIntArray(SPAWN_CHANCE);
     }
   }
-  
+
   public Statuary random() {
     float[] chances = new float[3];
     for (int i = 0; i < 3; ++i) chances[i] = spawnChance[i];
@@ -418,6 +418,8 @@ public class Statuary extends NPC {
         item.upgrade(Random.Float() < .1 ? 2 : 1);
         item.cursed = true;
       }
+      item.cursedKnown = true;
+      
       Dungeon.level.drop(item, hero.pos);
 
       // effects

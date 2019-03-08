@@ -20,9 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.sprites;
 
-import com.egoal.darkestpixeldungeon.items.KGenerator;
-import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
-
 public class ItemSpriteSheet {
 
   private static final int WIDTH = 16;
@@ -219,7 +216,9 @@ public class ItemSpriteSheet {
   public static final int GOLD_PLATE_STATUE = ARTIFACTS + 30;
   public static final int BONE_HAND = ARTIFACTS + 31;
   public static final int HANDLE_OF_ABYSS = ARTIFACTS + 32;
-
+  public static final int CLOAK_OF_SHEEP = ARTIFACTS+ 33;
+  public static final int HEART_OF_SATAN = ARTIFACTS+ 34;
+  public static final int ARTIFACT_EYEBALL = ARTIFACTS+ 35;
 
   //32 free slots
 

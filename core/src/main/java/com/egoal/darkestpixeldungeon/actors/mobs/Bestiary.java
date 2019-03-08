@@ -77,7 +77,7 @@ public class Bestiary {
         classes = new Class<?>[]{Rat.class, Gnoll.class};
         break;
       case 3:
-        chances = new float[]{2, 4, 1, 1};
+        chances = new float[]{2, 4, 0.5f, 1};
         classes = new Class<?>[]{Rat.class, Gnoll.class, Crab.class, Swarm
                 .class};
         break;

@@ -61,7 +61,7 @@ public class Questioner extends NPC {
       }
     });
 
-    return false;
+    return true;
   }
 
   public Questioner random() {
@@ -76,8 +76,7 @@ public class Questioner extends NPC {
     } else {
       yell(Messages.get(this, question + "_pass"));
       Dungeon.hero.takeDamage(new Damage(Random.Int(2, 6), this, Dungeon
-              .hero).type(Damage
-              .Type.MENTAL));
+              .hero).type(Damage.Type.MENTAL));
       GLog.n(Messages.get(this, "tough"));
     }
 

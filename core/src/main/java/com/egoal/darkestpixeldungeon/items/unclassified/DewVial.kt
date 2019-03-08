@@ -56,8 +56,9 @@ class DewVial : Item() {
 
         when (action) {
             AC_DRINK -> {
-                if (rune != null) return
-                if (volume > 0) {
+                if (rune != null){
+                  GLog.w(Messages.get(this, "has-rune"))  
+                } else if (volume > 0) {
                     val require = (hero.HT - hero.HP) / dhp(hero)
                     val drink = Math.min(volume, require)
 
