@@ -74,7 +74,7 @@ public class WarpingTrap extends Trap {
 
       Char ch = Actor.findChar(pos);
       if (ch == Dungeon.hero) {
-        Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+        Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
         if (buff != null) buff.detach();
 
         for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))

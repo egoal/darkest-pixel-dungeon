@@ -37,6 +37,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CriticalShock;
+import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -54,6 +55,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.features.Door;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
@@ -194,7 +196,7 @@ public abstract class Char extends Actor {
       }
       dmg = enemy.defenseProc(dmg);
 
-      if (visibleFight) {
+      if (visibleFight && !TimekeepersHourglass.Companion.IsTimeStopped()) {
         if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature
                 .CRITCIAL) && dmg.value > 0)
           Sample.INSTANCE.play(Assets.SND_CRITICAL, 1, 1, 1f);
@@ -213,7 +215,12 @@ public abstract class Char extends Actor {
         Camera.main.shake(GameMath.gate(1, shake, 5), .3f);
 
       // take!
-      enemy.takeDamage(dmg);
+      int value = enemy.takeDamage(dmg);
+      if (value < 0){
+        // ^^^ this is the only case when time stop! not a good design, but works for now.
+        enemy.sprite.flash(); // let the player know, "i hit it"
+        return true;
+      } 
 
       // buffs, dont know why this piece of code exists, 
       // maybe the mage? or the attack effect?
@@ -225,11 +232,11 @@ public abstract class Char extends Actor {
       // effects
       // burst blood
       if (dmg.isFeatured(Damage.Feature.CRITCIAL)) {
-        enemy.sprite.bloodBurstB(sprite.center(), dmg.value);
-        enemy.sprite.spriteBurst(sprite.center(), dmg.value);
+        enemy.sprite.bloodBurstB(sprite.center(), value);
+        enemy.sprite.spriteBurst(sprite.center(), value);
         enemy.sprite.flash();
       } else {
-        enemy.sprite.bloodBurstA(sprite.center(), dmg.value);
+        enemy.sprite.bloodBurstA(sprite.center(), value);
         enemy.sprite.flash();
       }
 
@@ -311,6 +318,14 @@ public abstract class Char extends Actor {
   }
 
   public int takeDamage(Damage dmg) {
+    // time freeze
+    TimekeepersHourglass.TimeFreeze tf = Dungeon.hero.buff
+            (TimekeepersHourglass.TimeFreeze.class);
+    if (tf != null) {
+      tf.addDelayedDamage(dmg);
+      return -1; //! be negative  
+    }
+
     // life link
     LifeLink ll = buff(LifeLink.class);
     if (ll != null) {

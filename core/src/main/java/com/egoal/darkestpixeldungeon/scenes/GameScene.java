@@ -89,6 +89,7 @@ import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.egoal.darkestpixeldungeon.windows.WndStory;
 import com.egoal.darkestpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
@@ -104,6 +105,8 @@ import com.watabou.utils.Random;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class GameScene extends PixelScene {
 
@@ -745,6 +748,36 @@ public class GameScene extends PixelScene {
     scene.fadeIn(0xFF000000 | color, true);
   }
 
+  // color blender
+  private static ColorLayer colorLayer = null;
+
+  public static void setColorLayer(int color) {
+    if (colorLayer != null) resetColorLayer();
+    colorLayer = new ColorLayer(color);
+    scene.add(colorLayer);
+  }
+
+  public static void resetColorLayer() {
+    if (colorLayer != null) colorLayer.remove();
+    colorLayer = null;
+  }
+
+  public static class ColorLayer extends ColorBlock {
+    public ColorLayer(int color) {
+      super(uiCamera.width, uiCamera.height, color);
+      camera = uiCamera;
+    }
+
+    @Override
+    public void draw() {
+      GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE);
+      super.draw();
+      GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+    }
+  }
+  // ^^^ may not a good idea...
+  
+  
   public static void gameOver() {
     Banner gameOver = new Banner(BannerSprites.get(BannerSprites.Type
             .GAME_OVER));
@@ -879,7 +912,7 @@ public class GameScene extends PixelScene {
     } else if (objects.size() == 1) {
       examineObject(objects.get(0));
     } else {
-      GameScene.show(new WndOptions(Messages.get(GameScene.class, 
+      GameScene.show(new WndOptions(Messages.get(GameScene.class,
               "choose_examine"),
               Messages.get(GameScene.class, "multiple_examine"), names
               .toArray(new String[names.size()])) {
@@ -910,24 +943,24 @@ public class GameScene extends PixelScene {
     } else if (o instanceof Trap) {
       GameScene.show(new WndInfoTrap((Trap) o));
     } else {
-      GameScene.show(new WndMessage(Messages.get(GameScene.class, 
+      GameScene.show(new WndMessage(Messages.get(GameScene.class,
               "dont_know")));
     }
   }
 
 
-  private static final CellSelector.Listener defaultCellListener = new 
+  private static final CellSelector.Listener defaultCellListener = new
           CellSelector.Listener() {
-    @Override
-    public void onSelect(Integer cell) {
-      if (Dungeon.hero.handle(cell)) {
-        Dungeon.hero.next();
-      }
-    }
+            @Override
+            public void onSelect(Integer cell) {
+              if (Dungeon.hero.handle(cell)) {
+                Dungeon.hero.next();
+              }
+            }
 
-    @Override
-    public String prompt() {
-      return null;
-    }
-  };
+            @Override
+            public String prompt() {
+              return null;
+            }
+          };
 }

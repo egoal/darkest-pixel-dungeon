@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
@@ -17,13 +18,13 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.util.ArrayList
 
-class TheWorld : Artifact() {
+class TimekeepersHourglass : Artifact() {
     init {
         image = ItemSpriteSheet.ARTIFACT_HOURGLASS
 
         levelCap = 5
 
-        chargeCap = 10 + level() * 2
+        chargeCap = 5 + level() / 2
         charge = chargeCap
         partialCharge = 0f
 
@@ -55,10 +56,9 @@ class TheWorld : Artifact() {
                 GLog.i(Messages.get(this, "deactivate"))
             } else {
                 GLog.i(Messages.get(this, "onfreeze"))
-                GameScene.flash(0xffffff)
                 Sample.INSTANCE.play(Assets.SND_TELEPORT)
 
-                TimeFreeze().attachTo(hero)
+                activated = TimeFreeze().attachTo(hero)
             }
         }
     }
@@ -67,7 +67,7 @@ class TheWorld : Artifact() {
 
     override fun doUnequip(hero: Hero, collect: Boolean, single: Boolean): Boolean {
         if (super.doUnequip(hero, collect, single)) {
-            hero.buff(TimeFreeze()::class.java)?.detach()
+            hero.buff(TimeFreeze::class.java)?.detach()
             return true
         }
         return false
@@ -90,18 +90,20 @@ class TheWorld : Artifact() {
                     desc += "\n\n" + Messages.get(this, "desc_hint")
             } else desc += "\n\n" + Messages.get(this, "desc_cursed")
         }
-        
+
         return desc
     }
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(SAND_BAGS, sandBags)
+        bundle.put(ACTIVATED, activated)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         sandBags = bundle.getInt(SAND_BAGS)
+        activated = bundle.getBoolean(ACTIVATED)
     }
 
     inner class Recharge : ArtifactBuff() {
@@ -130,6 +132,7 @@ class TheWorld : Artifact() {
     inner class TimeFreeze : ArtifactBuff() {
         var partialTime = 0f
         private val pressed = arrayListOf<Int>() // cells delay to be pressed
+        private val damages = arrayListOf<Damage>() // damages delay to give
 
         fun processTime(time: Float): Boolean {
             partialTime += time
@@ -150,16 +153,40 @@ class TheWorld : Artifact() {
             if (!pressed.contains(cell)) pressed.add(cell) // the order matters, 
         }
 
-        fun triggerPresses() {
+        fun addDelayedDamage(dmg: Damage) {
+            damages.add(dmg)
+        }
+
+        private fun triggerPresses() {
             pressed.forEach { Dungeon.level.press(it, null) }
             pressed.clear()
+        }
+
+        private fun triggerDamages() {
+            for (dmg in damages) {
+                (dmg.to as Char?)?.let { ch: Char ->
+                    if (ch.isAlive) {
+                        ch.takeDamage(dmg)
+                        if (Dungeon.visible[ch.pos]) {
+                            // effects
+                            val from = dmg.from as Char?
+                            if (from != null)
+                                ch.sprite.bloodBurstA(from.sprite.center(), dmg.value)
+                            Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(.8f, 1.25f))
+                        }
+
+                    }
+                }
+            }
+            damages.clear()
         }
 
         override fun attachTo(target: Char?): Boolean {
             Dungeon.level?.let {
                 it.mobs.forEach { m -> m.sprite.add(CharSprite.State.PARALYSED) }
             }
-            GameScene.freezeEmitters = true
+            // GameScene.freezeEmitters = true
+            GameScene.setColorLayer(0x441885c4)
 
             return super.attachTo(target)
         }
@@ -168,12 +195,15 @@ class TheWorld : Artifact() {
             Dungeon.level.mobs.forEach {
                 it.sprite.remove(CharSprite.State.PARALYSED)
             }
-            GameScene.freezeEmitters = false
+            // GameScene.freezeEmitters = false
+            GameScene.resetColorLayer()
 
             updateQuickslot()
             super.detach()
+            activated = false
 
             triggerPresses()
+            triggerDamages()
         }
 
         override fun storeInBundle(bundle: Bundle) {
@@ -193,6 +223,7 @@ class TheWorld : Artifact() {
     companion object {
         private const val AC_ACTIVATE = "activate"
         private const val SAND_BAGS = "sand-bags"
+        private const val ACTIVATED = "activated"
 
         private const val TF_PRESSES = "tf-presses"
         private const val TF_PARTIAL = "tf-partial"
@@ -203,7 +234,7 @@ class TheWorld : Artifact() {
             }
 
             override fun doPickUp(hero: Hero): Boolean {
-                val tw = hero.belongings.getItem(TheWorld::class.java)
+                val tw = hero.belongings.getItem(TimekeepersHourglass::class.java)
                 if (tw == null || tw.cursed) {
                     GLog.w(Messages.get(this, "no_hourglass"))
                     return false
@@ -219,6 +250,8 @@ class TheWorld : Artifact() {
 
             override fun price(): Int = 10
         }
+
+        fun IsTimeStopped(): Boolean = Dungeon.hero.buff(TimeFreeze::class.java) != null
     }
 
 }

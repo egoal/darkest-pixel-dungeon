@@ -106,7 +106,8 @@ public class DPDShopKeeper extends NPC {
 
   @Override
   public int takeDamage(Damage dmg) {
-    flee();
+    if (super.takeDamage(dmg) >= 0)
+      flee();
     return 0;
   }
 

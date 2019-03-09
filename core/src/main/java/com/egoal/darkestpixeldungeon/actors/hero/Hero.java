@@ -626,6 +626,8 @@ public class Hero extends Char {
     if (HP < HT / 2 && buff(HelmetBarbarian.HelmetBuff.class) != null)
       dmg.value *= 1.25f;
 
+    if(TimekeepersHourglass.Companion.IsTimeStopped()) dmg.addFeature(Damage.Feature.ACCURATE);
+    
     return dmg;
   }
 
@@ -728,8 +730,8 @@ public class Hero extends Char {
 
   @Override
   public void spend(float time) {
-    TimekeepersHourglass.timeFreeze buff = buff(TimekeepersHourglass
-            .timeFreeze.class);
+    TimekeepersHourglass.TimeFreeze buff = 
+            buff(TimekeepersHourglass.TimeFreeze.class);
     if (!(buff != null && buff.processTime(time)))
       super.spend(time);
   }
@@ -955,7 +957,7 @@ public class Hero extends Char {
           heap.pickUp();
 
           if (item instanceof Dewdrop
-                  || item instanceof TimekeepersHourglass.sandBag
+                  || item instanceof TimekeepersHourglass.Companion.SandBag
                   || item instanceof DriedRose.Companion.Petal
                   || item instanceof Key) {
             //Do Nothing
@@ -1099,7 +1101,7 @@ public class Hero extends Char {
 
       curAction = null;
 
-      Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+      Buff buff = buff(TimekeepersHourglass.TimeFreeze.class);
       if (buff != null) buff.detach();
 
       InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
@@ -1145,7 +1147,7 @@ public class Hero extends Char {
           hunger.reduceHunger(-Hunger.STARVING / 10);
         }
 
-        Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+        Buff buff = buff(TimekeepersHourglass.TimeFreeze.class);
         if (buff != null) buff.detach();
 
         InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
@@ -1243,10 +1245,6 @@ public class Hero extends Char {
 
   @Override
   public int takeDamage(Damage dmg) {
-    // freeze self
-    if (buff(TimekeepersHourglass.timeStasis.class) != null)
-      return 0;
-
     // interrupt action or resting
     if (!(dmg.from instanceof Hunger || dmg.from instanceof Viscosity
             .DeferedDamage) && damageInterrupt) {
@@ -1682,10 +1680,6 @@ public class Hero extends Char {
 
   @Override
   public void add(Buff buff) {
-
-    if (buff(TimekeepersHourglass.timeStasis.class) != null)
-      return;
-
     //* check buff immunities
     // immunities
     for (Buff b : buffs()) {

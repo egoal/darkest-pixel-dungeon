@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.HeartOfSatan;
+import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
 import com.egoal.darkestpixeldungeon.items.helmets.WizardHat;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
@@ -142,6 +143,7 @@ public enum HeroClass {
     }
     
     new HeartOfSatan().collect();
+    new TimekeepersHourglass().collect();
   }
 
   private static void initDebug(Hero hero) {

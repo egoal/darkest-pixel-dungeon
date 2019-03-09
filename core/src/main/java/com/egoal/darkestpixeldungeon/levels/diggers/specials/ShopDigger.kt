@@ -174,7 +174,7 @@ class ShopDigger : RectDigger() {
             }
 
             for (i in 1..bags) {
-                itemsToSpawn.add(TimekeepersHourglass.sandBag())
+                itemsToSpawn.add(TimekeepersHourglass.Companion.SandBag())
                 hourglass.sandBags++
             }
         }

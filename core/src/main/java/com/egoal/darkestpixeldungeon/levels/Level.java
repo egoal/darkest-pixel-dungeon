@@ -249,7 +249,7 @@ public abstract class Level implements Bundlable {
           //the player may miss a single petal and still max their rose.
           if (rose.getDroppedPetals() < 11) {
             stationaryItems.add(new DriedRose.Companion.Petal());
-            rose.setDroppedPetals(rose.getDroppedPetals()+ 1);
+            rose.setDroppedPetals(rose.getDroppedPetals() + 1);
           }
         }
       }
@@ -265,7 +265,7 @@ public abstract class Level implements Bundlable {
 
         // give extra torches
         {
-          float prop = 0.25f - Dungeon.depth / 5 * 0.025f;
+          float prop = 0.3f - Dungeon.depth / 5 * 0.025f;
           while (Random.Float() < prop)
             stationaryItems.add(new Torch());
         }
@@ -704,12 +704,12 @@ public abstract class Level implements Bundlable {
     }
     // update lights
     BArray.setFalse(lighted);
-    int[] L1norm2 = new int[]{
-            -width * 2,
-            -width - 1, -width, -width + 1,
+    final int[] L1norm2 = new int[]{
+            -width * 2 - 1, -width * 2, -width * 2 + 1,
+            -width - 2, -width - 1, -width, -width + 1, -width + 2,
             -2, -1, 0, +1, +2,
-            +width - 1, +width, +width + 1,
-            +width * 2,
+            +width - 2, +width - 1, +width, +width + 1, +width + 2,
+            +width * 2 - 1, +width * 2, +width * 2 + 1,
     };
     for (int i = 0; i < length(); ++i) {
       if (luminary[i]) {
@@ -1024,8 +1024,8 @@ public abstract class Level implements Bundlable {
         break;
     }
 
-    TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff
-            (TimekeepersHourglass.timeFreeze.class);
+    TimekeepersHourglass.TimeFreeze timeFreeze = 
+            Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 
     if (trap != null) {
       if (timeFreeze == null) {
@@ -1040,8 +1040,7 @@ public abstract class Level implements Bundlable {
 
         discover(cell);
 
-        timeFreeze.setDelayedPress(cell);
-
+        timeFreeze.addDelayedPress(cell);
       }
     }
 
@@ -1088,15 +1087,13 @@ public abstract class Level implements Bundlable {
     int cx = c.pos % width();
     int cy = c.pos / width();
 
-    boolean sighted = c.buff(Blindness.class) == null && c.buff(Shadows
-            .class) == null
-            && c.buff(TimekeepersHourglass.timeStasis.class) == null && c
-            .isAlive();
+    boolean sighted = c.buff(Blindness.class) == null &&
+            c.buff(Shadows.class) == null && c.isAlive();
     if (sighted) {
 //      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance(), c
 //              .seeDistance());
-      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance
-              (), c.seeDistance());
+      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(), 
+              c.seeDistance());
     } else {
       BArray.setFalse(fieldOfView);
     }
@@ -1109,7 +1106,7 @@ public abstract class Level implements Bundlable {
       }
     }
 
-    if ((sighted && sense > 1) || !sighted) {
+    if (sighted || sense > 1) {
 
       int ax = Math.max(0, cx - sense);
       int bx = Math.min(cx + sense, width() - 1);

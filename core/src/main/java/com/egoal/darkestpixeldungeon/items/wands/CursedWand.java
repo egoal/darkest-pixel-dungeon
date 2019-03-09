@@ -346,7 +346,7 @@ public class CursedWand {
           for (int i = 1; i < Dungeon.depth; i++) depths[i - 1] = i;
           int depth = 1 + Random.chances(depths);
 
-          Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+          Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
           if (buff != null) buff.detach();
 
           for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))

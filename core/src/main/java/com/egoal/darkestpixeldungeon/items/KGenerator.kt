@@ -224,7 +224,7 @@ object KGenerator {
             MasterThievesArmband::class.java to 1f,
             SandalsOfNature::class.java to 1f,
             TalismanOfForesight::class.java to 1f,
-            TimekeepersHourglass::class.java to 1f,
+            TimekeepersHourglass::class.java to 1f, 
             UnstableSpellbook::class.java to 1f,
             AlchemistsToolkit::class.java to 0f, // currently removed from drop tables,
             DriedRose::class.java to 0f, // starts with no chance of spawning, chance is set directly after beating ghost quest.
@@ -234,7 +234,7 @@ object KGenerator {
             GoldPlatedStatue::class.java to 1f,
             HandOfTheElder::class.java to 0f, // by undead
             HandleOfAbyss::class.java to 1f, 
-            HeartOfSatan::class.java to 0.5f, 
+            HeartOfSatan::class.java to 1f, 
             ClockOfSheep::class.java to 1f
     )
 

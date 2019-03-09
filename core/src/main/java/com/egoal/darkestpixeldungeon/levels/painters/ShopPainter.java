@@ -242,22 +242,22 @@ public class ShopPainter extends Painter {
       //this way players who get the hourglass late can still max it, usually.
       switch (Dungeon.depth) {
         case 6:
-          bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.20f);
+          bags = (int) Math.ceil((5 - hourglass.getSandBags()) * 0.20f);
           break;
         case 11:
-          bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.25f);
+          bags = (int) Math.ceil((5 - hourglass.getSandBags()) * 0.25f);
           break;
         case 16:
-          bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.50f);
+          bags = (int) Math.ceil((5 - hourglass.getSandBags()) * 0.50f);
           break;
         case 21:
-          bags = (int) Math.ceil((5 - hourglass.sandBags) * 0.80f);
+          bags = (int) Math.ceil((5 - hourglass.getSandBags()) * 0.80f);
           break;
       }
 
       for (int i = 1; i <= bags; i++) {
-        itemsToSpawn.add(new TimekeepersHourglass.sandBag());
-        hourglass.sandBags++;
+        itemsToSpawn.add(new TimekeepersHourglass.Companion.SandBag());
+        hourglass.setSandBags(hourglass.getSandBags()+1);
       }
     }
 
