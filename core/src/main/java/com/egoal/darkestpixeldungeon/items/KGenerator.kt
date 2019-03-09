@@ -235,7 +235,8 @@ object KGenerator {
             HandOfTheElder::class.java to 0f, // by undead
             HandleOfAbyss::class.java to 1f, 
             HeartOfSatan::class.java to 1f, 
-            ClockOfSheep::class.java to 1f
+            CloakOfSheep::class.java to 1f, 
+            EyeballOfTheElder::class.java to 1f 
     )
 
     object ARTIFACT : ClassMapGenerator<Artifact>(HashMap()), Bundlable {

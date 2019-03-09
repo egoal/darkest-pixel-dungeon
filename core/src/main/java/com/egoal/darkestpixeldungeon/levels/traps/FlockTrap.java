@@ -44,6 +44,10 @@ public class FlockTrap extends Trap {
 
   @Override
   public void activate() {
+    ActivateAt(pos);
+  }
+
+  public static void ActivateAt(final int pos) {
     //use an actor as we want to put this on a slight delay so all chars get 
     // a chance to act this turn first.
     Actor.add(new Actor() {
@@ -70,7 +74,5 @@ public class FlockTrap extends Trap {
         return true;
       }
     });
-
   }
-
 }

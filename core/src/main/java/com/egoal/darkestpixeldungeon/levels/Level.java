@@ -674,6 +674,28 @@ public abstract class Level implements Bundlable {
     return null;
   }
 
+  // call this each time luminary is modified
+  public void updateLightMap(){
+    BArray.setFalse(lighted);
+    final int[] L1norm2 = new int[]{
+            -width * 2 - 1, -width * 2, -width * 2 + 1,
+            -width - 2, -width - 1, -width, -width + 1, -width + 2,
+            -2, -1, 0, +1, +2,
+            +width - 2, +width - 1, +width, +width + 1, +width + 2,
+            +width * 2 - 1, +width * 2, +width * 2 + 1,
+    };
+    
+    for (int i = 0; i < length(); ++i) {
+      if (luminary[i]) {
+        for (int np : L1norm2) {
+          int pos = i + np;
+          if (pos >= 0 && pos < length())
+            lighted[pos] = true;
+        }
+      }
+    }
+  }
+  
   protected void buildFlagMaps() {
 
     fieldOfView = new boolean[length()];
@@ -703,23 +725,7 @@ public abstract class Level implements Bundlable {
       luminary[i] = (flags & Terrain.LUMINARY) != 0;
     }
     // update lights
-    BArray.setFalse(lighted);
-    final int[] L1norm2 = new int[]{
-            -width * 2 - 1, -width * 2, -width * 2 + 1,
-            -width - 2, -width - 1, -width, -width + 1, -width + 2,
-            -2, -1, 0, +1, +2,
-            +width - 2, +width - 1, +width, +width + 1, +width + 2,
-            +width * 2 - 1, +width * 2, +width * 2 + 1,
-    };
-    for (int i = 0; i < length(); ++i) {
-      if (luminary[i]) {
-        for (int np : L1norm2) {
-          int pos = i + np;
-          if (pos >= 0 && pos < length())
-            lighted[pos] = true;
-        }
-      }
-    }
+    updateLightMap();
 
     int lastRow = length() - width();
     for (int i = 0; i < width(); i++) {

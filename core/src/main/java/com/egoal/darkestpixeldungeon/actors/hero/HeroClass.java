@@ -23,7 +23,9 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
+import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
+import com.egoal.darkestpixeldungeon.items.artifacts.EyeballOfTheElder;
 import com.egoal.darkestpixeldungeon.items.artifacts.HeartOfSatan;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
@@ -141,9 +143,6 @@ public enum HeroClass {
     if (DarkestPixelDungeon.debug()) {
       initDebug(hero);
     }
-    
-    new HeartOfSatan().collect();
-    new TimekeepersHourglass().collect();
   }
 
   private static void initDebug(Hero hero) {
@@ -152,6 +151,9 @@ public enum HeroClass {
     hero.STR = 18;
     hero.lvl = 1;
 
+    new CloakOfSheep().collect();
+    new EyeballOfTheElder().collect();
+    
     new DriedRose().identify().collect();
     new HandleOfAbyss().identify().collect();
     new HandOfTheElder().identify().collect();

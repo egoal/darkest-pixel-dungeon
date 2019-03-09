@@ -145,7 +145,7 @@ class DriedRose : Artifact() {
                         GLog.p(Messages.get(DriedRose::class.java, "charged"))
                     }
                 }
-            } else if (cursed && Random.Int(100) == 0) {
+            } else if (cursed && Random.Int(50) == 0) {
                 val avpos = PathFinder.NEIGHBOURS8.map { target.pos + it }.filter {
                     Actor.findChar(it) == null && (Level.passable[it] || Level.avoid[it])
                 }

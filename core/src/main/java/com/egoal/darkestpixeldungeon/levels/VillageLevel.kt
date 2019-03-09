@@ -41,8 +41,8 @@ class VillageLevel : KRegularLevel() {
         paintWater()
         paintGrass()
 
-        setTrap(CursingTrap().reveal(), xy2cell(16, 28))
-        map[xy2cell(16, 28)] = Terrain.TRAP
+//        setTrap(CursingTrap().reveal(), xy2cell(16, 28))
+//        map[xy2cell(16, 28)] = Terrain.TRAP
 
         return true
     }
@@ -96,7 +96,7 @@ class VillageLevel : KRegularLevel() {
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
-        putMobAt(Yvette::class.java, 16, 29)
+        // putMobAt(Yvette::class.java, 16, 29)
     }
 
     override fun respawner(): Actor? = null
