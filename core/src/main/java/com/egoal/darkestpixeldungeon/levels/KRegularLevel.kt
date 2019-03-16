@@ -95,7 +95,7 @@ abstract class KRegularLevel : Level() {
         val probs = HashMap<Class<out Digger>, Float>(SpecialDiggers)
         if (pitRoomNeeded) {
             // a pit room is need, remove all locked diggers
-            // todo: this is truely fragile
+            // todo: this is fragile
             diggers.add(PitDigger())
 
             probs.remove(ArmoryDigger::class.java)
@@ -105,11 +105,8 @@ abstract class KRegularLevel : Level() {
             probs.remove(WeakFloorDigger::class.java)
             probs.remove(LaboratoryDigger::class.java)
             probs.remove(WandDigger::class.java)
-        } else if (Dungeon.laboratoryNeed()) {
-            diggers.add(LaboratoryDigger())
-
-            probs.remove(LaboratoryDigger::class.java)
-        }
+            probs.remove(CryptDigger::class.java)
+        } 
 
         // never fall to boss
         if (Dungeon.bossLevel(Dungeon.depth + 1))
@@ -444,8 +441,9 @@ abstract class KRegularLevel : Level() {
                 TreasuryDigger::class.java to 0.75f,
                 VaultDigger::class.java to 0.75f,
                 WeakFloorDigger::class.java to 0.75f,
-                AltarDigger::class.java to 0.75f, 
-                WandDigger::class.java to 0.75f 
+                AltarDigger::class.java to 0.75f,
+                WandDigger::class.java to 0.75f,
+                CryptDigger::class.java to 1f
         )
 
         val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(
@@ -467,8 +465,8 @@ abstract class KRegularLevel : Level() {
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
                 PatchDigger::class.java to .05f,
-                GraveyardDigger::class.java to .05f, 
-                SmallCornerDigger::class.java to 0.075f 
+                GraveyardDigger::class.java to .05f,
+                SmallCornerDigger::class.java to 0.075f
         )
     }
 }

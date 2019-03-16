@@ -67,16 +67,14 @@ class WndAlchemy : Window() {
         resize(WIDTH.toInt(), refineButton.bottom().toInt())
     }
 
-    private val itemSelector = object : WndBag.Listener {
-        override fun onSelect(item: Item?) {
-            if (item != null) {
-                for (btn in inputButtons)
-                    if (btn.item == null) {
-                        btn.item(item.detach(Dungeon.hero.belongings.backpack))
-                        break
-                    }
-                updateState()
-            }
+    private val itemSelector = WndBag.Listener { item ->
+        if (item != null) {
+            for (btn in inputButtons)
+                if (btn.item == null) {
+                    btn.item(item.detach(Dungeon.hero.belongings.backpack))
+                    break
+                }
+            updateState()
         }
     }
 
@@ -89,7 +87,7 @@ class WndAlchemy : Window() {
     }
 
     private fun combine() {
-        if(result==null)
+        if (result == null)
             GLog.n(Messages.get(ExtractionFlask::class.java, "refine_failed"))
         else
             AlchemyPot.OnCombined(inputButtons.mapNotNull { it.item }, result!!)
@@ -113,5 +111,5 @@ class WndAlchemy : Window() {
         super.destroy()
     }
 
-    //todo: player may lost items if quit with alchemy window open.
+    // todo: player may lost items if quit with alchemy window open.
 }

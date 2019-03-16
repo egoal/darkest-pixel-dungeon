@@ -127,9 +127,9 @@ public class Pressure extends Buff implements Hero.Doom {
   public Damage procOutcomingDamage(Damage dmg) {
     switch (level) {
       case CONFIDENT:
-        if (!dmg.isFeatured(Damage.Feature.CRITCIAL) && Random.Int(10) == 0) {
+        if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Int(10) == 0) {
           dmg.value *= 1.5;
-          dmg.addFeature(Damage.Feature.CRITCIAL);
+          dmg.addFeature(Damage.Feature.CRITICAL);
         } else
           dmg.value *= 1.1;
         break;

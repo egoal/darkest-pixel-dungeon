@@ -80,8 +80,8 @@ class BrightRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0xffffff)
 
     override fun affect(hero: Hero) {
-        Buff.prolong(hero, SharpVision::class.java, 80f)
-        Buff.prolong(hero, MoonNight::class.java, 80f)
+        Buff.prolong(hero, SharpVision::class.java, 100f)
+        Buff.prolong(hero, MoonNight::class.java, 100f)
     }
 }
 

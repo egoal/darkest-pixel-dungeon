@@ -52,6 +52,8 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
 
     override fun enchant(ench: Enchantment): Weapon = selectEnchantSword().enchant(ench)
 
+    override fun hasEnchant(type: Class<out Enchantment>): Boolean = left.hasEnchant(type) || right.hasEnchant(type)
+
     override fun glowing(): ItemSprite.Glowing? {
         return left.glowing() ?: right.glowing()
     }

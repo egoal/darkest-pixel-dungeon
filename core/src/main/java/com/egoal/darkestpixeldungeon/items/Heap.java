@@ -142,10 +142,10 @@ public class Heap implements Bundlable {
         CellEmitter.center(pos).start(Speck.factory(Speck.RATTLE), 0.1f, 3);
         for (Item item : items) {
           if (item.cursed) {
+            item.cursedKnown = true;
             if (Wraith.spawnAt(pos) == null) {
+              //^ spawn failed, hurt hero directly
               hero.sprite.emitter().burst(ShadowParticle.CURSE, 6);
-              // fixme: what does this do?
-              // hero.damage( hero.HP / 2, this );
               hero.takeDamage(new Damage(hero.HP / 2, this, hero));
               hero.takeDamage(new Damage(Random.Int(4, 12), this, hero).type
                       (Damage.Type.MENTAL));
@@ -418,7 +418,8 @@ public class Heap implements Bundlable {
 
         destroy();
 
-        Statistics.INSTANCE.setPotionsCooked(Statistics.INSTANCE.getPotionsCooked()+1); 
+        Statistics.INSTANCE.setPotionsCooked(Statistics.INSTANCE
+                .getPotionsCooked() + 1);
         Badges.validatePotionsCooked();
 
         potion = Generator.random(Generator.Category.POTION);
@@ -429,8 +430,9 @@ public class Heap implements Bundlable {
         Class<? extends Item> itemClass = proto.alchemyClass;
 
         destroy();
-        
-        Statistics.INSTANCE.setPotionsCooked(Statistics.INSTANCE.getPotionsCooked()+1);
+
+        Statistics.INSTANCE.setPotionsCooked(Statistics.INSTANCE
+                .getPotionsCooked() + 1);
         Badges.validatePotionsCooked();
 
         if (itemClass == null) {

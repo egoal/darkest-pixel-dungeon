@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -43,13 +44,18 @@ public class ScrollSeller extends DPDShopKeeper {
     addItemToSell(new ScrollOfRemoveCurse());
     int cntItems = Random.Int(1, 4);
     for (int i = 0; i < cntItems; ++i) {
-      addItemToSell(Generator.random(Generator.Category.SCROLL));
+      addItemToSell(KGenerator.SCROLL.INSTANCE.generate());
     }
 
-    addItemToSell(Generator.random(Generator.Category.WAND));
-    if (Random.Float() < .25f)
-      addItemToSell(Generator.random(Generator.Category.WAND));
-
+    Item wand = KGenerator.WAND.INSTANCE.generate();
+    wand.cursed = false;
+    addItemToSell(wand);
+    if (Random.Float() < .25f) {
+      Item wand2 = KGenerator.WAND.INSTANCE.generate();
+      wand2.cursed = false;
+      addItemToSell(wand2);
+    }
+      
     addItemToSell(new Stylus().identify());
 
     return this;

@@ -62,7 +62,7 @@ public class Monk extends Mob {
     Damage dmg = new Damage(value, this, target).addElement(Damage.Element
             .ACID);
     if (value > 21)
-      dmg.addFeature(Damage.Feature.CRITCIAL);
+      dmg.addFeature(Damage.Feature.CRITICAL);
     return dmg;
   }
 

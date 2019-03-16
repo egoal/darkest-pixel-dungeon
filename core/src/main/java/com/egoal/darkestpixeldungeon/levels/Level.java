@@ -1112,7 +1112,7 @@ public abstract class Level implements Bundlable {
       }
     }
 
-    if (sighted || sense > 1) {
+    if (!sighted || sense > 1) {
 
       int ax = Math.max(0, cx - sense);
       int bx = Math.min(cx + sense, width() - 1);

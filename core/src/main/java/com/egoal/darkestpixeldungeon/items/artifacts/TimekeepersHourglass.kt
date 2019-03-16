@@ -24,7 +24,7 @@ class TimekeepersHourglass : Artifact() {
 
         levelCap = 5
 
-        chargeCap = 5 + level() / 2
+        chargeCap = 5 + level()
         charge = chargeCap
         partialCharge = 0f
 
@@ -74,12 +74,14 @@ class TimekeepersHourglass : Artifact() {
     }
 
     override fun upgrade(): Item {
-        chargeCap += 2
         // artifact transmutation
         while (level() + 1 > sandBags)
             sandBags++
 
-        return super.upgrade()
+        val self = super.upgrade()
+        chargeCap = 5 + level()
+
+        return self
     }
 
     override fun desc(): String {
@@ -169,12 +171,13 @@ class TimekeepersHourglass : Artifact() {
                         ch.takeDamage(dmg)
                         if (Dungeon.visible[ch.pos]) {
                             // effects
-                            val from = dmg.from as Char?
-                            if (from != null)
-                                ch.sprite.bloodBurstA(from.sprite.center(), dmg.value)
-                            Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(.8f, 1.25f))
+                            if (dmg.from is Char) {
+                                (dmg.from as Char?)?.let {
+                                    ch.sprite.bloodBurstA(it.sprite.center(), dmg.value)
+                                    Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(.8f, 1.25f))
+                                }
+                            }
                         }
-
                     }
                 }
             }

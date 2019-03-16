@@ -142,7 +142,7 @@ class HandOfTheElder : Artifact() {
                 GLog.w(Messages.get(HandOfTheElder::class.java, "unknown_ring"))
             } else if (rings.contains(item::class.java))
                 GLog.w(Messages.get(HandOfTheElder::class.java, "duplicate_ring"))
-            else if (item.doUnequip(Dungeon.hero, false)) {
+            else if (!item.isEquipped(Dungeon.hero) || item.doUnequip(Dungeon.hero, false)) {
                 wearRing(item)
 
                 with(Dungeon.hero) {
@@ -224,10 +224,10 @@ class HandOfTheElder : Artifact() {
                 RingOfCritical::class.java to Weakness::class.java,
                 RingOfElements::class.java to Chill::class.java,
                 RingOfEvasion::class.java to Shock::class.java,
-                RingOfForce::class.java to Vertigo::class.java,
+                RingOfForce::class.java to Amok::class.java, 
                 RingOfFuror::class.java to Slow::class.java,
                 RingOfHaste::class.java to Slow::class.java,
-                // RingOfMight.class, 
+                RingOfMight::class.java to Weakness::class.java, 
                 RingOfSharpshooting::class.java to Blindness::class.java,
                 RingOfTenacity::class.java to Vertigo::class.java,
                 RingOfWealth::class.java to Charm.Attacher::class.java

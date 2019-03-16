@@ -221,7 +221,7 @@ object KGenerator {
             ChaliceOfBlood::class.java to 0f,  // by statuary
             CloakOfShadows::class.java to 0f, // for rouge
             HornOfPlenty::class.java to 1f,
-            MasterThievesArmband::class.java to 1f,
+            MasterThievesArmband::class.java to 0f, // by thief
             SandalsOfNature::class.java to 1f,
             TalismanOfForesight::class.java to 1f,
             TimekeepersHourglass::class.java to 1f, 
@@ -329,7 +329,7 @@ object KGenerator {
             SCROLL to 400f,
             WAND to 40f,
             RING to 15f,
-            ARTIFACT to 10f,
+            ARTIFACT to 12f,
             SEED to 50f,
             FOOD to 0f,
             GOLD to 500f,

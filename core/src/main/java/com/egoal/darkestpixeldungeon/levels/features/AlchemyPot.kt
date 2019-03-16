@@ -61,17 +61,7 @@ object AlchemyPot {
                 val pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
                 if (pr != null)
                     return Pair(true, (pr.second as Blandfruit).cook(pr.first as Plant.Seed))
-
-                if (Dungeon.hero.heroClass == HeroClass.SORCERESS && items.all { it is Plant.Seed })
-                    return Pair(true, PotionMasterRefine(items[0] as Plant.Seed, items[1] as Plant.Seed))
-
-                if (Dungeon.hero.subClass == HeroSubClass.WITCH) {
-                    val pr = SplitTwoItem({ it is Potion && it.canBeReinforced() && it.isIdentified }, { it is Plant.Seed }, items[0], items[1])
-                    if (pr != null) {
-                        (pr.first as Potion).reinforce()
-                        return Pair(true, pr.first)
-                    }
-                }
+                
                 return Pair(false, null)
             }
             1 -> {
@@ -86,37 +76,8 @@ object AlchemyPot {
         GLog.w(Messages.get(this, "combined", result.name()))
         if (!result.collect())
             Dungeon.level.drop(result, Dungeon.hero.pos)
-
-        if (result is Potion && !result.reinforced && Dungeon.hero.heroClass == HeroClass.SORCERESS) {
-            // sorceress perk: affect weapon
-            val wep = Dungeon.hero.belongings.weapon as Weapon?
-            if (wep != null) {
-                // now is fixed probability: 20%
-                if (wep.STRReq() < Dungeon.hero.STR() && !wep.cursed) {
-                    if (Random.Int(5) == 0) {
-                        when (Random.Int(4)) {
-                            0 -> wep.enchant(Venomous())
-                            1 -> wep.enchant(Unstable())
-                            else -> wep.enchant()
-                        }
-                        GLog.w(Messages.get(ExtractionFlask::class.java, "inscribed"))
-                    }
-                } else
-                    GLog.w(Messages.get(ExtractionFlask::class.java, "cannot_inscribe"))
-            }
-        }
     }
-
-    // sorceress perk
-    // more likely to generate toxic gas
-    fun PotionMasterRefine(seed0: Plant.Seed, seed1: Plant.Seed): Item? = when {
-        seed0 is Sorrowmoss.Seed || seed1 is Sorrowmoss.Seed -> PotionOfToxicGas()
-        Random.Int(15) == 0 -> null
-        Random.Int(5) == 0 -> PotionOfToxicGas()
-        else -> Generator.random(Generator.Category.POTION)
-    }
-
-
+    
     private fun SplitTwoItem(checker0: (Item) -> Boolean, checker1: (Item) -> Boolean,
                              item0: Item, item1: Item): Pair<Item, Item>? = when {
         checker0(item0) && checker1(item1) -> Pair(item0, item1)

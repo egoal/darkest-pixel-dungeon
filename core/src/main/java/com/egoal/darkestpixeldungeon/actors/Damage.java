@@ -39,7 +39,7 @@ public class Damage {
 
   public static class Feature {
     public static final int NONE = 0x0000;
-    public static final int CRITCIAL = 0x0001;
+    public static final int CRITICAL = 0x0001;
     public static final int ACCURATE = 0x0002;
     public static final int PURE = 0x0004;
     public static final int DEATH = 0x0008;

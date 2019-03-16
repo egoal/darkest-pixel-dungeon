@@ -65,7 +65,7 @@ public class Brute extends Mob {
     Damage damage = new Damage(Random.NormalIntRange(8, 24), this, target);
     if (enraged) {
       damage.value *= Random.Float(1.25f, 1.75f);
-      damage.addFeature(Damage.Feature.CRITCIAL);
+      damage.addFeature(Damage.Feature.CRITICAL);
     }
     return damage;
   }
@@ -85,7 +85,7 @@ public class Brute extends Mob {
   public int takeDamage(Damage dmg) {
     int val = super.takeDamage(dmg);
 
-    if (isAlive() && !enraged && HP < HT / 4) {
+    if (isAlive() && !enraged && HP < HT / 3) {
       enraged = true;
       if (Dungeon.visible[pos]) {
         GLog.w(Messages.get(this, "enraged_text"));

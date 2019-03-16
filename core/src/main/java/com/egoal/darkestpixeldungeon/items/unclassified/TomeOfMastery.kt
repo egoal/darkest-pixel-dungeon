@@ -99,7 +99,7 @@ class TomeOfMastery : Item() {
 
     fun choose(way: HeroSubClass) {
         detach(curUser.belongings.backpack)
-        
+
         with(curUser) {
             spend(TomeOfMastery.TIME_TO_READ)
             busy()
@@ -125,6 +125,10 @@ class TomeOfMastery : Item() {
                 val uos = UrnOfShadow().identify()
                 if (uos.doPickUp(curUser)) GLog.w(Messages.get(curUser, "you_now_have", uos.name()))
                 else Dungeon.level.drop(uos, curUser.pos).sprite.drop()
+            }
+            HeroSubClass.WITCH -> {
+                curUser.belongings.getItem(ExtractionFlask::class.java)?.reinforce()
+                //^ may lose perk
             }
             HeroSubClass.STARGAZER -> {
                 val a = Astrolabe().identify()

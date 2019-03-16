@@ -414,8 +414,7 @@ public class WndBag extends WndTabbed {
                                   EquipableItem) ||
                           mode == Mode.RING && (item instanceof Ring) ||
                           mode == Mode.ALCHEMY && (item instanceof Plant.Seed || item instanceof MysteryMeat ||
-                                  (item instanceof Blandfruit && ((Blandfruit)item).potionAttrib==null) ||
-                                  (Dungeon.hero.subClass==HeroSubClass.WITCH && item instanceof Potion && item.isIdentified())) ||
+                                  (item instanceof Blandfruit && ((Blandfruit)item).potionAttrib==null)) ||
                           mode == Mode.ALL
           );
           //extra logic for cursed weapons or armor

@@ -14,7 +14,9 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.effects.particles.ShaftParticle;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -113,6 +115,7 @@ public class Astrolabe extends Artifact {
     }
 
     curUser.sprite.showStatus(ivk.color(), ivk.status());
+    CellEmitter.get(curUser.pos).start(ShaftParticle.FACTORY, 0.2f, 3);
 
     if (ivk.positive) {
       // positive invoker will cached
@@ -141,7 +144,7 @@ public class Astrolabe extends Artifact {
       cachedInvoker_2.invoke(curUser, this);
       cachedInvoker_2 = null;
     }
-    
+
     updateQuickslot();
   }
 
@@ -217,7 +220,7 @@ public class Astrolabe extends Artifact {
         cachedInvoker_2 = (Invoker) c.newInstance();
 
     } catch (Exception e) {
-    } 
+    }
   }
 
   @Override
@@ -277,8 +280,7 @@ public class Astrolabe extends Artifact {
     }
 
     float addInvoker(float pos, int width, final String name, final
-    String help, int
-                             color, final int idx) {
+    String help, int color, final int idx) {
       RedButton btn = new RedButton(name) {
         @Override
         protected void onClick() {
@@ -486,7 +488,7 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
       user.recoverSanity(Random.Int(1, 4));
-      a.cooldown -= NORMAL_COOLDOWN/2;
+      a.cooldown -= NORMAL_COOLDOWN / 2;
     }
   }
 
@@ -596,7 +598,7 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
       Buff.prolong(user, Roots.class, 3f);
-      a.cooldown  += NORMAL_COOLDOWN;
+      a.cooldown += NORMAL_COOLDOWN;
     }
   }
 }

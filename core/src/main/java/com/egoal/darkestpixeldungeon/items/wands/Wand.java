@@ -363,6 +363,7 @@ public abstract class Wand extends Item {
                       ()));
             }
           } else {
+            curWand.cursedKnown = true;
             curWand.fx(shot, new Callback() {
               public void call() {
                 curWand.onZap(shot);

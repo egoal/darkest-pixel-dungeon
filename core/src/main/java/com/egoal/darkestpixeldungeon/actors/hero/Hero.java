@@ -269,10 +269,6 @@ public class Hero extends Char {
 
     float reg = regeneration;
 
-    HeaddressRegeneration.Regeneration hrreg = buff(HeaddressRegeneration
-            .Regeneration.class);
-    if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : (0.1 + reg * 0.15);
-
     HeartOfSatan.Regeneration hr = buff(HeartOfSatan.Regeneration.class);
     if (hr != null) {
       if (hr.isCursed()) {
@@ -281,6 +277,10 @@ public class Hero extends Char {
         reg += HT * 0.004f * Math.pow(1.075, hr.itemLevel());
     }
 
+    HeaddressRegeneration.Regeneration hrreg = buff(HeaddressRegeneration
+            .Regeneration.class);
+    if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : (0.05 + reg * 0.2);
+    
     if (buff(MendingRune.Recovery.class) != null) {
       reg += 0.05f;
       if (reg > 0f) reg *= 2f;
@@ -588,10 +588,10 @@ public class Hero extends Char {
     // critical
     if (buff(CriticalRune.Critical.class) != null) {
       dmg.value *= 1.4f;
-      dmg.addFeature(Damage.Feature.CRITCIAL);
+      dmg.addFeature(Damage.Feature.CRITICAL);
     }
 
-    if (!dmg.isFeatured(Damage.Feature.CRITCIAL)) {
+    if (!dmg.isFeatured(Damage.Feature.CRITICAL)) {
 
       int bonusCritical = RingOfCritical.getBonus(this, RingOfCritical.Critical
               .class);
@@ -600,7 +600,7 @@ public class Hero extends Char {
 
       if (Random.Float() < theCriticalChance) {
         dmg.value *= 1.5f;
-        dmg.addFeature(Damage.Feature.CRITCIAL);
+        dmg.addFeature(Damage.Feature.CRITICAL);
       }
     }
 
@@ -626,8 +626,9 @@ public class Hero extends Char {
     if (HP < HT / 2 && buff(HelmetBarbarian.HelmetBuff.class) != null)
       dmg.value *= 1.25f;
 
-    if(TimekeepersHourglass.Companion.IsTimeStopped()) dmg.addFeature(Damage.Feature.ACCURATE);
-    
+    if (TimekeepersHourglass.Companion.IsTimeStopped() && canSurpriseAttack())
+      dmg.addFeature(Damage.Feature.ACCURATE);
+
     return dmg;
   }
 
@@ -730,7 +731,7 @@ public class Hero extends Char {
 
   @Override
   public void spend(float time) {
-    TimekeepersHourglass.TimeFreeze buff = 
+    TimekeepersHourglass.TimeFreeze buff =
             buff(TimekeepersHourglass.TimeFreeze.class);
     if (!(buff != null && buff.processTime(time)))
       super.spend(time);
@@ -1211,7 +1212,7 @@ public class Hero extends Char {
       dmg = wep.proc(dmg);
 
     // critical damage recover pressure
-    if (dmg.isFeatured(Damage.Feature.CRITCIAL) && dmg.value > 0 && Random
+    if (dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0 && Random
             .Int(20) == 0)
       recoverSanity(Math.min(Random.Int(dmg.value / 6) + 1, 10));
 
@@ -1289,7 +1290,7 @@ public class Hero extends Char {
           // when hit from nowhere
           dmgMental.value += Random.Int(2, 5);
         }
-        if (dmg.isFeatured(Damage.Feature.CRITCIAL)) {
+        if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
           // when take critical damage, up pressure
           if (dmg.type != Damage.Type.MENTAL)
             dmgMental.value += Random.Int(1, 6);

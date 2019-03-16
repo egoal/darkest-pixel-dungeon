@@ -81,11 +81,10 @@ class HeartOfSatan : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
         if (isEquipped(Dungeon.hero)) {
-            desc += "\n\n"
             if (cursed)
-                desc += Messages.get(this, "desc_cursed")
+                desc += "\n\n"+ Messages.get(this, "desc_cursed")
             else if (level() > 0)
-                desc += Messages.get(this, "desc_hint")
+                desc += "\n\n"+ Messages.get(this, "desc_hint")
         }
 
         return desc

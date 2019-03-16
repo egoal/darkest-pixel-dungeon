@@ -30,9 +30,9 @@ public class Holy extends Weapon.Enchantment {
     }
 
     // critical
-    if (!damage.isFeatured(Damage.Feature.CRITCIAL) && Random.Float() < .1f) {
+    if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < .1f) {
       damage.value *= 1.25f;
-      damage.addFeature(Damage.Feature.CRITCIAL);
+      damage.addFeature(Damage.Feature.CRITICAL);
     }
 
     return damage.addElement(Damage.Element.HOLY);

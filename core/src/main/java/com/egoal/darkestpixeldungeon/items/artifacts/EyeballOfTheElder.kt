@@ -68,7 +68,7 @@ class EyeballOfTheElder : Artifact() {
             upgrade()
             cursed = isCursed
 
-            Item.curUser.takeDamage(Damage(2 + Random.IntRange(level() / 2, level() * 3 / 2), this, Item.curUser).type(Damage.Type.MENTAL))
+            Item.curUser.takeDamage(Damage(2 + Random.IntRange(0, level()), this, Item.curUser).type(Damage.Type.MENTAL))
             CellEmitter.get(Item.curUser.pos).burst(ShadowParticle.CURSE, 5)
             Sample.INSTANCE.play(Assets.SND_BURNING)
 

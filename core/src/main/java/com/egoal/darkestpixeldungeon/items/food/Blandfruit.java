@@ -174,6 +174,8 @@ public class Blandfruit extends Food {
       potionGlow = new ItemSprite.Glowing(0xA79400);
     }
 
+    if (potionAttrib.canBeReinforced()) potionAttrib.reinforce();
+
     return this;
   }
 

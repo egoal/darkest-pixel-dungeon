@@ -48,6 +48,8 @@ class CloakOfSheep : Artifact() {
                 GLog.i(Messages.get(this, "cursed"))
             else if (cooldown > 0)
                 GLog.i(Messages.get(this, "not-ready"))
+            else if (hero.rooted)
+                GLog.i(Messages.get(this, "cannot-move"))
             else {
                 // blink
                 GameScene.selectCell(caster)
@@ -55,7 +57,7 @@ class CloakOfSheep : Artifact() {
         }
     }
 
-    private fun cd(): Int = 20 - level()
+    private fun cd(): Int = 25 - level()
     private fun range(): Int = 5 + level()
     private fun requireExp(): Int = (level() + 2) * (level() + 1)
 

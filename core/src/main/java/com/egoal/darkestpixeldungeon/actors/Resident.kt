@@ -20,6 +20,6 @@ class Resident: Actor(){
         lateinit var Instance: Resident
         
         private const val TICK = 1f
-        private const val TIME_SCALE = 1f
+        private const val TIME_SCALE = 0.85f
     }
 }

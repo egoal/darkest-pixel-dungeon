@@ -6,8 +6,6 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfElements
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 
-const val BASE_DURATION = 20f
-
 class Drunk : Vertigo() {
     override fun icon(): Int = BuffIndicator.DRUNK
 
@@ -16,6 +14,8 @@ class Drunk : Vertigo() {
     override fun desc(): String = Messages.get(this, "desc", dispTurns())
 
     companion object {
+        private const val BASE_DURATION = 20f
+        
         fun duration(ch: Char): Float {
             val r = ch.buff(RingOfElements.Resistance::class.java)
             return if (r == null) BASE_DURATION else r.durationFactor() * BASE_DURATION

@@ -269,7 +269,7 @@ public class UrnOfShadow extends Artifact {
                           .addElement(Damage.Element.SHADOW);
                   target.takeDamage(dmg);
                   Buff.affect(target, SoulBurning.class).reignite(target);
-                  
+
                   // pass
                   curUser.next();
                 }
@@ -304,7 +304,8 @@ public class UrnOfShadow extends Artifact {
       } else {
         if (target instanceof Mob) {
           Mob mob = (Mob) target;
-          if (!mob.hostile || mob.properties().contains(Char.Property.UNDEAD)) {
+          if (!mob.hostile || mob.properties().contains(Char.Property.UNDEAD) ||
+                  mob.immunizedBuffs().contains(Dementage.class)) {
             GLog.w(Messages.get(this, "no_soul"));
             return;
           }

@@ -87,7 +87,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         val dmg = Damage(Random.IntRange(1 + level, 5 + 6 * level), this, enemy).addElement(Damage.Element.SHADOW)
         if (Random.Float() < 0.15f) {
             dmg.value = dmg.value * 5 / 4
-            dmg.addFeature(Damage.Feature.CRITCIAL)
+            dmg.addFeature(Damage.Feature.CRITICAL)
         }
 
         return dmg

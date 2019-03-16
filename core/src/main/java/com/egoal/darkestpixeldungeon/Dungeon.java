@@ -61,7 +61,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-  public static int initialDepth_ = -1+1;
+  public static int initialDepth_ = -1;
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -95,9 +95,6 @@ public class Dungeon {
     chaliceOfBlood, // only the statuary drop this now
     demonicSkull,
     handOfElder,
-
-    // rooms
-    laboratories,
 
     //containers
     dewVial,
@@ -393,13 +390,7 @@ public class Dungeon {
 
     return slLeft > 0 && Random.Int(10 - depth % 10) < slLeft;
   }
-
-  public static boolean laboratoryNeed() {
-    // 1 per 10 floors
-    int labLeft = (depth / 10 + 1) - limitedDrops.laboratories.count;
-    return labLeft > 0 && Random.Int(10 - depth % 10) < labLeft;
-  }
-
+  
   // save
   private static final String RG_GAME_FILE = "game.dat";
   private static final String RG_DEPTH_FILE = "depth%d.dat";

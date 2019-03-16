@@ -26,14 +26,10 @@ import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.EyeballOfTheElder;
-import com.egoal.darkestpixeldungeon.items.artifacts.HeartOfSatan;
-import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
-import com.egoal.darkestpixeldungeon.items.helmets.WizardHat;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
-import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone;
-import com.egoal.darkestpixeldungeon.items.unclassified.RegenerationRune;
+import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
@@ -51,9 +47,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal;
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
-import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.potions.*;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfElements;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLight;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -135,7 +129,7 @@ public enum HeroClass {
       new Torch().identify().collect();
 
     new ScrollOfIdentify().identify();
-    
+
     // the seed pouch is carried.
     (new SeedPouch()).identify().collect();
     Dungeon.limitedDrops.seedBag.drop();
@@ -153,14 +147,14 @@ public enum HeroClass {
 
     new CloakOfSheep().collect();
     new EyeballOfTheElder().collect();
-    
+
     new DriedRose().identify().collect();
     new HandleOfAbyss().identify().collect();
     new HandOfTheElder().identify().collect();
-    
+
     new DewVial().collect();
     new UnholyBlood().collect();
-    
+
     ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
     somm.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(3, somm);
@@ -171,7 +165,7 @@ public enum HeroClass {
     new ScrollOfUpgrade().quantity(10).identify().collect();
     new ScrollOfEnchanting().quantity(3).identify().collect();
     new ScrollOfIdentify().quantity(10).collect();
-    
+
     new PotionOfHealing().quantity(9).identify().collect();
 
     (new PlateArmor()).upgrade(9).identify().collect();
@@ -184,9 +178,9 @@ public enum HeroClass {
     new Blandfruit().quantity(10).collect();
     new Earthroot.Seed().quantity(10).collect();
     new Firebloom.Seed().quantity(10).collect();
-    
+
     (new TomeOfMastery()).collect();
-    
+
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);
@@ -314,15 +308,15 @@ public enum HeroClass {
 
     (hero.belongings.weapon = new SorceressWand()).identify();
 
-//    ExtractionFlask flask = new ExtractionFlask();
-//    flask.identify().collect();
+    ExtractionFlask flask = new ExtractionFlask();
+    flask.identify().collect();
 
     // ranged weapon
     Dart darts = new Dart(6);
     darts.identify().collect();
 
-//    Dungeon.quickslot.setSlot(0, flask);
-    Dungeon.quickslot.setSlot(0, darts);
+    Dungeon.quickslot.setSlot(0, flask);
+    Dungeon.quickslot.setSlot(1, darts);
 
     new PotionOfToxicGas().identify().collect();
 

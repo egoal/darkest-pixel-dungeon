@@ -126,9 +126,9 @@ class ShopDigger : RectDigger() {
                 itemsToSpawn.add(Torch())
             }
         }
-        itemsToSpawn.add(KGenerator.HELMET.generate())
+        itemsToSpawn.add(KGenerator.HELMET.generate().apply { cursed = false })
         itemsToSpawn.add(Torch().quantity(if (Random.Int(5) == 0) 2 else 1))
-        
+
         if (Random.Float() < (Dungeon.depth / 5) * 0.2f)
             itemsToSpawn.add(SmokeSparks().quantity(Random.NormalIntRange(1, 4)))
 

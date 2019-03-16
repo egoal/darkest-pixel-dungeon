@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
@@ -93,7 +92,7 @@ public class Goo extends Mob {
       }
       Sample.INSTANCE.play(Assets.SND_BURNING);
       dmg.value = Random.NormalIntRange(min * 3, max * 3);
-      dmg.addFeature(Damage.Feature.CRITCIAL);
+      dmg.addFeature(Damage.Feature.CRITICAL);
     } else {
       dmg.value = Random.NormalIntRange(min, max);
     }

@@ -198,7 +198,7 @@ public abstract class Char extends Actor {
 
       if (visibleFight && !TimekeepersHourglass.Companion.IsTimeStopped()) {
         if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature
-                .CRITCIAL) && dmg.value > 0)
+                .CRITICAL) && dmg.value > 0)
           Sample.INSTANCE.play(Assets.SND_CRITICAL, 1, 1, 1f);
         else
           Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
@@ -216,11 +216,12 @@ public abstract class Char extends Actor {
 
       // take!
       int value = enemy.takeDamage(dmg);
-      if (value < 0){
-        // ^^^ this is the only case when time stop! not a good design, but works for now.
+      if (value < 0) {
+        // ^^^ this is the only case when time stop! not a good design, but 
+        // works for now.
         enemy.sprite.flash(); // let the player know, "i hit it"
         return true;
-      } 
+      }
 
       // buffs, dont know why this piece of code exists, 
       // maybe the mage? or the attack effect?
@@ -231,7 +232,7 @@ public abstract class Char extends Actor {
 
       // effects
       // burst blood
-      if (dmg.isFeatured(Damage.Feature.CRITCIAL)) {
+      if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
         enemy.sprite.bloodBurstB(sprite.center(), value);
         enemy.sprite.spriteBurst(sprite.center(), value);
         enemy.sprite.flash();
@@ -398,7 +399,7 @@ public abstract class Char extends Actor {
         String number = Integer.toString(dmg.value);
         int color = HP > HT / 4 ? CharSprite.WARNING : CharSprite.NEGATIVE;
 
-        if (dmg.isFeatured(Damage.Feature.CRITCIAL))
+        if (dmg.isFeatured(Damage.Feature.CRITICAL))
           number += "!";
 
         sprite.showStatus(color, number);

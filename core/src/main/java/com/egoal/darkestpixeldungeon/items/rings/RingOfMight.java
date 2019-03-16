@@ -75,7 +75,6 @@ public class RingOfMight extends Ring {
     return new Might();
   }
 
-  public class Might extends RingBuff {
-  }
+  public class Might extends RingBuff { }
 }
 
