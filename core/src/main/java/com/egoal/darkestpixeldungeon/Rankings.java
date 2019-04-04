@@ -119,7 +119,8 @@ public enum Rankings {
   }
 
   private int score(boolean win) {
-    return (Statistics.INSTANCE.getGoldCollected() + Dungeon.hero.lvl * (win ? 26 : Dungeon
+    return (Statistics.INSTANCE.getGoldCollected() + Dungeon.hero.lvl * (win 
+            ? 26 : Dungeon
             .depth) * 100) * (win ? 2 : 1);
   }
 
@@ -303,6 +304,10 @@ public enum Rankings {
           return Messages.get(this, "something");
         }
       } else {
+        // support old rankings...
+        if (cause.getClass().getName().contains("amulet"))
+          cause = Amulet.class;
+
         String result = Messages.get(cause, "rankings_desc", (Messages.get
                 (cause, "name")));
         if (result.contains("!!!NO TEXT FOUND!!!")) {
@@ -374,7 +379,8 @@ public enum Rankings {
     }
   }
 
-  private static final Comparator<Record> scoreComparator = new Comparator<Rankings.Record>() {
+  private static final Comparator<Record> scoreComparator = new 
+          Comparator<Rankings.Record>() {
     @Override
     public int compare(Record lhs, Record rhs) {
       return (int) Math.signum(rhs.score - lhs.score);

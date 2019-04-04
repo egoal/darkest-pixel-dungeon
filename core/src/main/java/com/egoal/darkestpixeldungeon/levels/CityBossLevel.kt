@@ -44,7 +44,7 @@ class CityBossLevel : Level() {
 
     override fun build(iteration: Int): Boolean {
         loadMapDataFromFile(MAP_FILE)
-        arenaDoor = xy2cell(17, 28)
+        arenaDoor = xy2cell(17, 29)
 
         return true
     }

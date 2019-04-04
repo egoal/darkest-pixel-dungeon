@@ -57,7 +57,7 @@ class CloakOfSheep : Artifact() {
         }
     }
 
-    private fun cd(): Int = 25 - level()
+    private fun cd(): Int = 20
     private fun range(): Int = 5 + level()
     private fun requireExp(): Int = (level() + 2) * (level() + 1)
 

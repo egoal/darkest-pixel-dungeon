@@ -26,6 +26,10 @@ import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.EyeballOfTheElder;
+import com.egoal.darkestpixeldungeon.items.food.ChargrilledMeat;
+import com.egoal.darkestpixeldungeon.items.food.FrozenCarpaccio;
+import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
+import com.egoal.darkestpixeldungeon.items.food.StewedMeat;
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
@@ -161,11 +165,16 @@ public enum HeroClass {
 
     new Wine().quantity(2).collect();
 
-    new ScrollOfLight().quantity(3).identify().collect();
-    new ScrollOfUpgrade().quantity(10).identify().collect();
-    new ScrollOfEnchanting().quantity(3).identify().collect();
-    new ScrollOfIdentify().quantity(10).collect();
+//    new ScrollOfLight().quantity(3).identify().collect();
+//    new ScrollOfUpgrade().quantity(10).identify().collect();
+//    new ScrollOfEnchanting().quantity(3).identify().collect();
+//    new ScrollOfIdentify().quantity(10).collect();
 
+    new MysteryMeat().collect();
+    new ChargrilledMeat().collect();
+    new StewedMeat().collect();
+    new FrozenCarpaccio().collect();
+    
     new PotionOfHealing().quantity(9).identify().collect();
 
     (new PlateArmor()).upgrade(9).identify().collect();
@@ -184,10 +193,6 @@ public enum HeroClass {
     PotionOfMindVision pomv = new PotionOfMindVision();
     pomv.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(4, pomv);
-
-    (new Sword()).identify().collect();
-    (new Sword()).identify().collect();
-    new MaskOfClown().identify().collect();
   }
 
   public Badges.Badge masteryBadge() {

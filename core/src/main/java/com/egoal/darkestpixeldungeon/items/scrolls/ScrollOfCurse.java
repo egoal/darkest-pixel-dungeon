@@ -29,6 +29,7 @@ public class ScrollOfCurse extends InventoryScroll{
     Sample.INSTANCE.play(Assets.SND_CURSED);
 
     item.cursed = true;
+    item.cursedKnown = true;
     updateQuickslot();
     
     GLog.w(Messages.get(this, "cursed", item.name()));

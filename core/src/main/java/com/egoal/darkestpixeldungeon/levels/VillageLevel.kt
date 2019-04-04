@@ -96,6 +96,9 @@ class VillageLevel : KRegularLevel() {
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
+        // roberry
+        putMobAt(CatRoberry::class.java, 12, 6)
+
         // putMobAt(Yvette::class.java, 16, 29)
     }
 
@@ -111,6 +114,7 @@ class VillageLevel : KRegularLevel() {
 
     override fun tileName(tile: Int): String = when (tile) {
         Terrain.WATER -> Messages.get(VillageLevel::class.java, "water_name")
+        Terrain.STATUE-> Messages.get(VillageLevel::class.java, "statue_name")
         else -> super.tileName(tile)
     }
 
@@ -118,6 +122,7 @@ class VillageLevel : KRegularLevel() {
         Terrain.EMPTY_DECO -> Messages.get(SewerLevel::class.java, "empty_deco_desc")
         Terrain.BOOKSHELF -> Messages.get(SewerLevel::class.java, "bookshelf_desc")
         Terrain.WATER -> Messages.get(VillageLevel::class.java, "water_desc")
+        Terrain.STATUE-> Messages.get(VillageLevel::class.java, "statue_desc")
         else -> super.tileDesc(tile)
     }
 }

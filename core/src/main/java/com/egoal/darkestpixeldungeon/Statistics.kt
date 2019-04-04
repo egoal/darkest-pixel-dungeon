@@ -45,7 +45,8 @@ object Statistics {
     var AmuletObtained = false
 
     val Clock = ClockTime()
-    init{
+
+    init {
         Clock.set(0, 9, 0f)
     }
 
@@ -59,7 +60,7 @@ object Statistics {
     private val ANKHS = "ankhsUsed"
     private val DURATION = "duration"
     private val AMULET = "amuletObtained"
-    private val TOTAL_MINUTES ="total-minutes"
+    private val TOTAL_MINUTES = "total-minutes"
 
     fun reset() {
 
@@ -105,7 +106,7 @@ object Statistics {
         AnkhsUsed = bundle.getInt(ANKHS)
         Duration = bundle.getFloat(DURATION)
         AmuletObtained = bundle.getBoolean(AMULET)
-        
+
         Clock.totalMinutes = bundle.getFloat(TOTAL_MINUTES)
         Clock.updateState()
     }
@@ -113,13 +114,13 @@ object Statistics {
     class ClockTime {
         var totalMinutes = 0f
         var state = State.Day
-        
+
         val day: Int get() = totalMinutes.toInt() / 60 / 24
         val hour: Int get() = totalMinutes.toInt() / 60 % 24
         val minute: Int get() = totalMinutes.toInt() % 60
 
         val timestr: String get() = "%02d:%02d".format(hour, minute)
-        
+
         enum class State {
             Day, Night, MidNight
         }
@@ -136,27 +137,28 @@ object Statistics {
 
         // special time point would indicate the player
         val special: Boolean get() = minute in 0..20 && hour in listOf(2, 7, 19, 22)
-        
+
         fun updateState() {
-            if(Dungeon.hero?.buff(MoonNight::class.java)!=null) {
+            if (Dungeon.hero?.buff(MoonNight::class.java) != null) {
                 state = State.Night
                 return
             }
-            
-            val newState = when {
+
+            var newState = when {
                 hour in 7 until 19 -> State.Day
                 hour < 2 || hour >= 22 -> State.MidNight
                 else -> State.Night
             }
-            
-            if(newState!=state){
+            if (Dungeon.depth > 20 && newState == State.Day) newState = State.Night
+
+            if (newState != state) {
                 // state changed.
                 state = newState
-                
-                val info = when(state){
-                    State.Day-> Messages.get(Hero::class.java, "clock-day")
-                    State.Night-> Messages.get(Hero::class.java, "clock-night")
-                    State.MidNight-> Messages.get(Hero::class.java, "clock-midnight")
+
+                val info = when (state) {
+                    State.Day -> Messages.get(Hero::class.java, "clock-day")
+                    State.Night -> Messages.get(Hero::class.java, "clock-night")
+                    State.MidNight -> Messages.get(Hero::class.java, "clock-midnight")
                 }
                 GLog.w(info)
             }

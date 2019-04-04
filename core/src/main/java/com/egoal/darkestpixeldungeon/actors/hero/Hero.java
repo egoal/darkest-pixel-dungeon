@@ -265,7 +265,11 @@ public class Hero extends Char {
   }
 
   public float regenerateSpeed() {
-    if (isStarving()) return 0f;
+    Hunger hunger = buff(Hunger.class);
+    int lvl = hunger == null ? 0 : hunger.hunger();
+    // todo: rework this
+    if (lvl >= Hunger.STARVING) return 0f;
+
 
     float reg = regeneration;
 
@@ -274,17 +278,19 @@ public class Hero extends Char {
       if (hr.isCursed()) {
         reg = reg > 0f ? -0.025f : reg * 1.25f;
       } else
-        reg += HT * 0.004f * Math.pow(1.075, hr.itemLevel());
+        reg += HT * 0.004f * Math.pow(1.07, hr.itemLevel());
     }
 
     HeaddressRegeneration.Regeneration hrreg = buff(HeaddressRegeneration
             .Regeneration.class);
     if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : (0.05 + reg * 0.2);
-    
+
     if (buff(MendingRune.Recovery.class) != null) {
       reg += 0.05f;
       if (reg > 0f) reg *= 2f;
     }
+
+    if (lvl >= Hunger.HUNGRY) reg *= 0.5f;
 
     return reg;
   }

@@ -56,7 +56,8 @@ class WaterOfTransmutation : WellWater() {
         while (newWeap !is MeleeWeapon || weap.javaClass == newWeap.javaClass)
             newWeap = KGenerator.WEAPON.tier(weap.tier).generate()
 
-        var n = newWeap as Weapon
+        val n = newWeap as Weapon
+        n.level(0)
         val lvl = weap.level()
         if (lvl > 0) n.upgrade(lvl) else if (lvl < 0) n.degrade(-lvl)
 
@@ -72,7 +73,8 @@ class WaterOfTransmutation : WellWater() {
     private fun changeRing(r: Ring): Ring? {
         var n = KGenerator.RING.generate() as Ring
         while (n.javaClass == r.javaClass) n = KGenerator.RING.generate() as Ring
-
+        n.level(0)
+        
         val lvl = r.level()
         if (lvl > 0) n.upgrade(lvl) else if (lvl < 0) n.degrade(-lvl)
 
@@ -99,8 +101,8 @@ class WaterOfTransmutation : WellWater() {
     private fun changeWand(w: Wand): Wand? {
         var n = KGenerator.WAND.generate() as Wand
         while (n.javaClass == w.javaClass) n = KGenerator.WAND.generate() as Wand
-
         n.level(0)
+        
         n.upgrade(w.level())
 
         n.levelKnown = w.levelKnown

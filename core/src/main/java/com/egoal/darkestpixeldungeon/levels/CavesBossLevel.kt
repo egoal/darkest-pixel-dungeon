@@ -28,11 +28,13 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.RobotREN
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
+import com.egoal.darkestpixeldungeon.levels.diggers.Rect
 import com.egoal.darkestpixeldungeon.levels.painters.Painter
 import com.egoal.darkestpixeldungeon.levels.traps.ToxicTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -48,6 +50,7 @@ import com.watabou.utils.Random
 class CavesBossLevel : Level() {
 
     private var arenaDoor: Int = 0
+    private var arenaDoorUp: Int = 0
     private var enteredArena = false
     private var keyDropped = false
 
@@ -63,62 +66,11 @@ class CavesBossLevel : Level() {
     override fun trackMusic(): String = if (enteredArena && !keyDropped)
         Assets.TRACK_BOSS_LOOP else Assets.TRACK_CHAPTER_3
 
-    override fun setupSize() {
-        if (width == 0 || height == 0) {
-            height = 32
-            width = height
-        }
-        length = width * height
-    }
-
     override fun build(iterations: Int): Boolean {
+        loadMapDataFromFile(MAP_FILE)
 
-        var topMost = Integer.MAX_VALUE
-
-        for (i in 0..7) {
-            val left: Int
-            val right: Int
-            val top: Int
-            val bottom: Int
-            if (Random.Int(2) == 0) {
-                left = Random.Int(1, ROOM_LEFT - 3)
-                right = ROOM_RIGHT + 3
-            } else {
-                left = ROOM_LEFT - 3
-                right = Random.Int(ROOM_RIGHT + 3, width() - 1)
-            }
-            if (Random.Int(2) == 0) {
-                top = Random.Int(2, ROOM_TOP - 3)
-                bottom = ROOM_BOTTOM + 3
-            } else {
-                top = ROOM_LEFT - 3
-                bottom = Random.Int(ROOM_TOP + 3, height() - 1)
-            }
-
-            Digger.Fill(this, left, top, right - left + 1, bottom - top + 1, Terrain.EMPTY)
-
-            if (top < topMost) {
-                topMost = top
-                exit = Random.Int(left, right) + (top - 1) * width()
-            }
-        }
-
-        map[exit] = Terrain.LOCKED_EXIT
-
-        Painter.fill(this, ROOM_LEFT - 1, ROOM_TOP - 1,
-                ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain
-                .WALL)
-        Painter.fill(this, ROOM_LEFT, ROOM_TOP + 1,
-                ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP, Terrain.EMPTY)
-
-        Painter.fill(this, ROOM_LEFT, ROOM_TOP,
-                ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.EMPTY_DECO)
-
-        arenaDoor = Random.Int(ROOM_LEFT, ROOM_RIGHT) + (ROOM_BOTTOM + 1) * width()
-        map[arenaDoor] = Terrain.DOOR
-
-        entrance = Random.Int(ROOM_LEFT + 1, ROOM_RIGHT - 1) + Random.Int(ROOM_TOP + 1, ROOM_BOTTOM - 1) * width()
-        map[entrance] = Terrain.ENTRANCE
+        arenaDoor = xy2cell(16, 26)
+        arenaDoorUp = xy2cell(16, 11)
 
         val patch = Patch.Generate(this, 0.45f, 6)
         for (i in 0 until length()) {
@@ -170,13 +122,14 @@ class CavesBossLevel : Level() {
 
         var sign: Int
         do {
-            sign = Random.Int(ROOM_LEFT, ROOM_RIGHT) + Random.Int(ROOM_TOP,
-                    ROOM_BOTTOM) * width()
+            sign = pointToCell(ROOM_ENTRANCE.shrink(1).random())
         } while (sign == entrance || map[sign] == Terrain.INACTIVE_TRAP)
         map[sign] = Terrain.SIGN
     }
 
-    override fun createMobs() {}
+    override fun createMobs() {
+        mobs.add(RobotREN().apply { pos = xy2cell(12, 7) })
+    }
 
     override fun respawner(): Actor? = null
 
@@ -185,7 +138,7 @@ class CavesBossLevel : Level() {
         if (item != null) {
             var pos: Int
             do {
-                pos = Random.IntRange(ROOM_LEFT, ROOM_RIGHT) + Random.IntRange(ROOM_TOP + 1, ROOM_BOTTOM) * width()
+                pos = pointToCell(ROOM_ENTRANCE.shrink(1).random())
             } while (pos == entrance || map[pos] == Terrain.SIGN)
             drop(item, pos).type = Heap.Type.REMAINS
         }
@@ -235,10 +188,16 @@ class CavesBossLevel : Level() {
             keyDropped = true
             unseal()
 
-            CellEmitter.get(arenaDoor).start(Speck.factory(Speck.ROCK), 0.07f, 10)
-
-            Level.set(arenaDoor, Terrain.EMPTY_DECO)
-            GameScene.updateMap(arenaDoor)
+            // open
+            val openDoor = { cell: Int->
+                CellEmitter.get(cell).start(Speck.factory(Speck.ROCK), 0.07f, 10)
+                Level.set(cell, Terrain.EMPTY_DECO)
+                GameScene.updateMap(cell)
+            }
+            
+            openDoor(arenaDoor)
+            openDoor(arenaDoorUp)
+            
             Dungeon.observe()
 
             Music.INSTANCE.play(trackMusic(), true)
@@ -250,25 +209,18 @@ class CavesBossLevel : Level() {
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
-        bundle.put(DOOR, arenaDoor)
         bundle.put(ENTERED, enteredArena)
         bundle.put(DROPPED, keyDropped)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        arenaDoor = bundle.getInt(DOOR)
         enteredArena = bundle.getBoolean(ENTERED)
         keyDropped = bundle.getBoolean(DROPPED)
     }
 
 
-    private fun outsideEntranceRoom(cell: Int): Boolean {
-        val cx = cell % width()
-        val cy = cell / width()
-        return cx < ROOM_LEFT - 1 || cx > ROOM_RIGHT + 1 || cy < ROOM_TOP - 1 ||
-                cy > ROOM_BOTTOM + 1
-    }
+    private fun outsideEntranceRoom(cell: Int): Boolean = !ROOM_ENTRANCE.inside(cellToPoint(cell))
 
     override fun tileName(tile: Int): String = when (tile) {
         Terrain.GRASS -> Messages.get(CavesLevel::class.java, "grass_name")
@@ -294,17 +246,12 @@ class CavesBossLevel : Level() {
     }
 
     companion object {
+        private const val MAP_FILE: String = "data/CavesBossLevel.map"
 
-        private val WIDTH = 32
-        private val HEIGHT = 32
+        private val ROOM_ENTRANCE = Rect(14, 18, 22, 26)
 
-        private val ROOM_LEFT = WIDTH / 2 - 2
-        private val ROOM_RIGHT = WIDTH / 2 + 2
-        private val ROOM_TOP = HEIGHT / 2 - 2
-        private val ROOM_BOTTOM = HEIGHT / 2 + 2
-
-        private val DOOR = "door"
-        private val ENTERED = "entered"
-        private val DROPPED = "droppped"
+        private const val DOOR = "door"
+        private const val ENTERED = "entered"
+        private const val DROPPED = "droppped"
     }
 }

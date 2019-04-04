@@ -180,19 +180,16 @@ public class HeroSprite extends CharSprite {
         row = 1;
         break;
       case ROGUE:
+        row = 2;
         break;
       case HUNTRESS:
+        row = 3;
         break;
       case SORCERESS:
         row = 4;
         break;
     }
 
-    return row >= 0 ? PortraitAt(row, GameMath.clamp(armorTier, 0, 1)) : 
-            avatar(cl, armorTier);
-  }
-
-  private static Image PortraitAt(int row, int col) {
-    return new Image(Assets.PORTRAITS, 26 * col, 26 * row, 26, 26);
+    return new Image(Assets.PORTRAITS, 0, 26* row, 26, 26);
   }
 }

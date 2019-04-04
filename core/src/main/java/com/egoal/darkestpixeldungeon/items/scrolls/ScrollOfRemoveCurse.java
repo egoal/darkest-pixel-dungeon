@@ -90,11 +90,12 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
           }
         }
       }
+      
+      item.cursedKnown = true;
     }
-
-    if (procced) {
+    
+    if (procced) 
       hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
-    }
 
     return procced;
   }

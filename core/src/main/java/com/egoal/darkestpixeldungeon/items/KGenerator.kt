@@ -329,7 +329,7 @@ object KGenerator {
             SCROLL to 400f,
             WAND to 40f,
             RING to 15f,
-            ARTIFACT to 12f,
+            ARTIFACT to 15f,
             SEED to 50f,
             FOOD to 0f,
             GOLD to 500f,

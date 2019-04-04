@@ -106,7 +106,7 @@ abstract class KRegularLevel : Level() {
             probs.remove(LaboratoryDigger::class.java)
             probs.remove(WandDigger::class.java)
             probs.remove(CryptDigger::class.java)
-        } 
+        }
 
         // never fall to boss
         if (Dungeon.bossLevel(Dungeon.depth + 1))
@@ -135,32 +135,43 @@ abstract class KRegularLevel : Level() {
     private fun setStairs(): Boolean {
         val normalSpaces = spaces.filter { it.type == DigResult.Type.Normal }
 
-        for (_i in 1..10) {
+        val trySetStairs = fun(): Triple<Int, Pair<Space, Int>, Pair<Space, Int>>? {
+            var theEntrance = -1
             var spaceEntrance: Space
             do {
                 spaceEntrance = Random.element(normalSpaces)
-                entrance = pointToCell(spaceEntrance.rect.random(1))
-            } while (map[entrance] != Terrain.EMPTY)
+                theEntrance = pointToCell(spaceEntrance.rect.random(1))
+            } while (map[theEntrance] != Terrain.EMPTY)
 
-            for (_j in 1..30) {
-                var spaceExit = Random.element(normalSpaces)
-                if (spaceExit == spaceEntrance) continue
+            for (i in 1..30) {
+                var theExit = -1
+                val spaceExit = Random.element(normalSpaces)
+                if (spaceEntrance == spaceExit) continue
 
-                exit = pointToCell(spaceExit.rect.random(1))
+                theExit = pointToCell(spaceExit.rect.random(1))
 
-                if (map[exit] == Terrain.EMPTY && distance(entrance, exit) >= 12) {
-                    // gotcha
-                    spaceEntrance.type = DigResult.Type.Entrance
-                    spaceExit.type = DigResult.Type.Exit
-                    map[entrance] = Terrain.ENTRANCE
-                    map[exit] = Terrain.EXIT
-
-                    return true
+                if (map[theExit] == Terrain.EMPTY) {
+                    val dis = distance(theEntrance, theExit)
+                    if (dis >= 12)
+                        return Triple(dis, Pair(spaceEntrance, theEntrance), Pair(spaceExit, theExit))
                 }
             }
+            return null
         }
 
-        return false
+        val tpl = (1..10).mapNotNull { trySetStairs() }.maxBy { it.first }
+
+        if (tpl == null) return false
+
+        tpl.second.first.type = DigResult.Type.Entrance
+        entrance = tpl.second.second
+        exit = tpl.third.second
+        tpl.third.first.type = DigResult.Type.Exit
+
+        map[entrance] = Terrain.ENTRANCE
+        map[exit] = Terrain.EXIT
+
+        return true
     }
 
     override fun nMobs(): Int = when (Dungeon.depth) {
@@ -427,7 +438,7 @@ abstract class KRegularLevel : Level() {
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
                 ArmoryDigger::class.java to 1f,
                 GardenDigger::class.java to 1f,
-                LaboratoryDigger::class.java to 1.5f,
+                LaboratoryDigger::class.java to 1.6f,
                 LibraryDigger::class.java to 1f,
                 MagicWellDigger::class.java to 1f,
                 PitDigger::class.java to 0f,
@@ -436,14 +447,14 @@ abstract class KRegularLevel : Level() {
                 ShopDigger::class.java to 0f,
                 StatuaryDigger::class.java to 1f,
                 StatueDigger::class.java to 1f,
-                StorageDigger::class.java to 1f,
+                StorageDigger::class.java to 0.8f,
                 TrapsDigger::class.java to 1f,
                 TreasuryDigger::class.java to 0.75f,
                 VaultDigger::class.java to 0.75f,
                 WeakFloorDigger::class.java to 0.75f,
                 AltarDigger::class.java to 0.75f,
                 WandDigger::class.java to 0.75f,
-                CryptDigger::class.java to 1f
+                CryptDigger::class.java to 0.75f
         )
 
         val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(
