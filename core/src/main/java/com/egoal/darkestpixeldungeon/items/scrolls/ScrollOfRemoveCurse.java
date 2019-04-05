@@ -59,10 +59,13 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 
     boolean procced = false;
     for (Item item : items) {
-      if (item != null && item.cursed) {
+      if(item!=null){
+        if(item.cursed) procced = true;
+        
         item.cursed = false;
-        procced = true;
+        item.cursedKnown = true;
       }
+      
       if (item instanceof Weapon) {
         Weapon w = (Weapon) item;
         if (w.hasCurseEnchant()) {
@@ -90,8 +93,6 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
           }
         }
       }
-      
-      item.cursedKnown = true;
     }
     
     if (procced) 

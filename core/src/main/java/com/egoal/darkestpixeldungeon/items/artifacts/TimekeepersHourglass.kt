@@ -58,6 +58,7 @@ class TimekeepersHourglass : Artifact() {
                 GLog.i(Messages.get(this, "onfreeze"))
                 Sample.INSTANCE.play(Assets.SND_TELEPORT)
 
+                GameScene.flash(0x444444)
                 activated = TimeFreeze().attachTo(hero)
             }
         }

@@ -10,8 +10,10 @@ class TestLevel : SewerLevel() {
     override fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(0, 8)
         // diggers.add(WandDigger())
-        diggers.add(CryptDigger())
-        diggers.add(GardenDigger())
+        // diggers.add(CryptDigger())
+        // diggers.add(GardenDigger())
+        diggers.add(MagicWellDigger())
+        diggers.add(MagicWellDigger())
         
         return diggers
     }

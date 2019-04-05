@@ -295,6 +295,19 @@ class ExtractionFlask : Item() {
                     }
                 }
             }
+
+            override fun destroy() {
+                btnItem_1.item?.let {
+                    if (!it.collect())
+                        Dungeon.level.drop(it, Dungeon.hero.pos)
+                }
+                btnItem_2.item?.let {
+                    if (!it.collect())
+                        Dungeon.level.drop(it, Dungeon.hero.pos)
+                }
+                
+                super.destroy()
+            }
         }
 
         // item button

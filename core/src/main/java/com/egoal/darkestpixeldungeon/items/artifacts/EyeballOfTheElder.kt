@@ -52,7 +52,7 @@ class EyeballOfTheElder : Artifact() {
     private fun cd(): Int = 20
     private fun zapRange(): Int = 5 + level()
     private fun zapDamage(): Int {
-        val value = Random.IntRange(1 + level(), 4 + level() * 3)
+        val value = Random.IntRange(3 + level(), 4 + level() * 3)
         return if (cursed) (value * 1.3f).toInt() else value
     }
 

@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.items.armor.MailArmor;
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.EyeballOfTheElder;
+import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.items.food.ChargrilledMeat;
 import com.egoal.darkestpixeldungeon.items.food.FrozenCarpaccio;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
@@ -73,6 +74,8 @@ import com.egoal.darkestpixeldungeon.plants.Earthroot;
 import com.egoal.darkestpixeldungeon.plants.Firebloom;
 import com.egoal.darkestpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Bundle;
+
+import kotlin.concurrent.TimersKt;
 
 public enum HeroClass {
 
@@ -151,10 +154,10 @@ public enum HeroClass {
 
     new CloakOfSheep().collect();
     new EyeballOfTheElder().collect();
-
     new DriedRose().identify().collect();
     new HandleOfAbyss().identify().collect();
     new HandOfTheElder().identify().collect();
+    new TimekeepersHourglass().identify().collect();
 
     new DewVial().collect();
     new UnholyBlood().collect();
