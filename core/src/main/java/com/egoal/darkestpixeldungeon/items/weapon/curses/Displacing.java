@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.curses;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -57,6 +58,9 @@ public class Displacing extends Weapon.Enchantment {
         }
 
         defender.pos = newPos;
+        if(defender instanceof Mob && ((Mob) defender).state== ((Mob) defender).HUNTING)
+          ((Mob) defender).state = ((Mob) defender).WANDERING;
+        
         defender.sprite.place(defender.pos);
         defender.sprite.visible = Dungeon.visible[defender.pos];
 

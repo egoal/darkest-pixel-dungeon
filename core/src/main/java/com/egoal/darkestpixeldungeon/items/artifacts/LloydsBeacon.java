@@ -233,6 +233,9 @@ public class LloydsBeacon extends Artifact {
                 } else {
 
                   ch.pos = pos;
+                  if(ch instanceof Mob && ((Mob) ch).state== ((Mob) ch).HUNTING)
+                    ((Mob) ch).state = ((Mob) ch).WANDERING;
+                  
                   ch.sprite.place(ch.pos);
                   ch.sprite.visible = Dungeon.visible[pos];
 

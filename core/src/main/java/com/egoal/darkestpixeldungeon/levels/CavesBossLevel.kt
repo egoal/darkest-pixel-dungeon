@@ -164,7 +164,7 @@ class CavesBossLevel : Level() {
                 state = WANDERING
                 do {
                     pos = Random.Int(length())
-                } while (!Level.passable[pos] || !outsideEntranceRoom(pos) || Dungeon.visible[pos])
+                } while (pos < 400 || !Level.passable[pos] || !outsideEntranceRoom(pos) || Dungeon.visible[pos])
             }
             GameScene.add(boss)
 
@@ -189,15 +189,15 @@ class CavesBossLevel : Level() {
             unseal()
 
             // open
-            val openDoor = { cell: Int->
+            val openDoor = { cell: Int ->
                 CellEmitter.get(cell).start(Speck.factory(Speck.ROCK), 0.07f, 10)
                 Level.set(cell, Terrain.EMPTY_DECO)
                 GameScene.updateMap(cell)
             }
-            
+
             openDoor(arenaDoor)
             openDoor(arenaDoorUp)
-            
+
             Dungeon.observe()
 
             Music.INSTANCE.play(trackMusic(), true)

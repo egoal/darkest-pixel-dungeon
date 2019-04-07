@@ -305,7 +305,7 @@ public enum Rankings {
         }
       } else {
         // support old rankings...
-        if (cause.getClass().getName().contains("amulet"))
+        if (cause.getClass().getName().contains("Amulet"))
           cause = Amulet.class;
 
         String result = Messages.get(cause, "rankings_desc", (Messages.get

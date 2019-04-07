@@ -675,7 +675,7 @@ public abstract class Level implements Bundlable {
   }
 
   // call this each time luminary is modified
-  public void updateLightMap(){
+  public void updateLightMap() {
     BArray.setFalse(lighted);
     final int[] L1norm2 = new int[]{
             -width * 2 - 1, -width * 2, -width * 2 + 1,
@@ -684,7 +684,7 @@ public abstract class Level implements Bundlable {
             +width - 2, +width - 1, +width, +width + 1, +width + 2,
             +width * 2 - 1, +width * 2, +width * 2 + 1,
     };
-    
+
     for (int i = 0; i < length(); ++i) {
       if (luminary[i]) {
         for (int np : L1norm2) {
@@ -695,7 +695,7 @@ public abstract class Level implements Bundlable {
       }
     }
   }
-  
+
   protected void buildFlagMaps() {
 
     fieldOfView = new boolean[length()];
@@ -855,22 +855,7 @@ public abstract class Level implements Bundlable {
 
   public Heap drop(Item item, int cell) {
 
-    //This messy if statement deals will items which should not drop in 
-    // challenges primarily.
-    if ((Dungeon.isChallenged(Challenges.NO_FOOD) && (item instanceof Food ||
-            item instanceof BlandfruitBush.Seed)) ||
-            (Dungeon.isChallenged(Challenges.NO_ARMOR) && item instanceof
-                    Armor) ||
-            (Dungeon.isChallenged(Challenges.NO_HEALING) && item instanceof
-                    PotionOfHealing) ||
-            (Dungeon.isChallenged(Challenges.NO_HERBALISM) && (item
-                    instanceof Plant.Seed || item instanceof Dewdrop || item
-                    instanceof SeedPouch)) ||
-            (Dungeon.isChallenged(Challenges.NO_SCROLLS) && ((item instanceof
-                    Scroll && !(item instanceof ScrollOfUpgrade)) || item
-                    instanceof
-                    ScrollHolder)) ||
-            item == null) {
+    if (item == null || Challenges.INSTANCE.isForbidden(item)) {
 
       //create a dummy heap, give it a dummy sprite, don't add it to the 
       // game, and return it.
@@ -933,6 +918,7 @@ public abstract class Level implements Bundlable {
   }
 
   public Plant plant(Plant.Seed seed, int pos) {
+    if (Dungeon.isChallenged(Challenges.NO_HERBALISM)) return null;
 
     Plant plant = plants.get(pos);
     if (plant != null) {
@@ -1030,7 +1016,7 @@ public abstract class Level implements Bundlable {
         break;
     }
 
-    TimekeepersHourglass.TimeFreeze timeFreeze = 
+    TimekeepersHourglass.TimeFreeze timeFreeze =
             Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 
     if (trap != null) {
@@ -1098,7 +1084,7 @@ public abstract class Level implements Bundlable {
     if (sighted) {
 //      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance(), c
 //              .seeDistance());
-      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(), 
+      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(),
               c.seeDistance());
     } else {
       BArray.setFalse(fieldOfView);

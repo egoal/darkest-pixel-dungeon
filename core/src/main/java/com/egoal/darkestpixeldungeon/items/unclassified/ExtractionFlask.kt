@@ -171,7 +171,7 @@ class ExtractionFlask : Item() {
         }
     }
 
-    private fun minDewRequired() = if (reinforced) 3 else 4
+    private fun minDewRequired() = if (reinforced) 2 else 3
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

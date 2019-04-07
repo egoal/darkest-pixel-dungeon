@@ -259,9 +259,6 @@ public class Dungeon {
                 .getDeepestFloor() - 1);
     }
 
-//    if (DarkestPixelDungeon.debug())
-//      level = new TestLevel(); // EmptyLevel();
-
     visible = new boolean[level.length()];
     level.create();
 
@@ -356,9 +353,11 @@ public class Dungeon {
   }
 
   public static boolean souNeeded() {
+    final int SOU_PER_FLOORSET = isChallenged(Challenges.NO_SCROLLS) ? 1 : 3;
+
     //3 SOU each floor set
-    int souLeftThisSet = 3 - (limitedDrops.upgradeScrolls.count - (depth / 5)
-            * 3);
+    int souLeftThisSet = SOU_PER_FLOORSET - (limitedDrops.upgradeScrolls.count - (depth / 5)
+            * SOU_PER_FLOORSET);
     if (souLeftThisSet <= 0) return false;
 
     int floorThisSet = (depth % 5);
@@ -390,7 +389,7 @@ public class Dungeon {
 
     return slLeft > 0 && Random.Int(10 - depth % 10) < slLeft;
   }
-  
+
   // save
   private static final String RG_GAME_FILE = "game.dat";
   private static final String RG_DEPTH_FILE = "depth%d.dat";

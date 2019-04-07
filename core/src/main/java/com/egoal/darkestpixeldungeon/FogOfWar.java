@@ -36,20 +36,25 @@ import java.nio.IntBuffer;
 
 public class FogOfWar extends Image {
 
-  private static final int VISIBLE[] = new int[]{0xAA000000, 0x55000000, //-2
-          // and -1 brightness
+  private static final int VISIBLE[] = new int[]{
+          0xAA000000, 0x55000000, //-2 and -1 brightness
           0x00000000, //0 brightness
           0x00000000, 0x00000000}; //1 and 2 brightness
 
-  private static final int VISITED[] = new int[]{0xEE000000, 0xDD000000,
+  private static final int VISITED[] = new int[]{
+          0xEE000000, 0xDD000000,
           0xCC000000,
-          0x99000000, 0x66000000};
+          0x99000000, 0x66000000
+  };
 
-  private static final int MAPPED[] = new int[]{0xEE442211, 0xDD442211,
-          0xCC442211,
-          0x99442211, 0x66442211};
+  private static final int MAPPED[] = new int[]{
+          0xDD221108, 0xBB442211,
+          0x99663319,
+          0x77884411, 0x55AA552A
+  };
 
-  private static final int INVISIBLE[] = new int[]{0xFF000000, 0xFF000000,
+  private static final int INVISIBLE[] = new int[]{
+          0xFF000000, 0xFF000000,
           0xFF000000,
           0xFF000000, 0xFF000000};
 
@@ -108,7 +113,7 @@ public class FogOfWar extends Image {
     updated.setEmpty();
   }
 
-  private void updateTexture(boolean[] visible, boolean[] visited, boolean[] 
+  private void updateTexture(boolean[] visible, boolean[] visited, boolean[]
           mapped) {
 
     moveToUpdating();
@@ -227,7 +232,8 @@ public class FogOfWar extends Image {
   public void draw() {
 
     if (!updated.isEmpty()) {
-      updateTexture(Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped);
+      updateTexture(Dungeon.visible, Dungeon.level.visited, Dungeon.level
+              .mapped);
       updating.setEmpty();
     }
 

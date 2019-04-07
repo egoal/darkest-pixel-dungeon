@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.levels.traps;
 
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -66,8 +67,10 @@ public class TeleportationTrap extends Trap {
         GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
 
       } else {
-
         ch.pos = pos;
+        if(ch instanceof Mob && ((Mob) ch).state== ((Mob) ch).HUNTING)
+          ((Mob) ch).state = ((Mob) ch).WANDERING;
+        
         ch.sprite.place(ch.pos);
         ch.sprite.visible = Dungeon.visible[pos];
 

@@ -139,17 +139,16 @@ object Statistics {
         val special: Boolean get() = minute in 0..20 && hour in listOf(2, 7, 19, 22)
 
         fun updateState() {
-            if (Dungeon.hero?.buff(MoonNight::class.java) != null) {
-                state = State.Night
-                return
-            }
-
             var newState = when {
                 hour in 7 until 19 -> State.Day
                 hour < 2 || hour >= 22 -> State.MidNight
                 else -> State.Night
             }
-            if (Dungeon.depth > 20 && newState == State.Day) newState = State.Night
+            
+            // night control
+            if(newState==State.Day && (Dungeon.hero?.buff(MoonNight::class.java)!=null ||
+                            Dungeon.depth> 20|| Dungeon.isChallenged(Challenges.THE_LONG_NIGHT)))
+                newState = State.Night
 
             if (newState != state) {
                 // state changed.

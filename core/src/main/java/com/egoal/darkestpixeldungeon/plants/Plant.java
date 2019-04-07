@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.plants;
 
+import com.egoal.darkestpixeldungeon.Challenges;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -143,7 +144,10 @@ public abstract class Plant implements Bundlable {
 
     @Override
     protected void onThrow(int cell) {
-      if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell]) {
+      if (Dungeon.level.map[cell] == Terrain.ALCHEMY ||
+              Level.pit[cell] ||
+              Dungeon.level.traps.get(cell) != null ||
+              Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
         super.onThrow(cell);
       } else {
         Dungeon.level.plant(this, cell);

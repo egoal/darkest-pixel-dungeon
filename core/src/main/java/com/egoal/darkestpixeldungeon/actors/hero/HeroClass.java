@@ -126,13 +126,12 @@ public enum HeroClass {
   }
 
   private static void initCommon(Hero hero) {
-    if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-      (hero.belongings.armor = new ClothArmor()).identify();
+    (hero.belongings.armor = new ClothArmor()).identify();
 
     if (!Dungeon.isChallenged(Challenges.NO_FOOD))
       new Food().identify().collect();
 
-    if (!Dungeon.isChallenged(Challenges.DARKNESS))
+    if (Dungeon.isChallenged(Challenges.THE_LONG_NIGHT))
       new Torch().identify().collect();
 
     new ScrollOfIdentify().identify();
@@ -177,7 +176,7 @@ public enum HeroClass {
     new ChargrilledMeat().collect();
     new StewedMeat().collect();
     new FrozenCarpaccio().collect();
-    
+
     new PotionOfHealing().quantity(9).identify().collect();
 
     (new PlateArmor()).upgrade(9).identify().collect();
@@ -222,15 +221,12 @@ public enum HeroClass {
     new Wine().collect();
 
     if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
-      if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-        hero.belongings.armor.affixSeal(new BrokenSeal());
+      hero.belongings.armor.affixSeal(new BrokenSeal());
       Dungeon.quickslot.setSlot(0, darts);
     } else {
-      if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
-        BrokenSeal seal = new BrokenSeal();
-        seal.collect();
-        Dungeon.quickslot.setSlot(0, seal);
-      }
+      BrokenSeal seal = new BrokenSeal();
+      seal.collect();
+      Dungeon.quickslot.setSlot(0, seal);
       Dungeon.quickslot.setSlot(1, darts);
     }
 
@@ -406,7 +402,6 @@ public enum HeroClass {
                 Messages.get(HeroClass.class, "sorceress_perk3"),
                 Messages.get(HeroClass.class, "sorceress_perk4"),
                 Messages.get(HeroClass.class, "sorceress_perk5"),
-                // Messages.get(HeroClass.class, "sorceress_perk6"),
         };
     }
 
