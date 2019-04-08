@@ -149,7 +149,7 @@ public enum HeroClass {
     hero.HP = 200;
     hero.HT = 1000;
     hero.STR = 18;
-    hero.lvl = 1;
+    hero.lvl = 20;
 
     new CloakOfSheep().collect();
     new EyeballOfTheElder().collect();

@@ -189,10 +189,10 @@ class CavesBossLevel : Level() {
             unseal()
 
             // open
-            val openDoor = { cell: Int ->
-                CellEmitter.get(cell).start(Speck.factory(Speck.ROCK), 0.07f, 10)
-                Level.set(cell, Terrain.EMPTY_DECO)
-                GameScene.updateMap(cell)
+            val openDoor = { door: Int ->
+                CellEmitter.get(door).start(Speck.factory(Speck.ROCK), 0.07f, 10)
+                Level.set(door, Terrain.EMPTY_DECO)
+                GameScene.updateMap(door)
             }
 
             openDoor(arenaDoor)

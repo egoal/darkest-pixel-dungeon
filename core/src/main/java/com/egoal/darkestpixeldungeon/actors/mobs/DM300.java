@@ -66,6 +66,7 @@ public class DM300 extends Mob {
     spriteClass = DM300Sprite.class;
 
     HP = HT = 200;
+    HP = 1;
     EXP = 30;
     defenseSkill = 18;
 
