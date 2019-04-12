@@ -86,7 +86,7 @@ abstract class KRegularLevel : Level() {
         val diggers = ArrayList<Digger>()
 
         // as most 1 secret per level
-        if (Random.IntRange(2, 5) <= specials) {
+        if (!Dungeon.bossLevel() && Random.IntRange(2, 5) <= specials) {
             Log.d("dpd", "a secret digger chosen.")
             diggers.add(Random.chances(SecretDiggers).newInstance())
         }
@@ -132,7 +132,7 @@ abstract class KRegularLevel : Level() {
         return diggers
     }
 
-    private fun setStairs(): Boolean {
+    protected open fun setStairs(): Boolean {
         val normalSpaces = spaces.filter { it.type == DigResult.Type.Normal }
 
         val trySetStairs = fun(): Triple<Int, Pair<Space, Int>, Pair<Space, Int>>? {
