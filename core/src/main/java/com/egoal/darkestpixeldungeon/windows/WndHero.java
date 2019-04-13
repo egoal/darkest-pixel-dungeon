@@ -147,7 +147,7 @@ public class WndHero extends WndTabbed {
       // sanity slot
       Pressure p = hero.buff(Pressure.class);
       if (p != null)
-        statSlot(Messages.get(this, "sanity"), (int) p.pressure + "/" + (int)
+        statSlot(Messages.get(this, "sanity"), (int) p.getPressure() + "/" + (int)
                 Pressure.MAX_PRESSURE);
 
       // add hunger state slot

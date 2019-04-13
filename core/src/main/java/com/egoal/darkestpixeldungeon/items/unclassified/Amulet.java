@@ -41,7 +41,7 @@ public class Amulet extends Item {
   private static final String AC_END = "END";
 
   private boolean everPicked = false;
-  
+
   {
     image = ItemSpriteSheet.AMULET;
 
@@ -69,7 +69,7 @@ public class Amulet extends Item {
   public boolean doPickUp(Hero hero) {
     if (super.doPickUp(hero)) {
       // recover all sanity
-      if(!everPicked)
+      if (!everPicked)
         hero.recoverSanity((int) Pressure.MAX_PRESSURE);
       everPicked = true;
 
@@ -116,16 +116,17 @@ public class Amulet extends Item {
   }
 
   private final String EVER_PICKED = "ever-picked";
+
   @Override
-  public void storeInBundle(Bundle bundle){
+  public void storeInBundle(Bundle bundle) {
     super.storeInBundle(bundle);
     bundle.put(EVER_PICKED, everPicked);
   }
-  
+
   @Override
-  public void restoreFromBundle(Bundle bundle){
+  public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
     everPicked = bundle.getBoolean(EVER_PICKED);
   }
-  
+
 }

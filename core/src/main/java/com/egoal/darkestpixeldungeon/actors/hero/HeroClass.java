@@ -31,8 +31,10 @@ import com.egoal.darkestpixeldungeon.items.food.ChargrilledMeat;
 import com.egoal.darkestpixeldungeon.items.food.FrozenCarpaccio;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.food.StewedMeat;
+import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
+import com.egoal.darkestpixeldungeon.items.unclassified.DemonicSkull;
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial;
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask;
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery;
@@ -158,26 +160,30 @@ public enum HeroClass {
     new HandOfTheElder().identify().collect();
     new TimekeepersHourglass().identify().collect();
 
-    new DewVial().collect();
+//    new DewVial().collect();
     new UnholyBlood().collect();
+    new DemonicSkull().collect();
 
     ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
     somm.quantity(30).identify().collect();
     Dungeon.quickslot.setSlot(3, somm);
 
-    new Wine().quantity(2).collect();
 
 //    new ScrollOfLight().quantity(3).identify().collect();
 //    new ScrollOfUpgrade().quantity(10).identify().collect();
 //    new ScrollOfEnchanting().quantity(3).identify().collect();
 //    new ScrollOfIdentify().quantity(10).collect();
 
-    new MysteryMeat().collect();
-    new ChargrilledMeat().collect();
-    new StewedMeat().collect();
-    new FrozenCarpaccio().collect();
+    new Wine().quantity(2).collect();
+//    new MysteryMeat().collect();
+//    new ChargrilledMeat().collect();
+//    new StewedMeat().collect();
+//    new FrozenCarpaccio().collect();
 
-    new PotionOfHealing().quantity(9).identify().collect();
+    new PotionOfHealing().quantity(30).identify().collect();
+    PotionOfMindVision pomv = new PotionOfMindVision();
+    pomv.quantity(30).identify().collect();
+    Dungeon.quickslot.setSlot(4, pomv);
 
     (new PlateArmor()).upgrade(9).identify().collect();
     (new AssassinsBlade()).upgrade(9).identify().collect();
@@ -192,9 +198,8 @@ public enum HeroClass {
 
     (new TomeOfMastery()).collect();
 
-    PotionOfMindVision pomv = new PotionOfMindVision();
-    pomv.quantity(30).identify().collect();
-    Dungeon.quickslot.setSlot(4, pomv);
+    new HelmetCrusader().identify().collect();
+    new MaskOfClown().identify().collect();
   }
 
   public Badges.Badge masteryBadge() {

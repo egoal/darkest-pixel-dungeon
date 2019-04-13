@@ -22,14 +22,11 @@ class HelmetCrusader : Helmet() {
         return desc
     }
 
-    override fun buff(): HelmetBuff = Protect()
-    
-    inner class Protect: HelmetBuff(){
-        override fun act(): Boolean {
-            if(cursed && Random.Int(10)==0)
-                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
-                
-            return super.act()
-        }
+    override fun procTakenDamage(dmg: Damage): Damage {
+        if (dmg.isFeatured(Damage.Feature.RANGED) && Random.Float() < 0.2f)
+            dmg.value = 0
+        return dmg
     }
+
+    override fun viewAmend(): Int = -1
 }

@@ -35,8 +35,9 @@ public class ItemSpriteSheet {
   public static final int NULLWARN = PLACEHOLDERS + 0;
   public static final int WEAPON_HOLDER = PLACEHOLDERS + 1;
   public static final int ARMOR_HOLDER = PLACEHOLDERS + 2;
-  public static final int RING_HOLDER = PLACEHOLDERS + 3;
-  public static final int SOMETHING = PLACEHOLDERS + 4;
+  public static final int HELMET_HOLDER = PLACEHOLDERS + 3;
+  public static final int RING_HOLDER = PLACEHOLDERS + 4;
+  public static final int SOMETHING = PLACEHOLDERS + 5;
 
   private static final int UNCOLLECTIBLE = xy(9, 1);   //8 slots
   public static final int GOLD = UNCOLLECTIBLE + 0;
@@ -149,7 +150,7 @@ public class ItemSpriteSheet {
   public static final int DWARF_CROWN = HELMET + 4;
   public static final int HEADDRESS_OF_REGENERATION = HELMET + 5;
   public static final int WIZARD_HAT = HELMET + 6;
-  public static final int HELMET_CLOWN = HELMET+ 7;
+  public static final int HELMET_CLOWN = HELMET + 7;
 
   //16 free slots
 
@@ -216,9 +217,9 @@ public class ItemSpriteSheet {
   public static final int GOLD_PLATE_STATUE = ARTIFACTS + 30;
   public static final int BONE_HAND = ARTIFACTS + 31;
   public static final int HANDLE_OF_ABYSS = ARTIFACTS + 32;
-  public static final int CLOAK_OF_SHEEP = ARTIFACTS+ 33;
-  public static final int HEART_OF_SATAN = ARTIFACTS+ 34;
-  public static final int ARTIFACT_EYEBALL = ARTIFACTS+ 35;
+  public static final int CLOAK_OF_SHEEP = ARTIFACTS + 33;
+  public static final int HEART_OF_SATAN = ARTIFACTS + 34;
+  public static final int ARTIFACT_EYEBALL = ARTIFACTS + 35;
 
   //32 free slots
 

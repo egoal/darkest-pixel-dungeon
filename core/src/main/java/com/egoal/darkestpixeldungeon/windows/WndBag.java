@@ -83,7 +83,7 @@ public class WndBag extends WndTabbed {
     ALCHEMY
   }
 
-  protected static final int COLS_P = 4 + 1;
+  protected static final int COLS_P = 5;
   protected static final int COLS_L = 6;
 
   protected static final int SLOT_SIZE = 22;
@@ -117,9 +117,9 @@ public class WndBag extends WndTabbed {
     lastBag = bag;
 
     nCols = DarkestPixelDungeon.landscape() ? COLS_L : COLS_P;
-    // +5+1 the equipments, the gold
-    nRows = (Belongings.BACKPACK_SIZE + 5 + 1) / nCols +
-            ((Belongings.BACKPACK_SIZE + 5 + 1) % nCols > 0 ? 1 : 0);
+    // +6+1 equipments and gold
+    nRows = (Belongings.BACKPACK_SIZE + 6 + 1) / nCols +
+            ((Belongings.BACKPACK_SIZE + 6 + 1) % nCols > 0 ? 1 : 0);
 
     int slotsWidth = SLOT_SIZE * nCols + SLOT_MARGIN * (nCols - 1);
     int slotsHeight = SLOT_SIZE * nRows + SLOT_MARGIN * (nRows - 1);
@@ -185,6 +185,8 @@ public class WndBag extends WndTabbed {
             (ItemSpriteSheet.WEAPON_HOLDER));
     placeItem(stuff.armor != null ? stuff.armor : new Placeholder
             (ItemSpriteSheet.ARMOR_HOLDER));
+    placeItem(stuff.helmet != null ? stuff.helmet : new Placeholder
+            (ItemSpriteSheet.HELMET_HOLDER));
     placeItem(stuff.misc1 != null ? stuff.misc1 : new Placeholder
             (ItemSpriteSheet.RING_HOLDER));
     placeItem(stuff.misc2 != null ? stuff.misc2 : new Placeholder
@@ -195,7 +197,7 @@ public class WndBag extends WndTabbed {
     boolean backpack = (container == Dungeon.hero.belongings.backpack);
     if (!backpack) {
       count = nCols;
-      col = 0;
+      col = 1;
       row = 1;
     }
 
@@ -205,7 +207,7 @@ public class WndBag extends WndTabbed {
     }
 
     // Free Space
-    while (count - (backpack ? 5 : nCols) < container.size) {
+    while (count - (backpack ? 6 : nCols) < container.size) {
       placeItem(null);
     }
 
@@ -378,7 +380,8 @@ public class WndBag extends WndTabbed {
           bg.ga = -0.15f;
         } else if (!item.isIdentified()) {
           //^ not identified, but mark if cursedKnown
-          if((item instanceof EquipableItem|| item instanceof Wand) && item.cursedKnown)
+          if ((item instanceof EquipableItem || item instanceof Wand) && item
+                  .cursedKnown)
             bg.ba = 0.3f;
           else {
             bg.ra = 0.3f;
@@ -413,8 +416,11 @@ public class WndBag extends WndTabbed {
                           mode == Mode.EQUIPMENT && (item instanceof
                                   EquipableItem) ||
                           mode == Mode.RING && (item instanceof Ring) ||
-                          mode == Mode.ALCHEMY && (item instanceof Plant.Seed || item instanceof MysteryMeat ||
-                                  (item instanceof Blandfruit && ((Blandfruit)item).potionAttrib==null)) ||
+                          mode == Mode.ALCHEMY && (item instanceof Plant.Seed
+                                  || item instanceof MysteryMeat ||
+                                  (item instanceof Blandfruit && (
+                                          (Blandfruit) item).potionAttrib == 
+                                          null)) ||
                           mode == Mode.ALL
           );
           //extra logic for cursed weapons or armor

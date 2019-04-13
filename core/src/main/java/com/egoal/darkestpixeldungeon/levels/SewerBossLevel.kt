@@ -17,7 +17,7 @@ import com.watabou.noosa.audio.Music
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
-class KSewerBossLevel : SewerLevel() {
+class SewerBossLevel : SewerLevel() {
 
     private var bossAppeared = false
     private var bossDefeated = false

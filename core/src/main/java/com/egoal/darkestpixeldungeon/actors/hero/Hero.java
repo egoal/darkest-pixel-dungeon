@@ -39,12 +39,11 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.HeartOfSatan;
 import com.egoal.darkestpixeldungeon.items.artifacts.RiemannianManifoldShield;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
-import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness;
+import com.egoal.darkestpixeldungeon.items.helmets.CircletEmerald;
 import com.egoal.darkestpixeldungeon.items.helmets.HeaddressRegeneration;
-import com.egoal.darkestpixeldungeon.items.helmets.HelmetBarbarian;
 import com.egoal.darkestpixeldungeon.items.helmets.HelmetCrusader;
 import com.egoal.darkestpixeldungeon.items.helmets.HoodApprentice;
-import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown;
+import com.egoal.darkestpixeldungeon.items.helmets.MaskOfMadness;
 import com.egoal.darkestpixeldungeon.items.helmets.WizardHat;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfCritical;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -236,8 +235,8 @@ public class Hero extends Char {
                             .ClockTime.State.MidNight))
       vd += 1;
 
-    if (buff(HelmetCrusader.Protect.class) != null)
-      vd -= 1;
+    if (belongings.helmet != null)
+      vd += belongings.helmet.viewAmend();
 
     return GameMath.clamp(vd, 1, 9);
   }
@@ -246,8 +245,8 @@ public class Hero extends Char {
   public int seeDistance() {
     int sd = 8;
 
-    if (buff(HelmetCrusader.Protect.class) != null)
-      sd -= 1;
+    if (belongings.helmet != null)
+      sd += belongings.helmet.viewAmend();
 
     return GameMath.clamp(sd, 1, 9);
   }
@@ -281,9 +280,9 @@ public class Hero extends Char {
         reg += HT * 0.004f * Math.pow(1.07, hr.itemLevel());
     }
 
-    HeaddressRegeneration.Regeneration hrreg = buff(HeaddressRegeneration
-            .Regeneration.class);
-    if (hrreg != null) reg += hrreg.getCursed() ? -0.1 : (0.05 + reg * 0.2);
+    if (belongings.helmet instanceof HeaddressRegeneration)
+      reg += belongings.helmet.cursed ? -0.1 : (0.05 + reg * 0.2);
+
 
     if (buff(MendingRune.Recovery.class) != null) {
       reg += 0.05f;
@@ -297,16 +296,21 @@ public class Hero extends Char {
 
   //todo: refactor this
   public float arcaneFactor() {
-    if (buff(HoodApprentice.Apprentice.class) != null)
+    if (belongings.helmet instanceof HoodApprentice)
       return 1.15f;
 
     return 1f;
   }
 
   public float wandChargeFactor() {
-    WizardHat.Recharge wr = buff(WizardHat.Recharge.class);
-    if (wr != null)
-      return wr.getCursed() ? 0.9f : 1.15f;
+    if (belongings.helmet instanceof WizardHat)
+      return belongings.helmet.cursed ? 0.9f : 1.15f;
+    return 1f;
+  }
+
+  public float mentalFactor() {
+    if (belongings.helmet instanceof CircletEmerald)
+      return belongings.helmet.cursed ? 0.95f : 1.1f;
     return 1f;
   }
 
@@ -537,11 +541,6 @@ public class Hero extends Char {
       if (belongings.weapon != null)
         dmg = belongings.weapon.defendDamage(dmg);
 
-      if (dmg.isFeatured(Damage.Feature.RANGED) &&
-              buff(HelmetCrusader.Protect.class) != null && Random.Float() <
-              0.15f)
-        dmg.value = 0;
-
       int dr = 0;
       if (belongings.armor != null) {
         dr = Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor
@@ -571,6 +570,7 @@ public class Hero extends Char {
     // ring of force
     int bonus = RingOfForce.getBonus(this, RingOfForce.Force.class);
 
+    // weapon
     KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
     if (wep != null) {
       dmg = wep.giveDamage(this, enemy);
@@ -588,8 +588,9 @@ public class Hero extends Char {
       }
     }
 
-    if (buff(MaskOfClown.Indulge.class) != null && Random.Float() < 0.1f)
-      dmg.addFeature(Damage.Feature.PURE);
+    // helmet
+    if (belongings.helmet != null)
+      dmg = belongings.helmet.procGivenDamage(dmg);
 
     // critical
     if (buff(CriticalRune.Critical.class) != null) {
@@ -611,14 +612,10 @@ public class Hero extends Char {
     }
 
     // pressure
-    dmg = buff(Pressure.class).procOutcomingDamage(dmg);
+    dmg = buff(Pressure.class).procGivenDamage(dmg);
 
     if (buff(Drunk.class) != null)
       dmg = Drunk.Companion.procOutcomingDamage(dmg);
-
-    MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
-    if (madness != null)
-      dmg = madness.procOutcomingDamage(dmg);
 
     if (dmg.value < 0) dmg.value = 0;
 
@@ -628,9 +625,6 @@ public class Hero extends Char {
 
     if (buff(Fury.class) != null)
       dmg.value *= 1.5f;
-
-    if (HP < HT / 2 && buff(HelmetBarbarian.HelmetBuff.class) != null)
-      dmg.value *= 1.25f;
 
     if (TimekeepersHourglass.Companion.IsTimeStopped() && canSurpriseAttack())
       dmg.addFeature(Damage.Feature.ACCURATE);
@@ -1265,9 +1259,7 @@ public class Hero extends Char {
       GLog.w(Messages.get(this, "pain_resist"));
     }
 
-    MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
-    if (madness != null)
-      dmg = madness.procIncomingDamage(dmg);
+    if (belongings.helmet != null) dmg = belongings.helmet.procTakenDamage(dmg);
 
     // 韧性之戒
     int tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
@@ -1667,7 +1659,7 @@ public class Hero extends Char {
 
     // recover sanity
     recoverSanity(Math.min(Random.NormalIntRange(1, lvl * 3 / 4),
-            (int) (buff(Pressure.class).pressure * 0.3f)));
+            (int) (buff(Pressure.class).getPressure() * 0.3f)));
   }
 
   public int maxExp() {
@@ -1929,9 +1921,8 @@ public class Hero extends Char {
       recoverSanity(Random.IntRange(1, 6));
     }
 
-    MaskOfMadness.Madness madness = buff(MaskOfMadness.Madness.class);
-    if (madness != null)
-      madness.onEmenySlayed(ch);
+    if (belongings.helmet instanceof MaskOfMadness)
+      ((MaskOfMadness) belongings.helmet).onEnemySlayed(ch);
 
     BloodSuck bs = buff(BloodSuck.class);
     if (bs != null)

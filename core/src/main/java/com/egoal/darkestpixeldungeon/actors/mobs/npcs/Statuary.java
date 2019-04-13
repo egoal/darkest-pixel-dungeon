@@ -210,7 +210,7 @@ public class Statuary extends NPC {
         GLog.n(Messages.get(this, "unholy"));
       } else {
         // reward
-        int rp = (int) (hero.buff(Pressure.class).pressure * 0.3f);
+        int rp = (int) (hero.buff(Pressure.class).getPressure() * 0.3f);
         hero.recoverSanity(rp);
         GLog.h(Messages.get(this, "holy"));
 

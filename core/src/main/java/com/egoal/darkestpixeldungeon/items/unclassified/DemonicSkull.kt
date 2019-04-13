@@ -3,7 +3,7 @@ package com.egoal.darkestpixeldungeon.items.unclassified
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.artifacts.MaskOfMadness
+import com.egoal.darkestpixeldungeon.items.helmets.MaskOfMadness
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog

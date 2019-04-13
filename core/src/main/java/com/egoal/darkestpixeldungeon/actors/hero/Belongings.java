@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.hero;
 import com.egoal.darkestpixeldungeon.items.KindofMisc;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
+import com.egoal.darkestpixeldungeon.items.helmets.Helmet;
 import com.egoal.darkestpixeldungeon.items.keys.Key;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -38,7 +39,7 @@ import java.util.Iterator;
 
 public class Belongings implements Iterable<Item> {
 
-  public static final int BACKPACK_SIZE = 19 + 5 + 5;
+  public static final int BACKPACK_SIZE = 28;
 
   private Hero owner;
 
@@ -46,6 +47,7 @@ public class Belongings implements Iterable<Item> {
 
   public KindOfWeapon weapon = null;
   public Armor armor = null;
+  public Helmet helmet = null;
   public KindofMisc misc1 = null;
   public KindofMisc misc2 = null;
   public KindofMisc misc3 = null;  // add an extra slot
@@ -65,6 +67,7 @@ public class Belongings implements Iterable<Item> {
 
   private static final String WEAPON = "weapon";
   private static final String ARMOR = "armor";
+  private static final String HELMET = "helmet";
   private static final String MISC1 = "misc1";
   private static final String MISC2 = "misc2";
   private static final String MISC3 = "misc3";
@@ -78,6 +81,7 @@ public class Belongings implements Iterable<Item> {
 
     bundle.put(WEAPON, weapon);
     bundle.put(ARMOR, armor);
+    bundle.put(HELMET, helmet);
     bundle.put(MISC1, misc1);
     bundle.put(MISC2, misc2);
     bundle.put(MISC3, misc3);
@@ -125,6 +129,10 @@ public class Belongings implements Iterable<Item> {
     if (armor != null) {
       armor.activate(owner);
     }
+
+    helmet = (Helmet) bundle.get(HELMET);
+    if (helmet != null)
+      helmet.activate(owner);
 
     misc1 = (KindofMisc) bundle.get(MISC1);
     if (misc1 != null) {
@@ -195,10 +203,10 @@ public class Belongings implements Iterable<Item> {
     return Random.element(backpack.items);
   }
 
-  public Item[] equippedItems(){
+  public Item[] equippedItems() {
     return new Item[]{weapon, armor, misc1, misc2, misc3};
   }
-  
+
   public void resurrect(int depth) {
 
     for (Item item : backpack.items.toArray(new Item[0])) {
@@ -264,7 +272,7 @@ public class Belongings implements Iterable<Item> {
 
     private Iterator<Item> backpackIterator = backpack.iterator();
 
-    private Item[] equipped = {weapon, armor, misc1, misc2, misc3};
+    private Item[] equipped = {weapon, armor, helmet, misc1, misc2, misc3};
     private int backpackIndex = equipped.length;
 
     @Override
@@ -302,12 +310,15 @@ public class Belongings implements Iterable<Item> {
           equipped[1] = armor = null;
           break;
         case 2:
-          equipped[2] = misc1 = null;
+          equipped[2] = helmet = null;
           break;
         case 3:
-          equipped[3] = misc2 = null;
+          equipped[2] = misc1 = null;
           break;
         case 4:
+          equipped[3] = misc2 = null;
+          break;
+        case 5:
           equipped[4] = misc3 = null;
           break;
         default:

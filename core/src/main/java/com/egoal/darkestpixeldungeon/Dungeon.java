@@ -210,7 +210,7 @@ public class Dungeon {
         level = new SewerLevel();
         break;
       case 5:
-        level = new KSewerBossLevel();
+        level = new SewerBossLevel();
         break;
       case 6:
       case 7:

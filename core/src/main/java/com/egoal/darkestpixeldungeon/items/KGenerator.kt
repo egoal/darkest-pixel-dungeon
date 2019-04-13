@@ -303,7 +303,8 @@ object KGenerator {
             CrownOfDwarf::class.java to 0f, // by king 
             HeaddressRegeneration::class.java to 1f,
             WizardHat::class.java to 1f,
-            MaskOfClown::class.java to 1f
+            MaskOfClown::class.java to 1f, 
+            MaskOfMadness::class.java to 0f // compose 
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(

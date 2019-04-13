@@ -40,7 +40,7 @@ class Humanity : Item() {
             hero.busy()
 
             //1. recover sanity
-            hero.recoverSanity((Pressure.heroPressure() * 0.5f).toInt())
+            hero.recoverSanity((Pressure.HeroPressure() * 0.5f).toInt())
             //todo: show effects
 
             //2. recover hp

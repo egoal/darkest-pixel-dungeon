@@ -6,7 +6,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
-class HelmetBarbarian: Helmet(){
+class HelmetBarbarian : Helmet() {
     init {
         image = ItemSpriteSheet.HELMET_BARBARIAN
     }
@@ -22,15 +22,9 @@ class HelmetBarbarian: Helmet(){
         return desc
     }
 
-    override fun buff(): HelmetBuff = HelmetBuff()
-    
-    inner class Anger: HelmetBuff(){
-        override fun act(): Boolean{
-            if(cursed && Random.Int(10)==0)
-                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
-
-            return super.act()
-        }
+    override fun procGivenDamage(dmg: Damage): Damage {
+        if (dmg.from != null && dmg.from is Char && (dmg.from as Char).HP < (dmg.from as Char).HT / 2)
+            dmg.value = dmg.value * 5 / 4
+        return dmg
     }
-    
 }

@@ -18,8 +18,4 @@ class WizardHat : Helmet() {
 
         return desc
     }
-
-    override fun buff(): HelmetBuff = Recharge()
-
-    inner class Recharge : HelmetBuff()
 }

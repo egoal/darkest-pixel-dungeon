@@ -221,7 +221,7 @@ public class StatusPane extends Component {
 
     Pressure p = Dungeon.hero.buff(Pressure.class);
     if (p != null) {
-      san.scale.x = Math.max(0, p.pressure / Pressure.MAX_PRESSURE);
+      san.scale.x = Math.max(0, p.getPressure() / Pressure.MAX_PRESSURE);
     }
 
     // the portrait effect

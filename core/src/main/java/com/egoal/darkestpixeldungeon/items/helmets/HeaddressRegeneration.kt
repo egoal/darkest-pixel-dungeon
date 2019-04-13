@@ -21,9 +21,4 @@ class HeaddressRegeneration: Helmet() {
 
         return desc
     }
-
-    override fun buff(): HelmetBuff = Regeneration()
-
-    inner class Regeneration: HelmetBuff()
-
 }

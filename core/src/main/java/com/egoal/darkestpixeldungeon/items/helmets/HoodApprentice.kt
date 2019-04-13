@@ -21,16 +21,4 @@ class HoodApprentice : Helmet(){
 
         return desc
     }
-
-    override fun buff(): HelmetBuff = Apprentice()
-
-    inner class Apprentice: HelmetBuff(){
-        override fun act(): Boolean{
-            if(cursed && Random.Int(10)==0)
-                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
-
-            return super.act()
-        }
-    }
-
 }

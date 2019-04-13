@@ -6,7 +6,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
-class MaskOfClown: Helmet() {
+class MaskOfClown : Helmet() {
     init {
         image = ItemSpriteSheet.HELMET_CLOWN
     }
@@ -22,14 +22,9 @@ class MaskOfClown: Helmet() {
         return desc
     }
 
-    override fun buff(): HelmetBuff = Indulge()
-
-    inner class Indulge : HelmetBuff(){
-        override fun act(): Boolean {
-            if(cursed && Random.Int(10)==0)
-                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
-
-            return super.act()
-        }
+    override fun procGivenDamage(dmg: Damage): Damage {
+        if (!cursed && Random.Float() < 0.1f)
+            dmg.addFeature(Damage.Feature.PURE)
+        return dmg
     }
 }
