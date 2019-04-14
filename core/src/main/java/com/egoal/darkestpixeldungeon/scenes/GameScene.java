@@ -898,7 +898,7 @@ public class GameScene extends PixelScene {
     Plant plant = Dungeon.level.plants.get(cell);
     if (plant != null) {
       objects.add(plant);
-      names.add(Messages.titleCase(plant.plantName));
+      names.add(Messages.titleCase(plant.getPlantName()));
     }
 
     Trap trap = Dungeon.level.traps.get(cell);

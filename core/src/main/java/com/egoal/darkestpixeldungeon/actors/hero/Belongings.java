@@ -313,13 +313,13 @@ public class Belongings implements Iterable<Item> {
           equipped[2] = helmet = null;
           break;
         case 3:
-          equipped[2] = misc1 = null;
+          equipped[3] = misc1 = null;
           break;
         case 4:
-          equipped[3] = misc2 = null;
+          equipped[4] = misc2 = null;
           break;
         case 5:
-          equipped[4] = misc3 = null;
+          equipped[5] = misc3 = null;
           break;
         default:
           backpackIterator.remove();

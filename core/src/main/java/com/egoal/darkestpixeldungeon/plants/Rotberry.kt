@@ -18,29 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.plants;
+package com.egoal.darkestpixeldungeon.plants
 
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Rotberry extends Plant {
+class Rotberry : Plant(7) {
 
-  {
-    image = 7;
-  }
-
-  @Override
-  public void activate() {
-    Dungeon.level.drop(new Seed(), pos).sprite.drop();
-  }
-
-  public static class Seed extends Plant.Seed {
-    {
-      image = ItemSpriteSheet.SEED_ROTBERRY;
-
-      plantClass = Rotberry.class;
-      alchemyClass = PotionOfStrength.class;
+    override fun activate() {
+        Dungeon.level.drop(Seed(), pos).sprite.drop()
     }
-  }
+
+    class Seed : Plant.Seed(plantClass = Rotberry::class.java, 
+            alchemyClass = PotionOfStrength::class.java) {
+        init {
+            image = ItemSpriteSheet.SEED_ROTBERRY
+
+            
+        }
+    }
 }

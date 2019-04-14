@@ -62,10 +62,10 @@ public class PlantSprite extends Image {
 
     revive();
 
-    reset(plant.image);
+    reset(plant.getImage());
     alpha(1f);
 
-    pos = plant.pos;
+    pos = plant.getPos();
     x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE;
     y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE;
 

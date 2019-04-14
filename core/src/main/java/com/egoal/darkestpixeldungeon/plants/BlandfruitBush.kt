@@ -18,30 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.plants;
+package com.egoal.darkestpixeldungeon.plants
 
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.items.food.Blandfruit
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class BlandfruitBush extends Plant {
+class BlandfruitBush : Plant(8) {
 
-  {
-    image = 8;
-  }
-
-  @Override
-  public void activate() {
-    Dungeon.level.drop(new Blandfruit(), pos).sprite.drop();
-  }
-
-  public static class Seed extends Plant.Seed {
-    {
-      image = ItemSpriteSheet.SEED_BLANDFRUIT;
-
-      plantClass = BlandfruitBush.class;
-      alchemyClass = null;
+    override fun activate() {
+        Dungeon.level.drop(Blandfruit(), pos).sprite.drop()
     }
 
-  }
+    class Seed : Plant.Seed(BlandfruitBush::class.java, null) {
+        init {
+            image = ItemSpriteSheet.SEED_BLANDFRUIT
+        }
+
+    }
 }

@@ -251,9 +251,8 @@ public class WandOfRegrowth extends Wand {
   }
 
   public static class Dewcatcher extends Plant {
-
-    {
-      image = 12;
+    public Dewcatcher() {
+      super(12);
     }
 
     @Override
@@ -263,14 +262,14 @@ public class WandOfRegrowth extends Wand {
 
       ArrayList<Integer> candidates = new ArrayList<Integer>();
       for (int i : PathFinder.NEIGHBOURS8) {
-        if (Level.passable[pos + i]) {
-          candidates.add(pos + i);
+        if (Level.passable[getPos() + i]) {
+          candidates.add(getPos() + i);
         }
       }
 
       for (int i = 0; i < nDrops && !candidates.isEmpty(); i++) {
         Integer c = Random.element(candidates);
-        Dungeon.level.drop(new Dewdrop(), c).sprite.drop(pos);
+        Dungeon.level.drop(new Dewdrop(), c).sprite.drop(getPos());
         candidates.remove(c);
       }
 
@@ -278,16 +277,16 @@ public class WandOfRegrowth extends Wand {
 
     //seed is never dropped, only care about plant class
     public static class Seed extends Plant.Seed {
-      {
-        plantClass = Dewcatcher.class;
+      public Seed() {
+        super(Dewcatcher.class, null);
       }
     }
   }
 
   public static class Seedpod extends Plant {
 
-    {
-      image = 13;
+    public Seedpod() {
+      super(13);
     }
 
     @Override
@@ -297,15 +296,15 @@ public class WandOfRegrowth extends Wand {
 
       ArrayList<Integer> candidates = new ArrayList<Integer>();
       for (int i : PathFinder.NEIGHBOURS8) {
-        if (Level.passable[pos + i]) {
-          candidates.add(pos + i);
+        if (Level.passable[getPos() + i]) {
+          candidates.add(getPos() + i);
         }
       }
 
       for (int i = 0; i < nSeeds && !candidates.isEmpty(); i++) {
         Integer c = Random.element(candidates);
         Dungeon.level.drop(Generator.random(Generator.Category.SEED), c)
-                .sprite.drop(pos);
+                .sprite.drop(getPos());
         candidates.remove(c);
       }
 
@@ -313,8 +312,8 @@ public class WandOfRegrowth extends Wand {
 
     //seed is never dropped, only care about plant class
     public static class Seed extends Plant.Seed {
-      {
-        plantClass = Seedpod.class;
+      public Seed() {
+        super(Seedpod.class, null);
       }
     }
 

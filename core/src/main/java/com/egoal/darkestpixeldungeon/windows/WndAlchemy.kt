@@ -14,10 +14,6 @@ import com.egoal.darkestpixeldungeon.ui.Window
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 
-private const val WIDTH = 116f
-private const val BTN_SIZE = 32f
-private const val BTN_GAP = 2f
-
 class WndAlchemy : Window() {
     private var inputButtons: Array<BtnItem>
 
@@ -112,4 +108,10 @@ class WndAlchemy : Window() {
     }
 
     // todo: player may lost items if quit with alchemy window open.
+
+    companion object {
+        private const val WIDTH = 116f
+        private const val BTN_SIZE = 32f
+        private const val BTN_GAP = 2f
+    }
 }

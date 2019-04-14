@@ -220,8 +220,8 @@ public class HornOfPlenty extends Artifact {
     @Override
     public void onSelect(Item item) {
       if (item != null && item instanceof Food) {
-        if (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib ==
-                null) {
+        if (item instanceof Blandfruit &&
+                ((Blandfruit) item).getPotionAttrib() == null) {
           GLog.w(Messages.get(HornOfPlenty.class, "reject"));
         } else {
           Hero hero = Dungeon.hero;

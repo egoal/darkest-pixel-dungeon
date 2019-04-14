@@ -661,8 +661,7 @@ public abstract class Char extends Actor {
     IMMOVABLE,
     PHANTOM,
   }
-
-
+  
   // used on damage attacker, avoid null usage...
   public static class Nobody extends Char {
     public static Nobody INSTANCE = new Nobody();

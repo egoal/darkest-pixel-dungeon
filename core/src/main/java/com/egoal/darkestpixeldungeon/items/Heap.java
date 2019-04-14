@@ -427,7 +427,7 @@ public class Heap implements Bundlable {
       } else {
 
         Plant.Seed proto = (Plant.Seed) items.get(Random.chances(chances));
-        Class<? extends Item> itemClass = proto.alchemyClass;
+        Class<? extends Item> itemClass = proto.getAlchemyClass();
 
         destroy();
 

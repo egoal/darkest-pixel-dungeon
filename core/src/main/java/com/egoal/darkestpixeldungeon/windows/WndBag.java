@@ -91,6 +91,8 @@ public class WndBag extends WndTabbed {
   protected static final int TITLE_HEIGHT = 12;
 
   private Listener listener;
+  private Filter filter = null;// compatible for  lambda
+
   private WndBag.Mode mode;
   private String title;
 
@@ -105,9 +107,20 @@ public class WndBag extends WndTabbed {
   private static Bag lastBag;
 
   public WndBag(Bag bag, Listener listener, Mode mode, String title) {
-
     super();
 
+    create(bag, listener, mode, title);
+  }
+
+  public WndBag(Bag bag, Listener listener, String title, Filter filter) {
+    super();
+    this.filter = filter;
+
+    create(bag, listener, Mode.ALL, title);
+  }
+
+  // second stage constructor...
+  private void create(Bag bag, Listener listener, Mode mode, String title) {
     this.listener = listener;
     this.mode = mode;
     this.title = title;
@@ -391,37 +404,7 @@ public class WndBag extends WndTabbed {
         if (item.name() == null) {
           enable(false);
         } else {
-          enable(
-                  mode == Mode.FOR_SALE && (item.price() > 0) && (!item
-                          .isEquipped(Dungeon.hero) || !item.cursed) ||
-                          mode == Mode.UPGRADEABLE && item.isUpgradable() ||
-                          mode == Mode.UNIDENTIFED && !item.isIdentified() ||
-                          mode == Mode.UNIDED_OR_CURSED && ((item instanceof
-                                  EquipableItem || item instanceof Wand) &&
-                                  (!item.isIdentified() || item.cursed)) ||
-                          mode == Mode.QUICKSLOT && (item.defaultAction !=
-                                  null) ||
-                          mode == Mode.WEAPON && (item instanceof MeleeWeapon
-                                  || item instanceof Boomerang) ||
-                          mode == Mode.ARMOR && (item instanceof Armor) ||
-                          mode == Mode.ENCHANTABLE && (item instanceof
-                                  MeleeWeapon || item instanceof Boomerang ||
-                                  item instanceof Armor) ||
-                          mode == Mode.WAND && (item instanceof Wand) ||
-                          mode == Mode.SEED && (item instanceof Plant.Seed) ||
-                          mode == Mode.FOOD && (item instanceof Food) ||
-                          mode == Mode.POTION && (item instanceof Potion) ||
-                          mode == Mode.SCROLL && (item instanceof Scroll) ||
-                          mode == Mode.EQUIPMENT && (item instanceof
-                                  EquipableItem) ||
-                          mode == Mode.RING && (item instanceof Ring) ||
-                          mode == Mode.ALCHEMY && (item instanceof Plant.Seed
-                                  || item instanceof MysteryMeat ||
-                                  (item instanceof Blandfruit && (
-                                          (Blandfruit) item).potionAttrib == 
-                                          null)) ||
-                          mode == Mode.ALL
-          );
+          enable(filter != null ? filter.enable(item) : filterByMode(item));
           //extra logic for cursed weapons or armor
           if (!active && mode == Mode.UNIDED_OR_CURSED) {
             if (item instanceof Weapon) {
@@ -437,6 +420,49 @@ public class WndBag extends WndTabbed {
       } else {
         bg.color(NORMAL);
       }
+    }
+    
+    private boolean filterByMode(Item item){
+      switch (mode){
+        case FOR_SALE:
+          return item.price()>0 && !(item.isEquipped(Dungeon.hero) && item.cursed);
+        case UPGRADEABLE:
+          return item.isUpgradable();
+        case UNIDENTIFED:
+          return !item.isIdentified();
+        case UNIDED_OR_CURSED:
+          return (item instanceof EquipableItem || item instanceof Wand) && 
+                  (!item.isIdentified() || item.cursed);
+        case QUICKSLOT:
+          return item.defaultAction!=null;
+        case WEAPON:
+          return item instanceof MeleeWeapon || item instanceof Boomerang;
+        case ARMOR:
+          return item instanceof Armor;
+        case ENCHANTABLE:
+          return item instanceof MeleeWeapon || item instanceof Boomerang|| item instanceof Armor;
+        case WAND:
+          return item instanceof Wand;
+        case SEED:
+          return item instanceof Plant.Seed;
+        case FOOD:
+          return item instanceof Food;
+        case POTION:
+          return item instanceof Potion;
+        case SCROLL:
+          return item instanceof Scroll;
+        case EQUIPMENT:
+          return item instanceof EquipableItem;
+        case RING:
+          return item instanceof Ring;
+        case ALCHEMY:
+          return item instanceof Plant.Seed || item instanceof MysteryMeat || 
+                  (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib()==null);
+        case ALL:
+          return true;
+      }
+      
+      return false;
     }
 
     @Override
@@ -486,5 +512,9 @@ public class WndBag extends WndTabbed {
 
   public interface Listener {
     void onSelect(Item item);
+  }
+
+  public interface Filter {
+    boolean enable(Item item);
   }
 }

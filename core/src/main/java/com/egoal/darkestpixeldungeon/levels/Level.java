@@ -376,7 +376,7 @@ public abstract class Level implements Bundlable {
     collection = bundle.getCollection(PLANTS);
     for (Bundlable p : collection) {
       Plant plant = (Plant) p;
-      plants.put(plant.pos, plant);
+      plants.put(plant.getPos(), plant);
     }
 
     collection = bundle.getCollection(TRAPS);
@@ -868,19 +868,12 @@ public abstract class Level implements Bundlable {
 
     }
 
-    if ((map[cell] == Terrain.ALCHEMY) && (
-            !(item instanceof Plant.Seed || item instanceof Blandfruit) ||
-                    item instanceof BlandfruitBush.Seed ||
-                    (item instanceof Blandfruit && (((Blandfruit) item)
-                            .potionAttrib != null || heaps.get(cell) != null)
-                    ) ||
-                    Dungeon.hero.buff(AlchemistsToolkit.alchemy.class) !=
-                            null && Dungeon.hero.buff(AlchemistsToolkit
-                            .alchemy.class).isCursed())) {
+    // don't drop on them
+    if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain.ENCHANTING_STATION) {
       int n;
       do {
         n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)];
-      } while (map[n] != Terrain.EMPTY_SP);
+      } while (map[n] != Terrain.EMPTY_SP); //fixme: as they must put on empty_sp tiles!!!
       cell = n;
     }
 

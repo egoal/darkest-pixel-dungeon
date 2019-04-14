@@ -27,7 +27,7 @@ public class WndInfoPlant extends WndTitledMessage {
 
   public WndInfoPlant(Plant plant) {
 
-    super(new PlantSprite(plant.image), plant.plantName, plant.desc());
+    super(new PlantSprite(plant.getImage()), plant.getPlantName(), plant.desc());
 
   }
 }
