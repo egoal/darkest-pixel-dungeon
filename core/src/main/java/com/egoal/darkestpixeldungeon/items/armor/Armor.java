@@ -140,12 +140,12 @@ public class Armor extends EquipableItem {
   @Override
   public boolean doEquip(Hero hero) {
 
-    detach(hero.belongings.backpack);
+    detach(hero.getBelongings().backpack);
 
-    if (hero.belongings.armor == null || hero.belongings.armor.doUnequip
+    if (hero.getBelongings().armor == null || hero.getBelongings().armor.doUnequip
             (hero, true, false)) {
 
-      hero.belongings.armor = this;
+      hero.getBelongings().armor = this;
 
       cursedKnown = true;
       if (cursed) {
@@ -161,7 +161,7 @@ public class Armor extends EquipableItem {
 
     } else {
 
-      collect(hero.belongings.backpack);
+      collect(hero.getBelongings().backpack);
       return false;
 
     }
@@ -198,7 +198,7 @@ public class Armor extends EquipableItem {
   public boolean doUnequip(Hero hero, boolean collect, boolean single) {
     if (super.doUnequip(hero, collect, single)) {
 
-      hero.belongings.armor = null;
+      hero.getBelongings().armor = null;
       ((HeroSprite) hero.sprite).updateArmor();
 
       BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield
@@ -216,7 +216,7 @@ public class Armor extends EquipableItem {
 
   @Override
   public boolean isEquipped(Hero hero) {
-    return hero.belongings.armor == this;
+    return hero.getBelongings().armor == this;
   }
 
   public final int DRMax() {
@@ -294,7 +294,7 @@ public class Armor extends EquipableItem {
 
       if (STRReq() > Dungeon.hero.STR()) {
         info += " " + Messages.get(Armor.class, "too_heavy");
-      } else if (Dungeon.hero.heroClass == HeroClass.ROGUE && Dungeon.hero
+      } else if (Dungeon.hero.getHeroClass() == HeroClass.ROGUE && Dungeon.hero
               .STR() > STRReq()) {
         info += " " + Messages.get(Armor.class, "excess_str");
       }

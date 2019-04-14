@@ -154,7 +154,7 @@ public class GameScene extends PixelScene {
 
     Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
 
-    DarkestPixelDungeon.lastClass(Dungeon.hero.heroClass.ordinal());
+    DarkestPixelDungeon.lastClass(Dungeon.hero.getHeroClass().ordinal());
 
     super.create();
     Camera.main.zoom(GameMath.gate(minZoom, defaultZoom + DarkestPixelDungeon
@@ -445,7 +445,7 @@ public class GameScene extends PixelScene {
       t.start();
     }
 
-    if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {
+    if (Dungeon.hero.getReady() && Dungeon.hero.paralysed == 0) {
       log.newLine();
     }
 
@@ -469,7 +469,7 @@ public class GameScene extends PixelScene {
       if (tagAppearing) layoutTags();
     }
 
-    cellSelector.enable(Dungeon.hero.ready);
+    cellSelector.enable(Dungeon.hero.getReady());
   }
 
   private boolean tagAttack = false;
@@ -527,7 +527,7 @@ public class GameScene extends PixelScene {
 
   @Override
   protected void onMenuPressed() {
-    if (Dungeon.hero.ready) {
+    if (Dungeon.hero.getReady()) {
       selectItem(null, WndBag.Mode.ALL, null);
     }
   }
@@ -843,10 +843,10 @@ public class GameScene extends PixelScene {
   }
 
   static boolean cancel() {
-    if (Dungeon.hero.curAction != null || Dungeon.hero.resting) {
+    if (Dungeon.hero.getCurAction() != null || Dungeon.hero.getResting()) {
 
-      Dungeon.hero.curAction = null;
-      Dungeon.hero.resting = false;
+      Dungeon.hero.setCurAction(null);
+      Dungeon.hero.setResting(false);
       return true;
 
     } else {

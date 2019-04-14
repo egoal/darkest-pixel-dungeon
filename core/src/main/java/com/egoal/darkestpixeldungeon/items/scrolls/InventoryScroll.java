@@ -90,7 +90,7 @@ public abstract class InventoryScroll extends Scroll {
 
       } else if (!((Scroll) curItem).ownedByBook) {
 
-        curItem.collect(curUser.belongings.backpack);
+        curItem.collect(curUser.getBelongings().backpack);
 
       }
     }

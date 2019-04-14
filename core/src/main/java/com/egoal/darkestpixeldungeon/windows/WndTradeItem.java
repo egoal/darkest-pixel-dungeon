@@ -119,7 +119,7 @@ public class WndTradeItem extends Window {
 
     // sorceress perk1
     final int price = (int) (item.sellPrice() *
-            (Dungeon.hero.heroPerk.contain(HeroPerk.Perk.SHREWD) ? .75 : 1));
+            (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1));
 
     if (canBuy) {
 
@@ -236,7 +236,7 @@ public class WndTradeItem extends Window {
             false)) {
       return;
     }
-    item.detachAll(hero.belongings.backpack);
+    item.detachAll(hero.getBelongings().backpack);
 
     int price = item.price();
 
@@ -251,7 +251,7 @@ public class WndTradeItem extends Window {
 
       Hero hero = Dungeon.hero;
 
-      item = item.detach(hero.belongings.backpack);
+      item = item.detach(hero.getBelongings().backpack);
       int price = item.price();
 
       new Gold(price).doPickUp(hero);

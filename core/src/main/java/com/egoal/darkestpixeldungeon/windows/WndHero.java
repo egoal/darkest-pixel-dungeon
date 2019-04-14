@@ -124,13 +124,13 @@ public class WndHero extends WndTabbed {
       Hero hero = Dungeon.hero;
 
       IconTitle title = new IconTitle();
-      title.icon(HeroSprite.avatar(hero.heroClass, hero.tier()));
+      title.icon(HeroSprite.avatar(hero.getHeroClass(), hero.tier()));
       if (hero.givenName().equals(hero.className()))
-        title.label(Messages.get(this, "title", hero.lvl, hero.className())
+        title.label(Messages.get(this, "title", hero.getLvl(), hero.className())
                 .toUpperCase(Locale.ENGLISH));
       else
         title.label((hero.givenName() + "\n" + Messages.get(this, "title",
-                hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH));
+                hero.getLvl(), hero.className())).toUpperCase(Locale.ENGLISH));
       title.color(Window.SHPX_COLOR);
       title.setRect(0, 0, WIDTH, 0);
       add(title);
@@ -142,7 +142,7 @@ public class WndHero extends WndTabbed {
         statSlot(Messages.get(this, "health"), hero.HP + "+" + hero.SHLD +
                 "/" + hero.HT);
       else statSlot(Messages.get(this, "health"), (hero.HP) + "/" + hero.HT);
-      statSlot(Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp());
+      statSlot(Messages.get(this, "exp"), hero.getExp() + "/" + hero.maxExp());
 
       // sanity slot
       Pressure p = hero.buff(Pressure.class);

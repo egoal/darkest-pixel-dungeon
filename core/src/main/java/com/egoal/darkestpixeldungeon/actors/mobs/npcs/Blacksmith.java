@@ -94,7 +94,7 @@ public class Blacksmith extends NPC {
     } else if (!Quest.completed) {
       if (Quest.alternative) {
 
-        Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
+        Pickaxe pick = Dungeon.hero.getBelongings().getItem(Pickaxe.class);
         if (pick == null) {
           tell(Messages.get(this, "lost_pick"));
         } else if (!pick.bloodStained) {
@@ -103,7 +103,7 @@ public class Blacksmith extends NPC {
           if (pick.isEquipped(Dungeon.hero)) {
             pick.doUnequip(Dungeon.hero, false);
           }
-          pick.detach(Dungeon.hero.belongings.backpack);
+          pick.detach(Dungeon.hero.getBelongings().backpack);
           tell(Messages.get(this, "completed"));
 
           Quest.completed = true;
@@ -112,8 +112,8 @@ public class Blacksmith extends NPC {
 
       } else {
 
-        Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
-        DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
+        Pickaxe pick = Dungeon.hero.getBelongings().getItem(Pickaxe.class);
+        DarkGold gold = Dungeon.hero.getBelongings().getItem(DarkGold.class);
         if (pick == null) {
           tell(Messages.get(this, "lost_pick"));
         } else if (gold == null || gold.quantity() < 12) {
@@ -122,8 +122,8 @@ public class Blacksmith extends NPC {
           if (pick.isEquipped(Dungeon.hero)) {
             pick.doUnequip(Dungeon.hero, false);
           }
-          pick.detach(Dungeon.hero.belongings.backpack);
-          gold.detachAll(Dungeon.hero.belongings.backpack);
+          pick.detach(Dungeon.hero.getBelongings().backpack);
+          gold.detachAll(Dungeon.hero.getBelongings().backpack);
           tell(Messages.get(this, "completed"));
 
           Quest.completed = true;
@@ -199,7 +199,7 @@ public class Blacksmith extends NPC {
     if (second.isEquipped(Dungeon.hero)) {
       ((EquipableItem) second).doUnequip(Dungeon.hero, false);
     }
-    second.detachAll(Dungeon.hero.belongings.backpack);
+    second.detachAll(Dungeon.hero.getBelongings().backpack);
 
     Quest.reforged = true;
 

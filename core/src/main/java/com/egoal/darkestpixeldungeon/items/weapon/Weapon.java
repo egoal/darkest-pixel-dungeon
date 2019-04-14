@@ -164,7 +164,7 @@ abstract public class Weapon extends KindOfWeapon {
   public float speedFactor(Hero hero) {
 
     int encumrance = STRReq() - hero.STR();
-    if (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS) {
+    if (this instanceof MissileWeapon && hero.getHeroClass() == HeroClass.HUNTRESS) {
       encumrance -= 2;
     }
 

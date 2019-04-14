@@ -46,7 +46,7 @@ public class AttackIndicator extends Tag {
   private ArrayList<Mob> candidates = new ArrayList<Mob>();
 
   public AttackIndicator() {
-    super(DangerIndicator.COLOR);
+    super(0xFF4C4C);
 
     instance = this;
     lastTarget = null;
@@ -86,7 +86,7 @@ public class AttackIndicator extends Tag {
 
       if (Dungeon.hero.isAlive()) {
 
-        enable(Dungeon.hero.ready);
+        enable(Dungeon.hero.getReady());
 
       } else {
         visible(false);

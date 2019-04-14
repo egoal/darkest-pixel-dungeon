@@ -44,7 +44,7 @@ public class Fadeleaf extends Plant {
     if (ch instanceof Hero) {
 
       ScrollOfTeleportation.teleportHero((Hero) ch);
-      ((Hero) ch).curAction = null;
+      ((Hero) ch).setCurAction(null);
 
     } else if (ch instanceof Mob && !ch.properties().contains(Char.Property
             .IMMOVABLE)) {

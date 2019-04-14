@@ -130,7 +130,7 @@ public class SurfaceScene extends PixelScene {
       window.add(patch);
     }
 
-    Avatar a = new Avatar(Dungeon.hero.heroClass);
+    Avatar a = new Avatar(Dungeon.hero.getHeroClass());
     // Removing semitransparent contour
     a.am = 2;
     a.aa = -1;

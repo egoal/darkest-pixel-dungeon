@@ -91,7 +91,7 @@ public class WndWandmaker extends Window {
 
     hide();
 
-    item.detach(Dungeon.hero.belongings.backpack);
+    item.detach(Dungeon.hero.getBelongings().backpack);
 
     reward.identify();
     if (reward.doPickUp(Dungeon.hero)) {

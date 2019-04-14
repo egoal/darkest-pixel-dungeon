@@ -71,7 +71,7 @@ public class WndImp extends Window {
 
     hide();
 
-    tokens.detachAll(Dungeon.hero.belongings.backpack);
+    tokens.detachAll(Dungeon.hero.getBelongings().backpack);
 
     reward.identify();
     if (reward.doPickUp(Dungeon.hero)) {

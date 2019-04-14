@@ -453,7 +453,7 @@ public abstract class Mob extends Char {
     if (!enemySeen && enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack
             ()) {
       // surprise attack!
-      if (((Hero) enemy).heroPerk.contain(HeroPerk.Perk.ASSASSIN)) {
+      if (((Hero) enemy).getHeroPerk().contain(HeroPerk.Perk.ASSASSIN)) {
         // assassin perk
         dmg.value *= 1.25f;
         Wound.hit(this);
@@ -543,7 +543,7 @@ public abstract class Mob extends Char {
   }
 
   public int exp() {
-    int dlvl = Dungeon.hero.lvl - maxLvl;
+    int dlvl = Dungeon.hero.getLvl() - maxLvl;
     if (dlvl < 0) return EXP;
     return EXP / (2 + dlvl);
   }
@@ -557,7 +557,7 @@ public abstract class Mob extends Char {
     int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
     lootChance *= Math.pow(1.15, bonus);
 
-    if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
+    if (Random.Float() < lootChance && Dungeon.hero.getLvl() <= maxLvl + 2) {
       Item loot = createLoot();
       if (loot != null)
         Dungeon.level.drop(loot, pos).sprite.drop();

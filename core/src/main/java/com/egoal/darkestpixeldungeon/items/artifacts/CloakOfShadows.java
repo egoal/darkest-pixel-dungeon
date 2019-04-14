@@ -226,7 +226,7 @@ public class CloakOfShadows extends Artifact {
         ((Hero) target).interrupt();
       }
 
-      if (turnsToCost == 0) exp += 10 + ((Hero) target).lvl;
+      if (turnsToCost == 0) exp += 10 + ((Hero) target).getLvl();
 
       if (exp >= (level() + 1) * 40 && level() < levelCap) {
         upgrade();
@@ -246,7 +246,7 @@ public class CloakOfShadows extends Artifact {
     public void dispel() {
       charge--;
 
-      exp += 10 + ((Hero) target).lvl;
+      exp += 10 + ((Hero) target).getLvl();
 
       if (exp >= (level() + 1) * 40 && level() < levelCap) {
         upgrade();

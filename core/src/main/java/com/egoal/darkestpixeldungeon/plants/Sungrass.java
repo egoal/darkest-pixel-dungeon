@@ -96,7 +96,7 @@ public class Sungrass extends Plant {
           target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
         }
         if (target.HP == target.HT && target instanceof Hero) {
-          ((Hero) target).resting = false;
+          ((Hero) target).setResting(false);
         }
         count = 1;
       } else {

@@ -59,11 +59,11 @@ public class Artifact extends KindofMisc {
   @Override
   public boolean doEquip(final Hero hero) {
 
-    if ((hero.belongings.misc1 != null && hero.belongings.misc1.getClass() ==
+    if ((hero.getBelongings().misc1 != null && hero.getBelongings().misc1.getClass() ==
             this.getClass())
-            || (hero.belongings.misc2 != null && hero.belongings
+            || (hero.getBelongings().misc2 != null && hero.getBelongings()
             .misc2.getClass() == this.getClass())
-            || (hero.belongings.misc3 != null && hero.belongings
+            || (hero.getBelongings().misc3 != null && hero.getBelongings()
             .misc3.getClass() == this.getClass())) {
 
       GLog.w(Messages.get(Artifact.class, "cannot_wear_two"));

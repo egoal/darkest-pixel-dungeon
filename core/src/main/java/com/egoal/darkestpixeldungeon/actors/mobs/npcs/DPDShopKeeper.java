@@ -399,7 +399,7 @@ public class DPDShopKeeper extends NPC {
 
     private int buyPrice(Item item) {
       return (int) (item.sellPrice() *
-              (Dungeon.hero.heroPerk.contain(HeroPerk.Perk.SHREWD) ? .75 : 1.));
+              (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1.));
     }
 
     private static class ItemButton extends ItemSlot {

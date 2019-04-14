@@ -151,12 +151,11 @@ public abstract class Scroll extends Item {
         GLog.n(Messages.get(this, "cursed"));
       } else {
         // want read
-        Pair<Boolean, String> pr = hero.canRead();
-        if (!pr.first)
-          GLog.n(pr.second);
+        kotlin.Pair<Boolean, String> pr = hero.canRead();
+        if (!pr.getFirst()) GLog.n(pr.getSecond());
         else {
           curUser = hero;
-          curItem = detach(hero.belongings.backpack);
+          curItem = detach(hero.getBelongings().backpack);
           doRead();
         }
       }

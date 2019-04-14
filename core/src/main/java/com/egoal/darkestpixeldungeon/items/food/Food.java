@@ -71,12 +71,12 @@ public class Food extends Item {
 
     if (action.equals(AC_EAT)) {
 
-      detach(hero.belongings.backpack);
+      detach(hero.getBelongings().backpack);
 
       (hero.buff(Hunger.class)).satisfy(energy);
       GLog.i(message);
 
-      switch (hero.heroClass) {
+      switch (hero.getHeroClass()) {
         case WARRIOR:
           if (hero.HP < hero.HT) {
             hero.HP = Math.min(hero.HP + 5, hero.HT);

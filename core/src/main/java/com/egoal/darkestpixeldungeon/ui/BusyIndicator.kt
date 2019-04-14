@@ -18,24 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.ui;
+package com.egoal.darkestpixeldungeon.ui
 
-import com.egoal.darkestpixeldungeon.Dungeon;
-import com.watabou.noosa.Image;
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.watabou.noosa.Image
 
-public class BusyIndicator extends Image {
+class BusyIndicator : Image() {
+    init {
+        copy(Icons.BUSY.get())
 
-  public BusyIndicator() {
-    super();
-    copy(Icons.BUSY.get());
+        origin.set(width / 2, height / 2)
+        angularSpeed = 720f
+    }
 
-    origin.set(width / 2, height / 2);
-    angularSpeed = 720;
-  }
-
-  @Override
-  public void update() {
-    super.update();
-    visible = Dungeon.hero.isAlive() && !Dungeon.hero.ready;
-  }
+    override fun update() {
+        super.update()
+        visible = Dungeon.hero.isAlive && !Dungeon.hero.ready
+    }
 }

@@ -56,7 +56,7 @@ public class MagicalSleep extends Buff {
   public boolean act() {
     if (target instanceof Hero) {
       target.HP = Math.min(target.HP + 1, target.HT);
-      ((Hero) target).resting = true;
+      ((Hero) target).setResting(true);
       target.buff(Pressure.class).downPressure(.5f);
       sleeped_ += STEP;
       if (sleeped_ > MAX_SLEEP_TIME) {
@@ -73,7 +73,7 @@ public class MagicalSleep extends Buff {
     if (target.paralysed > 0)
       target.paralysed--;
     if (target instanceof Hero)
-      ((Hero) target).resting = false;
+      ((Hero) target).setResting(false);
     super.detach();
   }
 

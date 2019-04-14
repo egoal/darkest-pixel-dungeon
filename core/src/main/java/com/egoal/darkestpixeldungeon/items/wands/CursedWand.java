@@ -250,7 +250,7 @@ public class CursedWand {
           cursedFX(user, bolt, new Callback() {
             public void call() {
               // int damage = user.lvl * 2;
-              Damage damage = new Damage(user.lvl * 2, this, target).type
+              Damage damage = new Damage(user.getLvl() * 2, this, target).type
                       (Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
               switch (Random.Int(2)) {
                 case 0:
@@ -453,7 +453,7 @@ public class CursedWand {
       //random transmogrification
       case 3:
         wand.wandUsed();
-        wand.detach(user.belongings.backpack);
+        wand.detach(user.getBelongings().backpack);
         Item result;
         do {
           result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,

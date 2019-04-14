@@ -141,8 +141,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
   @Override
   public Image getIcon() {
     Image icon;
-    if (((Hero) target).belongings.weapon != null) {
-      icon = new ItemSprite(Dungeon.hero.belongings.weapon.image, null);
+    if (((Hero) target).getBelongings().weapon != null) {
+      icon = new ItemSprite(Dungeon.hero.getBelongings().weapon.image, null);
     } else {
       icon = new ItemSprite(new Item() {
         {

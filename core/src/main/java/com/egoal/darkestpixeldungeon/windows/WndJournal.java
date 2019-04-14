@@ -82,16 +82,16 @@ public class WndJournal extends Window {
     float pos = 0;
 
     //Keys
-    for (int i = Dungeon.hero.belongings.ironKeys.length - 1; i > 0; i--) {
-      if (Dungeon.hero.belongings.specialKeys[i] > 0) {
+    for (int i = Dungeon.hero.getBelongings().ironKeys.length - 1; i > 0; i--) {
+      if (Dungeon.hero.getBelongings().specialKeys[i] > 0) {
         String text;
         if (i % 5 == 0)
           text = Messages.capitalize(Messages.get(SkeletonKey.class, "name"));
         else
           text = Messages.capitalize(Messages.get(GoldenKey.class, "name"));
 
-        if (Dungeon.hero.belongings.specialKeys[i] > 1) {
-          text += " x" + Dungeon.hero.belongings.specialKeys[i];
+        if (Dungeon.hero.getBelongings().specialKeys[i] > 1) {
+          text += " x" + Dungeon.hero.getBelongings().specialKeys[i];
         }
         ListItem item = new ListItem(Messages.titleCase(text), i);
         item.setRect(0, pos, WIDTH, ITEM_HEIGHT);
@@ -99,11 +99,11 @@ public class WndJournal extends Window {
 
         pos += item.height();
       }
-      if (Dungeon.hero.belongings.ironKeys[i] > 0) {
+      if (Dungeon.hero.getBelongings().ironKeys[i] > 0) {
         String text = Messages.titleCase(Messages.get(IronKey.class, "name"));
 
-        if (Dungeon.hero.belongings.ironKeys[i] > 1) {
-          text += " x" + Dungeon.hero.belongings.ironKeys[i];
+        if (Dungeon.hero.getBelongings().ironKeys[i] > 1) {
+          text += " x" + Dungeon.hero.getBelongings().ironKeys[i];
         }
 
         ListItem item = new ListItem(text, i);

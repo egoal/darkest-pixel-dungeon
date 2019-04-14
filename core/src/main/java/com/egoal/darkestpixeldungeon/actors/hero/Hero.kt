@@ -55,7 +55,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 // refactor may finish someday...
-class KHero : Char() {
+class Hero : Char() {
     init {
         actPriority = 0
         name = Messages.get(this, "name")
@@ -85,7 +85,7 @@ class KHero : Char() {
     private var damageInterrupt = true
     var curAction: HeroAction? = null
     var lastAction: HeroAction? = null
-    private var enemy: Char? = null
+    internal var enemy: Char? = null
 
     private val visibleEnemies = mutableListOf<Mob>()
     val mindVisionEnemies = mutableListOf<Mob>()
@@ -95,7 +95,7 @@ class KHero : Char() {
 
     // equipments
     var rangedWeapon: MissileWeapon? = null
-    val belongings = Belongings(Dungeon.hero) //fixme
+    val belongings = Belongings(this)
 
     fun STR(): Int {
         var str = this.STR + if (weakened) -2 else 0
@@ -208,8 +208,7 @@ class KHero : Char() {
         followers.clear()
     }
 
-    fun className(): String = if (subClass == null || subClass == HeroSubClass.NONE)
-        heroClass.title() else subClass.title()
+    fun className(): String = if (subClass == HeroSubClass.NONE) heroClass.title() else subClass.title()
 
     fun givenName(): String = if (name == Messages.get(this, "name")) className() else name
 
@@ -398,20 +397,19 @@ class KHero : Char() {
 
     fun isStarving(): Boolean = buff(Hunger::class.java)!!.isStarving
 
-    fun canAttack(): Boolean {
-        if (enemy == null || enemy!!.pos == pos) return false
-
-        if (Dungeon.level.adjacent(pos, enemy!!.pos)) return true
+    fun canAttack(target: Char): Boolean {
+        if (target.pos == pos) return false
+        if (Dungeon.level.adjacent(pos, target.pos)) return true
 
         // weapon range
         var canHit = false
         belongings.weapon?.let {
-            //fixme
-            if (Dungeon.level.distance(pos, enemy!!.pos) <= it.reachFactor(Dungeon.hero)) {
+            val wepRange = it.reachFactor(this)
+            if (Dungeon.level.distance(pos, target.pos) <= wepRange) {
                 val passable = BArray.not(Level.solid, null)
                 for (mob in Dungeon.level.mobs) passable[mob.pos] = false
-                PathFinder.buildDistanceMap(enemy!!.pos, passable, it.reachFactor(Dungeon.hero))
-                canHit = PathFinder.distance[pos] <= it.reachFactor(Dungeon.hero)
+                PathFinder.buildDistanceMap(target.pos, passable, wepRange)
+                canHit = PathFinder.distance[pos] <= wepRange
             }
         }
 
@@ -546,7 +544,11 @@ class KHero : Char() {
             sprite.showStatus(0xFFFFFF, r.toString())
     }
 
-    override fun spend(time: Float) {
+    fun recoverSanity(value: Int) {
+        recoverSanity(value.toFloat())
+    }
+
+    public override fun spend(time: Float) {
         if (buff(TimekeepersHourglass.TimeFreeze::class.java)?.processTime(time) != true)
             super.spend(time)
     }
@@ -813,7 +815,7 @@ class KHero : Char() {
                 buff(Pressure::class.java)!!.pressure * 0.3f))
     }
 
-    private fun updateAwareness() {
+    internal fun updateAwareness() {
         val w = if (heroPerk.contain(HeroPerk.Perk.KEEN)) 0.85 else 0.9
         awareness = (1.0 - Math.pow(w, (1 + Math.min(lvl, 9)).toDouble() * 0.5)).toFloat()
     }
@@ -893,7 +895,7 @@ class KHero : Char() {
         return super.isAlive()
     }
 
-    fun reset(full: Boolean) {
+    fun rest(full: Boolean) {
         spendAndNext(TIME_TO_REST)
         if (!full)
             sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"))
@@ -1159,7 +1161,7 @@ class KHero : Char() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
 
-        heroClass = HeroClass.restoreInBundle(bundle)
+        heroClass = HeroClass.RestoreFromBundle(bundle)
         subClass = HeroSubClass.RestoreFromBundle(bundle)
         heroPerk = HeroPerk.restoreFromBundle(bundle)
 

@@ -109,9 +109,8 @@ public class UnstableSpellbook extends Artifact {
       else if (charge == 0) GLog.i(Messages.get(this, "no_charge"));
       else if (cursed) GLog.i(Messages.get(this, "cursed"));
       else {
-        Pair<Boolean, String> pr = hero.canRead();
-        if (!pr.first)
-          GLog.n(pr.second);
+        kotlin.Pair<Boolean, String> pr = hero.canRead();
+        if (!pr.getFirst()) GLog.n(pr.getSecond());
         else {
           charge--;
 
@@ -231,7 +230,7 @@ public class UnstableSpellbook extends Artifact {
             hero.sprite.emitter().burst(ElmoParticle.FACTORY, 12);
 
             scrolls.remove(i);
-            item.detach(hero.belongings.backpack);
+            item.detach(hero.getBelongings().backpack);
 
             upgrade();
             GLog.i(Messages.get(UnstableSpellbook.class, "infuse_scroll"));

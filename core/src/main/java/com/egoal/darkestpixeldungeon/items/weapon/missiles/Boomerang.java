@@ -95,7 +95,7 @@ public class Boomerang extends MissileWeapon {
 
   @Override
   public Damage proc(Damage damage) {
-    if (damage.from instanceof Hero && ((Hero) damage.from).rangedWeapon == 
+    if (damage.from instanceof Hero && ((Hero) damage.from).getRangedWeapon() == 
             this) {
       // launch by hero
       circleBack(((Char) damage.to).pos, (Hero) damage.from);
@@ -114,11 +114,11 @@ public class Boomerang extends MissileWeapon {
             reset(from, curUser.pos, curItem, null);
 
     if (throwEquiped) {
-      owner.belongings.weapon = this;
+      owner.getBelongings().weapon = this;
       owner.spend(-TIME_TO_EQUIP);
       Dungeon.quickslot.replaceSimilar(this);
       updateQuickslot();
-    } else if (!collect(curUser.belongings.backpack)) {
+    } else if (!collect(curUser.getBelongings().backpack)) {
       Dungeon.level.drop(this, owner.pos).sprite.drop();
     }
   }

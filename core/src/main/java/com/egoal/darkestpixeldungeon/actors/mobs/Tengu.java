@@ -74,10 +74,10 @@ public class Tengu extends Mob {
   private HashSet<Phantom> phantoms = new HashSet<>();
 
   @Override
-  public void onAdd(){
-    for(Mob m: Dungeon.level.mobs)
-      if(m instanceof Phantom)
-        phantoms.add((Phantom)m);
+  public void onAdd() {
+    for (Mob m : Dungeon.level.mobs)
+      if (m instanceof Phantom)
+        phantoms.add((Phantom) m);
   }
 
   @Override
@@ -109,7 +109,7 @@ public class Tengu extends Mob {
     }
 
     if (enemy == Dungeon.hero)
-      Dungeon.hero.resting = false;
+      Dungeon.hero.setResting(false);
 
     sprite.attack(enemy.pos);
     spend(attackDelay());
@@ -126,7 +126,7 @@ public class Tengu extends Mob {
   @Override
   public Damage defendDamage(Damage dmg) {
     dmg.value -= Random.NormalIntRange(0, 5);
-    
+
     return dmg;
   }
 
@@ -134,7 +134,7 @@ public class Tengu extends Mob {
   public int attackSkill(Char target) {
     return 20;
   }
-  
+
   // copy from Char, so i should rework this function...
   @Override
   public boolean checkHit(Damage dmg) {
@@ -153,9 +153,9 @@ public class Tengu extends Mob {
     Char defender = (Char) dmg.to;
     float acuRoll = Random.Float(attacker.attackSkill(defender));
     float defRoll = Random.Float(defender.defenseSkill(attacker));
-    if(dmg.isFeatured(Damage.Feature.RANGED))
-      defRoll *=  1.2;
-    
+    if (dmg.isFeatured(Damage.Feature.RANGED))
+      defRoll *= 1.2;
+
     if (attacker.buffs(Bless.class) != null) acuRoll *= 1.2f;
     if (defender.buffs(Bless.class) != null) defRoll *= 1.2f;
 
@@ -266,7 +266,7 @@ public class Tengu extends Mob {
     Buff.detach(Dungeon.hero, Ignorant.class);
     Buff.detach(Dungeon.hero, MoonNight.class);
 
-    if (Dungeon.hero.subClass == HeroSubClass.NONE) {
+    if (Dungeon.hero.getSubClass() == HeroSubClass.NONE) {
       Dungeon.level.drop(new TomeOfMastery(), pos).sprite.drop();
     }
     Dungeon.level.drop(new MoonStone(), pos).sprite.drop();
@@ -278,7 +278,8 @@ public class Tengu extends Mob {
     Badges.validateBossSlain();
 
     // upgrade to the beacon
-    LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+    LloydsBeacon beacon = Dungeon.hero.getBelongings().getItem(LloydsBeacon
+            .class);
     if (beacon != null)
       beacon.upgrade();
 
@@ -301,7 +302,7 @@ public class Tengu extends Mob {
 
     // more likely to jump into water
     int waterpos = ((PrisonBossLevel) Dungeon.level).hallCenter();
-    boolean waterokay = Dungeon.level.distance(waterpos, thepos) >= 
+    boolean waterokay = Dungeon.level.distance(waterpos, thepos) >=
             JUMP_MIN_DISTANCE && Actor.findChar(waterpos) == null;
     if (waterokay) {
       // wont jump into the gas!
@@ -460,7 +461,7 @@ public class Tengu extends Mob {
   public HashSet<Class<?>> immunizedBuffs() {
     return IMMUNITIES;
   }
-  
+
   // tengu's skill
   static class Phantom extends Mob {
     {

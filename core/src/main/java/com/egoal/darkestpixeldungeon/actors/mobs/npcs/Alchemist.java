@@ -81,7 +81,7 @@ public class Alchemist extends NPC {
 
   // drink and give reward
   public void drink() {
-    DewVial dv = Dungeon.hero.belongings.getItem(DewVial.class);
+    DewVial dv = Dungeon.hero.getBelongings().getItem(DewVial.class);
     assert (dv != null);
     // drink
     int vol = dv.getVolume();
@@ -229,7 +229,7 @@ public class Alchemist extends NPC {
     private void onAnswered() {
       hide();
 
-      DewVial dv = Dungeon.hero.belongings.getItem(DewVial.class);
+      DewVial dv = Dungeon.hero.getBelongings().getItem(DewVial.class);
       if (dv == null) {
         GameScene.show(new WndQuest(alchemist_, Messages.get(this, 
                 "bottle_miss")));

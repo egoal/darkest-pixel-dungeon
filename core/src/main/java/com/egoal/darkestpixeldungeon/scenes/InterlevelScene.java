@@ -223,7 +223,7 @@ public class InterlevelScene extends PixelScene {
       level = Dungeon.newLevel();
     } else {
       Dungeon.depth++;
-      level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+      level = Dungeon.loadLevel(Dungeon.hero.getHeroClass());
     }
     Dungeon.switchLevel(level, level.entrance);
   }
@@ -239,7 +239,7 @@ public class InterlevelScene extends PixelScene {
       level = Dungeon.newLevel();
     } else {
       Dungeon.depth++;
-      level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+      level = Dungeon.loadLevel(Dungeon.hero.getHeroClass());
     }
     Dungeon.switchLevel(level, fallIntoPit ? level.pitCell() : level
             .randomRespawnCell());
@@ -251,7 +251,7 @@ public class InterlevelScene extends PixelScene {
 
     Dungeon.saveAll();
     Dungeon.depth--;
-    Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+    Level level = Dungeon.loadLevel(Dungeon.hero.getHeroClass());
     Dungeon.switchLevel(level, level.exit);
   }
 
@@ -262,7 +262,7 @@ public class InterlevelScene extends PixelScene {
 
     Dungeon.saveAll();
     Dungeon.depth = returnDepth;
-    Level level = Dungeon.loadLevel(Dungeon.hero.heroClass);
+    Level level = Dungeon.loadLevel(Dungeon.hero.getHeroClass());
     Dungeon.switchLevel(level, returnPos);
   }
 

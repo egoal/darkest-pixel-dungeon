@@ -180,7 +180,7 @@ public class ShopPainter extends Painter {
         break;
     }
 
-    ChooseBag(Dungeon.hero.belongings);
+    ChooseBag(Dungeon.hero.getBelongings());
 
     // potions
 //		itemsToSpawn.add( new PotionOfHealing(){
@@ -234,7 +234,7 @@ public class ShopPainter extends Painter {
     }
 
 
-    TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem
+    TimekeepersHourglass hourglass = Dungeon.hero.getBelongings().getItem
             (TimekeepersHourglass.class);
     if (hourglass != null) {
       int bags = 0;

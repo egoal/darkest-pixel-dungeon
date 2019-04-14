@@ -204,7 +204,7 @@ public class DM300 extends Mob {
 
     Badges.validateBossSlain();
 
-    LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+    LloydsBeacon beacon = Dungeon.hero.getBelongings().getItem(LloydsBeacon.class);
     if (beacon != null) {
       beacon.upgrade();
     }

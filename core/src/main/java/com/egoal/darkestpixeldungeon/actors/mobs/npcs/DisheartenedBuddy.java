@@ -40,7 +40,7 @@ public class DisheartenedBuddy extends NPC {
   public boolean interact() {
     sprite.turnTo(pos, Dungeon.hero.pos);
 
-    if (Dungeon.hero.belongings.getItem(Amulet.class) == null) {
+    if (Dungeon.hero.getBelongings().getItem(Amulet.class) == null) {
       float[] chances = new float[]{1, 2, 2, 2};
       if (meetTimes_++ == 0) {
         chances[0] = 10;

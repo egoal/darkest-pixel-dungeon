@@ -84,7 +84,7 @@ abstract public class MissileWeapon extends Weapon {
                 .Aim.class);
 
         //* huntress bonus
-        if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion
+        if (curUser.getHeroClass() == HeroClass.HUNTRESS && enemy.buff(PinCushion
                 .class) == null)
           bonus += 3;
 
@@ -112,7 +112,7 @@ abstract public class MissileWeapon extends Weapon {
   public Damage proc(Damage dmg) {
     Hero hero = (Hero) (dmg.from);
     // remove self
-    if (hero.rangedWeapon == null && stackable) {
+    if (hero.getRangedWeapon() == null && stackable) {
       if (quantity == 1)
         doUnequip(hero, false, false);
       else
@@ -129,7 +129,7 @@ abstract public class MissileWeapon extends Weapon {
 
     // huntress perk
     int exstr = hero.STR() - STRReq();
-    if (hero.heroPerk.contain(HeroPerk.Perk.SHOOTER))
+    if (hero.getHeroPerk().contain(HeroPerk.Perk.SHOOTER))
       dmg.value += Random.Int(1, exstr);
 
     return dmg;
@@ -160,7 +160,7 @@ abstract public class MissileWeapon extends Weapon {
 
     if (STRReq() > Dungeon.hero.STR()) {
       info += " " + Messages.get(Weapon.class, "too_heavy");
-    } else if (Dungeon.hero.heroClass == HeroClass.HUNTRESS && Dungeon.hero
+    } else if (Dungeon.hero.getHeroClass() == HeroClass.HUNTRESS && Dungeon.hero
             .STR() > STRReq()) {
       info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR
               () - STRReq());

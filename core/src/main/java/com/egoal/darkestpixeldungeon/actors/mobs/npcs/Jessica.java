@@ -46,12 +46,12 @@ public class Jessica extends NPC {
     //todo: solve the multiple book bug!!
     sprite.turnTo(pos, Dungeon.hero.pos);
     if (!Quest.completed_) {
-      CallysDiary cd = Dungeon.hero.belongings.getItem(CallysDiary.class);
+      CallysDiary cd = Dungeon.hero.getBelongings().getItem(CallysDiary.class);
       if (cd == null) {
         tell(Messages.get(this, "please"));
         Quest.given_ = true;
       } else {
-        cd.detach(Dungeon.hero.belongings.backpack);
+        cd.detach(Dungeon.hero.getBelongings().backpack);
         GLog.w(Messages.get(this, "return_book"));
         Quest.completed_ = true;
         tell(Messages.get(this, "thank_you"));

@@ -69,7 +69,7 @@ public class Honeypot extends Item {
 
       hero.sprite.zap(hero.pos);
 
-      detach(hero.belongings.backpack);
+      detach(hero.getBelongings().backpack);
 
       shatter(hero, hero.pos).collect();
 

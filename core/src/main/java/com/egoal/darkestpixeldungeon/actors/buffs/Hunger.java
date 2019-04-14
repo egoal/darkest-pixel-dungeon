@@ -96,7 +96,7 @@ public class Hunger extends Buff implements Hero.Doom {
         if (newLevel >= STARVING) {
 
           GLog.n(Messages.get(this, "onstarving"));
-          hero.resting = false;
+          hero.setResting(false);
           target.takeDamage(new Damage(1, this, target).type(Damage.Type
                   .MAGICAL).addFeature(Damage.Feature.PURE));
           statusUpdated = true;
@@ -117,7 +117,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
       }
 
-      float step = ((Hero) target).heroClass == HeroClass.ROGUE ? STEP * 1.2f
+      float step = ((Hero) target).getHeroClass() == HeroClass.ROGUE ? STEP * 1.2f
               : STEP;
       spend(target.buff(Shadows.class) == null ? step : step * 1.5f);
 

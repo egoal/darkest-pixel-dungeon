@@ -56,20 +56,20 @@ public class Frost extends FlavourBuff {
       if (target instanceof Hero) {
 
         Hero hero = (Hero) target;
-        Item item = hero.belongings.randomUnequipped();
+        Item item = hero.getBelongings().randomUnequipped();
         if (item instanceof Potion
                 && !(item instanceof PotionOfStrength || item instanceof 
                 PotionOfMight)) {
 
-          item = item.detach(hero.belongings.backpack);
+          item = item.detach(hero.getBelongings().backpack);
           GLog.w(Messages.get(this, "freezes", item.toString()));
           ((Potion) item).shatter(hero.pos);
 
         } else if (item instanceof MysteryMeat) {
 
-          item = item.detach(hero.belongings.backpack);
+          item = item.detach(hero.getBelongings().backpack);
           FrozenCarpaccio carpaccio = new FrozenCarpaccio();
-          if (!carpaccio.collect(hero.belongings.backpack)) {
+          if (!carpaccio.collect(hero.getBelongings().backpack)) {
             Dungeon.level.drop(carpaccio, target.pos).sprite.drop();
           }
           GLog.w(Messages.get(this, "freezes", item.toString()));

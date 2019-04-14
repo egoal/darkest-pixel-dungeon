@@ -190,7 +190,7 @@ public class Blandfruit extends Food {
             potionAttrib instanceof PotionOfLevitation ||
             potionAttrib instanceof PotionOfPurity) {
       potionAttrib.cast(user, dst);
-      detach(user.belongings.backpack);
+      detach(user.getBelongings().backpack);
     } else {
       super.cast(user, dst);
     }

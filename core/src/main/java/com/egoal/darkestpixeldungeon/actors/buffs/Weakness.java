@@ -49,7 +49,7 @@ public class Weakness extends FlavourBuff {
     boolean attached = super.attachTo(target);
     
     if(attached && target instanceof Hero){
-      ((Hero) target).weakened = true;
+      ((Hero) target).setWeakened(true);
     }
     
     return attached;
@@ -59,7 +59,7 @@ public class Weakness extends FlavourBuff {
   public void detach() {
     super.detach();
     if(target instanceof Hero)
-      ((Hero) target).weakened = false;
+      ((Hero) target).setWeakened(false);
   }
 
   public static float duration(Char ch) {

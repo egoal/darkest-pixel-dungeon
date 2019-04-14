@@ -105,12 +105,12 @@ public class StatusPane extends Component {
     btnMenu = new MenuButton();
     add(btnMenu);
 
-    portrait = HeroSprite.Portrait(Dungeon.hero.heroClass, lastTier);
+    portrait = HeroSprite.Portrait(Dungeon.hero.getHeroClass(), lastTier);
     add(portrait);
 
     int compassTarget = Dungeon.level.exit;
     if (Dungeon.hero != null) {
-      if (Dungeon.hero.belongings.getItem(Amulet.class) != null)
+      if (Dungeon.hero.getBelongings().getItem(Amulet.class) != null)
         compassTarget = Dungeon.level.entrance;
     }
 
@@ -251,10 +251,10 @@ public class StatusPane extends Component {
     shieldedHP.scale.x = health / max;
     rawShielding.scale.x = shield / max;
 
-    exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero
+    exp.scale.x = (width / exp.width) * Dungeon.hero.getExp() / Dungeon.hero
             .maxExp();
 
-    if (Dungeon.hero.lvl != lastLvl) {
+    if (Dungeon.hero.getLvl() != lastLvl) {
 
       if (lastLvl != -1) {
         Emitter emitter = (Emitter) recycle(Emitter.class);
@@ -263,7 +263,7 @@ public class StatusPane extends Component {
         emitter.burst(Speck.factory(Speck.STAR), 12);
       }
 
-      lastLvl = Dungeon.hero.lvl;
+      lastLvl = Dungeon.hero.getLvl();
       level.text(Integer.toString(lastLvl));
       level.measure();
       level.x = 27.5f - level.width() / 2f;
@@ -274,7 +274,7 @@ public class StatusPane extends Component {
     int tier = Dungeon.hero.tier();
     if (tier != lastTier) {
       lastTier = tier;
-      portrait.copy(HeroSprite.Portrait(Dungeon.hero.heroClass, tier));
+      portrait.copy(HeroSprite.Portrait(Dungeon.hero.getHeroClass(), tier));
     }
   }
 
@@ -341,18 +341,18 @@ public class StatusPane extends Component {
       boolean specialKey = false;
       int ironKeys = 0;
       for (int i = 1; i <= Math.min(Dungeon.depth, 25); i++) {
-        if (Dungeon.hero.belongings.ironKeys[i] > 0 || Dungeon.hero
-                .belongings.specialKeys[i] > 0) {
+        if (Dungeon.hero.getBelongings().ironKeys[i] > 0 || Dungeon.hero
+                .getBelongings().specialKeys[i] > 0) {
           foundKeys = true;
 
           if (i < Dungeon.depth) {
             blackKey = true;
 
           } else {
-            if (Dungeon.hero.belongings.specialKeys[i] > 0) {
+            if (Dungeon.hero.getBelongings().specialKeys[i] > 0) {
               specialKey = true;
             }
-            ironKeys = Dungeon.hero.belongings.ironKeys[i];
+            ironKeys = Dungeon.hero.getBelongings().ironKeys[i];
           }
         }
       }

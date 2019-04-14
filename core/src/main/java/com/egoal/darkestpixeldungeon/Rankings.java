@@ -80,9 +80,9 @@ public enum Rankings {
 
     rec.cause = cause;
     rec.win = win;
-    rec.heroClass = Dungeon.hero.heroClass;
+    rec.heroClass = Dungeon.hero.getHeroClass();
     rec.armorTier = Dungeon.hero.tier();
-    rec.herolevel = Dungeon.hero.lvl;
+    rec.herolevel = Dungeon.hero.getLvl();
     rec.depth = Dungeon.depth;
     rec.score = score(win);
 
@@ -119,7 +119,7 @@ public enum Rankings {
   }
 
   private int score(boolean win) {
-    return (Statistics.INSTANCE.getGoldCollected() + Dungeon.hero.lvl * (win 
+    return (Statistics.INSTANCE.getGoldCollected() + Dungeon.hero.getLvl() * (win 
             ? 26 : Dungeon
             .depth) * 100) * (win ? 2 : 1);
   }
@@ -132,7 +132,7 @@ public enum Rankings {
   public void saveGameData(Record rec) {
     rec.gameData = new Bundle();
 
-    Belongings belongings = Dungeon.hero.belongings;
+    Belongings belongings = Dungeon.hero.getBelongings();
 
     //save the hero and belongings
     ArrayList<Item> allItems = (ArrayList<Item>) belongings.backpack.items
@@ -348,7 +348,7 @@ public enum Rankings {
       win = bundle.getBoolean(WIN);
       score = bundle.getInt(SCORE);
 
-      heroClass = HeroClass.restoreInBundle(bundle);
+      heroClass = HeroClass.Companion.RestoreFromBundle(bundle);
       armorTier = bundle.getInt(TIER);
 
       if (bundle.contains(FILE)) gameFile = bundle.getString(FILE);

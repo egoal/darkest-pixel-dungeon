@@ -133,7 +133,7 @@ public class MagesStaff extends MeleeWeapon {
   @Override
   public Damage proc(Damage dmg) {
     // battle mage perk
-    if (wand != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
+    if (wand != null && Dungeon.hero.getSubClass() == HeroSubClass.BATTLEMAGE) {
       if (wand.curCharges < wand.maxCharges)
         wand.partialCharge += 0.33f;
       ScrollOfRecharging.charge((Hero) dmg.from);
@@ -146,7 +146,7 @@ public class MagesStaff extends MeleeWeapon {
   @Override
   public int reachFactor(Hero hero) {
     int reach = super.reachFactor(hero);
-    if (wand instanceof WandOfDisintegration && hero.subClass == HeroSubClass
+    if (wand instanceof WandOfDisintegration && hero.getSubClass() == HeroSubClass
             .BATTLEMAGE) {
       reach++;
     }
@@ -341,7 +341,7 @@ public class MagesStaff extends MeleeWeapon {
 
       Dungeon.quickslot.clearItem(wand);
 
-      wand.detach(curUser.belongings.backpack);
+      wand.detach(curUser.getBelongings().backpack);
       Badges.validateTutorial();
 
       GLog.p(Messages.get(MagesStaff.class, "imbue", wand.name()));

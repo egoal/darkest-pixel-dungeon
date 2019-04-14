@@ -95,13 +95,13 @@ public class Wandmaker extends NPC {
       switch (Quest.type) {
         case 1:
         default:
-          item = Dungeon.hero.belongings.getItem(CorpseDust.class);
+          item = Dungeon.hero.getBelongings().getItem(CorpseDust.class);
           break;
         case 2:
-          item = Dungeon.hero.belongings.getItem(Embers.class);
+          item = Dungeon.hero.getBelongings().getItem(Embers.class);
           break;
         case 3:
-          item = Dungeon.hero.belongings.getItem(Rotberry.Seed.class);
+          item = Dungeon.hero.getBelongings().getItem(Rotberry.Seed.class);
           break;
       }
 
@@ -129,7 +129,7 @@ public class Wandmaker extends NPC {
 
       String msg1 = "";
       String msg2 = "";
-      switch (Dungeon.hero.heroClass) {
+      switch (Dungeon.hero.getHeroClass()) {
         case WARRIOR:
           msg1 += Messages.get(this, "intro_warrior");
           break;

@@ -49,7 +49,7 @@ open class Helmet : EquipableItem() {
             if (super.doUnequip(hero, collect, single)) {
                 hero.belongings.helmet = null
 
-                hero.remove(buff)
+                hero.remove(buff!!)
                 buff = null
                 true
             } else

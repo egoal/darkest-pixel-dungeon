@@ -60,32 +60,15 @@ class TomeOfMastery : Item() {
 
             curUser = hero
 
-            var way1: HeroSubClass? = null
-            var way2: HeroSubClass? = null
-            when (hero.heroClass) {
-                HeroClass.WARRIOR -> {
-                    way1 = HeroSubClass.GLADIATOR
-                    way2 = HeroSubClass.BERSERKER
-                }
-                HeroClass.MAGE -> {
-                    way1 = HeroSubClass.BATTLEMAGE
-                    way2 = HeroSubClass.WARLOCK
-                }
-                HeroClass.ROGUE -> {
-                    way1 = HeroSubClass.FREERUNNER
-                    way2 = HeroSubClass.ASSASSIN
-                }
-                HeroClass.HUNTRESS -> {
-                    way1 = HeroSubClass.SNIPER
-                    way2 = HeroSubClass.WARDEN
-                }
-                HeroClass.SORCERESS -> {
-                    way1 = HeroSubClass.STARGAZER
-                    way2 = HeroSubClass.WITCH
-                }
+            val twoWay = when (hero.heroClass) {
+                HeroClass.WARRIOR -> Pair(HeroSubClass.GLADIATOR, HeroSubClass.BERSERKER)
+                HeroClass.MAGE -> Pair(HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK)
+                HeroClass.ROGUE -> Pair(HeroSubClass.FREERUNNER, HeroSubClass.ASSASSIN)
+                HeroClass.HUNTRESS -> Pair(HeroSubClass.SNIPER, HeroSubClass.WARDEN)
+                HeroClass.SORCERESS -> Pair(HeroSubClass.STARGAZER, HeroSubClass.WITCH)
             }
-            GameScene.show(WndChooseWay(this, way1!!, way2!!))
 
+            GameScene.show(WndChooseWay(this, twoWay.first, twoWay.second))
         }
     }
 

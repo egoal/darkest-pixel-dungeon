@@ -148,7 +148,7 @@ public class Thief extends Mob {
 
   protected boolean steal(Hero hero) {
 
-    Item item = hero.belongings.randomUnequipped();
+    Item item = hero.getBelongings().randomUnequipped();
 
     if (item != null && !item.unique && item.level() < 1) {
 
@@ -159,9 +159,9 @@ public class Thief extends Mob {
       // process on the honey pot
       if (item instanceof Honeypot) {
         this.item = ((Honeypot) item).shatter(this, this.pos);
-        item.detach(hero.belongings.backpack);
+        item.detach(hero.getBelongings().backpack);
       } else {
-        this.item = item.detach(hero.belongings.backpack);
+        this.item = item.detach(hero.getBelongings().backpack);
         if (item instanceof Honeypot.ShatteredPot)
           ((Honeypot.ShatteredPot) item).setHolder(this);
       }

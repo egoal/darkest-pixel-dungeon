@@ -29,7 +29,7 @@ public class ResistAny extends Buff {
     if (--resistCount <= 0) {
       // would detach, check rms
       if(target instanceof Hero){
-        for(Item item: ((Hero) target).belongings.equippedItems())
+        for(Item item: ((Hero) target).getBelongings().equippedItems())
           if(item instanceof RiemannianManifoldShield)
             ((RiemannianManifoldShield) item).recharge();
       }

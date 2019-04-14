@@ -270,7 +270,7 @@ public class Potion extends Item {
 
   protected void drink(Hero hero) {
 
-    detach(hero.belongings.backpack);
+    detach(hero.getBelongings().backpack);
 
     hero.spend(TIME_TO_DRINK);
     hero.busy();

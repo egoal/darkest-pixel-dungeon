@@ -117,7 +117,7 @@ public class Toolbar extends Component {
 
       @Override
       protected void onClick() {
-        GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null,
+        GameScene.show(new WndBag(Dungeon.hero.getBelongings().backpack, null,
                 WndBag.Mode.ALL, null));
       }
 
@@ -246,8 +246,8 @@ public class Toolbar extends Component {
   public void update() {
     super.update();
 
-    if (lastEnabled != Dungeon.hero.ready) {
-      lastEnabled = Dungeon.hero.ready;
+    if (lastEnabled != Dungeon.hero.getReady()) {
+      lastEnabled = Dungeon.hero.getReady();
 
       for (Gizmo tool : members) {
         if (tool instanceof Tool) {

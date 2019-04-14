@@ -219,7 +219,7 @@ public class Statuary extends NPC {
         }
 
         if (Random.Int(4) == 0) {
-          KindOfWeapon kow = hero.belongings.weapon;
+          KindOfWeapon kow = hero.getBelongings().weapon;
           if (kow != null && kow instanceof Weapon) {
             ((Weapon) kow).enchant(new Holy());
 
@@ -237,20 +237,20 @@ public class Statuary extends NPC {
 
       {
         ArrayList<Item> itemToCurse = new ArrayList<>();
-        KindOfWeapon weapon = hero.belongings.weapon;
+        KindOfWeapon weapon = hero.getBelongings().weapon;
         if (weapon instanceof Weapon && !(weapon instanceof Boomerang)) {
           itemToCurse.add(weapon);
         }
-        Armor armor = hero.belongings.armor;
+        Armor armor = hero.getBelongings().armor;
         if (armor != null && !armor.cursed)
           itemToCurse.add(armor);
 
-        if (hero.belongings.misc1 != null)
-          itemToCurse.add(hero.belongings.misc1);
-        if (hero.belongings.misc2 != null)
-          itemToCurse.add(hero.belongings.misc2);
-        if (hero.belongings.misc3 != null)
-          itemToCurse.add(hero.belongings.misc3);
+        if (hero.getBelongings().misc1 != null)
+          itemToCurse.add(hero.getBelongings().misc1);
+        if (hero.getBelongings().misc2 != null)
+          itemToCurse.add(hero.getBelongings().misc2);
+        if (hero.getBelongings().misc3 != null)
+          itemToCurse.add(hero.getBelongings().misc3);
 
         if (itemToCurse.size() > 0) {
           Item item = Random.element(itemToCurse);
@@ -320,7 +320,7 @@ public class Statuary extends NPC {
         }
 
         // reward
-        UrnOfShadow uos = hero.belongings.getItem(UrnOfShadow.class);
+        UrnOfShadow uos = hero.getBelongings().getItem(UrnOfShadow.class);
         if (uos != null && uos.level() < 10) {
           uos.upgrade(2);
         } else {
@@ -329,7 +329,7 @@ public class Statuary extends NPC {
             hero.HT += Random.Int(5, 10);
             GLog.i(Messages.get(this, "upht"));
             if (Random.Int(5) == 0) {
-              KindOfWeapon kow = hero.belongings.weapon;
+              KindOfWeapon kow = hero.getBelongings().weapon;
               if (kow != null && kow instanceof Weapon) {
                 ((Weapon) kow).enchant(new Vampiric());
 

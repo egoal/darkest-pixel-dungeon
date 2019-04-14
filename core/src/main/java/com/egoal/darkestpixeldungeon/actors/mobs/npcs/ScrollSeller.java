@@ -71,7 +71,7 @@ public class ScrollSeller extends DPDShopKeeper {
 
   private int feeClean() {
     return (int) (40 * (Dungeon.depth + 4) *
-            (Dungeon.hero.heroPerk.contain(HeroPerk.Perk.SHREWD) ? .75 : 1.));
+            (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1.));
   }
 
   protected void onPlayerClean() {

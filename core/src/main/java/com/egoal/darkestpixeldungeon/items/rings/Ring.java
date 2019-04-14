@@ -59,7 +59,7 @@ public class Ring extends KindofMisc {
           RingOfWealth.class,
   };
 
-  private static final HashMap<String, Integer> gems = new HashMap<String, 
+  private static final HashMap<String, Integer> gems = new HashMap<String,
           Integer>() {
     {
       put("garnet", ItemSpriteSheet.RING_GARNET);
@@ -98,7 +98,7 @@ public class Ring extends KindofMisc {
 
   @SuppressWarnings("unchecked")
   public static void restore(Bundle bundle) {
-    handler = new ItemStatusHandler<>((Class<? extends Ring>[]) rings, gems, 
+    handler = new ItemStatusHandler<>((Class<? extends Ring>[]) rings, gems,
             bundle);
   }
 
@@ -256,7 +256,7 @@ public class Ring extends KindofMisc {
     @Override
     public boolean attachTo(Char target) {
 
-      if (target instanceof Hero && ((Hero) target).heroClass == HeroClass
+      if (target instanceof Hero && ((Hero) target).getHeroClass() == HeroClass
               .ROGUE && !isKnown()) {
         setKnown();
         GLog.i(Messages.get(Ring.class, "known", name()));

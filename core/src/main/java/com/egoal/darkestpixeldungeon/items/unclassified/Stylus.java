@@ -90,7 +90,7 @@ public class Stylus extends Item {
       return;
     }
 
-    detach(curUser.belongings.backpack);
+    detach(curUser.getBelongings().backpack);
 
     GLog.w(Messages.get(this, "inscribed"));
 

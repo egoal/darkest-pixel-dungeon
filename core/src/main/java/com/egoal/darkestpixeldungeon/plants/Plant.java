@@ -60,7 +60,7 @@ public abstract class Plant implements Bundlable {
 
     Char ch = Actor.findChar(pos);
 
-    if (ch instanceof Hero && ((Hero) ch).subClass == HeroSubClass.WARDEN) {
+    if (ch instanceof Hero && ((Hero) ch).getSubClass() == HeroSubClass.WARDEN) {
       Buff.affect(ch, Barkskin.class).level(ch.HT / 3);
     }
 
@@ -78,7 +78,7 @@ public abstract class Plant implements Bundlable {
       CellEmitter.get(pos).burst(LeafParticle.GENERAL, 6);
     }
 
-    if (Dungeon.hero.subClass == HeroSubClass.WARDEN) {
+    if (Dungeon.hero.getSubClass() == HeroSubClass.WARDEN) {
 
       int naturalismLevel = 0;
       SandalsOfNature.Naturalism naturalism = Dungeon.hero.buff
@@ -163,7 +163,7 @@ public abstract class Plant implements Bundlable {
 
         hero.spend(TIME_TO_PLANT);
         hero.busy();
-        ((Seed) detach(hero.belongings.backpack)).onThrow(hero.pos);
+        ((Seed) detach(hero.getBelongings().backpack)).onThrow(hero.pos);
 
         hero.sprite.operate(hero.pos);
 

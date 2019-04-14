@@ -251,7 +251,7 @@ public abstract class Wand extends Item {
       identify();
       GLog.w(Messages.get(Wand.class, "identify", name()));
     } else {
-      if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
+      if (curUser.getHeroClass() == HeroClass.MAGE) levelKnown = true;
       updateQuickslot();
     }
 

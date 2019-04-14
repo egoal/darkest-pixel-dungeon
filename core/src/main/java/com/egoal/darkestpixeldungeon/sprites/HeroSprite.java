@@ -52,7 +52,7 @@ public class HeroSprite extends CharSprite {
 
     link(Dungeon.hero);
 
-    texture(Dungeon.hero.heroClass.spritesheet());
+    texture(Dungeon.hero.getHeroClass().spritesheet());
     updateArmor();
 
     if (ch.isAlive())
@@ -139,7 +139,7 @@ public class HeroSprite extends CharSprite {
 
   @Override
   public void update() {
-    sleeping = ch.isAlive() && ((Hero) ch).resting;
+    sleeping = ch.isAlive() && ((Hero) ch).getResting();
 
     super.update();
   }

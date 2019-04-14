@@ -89,13 +89,13 @@ public class HornOfPlenty extends Artifact {
       else if (charge == 0) GLog.i(Messages.get(this, "no_food"));
       else {
         //consume as many
-        int chargesToUse = Math.max(1, hero.buff(Hunger.class).hunger() / 
+        int chargesToUse = Math.max(1, hero.buff(Hunger.class).hunger() /
                 (int) (Hunger.STARVING / 10));
         if (chargesToUse > charge) chargesToUse = charge;
         hero.buff(Hunger.class).satisfy((Hunger.STARVING / 10) * chargesToUse);
 
         //if you get at least 80 food energy from the horn
-        switch (hero.heroClass) {
+        switch (hero.getHeroClass()) {
           case WARRIOR:
             if (hero.HP < hero.HT) {
               hero.HP = Math.min(hero.HP + 5, hero.HT);
@@ -115,7 +115,8 @@ public class HornOfPlenty extends Artifact {
         // mental
         hero.recoverSanity(Random.Int(1, chargesToUse));
 
-        Statistics.INSTANCE.setFoodEaten(Statistics.INSTANCE.getFoodEaten()+1);
+        Statistics.INSTANCE.setFoodEaten(Statistics.INSTANCE.getFoodEaten() +
+                1);
 
         charge -= chargesToUse;
 
@@ -183,13 +184,13 @@ public class HornOfPlenty extends Artifact {
 
     public void gainCharge(float levelPortion) {
       if (charge < chargeCap) {
-        if(cursed) return;
+        if (cursed) return;
         //generates 0.25x max hunger value every hero level, +0.035x max 
         // value per horn level
         //to a max of 1.3x max hunger value per hero level
         //This means that a standard ration will be recovered in ~7.15 hero 
         // levels
-        partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.035f * 
+        partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.035f *
                 level()));
 
         //charge is in increments of 1/10 max hunger value.
@@ -234,7 +235,7 @@ public class HornOfPlenty extends Artifact {
             GLog.p(Messages.get(HornOfPlenty.class, "maxlevel"));
           } else
             GLog.p(Messages.get(HornOfPlenty.class, "levelup"));
-          item.detach(hero.belongings.backpack);
+          item.detach(hero.getBelongings().backpack);
         }
 
       }

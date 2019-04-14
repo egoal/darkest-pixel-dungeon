@@ -149,9 +149,9 @@ public class WndRanking extends WndTabbed {
       String heroClass = Dungeon.hero.className();
 
       IconTitle title = new IconTitle();
-      title.icon(HeroSprite.avatar(Dungeon.hero.heroClass, Dungeon.hero.tier
+      title.icon(HeroSprite.avatar(Dungeon.hero.getHeroClass(), Dungeon.hero.tier
               ()));
-      title.label(Messages.get(this, "title", Dungeon.hero.lvl, heroClass)
+      title.label(Messages.get(this, "title", Dungeon.hero.getLvl(), heroClass)
               .toUpperCase(Locale.ENGLISH));
       title.color(Window.SHPX_COLOR);
       title.setRect(0, 0, WIDTH, 0);
@@ -177,7 +177,7 @@ public class WndRanking extends WndTabbed {
       pos += GAP + GAP;
 
       pos = statSlot(this, Messages.get(this, "str"), Integer.toString
-              (Dungeon.hero.STR), pos);
+              (Dungeon.hero.getSTR()), pos);
       pos = statSlot(this, Messages.get(this, "health"), Integer.toString
               (Dungeon.hero.HT), pos);
 
@@ -229,7 +229,7 @@ public class WndRanking extends WndTabbed {
     public ItemsTab() {
       super();
 
-      Belongings stuff = Dungeon.hero.belongings;
+      Belongings stuff = Dungeon.hero.getBelongings();
       if (stuff.weapon != null) {
         addItem(stuff.weapon);
       }

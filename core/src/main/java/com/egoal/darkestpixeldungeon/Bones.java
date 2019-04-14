@@ -80,19 +80,19 @@ public class Bones {
     if (Random.Int(2) == 0) {
       switch (Random.Int(6)) {
         case 0:
-          item = hero.belongings.weapon;
+          item = hero.getBelongings().weapon;
           break;
         case 1:
-          item = hero.belongings.armor;
+          item = hero.getBelongings().armor;
           break;
         case 2:
-          item = hero.belongings.misc1;
+          item = hero.getBelongings().misc1;
           break;
         case 3:
-          item = hero.belongings.misc2;
+          item = hero.getBelongings().misc2;
           break;
         case 4:
-          item = hero.belongings.misc3;
+          item = hero.getBelongings().misc3;
           break;
         case 5:
           item = Dungeon.quickslot.randomNonePlaceholder();
@@ -102,7 +102,7 @@ public class Bones {
         return pickItem(hero);
     } else {
 
-      Iterator<Item> iterator = hero.belongings.backpack.iterator();
+      Iterator<Item> iterator = hero.getBelongings().backpack.iterator();
       Item curItem;
       ArrayList<Item> items = new ArrayList<Item>();
       while (iterator.hasNext()) {

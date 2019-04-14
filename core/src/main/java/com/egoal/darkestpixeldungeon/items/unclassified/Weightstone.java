@@ -85,7 +85,7 @@ public class Weightstone extends Item {
 
   private void apply(Weapon weapon, boolean forSpeed) {
 
-    detach(curUser.belongings.backpack);
+    detach(curUser.getBelongings().backpack);
 
     if (forSpeed) {
       weapon.imbue = Weapon.Imbue.LIGHT;

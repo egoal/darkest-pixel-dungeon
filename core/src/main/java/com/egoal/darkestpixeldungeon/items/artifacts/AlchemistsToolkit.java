@@ -285,7 +285,7 @@ public class AlchemistsToolkit extends Artifact {
           hero.spend(2f);
           Sample.INSTANCE.play(Assets.SND_DRINK);
 
-          item.detach(hero.belongings.backpack);
+          item.detach(hero.getBelongings().backpack);
 
           curGuess.add(convertName(item.getClass().getSimpleName()));
           if (curGuess.size() == 3) {

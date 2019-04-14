@@ -41,7 +41,7 @@ class SewerBossLevel : SewerLevel() {
     override fun respawner(): Actor? = null
 
     override fun chooseDiggers(): ArrayList<Digger> {
-        val rectdiggers = hashMapOf(
+        val rectDiggers = hashMapOf(
                 CellDigger::class.java to .1f,
                 LatticeDigger::class.java to .075f,
                 RectDigger::class.java to 1.25f,
@@ -56,14 +56,14 @@ class SewerBossLevel : SewerLevel() {
 
         val total = Random.IntRange(7, 9)
         while (diggers.size < total)
-            diggers.add(Random.chances(NormalDiggers).newInstance())
+            diggers.add(Random.chances(rectDiggers).newInstance())
 
         return diggers
     }
 
     override fun decorate() {
         super.decorate()
-        
+
         // fill all chasm
         for (i in 0 until length)
             if (map[i] == Terrain.CHASM)

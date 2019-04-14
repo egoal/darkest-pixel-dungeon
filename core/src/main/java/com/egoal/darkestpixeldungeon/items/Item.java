@@ -100,7 +100,7 @@ public class Item implements Bundlable {
   }
 
   public boolean doPickUp(Hero hero) {
-    if (collect(hero.belongings.backpack)) {
+    if (collect(hero.getBelongings().backpack)) {
 
       GameScene.pickUp(this);
       Sample.INSTANCE.play(Assets.SND_ITEM);
@@ -114,7 +114,7 @@ public class Item implements Bundlable {
 
   public void doDrop(Hero hero) {
     hero.spendAndNext(TIME_TO_DROP);
-    Dungeon.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite
+    Dungeon.level.drop(detachAll(hero.getBelongings().backpack), hero.pos).sprite
             .drop(hero.pos);
   }
 
@@ -204,7 +204,7 @@ public class Item implements Bundlable {
   }
 
   public boolean collect() {
-    return collect(Dungeon.hero.belongings.backpack);
+    return collect(Dungeon.hero.getBelongings().backpack);
   }
 
   public final Item detach(Bag container) {
@@ -513,7 +513,7 @@ public class Item implements Bundlable {
             reset(user.pos, cell, this, new Callback() {
               @Override
               public void call() {
-                Item.this.detach(user.belongings.backpack).onThrow(cell);
+                Item.this.detach(user.getBelongings().backpack).onThrow(cell);
                 user.spendAndNext(finalDelay);
               }
             });

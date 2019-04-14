@@ -79,7 +79,7 @@ public class WndGame extends Window {
           Game.switchScene(InterlevelScene.class);
         }
       });
-      btnStart.icon(Icons.get(Dungeon.hero.heroClass));
+      btnStart.icon(Icons.get(Dungeon.hero.getHeroClass()));
 
       addButton(new RedButton(Messages.get(this, "rankings")) {
         @Override

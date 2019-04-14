@@ -29,6 +29,8 @@ import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
 
+import java.util.List;
+
 public class WndClass extends WndTabbed {
 
   private static final int WIDTH = 110;
@@ -103,10 +105,10 @@ public class WndClass extends WndTabbed {
 
       float dotWidth = 0;
 
-      String[] items = cl.perks();
+      List<String> items = cl.perks();
       float pos = MARGIN;
 
-      for (int i = 0; i < items.length; i++) {
+      for (int i = 0; i < items.size(); i++) {
 
         if (i > 0) {
           pos += GAP;
@@ -121,7 +123,7 @@ public class WndClass extends WndTabbed {
         }
         add(dot);
 
-        RenderedTextMultiline item = PixelScene.renderMultiline(items[i], 6);
+        RenderedTextMultiline item = PixelScene.renderMultiline(items.get(i), 6);
         item.maxWidth((int) (WIDTH - MARGIN * 2 - dotWidth));
         item.setPos(dot.x + dotWidth, pos);
         add(item);
@@ -167,7 +169,8 @@ public class WndClass extends WndTabbed {
                   .desc();
           break;
         case SORCERESS:
-          message = HeroSubClass.STARGAZER.desc() + "\n\n" + HeroSubClass.WITCH.desc();
+          message = HeroSubClass.STARGAZER.desc() + "\n\n" + HeroSubClass
+                  .WITCH.desc();
           break;
       }
 

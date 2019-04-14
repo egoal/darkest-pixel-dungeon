@@ -82,7 +82,7 @@ public class WndResurrect extends Window {
         hide();
 
         Rankings.INSTANCE.submit(false, WndResurrect.causeOfDeath.getClass());
-        Hero.reallyDie(WndResurrect.causeOfDeath);
+        Hero.Companion.ReallyDie(WndResurrect.causeOfDeath);
       }
     };
     btnNo.setRect(0, btnYes.bottom() + GAP, WIDTH, BTN_HEIGHT);

@@ -126,7 +126,7 @@ public class WndEnchanting extends Window {
           return;
         }
 
-        btnPressed_.item(item.detach(Dungeon.hero.belongings.backpack));
+        btnPressed_.item(item.detach(Dungeon.hero.getBelongings().backpack));
 
         if (btnItemSrc_.item != null && btnItemTgt_.item != null) {
           String result = EnchantingStation.INSTANCE.CanTransform(

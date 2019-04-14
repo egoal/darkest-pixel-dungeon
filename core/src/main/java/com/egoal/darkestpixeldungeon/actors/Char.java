@@ -180,9 +180,9 @@ public abstract class Char extends Actor {
 
       // enemy armor defense
 
-      // sniper's perk, 
-      if (this instanceof Hero && ((Hero) this).rangedWeapon != null && (
-              (Hero) this).subClass == HeroSubClass.SNIPER) {
+      // sniper's perk,
+      if (this instanceof Hero && ((Hero) this).getRangedWeapon() != null && (
+              (Hero) this).getSubClass() == HeroSubClass.SNIPER) {
         // sniper's perk: ignore defence
       } else if (!dmg.isFeatured(Damage.Feature.PURE))
         dmg = enemy.defendDamage(dmg);

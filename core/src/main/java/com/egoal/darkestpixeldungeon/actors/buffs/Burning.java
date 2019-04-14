@@ -90,11 +90,11 @@ public class Burning extends Buff implements Hero.Doom {
 
         Hero hero = (Hero) target;
 
-        if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph
+        if (hero.getBelongings().armor != null && hero.getBelongings().armor.hasGlyph
                 (Brimstone.class)) {
           // wear armor with brimstone
           
-          float heal = hero.belongings.armor.level() / 5f;
+          float heal = hero.getBelongings().armor.level() / 5f;
           if (Random.Float() < heal % 1) heal++;
           if (heal >= 1 && hero.HP < hero.HT) {
             hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), (int) 
@@ -108,11 +108,11 @@ public class Burning extends Buff implements Hero.Doom {
 
           // burn something
           if (!burnedSomething) {
-            Item item = hero.belongings.randomUnequipped();
+            Item item = hero.getBelongings().randomUnequipped();
             if (item instanceof Scroll
                     && !(item instanceof ScrollOfUpgrade)) {
 
-              item = item.detach(hero.belongings.backpack);
+              item = item.detach(hero.getBelongings().backpack);
               GLog.w(Messages.get(this, "burnsup", Messages.capitalize(item
                       .toString())));
 
@@ -121,9 +121,9 @@ public class Burning extends Buff implements Hero.Doom {
               burnedSomething = true;
             } else if (item instanceof MysteryMeat) {
 
-              item = item.detach(hero.belongings.backpack);
+              item = item.detach(hero.getBelongings().backpack);
               ChargrilledMeat steak = new ChargrilledMeat();
-              if (!steak.collect(hero.belongings.backpack)) {
+              if (!steak.collect(hero.getBelongings().backpack)) {
                 Dungeon.level.drop(steak, hero.pos).sprite.drop();
               }
               GLog.w(Messages.get(this, "burnsup", item.toString()));

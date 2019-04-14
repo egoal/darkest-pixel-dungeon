@@ -238,7 +238,7 @@ public abstract class Level implements Bundlable {
         Dungeon.limitedDrops.lullabyScrolls.count++;
       }
 
-      DriedRose rose = Dungeon.hero.belongings.getItem(DriedRose.class);
+      DriedRose rose = Dungeon.hero.getBelongings().getItem(DriedRose.class);
       if (rose != null && !rose.cursed) {
         //this way if a rose is dropped later in the game, player still has a
         // chance to max it out.
@@ -1114,25 +1114,25 @@ public abstract class Level implements Bundlable {
 
     //Currently only the hero can get mind vision or awareness
     if (c.isAlive() && c == Dungeon.hero) {
-      Dungeon.hero.mindVisionEnemies.clear();
+      Dungeon.hero.getMindVisionEnemies().clear();
       if (c.buff(MindVision.class) != null) {
         for (Mob mob : mobs) {
           int p = mob.pos;
 
           if (!fieldOfView[p]) {
-            Dungeon.hero.mindVisionEnemies.add(mob);
+            Dungeon.hero.getMindVisionEnemies().add(mob);
           }
           for (int i : PathFinder.NEIGHBOURS9)
             fieldOfView[p + i] = true;
 
         }
-      } else if (((Hero) c).heroClass == HeroClass.HUNTRESS) {
+      } else if (((Hero) c).getHeroClass() == HeroClass.HUNTRESS) {
         for (Mob mob : mobs) {
           int p = mob.pos;
           if (distance(c.pos, p) == 2) {
 
             if (!fieldOfView[p]) {
-              Dungeon.hero.mindVisionEnemies.add(mob);
+              Dungeon.hero.getMindVisionEnemies().add(mob);
             }
             for (int i : PathFinder.NEIGHBOURS9)
               fieldOfView[p + i] = true;

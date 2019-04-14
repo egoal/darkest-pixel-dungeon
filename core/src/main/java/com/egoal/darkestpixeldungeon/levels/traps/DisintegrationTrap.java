@@ -71,8 +71,8 @@ public class DisintegrationTrap extends Trap {
           Dungeon.fail(getClass());
           GLog.n(Messages.get(this, "ondeath"));
         } else {
-          Item item = hero.belongings.randomUnequipped();
-          Bag bag = hero.belongings.backpack;
+          Item item = hero.getBelongings().randomUnequipped();
+          Bag bag = hero.getBelongings().backpack;
           //bags do not protect against this trap
           if (item instanceof Bag) {
             bag = (Bag) item;

@@ -469,16 +469,16 @@ public class Dungeon {
     if (hero.isAlive()) {
 
       Actor.fixTime();
-      saveGame(gameFile(hero.heroClass), doBackup ? backupGameFile(hero
-              .heroClass) : null);
-      saveLevel(doBackup ? backupLevelFile(hero.heroClass) : null);
+      saveGame(gameFile(hero.getHeroClass()), doBackup ? backupGameFile(hero
+              .getHeroClass()) : null);
+      saveLevel(doBackup ? backupLevelFile(hero.getHeroClass()) : null);
 
-      GamesInProgress.set(hero.heroClass, depth, hero.lvl, challenges != 0);
+      GamesInProgress.set(hero.getHeroClass(), depth, hero.getLvl(), challenges != 0);
 
     } else if (WndResurrect.instance != null) {
 
       WndResurrect.instance.hide();
-      Hero.reallyDie(WndResurrect.causeOfDeath);
+      Hero.Companion.ReallyDie(WndResurrect.causeOfDeath);
     }
   }
 
@@ -555,7 +555,7 @@ public class Dungeon {
       }
 
     } catch (IOException e) {
-      GamesInProgress.setUnknown(hero.heroClass);
+      GamesInProgress.setUnknown(hero.getHeroClass());
       DarkestPixelDungeon.reportException(e);
     }
   }
@@ -565,7 +565,7 @@ public class Dungeon {
     bundle.put(LEVEL, level);
 
     OutputStream output = Game.instance.openFileOutput(
-            Messages.format(depthFile(hero.heroClass), depth), Game
+            Messages.format(depthFile(hero.getHeroClass()), depth), Game
                     .MODE_PRIVATE);
     Bundle.write(bundle, output);
     output.close();
@@ -734,18 +734,18 @@ public class Dungeon {
     if (info.depth == -1) {
       info.depth = bundle.getInt("maxDepth");  // FIXME
     }
-    Hero.preview(info, bundle.getBundle(HERO));
+    Hero.Companion.Preview(info, bundle.getBundle(HERO));
   }
 
   public static void fail(Class cause) {
-    if (hero.belongings.getItem(Ankh.class) == null) {
+    if (hero.getBelongings().getItem(Ankh.class) == null) {
       Rankings.INSTANCE.submit(false, cause);
     }
   }
 
   public static void win(Class cause) {
 
-    hero.belongings.identify();
+    hero.getBelongings().identify();
 
     if (challenges != 0) {
       Badges.validateChampion();

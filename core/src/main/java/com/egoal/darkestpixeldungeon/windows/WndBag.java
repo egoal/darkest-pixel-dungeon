@@ -24,7 +24,6 @@ import android.graphics.RectF;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
@@ -135,7 +134,7 @@ public class WndBag extends WndTabbed {
 
     resize(slotsWidth, slotsHeight + TITLE_HEIGHT);
 
-    Belongings stuff = Dungeon.hero.belongings;
+    Belongings stuff = Dungeon.hero.getBelongings();
     Bag[] bags = {
             stuff.backpack,
             stuff.getItem(SeedPouch.class),
@@ -157,13 +156,13 @@ public class WndBag extends WndTabbed {
   public static WndBag lastBag(Listener listener, Mode mode, String title) {
 
     if (mode == lastMode && lastBag != null &&
-            Dungeon.hero.belongings.backpack.contains(lastBag)) {
+            Dungeon.hero.getBelongings().backpack.contains(lastBag)) {
 
       return new WndBag(lastBag, listener, mode, title);
 
     } else {
 
-      return new WndBag(Dungeon.hero.belongings.backpack, listener, mode,
+      return new WndBag(Dungeon.hero.getBelongings().backpack, listener, mode,
               title);
 
     }
@@ -171,7 +170,7 @@ public class WndBag extends WndTabbed {
 
   public static WndBag getBag(Class<? extends Bag> bagClass, Listener
           listener, Mode mode, String title) {
-    Bag bag = Dungeon.hero.belongings.getItem(bagClass);
+    Bag bag = Dungeon.hero.getBelongings().getItem(bagClass);
     return bag != null ?
             new WndBag(bag, listener, mode, title) :
             lastBag(listener, mode, title);
@@ -180,7 +179,7 @@ public class WndBag extends WndTabbed {
   protected void placeItems(Bag container) {
 
     // Equipped items
-    Belongings stuff = Dungeon.hero.belongings;
+    Belongings stuff = Dungeon.hero.getBelongings();
     placeItem(stuff.weapon != null ? stuff.weapon : new Placeholder
             (ItemSpriteSheet.WEAPON_HOLDER));
     placeItem(stuff.armor != null ? stuff.armor : new Placeholder
@@ -194,7 +193,7 @@ public class WndBag extends WndTabbed {
     placeItem(stuff.misc3 != null ? stuff.misc3 : new Placeholder
             (ItemSpriteSheet.RING_HOLDER));
 
-    boolean backpack = (container == Dungeon.hero.belongings.backpack);
+    boolean backpack = (container == Dungeon.hero.getBelongings().backpack);
     if (!backpack) {
       count = nCols;
       col = 1;
@@ -212,7 +211,7 @@ public class WndBag extends WndTabbed {
     }
 
     // Gold
-    if (container == Dungeon.hero.belongings.backpack) {
+    if (container == Dungeon.hero.getBelongings().backpack) {
       row = nRows - 1;
       col = nCols - 1;
       placeItem(new Gold(Dungeon.gold));
