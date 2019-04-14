@@ -128,6 +128,20 @@ class Pressure : Buff(), Hero.Doom {
         return dmg
     }
 
+    fun accuracyFactor(): Float = when (level) {
+        Level.CONFIDENT -> 1.2f
+        Level.NORMAL -> 1f
+        Level.NERVOUS -> 0.8f
+        Level.COLLAPSE -> 0.2f
+    }
+
+    fun evasionFactor(): Float = when (level) {
+        Level.CONFIDENT -> 1f
+        Level.NORMAL -> 1f
+        Level.NERVOUS -> 0.8f
+        Level.COLLAPSE -> 0f
+    }
+
     //
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
