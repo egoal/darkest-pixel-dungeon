@@ -48,11 +48,12 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
 class CavesBossLevel : Level() {
-
-    private var arenaDoor: Int = 0
-    private var arenaDoorUp: Int = 0
     private var enteredArena = false
     private var keyDropped = false
+
+    // patch, todo: clear this
+    private val ArenaDoor: Int get() = xy2cell(16, 26)
+    private val ArenaDoorUp: Int get() = xy2cell(16, 11)
 
     init {
         color1 = 0x534f3e
@@ -68,9 +69,6 @@ class CavesBossLevel : Level() {
 
     override fun build(iterations: Int): Boolean {
         loadMapDataFromFile(MAP_FILE)
-
-        arenaDoor = xy2cell(16, 26)
-        arenaDoorUp = xy2cell(16, 11)
 
         val patch = Patch.Generate(this, 0.45f, 6)
         for (i in 0 until length()) {
@@ -168,11 +166,11 @@ class CavesBossLevel : Level() {
             }
             GameScene.add(boss)
 
-            Level.set(arenaDoor, Terrain.WALL)
-            GameScene.updateMap(arenaDoor)
+            set(ArenaDoor, Terrain.WALL)
+            GameScene.updateMap(ArenaDoor)
             Dungeon.observe()
 
-            CellEmitter.get(arenaDoor).start(Speck.factory(Speck.ROCK), 0.07f, 10)
+            CellEmitter.get(ArenaDoor).start(Speck.factory(Speck.ROCK), 0.07f, 10)
             Camera.main.shake(3f, 0.7f)
             Sample.INSTANCE.play(Assets.SND_ROCKS)
 
@@ -190,13 +188,13 @@ class CavesBossLevel : Level() {
 
             // open
             val openDoor = { door: Int ->
-                Level.set(door, Terrain.EMPTY_DECO)
+                set(door, Terrain.EMPTY_DECO)
+                CellEmitter.get(door).start(Speck.factory(Speck.ROCK), 0.07f, 10)
                 GameScene.updateMap(door)
             }
 
-            openDoor(arenaDoor)
-            openDoor(arenaDoorUp)
-            CellEmitter.get(arenaDoorUp).start(Speck.factory(Speck.ROCK), 0.07f, 10)
+            openDoor(ArenaDoor)
+            openDoor(ArenaDoorUp)
 
             Dungeon.observe()
 
@@ -250,7 +248,6 @@ class CavesBossLevel : Level() {
 
         private val ROOM_ENTRANCE = Rect(14, 18, 22, 26)
 
-        private const val DOOR = "door"
         private const val ENTERED = "entered"
         private const val DROPPED = "droppped"
     }

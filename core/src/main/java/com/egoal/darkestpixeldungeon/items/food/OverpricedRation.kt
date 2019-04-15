@@ -18,21 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.food;
+package com.egoal.darkestpixeldungeon.items.food
 
-import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class OverpricedRation extends Food {
+class OverpricedRation : Food(Hunger.STARVING - Hunger.HUNGRY, 1) {
+    init {
+        image = ItemSpriteSheet.OVERPRICED
+    }
 
-  {
-    image = ItemSpriteSheet.OVERPRICED;
-    energy = Hunger.STARVING - Hunger.HUNGRY;
-    hornValue = 1;
-  }
-
-  @Override
-  public int price() {
-    return 10 * quantity;
-  }
+    override fun price(): Int = 10 * quantity
 }

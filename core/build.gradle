@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 27
     buildToolsVersion "27.0.1"
 
     buildTypes {
@@ -16,7 +16,7 @@ android {
 
 dependencies {
     compile project(':SPD-classes')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 repositories {
     mavenCentral()

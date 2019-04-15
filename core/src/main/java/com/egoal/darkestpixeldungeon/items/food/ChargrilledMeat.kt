@@ -18,27 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.food;
+package com.egoal.darkestpixeldungeon.items.food
 
-import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class ChargrilledMeat extends Food {
+class ChargrilledMeat : Food(Hunger.STARVING - Hunger.HUNGRY, 1) {
+    init {
+        image = ItemSpriteSheet.STEAK
+    }
 
-  {
-    image = ItemSpriteSheet.STEAK;
-    energy = Hunger.STARVING - Hunger.HUNGRY;
-    hornValue = 1;
-  }
+    override fun price(): Int = 8 * quantity
 
-  @Override
-  public int price() {
-    return 8 * quantity;
-  }
-
-  public static Food cook(MysteryMeat ingredient) {
-    ChargrilledMeat result = new ChargrilledMeat();
-    result.quantity = ingredient.quantity();
-    return result;
-  }
+    companion object {
+        fun cook(ingredient: MysteryMeat): Food = ChargrilledMeat().apply { quantity = ingredient.quantity() }
+    }
 }

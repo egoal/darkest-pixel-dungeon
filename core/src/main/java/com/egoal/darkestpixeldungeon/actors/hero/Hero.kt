@@ -159,7 +159,7 @@ class Hero : Char() {
 
     //todo: refactor helmet immersion
     fun arcaneFactor(): Float {
-        if (belongings.helmet != null && belongings.helmet is HoodApprentice) return 1.15f
+        if (belongings.helmet is HoodApprentice) return 1.15f
         return 1f
     }
 
@@ -541,7 +541,7 @@ class Hero : Char() {
     fun recoverSanity(value: Float) {
         val r = buff(Pressure::class.java)!!.downPressure(value)
         if (r > 0)
-            sprite.showStatus(0xFFFFFF, r.toString())
+            sprite.showStatus(0xFFFFFF, r.toInt().toString())
     }
 
     fun recoverSanity(value: Int) {
@@ -1006,7 +1006,7 @@ class Hero : Char() {
         if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.IntRange(6, 12).toFloat())
         else if (ch is Mob && ch.maxLvl >= lvl && Random.Int(10) == 0) recoverSanity(Random.IntRange(1, 6).toFloat())
 
-        (belongings.helmet as MaskOfMadness?)?.onEnemySlayed(ch)
+        if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)
 
         buff(BloodSuck::class.java)?.onEnemySlayed(ch)
         buff(ChaliceOfBlood.Store::class.java)?.onEnemySlayed(ch)
@@ -1116,7 +1116,7 @@ class Hero : Char() {
 
             GameScene.gameOver()
 
-            if (src is Hero.Doom) src.onDeath()
+            if (src is Doom) src.onDeath()
 
             Dungeon.deleteGame(Dungeon.hero.heroClass, true, true)
         }

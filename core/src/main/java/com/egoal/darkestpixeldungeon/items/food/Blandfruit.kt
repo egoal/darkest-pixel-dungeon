@@ -12,14 +12,11 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import java.lang.RuntimeException
 
-class Blandfruit : Food() {
+class Blandfruit : Food(Hunger.STARVING / 2, 6) {
+    //only applies when blandfruit is cooked
     init {
         stackable = true
         image = ItemSpriteSheet.BLANDFRUIT
-
-        //only applies when blandfruit is cooked
-        energy = Hunger.STARVING / 2
-        hornValue = 6
 
         bones = true
     }

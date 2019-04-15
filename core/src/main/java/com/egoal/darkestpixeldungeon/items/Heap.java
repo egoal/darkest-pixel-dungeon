@@ -249,7 +249,7 @@ public class Heap implements Bundlable {
         items.remove(item);
         evaporated = true;
       } else if (item instanceof MysteryMeat) {
-        replace(item, ChargrilledMeat.cook((MysteryMeat) item));
+        replace(item, ChargrilledMeat.Companion.cook((MysteryMeat) item));
         burnt = true;
       } else if (item instanceof Bomb) {
         items.remove(item);
@@ -341,7 +341,7 @@ public class Heap implements Bundlable {
     boolean frozen = false;
     for (Item item : items.toArray(new Item[0])) {
       if (item instanceof MysteryMeat) {
-        replace(item, FrozenCarpaccio.cook((MysteryMeat) item));
+        replace(item, FrozenCarpaccio.Companion.cook((MysteryMeat) item));
         frozen = true;
       } else if (item instanceof Potion
               && !(item instanceof PotionOfStrength || item instanceof
