@@ -40,31 +40,31 @@ open class Food(val enery: Float = Hunger.HUNGRY,
             detach(hero.belongings.backpack)
             hero.buff(Hunger::class.java)!!.satisfy(enery)
             GLog.i(message)
-        }
 
-        when (hero.heroClass) {
-            HeroClass.WARRIOR -> {
-                if (hero.HP < hero.HT) {
-                    hero.HP = min(hero.HP + 5, hero.HT)
-                    hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)
+            when (hero.heroClass) {
+                HeroClass.WARRIOR -> {
+                    if (hero.HP < hero.HT) {
+                        hero.HP = min(hero.HP + 5, hero.HT)
+                        hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)
+                    }
+                }
+                HeroClass.MAGE -> {
+                    Buff.affect(hero, Recharging::class.java, 4f)
+                    ScrollOfRecharging.charge(hero)
                 }
             }
-            HeroClass.MAGE -> {
-                Buff.affect(hero, Recharging::class.java, 4f)
-                ScrollOfRecharging.charge(hero)
-            }
+
+            hero.recoverSanity(Random.Float(2f, 7f))
+            hero.sprite.operate(hero.pos)
+            hero.busy()
+            SpellSprite.show(hero, SpellSprite.FOOD)
+            Sample.INSTANCE.play(Assets.SND_EAT)
+
+            hero.spend(TIME_TO_EAT)
+
+            Statistics.FoodEaten++
+            Badges.validateFoodEaten()
         }
-
-        hero.recoverSanity(Random.Float(2f, 7f))
-        hero.sprite.operate(hero.pos)
-        hero.busy()
-        SpellSprite.show(hero, SpellSprite.FOOD)
-        Sample.INSTANCE.play(Assets.SND_EAT)
-
-        hero.spend(TIME_TO_EAT)
-
-        Statistics.FoodEaten++
-        Badges.validateFoodEaten()
     }
 
     override fun isUpgradable(): Boolean = false

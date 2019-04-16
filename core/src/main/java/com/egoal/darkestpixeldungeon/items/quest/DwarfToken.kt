@@ -18,32 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.quest;
+package com.egoal.darkestpixeldungeon.items.quest
 
-import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.items.Item
 
-public class Embers extends Item {
+class DwarfToken : Item() {
+    init {
+        image = ItemSpriteSheet.TOKEN
 
-  {
-    image = ItemSpriteSheet.EMBER;
+        stackable = true
+        unique = true
+    }
 
-    unique = true;
-  }
+    override fun isUpgradable(): Boolean = false
 
-  @Override
-  public boolean isUpgradable() {
-    return false;
-  }
-
-  @Override
-  public boolean isIdentified() {
-    return true;
-  }
-
-  @Override
-  public ItemSprite.Glowing glowing() {
-    return new ItemSprite.Glowing(0x660000, 3f);
-  }
+    override fun isIdentified(): Boolean = true
 }

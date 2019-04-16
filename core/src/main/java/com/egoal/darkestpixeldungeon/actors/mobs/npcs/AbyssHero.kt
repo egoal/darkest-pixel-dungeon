@@ -209,13 +209,13 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
                 super.die()
                 CellEmitter.get(ch.pos).burst(ShadowParticle.UP, 5)
 
-                remove(CharSprite.State.SOUL_BURNING)
+                remove(State.SOUL_BURNING)
             }
 
             override fun link(ch: Char) {
                 super.link(ch)
 
-                add(CharSprite.State.SOUL_BURNING)
+                add(State.SOUL_BURNING)
             }
 
             override fun blood(): Int = 0x000000

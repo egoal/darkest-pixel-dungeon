@@ -46,7 +46,7 @@ abstract class KindofMisc : EquipableItem() {
             }
 
             detach(hero.belongings.backpack)
-            actions(hero)
+            activate(hero)
 
             cursedKnown = true
             if (cursed) {

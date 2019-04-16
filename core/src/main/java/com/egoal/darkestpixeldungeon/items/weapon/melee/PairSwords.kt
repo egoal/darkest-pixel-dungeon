@@ -31,7 +31,7 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
         // correct by diff
         return when (abs(left.level() - right.level())) {
             0 -> value * 7 / 4 // more powerful
-            1 -> value * 6 / 4 // similar to a usually tier-5 weapon
+            1 -> value * 6 / 4 // similar to a normal tier-5 weapon
             2 -> value * 5 / 4
             else -> value * 4 / 5
         }

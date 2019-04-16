@@ -18,27 +18,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.quest;
+package com.egoal.darkestpixeldungeon.items.quest
 
-import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.items.Item
 
-public class DarkGold extends Item {
+//this one's still hanging around to support quests from old saves
+//I may reuse it at some point.
+class RatSkull : Item() {
+    init {
+        image = ItemSpriteSheet.SKULL
 
-  {
-    image = ItemSpriteSheet.ORE;
+        unique = true
+    }
 
-    stackable = true;
-    unique = true;
-  }
+    override fun isUpgradable(): Boolean = false
 
-  @Override
-  public boolean isUpgradable() {
-    return false;
-  }
-
-  @Override
-  public boolean isIdentified() {
-    return true;
-  }
+    override fun isIdentified(): Boolean = true
 }

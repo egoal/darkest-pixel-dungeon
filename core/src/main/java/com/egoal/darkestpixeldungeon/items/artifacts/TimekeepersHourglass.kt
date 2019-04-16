@@ -23,6 +23,7 @@ class TimekeepersHourglass : Artifact() {
         image = ItemSpriteSheet.ARTIFACT_HOURGLASS
 
         levelCap = 5
+        cooldown = 0
 
         chargeCap = 5 + level()
         charge = chargeCap
@@ -50,9 +51,11 @@ class TimekeepersHourglass : Artifact() {
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
             else if (charge <= 1) GLog.i(Messages.get(this, "no_charge"))
             else if (cursed) GLog.i(Messages.get(this, "cursed"))
+            else if (cooldown > 0) GLog.i(Messages.get(this, "not-ready"))
             else if (activated) {
                 hero.buff(TimeFreeze::class.java)?.detach()
                 activated = false
+                cooldown = 3 // 3 turn 
                 GLog.i(Messages.get(this, "deactivate"))
             } else {
                 GLog.i(Messages.get(this, "onfreeze"))
@@ -123,6 +126,8 @@ class TimekeepersHourglass : Artifact() {
                 }
             } else if (cursed && Random.Int(10) == 0)
                 (target as Hero).spend(TICK) // steal time 
+
+            if (cooldown > 0) --cooldown
 
             updateQuickslot()
             spend(Actor.TICK)

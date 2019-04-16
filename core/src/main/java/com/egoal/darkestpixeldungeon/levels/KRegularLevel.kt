@@ -407,7 +407,7 @@ abstract class KRegularLevel : Level() {
             val s = randomSpace(DigResult.Type.Normal, 1)
             if (s != null) {
                 val cell = pointToCell(s.rect.random())
-                if (passable[cell])
+                if (passable[cell] && findMob(cell) == null)
                     return cell
             }
         }

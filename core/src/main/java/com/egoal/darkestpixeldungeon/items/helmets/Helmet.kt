@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.helmets
 
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
@@ -9,10 +10,11 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindofMisc
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
 
-open class Helmet : EquipableItem() {
+open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem() {
 
     override fun doEquip(hero: Hero): Boolean {
         detach(hero.belongings.backpack)
@@ -81,12 +83,31 @@ open class Helmet : EquipableItem() {
         val Cursed: Boolean get() = cursed
 
         override fun act(): Boolean {
+            if (!isIdentified && --ticksToKnow <= 0) {
+                identify()
+                GLog.w(Messages.get(Helmet::class.java, "identify", this@Helmet.toString()))
+            }
+
             if (cursed && Random.Int(10) == 0)
                 target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
 
-            return super.act()
+            spend(Actor.TICK)
+            return true
         }
     }
 
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(UNFAMILIRIARITY, ticksToKnow)
+    }
 
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        ticksToKnow = bundle.getInt(UNFAMILIRIARITY)
+    }
+
+    companion object {
+        private const val TICKS_TO_KNOW = 150
+        private const val UNFAMILIRIARITY = "unfamiliarity"
+    }
 }

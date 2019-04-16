@@ -20,7 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.levels.features
 
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
@@ -61,7 +63,7 @@ object AlchemyPot {
                 val pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
                 if (pr != null)
                     return Pair(true, (pr.second as Blandfruit).cook(pr.first as Plant.Seed))
-                
+
                 return Pair(false, null)
             }
             1 -> {
@@ -74,10 +76,15 @@ object AlchemyPot {
 
     fun OnCombined(items: List<Item>, result: Item) {
         GLog.w(Messages.get(this, "combined", result.name()))
-        if (!result.collect())
+        if (!result.doPickUp(Dungeon.hero))
             Dungeon.level.drop(result, Dungeon.hero.pos)
+
+        if (result is Potion) {
+            Statistics.PotionsCooked++
+            Badges.validatePotionsCooked()
+        }
     }
-    
+
     private fun SplitTwoItem(checker0: (Item) -> Boolean, checker1: (Item) -> Boolean,
                              item0: Item, item1: Item): Pair<Item, Item>? = when {
         checker0(item0) && checker1(item1) -> Pair(item0, item1)

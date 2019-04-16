@@ -35,18 +35,13 @@ class VaultDigger : RectDigger() {
             }
             1 -> {
                 // two different categories
-                val c1 = Random.oneOf(Generator.Category.WAND, Generator.Category.RING,
-                        Generator.Category.ARTIFACT)
-                var c2 = Random.oneOf(Generator.Category.WAND, Generator.Category.RING,
-                        Generator.Category.ARTIFACT)
-                while (c2 == c1)
-                    c2 = Random.oneOf(Generator.Category.WAND, Generator.Category.RING,
-                            Generator.Category.ARTIFACT)
+                val c1 = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT)
+                var c2 = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT)
+                while (c1 === c2)
+                    c2 = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT)
 
-                val i1 = Generator.random(c1)
-                val i2 = Generator.random(c2)
-                level.drop(i1, c).type = Heap.Type.CRYSTAL_CHEST
-                level.drop(i2, c + PathFinder.NEIGHBOURS4[Random.Int(4)]).type = Heap.Type.CRYSTAL_CHEST
+                level.drop(c1.generate(), c).type = Heap.Type.CRYSTAL_CHEST
+                level.drop(c2.generate(), c + PathFinder.NEIGHBOURS4[Random.Int(4)]).type = Heap.Type.CRYSTAL_CHEST
                 level.addItemToSpawn(GoldenKey(Dungeon.depth))
             }
             2 -> {

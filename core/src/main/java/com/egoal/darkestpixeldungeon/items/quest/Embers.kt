@@ -18,28 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.quest;
+package com.egoal.darkestpixeldungeon.items.quest
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
-import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-//this one's still hanging around to support quests from old saves
-//I may reuse it at some point.
-public class RatSkull extends Item {
+class Embers : Item() {
+    init {
+        image = ItemSpriteSheet.EMBER
 
-  {
-    image = ItemSpriteSheet.SKULL;
+        unique = true
+    }
 
-    unique = true;
-  }
+    override fun isUpgradable(): Boolean = false
 
-  @Override
-  public boolean isUpgradable() {
-    return false;
-  }
+    override fun isIdentified(): Boolean = true
 
-  @Override
-  public boolean isIdentified() {
-    return true;
-  }
+    override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0x660000, 3f)
 }

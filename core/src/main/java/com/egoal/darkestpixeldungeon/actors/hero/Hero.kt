@@ -767,7 +767,7 @@ class Hero : Char() {
         if (subClass == HeroSubClass.BERSERKER) Buff.affect(this, Berserk::class.java).recover(percent)
 
         var upgraded = false
-        while (exp > maxExp()) {
+        while (exp >= maxExp()) {
             exp -= maxExp()
             if (lvl < MAX_LEVEL) {
                 upgraded = true

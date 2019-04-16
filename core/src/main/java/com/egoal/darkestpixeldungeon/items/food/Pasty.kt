@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import java.util.*
 
 class Pasty : Food(Hunger.STARVING, 5) {
@@ -17,6 +18,7 @@ class Pasty : Food(Hunger.STARVING, 5) {
     }
 
     init {
+        image = ItemSpriteSheet.PASTY
         bones = true
     }
 

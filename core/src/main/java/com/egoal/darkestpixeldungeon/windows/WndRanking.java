@@ -101,7 +101,7 @@ public class WndRanking extends WndTabbed {
   private void createControls() {
 
     String[] labels =
-            {Messages.get(this, "stats"), Messages.get(this, "items"), 
+            {Messages.get(this, "stats"), Messages.get(this, "items"),
                     Messages.get(this, "badges")};
     Group[] pages =
             {new StatsTab(), new ItemsTab(), new BadgesTab()};
@@ -149,7 +149,8 @@ public class WndRanking extends WndTabbed {
       String heroClass = Dungeon.hero.className();
 
       IconTitle title = new IconTitle();
-      title.icon(HeroSprite.avatar(Dungeon.hero.getHeroClass(), Dungeon.hero.tier
+      title.icon(HeroSprite.avatar(Dungeon.hero.getHeroClass(), Dungeon.hero
+              .tier
               ()));
       title.label(Messages.get(this, "title", Dungeon.hero.getLvl(), heroClass)
               .toUpperCase(Locale.ENGLISH));
@@ -160,14 +161,14 @@ public class WndRanking extends WndTabbed {
       float pos = title.bottom();
 
       if (Dungeon.challenges > 0) {
-        RedButton btnCatalogus = new RedButton(Messages.get(this, 
+        RedButton btnCatalogus = new RedButton(Messages.get(this,
                 "challenges")) {
           @Override
           protected void onClick() {
             Game.scene().add(new WndChallenges(Dungeon.challenges, false));
           }
         };
-        btnCatalogus.setRect(0, pos, btnCatalogus.reqWidth() + 2, 
+        btnCatalogus.setRect(0, pos, btnCatalogus.reqWidth() + 2,
                 btnCatalogus.reqHeight() + 2);
         add(btnCatalogus);
 
@@ -205,7 +206,7 @@ public class WndRanking extends WndTabbed {
               (Statistics.INSTANCE.getAnkhsUsed()), pos);
     }
 
-    private float statSlot(Group parent, String label, String value, float 
+    private float statSlot(Group parent, String label, String value, float
             pos) {
 
       RenderedText txt = PixelScene.renderText(label, 7);
@@ -236,6 +237,8 @@ public class WndRanking extends WndTabbed {
       if (stuff.armor != null) {
         addItem(stuff.armor);
       }
+      if (stuff.helmet != null)
+        addItem(stuff.helmet);
       if (stuff.misc1 != null) {
         addItem(stuff.misc1);
       }
