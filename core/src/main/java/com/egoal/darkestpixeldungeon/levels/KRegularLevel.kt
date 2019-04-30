@@ -46,13 +46,15 @@ abstract class KRegularLevel : Level() {
         length = width * height
     }
 
+    open fun createLevelDigger() = LevelDigger(this)
+
     override fun build(iteration: Int): Boolean {
         if (iteration == 0 || chosenDiggers.isEmpty()) {
             chosenDiggers = chooseDiggers()
             Log.d("dpd", "${chosenDiggers.size} diggers chosen.")
         }
 
-        val ld = LevelDigger(this)
+        val ld = createLevelDigger()
         if (!ld.dig(chosenDiggers))
             return false
 

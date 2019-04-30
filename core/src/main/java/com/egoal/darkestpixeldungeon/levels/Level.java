@@ -869,11 +869,14 @@ public abstract class Level implements Bundlable {
     }
 
     // don't drop on them
-    if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain.ENCHANTING_STATION) {
+    if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain
+            .ENCHANTING_STATION) {
       int n;
       do {
         n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)];
-      } while (map[n] != Terrain.EMPTY_SP); //fixme: as they must put on empty_sp tiles!!!
+      }
+      while (map[n] != Terrain.EMPTY_SP); //fixme: as they must put on 
+      // empty_sp tiles!!!
       cell = n;
     }
 
@@ -1075,8 +1078,6 @@ public abstract class Level implements Bundlable {
     boolean sighted = c.buff(Blindness.class) == null &&
             c.buff(Shadows.class) == null && c.isAlive();
     if (sighted) {
-//      ShadowCaster.castShadow(cx, cy, fieldOfView, c.viewDistance(), c
-//              .seeDistance());
       ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(),
               c.seeDistance());
     } else {

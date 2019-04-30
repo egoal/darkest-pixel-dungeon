@@ -83,6 +83,11 @@ public class DM300 extends Mob {
   private boolean overloaded = false;
 
   @Override
+  public int viewDistance() {
+    return 6;
+  }
+
+  @Override
   public Damage giveDamage(Char target) {
     int val = Random.NormalIntRange(20, 25);
     if (overloaded)

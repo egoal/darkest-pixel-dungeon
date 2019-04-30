@@ -247,6 +247,8 @@ public abstract class Char extends Actor {
           Dungeon.fail(getClass());
           GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name)));
         } else if (this == Dungeon.hero) {
+          Statistics.INSTANCE.setHighestDamage(
+                  Math.max(Statistics.INSTANCE.getHighestDamage(), value));
           // killed by hero
           Dungeon.hero.onKillChar(enemy);
         }
@@ -661,7 +663,7 @@ public abstract class Char extends Actor {
     IMMOVABLE,
     PHANTOM,
   }
-  
+
   // used on damage attacker, avoid null usage...
   public static class Nobody extends Char {
     public static Nobody INSTANCE = new Nobody();

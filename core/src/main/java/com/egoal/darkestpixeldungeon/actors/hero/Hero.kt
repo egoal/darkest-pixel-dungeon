@@ -461,10 +461,6 @@ class Hero : Char() {
         if (buff(RiemannianManifoldShield.Recharge::class.java)?.isCursed == true)
             return dmg
 
-        if (dmg.type == Damage.Type.MAGICAL)
-            if (belongings.armor?.hasGlyph(AntiMagic::class.java) == true)
-                dmg.value = (dmg.value * 0.75f).toInt()
-
         buff(RingOfElements.Resistance::class.java)?.resist(dmg)
 
         return super.resistDamage(dmg)
@@ -540,7 +536,7 @@ class Hero : Char() {
 
     fun recoverSanity(value: Float) {
         val r = buff(Pressure::class.java)!!.downPressure(value)
-        if (r > 0)
+        if (r >= 1f)
             sprite.showStatus(0xFFFFFF, r.toInt().toString())
     }
 

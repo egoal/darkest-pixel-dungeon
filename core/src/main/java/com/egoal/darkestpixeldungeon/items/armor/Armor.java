@@ -308,7 +308,7 @@ public class Armor extends EquipableItem {
     }
 
     if (glyph != null && (cursedKnown || !glyph.curse())) {
-      info += "\n\n" + Messages.get(Armor.class, "inscribed", glyph.name());
+      info += "\n\n" + Messages.get(Item.class, "inscribed", glyph.name());
       info += " " + glyph.desc();
     }
 
@@ -447,8 +447,6 @@ public class Armor extends EquipableItem {
     };
 
     public abstract Damage proc(Armor armor, Damage damage);
-    // public abstract int proc( Armor armor, Char attacker, Char defender, 
-    // int damage );
 
     public String name() {
       if (!curse())

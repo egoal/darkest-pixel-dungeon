@@ -1,14 +1,13 @@
 package com.egoal.darkestpixeldungeon.items.helmets
 
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
-class HelmetBarbarian : Helmet() {
+class MaskOfHorror : Helmet() {
     init {
-        image = ItemSpriteSheet.HELMET_BARBARIAN
+        image = ItemSpriteSheet.HELMET_HORROR
     }
 
     override fun desc(): String {
@@ -16,14 +15,14 @@ class HelmetBarbarian : Helmet() {
         if (isIdentified) {
             desc += "\n\n" + Messages.get(this, "effect-desc")
             if (cursed)
-                desc += "\n\n" + Messages.get(Helmet::class.java, "cursed_desc")
+                desc += "\n\n" + Messages.get(this, "cursed-desc")
         }
 
         return desc
     }
 
     override fun procGivenDamage(dmg: Damage) {
-        if (dmg.from != null && dmg.from is Char && (dmg.from as Char).HP < (dmg.from as Char).HT / 2)
-            dmg.value = dmg.value * 5 / 4
+        if (!cursed && Random.Float() < 0.1f)
+            dmg.addFeature(Damage.Feature.ACCURATE)
     }
 }

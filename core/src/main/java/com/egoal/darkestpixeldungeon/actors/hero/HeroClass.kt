@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMindVision
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
@@ -215,7 +216,7 @@ enum class HeroClass(private val title: String) {
     }
 
     private fun initDebug(hero: Hero) {
-
+        MaskOfClown().collect()
     }
 
     private fun initPerks(hero: Hero) {

@@ -49,7 +49,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HP = HT
 
         timeLeft = 20f * level + 50f
-        maxExp = 5f + 3f * level
+        maxExp = 5f + 2.5f * level
     }
 
     private fun imitateHeroStatus() {

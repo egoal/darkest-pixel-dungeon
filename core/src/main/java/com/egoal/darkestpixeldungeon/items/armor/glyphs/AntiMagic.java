@@ -31,7 +31,9 @@ public class AntiMagic extends Armor.Glyph {
 
   @Override
   public Damage proc(Armor armor, Damage damage) {
-    //no proc effect, see Hero.damage
+    if (damage.type == Damage.Type.MAGICAL)
+      damage.value *= 0.75f;
+
     return damage;
   }
 

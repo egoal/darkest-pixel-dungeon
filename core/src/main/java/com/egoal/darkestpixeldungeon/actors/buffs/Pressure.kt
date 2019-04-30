@@ -28,7 +28,7 @@ class Pressure : Buff(), Hero.Doom {
         val newLevel = when {
             pressure <= LVL_CONFIDENT -> Level.CONFIDENT
             pressure <= LVL_NORMAL -> Level.NORMAL
-            pressure <= LVL_NERVOUS -> Level.NERVOUS
+            pressure < LVL_NERVOUS -> Level.NERVOUS
             else -> Level.COLLAPSE
         }
 

@@ -32,6 +32,7 @@ object Statistics {
     var DeepestFloor: Int = 0
     var EnemiesSlain: Int = 0
     var FoodEaten: Int = 0
+    var HighestDamage: Int = 0
     var PotionsCooked: Int = 0
     var PiranhasKilled: Int = 0
     var NightHunt: Int = 0
@@ -50,17 +51,18 @@ object Statistics {
         Clock.set(0, 9, 0f)
     }
 
-    private val GOLD = "score"
-    private val DEEPEST = "maxDepth"
-    private val SLAIN = "enemiesSlain"
-    private val FOOD = "foodEaten"
-    private val ALCHEMY = "potionsCooked"
-    private val PIRANHAS = "priranhas"
-    private val NIGHT = "nightHunt"
-    private val ANKHS = "ankhsUsed"
-    private val DURATION = "duration"
-    private val AMULET = "amuletObtained"
-    private val TOTAL_MINUTES = "total-minutes"
+    private const val GOLD = "score"
+    private const val DEEPEST = "maxDepth"
+    private const val SLAIN = "enemiesSlain"
+    private const val FOOD = "foodEaten"
+    private const val HIGHEST_DAMAGE = "highest-damage"
+    private const val ALCHEMY = "potionsCooked"
+    private const val PIRANHAS = "priranhas"
+    private const val NIGHT = "nightHunt"
+    private const val ANKHS = "ankhsUsed"
+    private const val DURATION = "duration"
+    private const val AMULET = "amuletObtained"
+    private const val TOTAL_MINUTES = "total-minutes"
 
     fun reset() {
 
@@ -68,6 +70,7 @@ object Statistics {
         DeepestFloor = Dungeon.initialDepth_
         EnemiesSlain = 0
         FoodEaten = 0
+        HighestDamage = 0
         PotionsCooked = 0
         PiranhasKilled = 0
         NightHunt = 0
@@ -86,6 +89,7 @@ object Statistics {
         bundle.put(DEEPEST, DeepestFloor)
         bundle.put(SLAIN, EnemiesSlain)
         bundle.put(FOOD, FoodEaten)
+        bundle.put(HIGHEST_DAMAGE, HighestDamage)
         bundle.put(ALCHEMY, PotionsCooked)
         bundle.put(PIRANHAS, PiranhasKilled)
         bundle.put(NIGHT, NightHunt)
@@ -100,6 +104,7 @@ object Statistics {
         DeepestFloor = bundle.getInt(DEEPEST)
         EnemiesSlain = bundle.getInt(SLAIN)
         FoodEaten = bundle.getInt(FOOD)
+        HighestDamage = bundle.getInt(HIGHEST_DAMAGE)
         PotionsCooked = bundle.getInt(ALCHEMY)
         PiranhasKilled = bundle.getInt(PIRANHAS)
         NightHunt = bundle.getInt(NIGHT)

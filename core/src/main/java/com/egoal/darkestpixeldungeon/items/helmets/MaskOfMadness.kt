@@ -22,22 +22,18 @@ class MaskOfMadness : Helmet() {
         return false
     }
 
-    override fun procGivenDamage(dmg: Damage): Damage {
+    override fun procGivenDamage(dmg: Damage) {
         val ratio = 2f - 1.5f / (Math.exp((level() / 3f).toDouble()).toFloat() + .5f)
         dmg.value = (dmg.value * ratio).toInt()
-
-        return dmg
     }
 
-    override fun procTakenDamage(dmg: Damage): Damage {
+    override fun procTakenDamage(dmg: Damage) {
         val ratio = if (dmg.type == Damage.Type.MENTAL)
             1.75f
         else
             1.8f - 1.5f / (Math.exp((level() / 3f).toDouble()).toFloat() + 1f) + 0.05f * level()
 
         dmg.value = (dmg.value * ratio).toInt()
-
-        return dmg
     }
 
     fun onEnemySlayed(ch: Char) {

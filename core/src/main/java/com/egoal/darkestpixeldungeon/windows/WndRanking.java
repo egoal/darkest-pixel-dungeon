@@ -49,7 +49,7 @@ import java.util.Locale;
 public class WndRanking extends WndTabbed {
 
   private static final int WIDTH = 91;
-  private static final int HEIGHT = 160;
+  private static final int HEIGHT = 182;
 
   private Thread thread;
   private String error = null;
@@ -151,7 +151,7 @@ public class WndRanking extends WndTabbed {
       IconTitle title = new IconTitle();
       title.icon(HeroSprite.avatar(Dungeon.hero.getHeroClass(), Dungeon.hero
               .tier
-              ()));
+                      ()));
       title.label(Messages.get(this, "title", Dungeon.hero.getLvl(), heroClass)
               .toUpperCase(Locale.ENGLISH));
       title.color(Window.SHPX_COLOR);
@@ -191,6 +191,8 @@ public class WndRanking extends WndTabbed {
 
       pos = statSlot(this, Messages.get(this, "depth"), Integer.toString
               (Statistics.INSTANCE.getDeepestFloor()), pos);
+      pos = statSlot(this, Messages.get(this, "highest-damage"), Integer
+              .toString(Statistics.INSTANCE.getHighestDamage()), pos);
       pos = statSlot(this, Messages.get(this, "enemies"), Integer.toString
               (Statistics.INSTANCE.getEnemiesSlain()), pos);
       pos = statSlot(this, Messages.get(this, "gold"), Integer.toString
@@ -253,7 +255,7 @@ public class WndRanking extends WndTabbed {
       pos = 0;
       for (int i = 0; i < 6; i++) {
         float posx = i % 4 * (22 + 1);
-        float posy = i / 4 * (22 + 1) + 116;
+        float posy = i / 4 * (22 + 1) + 22 * 6 + 6;
         if (Dungeon.quickslot.getItem(i) != null) {
           QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot
                   .getItem(i));

@@ -22,10 +22,9 @@ class HelmetCrusader : Helmet() {
         return desc
     }
 
-    override fun procTakenDamage(dmg: Damage): Damage {
+    override fun procTakenDamage(dmg: Damage) {
         if (dmg.isFeatured(Damage.Feature.RANGED) && Random.Float() < 0.2f)
             dmg.value = 0
-        return dmg
     }
 
     override fun viewAmend(): Int = -1

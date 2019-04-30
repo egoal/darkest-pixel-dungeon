@@ -224,7 +224,7 @@ object KGenerator {
             MasterThievesArmband::class.java to 0f, // by thief
             SandalsOfNature::class.java to 1f,
             TalismanOfForesight::class.java to 1f,
-            TimekeepersHourglass::class.java to 1f, 
+            TimekeepersHourglass::class.java to 1f,
             UnstableSpellbook::class.java to 1f,
             AlchemistsToolkit::class.java to 0f, // currently removed from drop tables,
             DriedRose::class.java to 0f, // starts with no chance of spawning, chance is set directly after beating ghost quest.
@@ -233,10 +233,10 @@ object KGenerator {
             RiemannianManifoldShield::class.java to 1f,
             GoldPlatedStatue::class.java to 1f,
             HandOfTheElder::class.java to 0f, // by undead
-            HandleOfAbyss::class.java to 1f, 
-            HeartOfSatan::class.java to 1f, 
-            CloakOfSheep::class.java to 1f, 
-            EyeballOfTheElder::class.java to 1f 
+            HandleOfAbyss::class.java to 1f,
+            HeartOfSatan::class.java to 1f,
+            CloakOfSheep::class.java to 1f,
+            EyeballOfTheElder::class.java to 1f
     )
 
     object ARTIFACT : ClassMapGenerator<Artifact>(HashMap()), Bundlable {
@@ -269,6 +269,8 @@ object KGenerator {
             spawned.clear()
             updateProbabilities()
         }
+
+        fun left(): Int = probMap.count { it.value > 0f }
 
         private fun updateProbabilities() {
             probMap.clear()
@@ -303,8 +305,9 @@ object KGenerator {
             CrownOfDwarf::class.java to 0f, // by king 
             HeaddressRegeneration::class.java to 1f,
             WizardHat::class.java to 1f,
-            MaskOfClown::class.java to 1f, 
-            MaskOfMadness::class.java to 0f // compose 
+            MaskOfHorror::class.java to 1f, 
+            MaskOfClown::class.java to 1f,
+            MaskOfMadness::class.java to 0f // compose
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
@@ -318,7 +321,7 @@ object KGenerator {
             CriticalRune::class.java to 0.5f,
             BrightRune::class.java to 1f,
             HasteRune::class.java to 1f,
-            TreasureRune::class.java to 1f, 
+            TreasureRune::class.java to 1f,
             BloodRune::class.java to 0f // from unholy blood
     ))
 

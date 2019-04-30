@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
+import com.egoal.darkestpixeldungeon.levels.diggers.LevelDigger
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.*
 import com.egoal.darkestpixeldungeon.levels.diggers.secret.SecretRatKingDigger
 import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.SewerExitDigger
@@ -61,6 +62,8 @@ class SewerBossLevel : SewerLevel() {
         return diggers
     }
 
+    override fun createLevelDigger(): LevelDigger = LevelDigger(this, 1)
+    
     override fun decorate() {
         super.decorate()
 

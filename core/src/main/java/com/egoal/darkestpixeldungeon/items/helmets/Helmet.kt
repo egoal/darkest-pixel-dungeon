@@ -8,13 +8,17 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindofMisc
+import com.egoal.darkestpixeldungeon.items.inscriptions.Inscription
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
 
 open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem() {
+
+    private var inscription: Inscription? = null
 
     override fun doEquip(hero: Hero): Boolean {
         detach(hero.belongings.backpack)
@@ -39,20 +43,14 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
         return false
     }
 
-    protected var buff: Buff? = null
+    override fun time2equip(hero: Hero): Float = 2f / hero.speed()
 
     // when equip
-    override fun activate(ch: Char) {
-        buff = buff()
-        buff!!.attachTo(ch)
-    }
+//    override fun activate(ch: Char) 
 
     override fun doUnequip(hero: Hero, collect: Boolean, single: Boolean): Boolean =
             if (super.doUnequip(hero, collect, single)) {
                 hero.belongings.helmet = null
-
-                hero.remove(buff!!)
-                buff = null
                 true
             } else
                 false
@@ -65,36 +63,48 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
         return this
     }
 
+    override fun isIdentified(): Boolean = true
+    
     override fun isUpgradable(): Boolean = false
 
     override fun price(): Int = if (cursedKnown && cursed) 20 else 40
 
-    // this is what we call helmets!
-    open fun procGivenDamage(dmg: Damage): Damage = dmg
+    override fun name(): String = if (inscription != null && (cursedKnown || !inscription!!.curse()))
+        inscription!!.name(super.name()) else super.name()
 
-    open fun procTakenDamage(dmg: Damage): Damage = dmg
+    override fun info(): String {
+        var info = desc()
+        val ins = inscription
+        if (ins != null && (cursedKnown || !ins.curse())) {
+            info += "\n\n" + Messages.get(Item::class.java, "inscribed", ins.name())
+            info += "\n\n" + ins.desc()
+        }
+
+        return info
+    }
+
+    // this is what we call helmets!
+    open fun procGivenDamage(dmg: Damage) {
+        inscription?.procGivenDamage(dmg)
+    }
+
+    open fun procTakenDamage(dmg: Damage) {
+        inscription?.procTakenDamage(this, dmg)
+    }
 
     open fun viewAmend(): Int = 0
 
-    protected open fun buff(): HelmetBuff = HelmetBuff()
-
-    // default buff, increase pressure when cursed
-    open inner class HelmetBuff : Buff() {
-        val Cursed: Boolean get() = cursed
-
-        override fun act(): Boolean {
-            if (!isIdentified && --ticksToKnow <= 0) {
-                identify()
-                GLog.w(Messages.get(Helmet::class.java, "identify", this@Helmet.toString()))
-            }
-
-            if (cursed && Random.Int(10) == 0)
-                target.takeDamage(Damage(1, Char.Nobody(), target).type(Damage.Type.MENTAL))
-
-            spend(Actor.TICK)
-            return true
-        }
+    fun inscribe(ins: Inscription?) {
+        inscription = ins
     }
+
+    // open fun inscribe(){}
+
+    fun hasInscription(inscls: Class<out Inscription>): Boolean = inscription?.javaClass == inscls
+    fun hasGoodInscription(): Boolean = inscription?.curse() == true
+    fun hasCursedInscription(): Boolean = inscription?.curse() == false
+
+    override fun glowing(): ItemSprite.Glowing? = if (cursedKnown || inscription?.curse() == true) inscription?.glowing() else null
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

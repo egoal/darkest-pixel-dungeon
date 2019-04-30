@@ -20,7 +20,7 @@ data class Space(var rect: Rect = Rect(), var type: DigResult.Type = DigResult.T
     }
 }
 
-class LevelDigger(val level: Level) {
+class LevelDigger(val level: Level, private val minLoops: Int = 2) {
     private var diggers = ArrayList<Digger>()
     private var walls = ArrayList<Wall>()
     var spaces = ArrayList<Space>()
@@ -59,12 +59,9 @@ class LevelDigger(val level: Level) {
             if (!dag) return false
         }
 
-        val lc = makeLoopClosure(6)
-        if (lc <= 2) 
+        if(minLoops>0 && makeLoopClosure(6)<=minLoops)
             return false
 
-        Log.d("dpd", "$lc extra loops.")
-        
         return true
     }
 
@@ -117,7 +114,7 @@ class LevelDigger(val level: Level) {
         for (pr in overlaps) {
             val seg = Rect.Overlap(pr.first, pr.second)
             // Digger.Fill(level, seg, Terrain.EMPTY_SP)
-            for(i in 1..3) {
+            for (i in 1..3) {
                 val dp = level.pointToCell(seg.random())
 
                 if (PathFinder.NEIGHBOURS9.all { level.map[dp + it] != Terrain.DOOR }) {
@@ -129,11 +126,11 @@ class LevelDigger(val level: Level) {
                     break
                 }
             }
-            
-            if(loops>maxLoops)
+
+            if (loops > maxLoops)
                 break
         }
-        
+
         //todo: extra strategy to handle more loops 
 
         return loops

@@ -55,6 +55,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import org.intellij.lang.annotations.Identifier;
+
 import java.util.HashSet;
 
 public class King extends Mob {
@@ -80,6 +82,11 @@ public class King extends Mob {
   private boolean nextPedestal = true;
 
   private static final String PEDESTAL = "pedestal";
+
+  @Override
+  public int viewDistance() {
+    return 6;
+  }
 
   @Override
   public void storeInBundle(Bundle bundle) {
@@ -171,7 +178,8 @@ public class King extends Mob {
 
     Badges.validateBossSlain();
 
-    LloydsBeacon beacon = Dungeon.hero.getBelongings().getItem(LloydsBeacon.class);
+    LloydsBeacon beacon = Dungeon.hero.getBelongings().getItem(LloydsBeacon
+            .class);
     if (beacon != null) {
       beacon.upgrade();
     }

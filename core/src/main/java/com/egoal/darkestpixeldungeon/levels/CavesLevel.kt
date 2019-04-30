@@ -73,6 +73,7 @@ class CavesLevel : KRegularLevel() {
                 if (map[c - 1] == Terrain.WALL && map[c - width] == Terrain.WALL) {
                     map[c] = Terrain.WALL
                     traps.remove(c)
+                    plants.remove(c)
                 }
             }
 
@@ -81,6 +82,7 @@ class CavesLevel : KRegularLevel() {
                 if (map[c + 1] == Terrain.WALL && map[c - width] == Terrain.WALL) {
                     map[c] = Terrain.WALL
                     traps.remove(c)
+                    plants.remove(c)
                 }
             }
 
@@ -89,6 +91,7 @@ class CavesLevel : KRegularLevel() {
                 if (map[c - 1] == Terrain.WALL && map[c + width] == Terrain.WALL) {
                     map[c] = Terrain.WALL
                     traps.remove(c)
+                    plants.remove(c)
                 }
             }
 
@@ -97,6 +100,7 @@ class CavesLevel : KRegularLevel() {
                 if (map[c + 1] == Terrain.WALL && map[c + width] == Terrain.WALL) {
                     map[c] = Terrain.WALL
                     traps.remove(c)
+                    plants.remove(c)
                 }
             }
         }

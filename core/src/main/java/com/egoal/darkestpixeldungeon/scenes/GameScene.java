@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.*;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -394,6 +395,8 @@ public class GameScene extends PixelScene {
         GLog.w(Messages.get(this, "secrets"));
       }
 
+      GLog.n(Messages.format("left artifacts: %d", KGenerator.ARTIFACT.INSTANCE.left()));
+      
       InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
       fadeIn();
