@@ -26,7 +26,6 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.watabou.noosa.particles.Emitter
 
 import java.util.ArrayList
 
@@ -52,7 +51,7 @@ class Torch : Item() {
             hero.sprite.operate(hero.pos)
 
             detach(hero.belongings.backpack)
-            Buff.affect(hero, Light::class.java, Light.DURATION)
+            Buff.affect(hero, Light::class.java).duration = Light.DURATION
 
             val emitter = hero.sprite.centerEmitter()
             emitter.start(FlameParticle.FACTORY, 0.2f, 3)
@@ -61,7 +60,7 @@ class Torch : Item() {
 
     override fun isUpgradable(): Boolean = false
 
-    override fun isIdentified(): Boolean = true 
+    override fun isIdentified(): Boolean = true
 
     override fun price(): Int = 15 * quantity
 

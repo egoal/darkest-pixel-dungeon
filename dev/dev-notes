@@ -17,57 +17,11 @@ ideas:
     地形破坏，需要修改地图机制
     装备系统，misc改动
 
-notes:
-    sprite size: npc-12x14, hero-12x15
-    hit check:
-        roll点: attackSkill > defenseSkill
-        Bless则乘以1.2，如果是魔法则乘以2
-    伤害:
-        effectiveDamage =   damageRoll()-drRoll()
-        effectiveDamage =   attackProc(enemy, effectiveDamage)
-        effectiveDamage =   enemy.defenseProc(this, effectiveDamage)
-
-        enemy.damage(effectiveDamage, this)
-
-        buff imbue
-    
-    地图:
-        repeat build
-            initRooms
-            build path, assign entrance& exit
-            assignRoomType
-            paint   // paint rooms
-            paintLuminary
-            paintWater
-            paintGrass
-            placeTraps
-        decorate
-        buildFlagMaps
-        createMobs
-        createItems
-    Item <- EquipableItem <- KindOfWeapon <- Weapon <- MissileWeapon
-
-    Wand <- DamageWand
-
-reporter:
-    用爱发电qi某人
-    泰勒
-    西園寺の世界
-    SPD最强战法(玫瑰里的幽咕咕咕咕咕咕咕咕:)
-    肾教 这破教吃枣药丸
-    秋水 （海神三叉戟？）
-    宇佐见 铃恩
-    问天
-    姓风见的太阳花妖
-    霜晨
-
 --------------------------------------------------------------------------------
     +血量、伤害等数值变更为浮点型；
     +特效、贴图，智能选择等
     +书籍
-    +地图生成
     +提高难度
-    +时光沙漏现在可以在静止的时间内为所欲为，充能点数下降，cd+充能制；
 
 backlog:
     炼金术士贴图
@@ -86,20 +40,21 @@ backlog:
 
     0.3.2
 		独立的头盔槽位，相应地了降低一单位的背包容量，重做了头饰类型，
-		疯狂面具现在属于头饰而非遗物；十字头盔格挡几率提高到20%；翡翠头环现在降低增压速度；
+		疯狂面具现在属于头饰而非遗物；十字头盔格挡几率提高到20%；翡翠头环现在降低增压速度； 骇人面具；
 		现在自然压力增长以速度控制而非概率，但期望值与原来相似；
-		跳楼叠怪；
+        完善的光照，火把的距离延长；
 		
 		修正了韧性之戒抵挡精神伤害的bug；
 		修正了炼药成就；
+		跳楼叠怪；
 
         - 新堆桶
         - 命运之轮
         - 远程武器重做，火焰壶
-        - 完善的光照
         - 被困冒险者任务
 		- 压力增强
 		- 房间系统
+		- 连击角斗士-> 巨魔战将！
 
 release:
 0.3.1a

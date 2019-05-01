@@ -55,7 +55,7 @@ class TimekeepersHourglass : Artifact() {
             else if (activated) {
                 hero.buff(TimeFreeze::class.java)?.detach()
                 activated = false
-                cooldown = 3 // 3 turn 
+                cooldown = 5 // 5 turn 
                 GLog.i(Messages.get(this, "deactivate"))
             } else {
                 GLog.i(Messages.get(this, "onfreeze"))

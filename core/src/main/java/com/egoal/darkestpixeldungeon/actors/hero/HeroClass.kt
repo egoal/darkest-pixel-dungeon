@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
+import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
@@ -201,28 +202,39 @@ enum class HeroClass(private val title: String) {
         bundle.put(CLASS, toString())
     }
 
+    // common
     protected open fun initHeroClass(hero: Hero) {
         hero.belongings.armor = ClothArmor().identify() as Armor
 
         if (!Dungeon.isChallenged(Challenges.NO_FOOD)) Food().identify().collect()
 
-        if (Dungeon.isChallenged(Challenges.THE_LONG_NIGHT)) Torch().identify().collect()
+        Torch().identify().collect()
 
         ScrollOfIdentify().setKnown()
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-
-
     }
 
     private fun initDebug(hero: Hero) {
-        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply { 
+        hero.apply {
+            HT = 1000
+            HP = 1
+            STR = 16
+            earnExp(1000)
+        }
+
+        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
             quantity(99).identify().collect()
         })
-        Dungeon.quickslot.setSlot(4, CloakOfSheep().apply { 
+        Dungeon.quickslot.setSlot(4, CloakOfSheep().apply {
             identify().collect()
         })
+        PotionOfHealing().quantity(99).identify().collect()
+        Torch().quantity(99).identify().collect()
+
+        PlateArmor().identify().upgrade(6).collect()
+        Claymore().identify().upgrade(6).collect()
     }
 
     private fun initPerks(hero: Hero) {

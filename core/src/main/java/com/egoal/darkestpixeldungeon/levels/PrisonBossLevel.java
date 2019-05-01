@@ -78,8 +78,9 @@ public class PrisonBossLevel extends Level {
     }
 
     if (!on) {
+      //todo: remove lights
       for (int i : hallLights)
-        removeLightVisualAt(i);
+        removeLuminaryAt(i);
     }
 
     buildFlagMaps();
@@ -230,7 +231,7 @@ public class PrisonBossLevel extends Level {
     // give buff
     Buff.affect(hero, Ignorant.class);
     MoonStone.Companion.Use(1000f);
-    
+
     bossAppeared = true;
     Music.INSTANCE.play(trackMusic(), true);
     Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);

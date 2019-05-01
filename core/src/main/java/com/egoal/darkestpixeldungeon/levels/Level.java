@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.levels;
 
-import android.graphics.RadialGradient;
 import android.util.Log;
 
 import com.egoal.darkestpixeldungeon.*;
@@ -30,14 +29,11 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.Halo;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
-import com.egoal.darkestpixeldungeon.items.armor.Armor;
-import com.egoal.darkestpixeldungeon.items.artifacts.AlchemistsToolkit;
-import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
+import com.egoal.darkestpixeldungeon.levels.features.Luminary;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual;
 import com.egoal.darkestpixeldungeon.actors.Actor;
@@ -55,17 +51,12 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.particles.FlowParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.WindParticle;
-import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus;
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
-import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
-import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -75,7 +66,6 @@ import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.mechanics.ShadowCaster;
 import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.plants.BlandfruitBush;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.utils.BArray;
@@ -126,8 +116,7 @@ public abstract class Level implements Bundlable {
   public static boolean[] avoid;
   public static boolean[] water;
   public static boolean[] pit;
-  public static boolean[] luminary;  // the luminaries in the level
-  public static boolean[] lighted;  // is lighted by the luminaries
+  public static boolean[] lighted;  // lighted by luminaries
 
   public static boolean[] discoverable;
 
@@ -139,20 +128,19 @@ public abstract class Level implements Bundlable {
   //when a boss level has become locked.
   public boolean locked = false;
 
-  public HashSet<Mob> mobs;
-  public SparseArray<Heap> heaps;
-  public HashMap<Class<? extends Blob>, Blob> blobs;
-  public SparseArray<Plant> plants;
-  public SparseArray<Trap> traps;
-  public HashSet<CustomTileVisual> customTiles;
+  public HashSet<Mob> mobs = new HashSet<>();
+  public SparseArray<Heap> heaps = new SparseArray<>();
+  public HashMap<Class<? extends Blob>, Blob> blobs = new HashMap<>();
+  public SparseArray<Plant> plants = new SparseArray<>();
+  public SparseArray<Trap> traps = new SparseArray<>();
+  public HashSet<CustomTileVisual> customTiles = new HashSet<>();
+  public HashSet<Luminary> luminaries = new HashSet<>();
 
   protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
   // visuals is added each time the scene is created, 
   // so, no need to keep track on them in the bundle
   protected Group visuals;
-  //todo: rework on this awful things...
-  protected ArrayList<LightVisual> visualLights = new ArrayList<>();
 
   public int color1 = 0x004400;
   public int color2 = 0x88CC44;
@@ -180,7 +168,11 @@ public abstract class Level implements Bundlable {
   public void create() {
 
     setupSize();
-    PathFinder.setMapSize(width(), height());
+    PathFinder.setMapSize(width, height);
+    Luminary.Companion.SetMapSize(width, height);
+
+    // allocation
+    fieldOfView = new boolean[length()];
     passable = new boolean[length()];
     losBlocking = new boolean[length()];
     flamable = new boolean[length()];
@@ -189,8 +181,6 @@ public abstract class Level implements Bundlable {
     avoid = new boolean[length()];
     water = new boolean[length()];
     pit = new boolean[length()];
-
-    luminary = new boolean[length()];
     lighted = new boolean[length()];
 
     map = new int[length()];
@@ -202,7 +192,7 @@ public abstract class Level implements Bundlable {
     ArrayList<Item> stationaryItems = new ArrayList<>();
 
     if (Dungeon.depth > 0 && (!(Dungeon.bossLevel() || Dungeon.depth == 21))) {
-      stationaryItems.add(Generator.random(Generator.Category.FOOD));
+      stationaryItems.add(KGenerator.FOOD.INSTANCE.generate());
 
       // special items
       int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth
@@ -288,12 +278,13 @@ public abstract class Level implements Bundlable {
       // no chasm feeling
       Arrays.fill(map, Terrain.WALL);
 
-      mobs = new HashSet<>();
-      heaps = new SparseArray<>();
-      blobs = new HashMap<>();
-      plants = new SparseArray<>();
-      traps = new SparseArray<>();
-      customTiles = new HashSet<>();
+      mobs.clear();
+      heaps.clear();
+      blobs.clear();
+      plants.clear();
+      traps.clear();
+      customTiles.clear();
+      luminaries.clear();
 
       if (build(i)) {
         Log.d("dpd", String.format("level build okay after %d trails.", i));
@@ -346,6 +337,7 @@ public abstract class Level implements Bundlable {
       width = height = 36; //default sizes
     length = width * height;
     PathFinder.setMapSize(width(), height());
+    Luminary.Companion.SetMapSize(width, height);
 
     mobs = new HashSet<>();
     heaps = new SparseArray<>();
@@ -453,13 +445,9 @@ public abstract class Level implements Bundlable {
     return length;
   }
 
-  public String tilesTex() {
-    return null;
-  }
+  abstract public String tilesTex();
 
-  public String waterTex() {
-    return null;
-  }
+  abstract public String waterTex();
 
   abstract protected boolean build(int iteration);
 
@@ -535,38 +523,44 @@ public abstract class Level implements Bundlable {
           visuals.add(new FlowParticle.Flow(i - width()));
         }
       }
-      if (luminary[i]) {
-        addLightVisual(i);
-      }
     }
+
+    // add luminaries' visuals
+    for (Luminary lum : luminaries.toArray(new Luminary[0]))
+      visuals.add(lum.createVisual());
+
     return visuals;
   }
 
-  public void addLightVisual(int pos) {
-    LightVisual e = lightVisual(pos);
-    visuals.add(e);
-    visualLights.add(e);
-  }
-
-  public void clearLightVisuals() {
-    for (LightVisual e : visualLights)
-      visuals.erase(e);
-
-    visualLights.clear();
-  }
-
-  public void removeLightVisualAt(int pos) {
-    for (LightVisual lv : visualLights) {
-      if (lv.pos == pos) {
-        visuals.erase(lv);
-        visualLights.remove(lv);
-        break;
-      }
+  private void addSceneLuminaries() {
+    // luminaries from map generation
+    for (int i = 0; i < length(); ++i) {
+      int flags = Terrain.flags[map[i]];
+      if ((flags & Terrain.LUMINARY) != 0)
+        luminaries.add(createSceneLuminaryAt(i));
     }
   }
 
-  protected LightVisual lightVisual(int pos) {
-    return new TorchLight(pos);
+  public void addLuminary(Luminary lum) {
+    luminaries.add(lum);
+    updateLightMap();
+  }
+
+  public void removeLuminary(Luminary lum) {
+    luminaries.remove(lum);
+    updateLightMap();
+  }
+
+  public void removeLuminaryAt(int pos) {
+    for (Luminary lum : luminaries)
+      if (lum.getPos() == pos) {
+        luminaries.remove(lum);
+        break;
+      }
+  }
+
+  protected Luminary createSceneLuminaryAt(int pos) {
+    return new Luminary(pos);
   }
 
   public int nMobs() {
@@ -582,19 +576,16 @@ public abstract class Level implements Bundlable {
     return null;
   }
 
-  protected static final float TIME_TO_RESPAWN = 45;
-  protected static final float TIME_TO_RESPAWN_DARK = 30;
-
   private float respawnTime() {
     switch (Statistics.INSTANCE.getClock().getState()) {
       case Day:
-        return 50;
+        return 50f;
       case Night:
-        return 40;
+        return 40f;
       case MidNight:
-        return 30;
+        return 30f;
       default:
-        return 10; // never come here
+        return 10f; // never come here
     }
   }
 
@@ -677,29 +668,12 @@ public abstract class Level implements Bundlable {
   // call this each time luminary is modified
   public void updateLightMap() {
     BArray.setFalse(lighted);
-    final int[] L1norm2 = new int[]{
-            -width * 2 - 1, -width * 2, -width * 2 + 1,
-            -width - 2, -width - 1, -width, -width + 1, -width + 2,
-            -2, -1, 0, +1, +2,
-            +width - 2, +width - 1, +width, +width + 1, +width + 2,
-            +width * 2 - 1, +width * 2, +width * 2 + 1,
-    };
-
-    for (int i = 0; i < length(); ++i) {
-      if (luminary[i]) {
-        for (int np : L1norm2) {
-          int pos = i + np;
-          if (pos >= 0 && pos < length())
-            lighted[pos] = true;
-        }
-      }
-    }
+    for (Luminary lum : luminaries.toArray(new Luminary[0])) lum.light(this);
   }
 
   protected void buildFlagMaps() {
-
+    //todo: allocation again
     fieldOfView = new boolean[length()];
-
     passable = new boolean[length()];
     losBlocking = new boolean[length()];
     flamable = new boolean[length()];
@@ -708,8 +682,6 @@ public abstract class Level implements Bundlable {
     avoid = new boolean[length()];
     water = new boolean[length()];
     pit = new boolean[length()];
-
-    luminary = new boolean[length()];
     lighted = new boolean[length()];
 
     for (int i = 0; i < length(); i++) {
@@ -722,9 +694,9 @@ public abstract class Level implements Bundlable {
       avoid[i] = (flags & Terrain.AVOID) != 0;
       water[i] = (flags & Terrain.LIQUID) != 0;
       pit[i] = (flags & Terrain.PIT) != 0;
-      luminary[i] = (flags & Terrain.LUMINARY) != 0;
     }
-    // update lights
+
+    addSceneLuminaries();
     updateLightMap();
 
     int lastRow = length() - width();
@@ -1071,13 +1043,13 @@ public abstract class Level implements Bundlable {
   }
 
   public void updateFieldOfView(Char c, boolean[] fieldOfView) {
-
     int cx = c.pos % width();
     int cy = c.pos / width();
 
     boolean sighted = c.buff(Blindness.class) == null &&
             c.buff(Shadows.class) == null && c.isAlive();
     if (sighted) {
+      updateLightMap();
       ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(),
               c.seeDistance());
     } else {
@@ -1319,36 +1291,6 @@ public abstract class Level implements Bundlable {
           return tileDesc(Terrain.CHASM);
         }
         return Messages.get(Level.class, "default_desc");
-    }
-  }
-
-  // basic light visual
-  public static class LightVisual extends Emitter {
-    public int pos;
-
-    public LightVisual(int pos) {
-      this.pos = pos;
-    }
-  }
-
-  public static class TorchLight extends LightVisual {
-    public TorchLight(int pos) {
-      super(pos);
-
-      PointF p = DungeonTilemap.tileCenterToWorld(pos);
-      pos(p.x - 1, p.y + 3, 2, 0);
-
-      // pour(FlameParticle.FACTORY, 0.15f);
-
-      // add(new Halo(16, 0xFFFFA0, 0.2f).point(p.x, p.y));
-      add(new Halo(20, 0xFFFFCC, 0.2f).point(p.x, p.y));
-    }
-
-    @Override
-    public void update() {
-      if (visible = Dungeon.visible[pos]) {
-        super.update();
-      }
     }
   }
 }

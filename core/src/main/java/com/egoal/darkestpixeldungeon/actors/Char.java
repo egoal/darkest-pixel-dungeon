@@ -160,7 +160,6 @@ public abstract class Char extends Actor {
         break;
     }
 
-    if (buff(Light.class) != null) vd = Math.max(vd, Light.DISTANCE);
     if (buff(Drunk.class) != null) vd -= 1;
 
     return vd;

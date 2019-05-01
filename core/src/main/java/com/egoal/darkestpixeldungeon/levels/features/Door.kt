@@ -9,7 +9,8 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.noosa.audio.Sample
 
 object Door {
-    fun Enter(pos: Int, ch: Char) {
+    // ch can be null: throw weapon to open door
+    fun Enter(pos: Int, ch: Char?) {
         Level.set(pos, Terrain.OPEN_DOOR)
         GameScene.updateMap(pos)
 

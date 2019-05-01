@@ -73,7 +73,7 @@ public class WandOfPrismaticLight extends DamageWand {
     }
     affectMap(beam);
 
-    Buff.prolong(curUser, Light.class, 4f + level() * 4);
+    Buff.affect(curUser, Light.class).prolong(4f + level() * 4f);
   }
 
   private void affectTarget(Char ch) {
@@ -141,7 +141,7 @@ public class WandOfPrismaticLight extends DamageWand {
   @Override
   public void onHit(MagesStaff staff, Damage damage) {
     //cripples enemy
-    Buff.prolong((Char)damage.to, Cripple.class, 1f + staff.level());
+    Buff.prolong((Char) damage.to, Cripple.class, 1f + staff.level());
   }
 
   @Override

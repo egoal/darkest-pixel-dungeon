@@ -38,7 +38,7 @@ public class ScrollOfLight extends Scroll {
     Invisibility.dispel();
 
     // give light, shock nearby mobs
-    Buff.prolong(curUser, Light.class, 10);
+    Buff.affect(curUser, Light.class).prolong(10f);
 
     for (Mob mob : Dungeon.level.mobs) {
       if (Level.fieldOfView[mob.pos]) {
@@ -51,7 +51,7 @@ public class ScrollOfLight extends Scroll {
                   .MAGIC_BOLT);
           if (b.path.size() > b.dist + 1) {
             // extend the path...
-            Ballistica bb = new Ballistica(mob.pos, b.path.get(b.dist + 1), 
+            Ballistica bb = new Ballistica(mob.pos, b.path.get(b.dist + 1),
                     Ballistica.MAGIC_BOLT);
             WandOfBlastWave.throwChar(mob, bb, AFFECT_RANGE - dis);
           }

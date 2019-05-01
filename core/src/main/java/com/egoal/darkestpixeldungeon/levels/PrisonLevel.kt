@@ -1,14 +1,17 @@
 package com.egoal.darkestpixeldungeon.levels
 
+import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Wandmaker
 import com.egoal.darkestpixeldungeon.effects.Halo
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
+import com.egoal.darkestpixeldungeon.levels.features.Luminary
 import com.egoal.darkestpixeldungeon.levels.traps.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Group
@@ -21,7 +24,7 @@ class PrisonLevel : RegularLevel() {
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_2
-    
+
     override fun tilesTex() = Assets.TILES_PRISON
 
     override fun waterTex() = Assets.WATER_PRISON
@@ -112,31 +115,30 @@ class PrisonLevel : RegularLevel() {
         else -> super.tileDesc(tile)
     }
 
-    override fun lightVisual(pos: Int): LightVisual = Torch(pos)
+    override fun createSceneLuminaryAt(pos: Int): Luminary = Torch(pos)
 
-    companion object {
-        fun AddPrisonVisuals(level: Level, group: Group) {
-            for (i in 0 until level.length())
-                if (level.map[i] == Terrain.WALL_DECO)
-                    group.add(Torch(i))
-        }
+    class Torch(pos: Int) : Luminary(pos) {
 
-        class Torch(pos: Int) : LightVisual(pos) {
+        override fun createVisual(): LightVisual = Visual(pos)
+
+        class Visual(cell: Int) : Luminary.TorchLight(cell) {
             init {
-                val p = DungeonTilemap.tileCenterToWorld(pos)
-                pos(p.x - 1, p.y + 3, 2f, 0f)
-
                 pour(FlameParticle.FACTORY, 0.15f)
-
-                add(Halo(16f, 0xffffcc, 0.2f).point(p.x, p.y))
-            }
-
-            override fun update() {
-                visible = Dungeon.visible[pos]
-                if (visible)
-                    super.update()
             }
         }
     }
+
+    override fun updateFieldOfView(c: Char, fieldOfView: BooleanArray) {
+        super.updateFieldOfView(c, fieldOfView)
+        Log.d("dpd", "luminaries: ${luminaries.size}, lighted: ${Level.lighted.count { it }}")
+    }
+
+//    companion object {
+//        fun AddPrisonVisuals(level: Level, group: Group) {
+//            for (i in 0 until level.length())
+//                if (level.map[i] == Terrain.WALL_DECO)
+//                    group.add(Torch(i))
+//        }
+//    }
 
 }
