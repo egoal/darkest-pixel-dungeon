@@ -15,7 +15,7 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
 
-class CavesLevel : KRegularLevel() {
+class CavesLevel : RegularLevel() {
     init {
         color1 = 0x534f3e
         color2 = 0xb9d661

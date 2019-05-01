@@ -57,7 +57,6 @@ import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
-import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.levels.features.Chasm;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -319,7 +318,7 @@ public class GameScene extends PixelScene {
         ScrollOfTeleportation.appear(Dungeon.hero, Dungeon.hero.pos);
         break;
       case FALL:
-        Chasm.heroLand();
+        Chasm.INSTANCE.HeroLand();
         break;
       case DESCEND:
         switch (Dungeon.depth) {
@@ -390,10 +389,10 @@ public class GameScene extends PixelScene {
           break;
         default:
       }
-      if (Dungeon.level instanceof RegularLevel &&
-              ((RegularLevel) Dungeon.level).secretDoors > 3) {
-        GLog.w(Messages.get(this, "secrets"));
-      }
+//      if (Dungeon.level instanceof RegularLevel &&
+//              ((RegularLevel) Dungeon.level).secretDoors > 3) {
+//        GLog.w(Messages.get(this, "secrets"));
+//      }
 
       GLog.n(Messages.format("left artifacts: %d", KGenerator.ARTIFACT.INSTANCE.left()));
       

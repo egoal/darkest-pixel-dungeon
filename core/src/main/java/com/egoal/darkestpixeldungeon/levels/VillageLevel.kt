@@ -5,12 +5,11 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
-import com.egoal.darkestpixeldungeon.levels.traps.CursingTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-class VillageLevel : KRegularLevel() {
+class VillageLevel : RegularLevel() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a

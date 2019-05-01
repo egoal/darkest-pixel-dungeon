@@ -29,7 +29,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-abstract class KRegularLevel : Level() {
+abstract class RegularLevel : Level() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a
@@ -75,7 +75,7 @@ abstract class KRegularLevel : Level() {
         return true
     }
 
-    private var chosenDiggers = ArrayList<Digger>()
+    protected var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
         if (Dungeon.shopOnLevel())
@@ -350,7 +350,7 @@ abstract class KRegularLevel : Level() {
 
     protected open fun trapChances(): FloatArray = floatArrayOf(1f)
 
-    protected fun placeTraps() {
+    protected open fun placeTraps() {
         val trapChances = trapChances()
         val trapClasses = trapClasses()
 

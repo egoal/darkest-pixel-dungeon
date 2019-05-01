@@ -56,9 +56,9 @@ public class PitfallTrap extends Trap {
     Char ch = Actor.findChar(pos);
 
     if (ch == Dungeon.hero) {
-      Chasm.heroFall(pos);
+      Chasm.INSTANCE.HeroFall(pos);
     } else if (ch != null) {
-      Chasm.mobFall((Mob) ch);
+      Chasm.INSTANCE.MobFall((Mob) ch);
     }
   }
 
@@ -70,7 +70,7 @@ public class PitfallTrap extends Trap {
     // of a disarmed trap tile.
     if (!(Dungeon.level.solid[pos - Dungeon.level.width()] && Dungeon.level
             .solid[pos + Dungeon.level.width()])
-            && !(Dungeon.level.solid[pos - 1] && Dungeon.level.solid[pos + 
+            && !(Dungeon.level.solid[pos - 1] && Dungeon.level.solid[pos +
             1])) {
 
       int c = Dungeon.level.map[pos - Dungeon.level.width()];

@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
+import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
@@ -216,7 +217,12 @@ enum class HeroClass(private val title: String) {
     }
 
     private fun initDebug(hero: Hero) {
-        MaskOfClown().collect()
+        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply { 
+            quantity(99).identify().collect()
+        })
+        Dungeon.quickslot.setSlot(4, CloakOfSheep().apply { 
+            identify().collect()
+        })
     }
 
     private fun initPerks(hero: Hero) {

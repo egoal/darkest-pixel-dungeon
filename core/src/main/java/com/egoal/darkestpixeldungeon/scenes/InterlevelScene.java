@@ -27,11 +27,11 @@ import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.GameLog;
 import com.egoal.darkestpixeldungeon.windows.WndError;
-import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.windows.WndStory;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -317,7 +317,7 @@ public class InterlevelScene extends PixelScene {
     Dungeon.depth--;
     Level level = Dungeon.newLevel();
     //FIXME this only partially addresses issues regarding weak floors.
-    RegularLevel.weakFloorCreated = false;
+    Level.weakFloorCreated = false;
     Dungeon.switchLevel(level, level.entrance);
   }
 

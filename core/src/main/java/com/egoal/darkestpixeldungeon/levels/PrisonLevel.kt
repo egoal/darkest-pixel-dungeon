@@ -14,7 +14,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Group
 import com.watabou.utils.Random
 
-class PrisonLevel : KRegularLevel() {
+class PrisonLevel : RegularLevel() {
     init {
         color1 = 0x6a723d
         color2 = 0x88924c

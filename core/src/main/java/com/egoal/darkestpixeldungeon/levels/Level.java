@@ -976,9 +976,9 @@ public abstract class Level implements Bundlable {
 
     if (ch != null && pit[cell] && !ch.flying) {
       if (ch == Dungeon.hero) {
-        Chasm.heroFall(cell);
+        Chasm.INSTANCE.HeroFall(cell);
       } else if (ch instanceof Mob) {
-        Chasm.mobFall((Mob) ch);
+        Chasm.INSTANCE.MobFall((Mob) ch);
       }
       return;
     }
@@ -1008,7 +1008,7 @@ public abstract class Level implements Bundlable {
         break;
 
       case Terrain.DOOR:
-        Door.enter(cell, ch);
+        Door.INSTANCE.Enter(cell, ch);
         break;
     }
 
@@ -1044,7 +1044,7 @@ public abstract class Level implements Bundlable {
     int cell = mob.pos;
 
     if (pit[cell] && !mob.flying) {
-      Chasm.mobFall(mob);
+      Chasm.INSTANCE.MobFall(mob);
       return;
     }
 
@@ -1056,7 +1056,7 @@ public abstract class Level implements Bundlable {
         break;
 
       case Terrain.DOOR:
-        Door.enter(cell, mob);
+        Door.INSTANCE.Enter(cell, mob);
         break;
     }
 

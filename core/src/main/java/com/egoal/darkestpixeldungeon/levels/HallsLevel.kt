@@ -15,7 +15,7 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import javax.microedition.khronos.opengles.GL10
 
-class HallsLevel : KRegularLevel() {
+class HallsLevel : RegularLevel() {
     init {
         color1 = 0x801500
         color2 = 0xa68521

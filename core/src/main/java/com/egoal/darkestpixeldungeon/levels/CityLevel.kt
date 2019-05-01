@@ -11,7 +11,7 @@ import com.watabou.noosa.particles.Emitter
 import com.watabou.noosa.particles.PixelParticle
 import com.watabou.utils.Random
 
-class CityLevel : KRegularLevel() {
+class CityLevel : RegularLevel() {
     init {
         color1 = 0x4b6636
         color2 = 0xf2f2f2

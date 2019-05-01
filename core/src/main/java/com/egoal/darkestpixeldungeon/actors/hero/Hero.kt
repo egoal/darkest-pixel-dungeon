@@ -659,11 +659,11 @@ class Hero : Char() {
 
             if (Actor.findChar(target) == null) {
                 if (Level.pit[target] && !flying && !Level.solid[target]) {
-                    if (!Chasm.jumpConfirmed) {
-                        Chasm.heroJump(Dungeon.hero) //fixme
+                    if (!Chasm.JumpConfirmed) {
+                        Chasm.HeroJump(Dungeon.hero) 
                         interrupt()
                     } else
-                        Chasm.heroFall(target)
+                        Chasm.HeroFall(target)
 
                     return false
                 }

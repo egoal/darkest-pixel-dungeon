@@ -12,7 +12,7 @@ import com.egoal.darkestpixeldungeon.levels.diggers.Rect
 import com.egoal.darkestpixeldungeon.levels.diggers.Wall
 import com.egoal.darkestpixeldungeon.levels.diggers.specials.AltarDigger
 
-class EmptyLevel : KRegularLevel() {
+class EmptyLevel : RegularLevel() {
     init {
         color1 = 0x48763c
         color2 = 0x59994a
