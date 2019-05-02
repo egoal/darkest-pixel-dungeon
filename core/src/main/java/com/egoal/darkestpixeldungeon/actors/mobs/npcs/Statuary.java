@@ -42,6 +42,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -85,6 +86,10 @@ public class Statuary extends NPC {
   private static int[] spawnChance = {1, 1, 1};
   private static final String NODE = "statuary";
   private static final String SPAWN_CHANCE = "spawnchance";
+
+  public static void Reset() {
+    spawnChance[0] = spawnChance[1] = spawnChance[2] = 1;
+  }
 
   public static void save(Bundle bundle) {
     Bundle node = new Bundle();
@@ -419,7 +424,7 @@ public class Statuary extends NPC {
         item.cursed = true;
       }
       item.cursedKnown = true;
-      
+
       Dungeon.level.drop(item, hero.pos);
 
       // effects

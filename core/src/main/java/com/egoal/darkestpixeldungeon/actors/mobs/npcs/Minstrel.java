@@ -51,7 +51,7 @@ public class Minstrel extends NPC{
   @Override
   protected boolean act() {
     // leave after some time
-    if(Statistics.INSTANCE.getDuration()>1200f){
+    if(Statistics.INSTANCE.getDuration()>8000f){
       die(null);
     }
     

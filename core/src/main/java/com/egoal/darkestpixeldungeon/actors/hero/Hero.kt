@@ -244,6 +244,8 @@ class Hero : Char() {
         //fixme
         accuracy *= (rangedWeapon ?: belongings.weapon)?.accuracyFactor(Dungeon.hero) ?: 1f
 
+        if (belongings.helmet is MaskOfHorror && belongings.helmet.cursed) accuracy *= 0.75f
+
         return (attackSkill * accuracy).toInt()
     }
 
@@ -660,7 +662,7 @@ class Hero : Char() {
             if (Actor.findChar(target) == null) {
                 if (Level.pit[target] && !flying && !Level.solid[target]) {
                     if (!Chasm.JumpConfirmed) {
-                        Chasm.HeroJump(Dungeon.hero) 
+                        Chasm.HeroJump(Dungeon.hero)
                         interrupt()
                     } else
                         Chasm.HeroFall(target)

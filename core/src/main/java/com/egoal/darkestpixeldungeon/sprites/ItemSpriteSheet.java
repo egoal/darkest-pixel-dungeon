@@ -152,6 +152,7 @@ public class ItemSpriteSheet {
   public static final int WIZARD_HAT = HELMET + 6;
   public static final int HELMET_CLOWN = HELMET + 7;
   public static final int HELMET_HORROR = HELMET + 8;
+  public static final int HELMET_RANGER = HELMET + 9;
 
   //16 free slots
 
@@ -297,6 +298,7 @@ public class ItemSpriteSheet {
   public static final int PICKAXE = QUEST + 4;
   public static final int ORE = QUEST + 5;
   public static final int TOKEN = QUEST + 6;
+  public static final int RANGER_BOW = QUEST + 7;
 
   private static final int BAGS = xy(1, 28);  //16 slots
   public static final int POUCH = BAGS + 0;

@@ -307,6 +307,7 @@ object KGenerator {
             WizardHat::class.java to 1f,
             MaskOfHorror::class.java to 1f, 
             MaskOfClown::class.java to 1f,
+            RangerHat::class.java to 0.2f, // rare, so Yvette counts.
             MaskOfMadness::class.java to 0f // compose
     ))
 

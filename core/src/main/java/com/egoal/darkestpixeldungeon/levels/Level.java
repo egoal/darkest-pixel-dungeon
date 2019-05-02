@@ -563,6 +563,9 @@ public abstract class Level implements Bundlable {
     return new Luminary(pos);
   }
 
+  // called before actor init, after restored.
+  public void onSwitchedIn(){ }
+  
   public int nMobs() {
     return 0;
   }

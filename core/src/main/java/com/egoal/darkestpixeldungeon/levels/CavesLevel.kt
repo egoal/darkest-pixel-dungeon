@@ -4,8 +4,11 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Blacksmith
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Yvette
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
+import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.BlackSmithDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.TrappedRangerDigger
 import com.egoal.darkestpixeldungeon.levels.traps.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Game
@@ -22,7 +25,7 @@ class CavesLevel : RegularLevel() {
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_3
-    
+
     override fun tilesTex() = Assets.TILES_CAVES
 
     override fun waterTex() = Assets.WATER_CAVES
@@ -42,24 +45,21 @@ class CavesLevel : RegularLevel() {
 
     override fun trapChances(): FloatArray = floatArrayOf(8f, 8f, 8f, 8f, 8f, 4f, 4f, 4f, 4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f)
 
-    private var spawnBlacksmith = false
-
+    //todo: overhaul quest system...
     override fun chooseDiggers(): ArrayList<Digger> {
         val diggers = super.chooseDiggers()
-        val digger = Blacksmith.Quest.GiveDigger()
-        spawnBlacksmith = digger != null
 
-        if (digger != null)
-            diggers.add(digger)
+        // todo: rework this...
+        if (!Yvette.Quest.Spawned && !Blacksmith.Quest.spawned) {
+            if (Random.Int(15 - Dungeon.depth) == 0) {
+//                diggers.add(BlackSmithDigger())
+//                Blacksmith.Quest.Spawn()
+                diggers.add(TrappedRangerDigger())
+                Yvette.Quest.Spawned = true
+            }
+        }
 
         return diggers
-    }
-
-    override fun createMobs() {
-        if (spawnBlacksmith)
-            Blacksmith.Quest.Spawn()
-
-        super.createMobs()
     }
 
     override fun decorate() {

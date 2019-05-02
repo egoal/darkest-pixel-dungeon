@@ -21,6 +21,7 @@ public class HeroPerk {
     POSITIVE("positive", 0x0080),  // 乐观：一定几率抵挡精神伤害
     ASSASSIN("assassin", 0x0100),  // 刺客：偷袭加成
     ALCHEMIST("alchemist", 0x0200), // 炼金术士：炼药加成
+    INTENDED_TRANSPORTATION("transportation", 0x0400), // 定点传送
     ;
 
     public String title;

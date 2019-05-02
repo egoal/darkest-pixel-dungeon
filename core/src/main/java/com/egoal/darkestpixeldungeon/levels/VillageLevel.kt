@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -101,6 +102,11 @@ class VillageLevel : RegularLevel() {
         // putMobAt(Yvette::class.java, 16, 29)
     }
 
+    override fun onSwitchedIn() {
+        if (Yvette.Quest.Completed && mobs.find { it.pos == xy2cell(19, 3) } == null)
+            putMobAt(Yvette::class.java, 19, 3)
+    }
+
     override fun respawner(): Actor? = null
 
     override fun createItems() {}
@@ -113,7 +119,7 @@ class VillageLevel : RegularLevel() {
 
     override fun tileName(tile: Int): String = when (tile) {
         Terrain.WATER -> Messages.get(VillageLevel::class.java, "water_name")
-        Terrain.STATUE-> Messages.get(VillageLevel::class.java, "statue_name")
+        Terrain.STATUE -> Messages.get(VillageLevel::class.java, "statue_name")
         else -> super.tileName(tile)
     }
 
@@ -121,7 +127,7 @@ class VillageLevel : RegularLevel() {
         Terrain.EMPTY_DECO -> Messages.get(SewerLevel::class.java, "empty_deco_desc")
         Terrain.BOOKSHELF -> Messages.get(SewerLevel::class.java, "bookshelf_desc")
         Terrain.WATER -> Messages.get(VillageLevel::class.java, "water_desc")
-        Terrain.STATUE-> Messages.get(VillageLevel::class.java, "statue_desc")
+        Terrain.STATUE -> Messages.get(VillageLevel::class.java, "statue_desc")
         else -> super.tileDesc(tile)
     }
 }

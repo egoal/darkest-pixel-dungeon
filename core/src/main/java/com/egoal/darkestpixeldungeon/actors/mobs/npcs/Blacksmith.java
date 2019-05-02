@@ -227,7 +227,7 @@ public class Blacksmith extends NPC {
 
   public static class Quest {
 
-    private static boolean spawned;
+    public static boolean spawned;
 
     private static boolean alternative;
     private static boolean given;

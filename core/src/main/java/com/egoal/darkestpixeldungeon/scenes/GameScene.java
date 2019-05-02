@@ -394,8 +394,9 @@ public class GameScene extends PixelScene {
 //        GLog.w(Messages.get(this, "secrets"));
 //      }
 
-      GLog.n(Messages.format("left artifacts: %d", KGenerator.ARTIFACT.INSTANCE.left()));
-      
+      GLog.n(Messages.format("left artifacts: %d", KGenerator.ARTIFACT
+              .INSTANCE.left()));
+
       InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
       fadeIn();
@@ -778,8 +779,8 @@ public class GameScene extends PixelScene {
     }
   }
   // ^^^ may not a good idea...
-  
-  
+
+
   public static void gameOver() {
     Banner gameOver = new Banner(BannerSprites.get(BannerSprites.Type
             .GAME_OVER));
@@ -841,6 +842,16 @@ public class GameScene extends PixelScene {
 
     scene.addToFront(wnd);
 
+    return wnd;
+  }
+
+  public static WndBag selectItem(WndBag.Listener listener, String title,
+                                  WndBag.Filter filter) {
+    cancelCellSelector();
+    WndBag wnd = new WndBag(Dungeon.hero.getBelongings().backpack, listener,
+            title, filter);
+    scene.addToFront(wnd);
+    
     return wnd;
   }
 

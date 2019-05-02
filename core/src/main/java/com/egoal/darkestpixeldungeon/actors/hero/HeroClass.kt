@@ -8,15 +8,19 @@ import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMindVision
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
+import com.egoal.darkestpixeldungeon.items.unclassified.Amulet
 import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch
@@ -221,20 +225,30 @@ enum class HeroClass(private val title: String) {
             HT = 1000
             HP = 1
             STR = 16
-            earnExp(1000)
+            lvl = 20
         }
 
+        hero.heroPerk.add(HeroPerk.Perk.INTENDED_TRANSPORTATION)
+        
         Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
             quantity(99).identify().collect()
         })
-        Dungeon.quickslot.setSlot(4, CloakOfSheep().apply {
-            identify().collect()
+        Dungeon.quickslot.setSlot(4, ScrollOfTeleportation().apply {
+            quantity(99).identify().collect()
         })
+
         PotionOfHealing().quantity(99).identify().collect()
+        PotionOfMindVision().quantity(99).identify().collect()
+        PotionOfLiquidFlame().quantity(99).identify().collect()
+
         Torch().quantity(99).identify().collect()
 
         PlateArmor().identify().upgrade(6).collect()
         Claymore().identify().upgrade(6).collect()
+
+        Amulet().collect()
+        
+        YvettesDiary().collect()
     }
 
     private fun initPerks(hero: Hero) {

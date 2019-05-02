@@ -25,6 +25,7 @@ import android.util.Log;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Resident;
+import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
@@ -61,7 +62,7 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-  public static int initialDepth_ = 9;
+  public static int initialDepth_ = -1;
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -165,11 +166,17 @@ public class Dungeon {
 
     chapters = new HashSet<Integer>();
 
+    // quest init
     Ghost.Quest.reset();
     Wandmaker.Quest.reset();
     Blacksmith.Quest.reset();
     Imp.Quest.reset();
 
+    Alchemist.Quest.reset();
+    Statuary.Reset();
+    Jessica.Quest.reset();
+    Yvette.Quest.INSTANCE.Reset();
+    
     Room.shuffleTypes();
 
     Generator.initArtifacts();
@@ -295,6 +302,7 @@ public class Dungeon {
     if (pos < 0 || pos >= level.length()) {
       pos = level.exit;
     }
+    Dungeon.level.onSwitchedIn();
 
     // add into level.mobs, then into actor.
     hero.restoreFollowers(level, pos);
@@ -356,7 +364,8 @@ public class Dungeon {
     final int SOU_PER_FLOORSET = isChallenged(Challenges.NO_SCROLLS) ? 1 : 3;
 
     //3 SOU each floor set
-    int souLeftThisSet = SOU_PER_FLOORSET - (limitedDrops.upgradeScrolls.count - (depth / 5)
+    int souLeftThisSet = SOU_PER_FLOORSET - (limitedDrops.upgradeScrolls
+            .count - (depth / 5)
             * SOU_PER_FLOORSET);
     if (souLeftThisSet <= 0) return false;
 
@@ -473,7 +482,8 @@ public class Dungeon {
               .getHeroClass()) : null);
       saveLevel(doBackup ? backupLevelFile(hero.getHeroClass()) : null);
 
-      GamesInProgress.set(hero.getHeroClass(), depth, hero.getLvl(), challenges != 0);
+      GamesInProgress.set(hero.getHeroClass(), depth, hero.getLvl(),
+              challenges != 0);
 
     } else if (WndResurrect.instance != null) {
 
@@ -522,7 +532,9 @@ public class Dungeon {
       // dpd save
       Alchemist.Quest.storeInBundle(quests);
       Jessica.Quest.storeInBundle(quests);
+      Yvette.Quest.INSTANCE.StoreInBundle(quests);
       Statuary.save(quests);
+
       bundle.put(QUESTS, quests);
 
       Room.storeRoomsInBundle(bundle);
@@ -639,13 +651,17 @@ public class Dungeon {
         Alchemist.Quest.restoreFromBundle(quests);
         Jessica.Quest.restoreFromBundle(quests);
         Statuary.load(quests);
+        Yvette.Quest.INSTANCE.RestoreFromBundle(quests);
       } else {
         Ghost.Quest.reset();
         Wandmaker.Quest.reset();
         Blacksmith.Quest.reset();
         Imp.Quest.reset();
-
+        
+        // dpd
         Alchemist.Quest.reset();
+        Jessica.Quest.reset();
+        Yvette.Quest.INSTANCE.Reset();
       }
 
       Room.restoreRoomsFromBundle(bundle);

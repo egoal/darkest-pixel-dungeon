@@ -20,14 +20,19 @@
  */
 package com.egoal.darkestpixeldungeon.items.scrolls;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.scenes.CellSelector;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.egoal.darkestpixeldungeon.sprites.HeroSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -44,10 +49,14 @@ public class ScrollOfTeleportation extends Scroll {
     Sample.INSTANCE.play(Assets.SND_READ);
     Invisibility.dispel();
 
-    teleportHero(curUser);
     setKnown();
 
-    readAnimation();
+    if (curUser.getHeroPerk().contain(HeroPerk.Perk.INTENDED_TRANSPORTATION))
+      IntendTeleportHero(curUser);
+    else {
+      teleportHero(curUser);
+      readAnimation();
+    }
   }
 
   public static void teleportHero(Hero hero) {
@@ -76,6 +85,40 @@ public class ScrollOfTeleportation extends Scroll {
 
     }
   }
+
+  public static void IntendTeleportHero(Hero hero) {
+    GameScene.selectCell(selectorDst);
+  }
+
+  private static final CellSelector.Listener selectorDst = new CellSelector
+          .Listener() {
+    @Override
+    public void onSelect(Integer cell) {
+      if (cell == null)
+        teleportHero(curUser);
+      else if (Dungeon.level.visited[cell] || Dungeon.level.mapped[cell]) {
+        if (Level.solid[cell] || Actor.findChar(cell) != null)
+          return;
+
+        appear(curUser, cell);
+        Dungeon.level.press(cell, curUser);
+        Dungeon.observe();
+        GameScene.updateFog();
+
+        GLog.i(Messages.get(ScrollOfTeleportation.class, "tele"));
+
+        // read animation...
+        curUser.spend(TIME_TO_READ);
+        curUser.busy();
+        ((HeroSprite) curUser.sprite).read();
+      }
+    }
+
+    @Override
+    public String prompt() {
+      return Messages.get(ScrollOfTeleportation.class, "select-destination");
+    }
+  };
 
   public static void appear(Char ch, int pos) {
 
