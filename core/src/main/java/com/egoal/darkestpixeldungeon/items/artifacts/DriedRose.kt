@@ -190,7 +190,7 @@ class DriedRose : Artifact() {
 
                 if (rose.level() >= rose.levelCap) {
                     GLog.i(Messages.get(this, "no_room"))
-                    hero.spendAndNext(Item.TIME_TO_PICK_UP)
+                    hero.spendAndNext(TIME_TO_PICK_UP)
                     return true
                 } else {
                     rose.upgrade()
@@ -198,7 +198,7 @@ class DriedRose : Artifact() {
                     else GLog.i(Messages.get(this, "levelup"))
 
                     Sample.INSTANCE.play(Assets.SND_DEWDROP)
-                    hero.spendAndNext(Item.TIME_TO_PICK_UP)
+                    hero.spendAndNext(TIME_TO_PICK_UP)
                     return true
                 }
             }

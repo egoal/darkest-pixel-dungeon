@@ -52,10 +52,13 @@ class CavesLevel : RegularLevel() {
         // todo: rework this...
         if (!Yvette.Quest.Spawned && !Blacksmith.Quest.spawned) {
             if (Random.Int(15 - Dungeon.depth) == 0) {
-//                diggers.add(BlackSmithDigger())
-//                Blacksmith.Quest.Spawn()
-                diggers.add(TrappedRangerDigger())
-                Yvette.Quest.Spawned = true
+                if (Random.Int(2) == 0) {
+                    diggers.add(BlackSmithDigger())
+                    Blacksmith.Quest.Spawn()
+                } else {
+                    diggers.add(TrappedRangerDigger())
+                    Yvette.Quest.Spawned = true
+                }
             }
         }
 

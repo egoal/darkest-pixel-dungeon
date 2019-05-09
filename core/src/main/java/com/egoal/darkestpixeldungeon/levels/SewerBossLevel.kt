@@ -44,10 +44,10 @@ class SewerBossLevel : SewerLevel() {
     override fun chooseDiggers(): ArrayList<Digger> {
         val rectDiggers = hashMapOf(
                 CellDigger::class.java to .1f,
-                LatticeDigger::class.java to .075f,
+                LatticeDigger::class.java to .05f,
                 RectDigger::class.java to 1.25f,
                 StripDigger::class.java to .1f,
-                GraveyardDigger::class.java to .025f,
+                GraveyardDigger::class.java to .02f,
                 SmallCornerDigger::class.java to 0.075f
         )
 

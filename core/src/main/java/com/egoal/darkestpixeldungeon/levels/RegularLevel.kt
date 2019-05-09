@@ -96,18 +96,20 @@ abstract class RegularLevel : Level() {
         // specials
         val probs = HashMap<Class<out Digger>, Float>(SpecialDiggers)
         if (pitRoomNeeded) {
-            // a pit room is need, remove all locked diggers
             // todo: this is fragile
             diggers.add(PitDigger())
-
+            
+            // a pit room is need, remove all locked diggers
             probs.remove(ArmoryDigger::class.java)
+            probs.remove(CryptDigger::class.java)
+            probs.remove(LaboratoryDigger::class.java)
             probs.remove(LibraryDigger::class.java)
+            probs.remove(StatueDigger::class.java)
             probs.remove(TreasuryDigger::class.java)
             probs.remove(VaultDigger::class.java)
-            probs.remove(WeakFloorDigger::class.java)
-            probs.remove(LaboratoryDigger::class.java)
             probs.remove(WandDigger::class.java)
-            probs.remove(CryptDigger::class.java)
+            // and the weak floor digger 
+            probs.remove(WeakFloorDigger::class.java)
         }
 
         // never fall to boss
@@ -438,7 +440,7 @@ abstract class RegularLevel : Level() {
         private val SPACES = "spaces"
 
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
-                ArmoryDigger::class.java to 1f,
+                ArmoryDigger::class.java to 0.75f,
                 GardenDigger::class.java to 1f,
                 LaboratoryDigger::class.java to 1.6f,
                 LibraryDigger::class.java to 1f,
@@ -472,12 +474,13 @@ abstract class RegularLevel : Level() {
                 CellDigger::class.java to .1f,
                 CircleDigger::class.java to .05f,
                 DiamondDigger::class.java to .05f,
-                LatticeDigger::class.java to .075f,
+                LatticeDigger::class.java to .025f,
                 RectDigger::class.java to 1.25f,
                 RoundDigger::class.java to .05f,
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
                 PatchDigger::class.java to .05f,
+                PillarDigger::class.java to .05f, 
                 GraveyardDigger::class.java to .05f,
                 SmallCornerDigger::class.java to 0.075f
         )

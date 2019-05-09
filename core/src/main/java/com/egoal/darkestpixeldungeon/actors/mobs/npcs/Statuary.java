@@ -250,6 +250,9 @@ public class Statuary extends NPC {
         if (armor != null && !armor.cursed)
           itemToCurse.add(armor);
 
+        if (hero.getBelongings().helmet != null)
+          itemToCurse.add(hero.getBelongings().helmet);
+
         if (hero.getBelongings().misc1 != null)
           itemToCurse.add(hero.getBelongings().misc1);
         if (hero.getBelongings().misc2 != null)

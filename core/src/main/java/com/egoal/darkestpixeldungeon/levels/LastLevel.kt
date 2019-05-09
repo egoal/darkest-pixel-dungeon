@@ -15,6 +15,8 @@ class LastLevel : Level() {
 
     private val MAP_FILE = "data/LastLevel.map"
 
+    override fun trackMusic(): String = Assets.TRACK_CHAPTER_5
+
     override fun setupSize() {
         if (width * height == 0) {
             width = 27

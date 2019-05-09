@@ -63,21 +63,21 @@ public class WndSettings extends WndTabbed {
     audio = new AudioTab();
     add(audio);
 
-    add(new LabeledTab(Messages.get(this, "screen")) {
-      @Override
-      protected void select(boolean value) {
-        super.select(value);
-        screen.visible = screen.active = value;
-        if (value) last_index = 0;
-      }
-    });
-
     add(new LabeledTab(Messages.get(this, "ui")) {
       @Override
       protected void select(boolean value) {
         super.select(value);
         ui.visible = ui.active = value;
         if (value) last_index = 1;
+      }
+    });
+    
+    add(new LabeledTab(Messages.get(this, "screen")) {
+      @Override
+      protected void select(boolean value) {
+        super.select(value);
+        screen.visible = screen.active = value;
+        if (value) last_index = 0;
       }
     });
 
@@ -161,7 +161,7 @@ public class WndSettings extends WndTabbed {
       add(chkImmersive);
 
 
-      boolean enableDebug = !false;
+      boolean enableDebug = false;
       if (!enableDebug)
         DarkestPixelDungeon.debug(false);
       // add debug checkbox

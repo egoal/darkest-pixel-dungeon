@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.Amulet
 import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch
+import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
@@ -31,6 +32,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.SmokeSparks
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.plants.Icecap
 import com.watabou.utils.Bundle
 
 enum class HeroClass(private val title: String) {

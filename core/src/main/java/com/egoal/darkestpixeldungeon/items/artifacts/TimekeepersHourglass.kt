@@ -254,6 +254,7 @@ class TimekeepersHourglass : Artifact() {
                 if (tw.level() == tw.levelCap)
                     GLog.p(Messages.get(this, "maxlevel"))
                 else GLog.p(Messages.get(this, "levelup"))
+                hero.spendAndNext(TIME_TO_PICK_UP)
                 return true
             }
 

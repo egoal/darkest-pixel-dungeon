@@ -76,9 +76,7 @@ public class ItemSpriteSheet {
 
   public static final int DPD_CAT_GIFT = SINGLE_USE + 17;
 
-  //32 free slots
-
-  private static final int WEP_TIER1 = xy(1, 7);   //8 slots
+  private static final int WEP_TIER1 = xy(1, 5);   //16 slots
   public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;
   public static final int DPD_BATTLE_GLOVES = WEP_TIER1 + 1;
   public static final int KNUCKLEDUSTER = WEP_TIER1 + 2;
@@ -87,14 +85,14 @@ public class ItemSpriteSheet {
   public static final int MAGES_STAFF = WEP_TIER1 + 5;
   public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
 
-  private static final int WEP_TIER2 = xy(9, 7);   //8 slots
+  private static final int WEP_TIER2 = xy(1, 6);   //16 slots
   public static final int SHORTSWORD = WEP_TIER2 + 0;
   public static final int HAND_AXE = WEP_TIER2 + 1;
   public static final int SPEAR = WEP_TIER2 + 2;
   public static final int QUARTERSTAFF = WEP_TIER2 + 3;
   public static final int DIRK = WEP_TIER2 + 4;
 
-  private static final int WEP_TIER3 = xy(1, 8);   //8 slots
+  private static final int WEP_TIER3 = xy(1, 7);   //16 slots
   public static final int SWORD = WEP_TIER3 + 0;
   public static final int MACE = WEP_TIER3 + 1;
   public static final int SCIMITAR = WEP_TIER3 + 2;
@@ -102,15 +100,16 @@ public class ItemSpriteSheet {
   public static final int SAI = WEP_TIER3 + 4;
   public static final int WHIP = WEP_TIER3 + 5;
   public static final int DPD_CRYSTALS_SWORDS = WEP_TIER3 + 6;
+  public static final int DAGGER_AXE = WEP_TIER3+ 7;
 
-  private static final int WEP_TIER4 = xy(9, 8);   //8 slots
+  private static final int WEP_TIER4 = xy(1, 8);   //16 slots
   public static final int LONGSWORD = WEP_TIER4 + 0;
   public static final int BATTLE_AXE = WEP_TIER4 + 1;
   public static final int FLAIL = WEP_TIER4 + 2;
   public static final int RUNIC_BLADE = WEP_TIER4 + 3;
   public static final int ASSASSINS_BLADE = WEP_TIER4 + 4;
 
-  private static final int WEP_TIER5 = xy(1, 9);   //8 slots
+  private static final int WEP_TIER5 = xy(1, 9);   //16 slots
   public static final int Claymore = WEP_TIER5 + 0;
   public static final int WAR_HAMMER = WEP_TIER5 + 1;
   public static final int GLAIVE = WEP_TIER5 + 2;

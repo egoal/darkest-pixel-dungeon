@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.ui;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
@@ -48,6 +49,7 @@ import com.watabou.utils.ColorMath;
 
 // status pane in the game scene
 public class StatusPane extends Component {
+  private final String VERSIONSTR = "0.3.2-0-2";
 
   private NinePatch bg;
   private NinePatch levelBg;
@@ -68,6 +70,7 @@ public class StatusPane extends Component {
 
   private BitmapText level;
   private BitmapText depth;
+  private BitmapText version;
 
   private DangerIndicator danger;
   private BuffIndicator buffs;
@@ -154,6 +157,11 @@ public class StatusPane extends Component {
     depth.measure();
     add(depth);
 
+    version = new BitmapText(VERSIONSTR, PixelScene.pixelFont);
+    version.hardlight(0xcacfc2);
+    version.measure();
+    if (VERSIONSTR.length() > 0) add(version);
+
     danger = new DangerIndicator();
     add(danger);
 
@@ -186,13 +194,16 @@ public class StatusPane extends Component {
 
     san.x = hp.x;
     san.y = 8;
-    // san.scale.x	=	0;
 
     bossHP.setPos(6 + (width - bossHP.width()) / 2, 20);
 
     depth.x = width - 35.5f - depth.width() / 2f;
     depth.y = 8f - depth.baseLine() / 2f;
     PixelScene.align(depth);
+
+    version.x = 2;
+    version.y = bg.height + 2;
+    PixelScene.align(version);
 
     danger.setPos(width - danger.width(), 20);
 

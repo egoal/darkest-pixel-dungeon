@@ -394,8 +394,7 @@ public class GameScene extends PixelScene {
 //        GLog.w(Messages.get(this, "secrets"));
 //      }
 
-      GLog.n(Messages.format("left artifacts: %d", KGenerator.ARTIFACT
-              .INSTANCE.left()));
+    //   GLog.n(Messages.format("left artifacts: %d", KGenerator.ARTIFACT.INSTANCE.left()));
 
       InterlevelScene.mode = InterlevelScene.Mode.NONE;
 

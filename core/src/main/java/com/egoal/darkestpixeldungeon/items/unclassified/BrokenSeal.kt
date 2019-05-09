@@ -90,7 +90,7 @@ class BrokenSeal : Item() {
             return true
         }
 
-        fun setArmor(arm: Armor) {
+        fun setArmor(arm: Armor?) {
             armor = arm
         }
 

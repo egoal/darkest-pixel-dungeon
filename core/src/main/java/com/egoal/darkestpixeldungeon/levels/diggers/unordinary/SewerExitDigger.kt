@@ -13,6 +13,13 @@ import com.watabou.utils.Random
 class SewerExitDigger : RectDigger() {
     override fun chooseRoomSize(wall: Wall): Point = Point(Random.IntRange(6, 8), Random.IntRange(6, 8))
 
+    override fun chooseDigArea(wall: Wall): Rect {
+        // cannot down to this room.
+        if (wall.direction == Direction.Down) return Rect(-1, -1, -1, -1)
+        
+        return super.chooseDigArea(wall)
+    }
+
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         Fill(level, rect, Terrain.EMPTY)
         LinkHorizontal(level, rect.y1, rect.x1, rect.x2, Terrain.WALL_DECO)

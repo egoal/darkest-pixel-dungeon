@@ -63,8 +63,10 @@ class PrisonLevel : RegularLevel() {
     }
 
     override fun createMobs() {
-        if (spawnWandmaker)
+        if (spawnWandmaker) {
+            spawnWandmaker = false // when reset, create Mobs would called again
             Wandmaker.Quest.Spawn(this, spaces.find { it.type == DigResult.Type.Entrance }!!.rect)
+        }
 
         super.createMobs()
     }

@@ -50,7 +50,7 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
     // or you could just split them, enchant, then dual again.
     override fun enchant(): Weapon = selectEnchantSword().enchant()
 
-    override fun enchant(ench: Enchantment): Weapon = selectEnchantSword().enchant(ench)
+    override fun enchant(ench: Enchantment?): Weapon = selectEnchantSword().enchant(ench)
 
     override fun hasEnchant(type: Class<out Enchantment>): Boolean = left.hasEnchant(type) || right.hasEnchant(type)
 

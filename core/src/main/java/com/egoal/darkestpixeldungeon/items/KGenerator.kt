@@ -90,8 +90,9 @@ object KGenerator {
                 Shuriken::class.java to 6f,
                 CurareDart::class.java to 6f,
                 CrystalsSwords::class.java to 4f,
-                SmokeSparks::class.java to 5f
-        ))
+                DaggerAxe::class.java to 5f,
+                SmokeSparks::class.java to 3f
+                ))
 
         object T4 : ClassMapGenerator<Weapon>(hashMapOf(
                 Longsword::class.java to 6f,
@@ -257,12 +258,17 @@ object KGenerator {
         }
 
         private val lastProbMap = HashMap<Class<out Artifact>, Float>()
+        private val lastSpawned = ArrayList<String>()
         fun push() {
             probMap.toMap(lastProbMap)
+            lastSpawned.clear()
+            lastSpawned.addAll(spawned)
         }
 
         fun pop() {
             lastProbMap.toMap(probMap)
+            spawned.clear()
+            spawned.addAll(lastSpawned)
         }
 
         fun reset() {
@@ -305,7 +311,7 @@ object KGenerator {
             CrownOfDwarf::class.java to 0f, // by king 
             HeaddressRegeneration::class.java to 1f,
             WizardHat::class.java to 1f,
-            MaskOfHorror::class.java to 1f, 
+            MaskOfHorror::class.java to 1f,
             MaskOfClown::class.java to 1f,
             RangerHat::class.java to 0.2f, // rare, so Yvette counts.
             MaskOfMadness::class.java to 0f // compose

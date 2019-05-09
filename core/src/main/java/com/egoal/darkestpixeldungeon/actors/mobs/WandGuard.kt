@@ -12,8 +12,10 @@ import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Random
@@ -54,6 +56,11 @@ class WandGuard : Mob() {
             enemy.defendDamage(dmg)
             enemy.takeDamage(dmg)
 
+            if (!enemy.isAlive) {
+                Dungeon.fail(dmg.from.javaClass)
+                GLog.n(Messages.capitalize(Messages.get(Char::class.java, "kill", (dmg.from as Char).name)))
+            }
+            
             //todo: i cannot use Wand::onZap(): coupling with Hero, may find way out
             //todo: fire wand performs not well
         }
