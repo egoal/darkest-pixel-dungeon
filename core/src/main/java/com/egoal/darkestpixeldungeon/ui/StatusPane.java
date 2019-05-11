@@ -49,7 +49,7 @@ import com.watabou.utils.ColorMath;
 
 // status pane in the game scene
 public class StatusPane extends Component {
-  private final String VERSIONSTR = "0.3.2-0-2";
+  private final String VERSIONSTR = "0.3.2-1";
 
   private NinePatch bg;
   private NinePatch levelBg;

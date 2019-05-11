@@ -14,7 +14,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 
 class 
-SmokeSparks : MissileWeapon() {
+SmokeSparks : MissileWeapon(1) {
     init {
         image = ItemSpriteSheet.SMOKE_SPARKS
     }
@@ -22,8 +22,6 @@ SmokeSparks : MissileWeapon() {
     override fun min(lvl: Int) = 1
 
     override fun max(lvl: Int) = 4
-
-    override fun STRReq(lvl: Int): Int = 10
 
     override fun onThrow(cell: Int) {
         Sample.INSTANCE.play(Assets.SND_BLAST)
@@ -40,6 +38,4 @@ SmokeSparks : MissileWeapon() {
         quantity = Random.Int(3, 5)
         return this
     }
-
-    override fun price(): Int = 5 * quantity
 }

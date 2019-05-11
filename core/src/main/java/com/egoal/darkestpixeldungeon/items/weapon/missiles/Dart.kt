@@ -18,52 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.missiles;
+package com.egoal.darkestpixeldungeon.items.weapon.missiles
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
-import com.egoal.darkestpixeldungeon.items.Item;
-import com.watabou.utils.Random;
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.watabou.utils.Random
 
-public class Shuriken extends MissileWeapon {
+class Dart(number: Int = 1) : MissileWeapon(1, stick = true) {
 
-  {
-    image = ItemSpriteSheet.SHURIKEN;
+    init {
+        image = ItemSpriteSheet.DART
 
-    DLY = 0.5f;
-  }
+        bones = false //Finding them in bones would be semi-frequent and disappointing.
+        quantity = number
+    }
 
-  @Override
-  public int min(int lvl) {
-    return 2;
-  }
+    override fun min(lvl: Int): Int = 1
 
-  @Override
-  public int max(int lvl) {
-    return 6;
-  }
+    override fun max(lvl: Int): Int = 4
 
-  @Override
-  public int STRReq(int lvl) {
-    return 13;
-  }
+    override fun random(): Item {
+        quantity = Random.Int(5, 15)
+        return this
+    }
 
-  public Shuriken() {
-    this(1);
-  }
-
-  public Shuriken(int number) {
-    super();
-    quantity = number;
-  }
-
-  @Override
-  public Item random() {
-    quantity = Random.Int(5, 15);
-    return this;
-  }
-
-  @Override
-  public int price() {
-    return 6 * quantity;
-  }
+    override fun unitPrice(): Int = 2
 }

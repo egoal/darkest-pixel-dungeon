@@ -13,7 +13,7 @@ import com.egoal.darkestpixeldungeon.sprites.MissileSprite
 import kotlin.math.max
 import kotlin.math.sqrt
 
-class Boomerang : MissileWeapon() {
+class Boomerang : MissileWeapon(1) {
     init {
         image = ItemSpriteSheet.BOOMERANG
 
@@ -28,12 +28,11 @@ class Boomerang : MissileWeapon() {
     // half base damage of tier-1
     override fun max(lvl: Int): Int = 5 + 2 * lvl
 
-    override fun STRReq(lvl: Int): Int {
-        val l = max(0, lvl).toFloat()
-        return 9 - ((sqrt(8f * l + 1f) - 1f) / 2f).toInt()
-    }
+    override fun breakChance(): Float = 0f // never break 
 
     override fun isUpgradable(): Boolean = true
+
+    override fun price(): Int = 0
 
     override fun upgrade(): Item = super.upgrade(false)
 

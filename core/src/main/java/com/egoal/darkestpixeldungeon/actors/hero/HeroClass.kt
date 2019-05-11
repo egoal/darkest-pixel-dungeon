@@ -29,9 +29,7 @@ import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.SmokeSparks
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Icecap
 import com.watabou.utils.Bundle
@@ -221,6 +219,13 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
+
+        Dart(99).collect()
+        IncendiaryDart(99).collect()
+        CurareDart(99).collect()
+        Javelin(99).collect()
+        Shuriken(99).collect()
+        Tamahawk(99).collect()
     }
 
     private fun initDebug(hero: Hero) {
@@ -232,7 +237,7 @@ enum class HeroClass(private val title: String) {
         }
 
         hero.heroPerk.add(HeroPerk.Perk.INTENDED_TRANSPORTATION)
-        
+
         Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
             quantity(99).identify().collect()
         })
@@ -250,7 +255,7 @@ enum class HeroClass(private val title: String) {
         Claymore().identify().upgrade(6).collect()
 
         Amulet().collect()
-        
+
         YvettesDiary().collect()
     }
 

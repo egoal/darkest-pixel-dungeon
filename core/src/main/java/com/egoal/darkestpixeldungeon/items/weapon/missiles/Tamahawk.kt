@@ -1,0 +1,52 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015  Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2016 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+package com.egoal.darkestpixeldungeon.items.weapon.missiles
+
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.watabou.utils.Random
+
+class Tamahawk(number: Int = 1) : MissileWeapon(5) {
+    init {
+        image = ItemSpriteSheet.TOMAHAWK
+
+        quantity = number
+
+    }
+
+    override fun min(lvl: Int): Int = 4
+
+    override fun max(lvl: Int): Int = 20
+
+    override fun proc(dmg: Damage): Damage {
+        Buff.affect(dmg.to as Char, Bleeding::class.java).set(dmg.value)
+        return super.proc(dmg)
+    }
+
+    override fun random(): Item {
+        quantity = Random.Int(5, 12)
+        return this
+    }
+}
