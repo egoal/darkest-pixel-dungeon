@@ -96,10 +96,10 @@ abstract public class KindOfWeapon extends EquipableItem {
     return new Damage(Random.NormalIntRange(min(), max()), owner, target);
   }
 
-  public float accuracyFactor(Hero hero) {
+  public float accuracyFactor(Hero hero, Char target) {
     return 1f;
   }
-
+  
   public float speedFactor(Hero hero) {
     return 1f;
   }

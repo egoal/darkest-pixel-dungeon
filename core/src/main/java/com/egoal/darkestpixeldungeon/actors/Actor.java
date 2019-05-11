@@ -254,6 +254,8 @@ public abstract class Actor implements Bundlable {
       Char ch = (Char) actor;
       chars.add(ch);
       for (Buff buff : ch.buffs()) {
+        if (all.contains(buff)) continue;
+        
         all.add(buff);
         buff.onAdd();
       }

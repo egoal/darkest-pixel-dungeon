@@ -1,7 +1,9 @@
 package com.egoal.darkestpixeldungeon.items.weapon.melee
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
@@ -32,4 +34,8 @@ class DaggerAxe : MeleeWeapon() {
 
         return super.proc(dmg)
     }
+
+    override fun accuracyFactor(hero: Hero, target: Char): Float =
+            if (Dungeon.level.adjacent(hero.pos, target.pos)) 0.5f
+            else 1f
 }

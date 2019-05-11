@@ -526,8 +526,10 @@ public abstract class Level implements Bundlable {
     }
 
     // add luminaries' visuals
-    for (Luminary lum : luminaries.toArray(new Luminary[0]))
-      visuals.add(lum.createVisual());
+    for (Luminary lum : luminaries.toArray(new Luminary[0])) {
+      Luminary.LightVisual lv = lum.createVisual();
+      if (lv != null) visuals.add(lv);
+    }
 
     return visuals;
   }
@@ -564,8 +566,9 @@ public abstract class Level implements Bundlable {
   }
 
   // called before actor init, after restored.
-  public void onSwitchedIn(){ }
-  
+  public void onSwitchedIn() {
+  }
+
   public int nMobs() {
     return 0;
   }

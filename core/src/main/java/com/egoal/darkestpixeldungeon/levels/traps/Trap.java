@@ -79,8 +79,7 @@ public abstract class Trap implements Bundlable {
       if (!visible) {
         Char ch = Actor.findChar(pos);
         if (ch instanceof Hero && ch.isAlive()) {
-          ch.takeDamage(new Damage(Random.NormalIntRange(1, 8), this, ch)
-                  .type(Damage.Type.MENTAL));
+          ch.takeDamage(new Damage(Random.NormalIntRange(1, 9), this, ch).type(Damage.Type.MENTAL));
         }
       }
       

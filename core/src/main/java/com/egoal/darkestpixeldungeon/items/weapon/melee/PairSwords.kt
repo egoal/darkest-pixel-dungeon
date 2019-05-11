@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.items.weapon.melee
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
@@ -39,8 +40,8 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
 
     override fun STRReq(lvl: Int): Int = Math.max(left.STRReq(), right.STRReq()) + 2
 
-    override fun accuracyFactor(hero: Hero?): Float {
-        val f = super.accuracyFactor(hero)
+    override fun accuracyFactor(hero: Hero, target: Char): Float {
+        val f = super.accuracyFactor(hero, target)
         val diff = abs(left.level() - right.level())
 
         return Math.pow(1.1, (2 - diff).toDouble()).toFloat() * f

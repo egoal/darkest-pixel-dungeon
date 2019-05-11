@@ -23,41 +23,45 @@ package com.egoal.darkestpixeldungeon.messages;
 import java.util.Locale;
 
 public enum Languages {
-  ENGLISH("english", "", Status.REVIEWED, null, null),
+  ENGLISH("english", "", Status.REVIEWED, new String[]{"Egoal"},
+          new String[]{"endlesssolitude", " 路人NPC", " 1834515403a"}),
 
-  RUSSIAN("русский", "ru", Status.REVIEWED, new String[]{"ConsideredHamster",
-          "Inevielle", "yarikonline"}, new String[]{"AttHawk46", 
-          "HerrGotlieb", "Shamahan", "Un_logic"}),
-  KOREAN("한국어", "ko", Status.REVIEWED, new String[]{"Flameblast12"}, new 
-          String[]{"Ddojin0115", "Eeeei", "lsiebnie", "WondarRabb1t"}),
-  CHINESE("中文", "zh", Status.REVIEWED, new String[]{"Jinkeloid(zdx00793)"}, 
+  //  RUSSIAN("русский", "ru", Status.REVIEWED, new 
+  // String[]{"ConsideredHamster",
+//          "Inevielle", "yarikonline"}, new String[]{"AttHawk46", 
+//          "HerrGotlieb", "Shamahan", "Un_logic"}),
+//  KOREAN("한국어", "ko", Status.REVIEWED, new String[]{"Flameblast12"}, new 
+//          String[]{"Ddojin0115", "Eeeei", "lsiebnie", "WondarRabb1t"}),
+  CHINESE("中文", "zh", Status.REVIEWED, new String[]{"Jinkeloid(zdx00793)"},
           new String[]{"931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401",
                   "ShatteredFlameBlast", "Hmdzl001", "Tempest102"}),
-  FINNISH("suomi", "fi", Status.REVIEWED, new String[]{"TenguTheKnight"}, null),
-
-  GERMAN("deutsch", "de", Status.UNREVIEWED, new String[]{"Dallukas", 
-          "KrystalCroft", "Wuzzy", "Davedude"}, new String[]{"DarkPixel", 
-          "ErichME", "Sarius", "Sorpl3x", "ThunfischGott", "Zap0", 
-          "Oragothen"}),
-  FRENCH("français", "fr", Status.UNREVIEWED, new String[]{"Emether", 
-          "Canc42", "Kultissim"}, new String[]{"Alsydis", "Basttee", 
-          "Go11um", "Minikrob", "Solthaar"}),
-  SPANISH("español", "es", Status.UNREVIEWED, new String[]{"Kiroto", 
-          "Grayscales"}, new String[]{"Alesxanderk", "CorvosUtopy", 
-          "Dewstend", "Dyrran", "Fervoreking", "Illyatwo2", "Kohru", 
-          "Alfongad", "Ctrijueque", "Dhg121", "Jonismack1"}),
-  ITALIAN("italiano", "it", Status.UNREVIEWED, new String[]{"Bizzolino", 
-          "Funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", 
-          "Nessunluogo", "Umby000"}),
-
-  PORTUGUESE("português", "pt", Status.INCOMPLETE, new 
-          String[]{"Matheus208"}, new String[]{"ChainedFreaK", "JST", 
-          "TDF2001", "Try31"}),
-  POLISH("polski", "pl", Status.INCOMPLETE, null, new String[]{"Darden", 
-          "Deksippos", "MJedi", "Scharnvirk", "Shmilly", "Dusakus", 
-          "Kuadziw", "Michaub", "Ozziezombie", "Szymex73"}),
-  HUNGARIAN("magyar", "hu", Status.INCOMPLETE, new String[]{"Dorheim"}, new 
-          String[]{"Clarovani"});
+//  FINNISH("suomi", "fi", Status.REVIEWED, new String[]{"TenguTheKnight"}, 
+// null),
+//
+//  GERMAN("deutsch", "de", Status.UNREVIEWED, new String[]{"Dallukas", 
+//          "KrystalCroft", "Wuzzy", "Davedude"}, new String[]{"DarkPixel", 
+//          "ErichME", "Sarius", "Sorpl3x", "ThunfischGott", "Zap0", 
+//          "Oragothen"}),
+//  FRENCH("français", "fr", Status.UNREVIEWED, new String[]{"Emether", 
+//          "Canc42", "Kultissim"}, new String[]{"Alsydis", "Basttee", 
+//          "Go11um", "Minikrob", "Solthaar"}),
+//  SPANISH("español", "es", Status.UNREVIEWED, new String[]{"Kiroto", 
+//          "Grayscales"}, new String[]{"Alesxanderk", "CorvosUtopy", 
+//          "Dewstend", "Dyrran", "Fervoreking", "Illyatwo2", "Kohru", 
+//          "Alfongad", "Ctrijueque", "Dhg121", "Jonismack1"}),
+//  ITALIAN("italiano", "it", Status.UNREVIEWED, new String[]{"Bizzolino", 
+//          "Funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", 
+//          "Nessunluogo", "Umby000"}),
+//
+//  PORTUGUESE("português", "pt", Status.INCOMPLETE, new 
+//          String[]{"Matheus208"}, new String[]{"ChainedFreaK", "JST", 
+//          "TDF2001", "Try31"}),
+//  POLISH("polski", "pl", Status.INCOMPLETE, null, new String[]{"Darden", 
+//          "Deksippos", "MJedi", "Scharnvirk", "Shmilly", "Dusakus", 
+//          "Kuadziw", "Michaub", "Ozziezombie", "Szymex73"}),
+//  HUNGARIAN("magyar", "hu", Status.INCOMPLETE, new String[]{"Dorheim"}, new 
+//          String[]{"Clarovani"})
+  ;
 
   public enum Status {
     //below 60% complete languages are not added.
@@ -72,7 +76,7 @@ public enum Languages {
   private String[] reviewers;
   private String[] translators;
 
-  Languages(String name, String code, Status status, String[] reviewers, 
+  Languages(String name, String code, Status status, String[] reviewers,
             String[] translators) {
     this.name = name;
     this.code = code;

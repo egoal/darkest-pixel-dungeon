@@ -15,7 +15,7 @@ open class Luminary(var pos: Int = -1) {
         }
     }
 
-    open fun createVisual(): LightVisual = TorchLight(pos)
+    open fun createVisual(): LightVisual? = TorchLight(pos)
 
     // 
     abstract class LightVisual(val cell: Int) : Emitter()
@@ -27,7 +27,7 @@ open class Luminary(var pos: Int = -1) {
 
             add(Halo(20f, 0xffffcc, 0.2f).point(p.x, p.y))
         }
-
+        
         override fun update() {
             visible = Dungeon.visible[cell]
             if (visible)

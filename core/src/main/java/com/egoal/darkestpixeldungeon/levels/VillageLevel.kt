@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
+import com.egoal.darkestpixeldungeon.levels.traps.FlockTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
@@ -41,7 +42,7 @@ class VillageLevel : RegularLevel() {
         paintWater()
         paintGrass()
 
-//        setTrap(CursingTrap().reveal(), xy2cell(16, 28))
+//        setTrap(FlockTrap().reveal(), xy2cell(16, 28))
 //        map[xy2cell(16, 28)] = Terrain.TRAP
 
         return true

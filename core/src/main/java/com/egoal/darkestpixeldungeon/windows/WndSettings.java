@@ -68,7 +68,7 @@ public class WndSettings extends WndTabbed {
       protected void select(boolean value) {
         super.select(value);
         ui.visible = ui.active = value;
-        if (value) last_index = 1;
+        if (value) last_index = 0;
       }
     });
     
@@ -77,7 +77,7 @@ public class WndSettings extends WndTabbed {
       protected void select(boolean value) {
         super.select(value);
         screen.visible = screen.active = value;
-        if (value) last_index = 0;
+        if (value) last_index = 1;
       }
     });
 

@@ -125,33 +125,25 @@ public class WndLangs extends Window {
     PixelScene.align(title);
     add(title);
 
-    if (currLang == Languages.ENGLISH) {
+    if (currLang == Languages.CHINESE) {
 
       RenderedTextMultiline info = PixelScene.renderMultiline(6);
-      // info.text("This is the source language, written by the developer.", 
-      // width - textLeft);
-      info.text("This is NOT the source language used by the developer, it's " +
-              "unfinished ever since.");
+      info.text(Messages.get(this, "do_not_change"), width - textLeft);
       info.setPos(textLeft, title.height() + 2);
       add(info);
 
     } else {
       RenderedTextMultiline info = PixelScene.renderMultiline(6);
-      if (currLang == Languages.CHINESE) {
-        // my source language
-        info.text(Messages.get(this, "do_not_change"), width - textLeft);
-      } else {
-        switch (currLang.status()) {
-          case REVIEWED:
-            info.text(Messages.get(this, "completed"), width - textLeft);
-            break;
-          case UNREVIEWED:
-            info.text(Messages.get(this, "unreviewed"), width - textLeft);
-            break;
-          case INCOMPLETE:
-            info.text(Messages.get(this, "unfinished"), width - textLeft);
-            break;
-        }
+      switch (currLang.status()) {
+        case REVIEWED:
+          info.text(Messages.get(this, "completed"), width - textLeft);
+          break;
+        case UNREVIEWED:
+          info.text(Messages.get(this, "unreviewed"), width - textLeft);
+          break;
+        case INCOMPLETE:
+          info.text(Messages.get(this, "unfinished"), width - textLeft);
+          break;
       }
       info.setPos(textLeft, title.height() + 2);
       add(info);
@@ -165,7 +157,7 @@ public class WndLangs extends Window {
           String[] reviewers = currLang.reviewers();
           String[] translators = currLang.translators();
           if (reviewers.length > 0) {
-            creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, 
+            creds += "_" + Messages.titleCase(Messages.get(WndLangs.class,
                     "reviewers")) + "_\n";
             for (String reviewer : reviewers) {
               creds += "-" + reviewer + "\n";
@@ -174,7 +166,7 @@ public class WndLangs extends Window {
           }
 
           if (reviewers.length > 0 || translators.length > 0) {
-            creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, 
+            creds += "_" + Messages.titleCase(Messages.get(WndLangs.class,
                     "translators")) + "_";
             //reviewers are also translators
             for (String reviewer : reviewers) {
@@ -188,7 +180,7 @@ public class WndLangs extends Window {
           Window credits = new Window();
 
           RenderedTextMultiline title = PixelScene.renderMultiline(9);
-          title.text(Messages.titleCase(Messages.get(WndLangs.class, 
+          title.text(Messages.titleCase(Messages.get(WndLangs.class,
                   "credits")), 65);
           title.hardlight(SHPX_COLOR);
           title.setPos((65 - title.width()) / 2, 0);
@@ -204,12 +196,14 @@ public class WndLangs extends Window {
         }
       };
       creditsBtn.setSize(creditsBtn.reqWidth() + 2, 16);
-      creditsBtn.setPos(textLeft + (textWidth - creditsBtn.width()) / 2f, y - 18);
+      creditsBtn.setPos(textLeft + (textWidth - creditsBtn.width()) / 2f, y -
+              18);
       add(creditsBtn);
 
       RenderedTextMultiline transifex_text = PixelScene.renderMultiline(6);
       transifex_text.text(Messages.get(this, "transifex"), width - textLeft);
-      transifex_text.setPos(textLeft, creditsBtn.top() - 2 - transifex_text.height());
+      transifex_text.setPos(textLeft, creditsBtn.top() - 2 - transifex_text
+              .height());
       add(transifex_text);
 
     }

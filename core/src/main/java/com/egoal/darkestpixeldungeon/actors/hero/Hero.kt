@@ -51,6 +51,7 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.*
 import kotlin.math.ceil
+import kotlin.math.exp
 import kotlin.math.max
 import kotlin.math.min
 
@@ -184,14 +185,11 @@ class Hero : Char() {
     // followers
     fun holdFollowers(level: Level) {
         followers.clear()
-        for (mob in level.mobs) {
-            if (mob.isFollower) {
-                level.mobs.remove(mob)
+        
+        level.mobs.filterTo(followers){ it.isFollower }
+        level.mobs.removeAll(followers)
 
-                followers.add(mob)
-                if (followers.size == MAX_FOLLOWERS) break
-            }
-        }
+        // todo: MAX FOLLOWERS CONTROL
 
         Log.d("dpd", "${followers.size} followers held.")
     }
@@ -232,17 +230,12 @@ class Hero : Char() {
     }
 
     override fun attackSkill(target: Char): Int {
-        var accuracy = 1f
-        if (rangedWeapon != null && Dungeon.level.adjacent(pos, target.pos))
-            accuracy *= 0.5f
+        var accuracy = buff(Pressure::class.java)!!.accuracyFactor()
 
-        accuracy *= buff(Pressure::class.java)!!.accuracyFactor()
+        if (buff(Drunk::class.java) != null) accuracy *= 0.75f
 
-        if (buff(Drunk::class.java) != null)
-            accuracy *= 0.75f
-
-        //fixme
-        accuracy *= (rangedWeapon ?: belongings.weapon)?.accuracyFactor(Dungeon.hero) ?: 1f
+        // weapon
+        accuracy *= (rangedWeapon ?: belongings.weapon)?.accuracyFactor(Dungeon.hero, target) ?: 1f
 
         if (belongings.helmet is MaskOfHorror && belongings.helmet.cursed) accuracy *= 0.75f
 
@@ -495,12 +488,12 @@ class Hero : Char() {
             val dmgMental = Damage(0, dmg.from, dmg.to).type(Damage.Type.MENTAL)
 
             if (dmg.from is Char && !Dungeon.visible[(dmg.from as Char).pos]) // attack from nowhere
-                dmgMental.value += Random.Int(2, 3)
+                dmgMental.value += Random.Int(1, 5)
             if (dmg.isFeatured(Damage.Feature.CRITICAL))
-                dmgMental.value += Random.Int(1, 6)
+                dmgMental.value += Random.Int(2, 6)
 
             if (!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0)
-                dmgMental.value += Random.Int(1, 4)
+                dmgMental.value += Random.Int(1, 5)
 
             dmg.value = min(dmg.value, 10)
             takeMentalDamage(dmgMental)
@@ -1002,7 +995,13 @@ class Hero : Char() {
 
         // may recover sanity
         if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.IntRange(6, 12).toFloat())
-        else if (ch is Mob && ch.maxLvl >= lvl && Random.Int(10) == 0) recoverSanity(Random.IntRange(1, 6).toFloat())
+        else if (ch is Mob && ch.maxLvl >= lvl) {
+            val x = 1f - HP.toFloat() / HT.toFloat()
+            val p = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
+
+            if (Random.Float() < p)
+                recoverSanity(Random.IntRange(1, 6).toFloat())
+        }
 
         if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)
 

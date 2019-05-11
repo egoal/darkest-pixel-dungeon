@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs
 
+import android.util.Log
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.Dungeon
@@ -34,24 +35,19 @@ import kotlin.math.min
 
 class Light : Buff() {
     var duration = 0f
-    private var luminary: Luminary? = null
+    lateinit var luminary: Luminary
 
     fun prolong(dt: Float) {
         duration = max(dt, duration)
     }
 
-    //todo: rework this
-    private fun initLuminary() {
-        Dungeon.level?.let {
-            luminary = TorchLight(target.pos)
-            Dungeon.level.addLuminary(luminary)
-        }
+    override fun onAdd() {
+        luminary = TorchLight(target.pos, target.id())
+        Dungeon.level.addLuminary(luminary)
     }
 
     override fun attachTo(target: Char): Boolean {
         if (super.attachTo(target)) {
-            initLuminary()
-
             Dungeon.observe()
             return true
         } else {
@@ -63,8 +59,7 @@ class Light : Buff() {
         duration -= Actor.TICK
         if (duration <= 0) detach()
         else {
-            if (luminary == null) initLuminary()
-            luminary!!.pos = target.pos
+            luminary.pos = target.pos
         }
 
         spend(Actor.TICK)
@@ -73,9 +68,7 @@ class Light : Buff() {
 
     override fun detach() {
         super.detach()
-        luminary?.let {
-            Dungeon.level.removeLuminary(it)
-        }
+        Dungeon.level.removeLuminary(luminary)
         Dungeon.observe()
     }
 
@@ -111,7 +104,7 @@ class Light : Buff() {
         private const val DISTANCE = 5
     }
 
-    class TorchLight(pos: Int) : Luminary(pos) {
+    class TorchLight(pos: Int, val id: Int) : Luminary(pos) {
         override fun light(level: Level) {
             val pt = level.cellToPoint(pos)
             val sx = max(0, pt.x - DISTANCE)
@@ -121,6 +114,9 @@ class Light : Buff() {
 
             for (y in sy..ey) Level.lighted.fill(true, level.xy2cell(sx, y), level.xy2cell(ex, y))
         }
+
+        // no visuals: halo is handled by sprite.
+        override fun createVisual(): LightVisual? = null
     }
 
 }

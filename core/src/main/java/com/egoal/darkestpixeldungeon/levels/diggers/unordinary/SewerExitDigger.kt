@@ -16,7 +16,7 @@ class SewerExitDigger : RectDigger() {
     override fun chooseDigArea(wall: Wall): Rect {
         // cannot down to this room.
         if (wall.direction == Direction.Down) return Rect(-1, -1, -1, -1)
-        
+
         return super.chooseDigArea(wall)
     }
 
@@ -26,10 +26,11 @@ class SewerExitDigger : RectDigger() {
 
         Set(level, overlappedWall(wall, rect.shrink(1)).random(), Terrain.DOOR)
 
-        val walls = Wall.Arround(rect,
+        val validrect = Rect(rect.x1, rect.x2, rect.y1 + 1, rect.y2)
+        val walls = Wall.Arround(validrect,
                 listOf(Direction.Left, Direction.Right, Direction.Down).filter { it != wall.direction.opposite })
 
-        level.entrance = level.pointToCell(rect.random(1))
+        level.entrance = level.pointToCell(validrect.random(1))
         level.exit = level.xy2cell((rect.x1 + rect.x2) / 2, rect.y1)
 
         return DigResult(rect, walls, DigResult.Type.Entrance)

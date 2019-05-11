@@ -63,7 +63,7 @@ class SewerBossLevel : SewerLevel() {
     }
 
     override fun createLevelDigger(): LevelDigger = LevelDigger(this, 1)
-    
+
     override fun decorate() {
         super.decorate()
 
@@ -96,7 +96,7 @@ class SewerBossLevel : SewerLevel() {
             var pos: Int
             do {
                 pos = randomRespawnCell()
-            } while (pos == entrance || map[pos] == Terrain.SIGN)
+            } while (pos == entrance || map[pos] == Terrain.SIGN || !passable[pos])
             drop(it, pos).type = Heap.Type.REMAINS
         }
     }

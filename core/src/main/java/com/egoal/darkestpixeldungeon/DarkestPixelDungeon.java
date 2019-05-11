@@ -252,7 +252,7 @@ public class DarkestPixelDungeon extends Game {
             Assets.SND_MIMIC,
 
             Assets.SND_ASTROLABE,
-            Assets.SND_CRITICAL, 
+            Assets.SND_CRITICAL,
             Assets.SND_RELOAD);
 
     if (classicFont()) {
@@ -282,9 +282,9 @@ public class DarkestPixelDungeon extends Game {
     switchScene(c, callback);
   }
 
-	/*
+  /*
    * ---> Prefernces
-	 */
+   */
 
   public static void debug(boolean value) {
     Preferences.INSTANCE.put(Preferences.KEY_DEBUG, value);
@@ -459,9 +459,11 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static boolean classicFont() {
+//    return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT,
+//            (language() != Languages.KOREAN && language() != Languages
+//                    .CHINESE));
     return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT,
-            (language() != Languages.KOREAN && language() != Languages
-                    .CHINESE));
+            language() != Languages.CHINESE);
   }
 
   public static void lastClass(int value) {
@@ -529,10 +531,10 @@ public class DarkestPixelDungeon extends Game {
   public static int version() {
     return Preferences.INSTANCE.getInt(Preferences.KEY_VERSION, 0);
   }
-  
-	/*
-	 * <--- Preferences
-	 */
+
+  /*
+   * <--- Preferences
+   */
 
   public static void reportException(Throwable tr) {
     Log.e("PD", Log.getStackTraceString(tr));

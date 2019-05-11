@@ -59,7 +59,7 @@ abstract public class MissileWeapon extends Weapon {
   @Override
   public int throwPos(Hero user, int dst) {
     if (hasEnchant(Projecting.class)
-            && !Level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 
+            && !Level.solid[dst] && Dungeon.level.distance(user.pos, dst) <=
             4) {
       return dst;
     } else {
@@ -84,7 +84,8 @@ abstract public class MissileWeapon extends Weapon {
                 .Aim.class);
 
         //* huntress bonus
-        if (curUser.getHeroClass() == HeroClass.HUNTRESS && enemy.buff(PinCushion
+        if (curUser.getHeroClass() == HeroClass.HUNTRESS && enemy.buff
+                (PinCushion
                 .class) == null)
           bonus += 3;
 
@@ -120,6 +121,12 @@ abstract public class MissileWeapon extends Weapon {
     }
 
     return super.proc(dmg);
+  }
+
+  @Override
+  public float accuracyFactor(Hero hero, Char target) {
+    return super.accuracyFactor(hero, target) *
+            (Dungeon.level.adjacent(hero.pos, target.pos) ? 0.5f : 1f);
   }
 
   @Override

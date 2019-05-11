@@ -87,7 +87,7 @@ class Pressure : Buff(), Hero.Doom {
         if (target.isAlive) {
             if (Dungeon.depth > 0 && Random.Int(10) == 0) {
                 //^ up pressure, not in the village
-                upPressure(Random.Int(1, 2 + Dungeon.depth / 4).toFloat())
+                upPressure(Random.Float(1f, 2f+ Dungeon.depth.toFloat()/ 4f))
             }
 
             // mental damage

@@ -615,7 +615,7 @@ public class Dungeon {
 
     Dungeon.challenges = bundle.getInt(CHALLENGES);
 
-    Dungeon.level = null;
+    // Dungeon.level = null;
     Dungeon.depth = -1;
 
     Scroll.restore(bundle);
@@ -677,8 +677,8 @@ public class Dungeon {
     hero = null;
     hero = (Hero) bundle.get(HERO);
 
-    gold = bundle.getInt(GOLD);
-    depth = bundle.getInt(DEPTH);
+    Dungeon.gold = bundle.getInt(GOLD);
+    Dungeon.depth = bundle.getInt(DEPTH);
 
     Statistics.INSTANCE.restoreFromBundle(bundle);
     Journal.restoreFromBundle(bundle);

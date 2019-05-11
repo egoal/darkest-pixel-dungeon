@@ -142,8 +142,7 @@ abstract public class Weapon extends KindOfWeapon {
   }
 
   @Override
-  public float accuracyFactor(Hero hero) {
-
+  public float accuracyFactor(Hero hero, Char target) {
     int encumbrance = STRReq() - hero.STR();
 
     if (hasEnchant(Wayward.class))
