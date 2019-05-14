@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny;
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
 import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shock;
+import com.egoal.darkestpixeldungeon.actors.buffs.Unbalance;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
@@ -283,6 +284,8 @@ public abstract class Char extends Actor {
 
     // shocked, must miss
     if (attacker.buff(Shock.class) != null) return false;
+
+    if (defender.buff(Unbalance.class) != null) return true;
 
     // must dodge, cannot hit
     MustDodge md = defender.buff(MustDodge.class);

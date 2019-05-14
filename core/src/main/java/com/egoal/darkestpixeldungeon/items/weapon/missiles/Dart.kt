@@ -32,15 +32,4 @@ class Dart(number: Int = 1) : MissileWeapon(1, stick = true) {
         bones = false //Finding them in bones would be semi-frequent and disappointing.
         quantity = number
     }
-
-    override fun min(lvl: Int): Int = 1
-
-    override fun max(lvl: Int): Int = 4
-
-    override fun random(): Item {
-        quantity = Random.Int(5, 15)
-        return this
-    }
-
-    override fun unitPrice(): Int = 2
 }

@@ -527,7 +527,7 @@ public abstract class Level implements Bundlable {
 
     // add luminaries' visuals
     for (Luminary lum : luminaries.toArray(new Luminary[0])) {
-      Luminary.LightVisual lv = lum.createVisual();
+      Luminary.LightVisual lv = lum.visual(); // lum.createVisual();
       if (lv != null) visuals.add(lv);
     }
 
@@ -545,18 +545,18 @@ public abstract class Level implements Bundlable {
 
   public void addLuminary(Luminary lum) {
     luminaries.add(lum);
-    updateLightMap();
   }
 
   public void removeLuminary(Luminary lum) {
     luminaries.remove(lum);
-    updateLightMap();
+    Luminary.LightVisual lv = lum.visual();
+    if (lv != null) visuals.remove(lv);
   }
 
   public void removeLuminaryAt(int pos) {
     for (Luminary lum : luminaries)
       if (lum.getPos() == pos) {
-        luminaries.remove(lum);
+        removeLuminary(lum);
         break;
       }
   }

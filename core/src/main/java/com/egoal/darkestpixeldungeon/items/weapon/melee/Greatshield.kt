@@ -18,28 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.missiles
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
-import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.watabou.utils.Random
 
-class Javelin(number: Int = 1) : MissileWeapon(4, stick = true) {
+class Greatshield : MeleeWeapon() {
 
     init {
-        image = ItemSpriteSheet.JAVELIN
+        image = ItemSpriteSheet.GREATSHIELD
 
-        quantity = number
+        tier = 5
     }
 
-    override fun max(lvl: Int): Int = 3 * (tier - 1)
+    //12 base, down from 30, +3 per level, down from +6
+    override fun max(lvl: Int): Int = 2 * (tier + 1) + lvl * (tier - 2)
 
-    override fun proc(dmg: Damage): Damage {
-        Buff.prolong(dmg.to as Char, Cripple::class.java, Cripple.DURATION)
-        return super.proc(dmg)
+    override fun defendDamage(dmg: Damage): Damage {
+        var value = 10 + 3 * level()
+
+        val burden = STRReq() - (dmg.to as Hero).STR()
+        if (burden > 0) value -= 2 * burden
+
+        if (value > 0) {
+            if (dmg.type == Damage.Type.NORMAL)
+                dmg.value -= value
+            else if (dmg.type == Damage.Type.MAGICAL)
+                dmg.value -= value * 4 / 5
+        }
+
+        return dmg
     }
 }

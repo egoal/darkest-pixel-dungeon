@@ -35,11 +35,7 @@ class CurareDart(number: Int = 1) : MissileWeapon(3, stick = true) {
 
         quantity = number
     }
-
-    override fun min(lvl: Int): Int = 1
-
-    override fun max(lvl: Int): Int = 3
-
+    
     override fun proc(dmg: Damage): Damage {
         Buff.prolong(dmg.to as Char, Paralysis::class.java, DURATION)
         return super.proc(dmg)

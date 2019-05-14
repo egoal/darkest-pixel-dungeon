@@ -78,7 +78,6 @@ public class PrisonBossLevel extends Level {
     }
 
     if (!on) {
-      //todo: remove lights
       for (int i : hallLights)
         removeLuminaryAt(i);
     }

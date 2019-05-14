@@ -52,8 +52,7 @@ import java.util.ArrayList
  */
 
 class ShopDigger : RectDigger() {
-
-    private var itemsToSpawn: ArrayList<Item>? = null
+    private lateinit var shopkeeper: DPDShopKeeper
 
     override fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(3, 6), Random.IntRange(3, 6))
 
@@ -64,20 +63,19 @@ class ShopDigger : RectDigger() {
         if (enter.area > 1)
             Set(level, enter.random(), Terrain.SIGN)
 
-        // generate items, place shopkeeper, this would call only once.
-        if (itemsToSpawn == null)
-            itemsToSpawn = GenerateItems()
+        if (!::shopkeeper.isInitialized) {
+            // generate items, place shopkeeper, this would call only once.
+            shopkeeper = (if (level is LastShopLevel) DPDImpShopkeeper() else DPDShopKeeper()).initSellItems()
+            for (item in GenerateItems())
+                shopkeeper.addItemToSell(item)
+        }
 
-        val dsk = if (level is LastShopLevel) DPDImpShopkeeper() else DPDShopKeeper()
-        dsk.pos = level.pointToCell(rect.center)
-        level.mobs.add(dsk)
+        shopkeeper.pos = level.pointToCell(rect.center)
+        level.mobs.add(shopkeeper)
 
-        if (dsk is DPDImpShopkeeper)
+        if (shopkeeper is DPDImpShopkeeper)
             for (i in PathFinder.NEIGHBOURS9)
-                Set(level, dsk.pos + i, Terrain.WATER)
-
-        for (item in itemsToSpawn!!)
-            dsk.addItemToSell(item)
+                Set(level, shopkeeper.pos + i, Terrain.WATER)
 
         return DigResult(rect, DigResult.Type.Special)
     }

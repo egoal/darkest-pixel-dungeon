@@ -44,7 +44,7 @@ enum class HeroClass(private val title: String) {
             super.initHeroClass(hero)
             hero.belongings.weapon = WornShortsword().identify() as Weapon
 
-            val darts = Dart(8)
+            val darts = Dart(3)
             darts.identify().collect()
 
             Wine().collect()
@@ -114,11 +114,11 @@ enum class HeroClass(private val title: String) {
             cloak.identify()
             cloak.activate(hero)
 
-            val ss = SmokeSparks()
-            ss.quantity(5).identify().collect()
-
+            val darts = Dart(8)
+            darts.identify().collect()
+            
             Dungeon.quickslot.setSlot(0, cloak)
-            Dungeon.quickslot.setSlot(1, ss)
+            Dungeon.quickslot.setSlot(1, darts)
 
             hero.heroPerk.add(HeroPerk.Perk.CRITICAL_STRIKE)
             hero.heroPerk.add(HeroPerk.Perk.KEEN)
@@ -219,13 +219,6 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-
-        Dart(99).collect()
-        IncendiaryDart(99).collect()
-        CurareDart(99).collect()
-        Javelin(99).collect()
-        Shuriken(99).collect()
-        Tamahawk(99).collect()
     }
 
     private fun initDebug(hero: Hero) {

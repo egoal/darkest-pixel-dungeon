@@ -42,10 +42,6 @@ class IncendiaryDart(number: Int = 1) : MissileWeapon(2, stick = true) {
         quantity = number
     }
 
-    override fun min(lvl: Int): Int = 1
-
-    override fun max(lvl: Int): Int = 2
-
     override fun onThrow(cell: Int) {
         val enemy = Actor.findChar(cell)
         if ((enemy == null || enemy === Item.curUser) && Level.flamable[cell])

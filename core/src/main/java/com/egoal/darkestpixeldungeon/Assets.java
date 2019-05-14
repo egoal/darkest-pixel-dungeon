@@ -54,12 +54,13 @@ public class Assets {
   public static final String QUESTIONER = ACTORS + "questioner.png";
   public static final String SPD_BATTLE_MAGE = ACTORS + "spd_battle_mage.png";
   public static final String ABYSS_HERO = ACTORS + "abyss_hero.png";
-  public static final String YVETTE = ACTORS+ "yvette.png";
+  public static final String YVETTE = ACTORS + "yvette.png";
 
   // shop keeper
   public static final String KEEPER = ACTORS + "shopkeeper.png";
   public static final String POTION_SELLER = ACTORS + "potion_seller.png";
   public static final String SCROLL_SELLER = ACTORS + "scroll_seller.png";
+  public static final String PLAGUE_DOCTOR = ACTORS + "plague_doctor.png";
 
   // mobs
   public static final String RAT = ACTORS + "rat.png";
@@ -101,9 +102,9 @@ public class Assets {
   public static final String SKELETON_KNIGHT = ACTORS + "skeleton_knight.png";
   public static final String MADMAN = ACTORS + "madman.png";
   public static final String BALLISTA = ACTORS + "ballista.png";
-  public static final String WAND_GUARD = ACTORS+ "wand_guard.png";
-  public static final String ROBERRY = ACTORS+ "roberry.png";
-  public static final String REN = ACTORS+ "ren.png";
+  public static final String WAND_GUARD = ACTORS + "wand_guard.png";
+  public static final String ROBERRY = ACTORS + "roberry.png";
+  public static final String REN = ACTORS + "ren.png";
 
   // levels=====================================================================
   // tile

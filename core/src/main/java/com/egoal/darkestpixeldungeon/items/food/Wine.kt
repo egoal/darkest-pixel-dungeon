@@ -44,7 +44,7 @@ class Wine : Item() {
             hero.spend(TIME_TO_DRINK)
             hero.busy()
 
-            var value = Math.min(Random.IntRange(15, (Pressure.HeroPressure() * .5f).toInt()), 30)
+            var value = Math.min(Random.IntRange(15, (Pressure.HeroPressure() * .4f).toInt()), 30)
             if (hero.heroPerk.contain(HeroPerk.Perk.DRUNKARD)) {
                 value += value / 5
                 hero.recoverSanity(value)

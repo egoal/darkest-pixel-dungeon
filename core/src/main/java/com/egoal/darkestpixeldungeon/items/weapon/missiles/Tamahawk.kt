@@ -36,9 +36,7 @@ class Tamahawk(number: Int = 1) : MissileWeapon(5) {
 
     }
 
-    override fun min(lvl: Int): Int = 4
-
-    override fun max(lvl: Int): Int = 20
+    override fun max(lvl: Int): Int = super.max(lvl) - 2
 
     override fun proc(dmg: Damage): Damage {
         Buff.affect(dmg.to as Char, Bleeding::class.java).set(dmg.value)

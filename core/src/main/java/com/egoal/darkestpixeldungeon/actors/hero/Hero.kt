@@ -185,8 +185,8 @@ class Hero : Char() {
     // followers
     fun holdFollowers(level: Level) {
         followers.clear()
-        
-        level.mobs.filterTo(followers){ it.isFollower }
+
+        level.mobs.filterTo(followers) { it.isFollower }
         level.mobs.removeAll(followers)
 
         // todo: MAX FOLLOWERS CONTROL
@@ -997,9 +997,11 @@ class Hero : Char() {
         if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.IntRange(6, 12).toFloat())
         else if (ch is Mob && ch.maxLvl >= lvl) {
             val x = 1f - HP.toFloat() / HT.toFloat()
-            val p = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
+            val px = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
+            val y = buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE
+            val py = if (y < 0.3f) 1f else (1f + (y - 0.3f) * (y - 0.3f))
 
-            if (Random.Float() < p)
+            if (Random.Float() < px * py)
                 recoverSanity(Random.IntRange(1, 6).toFloat())
         }
 

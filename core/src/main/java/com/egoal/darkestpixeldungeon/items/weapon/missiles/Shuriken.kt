@@ -28,16 +28,15 @@ class Shuriken(number: Int = 1) : MissileWeapon(2) {
     init {
         image = ItemSpriteSheet.SHURIKEN
 
-        DLY = 0.5f
+        DLY = 0.5f // faster
 
         quantity = number
     }
 
-    override fun min(lvl: Int): Int = 2
-    override fun max(lvl: Int): Int = 6
+    override fun max(lvl: Int): Int = 4 * tier
 
     override fun random(): Item {
-        quantity = Random.Int(5, 15)
+        quantity = Random.Int(7, 16) // like tier-1
         return this
     }
 }

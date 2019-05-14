@@ -18,32 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Sai extends MeleeWeapon {
+class Sai : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.SAI;
+    init {
+        image = ItemSpriteSheet.SAI
 
-    tier = 3;
-    DLY = 0.5f; //2x speed
-  }
+        tier = 3
+        DLY = 0.5f //2x speed
+    }
 
-  @Override
-  public int max(int lvl) {
-    return Math.round(2.5f * (tier + 1)) +     //10 base, down from 20
-            lvl * Math.round(0.5f * (tier + 1));  //+2 per level, down from +4
-  }
+    //10 base, down from 20, +2 per level, down from +4
+    override fun max(lvl: Int): Int = Math.round(2.5f * (tier + 1)) + 
+            lvl * Math.round(0.5f * (tier + 1))
 
-  @Override
-  public Damage defendDamage(Damage dmg){
-    if(dmg.type== Damage.Type.NORMAL)
-      dmg.value -=  3;
-    
-    return dmg;
-  }
+    override fun defendDamage(dmg: Damage): Damage {
+        if (STRReq() <= (dmg.to as Hero).STR()) {
+            if (dmg.type == Damage.Type.NORMAL)
+                dmg.value -= 3
+        }
+
+        return dmg
+    }
 }

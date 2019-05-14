@@ -9,13 +9,20 @@ import com.watabou.noosa.particles.Emitter
 
 // basic class for luminaries
 open class Luminary(var pos: Int = -1) {
+    protected var visual: LightVisual? = null
     open fun light(level: Level) {
         L2R3.forEach {
             if (level.insideMap(pos + it)) Level.lighted[pos + it] = true
         }
     }
 
-    open fun createVisual(): LightVisual? = TorchLight(pos)
+    fun visual(): LightVisual? {
+        if (visual == null)
+            visual = createVisual()
+        return visual
+    }
+
+    protected open fun createVisual(): LightVisual? = TorchLight(pos)
 
     // 
     abstract class LightVisual(val cell: Int) : Emitter()
@@ -27,7 +34,7 @@ open class Luminary(var pos: Int = -1) {
 
             add(Halo(20f, 0xffffcc, 0.2f).point(p.x, p.y))
         }
-        
+
         override fun update() {
             visible = Dungeon.visible[cell]
             if (visible)

@@ -21,12 +21,18 @@ class Boomerang : MissileWeapon(1) {
 
         unique = true
         bones = false
+
+        DLY = 1f // normal speed
     }
 
-    override fun min(lvl: Int): Int = 1 + lvl
+    override fun min(lvl: Int): Int = tier + lvl
 
-    // half base damage of tier-1
-    override fun max(lvl: Int): Int = 5 + 2 * lvl
+    override fun max(lvl: Int): Int = 5 * tier + 2 * lvl
+
+    override fun strCorrection(hero: Hero): Int {
+        val dstr = hero.STR() - STRReq()
+        return if (dstr <= 0) 0 else dstr * tier
+    }
 
     override fun breakChance(): Float = 0f // never break 
 
@@ -35,6 +41,8 @@ class Boomerang : MissileWeapon(1) {
     override fun price(): Int = 0
 
     override fun upgrade(): Item = super.upgrade(false)
+
+    override fun random(): Item = this
 
     override fun upgrade(enchant: Boolean): Item {
         super.upgrade(enchant)

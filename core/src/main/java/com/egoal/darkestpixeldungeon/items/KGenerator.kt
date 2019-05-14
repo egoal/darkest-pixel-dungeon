@@ -67,7 +67,7 @@ object KGenerator {
                 MagesStaff::class.java to 0f,
                 Boomerang::class.java to 0f,
                 BattleGloves::class.java to 1f,
-                SmokeSparks::class.java to 0.5f
+                Dart::class.java to 0.75f 
         ))
 
         object T2 : ClassMapGenerator<Weapon>(hashMapOf(
@@ -75,9 +75,7 @@ object KGenerator {
                 HandAxe::class.java to 5f,
                 Spear::class.java to 5f,
                 Quarterstaff::class.java to 4f,
-                Dirk::class.java to 4f,
-                IncendiaryDart::class.java to 6f,
-                SmokeSparks::class.java to 5f
+                Dirk::class.java to 12f
         ))
 
         object T3 : ClassMapGenerator<Weapon>(hashMapOf(
@@ -87,12 +85,10 @@ object KGenerator {
                 RoundShield::class.java to 4f,
                 Sai::class.java to 4f,
                 Whip::class.java to 4f,
-                Shuriken::class.java to 6f,
-                CurareDart::class.java to 6f,
                 CrystalsSwords::class.java to 4f,
                 DaggerAxe::class.java to 5f,
-                SmokeSparks::class.java to 3f
-                ))
+                Dart::class.java to 15f
+        ))
 
         object T4 : ClassMapGenerator<Weapon>(hashMapOf(
                 Longsword::class.java to 6f,
@@ -100,7 +96,7 @@ object KGenerator {
                 Flail::class.java to 5f,
                 RunicBlade::class.java to 4f,
                 AssassinsBlade::class.java to 4f,
-                Javelin::class.java to 6f
+                Dart::class.java to 6f
         ))
 
         object T5 : ClassMapGenerator<Weapon>(hashMapOf(
@@ -109,7 +105,24 @@ object KGenerator {
                 Glaive::class.java to 5f,
                 Greataxe::class.java to 4f,
                 Greatshield::class.java to 4f,
-                Tamahawk::class.java to 6f
+                Dart::class.java to 6f
+        ))
+
+        object MISSSILE : ClassMapGenerator<MissileWeapon>(hashMapOf(
+                // 1
+                Dart::class.java to 12f,
+                SmokeSparks::class.java to 6f,
+                // 2
+                Shuriken::class.java to 10f,
+                SwallowDart::class.java to 10f, 
+                IncendiaryDart::class.java to 1f,
+                // 3
+                FlyCutter::class.java to 8f, 
+                CurareDart::class.java to 1f,
+                // 4
+                Javelin::class.java to 6f,
+                // 5
+                Tamahawk::class.java to 4f
         ))
 
         private val floorSetTierProbs = arrayOf(
@@ -125,7 +138,10 @@ object KGenerator {
 
         fun random(floorSet: Int): Weapon {
             val fs = GameMath.clamp(floorSet, 0, floorSetTierProbs.size - 1)
-            return Ts[Random.chances(floorSetTierProbs[fs])].generate() as Weapon
+            // return Ts[Random.chances(floorSetTierProbs[fs])].generate() as Weapon
+            // todo: fixme
+            val wep = Ts[Random.chances(floorSetTierProbs[fs])].generate()
+            return (if (wep is MissileWeapon) MISSSILE.generate() else wep) as Weapon
         }
 
         fun tier(t: Int): ClassMapGenerator<Weapon> = Ts[t - 1]

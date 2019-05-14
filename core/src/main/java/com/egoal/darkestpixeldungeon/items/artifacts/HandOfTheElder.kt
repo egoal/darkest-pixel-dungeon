@@ -220,7 +220,7 @@ class HandOfTheElder : Artifact() {
         private const val MAX_RINGS_TO_WEAR = 5
 
         private val RingsToBuffs = mapOf<Class<out Ring>, Class<out FlavourBuff>>(
-                RingOfAccuracy::class.java to Shock::class.java,
+                RingOfAccuracy::class.java to Unbalance::class.java,
                 RingOfCritical::class.java to Weakness::class.java,
                 RingOfElements::class.java to Chill::class.java,
                 RingOfEvasion::class.java to Shock::class.java,

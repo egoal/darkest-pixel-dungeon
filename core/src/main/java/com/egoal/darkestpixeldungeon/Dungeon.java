@@ -79,6 +79,8 @@ public class Dungeon {
     arcaneStyli,
     wine,
 
+    laboratories,
+
     //all unlimited health potion sources (except guards, which are at the 
     // bottom.
     swarmHP,
@@ -176,7 +178,7 @@ public class Dungeon {
     Statuary.Reset();
     Jessica.Quest.reset();
     Yvette.Quest.INSTANCE.Reset();
-    
+
     Room.shuffleTypes();
 
     Generator.initArtifacts();
@@ -399,6 +401,12 @@ public class Dungeon {
     return slLeft > 0 && Random.Int(10 - depth % 10) < slLeft;
   }
 
+  public static boolean labNeed() {
+    // 1 per 10 floors
+    int labLeft = (depth / 10 + 1) - limitedDrops.laboratories.count;
+    return labLeft > 0 && Random.Int(10 - depth % 10) < labLeft;
+  }
+
   // save
   private static final String RG_GAME_FILE = "game.dat";
   private static final String RG_DEPTH_FILE = "depth%d.dat";
@@ -615,7 +623,7 @@ public class Dungeon {
 
     Dungeon.challenges = bundle.getInt(CHALLENGES);
 
-    // Dungeon.level = null;
+    Dungeon.level = null;
     Dungeon.depth = -1;
 
     Scroll.restore(bundle);
@@ -657,7 +665,7 @@ public class Dungeon {
         Wandmaker.Quest.reset();
         Blacksmith.Quest.reset();
         Imp.Quest.reset();
-        
+
         // dpd
         Alchemist.Quest.reset();
         Jessica.Quest.reset();

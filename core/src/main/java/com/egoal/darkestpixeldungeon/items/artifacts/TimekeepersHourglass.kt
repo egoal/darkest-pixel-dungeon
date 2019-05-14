@@ -49,7 +49,7 @@ class TimekeepersHourglass : Artifact() {
         if (action == AC_ACTIVATE) {
             if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
-            else if (charge <= 1) GLog.i(Messages.get(this, "no_charge"))
+            else if (charge < 1) GLog.i(Messages.get(this, "no_charge"))
             else if (cursed) GLog.i(Messages.get(this, "cursed"))
             else if (cooldown > 0) GLog.i(Messages.get(this, "not-ready"))
             else if (activated) {

@@ -162,10 +162,7 @@ abstract public class Weapon extends KindOfWeapon {
   @Override
   public float speedFactor(Hero hero) {
 
-    int encumrance = STRReq() - hero.STR();
-    if (this instanceof MissileWeapon && hero.getHeroClass() == HeroClass.HUNTRESS) {
-      encumrance -= 2;
-    }
+    int encumbrance = STRReq() - hero.STR();
 
     float DLY = imbue.delayFactor(this.DLY);
 
@@ -173,7 +170,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     DLY = (float) (0.25 + (DLY - 0.25) * Math.pow(0.8, bonus));
 
-    return (encumrance > 0 ? (float) (DLY * Math.pow(1.2, encumrance)) : DLY);
+    return (encumbrance > 0 ? (float) (DLY * Math.pow(1.2, encumbrance)) : DLY);
   }
 
   @Override

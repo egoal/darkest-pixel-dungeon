@@ -98,7 +98,7 @@ abstract class RegularLevel : Level() {
         if (pitRoomNeeded) {
             // todo: this is fragile
             diggers.add(PitDigger())
-            
+
             // a pit room is need, remove all locked diggers
             probs.remove(ArmoryDigger::class.java)
             probs.remove(CryptDigger::class.java)
@@ -110,6 +110,11 @@ abstract class RegularLevel : Level() {
             probs.remove(WandDigger::class.java)
             // and the weak floor digger 
             probs.remove(WeakFloorDigger::class.java)
+        } else if (Dungeon.labNeed()) {
+            diggers.add(LaboratoryDigger())
+            probs.remove(LaboratoryDigger::class.java)
+
+            Dungeon.limitedDrops.laboratories.drop()
         }
 
         // never fall to boss
@@ -188,7 +193,7 @@ abstract class RegularLevel : Level() {
         if (Dungeon.depth in 1 until 20) {
             val psProb = if (Dungeon.shopOnLevel()) .1f else .2f
             if (Random.Float() < psProb) {
-                val ps = PotionSeller().initSellItems()
+                val ps = PotionSeller.Random().initSellItems()
                 val s = randomSpace(DigResult.Type.Normal)
                 do {
                     ps.pos = pointToCell(s!!.rect.random())
@@ -440,7 +445,7 @@ abstract class RegularLevel : Level() {
         private val SPACES = "spaces"
 
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
-                ArmoryDigger::class.java to 0.75f,
+                ArmoryDigger::class.java to 0.6f,
                 GardenDigger::class.java to 1f,
                 LaboratoryDigger::class.java to 1.6f,
                 LibraryDigger::class.java to 1f,
@@ -480,7 +485,7 @@ abstract class RegularLevel : Level() {
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,
                 PatchDigger::class.java to .05f,
-                PillarDigger::class.java to .05f, 
+                PillarDigger::class.java to .05f,
                 GraveyardDigger::class.java to .05f,
                 SmallCornerDigger::class.java to 0.075f
         )

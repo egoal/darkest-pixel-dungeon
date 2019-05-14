@@ -100,7 +100,7 @@ public class ItemSpriteSheet {
   public static final int SAI = WEP_TIER3 + 4;
   public static final int WHIP = WEP_TIER3 + 5;
   public static final int DPD_CRYSTALS_SWORDS = WEP_TIER3 + 6;
-  public static final int DAGGER_AXE = WEP_TIER3+ 7;
+  public static final int DAGGER_AXE = WEP_TIER3 + 7;
 
   private static final int WEP_TIER4 = xy(1, 8);   //16 slots
   public static final int LONGSWORD = WEP_TIER4 + 0;
@@ -128,6 +128,8 @@ public class ItemSpriteSheet {
   public static final int JAVELIN = MISSILE_WEP + 5;
   public static final int TOMAHAWK = MISSILE_WEP + 6;
   public static final int SMOKE_SPARKS = MISSILE_WEP + 7;
+  public static final int SWALLOW_DART = MISSILE_WEP + 8;
+  public static final int FLY_CUTTER = MISSILE_WEP + 9;
 
   private static final int ARMOR = xy(1, 11);  //16 slots
   public static final int ARMOR_CLOTH = ARMOR + 0;

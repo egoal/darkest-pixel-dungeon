@@ -18,11 +18,7 @@ SmokeSparks : MissileWeapon(1) {
     init {
         image = ItemSpriteSheet.SMOKE_SPARKS
     }
-
-    override fun min(lvl: Int) = 1
-
-    override fun max(lvl: Int) = 4
-
+    
     override fun onThrow(cell: Int) {
         Sample.INSTANCE.play(Assets.SND_BLAST)
         GameScene.add(Blob.seed(cell, 80, SmokeOfBlindness::class.java))
