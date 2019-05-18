@@ -151,7 +151,7 @@ public class Dungeon {
     Ring.initGems();
 
     Statistics.INSTANCE.reset();
-    Journal.reset();
+    Journal.INSTANCE.reset();
 
     quickslot.reset();
     QuickSlotButton.reset();
@@ -548,7 +548,7 @@ public class Dungeon {
       Room.storeRoomsInBundle(bundle);
 
       Statistics.INSTANCE.storeInBundle(bundle);
-      Journal.storeInBundle(bundle);
+      Journal.INSTANCE.storeInBundle(bundle);
       Generator.storeInBundle(bundle);
       KGenerator.INSTANCE.storeInBundle(bundle);
 
@@ -689,7 +689,7 @@ public class Dungeon {
     Dungeon.depth = bundle.getInt(DEPTH);
 
     Statistics.INSTANCE.restoreFromBundle(bundle);
-    Journal.restoreFromBundle(bundle);
+    Journal.INSTANCE.restoreFromBundle(bundle);
     Generator.restoreFromBundle(bundle);
     KGenerator.INSTANCE.restoreFromBundle(bundle);
 

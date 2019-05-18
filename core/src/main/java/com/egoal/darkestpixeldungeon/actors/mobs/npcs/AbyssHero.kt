@@ -49,7 +49,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HP = HT
 
         timeLeft = 20f * level + 50f
-        maxExp = 5f + 2.5f * level
+        maxExp = 5f + 2f * level
     }
 
     private fun imitateHeroStatus() {
@@ -152,7 +152,11 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     // voice
     fun onSpawned() {
         if (hostile) yell(Messages.get(this, "defeat-me"))
-        else yell(Messages.get(this, "spawned"))
+        else{
+            // on each summon, gain exp
+            Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(0.20f)
+            yell(Messages.get(this, "spawned"))
+        }
 
         Dungeon.hero.takeDamage(Damage(Random.Int(level) + 1, this, Dungeon.hero).type(Damage.Type.MENTAL))
     }

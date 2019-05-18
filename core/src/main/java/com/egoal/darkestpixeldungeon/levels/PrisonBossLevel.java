@@ -443,7 +443,7 @@ public class PrisonBossLevel extends Level {
   @Override
   protected void createItems() {
     // dead body's bone
-    Item item = Bones.get();
+    Item item = Bones.INSTANCE.get();
     if (item != null)
       drop(item, randomRespawnCell()).type = Heap.Type.REMAINS;
 

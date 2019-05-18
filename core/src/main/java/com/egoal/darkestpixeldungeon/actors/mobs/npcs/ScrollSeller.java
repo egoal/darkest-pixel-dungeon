@@ -58,12 +58,13 @@ public class ScrollSeller extends DPDShopKeeper {
       
     addItemToSell(new Stylus().identify());
 
+    shuffleItems();
+    
     return this;
   }
 
   @Override
   public boolean interact() {
-    Journal.add(Journal.Feature.SCROLL_SELLER);
     GameScene.show(new WndShop(this));
 
     return false;

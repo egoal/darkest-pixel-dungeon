@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
@@ -106,6 +107,12 @@ class ChaliceOfBlood : Artifact() {
             (ratio < 0.5f) -> ItemSpriteSheet.ARTIFACT_CHALICE2
             else -> ItemSpriteSheet.ARTIFACT_CHALICE3
         }
+    }
+
+    // dont remove curse
+    override fun upgrade(): Item {
+        val isCursed = cursed
+        return super.upgrade().apply { cursed = isCursed }
     }
 
     override fun storeInBundle(bundle: Bundle) {

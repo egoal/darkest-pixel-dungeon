@@ -83,24 +83,26 @@ public class ChangesScene extends PixelScene {
     Component content = list.content();
     content.clear();
 
-    //Messages.get(this, "warning")+"
     String warning = Messages.get(this, "warning");
-    RenderedTextMultiline text = renderMultiline(
-            (warning.length() > 2 ? warning : "") +"\n\n"+
-            "_" + DarkestPixelDungeon.version + "_\n" +
+    RenderedTextMultiline txtWarning = renderMultiline(warning, 6);
+    txtWarning.maxWidth((int) panel.innerWidth());
+    content.add(txtWarning);
+    
+    RenderedTextMultiline text = renderMultiline("_" + DarkestPixelDungeon.version + "_\n" +
             Messages.get(this, "info" + DarkestPixelDungeon.version), 6);
     text.maxWidth((int) panel.innerWidth());
     content.add(text);
+    text.setPos(txtWarning.left(), txtWarning.bottom()+ 8f);
 
     // add versions' button
     final String HSPLIT = "---";
     String[] oldVersions = new String[]{
-            "0.3.1", "0.3.0", "", 
-            HSPLIT, 
-            "0.2.4c", "0.2.4b", "0.2.4a", 
-            "0.2.4", "0.2.3", "0.2.2b", 
-            "0.2.2a", "0.2.2", "0.2.1a", 
-            "0.2.1", "0.2.0", "", 
+            "0.3.1a", "0.3.1", "0.3.0",
+            HSPLIT,
+            "0.2.4c", "0.2.4b", "0.2.4a",
+            "0.2.4", "0.2.3", "0.2.2b",
+            "0.2.2a", "0.2.2", "0.2.1a",
+            "0.2.1", "0.2.0", "",
             HSPLIT,
             "0.1.3", "0.1.2", "0.1.1",
             "0.1.0", "", ""
@@ -108,7 +110,7 @@ public class ChangesScene extends PixelScene {
     {
       // todo: code lint
       float sx = 0f;
-      float sy = text.height() + 8;
+      float sy = text.bottom() + 8;
       int r = 0;
       int c = 0;
       int gaps = 0;
@@ -147,7 +149,7 @@ public class ChangesScene extends PixelScene {
     addToBack(archs);
 
     DarkestPixelDungeon.changeListChecked(true);
-    
+
     fadeIn();
   }
 

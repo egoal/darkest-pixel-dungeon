@@ -89,7 +89,7 @@ public class Blacksmith extends NPC {
         }
       });
 
-      Journal.add(Journal.Feature.TROLL);
+      Journal.INSTANCE.add(Messages.get(Blacksmith.class, "name"));
 
     } else if (!Quest.completed) {
       if (Quest.alternative) {
@@ -203,7 +203,7 @@ public class Blacksmith extends NPC {
 
     Quest.reforged = true;
 
-    Journal.remove(Journal.Feature.TROLL);
+    Journal.INSTANCE.remove(Messages.get(Blacksmith.class, "name"));
   }
 
   @Override

@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin
@@ -20,6 +21,7 @@ import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.Callback
 import com.watabou.utils.Random
 import java.util.HashSet
 
@@ -45,7 +47,7 @@ class Ballista : Mob() {
     }
 
     override fun viewDistance(): Int = 6
-    
+
     override fun giveDamage(enemy: Char): Damage =
             Damage(Random.NormalIntRange(16, 30), this, enemy).addFeature(Damage.Feature.RANGED)
 
@@ -65,18 +67,17 @@ class Ballista : Mob() {
         loaded = false
         return super.attack(enemy)
     }
-    
+
     override fun onAttackComplete() {
         // loaded = false
         if (Dungeon.level.adjacent(enemy.pos, pos))
             super.onAttackComplete()
         else {
             // show animation
-            (sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, enemy.pos, Dart()) {
+            (sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, enemy.pos, Dart(), Callback {
                 next()
-                if (enemy != null)
-                    attack(enemy)
-            }
+                if (enemy != null) attack(enemy)
+            })
         }
     }
 
@@ -115,8 +116,8 @@ class Ballista : Mob() {
     }
 
     override fun createLoot(): Item = when (Random.Int(4)) {
-        0 -> Dart(Random.IntRange(2, 5))
-        1 -> Javelin(Random.IntRange(1, 3))
+        0 -> Javelin(Random.IntRange(1, 3))
+        1 -> KGenerator.WEAPON.MISSSILE.generate()
         else -> Gold().random()
     }
 

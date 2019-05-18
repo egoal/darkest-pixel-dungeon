@@ -51,7 +51,7 @@ public class Alchemy extends Blob {
     area.union(pos % Dungeon.level.width(), pos / Dungeon.level.width());
 
     if (Dungeon.visible[pos]) {
-      Journal.add(Journal.Feature.ALCHEMY);
+      Journal.INSTANCE.add(Journal.Feature.ALCHEMY);
     }
   }
 

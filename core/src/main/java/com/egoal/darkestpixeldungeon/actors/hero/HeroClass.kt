@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
+import com.egoal.darkestpixeldungeon.items.artifacts.EyeballOfTheElder
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
@@ -21,10 +22,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
-import com.egoal.darkestpixeldungeon.items.unclassified.Amulet
-import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
-import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
-import com.egoal.darkestpixeldungeon.items.unclassified.Torch
+import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
@@ -219,6 +217,9 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
+        
+//        TomeOfMastery().collect()
+//        EyeballOfTheElder().collect()
     }
 
     private fun initDebug(hero: Hero) {

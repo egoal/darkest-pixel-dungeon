@@ -83,7 +83,7 @@ public class Statue extends Mob {
   @Override
   protected boolean act() {
     if (Dungeon.visible[pos]) {
-      Journal.add(Journal.Feature.STATUE);
+      Journal.INSTANCE.add(name);
     }
     return super.act();
   }
@@ -145,7 +145,7 @@ public class Statue extends Mob {
 
   @Override
   public void destroy() {
-    Journal.remove(Journal.Feature.STATUE);
+    Journal.INSTANCE.remove(name);
     super.destroy();
   }
 

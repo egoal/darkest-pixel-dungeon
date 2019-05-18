@@ -108,7 +108,7 @@ public class Imp extends NPC {
       Quest.given = true;
       Quest.completed = false;
 
-      Journal.add(Journal.Feature.IMP);
+      Journal.INSTANCE.add(name);
     }
 
     return false;
@@ -214,7 +214,7 @@ public class Imp extends NPC {
       reward = null;
       completed = true;
 
-      Journal.remove(Journal.Feature.IMP);
+      Journal.INSTANCE.remove(Messages.get(Imp.class, "name"));
     }
 
     public static boolean isCompleted() {

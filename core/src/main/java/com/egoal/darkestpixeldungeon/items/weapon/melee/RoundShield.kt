@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import kotlin.math.round
 
 class RoundShield : MeleeWeapon() {
     init {
@@ -35,15 +36,20 @@ class RoundShield : MeleeWeapon() {
     override fun max(lvl: Int): Int = 3 * (tier + 1) + lvl * (tier - 1)
 
     override fun defendDamage(dmg: Damage): Damage {
-        var value = 5 + 2 * level()
+        var value = 4 + round(1.75f * level()).toInt()
 
         val burden = STRReq() - (dmg.to as Hero).STR()
         if (burden > 0) value -= 2 * burden
 
-        if (dmg.type == Damage.Type.NORMAL)
-            dmg.value -= value
-        else if (dmg.type == Damage.Type.MAGICAL)
-            dmg.value -= value * 4 / 5
+        if (value > 0) {
+            if (dmg.isFeatured(Damage.Feature.RANGED))
+                value += round(value / 5f).toInt()
+
+            if (dmg.type == Damage.Type.NORMAL)
+                dmg.value -= value
+            else if (dmg.type == Damage.Type.MAGICAL)
+                dmg.value -= value * 4 / 5
+        }
 
         return dmg
     }

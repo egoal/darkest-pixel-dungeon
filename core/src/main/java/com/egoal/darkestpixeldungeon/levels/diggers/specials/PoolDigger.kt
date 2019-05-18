@@ -18,7 +18,6 @@ import com.watabou.utils.Random
 /**
  * Created by 93942 on 2018/12/8.
  */
-const val NUM_PIRANHAS = 3
 
 class PoolDigger : RectDigger() {
 
@@ -107,6 +106,10 @@ class PoolDigger : RectDigger() {
         prize.cursedKnown = true
 
         return prize
+    }
+
+    companion object {
+        private const val NUM_PIRANHAS = 3
     }
 
 }

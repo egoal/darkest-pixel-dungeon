@@ -45,9 +45,9 @@ class ArmoryDigger : RectDigger() {
     
     companion object {
         private val PrizeGenerators =   hashMapOf(
-                KGenerator.ARMOR to 1f, 
+                KGenerator.ARMOR to 0.75f, 
                 KGenerator.WEAPON to 1f, 
-                KGenerator.HELMET to 0.5f
+                KGenerator.HELMET to 0.45f
         )
     }
 }

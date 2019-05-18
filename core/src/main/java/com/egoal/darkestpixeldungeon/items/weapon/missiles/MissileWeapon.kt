@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Unbalance
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
@@ -30,7 +31,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         defaultAction = Item.AC_THROW
         usesTargeting = true
 
-        DLY = 0.4f + 0.2f * tier
+        DLY = 0.5f + 0.25f * tier
     }
 
     // lvl: 0 
@@ -137,7 +138,10 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
 
     protected open fun strCorrection(hero: Hero): Int {
         val dstr = hero.STR() - STRReq()
-        return if (dstr <= 0) 0 else dstr * tier / 2
+        if (dstr <= 0) return 0
+
+        val fix = if (hero.subClass == HeroSubClass.SNIPER) tier else tier / 2
+        return dstr * fix
     }
 
     override fun info(): String {

@@ -32,6 +32,7 @@ public class Effects {
     EXCLAMATION,
     CHAIN,
     DEATH_RAY,
+    THICK_DEATH_RAY,
     LIGHT_RAY,
     HEALTH_RAY
   }
@@ -64,6 +65,9 @@ public class Effects {
         break;
       case HEALTH_RAY:
         icon.frame(icon.texture.uvRect(16, 30, 32, 38));
+        break;
+      case THICK_DEATH_RAY:
+        icon.frame(icon.texture.uvRect(16, 37, 32, 48));
         break;
     }
     return icon;

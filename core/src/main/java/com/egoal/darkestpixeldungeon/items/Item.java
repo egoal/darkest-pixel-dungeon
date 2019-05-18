@@ -497,15 +497,15 @@ public class Item implements Bundlable {
     float delay = TIME_TO_THROW;
     if (this instanceof MissileWeapon) {
       delay *= ((MissileWeapon) this).speedFactor(user);
-      if (enemy != null) {
-        SnipersMark mark = user.buff(SnipersMark.class);
-        if (mark != null) {
-          if (mark.object == enemy.id()) {
-            delay *= 0.5f;
-          }
-          user.remove(mark);
-        }
-      }
+//      if (enemy != null) {
+//        SnipersMark mark = user.buff(SnipersMark.class);
+//        if (mark != null) {
+//          if (mark.object == enemy.id()) {
+//            delay *= 0.5f;
+//          }
+//          user.remove(mark);
+//        }
+//      }
     }
     final float finalDelay = delay;
 

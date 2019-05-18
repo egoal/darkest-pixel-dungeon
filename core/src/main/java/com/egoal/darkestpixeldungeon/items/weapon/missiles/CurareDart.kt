@@ -28,7 +28,7 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
-class CurareDart(number: Int = 1) : MissileWeapon(3, stick = true) {
+class CurareDart(number: Int = 1) : MissileWeapon(2, stick = true) {
 
     init {
         image = ItemSpriteSheet.CURARE_DART

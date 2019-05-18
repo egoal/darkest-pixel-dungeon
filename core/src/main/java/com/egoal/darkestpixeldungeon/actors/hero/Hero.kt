@@ -425,6 +425,8 @@ class Hero : Char() {
                     RingOfFuror.getBonus(this, RingOfFuror.Furor::class.java).toDouble()).toFloat()
         }
 
+        speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
+
         return speed
     }
 
@@ -436,7 +438,7 @@ class Hero : Char() {
 
         // snipper perk
         if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
-            Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
+            // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
             Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.1f).observer = id()
         }
 
@@ -995,14 +997,14 @@ class Hero : Char() {
 
         // may recover sanity
         if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.IntRange(6, 12).toFloat())
-        else if (ch is Mob && ch.maxLvl >= lvl) {
+        else if (ch is Mob && ch.maxLvl + 2 >= lvl) {
             val x = 1f - HP.toFloat() / HT.toFloat()
             val px = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
             val y = buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE
-            val py = if (y < 0.3f) 1f else (1f + (y - 0.3f) * (y - 0.3f))
+            val py = if (y < 0.3f) 1f else (1f + 2f * (y - 0.3f) * (y - 0.3f))
 
             if (Random.Float() < px * py)
-                recoverSanity(Random.IntRange(1, 6).toFloat())
+                recoverSanity(Random.NormalIntRange(1, 8).toFloat())
         }
 
         if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)
@@ -1026,7 +1028,7 @@ class Hero : Char() {
         val hit = attack(enemy)
 
         if (subClass == HeroSubClass.GLADIATOR) {
-            if (hit) Buff.affect(this, Combo::class.java).hit()
+            if (hit) Buff.affect(this, Combo::class.java).hit(enemy!!)
             else buff(Combo::class.java)?.miss()
         }
 

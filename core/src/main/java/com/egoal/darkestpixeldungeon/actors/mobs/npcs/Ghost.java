@@ -177,7 +177,7 @@ public class Ghost extends NPC {
         GameScene.add(questBoss);
         GameScene.show(new WndQuest(this, txt_quest));
         Quest.given = true;
-        Journal.add(Journal.Feature.GHOST);
+        Journal.INSTANCE.add(name);
       }
 
     }
@@ -304,7 +304,7 @@ public class Ghost extends NPC {
       weapon = null;
       armor = null;
 
-      Journal.remove(Journal.Feature.GHOST);
+      Journal.INSTANCE.remove(Messages.get(Ghost.class, "name"));
     }
 
     public static boolean completed() {

@@ -172,7 +172,7 @@ public class Wandmaker extends NPC {
         }
       });
 
-      Journal.add(Journal.Feature.WANDMAKER);
+      Journal.INSTANCE.add(name);
       Quest.given = true;
     }
 
@@ -341,8 +341,8 @@ public class Wandmaker extends NPC {
       Wandmaker w = new Wandmaker();
       do {
         w.pos = level.pointToCell(rect.random(0));
-      } while (level.map[w.pos] == Terrain.ENTRANCE || 
-              (Terrain.flags[level.map[w.pos]] & Terrain.PASSABLE) ==0);
+      } while (level.map[w.pos] == Terrain.ENTRANCE ||
+              (Terrain.flags[level.map[w.pos]] & Terrain.PASSABLE) == 0);
       level.mobs.add(w);
 
       spawned = true;
@@ -359,9 +359,9 @@ public class Wandmaker extends NPC {
       wand2.identify();
       wand2.upgrade();
     }
-    
+
     //
-    
+
     private static boolean setRoom(Collection<Room> rooms) {
       Room questRoom = null;
       for (Room r : rooms) {
@@ -397,7 +397,7 @@ public class Wandmaker extends NPC {
       wand1 = null;
       wand2 = null;
 
-      Journal.remove(Journal.Feature.WANDMAKER);
+      Journal.INSTANCE.remove(Messages.get(Wandmaker.class, "name"));
     }
   }
 }

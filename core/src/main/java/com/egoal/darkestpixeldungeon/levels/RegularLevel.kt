@@ -95,6 +95,9 @@ abstract class RegularLevel : Level() {
 
         // specials
         val probs = HashMap<Class<out Digger>, Float>(SpecialDiggers)
+        if(Dungeon.depth==1)
+            probs.remove(AltarDigger::class.java)
+        
         if (pitRoomNeeded) {
             // todo: this is fragile
             diggers.add(PitDigger())
@@ -248,7 +251,7 @@ abstract class RegularLevel : Level() {
 
         // bonus from wealth
         val bonus = Math.min(10, RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
-        while (Random.Float() < .2f + bonus * 0.05f)
+        while (Random.Float() < .25f + bonus * 0.05f)
             ++nItems
 
         for (i in 1..nItems) {

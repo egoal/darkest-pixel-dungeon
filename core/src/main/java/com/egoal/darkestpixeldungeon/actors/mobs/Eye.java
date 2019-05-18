@@ -72,8 +72,8 @@ public class Eye extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(15, 25), this, target).type
-            (Damage.Type.MAGICAL);
+    return new Damage(Random.NormalIntRange(15, 25), this, target)
+            .type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
   }
 
   @Override

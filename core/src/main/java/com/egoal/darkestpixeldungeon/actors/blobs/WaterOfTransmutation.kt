@@ -52,9 +52,9 @@ class WaterOfTransmutation : WellWater() {
     }
 
     private fun changeWeapon(weap: MeleeWeapon): Weapon? {
-        var newWeap = KGenerator.WEAPON.tier(weap.tier).generate()
-        while (newWeap !is MeleeWeapon || weap.javaClass == newWeap.javaClass)
-            newWeap = KGenerator.WEAPON.tier(weap.tier).generate()
+        var newWeap = KGenerator.WEAPON.MELEE.tier(weap.tier).generate()
+        while (weap.javaClass == newWeap.javaClass)
+            newWeap = KGenerator.WEAPON.MELEE.tier(weap.tier).generate()
 
         val n = newWeap as Weapon
         n.level(0)
@@ -74,7 +74,7 @@ class WaterOfTransmutation : WellWater() {
         var n = KGenerator.RING.generate() as Ring
         while (n.javaClass == r.javaClass) n = KGenerator.RING.generate() as Ring
         n.level(0)
-        
+
         val lvl = r.level()
         if (lvl > 0) n.upgrade(lvl) else if (lvl < 0) n.degrade(-lvl)
 
@@ -102,7 +102,7 @@ class WaterOfTransmutation : WellWater() {
         var n = KGenerator.WAND.generate() as Wand
         while (n.javaClass == w.javaClass) n = KGenerator.WAND.generate() as Wand
         n.level(0)
-        
+
         n.upgrade(w.level())
 
         n.levelKnown = w.levelKnown
@@ -145,6 +145,6 @@ class WaterOfTransmutation : WellWater() {
         super.use(emitter)
         emitter.pour(Speck.factory(Speck.CHANGE), 0.3f)
     }
-    
+
     override fun tileDesc(): String = Messages.get(this, "desc")
 }

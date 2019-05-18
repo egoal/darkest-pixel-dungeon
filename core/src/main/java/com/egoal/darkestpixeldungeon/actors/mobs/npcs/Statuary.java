@@ -156,17 +156,7 @@ public class Statuary extends NPC {
       return false;
 
     // add journal
-    switch (type) {
-      case ANGEL:
-        Journal.add(Journal.Feature.STATUARY_ANGEL);
-        break;
-      case DEVIL:
-        Journal.add(Journal.Feature.STATUARY_DEVIL);
-        break;
-      case MONSTER:
-        Journal.add(Journal.Feature.STATUARY_MONSTER);
-        break;
-    }
+    Journal.INSTANCE.add(name);
 
     GameScene.show(new WndStatuary(this));
 
@@ -188,17 +178,7 @@ public class Statuary extends NPC {
 
     if (!isActive) {
       // remove journal
-      switch (type) {
-        case ANGEL:
-          Journal.remove(Journal.Feature.STATUARY_ANGEL);
-          break;
-        case DEVIL:
-          Journal.remove(Journal.Feature.STATUARY_DEVIL);
-          break;
-        case MONSTER:
-          Journal.remove(Journal.Feature.STATUARY_MONSTER);
-          break;
-      }
+      Journal.INSTANCE.remove(name);
     }
   }
 

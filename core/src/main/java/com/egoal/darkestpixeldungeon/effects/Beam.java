@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.effects;
 
 import android.opengl.GLES20;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -70,6 +71,12 @@ public class Beam extends Image {
   public static class HealthRay extends Beam {
     public HealthRay(PointF s, PointF e) {
       super(s, e, Effects.Type.HEALTH_RAY, 0.75f);
+    }
+  }
+
+  public static class ThickDeathRay extends Beam {
+    public ThickDeathRay(PointF s, PointF e) {
+      super(s, e, Effects.Type.THICK_DEATH_RAY, 0.5f);
     }
   }
 

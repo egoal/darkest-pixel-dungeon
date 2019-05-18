@@ -40,7 +40,8 @@ open class PotionSeller : DPDShopKeeper() {
         }
         addItemToSell(PotionOfHealing())
         addItemToSell(PotionTestPaper().quantity(Random.Int(1, 3)))
-
+        
+        shuffleItems()
         return this
     }
 
@@ -58,7 +59,7 @@ open class PotionSeller : DPDShopKeeper() {
     companion object {
         fun Random(): PotionSeller {
             val p = Random.Float()
-            return if (p < 0.4f) PlagueDoctor() else PotionSeller()
+            return if (p < 0.3f) PlagueDoctor() else PotionSeller()
         }
     }
 }

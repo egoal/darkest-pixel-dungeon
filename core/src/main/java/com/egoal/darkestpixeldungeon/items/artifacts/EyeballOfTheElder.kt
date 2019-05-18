@@ -79,7 +79,7 @@ class EyeballOfTheElder : Artifact() {
         val dist = min(zapRange(), beam.dist)
 
         val dstCell = beam.path.get(dist)
-        Item.curUser.sprite.parent.add(Beam.DeathRay(
+        Item.curUser.sprite.parent.add(Beam.ThickDeathRay(
                 DungeonTilemap.tileCenterToWorld(beam.sourcePos),
                 DungeonTilemap.tileCenterToWorld(dstCell)))
 

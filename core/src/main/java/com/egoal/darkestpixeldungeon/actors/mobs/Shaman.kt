@@ -169,7 +169,7 @@ class Shaman : Mob(), Callback {
 
     companion object {
         private const val TIME_TO_ZAP = 1f
-        private const val TIME_TO_BUFF = 1f
+        private const val TIME_TO_BUFF = 0.5f
 
         private const val COOLDOWN_BUFF = 8f
         private const val COOLDOWN = "cooldown"

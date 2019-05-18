@@ -29,11 +29,6 @@ class Boomerang : MissileWeapon(1) {
 
     override fun max(lvl: Int): Int = 5 * tier + 2 * lvl
 
-    override fun strCorrection(hero: Hero): Int {
-        val dstr = hero.STR() - STRReq()
-        return if (dstr <= 0) 0 else dstr * tier
-    }
-
     override fun breakChance(): Float = 0f // never break 
 
     override fun isUpgradable(): Boolean = true

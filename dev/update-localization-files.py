@@ -11,4 +11,21 @@ def copy_source_out():
 
 		shutil.copy(file, LOCALIZATIONS+ filename)
 
-copy_source_out()
+def copy_source_in():
+	FILE_FOLDER = "../msg/"
+	FILE_TAGS = ["actors", "items", "levels", "misc", "plants", "scenes", "ui", "windows"]
+	files = {}
+	for file in os.listdir(FILE_FOLDER):
+		for tag in FILE_TAGS:
+			if tag in file:
+				files[tag] = FILE_FOLDER+ file
+				break
+	
+	for tag, file in files.items():
+		MASSAGES
+		# print(file, "{}{}/{}.properties".format(MASSAGES, tag, tag))
+		shutil.copy(file, "{}{}/{}.properties".format(MASSAGES, tag, tag))
+
+	print("message in.")
+
+copy_source_in()

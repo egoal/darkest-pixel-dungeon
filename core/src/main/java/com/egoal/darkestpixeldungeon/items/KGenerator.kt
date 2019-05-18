@@ -60,71 +60,6 @@ object KGenerator {
     }
 
     object WEAPON : ItemGenerator() {
-        object T1 : ClassMapGenerator<Weapon>(hashMapOf(
-                WornShortsword::class.java to 0f,
-                Knuckles::class.java to 1f,
-                Dagger::class.java to 1f,
-                MagesStaff::class.java to 0f,
-                Boomerang::class.java to 0f,
-                BattleGloves::class.java to 1f,
-                Dart::class.java to 0.75f 
-        ))
-
-        object T2 : ClassMapGenerator<Weapon>(hashMapOf(
-                NewShortsword::class.java to 6f,
-                HandAxe::class.java to 5f,
-                Spear::class.java to 5f,
-                Quarterstaff::class.java to 4f,
-                Dirk::class.java to 12f
-        ))
-
-        object T3 : ClassMapGenerator<Weapon>(hashMapOf(
-                Sword::class.java to 6f,
-                Mace::class.java to 5f,
-                Scimitar::class.java to 5f,
-                RoundShield::class.java to 4f,
-                Sai::class.java to 4f,
-                Whip::class.java to 4f,
-                CrystalsSwords::class.java to 4f,
-                DaggerAxe::class.java to 5f,
-                Dart::class.java to 15f
-        ))
-
-        object T4 : ClassMapGenerator<Weapon>(hashMapOf(
-                Longsword::class.java to 6f,
-                BattleAxe::class.java to 5f,
-                Flail::class.java to 5f,
-                RunicBlade::class.java to 4f,
-                AssassinsBlade::class.java to 4f,
-                Dart::class.java to 6f
-        ))
-
-        object T5 : ClassMapGenerator<Weapon>(hashMapOf(
-                Claymore::class.java to 6f,
-                WarHammer::class.java to 5f,
-                Glaive::class.java to 5f,
-                Greataxe::class.java to 4f,
-                Greatshield::class.java to 4f,
-                Dart::class.java to 6f
-        ))
-
-        object MISSSILE : ClassMapGenerator<MissileWeapon>(hashMapOf(
-                // 1
-                Dart::class.java to 12f,
-                SmokeSparks::class.java to 6f,
-                // 2
-                Shuriken::class.java to 10f,
-                SwallowDart::class.java to 10f, 
-                IncendiaryDart::class.java to 1f,
-                // 3
-                FlyCutter::class.java to 8f, 
-                CurareDart::class.java to 1f,
-                // 4
-                Javelin::class.java to 6f,
-                // 5
-                Tamahawk::class.java to 4f
-        ))
-
         private val floorSetTierProbs = arrayOf(
                 floatArrayOf(20f, 60f, 10f, 5f, 5f),
                 floatArrayOf(10f, 25f, 50f, 15f, 5f),
@@ -132,19 +67,84 @@ object KGenerator {
                 floatArrayOf(0f, 5f, 20f, 50f, 25f),
                 floatArrayOf(0f, 2f, 8f, 20f, 70f)
         )
-        private val Ts = arrayOf(T1, T2, T3, T4, T5)
+
+        object MELEE : ItemGenerator() {
+            object T1 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
+                    WornShortsword::class.java to 0f,
+                    Knuckles::class.java to 1f,
+                    Dagger::class.java to 1f,
+                    MagesStaff::class.java to 0f,
+                    BattleGloves::class.java to 1f
+            ))
+
+            object T2 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
+                    NewShortsword::class.java to 6f,
+                    HandAxe::class.java to 5f,
+                    Spear::class.java to 5f,
+                    Quarterstaff::class.java to 4f
+            ))
+
+            object T3 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
+                    Sword::class.java to 6f,
+                    Mace::class.java to 5f,
+                    Scimitar::class.java to 5f,
+                    RoundShield::class.java to 4f,
+                    Sai::class.java to 4f,
+                    Whip::class.java to 4f,
+                    CrystalsSwords::class.java to 4f,
+                    DaggerAxe::class.java to 5f
+            ))
+
+            object T4 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
+                    Longsword::class.java to 6f,
+                    BattleAxe::class.java to 5f,
+                    Flail::class.java to 5f,
+                    RunicBlade::class.java to 4f,
+                    AssassinsBlade::class.java to 4f
+            ))
+
+            object T5 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
+                    Claymore::class.java to 6f,
+                    WarHammer::class.java to 5f,
+                    Glaive::class.java to 5f,
+                    Greataxe::class.java to 4f,
+                    Greatshield::class.java to 4f
+            ))
+
+            private val Ts = arrayOf(T1, T2, T3, T4, T5)
+
+            override fun generate(): Item = random(CurrentFloorSet())
+
+            fun random(floorSet: Int): Weapon {
+                val fs = GameMath.clamp(floorSet, 0, floorSetTierProbs.size - 1)
+                return Ts[Random.chances(floorSetTierProbs[fs])].generate() as Weapon
+            }
+
+            fun tier(t: Int): ClassMapGenerator<MeleeWeapon> = Ts[t - 1]
+        }
+
+        object MISSSILE : ClassMapGenerator<MissileWeapon>(hashMapOf(
+                // 1
+                Boomerang::class.java to 0f,
+                Dart::class.java to 12f,
+                SmokeSparks::class.java to 6f,
+                // 2
+                Shuriken::class.java to 10f,
+                SwallowDart::class.java to 10f,
+                IncendiaryDart::class.java to 1f,
+                CurareDart::class.java to 1f,
+                // 3
+                FlyCutter::class.java to 8f,
+                // 4
+                Javelin::class.java to 6f,
+                // 5
+                Tamahawk::class.java to 4f
+        ))
 
         override fun generate(): Item = random(CurrentFloorSet())
 
-        fun random(floorSet: Int): Weapon {
-            val fs = GameMath.clamp(floorSet, 0, floorSetTierProbs.size - 1)
-            // return Ts[Random.chances(floorSetTierProbs[fs])].generate() as Weapon
-            // todo: fixme
-            val wep = Ts[Random.chances(floorSetTierProbs[fs])].generate()
-            return (if (wep is MissileWeapon) MISSSILE.generate() else wep) as Weapon
-        }
-
-        fun tier(t: Int): ClassMapGenerator<Weapon> = Ts[t - 1]
+        fun random(floorSet: Int): Weapon = (if (Random.Float() < 0.24f) MISSSILE.generate()
+        else MELEE.random(floorSet)) as Weapon
     }
 
     object POTION : ClassMapGenerator<Potion>(hashMapOf(
@@ -293,6 +293,15 @@ object KGenerator {
         }
 
         fun left(): Int = probMap.count { it.value > 0f }
+
+        // return: removed
+        fun remove(artifact: Artifact): Boolean {
+            if (spawned.contains(artifact.javaClass.simpleName)) return false
+
+            spawned.add(artifact.javaClass.simpleName)
+            updateProbabilities()
+            return true
+        }
 
         private fun updateProbabilities() {
             probMap.clear()

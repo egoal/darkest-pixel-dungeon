@@ -95,6 +95,10 @@ public class DPDShopKeeper extends NPC {
     return this;
   }
 
+  public void shuffleItems() {
+    Collections.shuffle(items_);
+  }
+
   @Override
   protected boolean act() {
     throwItem();
@@ -124,12 +128,7 @@ public class DPDShopKeeper extends NPC {
   // interact
   @Override
   public boolean interact() {
-    if (this instanceof ScrollSeller)
-      Journal.add(Journal.Feature.SCROLL_SELLER);
-    else if (this instanceof PotionSeller)
-      Journal.add(Journal.Feature.POTION_SELLER);
-    else
-      Journal.add(Journal.Feature.SHOP_KEEPER);
+    Journal.INSTANCE.add(name);
 
     GameScene.show(new WndShop(this));
 
@@ -142,12 +141,7 @@ public class DPDShopKeeper extends NPC {
 
   // actions
   protected void flee() {
-    if (this instanceof ScrollSeller)
-      Journal.remove(Journal.Feature.SCROLL_SELLER);
-    else if (this instanceof PotionSeller)
-      Journal.remove(Journal.Feature.POTION_SELLER);
-    else
-      Journal.remove(Journal.Feature.SHOP_KEEPER);
+    Journal.INSTANCE.remove(name);
 
     destroy();
     sprite.killAndErase();
@@ -160,7 +154,7 @@ public class DPDShopKeeper extends NPC {
 
   protected void onPlayerBuy() {
     if (items_.isEmpty()) {
-      GLog.w(Messages.get(this, "nothing_more"));
+      yell(Messages.get(this, "nothing_more"));
       return;
     }
     GameScene.show(new WndSellItems(this));
@@ -399,7 +393,8 @@ public class DPDShopKeeper extends NPC {
 
     private int buyPrice(Item item) {
       return (int) (item.sellPrice() *
-              (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1.));
+              (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75
+                      : 1.));
     }
 
     private static class ItemButton extends ItemSlot {
