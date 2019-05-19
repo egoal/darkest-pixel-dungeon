@@ -42,7 +42,7 @@ class WndJournal : Window() {
 
         val content = Component()
 
-        Journal.records.sortBy { it.depth }
+        Journal.records.sortBy { -it.depth }
 
         var pos = 0f
         // keys

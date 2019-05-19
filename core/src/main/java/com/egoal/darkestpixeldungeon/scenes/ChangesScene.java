@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.scenes;
 
+import com.egoal.darkestpixeldungeon.TopExceptionHandler;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.ui.ScrollPane;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
@@ -33,11 +34,15 @@ import com.egoal.darkestpixeldungeon.windows.WndMessage;
 // import com.sun.prism.Image;
 import com.watabou.input.Touchscreen;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 import com.watabou.noosa.TouchArea;
+import com.watabou.utils.Bundle;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 
@@ -87,12 +92,14 @@ public class ChangesScene extends PixelScene {
     RenderedTextMultiline txtWarning = renderMultiline(warning, 6);
     txtWarning.maxWidth((int) panel.innerWidth());
     content.add(txtWarning);
-    
-    RenderedTextMultiline text = renderMultiline("_" + DarkestPixelDungeon.version + "_\n" +
-            Messages.get(this, "info" + DarkestPixelDungeon.version), 6);
+
+    RenderedTextMultiline text = renderMultiline(
+            "_" + DarkestPixelDungeon.version + "_\n" +
+                    Messages.get(this, "info" + DarkestPixelDungeon.version),
+            6);
     text.maxWidth((int) panel.innerWidth());
     content.add(text);
-    text.setPos(txtWarning.left(), txtWarning.bottom()+ 8f);
+    text.setPos(txtWarning.left(), txtWarning.bottom() + 8f);
 
     // add versions' button
     final String HSPLIT = "---";

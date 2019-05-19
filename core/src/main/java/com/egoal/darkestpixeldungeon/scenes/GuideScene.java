@@ -14,6 +14,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Point;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class GuideScene extends PixelScene {
   @Override
   public void create() {
     super.create();
-
+    
     int w = Camera.main.width;
     int h = Camera.main.height;
 
@@ -94,7 +95,7 @@ public class GuideScene extends PixelScene {
           }
         };
 
-        li.setRect(0f, index * (HEIGHT_LISTITEM + GAP_LISTITEM), 
+        li.setRect(0f, index * (HEIGHT_LISTITEM + GAP_LISTITEM),
                 WIDTH_LISTITEM, HEIGHT_LISTITEM);
         content.add(li);
         items_.add(li);

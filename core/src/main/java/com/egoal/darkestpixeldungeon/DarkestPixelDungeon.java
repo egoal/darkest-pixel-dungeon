@@ -39,6 +39,8 @@ import com.watabou.noosa.audio.Sample;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
 public class DarkestPixelDungeon extends Game {
@@ -185,6 +187,8 @@ public class DarkestPixelDungeon extends Game {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    Thread.setDefaultUncaughtExceptionHandler(new TopExceptionHandler(this));
 
     updateImmersiveMode();
 
@@ -462,8 +466,9 @@ public class DarkestPixelDungeon extends Game {
 //    return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT,
 //            (language() != Languages.KOREAN && language() != Languages
 //                    .CHINESE));
-    return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT,
-            language() != Languages.CHINESE);
+    return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, true)
+            ; //,
+//            language() != Languages.CHINESE);
   }
 
   public static void lastClass(int value) {
@@ -537,6 +542,6 @@ public class DarkestPixelDungeon extends Game {
    */
 
   public static void reportException(Throwable tr) {
-    Log.e("PD", Log.getStackTraceString(tr));
+    TopExceptionHandler.Companion.WriteErrorFile(tr);
   }
 }

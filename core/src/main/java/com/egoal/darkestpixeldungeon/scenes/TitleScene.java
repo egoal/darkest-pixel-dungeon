@@ -25,12 +25,15 @@ import android.opengl.GLES20;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.TopExceptionHandler;
 import com.egoal.darkestpixeldungeon.effects.BannerSprites;
 import com.egoal.darkestpixeldungeon.effects.Fireball;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.ChangesButton;
+import com.egoal.darkestpixeldungeon.ui.ErrorButton;
 import com.egoal.darkestpixeldungeon.ui.ExitButton;
+import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -166,6 +169,7 @@ public class TitleScene extends PixelScene {
     sdpVersion.y = h - sdpVersion.height();
     add(sdpVersion);
 
+    // dpd version
     BitmapText version = new BitmapText("version " + Game.version + "",
             pixelFont);
     version.measure();
@@ -174,15 +178,23 @@ public class TitleScene extends PixelScene {
     version.y = h - sdpVersion.height() - version.height();
     add(version);
 
+    // dpd changes
     ChangesButton changes = new ChangesButton();
-    changes.setPos(w - changes.width() -1, h - sdpVersion.height() -
-            version.height() - changes.height() -1);
+    changes.setPos(w - changes.width() - 1, h - sdpVersion.height() -
+            version.height() - changes.height() - 1);
     add(changes);
 
     changes.setBlink(
             DarkestPixelDungeon.version() != DarkestPixelDungeon.versionCode ||
                     !DarkestPixelDungeon.changeListChecked()
     );
+
+    // error log
+    if (TopExceptionHandler.Companion.HasErrorFile()) {
+      ErrorButton eb = new ErrorButton();
+      eb.setPos(w - eb.width() - 1, changes.top() - eb.height() - 1);
+      add(eb);
+    }
 
     // exit
     ExitButton btnExit = new ExitButton();

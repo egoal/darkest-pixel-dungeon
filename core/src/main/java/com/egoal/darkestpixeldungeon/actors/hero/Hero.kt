@@ -1004,7 +1004,7 @@ class Hero : Char() {
             val py = if (y < 0.3f) 1f else (1f + 2f * (y - 0.3f) * (y - 0.3f))
 
             if (Random.Float() < px * py)
-                recoverSanity(Random.NormalIntRange(1, 8).toFloat())
+                recoverSanity(Random.NormalIntRange(1, 6).toFloat())
         }
 
         if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)

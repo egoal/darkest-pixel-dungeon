@@ -8,20 +8,18 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.PinCushion
 import com.egoal.darkestpixeldungeon.actors.buffs.Unbalance
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KindOfWeapon
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.Random
 import java.util.ArrayList
+import kotlin.math.sqrt
 
 abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false) : Weapon() {
     init {
@@ -31,7 +29,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         defaultAction = Item.AC_THROW
         usesTargeting = true
 
-        DLY = 0.5f + 0.25f * tier
+        DLY = 0.4f + 0.3f * tier
     }
 
     // lvl: 0 
@@ -140,8 +138,9 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         val dstr = hero.STR() - STRReq()
         if (dstr <= 0) return 0
 
-        val fix = if (hero.subClass == HeroSubClass.SNIPER) tier else tier / 2
-        return dstr * fix
+        val fix = 2f * sqrt(2f * tier - 1f) / 3f * (if (hero.subClass == HeroSubClass.SNIPER) 2f else 1f)
+
+        return Math.round(dstr * fix)
     }
 
     override fun info(): String {
