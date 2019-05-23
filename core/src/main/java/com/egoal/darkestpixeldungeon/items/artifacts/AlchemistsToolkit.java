@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -64,11 +65,10 @@ public class AlchemistsToolkit extends Artifact {
   public AlchemistsToolkit() {
     super();
 
-    Generator.Category cat = Generator.Category.POTION;
     for (int i = 1; i <= 3; i++) {
       String potion;
       do {
-        potion = convertName(cat.classes[Random.chances(cat.probs)]
+        potion = convertName(KGenerator.POTION.INSTANCE.generate().getClass()
                 .getSimpleName());
         //forcing the player to use experience potions would be completely 
         // unfair.

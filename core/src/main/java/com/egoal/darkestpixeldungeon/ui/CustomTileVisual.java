@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.ui;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
-import com.egoal.darkestpixeldungeon.levels.Room;
 import com.egoal.darkestpixeldungeon.levels.diggers.Rect;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
@@ -70,42 +69,33 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
 
     return this;
   }
-
-  //returns a number of 1x1 tiles to fill a room, based on a 3x3 texture, not
-  // dissimilar to a ninepatch.
-  public static ArrayList<CustomTileVisual> CustomTilesForRoom(Room r,
-                                                               Class<? extends CustomTileVisual> c) {
-    ArrayList<CustomTileVisual> result = new ArrayList<>();
+  
+  // returns a number of 1x1 tiles to fill a room, based on a 3x3 texture, 
+  // not dissimilar to a ninepatch.
+  public static ArrayList<CustomTileVisual> CustomTilesForRect(Rect r,
+                                                               Class<? extends CustomTileVisual> cls) {
+    ArrayList<CustomTileVisual> re = new ArrayList<>();
 
     try {
-      for (int x = r.left; x <= r.right; x++) {
-        for (int y = r.top; y <= r.bottom; y++) {
-          CustomTileVisual vis = c.newInstance();
+      for (int x = r.getX1(); x <= r.getX2(); ++x) {
+        for (int y = r.getY1(); y < r.getY2(); ++y) {
+          CustomTileVisual ctv = cls.newInstance();
 
-          if (x == r.right) vis.ofsX = 2;
-          else if (x != r.left) vis.ofsX = 1;
+          if (x == r.getX2()) ctv.ofsX = 2;
+          else if (x != r.getX1()) ctv.ofsX = 1;
 
-          if (y == r.bottom) vis.ofsY = 2;
-          else if (y != r.top) vis.ofsY = 1;
+          if (y == r.getY2()) ctv.ofsY = 2;
+          else if (y != r.getY1()) ctv.ofsY = 1;
 
-          vis.pos(x, y);
-          result.add(vis);
+          ctv.pos(x, y);
+          re.add(ctv);
         }
       }
     } catch (Exception e) {
-      throw new RuntimeException("Something went wrong while making a bunch " +
-              "of tile visuals for a room!", e);
+      throw new RuntimeException(e);
     }
 
-    return result;
-  }
-
-  public static ArrayList<CustomTileVisual> CustomTilesForRect(Rect r,
-                                                               Class<? extends CustomTileVisual> cls) {
-    Room room = new Room();
-    room.set(r.getX1() - 1, r.getY1() - 1, r.getX2() + 1, r.getY2() + 1);
-
-    return CustomTilesForRoom(room, cls);
+    return re;
   }
 
   private static final String TILE_X = "tileX";

@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Chains;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.GuardSprite;
@@ -113,19 +114,19 @@ public class Guard extends Mob {
         yell(Messages.get(this, "scorpion"));
         sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
           public void call() {
-            Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new 
+            Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new
                     Callback() {
-              public void call() {
-                enemy.pos = newPosFinal;
-                Dungeon.level.press(newPosFinal, enemy);
-                Cripple.prolong(enemy, Cripple.class, 4f);
-                if (enemy == Dungeon.hero) {
-                  Dungeon.hero.interrupt();
-                  Dungeon.observe();
-                  GameScene.updateFog();
-                }
-              }
-            }), -1);
+                      public void call() {
+                        enemy.pos = newPosFinal;
+                        Dungeon.level.press(newPosFinal, enemy);
+                        Cripple.prolong(enemy, Cripple.class, 4f);
+                        if (enemy == Dungeon.hero) {
+                          Dungeon.hero.interrupt();
+                          Dungeon.observe();
+                          GameScene.updateFog();
+                        }
+                      }
+                    }), -1);
             next();
           }
         }));
@@ -152,7 +153,7 @@ public class Guard extends Mob {
     if (Random.Int(2) == 0) {
       Armor loot;
       do {
-        loot = Generator.randomArmor();
+        loot = (Armor) KGenerator.ARMOR.INSTANCE.generate();
         //50% chance of re-rolling tier 4 or 5 items
       } while (loot.tier >= 4 && Random.Int(2) == 0);
       loot.level(0);

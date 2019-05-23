@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -46,7 +47,7 @@ public class Skeleton extends Mob {
     EXP = 5;
     maxLvl = 10;
 
-    loot = Generator.Category.WEAPON;
+    loot = KGenerator.WEAPON.INSTANCE.generate();
     lootChance = 0.175f;
 
     properties.add(Property.UNDEAD);
@@ -97,20 +98,19 @@ public class Skeleton extends Mob {
 
   @Override
   protected Item createLoot() {
-    if(!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float()<0.04f) {
+    if (!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float() < 0.04f) {
       Dungeon.limitedDrops.handOfElder.drop();
       return new HandOfTheElder().random();
-    }
-    else{
+    } else {
       Item loot;
       do {
-        loot = Generator.random(Generator.Category.WEAPON);
+        loot = KGenerator.WEAPON.INSTANCE.generate();
         //50% chance of re-rolling tier 4 or 5 items
       }
       while (loot instanceof MeleeWeapon && ((MeleeWeapon) loot).tier >= 4 &&
               Random.Int(2) == 0);
       loot.level(0);
-      
+
       return loot;
     }
   }

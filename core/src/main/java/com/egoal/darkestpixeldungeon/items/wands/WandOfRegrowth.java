@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.wands;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -129,7 +130,7 @@ public class WandOfRegrowth extends Wand {
     Level floor = Dungeon.level;
 
     while (cells.hasNext() && Random.Float() <= numPlants) {
-      Plant.Seed seed = (Plant.Seed) Generator.random(Generator.Category.SEED);
+      Plant.Seed seed = (Plant.Seed) KGenerator.SEED.INSTANCE.generate();
 
       if (seed instanceof BlandfruitBush.Seed) {
         if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
@@ -303,7 +304,7 @@ public class WandOfRegrowth extends Wand {
 
       for (int i = 0; i < nSeeds && !candidates.isEmpty(); i++) {
         Integer c = Random.element(candidates);
-        Dungeon.level.drop(Generator.random(Generator.Category.SEED), c)
+        Dungeon.level.drop(KGenerator.SEED.INSTANCE.generate(), c)
                 .sprite.drop(getPos());
         candidates.remove(c);
       }

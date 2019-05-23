@@ -35,8 +35,6 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.quest.DarkGold;
 import com.egoal.darkestpixeldungeon.items.quest.Pickaxe;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.egoal.darkestpixeldungeon.levels.Room;
-import com.egoal.darkestpixeldungeon.levels.Room.Type;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.BlacksmithSprite;
@@ -45,8 +43,6 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-
-import java.util.Collection;
 
 public class Blacksmith extends NPC {
 
@@ -277,28 +273,6 @@ public class Blacksmith extends NPC {
       } else {
         reset();
       }
-    }
-
-    public static boolean spawn(Collection<Room> rooms) {
-      if (!spawned && Dungeon.depth > 11 && Random.Int(15 - Dungeon.depth) ==
-              0) {
-
-        Room blacksmith;
-        for (Room r : rooms) {
-          if (r.type == Type.STANDARD && r.width() > 4 && r.height() > 4) {
-            blacksmith = r;
-            blacksmith.type = Type.BLACKSMITH;
-
-            spawned = true;
-            alternative = Random.Int(2) == 0;
-
-            given = false;
-
-            break;
-          }
-        }
-      }
-      return spawned;
     }
 
     // call these like you did with wand maker

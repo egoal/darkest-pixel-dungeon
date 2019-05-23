@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
@@ -235,8 +236,7 @@ public class CursedWand {
                     pos == Terrain.EMPTY_DECO ||
                     pos == Terrain.GRASS ||
                     pos == Terrain.HIGH_GRASS) {
-              Dungeon.level.plant((Plant.Seed) Generator.random(Generator
-                      .Category.SEED), pos);
+              Dungeon.level.plant((Plant.Seed) KGenerator.SEED.INSTANCE.generate(), pos);
             }
             wand.wandUsed();
           }
@@ -405,19 +405,19 @@ public class CursedWand {
       case 1:
         cursedFX(user, bolt, new Callback() {
           public void call() {
-            Mimic mimic = Mimic.spawnAt(bolt.collisionPos, new 
+            Mimic mimic = Mimic.Companion.SpawnAt(bolt.collisionPos, new 
                     ArrayList<Item>());
-            mimic.adjustStats(Dungeon.depth + 10);
+            mimic.adjustStatus(Dungeon.depth + 10);
             mimic.HP = mimic.HT;
             Item reward;
             do {
-              reward = Generator.random(Random.oneOf(Generator.Category
-                              .WEAPON, Generator.Category.ARMOR,
-                      Generator.Category.RING, Generator.Category.WAND));
+              reward = Random.oneOf(KGenerator.WEAPON.INSTANCE, 
+                      KGenerator.ARMOR.INSTANCE, KGenerator.RING.INSTANCE, 
+                      KGenerator.WAND.INSTANCE).generate();
             } while (reward.level() < 2 && !(reward instanceof MissileWeapon));
             Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1, 0.5f);
-            mimic.items.clear();
-            mimic.items.add(reward);
+            mimic.getItems().clear();
+            mimic.getItems().add(reward);
 
             wand.wandUsed();
           }
@@ -456,8 +456,9 @@ public class CursedWand {
         wand.detach(user.getBelongings().backpack);
         Item result;
         do {
-          result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
-                  Generator.Category.RING, Generator.Category.ARTIFACT));
+          result = Random.oneOf(KGenerator.WEAPON.INSTANCE,
+                  KGenerator.ARMOR.INSTANCE, KGenerator.RING.INSTANCE,
+                  KGenerator.ARTIFACT.INSTANCE).generate();
         } while (result.level() < 0 && !(result instanceof MissileWeapon));
         if (result.isUpgradable()) result.upgrade();
         result.cursed = result.cursedKnown = true;

@@ -124,7 +124,7 @@ public class Heap implements Bundlable {
   public void open(Hero hero) {
     switch (type) {
       case MIMIC:
-        if (Mimic.spawnAt(pos, items) != null) {
+        if (Mimic.Companion.SpawnAt(pos, items) != null) {
           destroy();
         } else {
           type = Type.CHEST;
@@ -225,7 +225,7 @@ public class Heap implements Bundlable {
   public void burn() {
 
     if (type == Type.MIMIC) {
-      Mimic m = Mimic.spawnAt(pos, items);
+      Mimic m = Mimic.Companion.SpawnAt(pos, items);
       if (m != null) {
         Buff.affect(m, Burning.class).reignite(m);
         m.sprite.emitter().burst(FlameParticle.FACTORY, 5);
@@ -326,7 +326,7 @@ public class Heap implements Bundlable {
   public void freeze() {
 
     if (type == Type.MIMIC) {
-      Mimic m = Mimic.spawnAt(pos, items);
+      Mimic m = Mimic.Companion.SpawnAt(pos, items);
       if (m != null) {
         Buff.prolong(m, Frost.class, Frost.duration(m) * Random.Float(1.0f,
                 1.5f));
@@ -422,7 +422,7 @@ public class Heap implements Bundlable {
                 .getPotionsCooked() + 1);
         Badges.validatePotionsCooked();
 
-        potion = Generator.random(Generator.Category.POTION);
+        potion = KGenerator.POTION.INSTANCE.generate();
 
       } else {
 
@@ -436,7 +436,7 @@ public class Heap implements Bundlable {
         Badges.validatePotionsCooked();
 
         if (itemClass == null) {
-          potion = Generator.random(Generator.Category.POTION);
+          potion = KGenerator.POTION.INSTANCE.generate();
         } else {
           try {
             potion = itemClass.newInstance();
@@ -455,7 +455,7 @@ public class Heap implements Bundlable {
 
       while (potion instanceof PotionOfHealing && Random.Int(10) < Dungeon
               .limitedDrops.cookingHP.count)
-        potion = Generator.random(Generator.Category.POTION);
+        potion = KGenerator.POTION.INSTANCE.generate();
 
       if (potion instanceof PotionOfHealing)
         Dungeon.limitedDrops.cookingHP.count++;

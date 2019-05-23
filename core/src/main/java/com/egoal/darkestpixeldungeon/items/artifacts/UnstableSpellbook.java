@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -116,7 +117,7 @@ public class UnstableSpellbook extends Artifact {
 
           Scroll scroll;
           do {
-            scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
+            scroll = (Scroll) KGenerator.SCROLL.INSTANCE.generate();
           } while (scroll == null ||
                   //gotta reduce the rate on these scrolls or that'll be all 
                   // the item does.

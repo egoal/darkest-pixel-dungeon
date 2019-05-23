@@ -50,7 +50,7 @@ public class GnollTrickster extends Gnoll {
 
     state = WANDERING;
 
-    loot = Generator.random(CurareDart.class);
+    loot = new CurareDart();
     lootChance = 1f;
 
     properties.add(Property.MINIBOSS);
@@ -66,7 +66,7 @@ public class GnollTrickster extends Gnoll {
   @Override
   protected boolean canAttack(Char enemy) {
     Ballistica attack = new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE);
-    return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos == 
+    return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos ==
             enemy.pos;
   }
 

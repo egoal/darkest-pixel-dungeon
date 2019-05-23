@@ -9,12 +9,12 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Heap;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.books.Book;
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
-import com.egoal.darkestpixeldungeon.levels.Room;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.VillageLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -133,19 +133,6 @@ public class Jessica extends NPC {
       }
     }
 
-    public static boolean spawnJessica(VillageLevel level, Room villageRoom) {
-      Jessica j = new Jessica();
-      reset();  // reset quest
-      do {
-        j.pos = level.pointToCell(villageRoom.random(1));
-      }
-      while (level.findMob(j.pos) != null || !level.passable[j.pos] || level
-              .map[j.pos] == Terrain.SIGN);
-      level.mobs.add(j);
-
-      return true;
-    }
-
     // prison level indeed
     public static boolean spawnBook(Level level) {
       if (!given_ || spawned_)
@@ -156,7 +143,7 @@ public class Jessica extends NPC {
         heap.type = Heap.Type.SKELETON;
         // heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
         heap.drop(new CallysDiary());
-        heap.drop(Generator.random(Generator.Category.RING).random());
+        heap.drop(KGenerator.RING.INSTANCE.generate());
 
         heap.pos = level.randomRespawnCell();
         level.heaps.put(heap.pos, heap);

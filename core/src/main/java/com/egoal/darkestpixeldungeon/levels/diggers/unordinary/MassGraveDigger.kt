@@ -36,8 +36,8 @@ class MassGraveDigger : RectDigger() {
         Set(level, door, Terrain.BARRICADE)
         level.addItemToSpawn(PotionOfLiquidFlame())
 
-        level.customTiles.addAll(CustomTileVisual.CustomTilesForRect(rect, Bones::class.java))
-        
+        level.customTiles.addAll(CustomTileVisual.CustomTilesForRect(rect.shrink(-1), Bones::class.java))
+
         // 50% 1 skeleton, 50% 2 skeletons
         for (i in 0..Random.Int(2)) {
             val s = Skeleton()

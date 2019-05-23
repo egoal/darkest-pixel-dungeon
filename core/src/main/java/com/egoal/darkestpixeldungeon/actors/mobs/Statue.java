@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -56,7 +57,7 @@ public class Statue extends Mob {
     super();
 
     do {
-      weapon = (Weapon) Generator.random(Generator.Category.WEAPON);
+      weapon = (Weapon) KGenerator.WEAPON.INSTANCE.generate();
     } while (!(weapon instanceof MeleeWeapon) || weapon.cursed);
 
     weapon.identify();
@@ -90,7 +91,7 @@ public class Statue extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(weapon.min(), weapon.max()), 
+    return new Damage(Random.NormalIntRange(weapon.min(), weapon.max()),
             this, target);
   }
 
@@ -98,7 +99,7 @@ public class Statue extends Mob {
   public Damage defendDamage(Damage dmg) {
     dmg = weapon.defendDamage(dmg);
     dmg.value -= Random.NormalIntRange(0, Dungeon.depth);
-    
+
     return dmg;
   }
 

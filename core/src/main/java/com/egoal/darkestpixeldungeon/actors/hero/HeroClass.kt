@@ -217,9 +217,6 @@ enum class HeroClass(private val title: String) {
 
 //        TomeOfMastery().collect()
 //        EyeballOfTheElder().collect()
-        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
-            quantity(99).identify().collect()
-        })
     }
 
     private fun initDebug(hero: Hero) {

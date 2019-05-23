@@ -33,9 +33,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
-import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.diggers.Rect
-import com.egoal.darkestpixeldungeon.levels.painters.Painter
 import com.egoal.darkestpixeldungeon.levels.traps.ToxicTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene

@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.effects.Beam;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.BloodParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.plants.Plant;
@@ -154,8 +155,7 @@ public class WandOfTransfusion extends Wand {
 
       //30% + 3%*lvl chance to grow a random plant, or just regrow grass.
       if (Random.Float() <= 0.3f + level() * 0.03f) {
-        Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category
-                .SEED), cell);
+        Dungeon.level.plant((Plant.Seed) KGenerator.SEED.INSTANCE.generate(), cell);
         CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 8);
         GameScene.updateMap(cell);
       } else {

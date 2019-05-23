@@ -26,12 +26,12 @@ import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.effects.Halo;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
 import com.egoal.darkestpixeldungeon.levels.features.Luminary;
 import com.egoal.darkestpixeldungeon.plants.Plant;
@@ -62,7 +62,6 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.levels.features.Chasm;
 import com.egoal.darkestpixeldungeon.levels.features.Door;
-import com.egoal.darkestpixeldungeon.levels.painters.Painter;
 import com.egoal.darkestpixeldungeon.levels.traps.Trap;
 import com.egoal.darkestpixeldungeon.mechanics.ShadowCaster;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -73,7 +72,6 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.*;
 
 import java.io.BufferedReader;
@@ -270,7 +268,6 @@ public abstract class Level implements Bundlable {
     pitRoomNeeded = Dungeon.depth > 1 && weakFloorCreated;
     weakFloorCreated = false;
 
-    Generator.push(); // push generator states
     KGenerator.INSTANCE.stash(); // some status may be modified during building
 
     for (int i = 0; ; ++i) {
@@ -291,7 +288,6 @@ public abstract class Level implements Bundlable {
         break;
       }
 
-      Generator.pop(); // failed, pop states...
       KGenerator.INSTANCE.recover();
     }
 
@@ -813,7 +809,7 @@ public abstract class Level implements Bundlable {
   }
 
   public static void set(int cell, int terrain) {
-    Painter.set(Dungeon.level, cell, terrain);
+    Digger.Companion.Set(Dungeon.level, cell, terrain);
 
     if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP && terrain
             != Terrain.INACTIVE_TRAP) {

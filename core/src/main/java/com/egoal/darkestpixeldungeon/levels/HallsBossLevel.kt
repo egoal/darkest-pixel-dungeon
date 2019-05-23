@@ -34,7 +34,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Yog
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.levels.painters.Painter
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.noosa.Group
@@ -97,7 +97,7 @@ class HallsBossLevel : Level() {
 
             val top = Random.IntRange(2, ROOM_TOP - 1)
             val bottom = Random.IntRange(ROOM_BOTTOM + 1, 22)
-            Painter.fill(this, 2 + i * 4, top, 4, bottom - top + 1, Terrain.EMPTY)
+            Digger.Fill(this, 2 + i * 4, top, 4, bottom - top + 1, Terrain.EMPTY)
 
             if (i == 2) {
                 exit = i * 4 + 3 + (top - 1) * width()
@@ -113,12 +113,10 @@ class HallsBossLevel : Level() {
 
         map[exit] = Terrain.LOCKED_EXIT
 
-        Painter.fill(this, ROOM_LEFT - 1, ROOM_TOP - 1,
-                ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain
-                .WALL)
-        Painter.fill(this, ROOM_LEFT, ROOM_TOP,
-                ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP + 1, Terrain
-                .EMPTY)
+        Digger.Fill(this, ROOM_LEFT - 1, ROOM_TOP - 1,
+                ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL)
+        Digger.Fill(this, ROOM_LEFT, ROOM_TOP,
+                ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP + 1, Terrain.EMPTY)
 
         entrance = Random.Int(ROOM_LEFT + 1, ROOM_RIGHT - 1) + Random.Int(ROOM_TOP + 1, ROOM_BOTTOM - 1) * width()
         map[entrance] = Terrain.ENTRANCE
@@ -188,10 +186,10 @@ class HallsBossLevel : Level() {
 
             Dungeon.observe()
 
-            val boss = Yog().apply { 
-                do{
+            val boss = Yog().apply {
+                do {
                     pos = Random.Int(length())
-                }while(!Level.passable[pos] || Dungeon.visible[pos]) 
+                } while (!Level.passable[pos] || Dungeon.visible[pos])
             }
             GameScene.add(boss)
             boss.spawnFists()

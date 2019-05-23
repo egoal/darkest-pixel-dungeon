@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.mobs.Monk;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.windows.WndImp;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -92,7 +93,8 @@ public class Imp extends NPC {
     sprite.turnTo(pos, Dungeon.hero.pos);
     if (Quest.given) {
 
-      DwarfToken tokens = Dungeon.hero.getBelongings().getItem(DwarfToken.class);
+      DwarfToken tokens = Dungeon.hero.getBelongings().getItem(DwarfToken
+              .class);
       if (tokens != null && (tokens.quantity() >= 6 || (!Quest.alternative &&
               tokens.quantity() >= 6))) {
         GameScene.show(new WndImp(this, tokens));
@@ -193,7 +195,7 @@ public class Imp extends NPC {
         given = false;
 
         do {
-          reward = (Ring) Generator.random(Generator.Category.RING);
+          reward = (Ring) KGenerator.RING.INSTANCE.generate();
         } while (reward.cursed);
         reward.upgrade(2);
         reward.cursed = true;

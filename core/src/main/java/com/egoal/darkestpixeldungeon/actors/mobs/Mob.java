@@ -407,7 +407,7 @@ public abstract class Mob extends Char {
   }
 
   protected float attackDelay() {
-    return buff(Rage.class)==null? 1f: 0.667f;
+    return buff(Rage.class) == null ? 1f : 0.667f;
   }
 
   protected boolean doAttack(Char enemy) {
@@ -573,21 +573,16 @@ public abstract class Mob extends Char {
 
   @SuppressWarnings("unchecked")
   protected Item createLoot() {
-    Item item;
-    if (loot instanceof Generator.Category) {
-
-      item = Generator.random((Generator.Category) loot);
-
-    } else if (loot instanceof KGenerator.ItemGenerator) {
+    Item item = null;
+    if (loot instanceof KGenerator.ItemGenerator) {
       item = ((KGenerator.ItemGenerator) loot).generate();
     } else if (loot instanceof Class<?>) {
-
-      item = Generator.random((Class<? extends Item>) loot);
-
+      try {
+        item = ((Class<? extends Item>) loot).newInstance();
+      } catch (Exception ignored) {
+      }
     } else {
-
       item = (Item) loot;
-
     }
     return item;
   }
@@ -646,7 +641,8 @@ public abstract class Mob extends Char {
 
         if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
           for (Mob mob : Dungeon.level.mobs) {
-            if(Dungeon.level.distance(pos, mob.pos)<=8 && mob.state!= mob.HUNTING) 
+            if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob
+                    .HUNTING)
               mob.beckon(target);
           }
         }
@@ -686,7 +682,8 @@ public abstract class Mob extends Char {
 
         if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
           for (Mob mob : Dungeon.level.mobs) {
-            if(Dungeon.level.distance(pos, mob.pos)<=8 && mob.state!= mob.HUNTING)
+            if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob
+                    .HUNTING)
               mob.beckon(target);
           }
         }

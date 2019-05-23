@@ -179,9 +179,6 @@ public class Dungeon {
     Jessica.Quest.reset();
     Yvette.Quest.INSTANCE.Reset();
 
-    Room.shuffleTypes();
-
-    Generator.initArtifacts();
     hero = new Hero();
     hero.live();
 
@@ -545,11 +542,8 @@ public class Dungeon {
 
       bundle.put(QUESTS, quests);
 
-      Room.storeRoomsInBundle(bundle);
-
       Statistics.INSTANCE.storeInBundle(bundle);
       Journal.INSTANCE.storeInBundle(bundle);
-      Generator.storeInBundle(bundle);
       KGenerator.INSTANCE.storeInBundle(bundle);
 
       Scroll.save(bundle);
@@ -613,7 +607,6 @@ public class Dungeon {
 
     version = bundle.getInt(VERSION);
 
-    Generator.reset();
     KGenerator.INSTANCE.reset();
 
     Actor.restoreNextID(bundle);
@@ -671,8 +664,6 @@ public class Dungeon {
         Jessica.Quest.reset();
         Yvette.Quest.INSTANCE.Reset();
       }
-
-      Room.restoreRoomsFromBundle(bundle);
     }
 
     Bundle badges = bundle.getBundle(BADGES);
@@ -690,7 +681,6 @@ public class Dungeon {
 
     Statistics.INSTANCE.restoreFromBundle(bundle);
     Journal.INSTANCE.restoreFromBundle(bundle);
-    Generator.restoreFromBundle(bundle);
     KGenerator.INSTANCE.restoreFromBundle(bundle);
 
     droppedItems = new SparseArray<ArrayList<Item>>();

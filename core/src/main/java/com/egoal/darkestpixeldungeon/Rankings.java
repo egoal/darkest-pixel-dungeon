@@ -183,7 +183,6 @@ public enum Rankings {
 
     Dungeon.hero = null;
     Dungeon.level = null;
-    Generator.reset();
     KGenerator.INSTANCE.reset();
     Dungeon.quickslot.reset();
     QuickSlotButton.reset();
