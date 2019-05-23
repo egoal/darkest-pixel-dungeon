@@ -144,7 +144,7 @@ class Hero : Char() {
             if (it.isCursed)
                 reg = if (reg > 0f) -0.025f else reg * 1.25f
             else
-                reg += HT.toFloat() * 0.004f * Math.pow(1.07, it.itemLevel().toDouble()).toFloat()
+                reg += HT.toFloat() * 0.004f * Math.pow(1.08, it.itemLevel().toDouble()).toFloat()
         }
 
         // helmet
@@ -439,7 +439,7 @@ class Hero : Char() {
         // snipper perk
         if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
             // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
-            Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.1f).observer = id()
+            Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
         }
 
         return dmg

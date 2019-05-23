@@ -65,6 +65,7 @@ public class ScrollSeller extends DPDShopKeeper {
 
   @Override
   public boolean interact() {
+    Journal.INSTANCE.add(Messages.titleCase(name));
     GameScene.show(new WndShop(this));
 
     return false;

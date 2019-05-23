@@ -191,7 +191,7 @@ public class Tengu extends Mob {
         HP = HT / 2; // avoid directly death from healthy
 
         // turn off the lights and give blind
-        if (((PrisonBossLevel) Dungeon.level).isLighted)
+        if (((PrisonBossLevel) Dungeon.level).isLighted())
           ((PrisonBossLevel) Dungeon.level).turnLights(false);
         Buff.prolong(Dungeon.hero, Blindness.class, 2);
 
@@ -322,7 +322,7 @@ public class Tengu extends Mob {
     if (newpos < 0) {
       do {
         newpos = Dungeon.level.pointToCell(((PrisonBossLevel) Dungeon.level)
-                .rmHall.random(1));
+                .rtHall.random(1));
       }
       while (Level.solid[newpos] || Dungeon.level.map[newpos] == Terrain.TRAP ||
               Dungeon.level.distance(newpos, thepos) < JUMP_MIN_DISTANCE ||

@@ -37,8 +37,7 @@ open class Luminary(var pos: Int = -1) {
 
         override fun update() {
             visible = Dungeon.visible[cell]
-            if (visible)
-                super.update()
+            if (visible) super.update()
         }
     }
 

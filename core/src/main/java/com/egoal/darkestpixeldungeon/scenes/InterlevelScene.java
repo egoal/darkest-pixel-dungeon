@@ -180,8 +180,7 @@ public class InterlevelScene extends PixelScene {
           else if (error instanceof IOException)
             errorMsg = Messages.get(this, "io_error");
           else
-            throw new RuntimeException("fatal error occured while moving " +
-                    "between floors", error);
+            throw new RuntimeException(error);
 
           if (InterlevelScene.mode == Mode.REFLUX)
             errorMsg = "no backup file found, return.";

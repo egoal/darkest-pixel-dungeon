@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.plants.Plant
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import kotlin.math.max
 
 abstract class RegularLevel : Level() {
     init {
@@ -95,9 +96,9 @@ abstract class RegularLevel : Level() {
 
         // specials
         val probs = HashMap<Class<out Digger>, Float>(SpecialDiggers)
-        if(Dungeon.depth==1)
+        if (Dungeon.depth == 1)
             probs.remove(AltarDigger::class.java)
-        
+
         if (pitRoomNeeded) {
             // todo: this is fragile
             diggers.add(PitDigger())
@@ -229,7 +230,7 @@ abstract class RegularLevel : Level() {
             } else 0
         }
 
-        var mobsToSpawn = if (Dungeon.depth == 1) 10 else nMobs()
+        var mobsToSpawn = max(10, nMobs()) // if (Dungeon.depth == 1) 10 else nMobs()
 
         // well distributed in each space
         val normalSpaces = spaces.filter { it.type == DigResult.Type.Normal }

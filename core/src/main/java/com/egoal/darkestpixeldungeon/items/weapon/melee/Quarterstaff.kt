@@ -18,31 +18,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Quarterstaff extends MeleeWeapon {
+class Quarterstaff : MeleeWeapon() {
+    init {
+        image = ItemSpriteSheet.QUARTERSTAFF
 
-  {
-    image = ItemSpriteSheet.QUARTERSTAFF;
+        tier = 2
+    }
 
-    tier = 2;
-  }
+    // 12 base, down from 15; scaling unchanged
+    override fun max(lvl: Int): Int = 4 * (tier + 1) + lvl * (tier + 1)
 
-  @Override
-  public int max(int lvl) {
-    return 4 * (tier + 1) +    //12 base, down from 15
-            lvl * (tier + 1);   //scaling unchanged
-  }
+    override fun defendDamage(dmg: Damage): Damage {
+        if (dmg.type == Damage.Type.NORMAL)
+            dmg.value -= 2
 
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    if (dmg.type == Damage.Type.NORMAL)
-      dmg.value -= 2;
-
-    return dmg;
-  }
+        return dmg
+    }
 }

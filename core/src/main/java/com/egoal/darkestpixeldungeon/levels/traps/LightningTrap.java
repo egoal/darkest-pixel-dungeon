@@ -52,8 +52,7 @@ public class LightningTrap extends Trap {
 
     if (ch != null) {
       ch.takeDamage(new Damage(Math.max(1, Random.Int(ch.HP / 3, 2 * ch.HP / 
-              3)), this, ch).type(Damage.Type.MAGICAL).addElement(Damage
-              .Element.LIGHT));
+              3)), this, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT));
       
       if (ch == Dungeon.hero) {
 

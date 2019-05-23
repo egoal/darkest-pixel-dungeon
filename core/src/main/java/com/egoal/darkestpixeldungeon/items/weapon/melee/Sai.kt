@@ -34,11 +34,11 @@ class Sai : MeleeWeapon() {
     }
 
     //10 base, down from 20, +2 per level, down from +4
-    override fun max(lvl: Int): Int = Math.round(2.5f * (tier + 1)) + 
+    override fun max(lvl: Int): Int = Math.round(2.5f * (tier + 1)) +
             lvl * Math.round(0.5f * (tier + 1))
 
     override fun defendDamage(dmg: Damage): Damage {
-        if (STRReq() <= (dmg.to as Hero).STR()) {
+        if (dmg.to !is Hero || STRReq() <= (dmg.to as Hero).STR()) {
             if (dmg.type == Damage.Type.NORMAL)
                 dmg.value -= 3
         }

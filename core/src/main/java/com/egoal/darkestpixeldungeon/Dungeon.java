@@ -249,7 +249,7 @@ public class Dungeon {
         level = new CityBossLevel();
         break;
       case 21:
-        level = new LastShopLevel(); // LastShopLevel();
+        level = new LastShopLevel(); 
         break;
       case 22:
       case 23:

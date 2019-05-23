@@ -128,7 +128,7 @@ public class DPDShopKeeper extends NPC {
   // interact
   @Override
   public boolean interact() {
-    Journal.INSTANCE.add(name);
+    Journal.INSTANCE.add(Messages.titleCase(name));
 
     GameScene.show(new WndShop(this));
 
@@ -141,7 +141,7 @@ public class DPDShopKeeper extends NPC {
 
   // actions
   protected void flee() {
-    Journal.INSTANCE.remove(name);
+    Journal.INSTANCE.remove(Messages.titleCase(name));
 
     destroy();
     sprite.killAndErase();

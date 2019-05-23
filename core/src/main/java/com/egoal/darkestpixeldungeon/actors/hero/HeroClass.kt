@@ -14,10 +14,7 @@ import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfMindVision
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
+import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
@@ -79,7 +76,7 @@ enum class HeroClass(private val title: String) {
             val staff =
                     if (Badges.isUnlocked(Badges.Badge.TUTORIAL_MAGE)) MagesStaff(WandOfMagicMissile())
                     else {
-                        WandOfMagicMissile().collect()
+                        WandOfMagicMissile().identify().collect()
                         MagesStaff()
                     }
 
@@ -114,7 +111,7 @@ enum class HeroClass(private val title: String) {
 
             val darts = Dart(8)
             darts.identify().collect()
-            
+
             Dungeon.quickslot.setSlot(0, cloak)
             Dungeon.quickslot.setSlot(1, darts)
 
@@ -217,9 +214,12 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-        
+
 //        TomeOfMastery().collect()
 //        EyeballOfTheElder().collect()
+        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
+            quantity(99).identify().collect()
+        })
     }
 
     private fun initDebug(hero: Hero) {
@@ -227,7 +227,7 @@ enum class HeroClass(private val title: String) {
             HT = 1000
             HP = 1
             STR = 16
-            lvl = 20
+            // lvl = 20
         }
 
         hero.heroPerk.add(HeroPerk.Perk.INTENDED_TRANSPORTATION)
@@ -236,6 +236,9 @@ enum class HeroClass(private val title: String) {
             quantity(99).identify().collect()
         })
         Dungeon.quickslot.setSlot(4, ScrollOfTeleportation().apply {
+            quantity(99).identify().collect()
+        })
+        Dungeon.quickslot.setSlot(3, PotionOfExperience().apply {
             quantity(99).identify().collect()
         })
 

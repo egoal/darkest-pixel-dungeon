@@ -39,8 +39,10 @@ class Greatshield : MeleeWeapon() {
     override fun defendDamage(dmg: Damage): Damage {
         var value = 8 + round(2.5f * level()).toInt()
 
-        val burden = STRReq() - (dmg.to as Hero).STR()
-        if (burden > 0) value -= 2 * burden
+        if (dmg.to is Hero) {
+            val burden = STRReq() - (dmg.to as Hero).STR()
+            if (burden > 0) value -= 2 * burden
+        }
 
         if (value > 0) {
             if (dmg.isFeatured(Damage.Feature.RANGED))
