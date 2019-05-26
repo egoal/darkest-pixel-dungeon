@@ -130,9 +130,7 @@ class ShopDigger : RectDigger() {
         if (Random.Float() < (Dungeon.depth / 5) * 0.2f)
             itemsToSpawn.add(SmokeSparks().quantity(Random.NormalIntRange(1, 4)))
 
-        val bag = ChooseBag(Dungeon.hero.belongings)
-        if (bag != null)
-            itemsToSpawn.add(bag)
+        ChooseBag(Dungeon.hero.belongings)?.let { itemsToSpawn.add(it) }
 
         itemsToSpawn.add(OverpricedRation())
         itemsToSpawn.add(OverpricedRation())
@@ -149,8 +147,8 @@ class ShopDigger : RectDigger() {
 
         // specials
         val rare = when (Random.Int(10)) {
-            0 -> Generator.random(Generator.Category.WAND)
-            1 -> Generator.random(Generator.Category.RING).upgrade(1)
+            0 -> KGenerator.WAND.generate()
+            1 -> KGenerator.RING.generate()
             else -> Stylus()
         }.apply {
             cursedKnown = false
@@ -204,15 +202,13 @@ class ShopDigger : RectDigger() {
             Dungeon.limitedDrops.seedBag.drop()
             return SeedPouch()
 
-        } else if (scrolls >= potions && scrolls >= wands && !Dungeon
-                        .limitedDrops.scrollBag.dropped()) {
+        } else if (scrolls >= potions && scrolls >= wands && 
+                !Dungeon.limitedDrops.scrollBag.dropped()) {
             Dungeon.limitedDrops.scrollBag.drop()
             return ScrollHolder()
-
         } else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
             Dungeon.limitedDrops.potionBag.drop()
             return PotionBandolier()
-
         } else if (!Dungeon.limitedDrops.wandBag.dropped()) {
             Dungeon.limitedDrops.wandBag.drop()
             return WandHolster()

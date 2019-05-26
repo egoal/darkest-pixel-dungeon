@@ -73,8 +73,9 @@ public class ItemSpriteSheet {
   public static final int KIT = SINGLE_USE + 13;
   public static final int AMULET = SINGLE_USE + 14;
   public static final int DPD_TEST_PAPER = SINGLE_USE + 15;
-
+  public static final int ENHANCED_SEAL = SINGLE_USE + 16;
   public static final int DPD_CAT_GIFT = SINGLE_USE + 17;
+  public static final int GREAT_BLUEPRINT = SINGLE_USE + 18;
 
   private static final int WEP_TIER1 = xy(1, 5);   //16 slots
   public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;
@@ -130,6 +131,7 @@ public class ItemSpriteSheet {
   public static final int SMOKE_SPARKS = MISSILE_WEP + 7;
   public static final int SWALLOW_DART = MISSILE_WEP + 8;
   public static final int FLY_CUTTER = MISSILE_WEP + 9;
+  public static final int ENHANCED_BOOMERANG = MISSILE_WEP + 10;
 
   private static final int ARMOR = xy(1, 11);  //16 slots
   public static final int ARMOR_CLOTH = ARMOR + 0;
@@ -255,7 +257,7 @@ public class ItemSpriteSheet {
   public static final int POTION_CHARCOAL = POTIONS + 9;
   public static final int POTION_SILVER = POTIONS + 10;
   public static final int POTION_IVORY = POTIONS + 11;
-  public static final int DPD_HIGHLY_TOXIC_POTION = POTIONS + 12;
+  public static final int POTION_DARK_GREEN = POTIONS + 12;
 
   private static final int SEEDS = xy(1, 22);  //16 slots
   public static final int SEED_ROTBERRY = SEEDS + 0;

@@ -207,7 +207,7 @@ class PrisonBossLevel : Level() {
     }
 
     override fun randomRespawnCell(): Int =
-            PathFinder.NEIGHBOURS8.filter { passable[entrance + it] }.random()
+            PathFinder.NEIGHBOURS8.map { it + entrance }.filter { passable[it] }.random()
 
     private fun buildHall() {
         rtHall = run {
@@ -348,7 +348,7 @@ class PrisonBossLevel : Level() {
 
         val leftCells = prisonCells.filter { it.x2 < rtHall.x1 }
 
-        drop(IronKey(), pointToCell(leftCells.random().random()))
+        drop(IronKey(Dungeon.depth), pointToCell(leftCells.random().random()))
         drop(Torch(), pointToCell(leftCells.random().random()))
         drop(WardenSmithNotes(), pointToCell(leftCells.random().random()))
     }

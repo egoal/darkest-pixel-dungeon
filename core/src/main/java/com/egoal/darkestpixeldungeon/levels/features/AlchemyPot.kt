@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.windows.WndAlchemy
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.food.StewedMeat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
@@ -58,7 +59,7 @@ object AlchemyPot {
     fun VerifyRefinement(items: List<Item>): Pair<Boolean, Item?> {
         return when (items.size) {
             // seed to potion.
-            3 -> if (items.all { it is Plant.Seed }) Pair(true, Generator.random(Generator.Category.POTION)) else Pair(false, null)
+            3 -> if (items.all { it is Plant.Seed }) Pair(true, KGenerator.POTION.generate()) else Pair(false, null)
             2 -> {
                 val pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
                 if (pr != null)

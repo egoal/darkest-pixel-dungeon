@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.unordinary
 
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Blacksmith
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.*
@@ -30,8 +31,7 @@ class BlackSmithDigger : RectDigger() {
             do {
                 pos = level.pointToCell(rect.random(1))
             } while (level.map[pos] != Terrain.EMPTY_SP)
-            level.drop(Generator.random(Random.oneOf(
-                    Generator.Category.ARMOR, Generator.Category.WEAPON)), pos)
+            level.drop(Random.oneOf(KGenerator.ARMOR, KGenerator.WEAPON).generate(), pos)
         }
 
         // smith

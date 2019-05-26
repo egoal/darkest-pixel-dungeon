@@ -70,7 +70,7 @@ class Blandfruit : Food(Hunger.STARVING / 2, 6) {
 
     override fun price(): Int = 20 * quantity
 
-    fun cook(seed: Plant.Seed): Item = imbuePotion(seed.alchemyClass!!.newInstance() as Potion)
+    fun cook(seed: Plant.Seed): Item = imbuePotion(seed.alchemyClass.newInstance())
 
     private fun imbuePotion(potion: Potion): Item {
         potionAttrib = potion
@@ -90,6 +90,7 @@ class Blandfruit : Food(Hunger.STARVING / 2, 6) {
             is PotionOfLevitation -> Pair("stormfruit", 0x1C3A57)
             is PotionOfPurity -> Pair("dreamfruit", 0x8E2975)
             is PotionOfExperience -> Pair("starfruit", 0xA79400)
+            is PotionOfPhysique-> Pair("mightfruit", 0x101010)
             else -> throw RuntimeException("never be here")
         }
         name = Messages.get(this, pr.first)

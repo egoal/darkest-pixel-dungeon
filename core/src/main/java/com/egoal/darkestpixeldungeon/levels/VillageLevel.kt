@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.levels.traps.FlockTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -101,6 +102,7 @@ class VillageLevel : RegularLevel() {
         putMobAt(CatRoberry::class.java, 12, 6)
 
         // putMobAt(Yvette::class.java, 16, 29)
+        // putMobAt(KingStatuary::class.java, 16, 29)
     }
 
     override fun onSwitchedIn() {
@@ -110,7 +112,10 @@ class VillageLevel : RegularLevel() {
 
     override fun respawner(): Actor? = null
 
-    override fun createItems() {}
+    override fun createItems() {
+//        for (i in 1..20)
+//            drop(KGenerator.POTION.generate(), xy2cell(15, i + 3))
+    }
 
     private fun putMobAt(cls: Class<out Mob>, x: Int, y: Int): Mob {
         val mob = cls.newInstance().apply { pos = xy2cell(x, y) }

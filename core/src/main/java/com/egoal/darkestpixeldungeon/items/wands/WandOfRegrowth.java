@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.wands;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -279,7 +280,7 @@ public class WandOfRegrowth extends Wand {
     //seed is never dropped, only care about plant class
     public static class Seed extends Plant.Seed {
       public Seed() {
-        super(Dewcatcher.class, null);
+        super(Dewcatcher.class, PotionOfHealing.class);
       }
     }
   }
@@ -314,7 +315,7 @@ public class WandOfRegrowth extends Wand {
     //seed is never dropped, only care about plant class
     public static class Seed extends Plant.Seed {
       public Seed() {
-        super(Seedpod.class, null);
+        super(Seedpod.class, PotionOfHealing.class);
       }
     }
 

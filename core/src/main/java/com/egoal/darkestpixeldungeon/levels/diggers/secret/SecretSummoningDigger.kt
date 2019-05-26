@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.secret
 
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
@@ -20,7 +21,7 @@ class SecretSummoningDigger : RectDigger() {
         Fill(level, rect, Terrain.SECRET_TRAP)
         Set(level, overlappedWall(wall, rect).random(), Terrain.SECRET_DOOR)
 
-        level.drop(Generator.random(), level.pointToCell(rect.center)).type = Heap.Type.SKELETON
+        level.drop(KGenerator.generate(), level.pointToCell(rect.center)).type = Heap.Type.SKELETON
 
         for (cell in rect.getAllPoints().map { level.pointToCell(it) })
             if (level.map[cell] == Terrain.SECRET_TRAP)

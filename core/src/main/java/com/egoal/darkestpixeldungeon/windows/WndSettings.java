@@ -161,7 +161,7 @@ public class WndSettings extends WndTabbed {
       add(chkImmersive);
 
 
-      boolean enableDebug = !false;
+      boolean enableDebug = false;
       if (!enableDebug)
         DarkestPixelDungeon.debug(false);
       // add debug checkbox

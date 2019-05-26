@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.effects.particles.LeafParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.artifacts.SandalsOfNature
+import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -80,8 +81,8 @@ abstract class Plant(val image: Int) : Bundlable {
 
     fun desc(): String = Messages.get(this, "desc")
 
-    open class Seed(private val plantClass: Class<out Plant>,
-                    public val alchemyClass: Class<out Item>?) : Item() {
+    open class Seed(private val plantClass: Class<out Plant>, 
+                    val alchemyClass: Class<out Potion>) : Item() {
         init {
             stackable = true
             defaultAction = AC_PLANT

@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.mobs.Statue
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.*
@@ -69,9 +70,9 @@ class SecretGuardianDigger : Digger() {
 
         // prize
         val prize = when (Random.Int(3)) {
-            0 -> Generator.random(Generator.Category.RING)
-            1 -> Generator.random(Generator.Category.ARTIFACT)
-            else -> Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR))
+            0 -> KGenerator.RING.generate()
+            1 -> KGenerator.ARTIFACT.generate()
+            else -> Random.oneOf(KGenerator.WEAPON, KGenerator.ARMOR).generate()
         }
         level.drop(prize, level.pointToCell(plat)).type = Heap.Type.CHEST
 
@@ -79,12 +80,12 @@ class SecretGuardianDigger : Digger() {
     }
 
     companion object {
-        
+
         // guardian
         class Guard : Statue() {
             init {
                 spriteClass = GuardSprite::class.java
-                
+
                 // normal weapon
                 weapon.enchant(null)
                 weapon.degrade(weapon.level())

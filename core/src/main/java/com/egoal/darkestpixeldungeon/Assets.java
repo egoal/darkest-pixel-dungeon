@@ -105,7 +105,8 @@ public class Assets {
   public static final String WAND_GUARD = ACTORS + "wand_guard.png";
   public static final String ROBERRY = ACTORS + "roberry.png";
   public static final String REN = ACTORS + "ren.png";
-
+  public static final String KING_STATUARY = ACTORS+ "king_statuary.png";
+  
   // levels=====================================================================
   // tile
   public static final String TILES_VILLAGE = LEVELS + "tiles_village.png";

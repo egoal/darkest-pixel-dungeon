@@ -22,6 +22,8 @@ package com.egoal.darkestpixeldungeon.plants
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfInvisibility
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfPhysique
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
 class BlandfruitBush : Plant(8) {
@@ -30,7 +32,8 @@ class BlandfruitBush : Plant(8) {
         Dungeon.level.drop(Blandfruit(), pos).sprite.drop()
     }
 
-    class Seed : Plant.Seed(BlandfruitBush::class.java, null) {
+    class Seed : Plant.Seed(plantClass = BlandfruitBush::class.java, 
+            alchemyClass = PotionOfPhysique::class.java) {
         init {
             image = ItemSpriteSheet.SEED_BLANDFRUIT
         }

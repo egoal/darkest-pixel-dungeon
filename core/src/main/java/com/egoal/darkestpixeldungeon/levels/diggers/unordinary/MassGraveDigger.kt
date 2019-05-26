@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.items.quest.CorpseDust
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -55,8 +56,8 @@ class MassGraveDigger : RectDigger() {
         items.add(Gold(1))
         if (Random.Float() <= 0.3f) items.add(Gold())
         if (Random.Float() <= 0.3f) items.add(Gold())
-        if (Random.Float() <= 0.6f) items.add(Generator.random())
-        if (Random.Float() <= 0.3f) items.add(Generator.randomArmor())
+        if (Random.Float() <= 0.6f) items.add(KGenerator.generate())
+        if (Random.Float() <= 0.3f) items.add(KGenerator.ARMOR.generate())
 
         for (i in items) {
             var pos: Int

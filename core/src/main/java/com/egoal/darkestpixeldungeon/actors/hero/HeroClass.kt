@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify
@@ -248,9 +249,9 @@ enum class HeroClass(private val title: String) {
         PlateArmor().identify().upgrade(6).collect()
         Claymore().identify().upgrade(6).collect()
 
-        Amulet().collect()
+        GreatBlueprint().collect()
 
-        YvettesDiary().collect()
+        Amulet().collect()
     }
 
     private fun initPerks(hero: Hero) {

@@ -578,7 +578,7 @@ public abstract class Mob extends Char {
       item = ((KGenerator.ItemGenerator) loot).generate();
     } else if (loot instanceof Class<?>) {
       try {
-        item = ((Class<? extends Item>) loot).newInstance();
+        item = ((Class<? extends Item>) loot).newInstance().random();
       } catch (Exception ignored) {
       }
     } else {

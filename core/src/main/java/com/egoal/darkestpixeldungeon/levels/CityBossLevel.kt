@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.King
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.KingStatuary
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
@@ -51,7 +52,9 @@ class CityBossLevel : Level() {
 
     override fun decorate() {}
 
-    override fun createMobs() {}
+    override fun createMobs() {
+        mobs.add(KingStatuary().apply { pos = xy2cell(10, 3) })
+    }
 
     override fun respawner(): Actor? = null
 
@@ -66,13 +69,8 @@ class CityBossLevel : Level() {
         }
     }
 
-    override fun randomRespawnCell(): Int {
-        var cell: Int
-        do {
-            cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)]
-        } while (!passable[cell])
-        return cell
-    }
+    override fun randomRespawnCell(): Int =
+            PathFinder.NEIGHBOURS8.map { it + entrance }.filter { passable[it] }.random()
 
     override fun press(cell: Int, ch: Char?) {
         super.press(cell, ch)

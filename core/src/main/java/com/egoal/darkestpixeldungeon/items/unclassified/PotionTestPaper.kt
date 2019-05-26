@@ -2,7 +2,6 @@ package com.egoal.darkestpixeldungeon.items.unclassified
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHighlyToxicGas
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfParalyticGas
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
@@ -43,7 +42,7 @@ class PotionTestPaper : Item() {
         else {
             detach(curUser.belongings.backpack)
             if (item is PotionOfLiquidFlame || item is PotionOfToxicGas ||
-                    item is PotionOfParalyticGas || item is PotionOfHighlyToxicGas)
+                    item is PotionOfParalyticGas)
                 GLog.w(Messages.get(this, "test_succeed", item.name()))
             else
                 GLog.i(Messages.get(this, "test_failed"))

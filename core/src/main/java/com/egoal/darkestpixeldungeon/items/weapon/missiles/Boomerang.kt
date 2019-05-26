@@ -13,7 +13,7 @@ import com.egoal.darkestpixeldungeon.sprites.MissileSprite
 import kotlin.math.max
 import kotlin.math.sqrt
 
-class Boomerang : MissileWeapon(1) {
+open class Boomerang : MissileWeapon(1) {
     init {
         image = ItemSpriteSheet.BOOMERANG
 
@@ -83,6 +83,13 @@ class Boomerang : MissileWeapon(1) {
             Imbue.LIGHT -> info + "\n\n" + Messages.get(Weapon::class.java, "lighter")
             Imbue.HEAVY -> info + "\n\n" + Messages.get(Weapon::class.java, "heavier")
             Imbue.NONE -> info
+        }
+    }
+
+    ///
+    class Enhanced : Boomerang() {
+        init {
+            image = ItemSpriteSheet.ENHANCED_BOOMERANG
         }
     }
 }

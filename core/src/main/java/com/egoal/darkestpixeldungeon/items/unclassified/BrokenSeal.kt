@@ -38,7 +38,7 @@ import com.watabou.noosa.audio.Sample
 
 import java.util.ArrayList
 
-class BrokenSeal : Item() {
+open class BrokenSeal : Item() {
 
     init {
         image = ItemSpriteSheet.SEAL
@@ -117,6 +117,13 @@ class BrokenSeal : Item() {
                     Badges.validateTutorial()
                 }
             }
+        }
+    }
+    
+    ///
+    class Enhanced : BrokenSeal() {
+        init {
+            image = ItemSpriteSheet.ENHANCED_SEAL
         }
     }
 }

@@ -92,6 +92,8 @@ public class InterlevelScene extends PixelScene {
       public void run() {
 
         try {
+          Generator.reset();
+          
           switch (mode) {
             case DESCEND:
               descend();
