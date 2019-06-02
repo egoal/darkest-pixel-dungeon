@@ -114,7 +114,8 @@ public class Item implements Bundlable {
 
   public void doDrop(Hero hero) {
     hero.spendAndNext(TIME_TO_DROP);
-    Dungeon.level.drop(detachAll(hero.getBelongings().backpack), hero.pos).sprite
+    Dungeon.level.drop(detachAll(hero.getBelongings().backpack), hero.pos)
+            .sprite
             .drop(hero.pos);
   }
 
@@ -493,20 +494,10 @@ public class Item implements Bundlable {
     Char enemy = Actor.findChar(cell);
     QuickSlotButton.target(enemy);
 
-    // FIXME!!!
     float delay = TIME_TO_THROW;
-    if (this instanceof MissileWeapon) {
+    if (this instanceof MissileWeapon)
       delay *= ((MissileWeapon) this).speedFactor(user);
-//      if (enemy != null) {
-//        SnipersMark mark = user.buff(SnipersMark.class);
-//        if (mark != null) {
-//          if (mark.object == enemy.id()) {
-//            delay *= 0.5f;
-//          }
-//          user.remove(mark);
-//        }
-//      }
-    }
+
     final float finalDelay = delay;
 
     ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).

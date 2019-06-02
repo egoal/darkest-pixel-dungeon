@@ -50,7 +50,7 @@ public class GnollTrickster extends Gnoll {
 
     state = WANDERING;
 
-    loot = new CurareDart();
+    loot = new CurareDart().random();
     lootChance = 1f;
 
     properties.add(Property.MINIBOSS);

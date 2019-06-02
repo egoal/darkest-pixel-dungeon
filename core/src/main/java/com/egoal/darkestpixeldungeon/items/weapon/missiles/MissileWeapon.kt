@@ -35,9 +35,9 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
     // lvl: 0 
     // 1: 1~ 5
     // 2: 2~ 10
-    override fun min(lvl: Int): Int = tier
+    override fun min(lvl: Int): Int = 1 + tier / 2
 
-    override fun max(lvl: Int): Int = 5 * tier
+    override fun max(lvl: Int): Int = 4 + tier * 2
 
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { remove(EquipableItem.AC_EQUIP) }
 
@@ -86,7 +86,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
     }
 
     protected open fun breakChance(): Float {
-        val base = Math.pow(0.55, tier / 2.0 + 1.0).toFloat()
+        val base = 0.65f - Math.pow(1.25, tier.toDouble()).toFloat() / 6f
         var bonus = RingOfSharpshooting.getBonus(Dungeon.hero, RingOfSharpshooting.Aim::class.java)
 
         // huntress bonus
@@ -107,7 +107,13 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
     }
 
     override fun accuracyFactor(hero: Hero, target: Char): Float {
-        return super.accuracyFactor(hero, target) * if (Dungeon.level.adjacent(hero.pos, target.pos)) 0.5f else 1f
+        var f = super.accuracyFactor(hero, target)
+        if (Dungeon.level.adjacent(hero.pos, target.pos))
+            f *= 0.4f
+        if (hero.subClass == HeroSubClass.SNIPER)
+            f *= 1.25f
+
+        return f
     }
 
     override fun giveDamage(hero: Hero, target: Char): Damage {
@@ -138,7 +144,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         val dstr = hero.STR() - STRReq()
         if (dstr <= 0) return 0
 
-        val fix = 2f * sqrt(2f * tier - 1f) / 3f * (if (hero.subClass == HeroSubClass.SNIPER) 2f else 1f)
+        val fix = sqrt(2f * tier - 1f) * (if (hero.subClass == HeroSubClass.SNIPER) 1.5f else 1f)
 
         return Math.round(dstr * fix)
     }

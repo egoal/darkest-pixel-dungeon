@@ -207,7 +207,7 @@ public class ItemSlot extends Button {
     topLeft.text(item.status());
 
     boolean isArmor = item instanceof Armor;
-    boolean isWeapon = item instanceof Weapon;
+    boolean isWeapon = item instanceof MeleeWeapon;
     if (isArmor || isWeapon) {
 
       if (item.levelKnown || (isWeapon && !(item instanceof MeleeWeapon))) {

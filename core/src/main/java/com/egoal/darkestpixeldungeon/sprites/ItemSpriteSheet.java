@@ -117,9 +117,7 @@ public class ItemSpriteSheet {
   public static final int GREATAXE = WEP_TIER5 + 3;
   public static final int GREATSHIELD = WEP_TIER5 + 4;
   public static final int PAIR_SWORDS = WEP_TIER5 + 5;
-
-  //8 free slots
-
+  
   private static final int MISSILE_WEP = xy(1, 10);  //16 slots
   public static final int DART = MISSILE_WEP + 0;
   public static final int BOOMERANG = MISSILE_WEP + 1;
@@ -132,6 +130,7 @@ public class ItemSpriteSheet {
   public static final int SWALLOW_DART = MISSILE_WEP + 8;
   public static final int FLY_CUTTER = MISSILE_WEP + 9;
   public static final int ENHANCED_BOOMERANG = MISSILE_WEP + 10;
+  public static final int DART_SEVENTH = MISSILE_WEP+ 11;
 
   private static final int ARMOR = xy(1, 11);  //16 slots
   public static final int ARMOR_CLOTH = ARMOR + 0;
@@ -218,13 +217,15 @@ public class ItemSpriteSheet {
   public static final int UNHOLY_BLOOD = ARTIFACTS + 26;
   public static final int MASK_OF_MADNESS = ARTIFACTS + 27;
   public static final int ASTROLABE = ARTIFACTS + 28;
-  public static final int RIEMANNIAN_SHIELD = ARTIFACTS + 29;
-  public static final int GOLD_PLATE_STATUE = ARTIFACTS + 30;
+  public static final int ASTROLABE_1 = ARTIFACTS + 29;
+  public static final int ASTROLABE_2 = ARTIFACTS + 30;
   public static final int BONE_HAND = ARTIFACTS + 31;
   public static final int HANDLE_OF_ABYSS = ARTIFACTS + 32;
   public static final int CLOAK_OF_SHEEP = ARTIFACTS + 33;
   public static final int HEART_OF_SATAN = ARTIFACTS + 34;
   public static final int ARTIFACT_EYEBALL = ARTIFACTS + 35;
+  public static final int RIEMANNIAN_SHIELD = ARTIFACTS + 37;
+  public static final int GOLD_PLATE_STATUE = ARTIFACTS + 38;
 
   //32 free slots
 

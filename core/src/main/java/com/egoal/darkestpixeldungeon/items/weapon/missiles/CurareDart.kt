@@ -35,11 +35,13 @@ class CurareDart(number: Int = 1) : MissileWeapon(2, stick = true) {
 
         quantity = number
     }
-    
+
     override fun proc(dmg: Damage): Damage {
         Buff.prolong(dmg.to as Char, Paralysis::class.java, DURATION)
         return super.proc(dmg)
     }
+
+    override fun breakChance(): Float = 1f
 
     override fun random(): Item {
         quantity = Random.Int(2, 5)

@@ -33,7 +33,7 @@ class Shuriken(number: Int = 1) : MissileWeapon(2) {
         quantity = number
     }
 
-    override fun max(lvl: Int): Int = 4 * tier 
+    override fun max(lvl: Int): Int = 2+ 2 * tier 
 
     override fun random(): Item {
         quantity = Random.Int(7, 16) // like tier-1

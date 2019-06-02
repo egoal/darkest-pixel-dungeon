@@ -135,6 +135,7 @@ object KGenerator {
                 CurareDart::class.java to 1f,
                 // 3
                 FlyCutter::class.java to 8f,
+                SeventhDart::class.java to 8f, 
                 // 4
                 Javelin::class.java to 6f,
                 // 5

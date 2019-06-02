@@ -84,7 +84,7 @@ class TomeOfMastery : Item() {
         detach(curUser.belongings.backpack)
 
         with(curUser) {
-            spend(TomeOfMastery.TIME_TO_READ)
+            spend(TIME_TO_READ)
             busy()
 
             subClass = way

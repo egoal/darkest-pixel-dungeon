@@ -36,6 +36,6 @@ class DaggerAxe : MeleeWeapon() {
     }
 
     override fun accuracyFactor(hero: Hero, target: Char): Float =
-            if (Dungeon.level.adjacent(hero.pos, target.pos)) 0.5f
+            if (Dungeon.level.adjacent(hero.pos, target.pos)) 0.4f
             else 1f
 }

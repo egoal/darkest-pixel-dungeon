@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.scenes;
 import com.egoal.darkestpixeldungeon.GamesInProgress;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
@@ -72,8 +73,11 @@ public class StartScene extends PixelScene {
   private GameButton btnLoad;
   private GameButton btnNewGame;
 
+  // todo: rework this
   private boolean huntressUnlocked;
+  private boolean sorceressUnlocked;
   private Group unlock;
+  private RenderedTextMultiline unlockText;
 
   public static HeroClass curClass;
 
@@ -145,9 +149,9 @@ public class StartScene extends PixelScene {
         InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
         Game.switchScene(InterlevelScene.class);
       }
-      
+
       @Override
-      protected boolean onLongClick(){
+      protected boolean onLongClick() {
         InterlevelScene.mode = InterlevelScene.Mode.REFLUX;
         Game.switchScene(InterlevelScene.class);
         return false;
@@ -159,9 +163,7 @@ public class StartScene extends PixelScene {
 
     HeroClass[] classes = {
             HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass
-            .HUNTRESS,
-
-            HeroClass.SORCERESS,
+            .HUNTRESS, HeroClass.SORCERESS,
     };
     for (HeroClass cl : classes) {
       ClassShield shield = new ClassShield(cl);
@@ -211,17 +213,14 @@ public class StartScene extends PixelScene {
     unlock = new Group();
     add(unlock);
 
-    if (!(huntressUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3))) {
+    huntressUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_2);
+    sorceressUnlocked = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3);
 
-      RenderedTextMultiline text = renderMultiline(Messages.get(this, 
-              "unlock"), 9);
-      text.maxWidth((int) width);
-      text.hardlight(0xFFFF00);
-      text.setPos(w / 2 - text.width() / 2, (bottom - BUTTON_HEIGHT) + 
-              (BUTTON_HEIGHT - text.height()) / 2);
-      align(text);
-      unlock.add(text);
-
+    if (!huntressUnlocked || !sorceressUnlocked) {
+      unlockText = renderMultiline(9);
+      unlockText.maxWidth((int) width);
+      unlockText.hardlight(0xFFFF00);
+      unlock.add(unlockText);
     }
 
     ExitButton btnExit = new ExitButton();
@@ -265,26 +264,24 @@ public class StartScene extends PixelScene {
     }
     shields.get(curClass = cl).highlight(true);
 
-    if (cl != HeroClass.HUNTRESS || huntressUnlocked) {
+    boolean locked = (cl == HeroClass.HUNTRESS && !huntressUnlocked) ||
+            (cl == HeroClass.SORCERESS && !sorceressUnlocked);
 
+    if (!locked) {
       unlock.visible = false;
 
       GamesInProgress.Info info = GamesInProgress.check(curClass);
       if (info != null) {
-
         btnLoad.visible = true;
-        btnLoad.secondary(Messages.format(Messages.get(this, "depth_level"), 
+        btnLoad.secondary(Messages.format(Messages.get(this, "depth_level"),
                 info.depth, info.level), info.challenges);
         btnNewGame.visible = true;
         btnNewGame.secondary(Messages.get(this, "erase"), false);
 
         float w = (Camera.main.width - GAP) / 2 - buttonX;
 
-        btnLoad.setRect(
-                buttonX, buttonY, w, BUTTON_HEIGHT);
-        btnNewGame.setRect(
-                btnLoad.right() + GAP, buttonY, w, BUTTON_HEIGHT);
-
+        btnLoad.setRect(buttonX, buttonY, w, BUTTON_HEIGHT);
+        btnNewGame.setRect(btnLoad.right() + GAP, buttonY, w, BUTTON_HEIGHT);
       } else {
         btnLoad.visible = false;
 
@@ -293,8 +290,23 @@ public class StartScene extends PixelScene {
         btnNewGame.setRect(buttonX, buttonY, Camera.main.width - buttonX * 2,
                 BUTTON_HEIGHT);
       }
-
     } else {
+      String text = "";
+      switch (cl) {
+        case HUNTRESS:
+          text = Messages.get(this, "unlock_huntress");
+          break;
+        case SORCERESS:
+          text = Messages.get(this, "unlock_sorceress");
+          break;
+      }
+      // unlock text
+      float height = DarkestPixelDungeon.landscape() ? HEIGHT_L : HEIGHT_P;
+      float bottom = Camera.main.height - (Camera.main.height - height) / 2;
+      unlockText.text(text);
+      unlockText.setPos(Camera.main.width / 2 - unlockText.width() / 2,
+              (bottom - BUTTON_HEIGHT) + (BUTTON_HEIGHT - unlockText.height()) / 2);
+      align(unlockText);
 
       unlock.visible = true;
       btnLoad.visible = false;
@@ -308,7 +320,7 @@ public class StartScene extends PixelScene {
     InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
     KGenerator.INSTANCE.reset();
-    
+
     if (DarkestPixelDungeon.intro()) {
       DarkestPixelDungeon.intro(false);
       Game.switchScene(IntroScene.class);
@@ -321,9 +333,9 @@ public class StartScene extends PixelScene {
   protected void onBackPressed() {
     DarkestPixelDungeon.switchNoFade(TitleScene.class);
   }
-  
+
   private static class GameButton extends RedButton {
-    
+
     private static final int SECONDARY_COLOR_N = 0xCACFC2;
     private static final int SECONDARY_COLOR_H = 0xFFFF88;
 
@@ -502,7 +514,8 @@ public class StartScene extends PixelScene {
 
       super.createChildren();
 
-      image = Icons.get(DarkestPixelDungeon.challenges() > 0 ? Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF);
+      image = Icons.get(DarkestPixelDungeon.challenges() > 0 ? Icons
+              .CHALLENGE_ON : Icons.CHALLENGE_OFF);
       add(image);
     }
 
@@ -518,7 +531,8 @@ public class StartScene extends PixelScene {
     @Override
     protected void onClick() {
       if (Badges.isUnlocked(Badges.Badge.VICTORY)) {
-        StartScene.this.add(new WndChallenges(DarkestPixelDungeon.challenges(), true) {
+        StartScene.this.add(new WndChallenges(DarkestPixelDungeon.challenges
+                (), true) {
           public void onBackPressed() {
             super.onBackPressed();
             image.copy(Icons.get(DarkestPixelDungeon.challenges() > 0 ?
@@ -526,7 +540,8 @@ public class StartScene extends PixelScene {
           }
         });
       } else {
-        StartScene.this.add(new WndMessage(Messages.get(StartScene.class, "need_to_win")));
+        StartScene.this.add(new WndMessage(Messages.get(StartScene.class,
+                "need_to_win")));
       }
     }
 

@@ -2,10 +2,12 @@ package com.egoal.darkestpixeldungeon.items.artifacts;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff;
 import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink;
 import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
@@ -14,10 +16,15 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.ShaftParticle;
+import com.egoal.darkestpixeldungeon.effects.particles.SmokeParticle;
+import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave;
+import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.CellSelector;
@@ -53,7 +60,7 @@ public class Astrolabe extends Artifact {
     cooldown = 0;
   }
 
-  private static float TIME_TO_INVOKE = .5f;
+  private static float TIME_TO_INVOKE = 1f;
   private static int NORMAL_COOLDOWN = 20;
 
   private static final String AC_INVOKE = "INVOKE";
@@ -81,6 +88,23 @@ public class Astrolabe extends Artifact {
     }
   }
 
+  private void updateSprite() {
+    int magic = 0;
+    if (cachedInvoker_1 != null) ++magic;
+    if (cachedInvoker_2 != null) ++magic;
+    switch (magic) {
+      case 1:
+        image = ItemSpriteSheet.ASTROLABE_1;
+        break;
+      case 2:
+        image = ItemSpriteSheet.ASTROLABE_2;
+        break;
+      default:
+        image = ItemSpriteSheet.ASTROLABE;
+        break;
+    }
+  }
+
   private boolean blockNextNegative = false;
   private boolean nextNegativeIsImprison = false;
 
@@ -96,7 +120,7 @@ public class Astrolabe extends Artifact {
 
     cooldown = NORMAL_COOLDOWN;
     Sample.INSTANCE.play(Assets.SND_ASTROLABE);
-
+    
     boolean invokePositive = Random.Float() < (cursed ? .5f : .75f);
 
     if (!invokePositive && blockNextNegative) {
@@ -151,10 +175,10 @@ public class Astrolabe extends Artifact {
   private static Class<?>[] positiveInvokers = new Class<?>[]{
           foresight.class, purgation.class, life_link.class,
           extremely_lucky.class, pardon.class, faith.class,
-          overload.class, guide.class, prophesy.class
+          overload.class, guide.class, prophesy.class, sun_strike.class, 
   };
   private static float[] positiveProbs = new float[]{
-          10, 10, 10, 5, 10, 5, 10, 10, 10,
+          10, 10, 10, 5, 10, 5, 10, 10, 10, 5
   };
   private static Class<?>[] negativeInvokers = new Class<?>[]{
           punish.class, vain.class, feedback.class, imprison.class,
@@ -221,6 +245,8 @@ public class Astrolabe extends Artifact {
 
     } catch (Exception e) {
     }
+
+    updateSprite();
   }
 
   @Override
@@ -325,6 +351,9 @@ public class Astrolabe extends Artifact {
           invokeMagic();
           break;
       }
+
+      updateSprite();
+      updateQuickslot();
     }
   }
 
@@ -333,8 +362,8 @@ public class Astrolabe extends Artifact {
   public static class Invoker {
     protected String name_ = "invoker";
     protected boolean needTarget_ = false;
-    private Hero user_ = null;
-    private Astrolabe a_ = null;
+    protected Hero user_ = null;
+    protected Astrolabe a_ = null;
     public boolean positive = true;
 
     public String status() {
@@ -349,7 +378,7 @@ public class Astrolabe extends Artifact {
       return positive ? 0xCC5252 : 0x000026;
     }
 
-    public final void invoke(Hero user, Astrolabe a) {
+    public void invoke(Hero user, Astrolabe a) {
       user_ = user;
       a_ = a;
       if (needTarget_) {
@@ -544,6 +573,117 @@ public class Astrolabe extends Artifact {
           Buff.prolong(ch, Paralysis.class, 3f);
           ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12);
         }
+      }
+    }
+  }
+
+  public static class sun_strike extends Invoker implements CellSelector
+          .Listener {
+    {
+      name_ = "sun_strike";
+    }
+
+    private static float TIME_TO_CHANT = 3f;
+
+    @Override
+    public void invoke(Hero user, Astrolabe a) {
+      user_ = user;
+      a_ = a;
+      GameScene.selectCell(this);
+    }
+
+    @Override
+    public void onSelect(Integer cell) {
+      if (cell != null) {
+        if (Dungeon.level.visited[cell] || Dungeon.level.mapped[cell]) {
+          Buff.prolong(user_, buff.class, 2f).target = cell;
+
+          user_.spend(TIME_TO_CHANT);
+          user_.busy();
+          user_.sprite.operate(user_.pos);
+        } else
+          GLog.w(Messages.get(Astrolabe.Invoker.class, "not_select_target"));
+      }
+    }
+
+    @Override
+    public String prompt() {
+      return Messages.get(Astrolabe.Invoker.class, "prompt");
+    }
+
+    public static class buff extends FlavourBuff {
+      public int target = 0;
+
+      private static final String TARGET = "target";
+
+      @Override
+      public boolean act() {
+        // cast! like bomb...
+        Sample.INSTANCE.play(Assets.SND_BLAST);
+        if (Dungeon.visible[target]) {
+          CellEmitter.center(target).burst(BlastParticle.FACTORY, 50);
+        }
+
+        boolean terrainAffected = false;
+        ArrayList<Char> enemies = new ArrayList<>();
+        for (int n : PathFinder.NEIGHBOURS9) {
+          int c = target + n;
+          if (c >= 0 && c < Dungeon.level.length()) {
+            if (Dungeon.visible[c]) {
+              CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
+            }
+
+            if (Level.flamable[c]) {
+              Dungeon.level.destroy(c);
+              GameScene.updateMap(c);
+              terrainAffected = true;
+            }
+
+            //destroys items / triggers bombs caught in the blast.
+            Heap heap = Dungeon.level.heaps.get(c);
+            if (heap != null) heap.explode();
+
+            Char ch = Actor.findChar(c);
+            if (ch != null && ch != Dungeon.hero) {
+              enemies.add(ch);
+            }
+          }
+        }
+
+        if (!enemies.isEmpty()) {
+          int totalDamage = 0;
+          for (Char ch : enemies) if (ch.HT > totalDamage) totalDamage = ch.HT;
+          totalDamage = Math.max(50, totalDamage);
+
+          int dmg = totalDamage / enemies.size();
+          for (Char ch : enemies) {
+            Damage d = new Damage(Random.IntRange(dmg * 7 / 10, dmg * 12 / 10),
+                    curUser, ch).addFeature(Damage.Feature.DEATH);
+            //^ cannot be pure, which will kill boss directly.
+            if (ch.pos == target) d.value *= 1.25f;
+            ch.defendDamage(d);
+            ch.takeDamage(d);
+          }
+        }
+
+        if (terrainAffected) {
+          Dungeon.observe();
+        }
+
+        return super.act();
+      }
+
+      @Override
+      public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+        bundle.put(TARGET, target);
+
+      }
+
+      @Override
+      public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        target = bundle.getInt(TARGET);
       }
     }
   }

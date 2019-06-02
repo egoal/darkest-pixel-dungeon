@@ -36,7 +36,7 @@ class Javelin(number: Int = 1) : MissileWeapon(4, stick = true) {
         quantity = number
     }
 
-    override fun max(lvl: Int): Int = 5 * (tier - 1)
+    override fun max(lvl: Int): Int = 2 + tier * 2
 
     override fun proc(dmg: Damage): Damage {
         Buff.prolong(dmg.to as Char, Cripple::class.java, Cripple.DURATION)

@@ -30,16 +30,17 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndItem
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.Bundle
 
 import java.util.ArrayList
 
 open class BrokenSeal : Item() {
-
     init {
         image = ItemSpriteSheet.SEAL
 
@@ -50,6 +51,8 @@ open class BrokenSeal : Item() {
 
         defaultAction = AC_INFO
     }
+
+    private var enchanted = false
 
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_AFFIX) }
 
@@ -69,10 +72,32 @@ open class BrokenSeal : Item() {
     // same as upgrading armor the seal is affixed to then removing it.
     override fun isUpgradable(): Boolean = level() == 0
 
-    class WarriorShield : Buff() {
+    fun enchant() {
+        enchanted = true
 
+        image = ItemSpriteSheet.ENHANCED_SEAL
+    }
+
+    override fun desc(): String {
+        var desc = super.desc()
+        if (enchanted) desc += "\n\n" + M.L(this, "enchant_desc")
+        return desc
+    }
+
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(ENCHANTED, enchanted)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        enchanted = bundle.getBoolean(ENCHANTED)
+        if (enchanted) enchant()
+    }
+
+    class WarriorShield : Buff() {
         private var armor: Armor? = null
-        private var partialShield: Float = 0.toFloat()
+        private var partialShield: Float = 0f
 
         override fun act(): Boolean {
             if (armor == null)
@@ -94,13 +119,22 @@ open class BrokenSeal : Item() {
             armor = arm
         }
 
-        fun maxShield(): Int = 3 + armor!!.tier + armor!!.level()
+        fun maxShield(): Int {
+            val am = armor!!
+            var value = 3 + am.tier + am.level()
+            // extra shield if enchanted, this would speed up the charging, too
+            // that's why i think it's powerful enough, at least for now
+            if (am.checkSeal()?.enchanted == true) value += 1 + am.level()
+
+            return value
+        }
     }
 
     companion object {
-        const val AC_AFFIX = "AFFIX"
+        private const val AC_AFFIX = "AFFIX"
         //only to be used from the quickslot, for tutorial purposes mostly.
-        const val AC_INFO = "INFO_WINDOW"
+        private const val AC_INFO = "INFO_WINDOW"
+        private const val ENCHANTED = "enchanted"
 
         private var armorSelector: WndBag.Listener = WndBag.Listener { item ->
             if (item != null && item is Armor) {
@@ -117,13 +151,6 @@ open class BrokenSeal : Item() {
                     Badges.validateTutorial()
                 }
             }
-        }
-    }
-    
-    ///
-    class Enhanced : BrokenSeal() {
-        init {
-            image = ItemSpriteSheet.ENHANCED_SEAL
         }
     }
 }

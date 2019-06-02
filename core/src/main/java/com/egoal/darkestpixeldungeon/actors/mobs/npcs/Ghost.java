@@ -330,9 +330,12 @@ public class Ghost extends NPC {
         armor = new PlateArmor();
       }
 
-      do{
-        weapon = (Weapon)KGenerator.WEAPON.MELEE.INSTANCE.tier(wepTier-1).generate();
-      }while(!(weapon instanceof  MeleeWeapon));
+      do {
+        weapon = (Weapon) KGenerator.WEAPON.MELEE.INSTANCE.tier(wepTier - 1)
+                .generate();
+      } while (!(weapon instanceof MeleeWeapon));
+      weapon.cursed = false;
+      weapon.enchant(null);
 
       //50%:+0, 30%:+1, 15%:+2, 5%:+3
       float itemLevelRoll = Random.Float();

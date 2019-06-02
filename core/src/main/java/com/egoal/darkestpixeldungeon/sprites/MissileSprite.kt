@@ -36,7 +36,7 @@ class MissileSprite : ItemSprite(), Tweener.Listener {
             angularSpeed = 0f
             angle = 135 - (Math.atan2(d.x.toDouble(), d.y.toDouble()) / 3.1415926 * 180).toFloat()
         } else
-            angularSpeed = (if (image == 15 || image == 106) 1440 else 720).toFloat()
+            angularSpeed = (if (image == 15 || image == 106) 1800 else 900).toFloat()
 
         val tweener = PosTweener(this, dst, d.length() / SPEED)
         tweener.listener = this
@@ -49,7 +49,7 @@ class MissileSprite : ItemSprite(), Tweener.Listener {
     }
 
     companion object {
-        private const val SPEED = 300f
+        private const val SPEED = 50f
 
         private val FIXED_ROTATION_IMAGES = arrayOf(
                 ItemSpriteSheet.DART, ItemSpriteSheet.INCENDIARY_DART,

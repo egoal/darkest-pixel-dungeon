@@ -38,7 +38,7 @@ class IncendiaryDart(number: Int = 1) : MissileWeapon(2, stick = true) {
 
     init {
         image = ItemSpriteSheet.INCENDIARY_DART
-        
+
         quantity = number
     }
 
@@ -49,6 +49,8 @@ class IncendiaryDart(number: Int = 1) : MissileWeapon(2, stick = true) {
         else
             super.onThrow(cell)
     }
+
+    override fun breakChance(): Float = 1f
 
     override fun proc(damage: Damage): Damage {
         Buff.affect(damage.to as Char, Burning::class.java).reignite(damage.to as Char)

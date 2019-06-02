@@ -17,6 +17,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.util.ArrayList
+import kotlin.math.sqrt
 
 class TimekeepersHourglass : Artifact() {
     init {
@@ -25,7 +26,7 @@ class TimekeepersHourglass : Artifact() {
         levelCap = 5
         cooldown = 0
 
-        chargeCap = 5 + level()
+        chargeCap = chargeCapacity(level())
         charge = chargeCap
         partialCharge = 0f
 
@@ -77,13 +78,16 @@ class TimekeepersHourglass : Artifact() {
         return false
     }
 
+    // 1, 3, 6, 10-> 1, 2, 3, 4: like MeleeWeapon::STRReq
+    private fun chargeCapacity(lvl: Int): Int = (2 + (sqrt(8f * (2 * lvl) + 1f) - 1f) / 2f).toInt()
+
     override fun upgrade(): Item {
         // artifact transmutation
         while (level() + 1 > sandBags)
             sandBags++
 
         val self = super.upgrade()
-        chargeCap = 5 + level()
+        chargeCap = chargeCapacity(level())
 
         return self
     }
@@ -116,7 +120,7 @@ class TimekeepersHourglass : Artifact() {
         override fun act(): Boolean {
             val lock = target.buff(LockedFloor::class.java)
             if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-                partialCharge += 1f / (60f - (chargeCap - charge) * 2f)
+                partialCharge += 1f / (40f - (chargeCap - charge) * 2f)
 
                 if (partialCharge >= 1f) {
                     partialCharge--

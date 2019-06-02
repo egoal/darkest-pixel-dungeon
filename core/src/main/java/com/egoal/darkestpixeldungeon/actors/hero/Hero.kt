@@ -433,7 +433,7 @@ class Hero : Char() {
     override fun attackProc(dmg: Damage): Damage {
         (rangedWeapon ?: belongings.weapon)?.proc(dmg)
 
-        if (dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0 && Random.Int(15) == 0)
+        if (dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0 && Random.Int(10) == 0)
             recoverSanity(min(Random.Int(dmg.value / 6) + 1, 10).toFloat())
 
         // snipper perk
@@ -998,10 +998,10 @@ class Hero : Char() {
         // may recover sanity
         if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.IntRange(6, 12).toFloat())
         else if (ch is Mob && ch.maxLvl + 2 >= lvl) {
-            val x = 1f - HP.toFloat() / HT.toFloat()
+            val x = buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE // 1f - HP.toFloat() / HT.toFloat()
             val px = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
-            val y = buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE
-            val py = if (y < 0.3f) 1f else (1f + 2f * (y - 0.3f) * (y - 0.3f))
+            val y = 1f - HP.toFloat() / HT.toFloat() // buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE
+            val py = if (y < 0.5f) 1f else (1f + 3f * (y - 0.5f) * (y - 0.5f))
 
             if (Random.Float() < px * py)
                 recoverSanity(Random.NormalIntRange(1, 6).toFloat())

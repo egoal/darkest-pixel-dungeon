@@ -5,10 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
-import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
-import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep
-import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
-import com.egoal.darkestpixeldungeon.items.artifacts.EyeballOfTheElder
+import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
@@ -215,9 +212,8 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-
-//        TomeOfMastery().collect()
-//        EyeballOfTheElder().collect()
+        
+        GreatBlueprint().identify().collect()
     }
 
     private fun initDebug(hero: Hero) {

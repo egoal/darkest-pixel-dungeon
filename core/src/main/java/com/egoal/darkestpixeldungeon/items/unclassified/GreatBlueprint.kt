@@ -52,6 +52,7 @@ class GreatBlueprint : Item() {
         detach(Dungeon.hero.belongings.backpack)
 
         // enhance
+        if(item is BrokenSeal) item.enchant()
 
         GLog.w(M.L(this, "enhanced", item.name()))
         with(curUser) {
