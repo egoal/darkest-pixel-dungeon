@@ -38,9 +38,7 @@ class GreatBlueprint : Item() {
     }
 
     // todo...
-    private val filter = WndBag.Filter {
-        it is BrokenSeal || it is MagesStaff || it is CloakOfShadows || it is Boomerang || it is ExtractionFlask
-    }
+    private val filter = WndBag.Filter { it is Enchantable }
 
     private val itemSelector = WndBag.Listener {
         if (it != null && filter.enable(it)) {
@@ -52,7 +50,7 @@ class GreatBlueprint : Item() {
         detach(Dungeon.hero.belongings.backpack)
 
         // enhance
-        if(item is BrokenSeal) item.enchant()
+        (item as Enchantable).enchantByBlueprint()
 
         GLog.w(M.L(this, "enhanced", item.name()))
         with(curUser) {
@@ -62,10 +60,15 @@ class GreatBlueprint : Item() {
             sprite.operate(pos)
         }
         Sample.INSTANCE.play(Assets.SND_EVOKE)
+        updateQuickslot()
     }
 
     companion object {
         private const val AC_USE = "USE"
+    }
+    
+    interface Enchantable{
+        fun enchantByBlueprint()
     }
 
 }

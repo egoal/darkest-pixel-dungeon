@@ -49,8 +49,6 @@ import com.watabou.utils.ColorMath;
 
 // status pane in the game scene
 public class StatusPane extends Component {
-  private final String VERSIONSTR = "0.3.2-1-5";
-
   private NinePatch bg;
   private NinePatch levelBg;
   private Image portrait;
@@ -157,10 +155,10 @@ public class StatusPane extends Component {
     depth.measure();
     add(depth);
 
-    version = new BitmapText(VERSIONSTR, PixelScene.pixelFont);
+    version = new BitmapText(Dungeon.VERSION_STRING, PixelScene.pixelFont);
     version.hardlight(0xcacfc2);
     version.measure();
-    if (VERSIONSTR.length() > 0) add(version);
+    if (Dungeon.VERSION_STRING.length() > 0) add(version);
 
     danger = new DangerIndicator();
     add(danger);

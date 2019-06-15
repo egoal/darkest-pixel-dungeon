@@ -51,6 +51,11 @@ public class ScrollOfTeleportation extends Scroll {
 
     setKnown();
 
+    if (Dungeon.bossLevel()) {
+      GLog.w(Messages.get(this, "no_tele"));
+      return;
+    }
+
     if (curUser.getHeroPerk().contain(HeroPerk.Perk.INTENDED_TRANSPORTATION))
       IntendTeleportHero(curUser);
     else {
@@ -70,10 +75,8 @@ public class ScrollOfTeleportation extends Scroll {
       }
     } while (pos == -1);
 
-    if (pos == -1 || Dungeon.bossLevel()) {
-
+    if (pos == -1) {
       GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
-
     } else {
 
       appear(hero, pos);

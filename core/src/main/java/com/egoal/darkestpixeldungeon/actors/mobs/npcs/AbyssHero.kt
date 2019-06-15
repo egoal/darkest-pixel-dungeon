@@ -141,7 +141,9 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun attackProc(dmg: Damage): Damage {
         if (!hostile) {
             (dmg.to as Mob?)?.let {
-                val expPortion = it.EXP.toFloat() * (dmg.value.toFloat() / it.HT.toFloat())
+                // fix by depth
+                val dl = (Dungeon.depth / 2 - level) / 2
+                val expPortion = it.EXP.toFloat() * (dmg.value.toFloat() / it.HT.toFloat()) * Math.pow(1.2, dl.toDouble()).toFloat()
                 Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(expPortion / maxExp)
             }
         }
@@ -152,7 +154,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     // voice
     fun onSpawned() {
         if (hostile) yell(Messages.get(this, "defeat-me"))
-        else{
+        else {
             // on each summon, gain exp
             Dungeon.hero.buff(HandleOfAbyss.Recharge::class.java)?.gainExp(0.20f)
             yell(Messages.get(this, "spawned"))

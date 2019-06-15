@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.watabou.utils.Random;
 
 public class ScrollOfUpgrade extends InventoryScroll {
 
@@ -45,8 +46,8 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
   @Override
   protected void onItemSelected(Item item) {
-
     upgrade(curUser);
+    curUser.recoverSanity(Random.Float(0.5f, 2.5f));
 
     //logic for telling the user when item properties change from upgrades
     //...yes this is rather messy

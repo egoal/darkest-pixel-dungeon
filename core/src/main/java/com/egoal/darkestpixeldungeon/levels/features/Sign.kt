@@ -14,7 +14,7 @@ import com.watabou.noosa.audio.Sample
 
 object Sign {
 
-    fun ShowInDepth(depth: Int) = depth in listOf(0, 5, 6, 11, 15, 16, 20, 21)
+    fun ShowInDepth(depth: Int) = depth in listOf(0, 5, 6, 11, 15, 16, 20)
 
     fun Read(pos: Int) {
         if (Dungeon.level is DeadEndLevel)

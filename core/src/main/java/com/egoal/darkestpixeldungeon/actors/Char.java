@@ -335,7 +335,7 @@ public abstract class Char extends Actor {
     LifeLink ll = buff(LifeLink.class);
     if (ll != null) {
       Actor a = Actor.findById(ll.linker);
-      if (a != null && (a instanceof Char)) {
+      if (a instanceof Char) {
         ((Char) a).takeDamage(dmg);
         ((Char) a).sprite.showStatus(0x000000, Messages.get(LifeLink.class,
                 "transform"));

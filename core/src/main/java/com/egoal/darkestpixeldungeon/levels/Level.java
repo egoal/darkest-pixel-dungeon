@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
@@ -187,61 +188,8 @@ public abstract class Level implements Bundlable {
     mapped = new boolean[length()];
     Arrays.fill(mapped, false);
 
-    ArrayList<Item> stationaryItems = new ArrayList<>();
-
-    if (Dungeon.depth > 0 && (!(Dungeon.bossLevel() || Dungeon.depth == 21))) {
-      stationaryItems.add(KGenerator.FOOD.INSTANCE.generate());
-
-      // special items
-      int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth
-              .class);
-
-      if (Dungeon.posNeeded()) {
-        if (Random.Float() > Math.pow(0.925, bonus))
-          stationaryItems.add(new PotionOfMight());
-        else
-          stationaryItems.add(new PotionOfStrength());
-        Dungeon.limitedDrops.strengthPotions.count++;
-      }
-      if (Dungeon.souNeeded()) {
-        stationaryItems.add(new ScrollOfUpgrade());
-        Dungeon.limitedDrops.upgradeScrolls.count++;
-      }
-      if (Dungeon.asNeeded()) {
-        if (Random.Float() > Math.pow(0.925, bonus))
-          stationaryItems.add(new Stylus());
-        stationaryItems.add(new Stylus());
-        Dungeon.limitedDrops.arcaneStyli.count++;
-      }
-      if (Dungeon.wineNeeded()) {
-        if (Random.Float() > Math.pow(0.925, bonus))
-          stationaryItems.add(new Wine());
-        stationaryItems.add(new Wine());
-        Dungeon.limitedDrops.wine.count++;
-      }
-      if (Dungeon.scrollOfLullabyNeed()) {
-        if (Random.Float() > Math.pow(0.925, bonus))
-          stationaryItems.add(new ScrollOfLullaby());
-        stationaryItems.add(new ScrollOfLullaby());
-        Dungeon.limitedDrops.lullabyScrolls.count++;
-      }
-
-      DriedRose rose = Dungeon.hero.getBelongings().getItem(DriedRose.class);
-      if (rose != null && !rose.cursed) {
-        //this way if a rose is dropped later in the game, player still has a
-        // chance to max it out.
-        int petalsNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) -
-                rose.getDroppedPetals()) / 3);
-
-        for (int i = 1; i <= petalsNeeded; i++) {
-          //the player may miss a single petal and still max their rose.
-          if (rose.getDroppedPetals() < 11) {
-            stationaryItems.add(new DriedRose.Companion.Petal());
-            rose.setDroppedPetals(rose.getDroppedPetals() + 1);
-          }
-        }
-      }
-
+    // feeling
+    if (Dungeon.depth != 0 && Dungeon.depth != 21 && !Dungeon.bossLevel()) {
       if (Dungeon.depth > 1) {
         float p = Random.Float();
         if (p < 0.2)
@@ -250,26 +198,21 @@ public abstract class Level implements Bundlable {
           feeling = Feeling.WATER;
         else if (p < 0.35)
           feeling = Feeling.GRASS;
-
-        // give extra torches
-        {
-          float prop = 0.3f - Dungeon.depth / 5 * 0.025f;
-          while (Random.Float() < prop)
-            stationaryItems.add(new Torch());
-        }
-
-        // extra wine
-        if (Random.Int(10) == 0)
-          stationaryItems.add(new Wine());
       }
     }
+
+    ArrayList<Item> stationaryItems = createStationaryItems();
 
     // now these two variables only set one once, so move outside
     pitRoomNeeded = Dungeon.depth > 1 && weakFloorCreated;
     weakFloorCreated = false;
 
-    KGenerator.INSTANCE.stash(); // some status may be modified during building
-
+    // some status may be modified during building
+    KGenerator.INSTANCE.stash();
+    ArrayList<Item> hasDropped = new ArrayList<>();
+    ArrayList<Item> dropped = Dungeon.droppedItems.get(Dungeon.depth + 1);
+    if (dropped != null) hasDropped.addAll(dropped);
+    
     for (int i = 0; ; ++i) {
       itemsToSpawn = (ArrayList<Item>) stationaryItems.clone();
       // no chasm feeling
@@ -289,6 +232,11 @@ public abstract class Level implements Bundlable {
       }
 
       KGenerator.INSTANCE.recover();
+    }
+
+    if (dropped != null) {
+      dropped.clear();
+      dropped.addAll(hasDropped);
     }
 
     decorate();
@@ -1132,6 +1080,70 @@ public abstract class Level implements Bundlable {
           heap.seen = true;
     }
 
+  }
+
+  private ArrayList<Item> createStationaryItems() {
+    ArrayList<Item> items = new ArrayList<>();
+    if (Dungeon.depth == 0 || Dungeon.depth == 21 || Dungeon.bossLevel())
+      return items;
+
+    // quota
+    items.add(KGenerator.FOOD.INSTANCE.generate());
+
+    int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
+    float p = (float) Math.pow(0.925, bonus);
+    if (Dungeon.posNeeded()) {
+      items.add(Random.Float() > p ? new PotionOfMight() : new
+              PotionOfStrength());
+      Dungeon.limitedDrops.strengthPotions.count++;
+    }
+    if (Dungeon.souNeeded()) {
+      items.add(new ScrollOfUpgrade());
+      Dungeon.limitedDrops.upgradeScrolls.count++;
+    }
+    if (Dungeon.asNeeded()) {
+      if (Random.Float() > p) items.add(new Stylus());
+      items.add(new Stylus());
+      Dungeon.limitedDrops.arcaneStyli.count++;
+    }
+    if (Dungeon.wineNeeded()) {
+      if (Random.Float() > p) items.add(new Wine());
+      items.add(new Wine());
+      Dungeon.limitedDrops.wine.count++;
+    }
+    if (Dungeon.scrollOfLullabyNeed()) {
+      if (Random.Float() > p) items.add(new ScrollOfLullaby());
+      items.add(new ScrollOfLullaby());
+      Dungeon.limitedDrops.lullabyScrolls.count++;
+    }
+
+    // torch
+    {
+      float prop = 0.3f - Dungeon.depth / 5 * 0.025f;
+      while (Random.Float() < prop) items.add(new Torch());
+    }
+
+    // extra wine?
+
+    // specials
+    DriedRose rose = Dungeon.hero.getBelongings().getItem(DriedRose.class);
+    if (rose != null && !rose.cursed) {
+      // this way if a rose is dropped later in the game, player still has a 
+      // chance to max it out.
+      int petalsNeeded = (int) Math.ceil((float) ((Dungeon.depth / 2) -
+              rose.getDroppedPetals()) / 3);
+
+      for (int i = 1; i <= petalsNeeded; i++) {
+        //the player may miss a single petal and still max their rose.
+        if (rose.getDroppedPetals() < 11) {
+          items.add(new DriedRose.Companion.Petal());
+          rose.setDroppedPetals(rose.getDroppedPetals() + 1);
+        }
+      }
+    }
+
+
+    return items;
   }
 
   public int distance(int a, int b) {

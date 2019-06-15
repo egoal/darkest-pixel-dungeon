@@ -65,7 +65,7 @@ public class PotionOfHealing extends Potion {
 
       GLog.p(Messages.get(this, "heal"));
     } else {
-      int value = hero.HT;
+      int value = Math.min(hero.HT, hero.HT / 3 + 50);
       // directly recover some health, since buff is act later than chars
       int directRecover = value / 3;
       hero.HP = Math.min(hero.HT, hero.HP + directRecover);

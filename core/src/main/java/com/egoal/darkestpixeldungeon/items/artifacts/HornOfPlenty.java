@@ -190,7 +190,7 @@ public class HornOfPlenty extends Artifact {
         //to a max of 1.3x max hunger value per hero level
         //This means that a standard ration will be recovered in ~7.15 hero 
         // levels
-        partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.035f *
+        partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.035f * 
                 level()));
 
         //charge is in increments of 1/10 max hunger value.

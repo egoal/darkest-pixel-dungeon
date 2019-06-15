@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.scenes
 
 import com.egoal.darkestpixeldungeon.Chrome
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.TopExceptionHandler
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.ui.*
@@ -43,15 +44,19 @@ class ErrorReportScene : PixelScene() {
         val content = list.content()
         content.clear()
 
+        // version
+        val versionstr = if (Dungeon.VERSION_STRING.isEmpty()) DarkestPixelDungeon.version
+        else Dungeon.VERSION_STRING
+        
+        val version = renderText(versionstr, 6)
+        content.add(version)
+
         // warning
         val warning = renderMultiline(M.L(this, "warning"), 6)
         warning.maxWidth(panel.innerWidth().toInt())
         content.add(warning)
-        // log
-//        val log = renderMultiline(TopExceptionHandler.LoadErrorString()!!, 6)
-//        log.maxWidth(panel.innerWidth().toInt())
-//        content.add(log)
-//        log.setPos(warning.left(), warning.bottom() + 8f)
+        warning.setPos(version.x, version.y + version.height() + 4f)
+
         var y = warning.bottom() + 8f
         for (line in TopExceptionHandler.LoadErrorStrings()!!) {
             val log = renderMultiline(line, 6)

@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.hero
 
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
@@ -26,6 +27,8 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Icecap
 import com.watabou.utils.Bundle
+import com.watabou.utils.Random
+import kotlin.math.min
 
 enum class HeroClass(private val title: String) {
     WARRIOR("warrior") {
@@ -33,6 +36,18 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.WARRIOR
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "warrior_perk$it") }
 
+        override fun initHeroStatus(hero: Hero) {
+            super.initHeroStatus(hero)
+            hero.HP += 5 // 25
+            hero.HT += 5 
+        }
+
+        override fun upgradeHero(hero: Hero) {
+            super.upgradeHero(hero)
+            hero.HT += 1
+            hero.HP += 1
+        }
+        
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
             hero.belongings.weapon = WornShortsword().identify() as Weapon
@@ -97,6 +112,11 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.ROGUE
         override fun perks(): List<String> = (1..6).map { Messages.get(HeroClass::class.java, "rogue_perk$it") }
 
+        override fun upgradeHero(hero: Hero) {
+            super.upgradeHero(hero)
+            hero.criticalChance += 0.1f / 100f
+        }
+        
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
 
@@ -154,6 +174,13 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.DPD_SORCERESS
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "sorceress_perk$it") }
 
+        override fun upgradeHero(hero: Hero) {
+            super.upgradeHero(hero)
+            hero.HT -= 1
+            hero.HP -= 1
+            hero.regeneration += 0.003f
+        }
+        
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
 
@@ -182,6 +209,7 @@ enum class HeroClass(private val title: String) {
     fun initHero(hero: Hero) {
         hero.heroClass = this
 
+        initHeroStatus(hero)
         initHeroClass(hero)
 
         if (DarkestPixelDungeon.debug()) initDebug(hero)
@@ -201,6 +229,8 @@ enum class HeroClass(private val title: String) {
     }
 
     // common
+    protected open fun initHeroStatus(hero: Hero) {}
+
     protected open fun initHeroClass(hero: Hero) {
         hero.belongings.armor = ClothArmor().identify() as Armor
 
@@ -212,10 +242,31 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-        
+
         GreatBlueprint().identify().collect()
+        WandOfBlastWave().identify().collect()
     }
 
+    // called when hero level up
+    open fun upgradeHero(hero: Hero){
+        hero.apply { 
+            lvl++
+            HT += 5
+            HP += 5
+
+            atkSkill++
+            defSkill++
+
+            criticalChance += 0.4f / 100f
+            regeneration += 0.015f
+
+            if (lvl < 10) updateAwareness()
+
+            recoverSanity(min(Random.NormalIntRange(1, lvl * 3 / 4).toFloat(),
+                    buff(Pressure::class.java)!!.pressure * 0.3f))
+        }
+    }
+    
     private fun initDebug(hero: Hero) {
         hero.apply {
             HT = 1000

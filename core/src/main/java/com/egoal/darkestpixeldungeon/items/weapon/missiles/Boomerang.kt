@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.weapon.missiles
 
+import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
@@ -8,19 +9,24 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
+import com.egoal.darkestpixeldungeon.items.unclassified.GreatBlueprint
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.sprites.MissileSprite
+import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
 import com.egoal.darkestpixeldungeon.utils.BArray
+import com.watabou.noosa.audio.Sample
+import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import kotlin.math.max
 import kotlin.math.sqrt
 
-open class Boomerang : MissileWeapon(1) {
-    private var ejection = 1
+open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
+    private var ejection = 0
+    private var enchanted = false
 
     init {
         image = ItemSpriteSheet.BOOMERANG
@@ -107,25 +113,70 @@ open class Boomerang : MissileWeapon(1) {
             Dungeon.level.drop(this, owner.pos).sprite.drop()
         }
         
-        ejection = 1
+        ejection = if(enchanted) 1 else 0
+        owner.next()
     }
 
     override fun cast(user: Hero, dst: Int) {
         throwEquiped = isEquipped(user) && !cursed
         if (throwEquiped) Dungeon.quickslot.convertToPlaceholder(this)
         
-        //fixme: this is a patch just for ejection
+        //fixme: copy from parent, this is a patch just for ejection
+        if (isEquipped(user)) {
+            if (quantity == 1 && !this.doUnequip(user, false, false)) {
+                return
+            }
+        }
         
+        val cell = throwPos(user, dst)
+        user.sprite.zap(cell)
+        user.busy()
         
-        super.cast(user, dst)
+        Sample.INSTANCE.play(Assets.SND_MISS, 0.6f, 0.6f, 1.5f)
+        val enemy = Actor.findChar(cell)
+        QuickSlotButton.target(enemy)
+        
+        val delay = Item.TIME_TO_THROW* speedFactor(user)
+        (user.sprite.parent.recycle(MissileSprite::class.java) as MissileSprite)
+                .reset(user.pos, cell, this, Callback { 
+                    (this@Boomerang.detach(user.belongings.backpack) as Boomerang).onThrow(cell)
+                    user.spend(delay) // spend but not next, next when the boomerang back to hand
+                })
     }
 
+    override fun onThrow(cell: Int) {
+        super.onThrow(cell)
+        Dungeon.hero.next() // patch to next
+    }
+    
     override fun desc(): String {
-        var info = super.desc()
+        val info = super.desc()
         return when (imbue) {
             Imbue.LIGHT -> info + "\n\n" + Messages.get(Weapon::class.java, "lighter")
             Imbue.HEAVY -> info + "\n\n" + Messages.get(Weapon::class.java, "heavier")
             Imbue.NONE -> info
         }
+    }
+
+    override fun enchantByBlueprint(){
+        enchanted = true
+        ejection = 1
+        
+        image = ItemSpriteSheet.ENHANCED_BOOMERANG
+    }
+    
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(ENCHANTED, enchanted)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        enchanted = bundle.getBoolean(ENCHANTED)
+        if (enchanted) enchantByBlueprint()
+    }
+    
+    companion object{
+        private const val ENCHANTED = "enchanted"
     }
 }

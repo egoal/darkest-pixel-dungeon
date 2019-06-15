@@ -49,7 +49,7 @@ class MissileSprite : ItemSprite(), Tweener.Listener {
     }
 
     companion object {
-        private const val SPEED = 50f
+        private const val SPEED = 300f
 
         private val FIXED_ROTATION_IMAGES = arrayOf(
                 ItemSpriteSheet.DART, ItemSpriteSheet.INCENDIARY_DART,

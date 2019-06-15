@@ -469,7 +469,6 @@ public class Astrolabe extends Artifact {
     protected void invoke_on_target(Hero user, Astrolabe a, Char c) {
       if (check_is_other(c)) {
         Buff.prolong(user, LifeLink.class, 3f).linker = c.id();
-
       }
     }
   }

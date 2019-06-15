@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.diggers.LevelDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.normal.*
 import com.egoal.darkestpixeldungeon.levels.diggers.specials.ShopDigger
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Group
@@ -26,7 +27,17 @@ class LastShopLevel : RegularLevel() {
     override fun waterTex(): String = Assets.WATER_CITY
 
     override fun chooseDiggers(): ArrayList<Digger> {
-        val diggers = selectDiggers(0, 4) // no special diggers
+        val normalDiggers = hashMapOf(
+                CellDigger::class.java to .1f,
+                LatticeDigger::class.java to .05f,
+                RectDigger::class.java to 1.25f,
+                StripDigger::class.java to .1f,
+                SmallCornerDigger::class.java to 0.075f
+        )
+
+        val diggers = ArrayList<Digger>()
+
+        for (i in 1..4) diggers.add(Random.chances(normalDiggers).newInstance())
         if (Imp.Quest.isCompleted())
             diggers.add(ShopDigger())
 

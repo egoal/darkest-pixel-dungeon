@@ -61,7 +61,7 @@ class Hero : Char() {
         actPriority = 0
         name = Messages.get(this, "name")
 
-        HT = 22
+        HT = 20
         HP = HT
     }
 
@@ -70,8 +70,8 @@ class Hero : Char() {
     var subClass = HeroSubClass.NONE
     var heroPerk = HeroPerk(0)
 
-    private var attackSkill = 10
-    private var defenseSkill = 5
+    var atkSkill = 10
+    var defSkill = 5
     var STR = STARTING_STR
     var weakened = false
     var awareness = 0.1f
@@ -239,7 +239,7 @@ class Hero : Char() {
 
         if (belongings.helmet is MaskOfHorror && belongings.helmet.cursed) accuracy *= 0.75f
 
-        return (attackSkill * accuracy).toInt()
+        return (atkSkill * accuracy).toInt()
     }
 
     override fun defenseSkill(enemy: Char): Int {
@@ -255,14 +255,14 @@ class Hero : Char() {
         val estr = (belongings.armor?.STRReq() ?: 10) - STR()
         if (estr > 0) {
             // heavy
-            return (defenseSkill * evasion / Math.pow(1.5, estr.toDouble())).toInt()
+            return (defSkill * evasion / Math.pow(1.5, estr.toDouble())).toInt()
         } else {
             // ligh
             bonus = if (heroClass == HeroClass.ROGUE) -estr else 0
 
             if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
                 bonus += 5 + belongings.armor.level() * 3 / 2
-            return Math.round((defenseSkill + bonus) * evasion).toInt()
+            return Math.round((defSkill + bonus) * evasion).toInt()
         }
 
     }
@@ -764,7 +764,7 @@ class Hero : Char() {
             exp -= maxExp()
             if (lvl < MAX_LEVEL) {
                 upgraded = true
-                updateLevelStates()
+                heroClass.upgradeHero(this)
             } else {
                 Buff.prolong(this, Bless::class.java, 30f)
                 exp = 0
@@ -782,30 +782,6 @@ class Hero : Char() {
 
             Badges.validateLevelReached()
         }
-    }
-
-    // called when level up
-    private fun updateLevelStates() {
-        lvl++
-        val dHT = when {
-            lvl <= 5 -> 6
-            lvl <= 20 -> 5
-            lvl < 30 -> 4
-            else -> 1
-        }
-        HT += dHT
-        HP += dHT
-
-        attackSkill++
-        defenseSkill++
-
-        criticalChance += 0.4f / 100f
-        regeneration += 0.015f
-
-        if (lvl < 10) updateAwareness()
-
-        recoverSanity(min(Random.NormalIntRange(1, lvl * 3 / 4).toFloat(),
-                buff(Pressure::class.java)!!.pressure * 0.3f))
     }
 
     internal fun updateAwareness() {
@@ -1142,8 +1118,8 @@ class Hero : Char() {
         subClass.storeInBundle(bundle)
         heroPerk.storeInBundle(bundle)
 
-        bundle.put(ATTACK, attackSkill)
-        bundle.put(DEFENSE, defenseSkill)
+        bundle.put(ATTACK, atkSkill)
+        bundle.put(DEFENSE, defSkill)
 
         bundle.put(STRENGTH, STR)
 
@@ -1166,8 +1142,8 @@ class Hero : Char() {
         subClass = HeroSubClass.RestoreFromBundle(bundle)
         heroPerk = HeroPerk.restoreFromBundle(bundle)
 
-        attackSkill = bundle.getInt(ATTACK)
-        defenseSkill = bundle.getInt(DEFENSE)
+        atkSkill = bundle.getInt(ATTACK)
+        defSkill = bundle.getInt(DEFENSE)
 
         STR = bundle.getInt(STRENGTH)
         updateAwareness()

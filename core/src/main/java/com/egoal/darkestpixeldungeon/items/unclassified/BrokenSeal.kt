@@ -40,7 +40,7 @@ import com.watabou.utils.Bundle
 
 import java.util.ArrayList
 
-open class BrokenSeal : Item() {
+open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
     init {
         image = ItemSpriteSheet.SEAL
 
@@ -72,7 +72,7 @@ open class BrokenSeal : Item() {
     // same as upgrading armor the seal is affixed to then removing it.
     override fun isUpgradable(): Boolean = level() == 0
 
-    fun enchant() {
+    override fun enchantByBlueprint() {
         enchanted = true
 
         image = ItemSpriteSheet.ENHANCED_SEAL
@@ -92,7 +92,7 @@ open class BrokenSeal : Item() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         enchanted = bundle.getBoolean(ENCHANTED)
-        if (enchanted) enchant()
+        if (enchanted) enchantByBlueprint()
     }
 
     class WarriorShield : Buff() {
