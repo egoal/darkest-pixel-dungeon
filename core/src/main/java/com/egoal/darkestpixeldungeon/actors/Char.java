@@ -230,6 +230,10 @@ public abstract class Char extends Actor {
       if (buff(EarthImbue.class) != null)
         buff(EarthImbue.class).proc(enemy);
 
+      if (this == Dungeon.hero)
+        Statistics.INSTANCE.setHighestDamage(
+                Math.max(Statistics.INSTANCE.getHighestDamage(), value));
+      
       // effects
       // burst blood
       if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
@@ -247,8 +251,6 @@ public abstract class Char extends Actor {
           Dungeon.fail(getClass());
           GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name)));
         } else if (this == Dungeon.hero) {
-          Statistics.INSTANCE.setHighestDamage(
-                  Math.max(Statistics.INSTANCE.getHighestDamage(), value));
           // killed by hero
           Dungeon.hero.onKillChar(enemy);
         }
@@ -533,7 +535,7 @@ public abstract class Char extends Actor {
     return null;
   }
 
-  public boolean isCharmedBy(Char ch) {
+  public synchronized boolean isCharmedBy(Char ch) {
     int chID = ch.id();
     for (Buff b : buffs) {
       if (b instanceof Charm && ((Charm) b).object == chID) {

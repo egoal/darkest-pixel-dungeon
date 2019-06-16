@@ -26,7 +26,7 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
         if (hero.belongings.helmet == null || hero.belongings.helmet.doUnequip(hero, true, false)) {
             hero.belongings.helmet = this
 
-            cursedKnown = true
+            identify()
             if (cursed) {
                 equipCursed(hero)
                 GLog.n(Messages.get(Helmet::class.java, "equip_cursed"))
@@ -63,7 +63,7 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
         return this
     }
 
-    override fun isIdentified(): Boolean = false
+//    override fun isIdentified(): Boolean = false
     
     override fun isUpgradable(): Boolean = false
 

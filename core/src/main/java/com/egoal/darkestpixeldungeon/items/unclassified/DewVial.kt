@@ -56,8 +56,8 @@ class DewVial : Item() {
 
         when (action) {
             AC_DRINK -> {
-                if (rune != null){
-                  GLog.w(Messages.get(this, "has-rune"))  
+                if (rune != null) {
+                    GLog.w(Messages.get(this, "has-rune"))
                 } else if (volume > 0) {
                     val require = (hero.HT - hero.HP) / dhp(hero)
                     val drink = Math.min(volume, require)
@@ -144,6 +144,7 @@ class DewVial : Item() {
 
     fun collectDew(dew: Dewdrop) {
         Volume += dew.quantity()
+        if (Volume > MAX_VOLUME) Volume = MAX_VOLUME
 
         GLog.i(Messages.get(this, "collected", dew.quantity()))
         if (full)

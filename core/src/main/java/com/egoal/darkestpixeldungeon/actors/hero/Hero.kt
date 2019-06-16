@@ -15,6 +15,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.armor.MageArmor
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.helmets.*
@@ -50,10 +51,7 @@ import com.watabou.utils.GameMath
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.*
-import kotlin.math.ceil
-import kotlin.math.exp
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.*
 
 // refactor may finish someday...
 class Hero : Char() {
@@ -252,6 +250,9 @@ class Hero : Char() {
 
         evasion *= buff(Pressure::class.java)!!.evasionFactor()
 
+        if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
+            evasion *= 1.2f
+
         val estr = (belongings.armor?.STRReq() ?: 10) - STR()
         if (estr > 0) {
             // heavy
@@ -262,7 +263,7 @@ class Hero : Char() {
 
             if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
                 bonus += 5 + belongings.armor.level() * 3 / 2
-            return Math.round((defSkill + bonus) * evasion).toInt()
+            return Math.round((defSkill + bonus) * evasion)
         }
 
     }
@@ -459,6 +460,9 @@ class Hero : Char() {
             return dmg
 
         buff(RingOfElements.Resistance::class.java)?.resist(dmg)
+        if (dmg.type == Damage.Type.MAGICAL && ((belongings.armor is MageArmor) &&
+                        (belongings.armor as MageArmor).enhanced))
+            dmg.value = round(dmg.value * 0.9f).toInt()
 
         return super.resistDamage(dmg)
     }
@@ -972,15 +976,14 @@ class Hero : Char() {
         if (ch.properties().contains(Property.PHANTOM)) return
 
         // may recover sanity
-        if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.IntRange(6, 12).toFloat())
+        if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.Float(6f, 12f))
         else if (ch is Mob && ch.maxLvl + 2 >= lvl) {
             val x = buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE // 1f - HP.toFloat() / HT.toFloat()
             val px = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
             val y = 1f - HP.toFloat() / HT.toFloat() // buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE
             val py = if (y < 0.5f) 1f else (1f + 3f * (y - 0.5f) * (y - 0.5f))
 
-            if (Random.Float() < px * py)
-                recoverSanity(Random.NormalIntRange(1, 6).toFloat())
+            if (Random.Float() < px * py) recoverSanity(Random.Float(1f, 6f))
         }
 
         if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)

@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample

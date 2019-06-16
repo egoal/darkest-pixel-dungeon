@@ -170,8 +170,11 @@ class Yvette : NPC() {
             Dungeon.level.drop(scroll, pos)
         }
 
-        if (Random.Int(4) == 0)
-            Dungeon.level.drop(Random.oneOf(KGenerator.ARTIFACT, KGenerator.RING).generate(), pos)
+        if (Random.Int(3) == 0)
+            Dungeon.level.drop(Random.oneOf(KGenerator.ARTIFACT, KGenerator.RING).generate().apply {
+                cursed = false
+                identify()
+            }, pos)
         else
             Dungeon.level.drop(RangerHat().identify(), pos)
 
@@ -230,7 +233,7 @@ class Yvette : NPC() {
             drop(IronKey(20))
             drop(YvettesDiary())
             drop(Bow())
-            
+
         }
     }
 

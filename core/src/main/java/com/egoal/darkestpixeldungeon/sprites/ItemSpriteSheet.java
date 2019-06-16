@@ -143,7 +143,8 @@ public class ItemSpriteSheet {
   public static final int ARMOR_ROGUE = ARMOR + 7;
   public static final int ARMOR_HUNTRESS = ARMOR + 8;
   public static final int DPD_ARMOR_SORCERESS = ARMOR + 9;
-
+  public static final int ARMOR_MAGE_ENHANCED = ARMOR + 10;
+  
   private static final int HELMET = xy(1, 12);
   public static final int HELMET_CRUSADER = HELMET + 0;
   public static final int HELMET_BARBARIAN = HELMET + 1;
@@ -226,6 +227,8 @@ public class ItemSpriteSheet {
   public static final int ARTIFACT_EYEBALL = ARTIFACTS + 35;
   public static final int RIEMANNIAN_SHIELD = ARTIFACTS + 37;
   public static final int GOLD_PLATE_STATUE = ARTIFACTS + 38;
+  public static final int EXTRACTION_FLASK_ENHANCED = ARTIFACTS + 39;
+  public static final int ARTIFACT_CLOAK_ENHANCED = ARTIFACTS + 40;
 
   //32 free slots
 

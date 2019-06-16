@@ -3,6 +3,9 @@ package com.egoal.darkestpixeldungeon.items.unclassified
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Chrome
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle
@@ -13,6 +16,9 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
+import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.levels.Terrain
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.plants.Sorrowmoss
@@ -31,11 +37,12 @@ import com.watabou.noosa.NinePatch
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.ui.Component
 import com.watabou.utils.Bundle
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.exp
 
-class ExtractionFlask : Item() {
+class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
     init {
         image = ItemSpriteSheet.EXTRACTION_FLASK
 
@@ -45,40 +52,73 @@ class ExtractionFlask : Item() {
 
     private var reinforced = false // once reinforced, can strengthen potion
     private var refined = 0 // refined counts
+    private var enhanced = false
+    private var purifiedWater = 0
 
     fun reinforce() {
         reinforced = true
         GLog.p(Messages.get(this, "upgrade"))
     }
 
-    override fun actions(hero: Hero?): ArrayList<String> {
+    override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
-        actions.add(AC_REFINE)
-        if (reinforced) actions.add(AC_STRENGTHEN)
+
+        if (hero.buff(PurifyCounter::class.java) == null) {
+            if (purifiedWater == 0) {
+                actions.add(AC_REFINE)
+                if (reinforced) actions.add(AC_STRENGTHEN)
+                if (enhanced) actions.add(AC_PURIFY)
+            } else {
+                actions.add(AC_TAKE_WATER)
+            }
+        }
+
         return actions
     }
 
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)
 
-        if (action == AC_REFINE)
-            GameScene.show(WndCraft(this, MODE_REFINE))
-        else if (action == AC_STRENGTHEN)
-            GameScene.show(WndCraft(this, MODE_STRENGTHEN))
+        when (action) {
+            AC_REFINE -> GameScene.show(WndCraft(this, MODE_REFINE))
+            AC_STRENGTHEN -> GameScene.show(WndCraft(this, MODE_STRENGTHEN))
+            AC_PURIFY -> {
+                curUser = hero
+                purifyWater()
+            }
+            AC_TAKE_WATER -> {
+                val dv = hero.belongings.getItem(DewVial::class.java)
+                if (dv == null) {
+                    GLog.w(M.L(this, "no-vial"))
+                    return
+                }
+                dv.collectDew(Dewdrop().apply { quantity(purifiedWater) })
+                purifiedWater = 0
+            }
+        }
     }
 
     override fun desc(): String {
-        var desc = Messages.get(this, "desc", refined)
+        var desc = M.L(this, "desc", refined)
 
-        desc += if (!cursed)
-            "\n\n" + Messages.get(this, "desc_hint")
-        else
-            "\n\n" + Messages.get(this, "desc_cursed")
+        desc += if (!cursed) "\n\n" + M.L(this, "desc_hint")
+        else "\n\n" + M.L(this, "desc_cursed")
+
+        if (enhanced) {
+            desc += "\n\n" + M.L(this, "enhanced_desc")
+            if (purifiedWater > 0)
+                desc += "\n" + M.L(this, "purify_desc")
+        }
 
         return desc
     }
 
     override fun isUpgradable(): Boolean = false
+
+    override fun enchantByBlueprint() {
+        enhanced = true
+        image = ItemSpriteSheet.EXTRACTION_FLASK_ENHANCED
+    }
 
     fun verifyRefine(s1: Plant.Seed, s2: Plant.Seed): String? {
         val vial = curUser.belongings.getItem(DewVial::class.java)
@@ -173,27 +213,60 @@ class ExtractionFlask : Item() {
 
     private fun minDewRequired() = if (reinforced) 2 else 3
 
+    private fun purifyWater() {
+        val cnt = PathFinder.NEIGHBOURS9.count { Level.water[curUser.pos + it] }
+        if (cnt == 0) {
+            GLog.w(M.L(this, "no_water_here"))
+            return
+        }
+
+        Buff.prolong(curUser, PurifyCounter::class.java, 10f * cnt)
+        purifiedWater = cnt
+    }
+
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(REINFORCED, reinforced)
         bundle.put(REFINED, refined)
+        bundle.put(ENHANCED, enhanced)
+        bundle.put(PURIFIED_WATER, purifiedWater)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         reinforced = bundle.getBoolean(REINFORCED)
         refined = bundle.getInt(REFINED)
+        enhanced = bundle.getBoolean(ENHANCED)
+        if (enhanced) enchantByBlueprint()
+        purifiedWater = bundle.getInt(PURIFIED_WATER)
+    }
+
+    class PurifyCounter : FlavourBuff() {
+        override fun attachTo(target: Char?): Boolean {
+            val attached = super.attachTo(target)
+            if (attached) GLog.w(M.L(ExtractionFlask::class.java, "start_purify"))
+            return attached
+        }
+
+        override fun detach() {
+            GLog.p(M.L(ExtractionFlask::class.java, "water_purified"))
+            super.detach()
+        }
     }
 
     companion object {
         private const val AC_REFINE = "refine"
         private const val AC_STRENGTHEN = "strengthen"
+        private const val AC_PURIFY = "purify"
+        private const val AC_TAKE_WATER = "take_water"
 
         private const val TIME_TO_REFINE = 2f
         private const val TIME_TO_EXTRACT = 2f
 
         private const val REINFORCED = "reinforced"
         private const val REFINED = "refined"
+        private const val ENHANCED = "enhanced"
+        private const val PURIFIED_WATER = "purified_water"
 
         // interact
         private const val MODE_REFINE = 0
@@ -305,7 +378,7 @@ class ExtractionFlask : Item() {
                     if (!it.collect())
                         Dungeon.level.drop(it, Dungeon.hero.pos)
                 }
-                
+
                 super.destroy()
             }
         }

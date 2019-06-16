@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.unclassified.GreatBlueprint;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
@@ -37,7 +38,8 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-public class CloakOfShadows extends Artifact {
+public class CloakOfShadows extends Artifact implements GreatBlueprint
+        .Enchantable {
 
   {
     image = ItemSpriteSheet.ARTIFACT_CLOAK;
@@ -58,6 +60,7 @@ public class CloakOfShadows extends Artifact {
   }
 
   private boolean stealthed = false;
+  public boolean enhanced = false;
 
   public static final String AC_STEALTH = "STEALTH";
 
@@ -142,12 +145,14 @@ public class CloakOfShadows extends Artifact {
 
   private static final String STEALTHED = "stealthed";
   private static final String COOLDOWN = "cooldown";
+  private static final String ENHANCED = "enhanced";
 
   @Override
   public void storeInBundle(Bundle bundle) {
     super.storeInBundle(bundle);
     bundle.put(STEALTHED, stealthed);
     bundle.put(COOLDOWN, cooldown);
+    bundle.put(ENHANCED, enhanced);
   }
 
   @Override
@@ -155,6 +160,8 @@ public class CloakOfShadows extends Artifact {
     super.restoreFromBundle(bundle);
     stealthed = bundle.getBoolean(STEALTHED);
     cooldown = bundle.getInt(COOLDOWN);
+    enhanced = bundle.getBoolean(ENHANCED);
+    if (enhanced) enchantByBlueprint();
 
     //for pre-0.4.1 saves which may have over-levelled cloaks
     if (level() == 15) {
@@ -166,6 +173,19 @@ public class CloakOfShadows extends Artifact {
   @Override
   public int price() {
     return 0;
+  }
+
+  @Override
+  public void enchantByBlueprint() {
+    enhanced = true;
+    image = ItemSpriteSheet.ARTIFACT_CLOAK_ENHANCED;
+  }
+
+  @Override
+  public String desc() {
+    String desc = super.desc();
+    if (enhanced) desc += "\n\n" + Messages.get(this, "enhanced_desc");
+    return desc;
   }
 
   public class cloakRecharge extends ArtifactBuff {
@@ -197,6 +217,17 @@ public class CloakOfShadows extends Artifact {
       return true;
     }
 
+    public boolean enhanced() {
+      return enhanced;
+    }
+
+    @Override
+    public void fx(boolean on) {
+//      if(enhanced) {
+//        if (on) target.sprite.add(CharSprite.State.BLUR);
+//        else target.sprite.remove(CharSprite.State.BLUR);
+//      }
+    }
   }
 
   public class cloakStealth extends ArtifactBuff {

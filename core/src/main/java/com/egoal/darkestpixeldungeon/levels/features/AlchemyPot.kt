@@ -63,8 +63,8 @@ object AlchemyPot {
             2 -> {
                 val pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
                 if (pr != null)
-                    return Pair(true, (pr.second as Blandfruit).cook(pr.first as Plant.Seed))
-
+                    return Pair(true, Blandfruit().cook(pr.first as Plant.Seed))
+                
                 return Pair(false, null)
             }
             1 -> {

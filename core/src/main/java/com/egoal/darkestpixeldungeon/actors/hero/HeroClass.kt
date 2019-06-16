@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
+import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
@@ -14,10 +15,7 @@ import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown
 import com.egoal.darkestpixeldungeon.items.potions.*
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
+import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
@@ -242,9 +240,11 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-
+        
         GreatBlueprint().identify().collect()
-        WandOfBlastWave().identify().collect()
+//        WandOfBlastWave().identify().collect()
+//        ArmorKit().collect()
+        LeatherArmor().identify().collect()
     }
 
     // called when hero level up

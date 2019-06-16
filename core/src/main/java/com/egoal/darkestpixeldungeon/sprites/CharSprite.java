@@ -22,7 +22,7 @@ package com.egoal.darkestpixeldungeon.sprites;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Char;
-import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.effects.BlurSprite;
 import com.egoal.darkestpixeldungeon.effects.CriticalShock;
 import com.egoal.darkestpixeldungeon.effects.FloatingText;
 import com.egoal.darkestpixeldungeon.effects.TorchHalo;
@@ -71,7 +71,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
   public enum State {
     BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED,
     DARKENED, MARKED,
-    SOUL_BURNING,
+    SOUL_BURNING, BLUR,
   }
 
   protected Animation idle;
@@ -97,6 +97,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
   protected EmoIcon emo;
 
   protected Emitter soulburning_;
+  private BlurSprite blurSprite;
 
   private Tweener jumpTweener;
   private Callback jumpCallback;
@@ -336,6 +337,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
           Sample.INSTANCE.play(Assets.SND_BURNING);
         }
         break;
+      case BLUR:
+        blurSprite = BlurSprite.Companion.Blur(this);
+        break;
     }
   }
 
@@ -393,6 +397,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
         if (soulburning_ != null) {
           soulburning_.on = false;
           soulburning_ = null;
+        }
+        break;
+      case BLUR:
+        if (blurSprite != null) {
+          blurSprite.clear();
+          blurSprite = null;
         }
         break;
     }

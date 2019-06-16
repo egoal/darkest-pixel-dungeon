@@ -129,7 +129,7 @@ class Pressure : Buff(), Hero.Doom {
     }
 
     fun accuracyFactor(): Float = when (level) {
-        Level.CONFIDENT -> 1.2f
+        Level.CONFIDENT -> 1.15f
         Level.NORMAL -> 1f
         Level.NERVOUS -> 0.8f
         Level.COLLAPSE -> 0.2f

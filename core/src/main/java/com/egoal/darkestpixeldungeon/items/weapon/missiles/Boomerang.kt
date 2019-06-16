@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.items.KindOfWeapon
 import com.egoal.darkestpixeldungeon.items.unclassified.GreatBlueprint
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.sprites.MissileSprite
@@ -150,12 +151,15 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
     }
     
     override fun desc(): String {
-        val info = super.desc()
-        return when (imbue) {
-            Imbue.LIGHT -> info + "\n\n" + Messages.get(Weapon::class.java, "lighter")
-            Imbue.HEAVY -> info + "\n\n" + Messages.get(Weapon::class.java, "heavier")
-            Imbue.NONE -> info
+        var info = super.desc()
+        info += when (imbue) {
+            Imbue.LIGHT -> "\n\n" + M.L(Weapon::class.java, "lighter")
+            Imbue.HEAVY -> "\n\n" + M.L(Weapon::class.java, "heavier")
+            Imbue.NONE -> ""
         }
+        if(enchanted) info += M.L(this, "enhanced_desc")
+        
+        return info
     }
 
     override fun enchantByBlueprint(){

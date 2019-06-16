@@ -120,9 +120,10 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         var value = Random.NormalIntRange(min(), max())
 
         // extra str
-        value += strCorrection(hero)
+        val strc = strCorrection(hero)
+        if (strc > 0) value += Random.Int(1, strc)
 
-        value = imbue.damageFactor(value);
+        value = imbue.damageFactor(value)
         return Damage(value, hero, target).addFeature(Damage.Feature.RANGED)
     }
 

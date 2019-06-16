@@ -26,7 +26,10 @@ class TopExceptionHandler(private val app: Activity) : Thread.UncaughtExceptionH
 
             // stack
             strError.add("STACK: ")
-            strError.addAll(tr.stackTrace.map { it.toString().trim { c -> c != '(' && c != ')' } })
+            for (stk in tr.stackTrace.map { it.toString().trim { c -> c != '(' && c != ')' } }) {
+                strError.add(stk)
+                if (strError.size >= 20) break
+            }
 
             val bundle = Bundle().apply {
                 put(STR_ERROR, strError.toTypedArray()) // Log.getStackTraceString(tr))

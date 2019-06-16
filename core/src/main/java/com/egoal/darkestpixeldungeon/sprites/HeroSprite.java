@@ -26,13 +26,14 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
+import com.egoal.darkestpixeldungeon.effects.NoosaScriptBlur;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
-import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 
 public class HeroSprite extends CharSprite {
@@ -49,10 +50,10 @@ public class HeroSprite extends CharSprite {
 
   public HeroSprite() {
     super();
-
-    link(Dungeon.hero);
-
+    
     texture(Dungeon.hero.getHeroClass().spritesheet());
+    
+    link(Dungeon.hero);
     updateArmor();
 
     if (ch.isAlive())
@@ -148,7 +149,12 @@ public class HeroSprite extends CharSprite {
     run.delay = on ? 0.667f / RUN_FRAMERATE : 1f / RUN_FRAMERATE;
     return on;
   }
-
+  
+//  @Override
+//  protected NoosaScript script(){
+//    return NoosaScriptBlur.Companion.Get();
+//  }
+  
   public static TextureFilm tiers() {
     if (tiers == null) {
       SmartTexture texture = TextureCache.get(Assets.ROGUE);
