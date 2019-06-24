@@ -92,7 +92,7 @@ public class AboutScene extends PixelScene {
     dpdlink.maxWidth(dpdText.maxWidth());
     dpdlink.hardlight(Window.DPD_COLOR);
     add(dpdlink);
-    dpdlink.setPos((DarkestPixelDungeon.landscape() ? colWidth : 0) +
+    dpdlink.setPos(// (DarkestPixelDungeon.landscape() ? colWidth : 0) +
             (colWidth - dpdlink.width()) / 2, dpdText.bottom() + 6);
     align(dpdlink);
 

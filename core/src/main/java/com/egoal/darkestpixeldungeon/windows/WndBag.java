@@ -83,7 +83,7 @@ public class WndBag extends WndTabbed {
   }
 
   protected static final int COLS_P = 5;
-  protected static final int COLS_L = 6;
+  protected static final int COLS_L = 7;
 
   protected static final int SLOT_SIZE = 22;
   protected static final int SLOT_MARGIN = 1;
@@ -209,7 +209,7 @@ public class WndBag extends WndTabbed {
     boolean backpack = (container == Dungeon.hero.getBelongings().backpack);
     if (!backpack) {
       count = nCols;
-      col = 1;
+      col = 0;
       row = 1;
     }
 
@@ -224,7 +224,7 @@ public class WndBag extends WndTabbed {
     }
 
     // Gold
-    if (container == Dungeon.hero.getBelongings().backpack) {
+    if (backpack) {
       row = nRows - 1;
       col = nCols - 1;
       placeItem(new Gold(Dungeon.gold));

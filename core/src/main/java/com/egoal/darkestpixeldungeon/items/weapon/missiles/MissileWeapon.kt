@@ -52,8 +52,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
     override fun onThrow(cell: Int) {
         val enemy = Actor.findChar(cell)
         if (enemy == null || enemy == Item.curUser) {
-            if (this is Boomerang) super.onThrow(cell)
-            else miss(cell)
+            miss(cell)
         } else {
             // shoot others
             if (Dungeon.level.adjacent(Item.curUser.pos, enemy.pos)) {
@@ -81,7 +80,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         val bonus = RingOfSharpshooting.getBonus(Item.curUser, RingOfSharpshooting.Aim::class.java)
 
         // degraded ring of sharpshooting will even make missed shots break.
-        if (Random.Float() < Math.pow(0.7, -bonus.toDouble()))
+        if (this is Boomerang && Random.Float() < Math.pow(0.7, -bonus.toDouble()))
             super.onThrow(cell)
     }
 

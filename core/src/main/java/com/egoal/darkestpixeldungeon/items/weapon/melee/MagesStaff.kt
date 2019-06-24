@@ -163,7 +163,7 @@ class MagesStaff(w: Wand? = null) : MeleeWeapon() {
 
     override fun info(): String {
         return super.info() +
-                if (wand != null) "\n\n" + M.L(this, "no_wand")
+                if (wand == null) "\n\n" + M.L(this, "no_wand")
                 else "\n\n" + M.L(this, "has_wand", M.L(wand!!, "name")) + " " + wand!!.statsDesc()
     }
 

@@ -39,7 +39,7 @@ public class QuickSlot {
 
   //note that the current max size is coded at 4, due to UI constraints, but 
   // it could be much much bigger with no issue.
-  public static int SIZE = 6; // 4;
+  public static int SIZE = 8; // 4;
   private Item[] slots = new Item[SIZE];
 
 

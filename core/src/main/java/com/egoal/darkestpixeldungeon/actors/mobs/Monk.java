@@ -50,7 +50,7 @@ public class Monk extends Mob {
     maxLvl = 21;
 
     loot = new Food();
-    lootChance = 0.072f;
+    lootChance = 0.064f;
 
     addResistances(Damage.Element.SHADOW, 1.25f);
     addResistances(Damage.Element.HOLY, .667f);

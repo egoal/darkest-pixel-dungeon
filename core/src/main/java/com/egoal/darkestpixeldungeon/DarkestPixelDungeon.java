@@ -493,7 +493,7 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static int quickSlots() {
-    return Preferences.INSTANCE.getInt(Preferences.KEY_QUICKSLOTS, 6, 0, 6);
+    return Preferences.INSTANCE.getInt(Preferences.KEY_QUICKSLOTS, 6, 0, 8);
   }
 
   public static void flipToolbar(boolean value) {
@@ -517,8 +517,9 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static String toolbarMode() {
-    return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape
-            () ? "SPLIT" : "GROUP");
+//    return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape
+//            () ? "SPLIT" : "GROUP");
+    return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, "SPLIT");
   }
 
   public static void intro(boolean value) {

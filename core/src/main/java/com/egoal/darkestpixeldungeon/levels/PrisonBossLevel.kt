@@ -123,7 +123,7 @@ class PrisonBossLevel : Level() {
         if (width - rtExit.center.x >= 6)
             placePrisonCellsBesideLaneV(rtExit.center.x, rtHall.y1 + 1, rtExit.y2 - 2, false)
         if (rtExit.center.x - rtHall.x2 >= 6)
-            placePrisonCellsBesideLaneV(rtExit.center.x, rtHall.y1 + 1, rtExit.y2 - 2, true)
+            placePrisonCellsBesideLaneV(rtExit.center.x, rtHall.y1 + 2, rtExit.y2 - 2, true)
 
         if (height - rtHall.y2 >= 6)
             placePrisonCellsBesideLaneH(rtHall.y2, rtStart.center.x, rtHall.x2, false)

@@ -31,7 +31,7 @@ public class GuideScene extends PixelScene {
   @Override
   public void create() {
     super.create();
-    
+
     int w = Camera.main.width;
     int h = Camera.main.height;
 
@@ -75,8 +75,8 @@ public class GuideScene extends PixelScene {
     };
     add(sp);
     {
-      final float WIDTH_LISTITEM = 40f;
-      final float HEIGHT_LISTITEM = 12f;
+      float WIDTH_LISTITEM = DarkestPixelDungeon.landscape() ? 80f : 40f;
+      float HEIGHT_LISTITEM = DarkestPixelDungeon.landscape() ? 12f : 20f;
       final float GAP_LISTITEM = 1;
       final int CNT_GUIDES = Integer.valueOf(Messages.get(this, "pages"));
 

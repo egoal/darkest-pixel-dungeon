@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.scenes;
 import android.opengl.GLES20;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.TopExceptionHandler;
@@ -39,6 +40,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -146,17 +148,33 @@ public class TitleScene extends PixelScene {
     };
     // align main buttons
     {
+      for (DashboardItem btn : btnsMain) add(btn);
+
       final float btnHeight = btnsMain[0].height();
       final float btnWidth = btnsMain[0].width();
-      final float btnGap = 1;
-      final int btnRows = 4;
-      for (int i = 0; i < btnsMain.length; ++i) {
-        add(btnsMain[i]);
 
-        int col = i / btnRows;
-        int row = i % btnRows;
-        btnsMain[i].setPos((w / 2 - btnWidth) / 2 + w / 2 * col, topRegion +
-                2 + (btnHeight + btnGap) * row);
+      if (DarkestPixelDungeon.landscape()) {
+        int cols = 4;
+        int rows = 2;
+        final float btnGapX = (w - btnWidth * cols) / (cols + 1);
+        final float btnGapY = 1f;
+        for (int i = 0; i < btnsMain.length; ++i) {
+          int r = i / cols;
+          int c = i % cols;
+          btnsMain[i].setPos(btnGapX + (btnWidth + btnGapX) * c,
+                  topRegion + 2 + (btnHeight + btnGapY) * r);
+        }
+      } else {
+        int cols = 2;
+        int rows = 4;
+        final float btnGapX = (w - btnWidth * cols) / (cols + 1);
+        final float btnGapY = 1f;
+        for (int i = 0; i < btnsMain.length; ++i) {
+          int r = i % rows;
+          int c = i / rows;
+          btnsMain[i].setPos(btnGapX + (btnWidth + btnGapX) * c,
+                  topRegion + 2 + (btnHeight + btnGapY) * r);
+        }
       }
     }
 
@@ -247,11 +265,11 @@ public class TitleScene extends PixelScene {
       super.layout();
 
       image.x = x + (width - image.width()) / 2 - FONT_SIZE;
-      image.y = y;
+      image.y = y + (BTN_HEIGHT - IMAGE_SIZE) / 2;
       align(image);
 
       label.x = image.x + image.width + 2;
-      label.y = y + 4;
+      label.y = image.y + FONT_SIZE / 2;
       align(label);
     }
 

@@ -52,7 +52,7 @@ public class Toolbar extends Component {
 
   private static Toolbar instance;
 
-  private static final int NUM_QUICK_SLOTS = 6;
+  private static final int NUM_QUICK_SLOTS = 8;
 
   public enum Mode {
     SPLIT,
@@ -170,12 +170,12 @@ public class Toolbar extends Component {
     switch (Mode.valueOf(DarkestPixelDungeon.toolbarMode())) {
       case SPLIT:
         // if more than 3 quick buttons is used, move up
-        if (slots > 3) {
+        if (!DarkestPixelDungeon.landscape() && slots > 3) {
           // 4 lines, text height is 6
           btnSearch.setPos(x, y - btnQuick[0].height() - 6 * 5);
           btnWait.setPos(x, btnSearch.top() - btnSearch.height());
         } else {
-          btnWait.setPos(x, y+2);
+          btnWait.setPos(x, y + 2);
           btnSearch.setPos(btnWait.right(), btnWait.top());
         }
 
@@ -183,18 +183,24 @@ public class Toolbar extends Component {
         btnInventory.setPos(right - btnInventory.width(), y);
 
         // layout the quick slots
-        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(),
-                visible[0]);
-        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(),
-                visible[1]);
-        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(),
-                visible[2]);
-        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(),
-                visible[3]);
-        btnQuick[4].setPos(btnQuick[3].left() - btnQuick[4].width(),
-                visible[4]);
-        btnQuick[5].setPos(btnQuick[4].left() - btnQuick[5].width(),
-                visible[5]);
+//        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(),
+//                visible[0]);
+//        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(),
+//                visible[1]);
+//        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(),
+//                visible[2]);
+//        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(),
+//                visible[3]);
+//        btnQuick[4].setPos(btnQuick[3].left() - btnQuick[4].width(),
+//                visible[4]);
+//        btnQuick[5].setPos(btnQuick[4].left() - btnQuick[5].width(),
+//                visible[5]);
+        float left = btnInventory.left();
+        for (int i = 0; i < NUM_QUICK_SLOTS; ++i) {
+          btnQuick[i].setPos(left- btnQuick[i].width(), visible[i]);
+          left = btnQuick[i].left();
+        }
+
         break;
 
       //! blew 2 mode is disabled ever since, 

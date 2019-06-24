@@ -39,7 +39,7 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
 
         DLY = 1f // normal speed
     }
-    
+
     override fun min(lvl: Int): Int = tier + lvl
 
     override fun max(lvl: Int): Int = 5 * tier + 2 * lvl
@@ -80,7 +80,7 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
     }
 
     private fun findCharToEject(ch: Char): Char? {
-        val passable = BooleanArray(Level.solid.size){ !Level.solid[it] && !Level.losBlocking[it] }
+        val passable = BooleanArray(Level.solid.size) { !Level.solid[it] && !Level.losBlocking[it] }
         PathFinder.buildDistanceMap(ch.pos, passable, 4)
         for (i in 0 until PathFinder.distance.size)
             if (PathFinder.distance[i] < Int.MAX_VALUE) {
@@ -91,12 +91,13 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
     }
 
     private fun eject(from: Int, to: Char, owner: Hero) {
-        (owner.sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(
-                from, to.pos, Item.curItem, Callback {
-            // simple shoot
-            if(to.isAlive) owner.shoot(to, this)
-            else circleBack(to.pos, owner)
-        })
+//        (owner.sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(
+//                from, to.pos, Item.curItem, Callback {
+//            // simple shoot
+//            if (to.isAlive) owner.shoot(to, this)
+//            else circleBack(to.pos, owner)
+//        })
+        onThrow(to.pos)
     }
 
     private var throwEquiped = false // this would never be true, now
@@ -113,33 +114,33 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
         } else if (!collect(owner.belongings.backpack)) {
             Dungeon.level.drop(this, owner.pos).sprite.drop()
         }
-        
-        ejection = if(enchanted) 1 else 0
+
+        ejection = if (enchanted) 1 else 0
         owner.next()
     }
 
     override fun cast(user: Hero, dst: Int) {
         throwEquiped = isEquipped(user) && !cursed
         if (throwEquiped) Dungeon.quickslot.convertToPlaceholder(this)
-        
+
         //fixme: copy from parent, this is a patch just for ejection
         if (isEquipped(user)) {
             if (quantity == 1 && !this.doUnequip(user, false, false)) {
                 return
             }
         }
-        
+
         val cell = throwPos(user, dst)
         user.sprite.zap(cell)
         user.busy()
-        
+
         Sample.INSTANCE.play(Assets.SND_MISS, 0.6f, 0.6f, 1.5f)
         val enemy = Actor.findChar(cell)
         QuickSlotButton.target(enemy)
-        
-        val delay = Item.TIME_TO_THROW* speedFactor(user)
+
+        val delay = Item.TIME_TO_THROW * speedFactor(user)
         (user.sprite.parent.recycle(MissileSprite::class.java) as MissileSprite)
-                .reset(user.pos, cell, this, Callback { 
+                .reset(user.pos, cell, this, Callback {
                     (this@Boomerang.detach(user.belongings.backpack) as Boomerang).onThrow(cell)
                     user.spend(delay) // spend but not next, next when the boomerang back to hand
                 })
@@ -149,7 +150,7 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
         super.onThrow(cell)
         Dungeon.hero.next() // patch to next
     }
-    
+
     override fun desc(): String {
         var info = super.desc()
         info += when (imbue) {
@@ -157,18 +158,18 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
             Imbue.HEAVY -> "\n\n" + M.L(Weapon::class.java, "heavier")
             Imbue.NONE -> ""
         }
-        if(enchanted) info += M.L(this, "enhanced_desc")
-        
+        if (enchanted) info += M.L(this, "enhanced_desc")
+
         return info
     }
 
-    override fun enchantByBlueprint(){
+    override fun enchantByBlueprint() {
         enchanted = true
         ejection = 1
-        
+
         image = ItemSpriteSheet.ENHANCED_BOOMERANG
     }
-    
+
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(ENCHANTED, enchanted)
@@ -179,8 +180,8 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
         enchanted = bundle.getBoolean(ENCHANTED)
         if (enchanted) enchantByBlueprint()
     }
-    
-    companion object{
+
+    companion object {
         private const val ENCHANTED = "enchanted"
     }
 }

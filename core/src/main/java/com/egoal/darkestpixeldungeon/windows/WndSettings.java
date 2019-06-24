@@ -71,7 +71,7 @@ public class WndSettings extends WndTabbed {
         if (value) last_index = 0;
       }
     });
-    
+
     add(new LabeledTab(Messages.get(this, "screen")) {
       @Override
       protected void select(boolean value) {
@@ -112,7 +112,7 @@ public class WndSettings extends WndTabbed {
         protected void onChange() {
           if (getSelectedValue() != DarkestPixelDungeon.scale()) {
             DarkestPixelDungeon.scale(getSelectedValue());
-            DarkestPixelDungeon.switchNoFade((Class<? extends PixelScene>) 
+            DarkestPixelDungeon.switchNoFade((Class<? extends PixelScene>)
                     DarkestPixelDungeon.scene().getClass(), new Game
                     .SceneChangeCallback() {
               @Override
@@ -136,7 +136,7 @@ public class WndSettings extends WndTabbed {
         scale.setRect(0, 0, 0, 0);
       }
 
-      OptionSlider brightness = new OptionSlider(Messages.get(this, 
+      OptionSlider brightness = new OptionSlider(Messages.get(this,
               "brightness"),
               Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 2) {
         @Override
@@ -148,6 +148,27 @@ public class WndSettings extends WndTabbed {
       brightness.setRect(0, scale.bottom() + GAP_SML, WIDTH, SLIDER_HEIGHT);
       add(brightness);
 
+      RedButton btnOrientation = new RedButton(DarkestPixelDungeon.landscape() ?
+              Messages.get(this, "portrait") : Messages.get(this, "landscape")) {
+        @Override
+        protected void onClick() {
+          if(DarkestPixelDungeon.landscape()){
+            DarkestPixelDungeon.landscape(false);
+          }else {
+            // warning
+            parent.add(new WndMessage(Messages.get(WndSettings.ScreenTab.class, "landscape_warning")) {
+              @Override
+              public void onBackPressed() {
+                super.onBackPressed();
+                DarkestPixelDungeon.landscape(true);
+              }
+            });
+          }
+        }
+      };
+      btnOrientation.setRect(0, brightness.bottom()+ GAP_TINY, WIDTH, BTN_HEIGHT);
+      add(btnOrientation);
+
       CheckBox chkImmersive = new CheckBox(Messages.get(this, "soft_keys")) {
         @Override
         protected void onClick() {
@@ -155,7 +176,7 @@ public class WndSettings extends WndTabbed {
           DarkestPixelDungeon.immerse(checked());
         }
       };
-      chkImmersive.setRect(0, brightness.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+      chkImmersive.setRect(0, btnOrientation.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
       chkImmersive.checked(DarkestPixelDungeon.immersed());
       chkImmersive.enable(android.os.Build.VERSION.SDK_INT >= 19);
       add(chkImmersive);
@@ -175,7 +196,7 @@ public class WndSettings extends WndTabbed {
                     WndSettings.ScreenTab.class, "debug_warning")));
         }
       };
-      chkDebug.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+      chkDebug.setRect(0, chkImmersive.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
       chkDebug.checked(DarkestPixelDungeon.debug());
       chkDebug.enable(enableDebug);
       add(chkDebug);
@@ -227,7 +248,7 @@ public class WndSettings extends WndTabbed {
       add(btnCentered);
       btnCentered.enable(false);
 
-      CheckBox chkFlipToolbar = new CheckBox(Messages.get(this, 
+      CheckBox chkFlipToolbar = new CheckBox(Messages.get(this,
               "flip_toolbar")) {
         @Override
         protected void onClick() {
@@ -236,13 +257,13 @@ public class WndSettings extends WndTabbed {
           Toolbar.updateLayout();
         }
       };
-      chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, WIDTH / 2 - 
+      chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, WIDTH / 2 -
               1, BTN_HEIGHT);
       chkFlipToolbar.checked(DarkestPixelDungeon.flipToolbar());
       add(chkFlipToolbar);
       chkFlipToolbar.enable(false);
 
-      final CheckBox chkFlipTags = new CheckBox(Messages.get(this, 
+      final CheckBox chkFlipTags = new CheckBox(Messages.get(this,
               "flip_indicators")) {
         @Override
         protected void onClick() {
@@ -265,12 +286,12 @@ public class WndSettings extends WndTabbed {
           // parent.add(new WndLangs());
         }
       };
-      btnLanguage.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH, 
+      btnLanguage.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH,
               BTN_HEIGHT);
       add(btnLanguage);
 
       OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"),
-              "0", "6", 0, 6) {
+              "0", "8", 0, 8) {
         @Override
         protected void onChange() {
           DarkestPixelDungeon.quickSlots(getSelectedValue());
@@ -285,7 +306,7 @@ public class WndSettings extends WndTabbed {
         @Override
         protected void onClick() {
           super.onClick();
-          DarkestPixelDungeon.switchNoFade((Class<? extends PixelScene>) 
+          DarkestPixelDungeon.switchNoFade((Class<? extends PixelScene>)
                   DarkestPixelDungeon.scene().getClass(), new Game
                   .SceneChangeCallback() {
             @Override
@@ -312,7 +333,7 @@ public class WndSettings extends WndTabbed {
   private class AudioTab extends Group {
 
     public AudioTab() {
-      OptionSlider musicVol = new OptionSlider(Messages.get(this, 
+      OptionSlider musicVol = new OptionSlider(Messages.get(this,
               "music_vol"), "0", "10", 0, 10) {
         @Override
         protected void onChange() {
@@ -336,7 +357,8 @@ public class WndSettings extends WndTabbed {
       add(musicMute);
 
 
-      OptionSlider SFXVol = new OptionSlider(Messages.get(this, "sfx_vol"), "0", "10", 0, 10) {
+      OptionSlider SFXVol = new OptionSlider(Messages.get(this, "sfx_vol"), 
+              "0", "10", 0, 10) {
         @Override
         protected void onChange() {
           Sample.INSTANCE.volume(getSelectedValue() / 10f);

@@ -9,6 +9,8 @@ import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary
+import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes
 import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
@@ -37,7 +39,7 @@ enum class HeroClass(private val title: String) {
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
             hero.HP += 5 // 25
-            hero.HT += 5 
+            hero.HT += 5
         }
 
         override fun upgradeHero(hero: Hero) {
@@ -45,7 +47,7 @@ enum class HeroClass(private val title: String) {
             hero.HT += 1
             hero.HP += 1
         }
-        
+
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
             hero.belongings.weapon = WornShortsword().identify() as Weapon
@@ -114,7 +116,7 @@ enum class HeroClass(private val title: String) {
             super.upgradeHero(hero)
             hero.criticalChance += 0.1f / 100f
         }
-        
+
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
 
@@ -154,6 +156,7 @@ enum class HeroClass(private val title: String) {
 
             val b = Boomerang()
             b.identify().collect()
+            b.enchantByBlueprint()
             Dungeon.quickslot.setSlot(0, b)
 
             hero.heroPerk.add(HeroPerk.Perk.NIGHT_VISION)
@@ -178,7 +181,7 @@ enum class HeroClass(private val title: String) {
             hero.HP -= 1
             hero.regeneration += 0.003f
         }
-        
+
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
 
@@ -186,11 +189,11 @@ enum class HeroClass(private val title: String) {
 
             val flask = ExtractionFlask()
             flask.identify().collect()
-            Dungeon.quickslot.setSlot(0, flask)
+            // Dungeon.quickslot.setSlot(0, flask)
 
             val darts = Dart(6)
             darts.identify().collect()
-            Dungeon.quickslot.setSlot(1, darts)
+            Dungeon.quickslot.setSlot(0, darts)
 
             PotionOfToxicGas().identify().collect()
 
@@ -240,16 +243,18 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-        
-        GreatBlueprint().identify().collect()
+
+//        GreatBlueprint().identify().collect()
 //        WandOfBlastWave().identify().collect()
 //        ArmorKit().collect()
-        LeatherArmor().identify().collect()
+//        LeatherArmor().identify().collect()
+        CallysDiary().identify().collect()
+        WardenSmithNotes().identify().collect()
     }
 
     // called when hero level up
-    open fun upgradeHero(hero: Hero){
-        hero.apply { 
+    open fun upgradeHero(hero: Hero) {
+        hero.apply {
             lvl++
             HT += 5
             HP += 5
@@ -266,7 +271,7 @@ enum class HeroClass(private val title: String) {
                     buff(Pressure::class.java)!!.pressure * 0.3f))
         }
     }
-    
+
     private fun initDebug(hero: Hero) {
         hero.apply {
             HT = 1000
