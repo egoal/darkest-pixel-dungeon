@@ -44,7 +44,7 @@ class RotLasher : Mob() {
         EXP = level / 3 + 1
         maxLvl = level + 2
 
-        defenseSkill = 5 + level
+        defenseSkill = 3 + level
         enemySeen = true
     }
 

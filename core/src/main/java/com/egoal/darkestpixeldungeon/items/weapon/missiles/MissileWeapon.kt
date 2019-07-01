@@ -80,7 +80,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         val bonus = RingOfSharpshooting.getBonus(Item.curUser, RingOfSharpshooting.Aim::class.java)
 
         // degraded ring of sharpshooting will even make missed shots break.
-        if (this is Boomerang && Random.Float() < Math.pow(0.7, -bonus.toDouble()))
+        if (this is Boomerang || Random.Float() < Math.pow(0.7, -bonus.toDouble()))
             super.onThrow(cell)
     }
 

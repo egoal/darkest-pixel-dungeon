@@ -156,7 +156,7 @@ enum class HeroClass(private val title: String) {
 
             val b = Boomerang()
             b.identify().collect()
-            b.enchantByBlueprint()
+            // b.enchantByBlueprint()
             Dungeon.quickslot.setSlot(0, b)
 
             hero.heroPerk.add(HeroPerk.Perk.NIGHT_VISION)
@@ -248,8 +248,8 @@ enum class HeroClass(private val title: String) {
 //        WandOfBlastWave().identify().collect()
 //        ArmorKit().collect()
 //        LeatherArmor().identify().collect()
-        CallysDiary().identify().collect()
-        WardenSmithNotes().identify().collect()
+//        CallysDiary().identify().collect()
+//        WardenSmithNotes().identify().collect()
     }
 
     // called when hero level up

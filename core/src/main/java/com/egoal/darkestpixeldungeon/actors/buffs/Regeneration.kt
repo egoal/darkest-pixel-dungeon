@@ -42,7 +42,7 @@ class Regeneration : Buff() {
                         (target as Hero).resting = false
                     }
                 }
-            }
+            } else dreg = 0f
 
             spend(1f)
         } else

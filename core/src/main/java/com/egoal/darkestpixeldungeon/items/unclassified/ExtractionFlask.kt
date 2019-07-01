@@ -46,7 +46,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
     init {
         image = ItemSpriteSheet.EXTRACTION_FLASK
 
-        // defaultAction = AC_REFINE
+//        defaultAction = AC_REFINE
         unique = true
     }
 

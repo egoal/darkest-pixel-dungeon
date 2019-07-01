@@ -54,6 +54,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     private fun imitateHeroStatus() {
         level = Dungeon.hero.lvl / 2 - (2 - Dungeon.depth / 5)
+        if (level > 10) level = 10
+
         defenseSkill = 5 + Dungeon.hero.lvl
         HT = Math.max(Dungeon.hero.HT / 2, Dungeon.hero.HP)
         HP = HT

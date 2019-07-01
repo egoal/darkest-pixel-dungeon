@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Rage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.effects.Wound;
@@ -194,7 +195,7 @@ public abstract class Mob extends Char {
     //we have no enemy, or the current one is dead
     if (enemy == null || !enemy.isAlive() || state == WANDERING)
       newEnemy = true;
-      //We are corrupted, and current enemy is either the hero or another 
+      //We are corrupted, and current enemy is either the hero or another
       // corrupted character.
     else if (buff(Corruption.class) != null && (enemy == Dungeon.hero ||
             enemy.buff(Corruption.class) != null))
@@ -466,7 +467,7 @@ public abstract class Mob extends Char {
             (enemy != this.enemy && Dungeon.level.distance(pos, enemy.pos) <
                     Dungeon.level.distance(pos, this.enemy.pos))) {
       aggro(enemy);
-      target = enemy.pos; // enemy set, not null 
+      target = enemy.pos; // enemy set, not null
     }
 
     // process buff: soul mark
@@ -494,6 +495,13 @@ public abstract class Mob extends Char {
     if (state != PASSIVE) {
       state = HUNTING;
     }
+  }
+
+  @Override
+  public Damage giveDamage(Char enemy) {
+    Damage dmg = super.giveDamage(enemy);
+    if(buff(Weakness.class)!=null) dmg.value *= 0.75f;
+    return dmg;
   }
 
   @Override

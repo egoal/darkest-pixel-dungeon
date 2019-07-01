@@ -97,6 +97,7 @@ class ChaliceOfBlood : Artifact() {
         volume -= consumed
 
         updateSprite()
+        updateQuickslot()
     }
 
     // sprite 
@@ -157,6 +158,7 @@ class ChaliceOfBlood : Artifact() {
             }
 
             updateSprite()
+            updateQuickslot()
         }
     }
 

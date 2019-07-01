@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.effects.particles;
 
+import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
@@ -29,7 +30,8 @@ public class FlameParticle extends PixelParticle.Shrinking {
   public static final Emitter.Factory FACTORY = new Factory() {
     @Override
     public void emit(Emitter emitter, int index, float x, float y) {
-      ((FlameParticle) emitter.recycle(FlameParticle.class)).reset(x, y);
+      Gizmo fp = emitter.recycle(FlameParticle.class);
+      if(fp!=null) ((FlameParticle)fp).reset(x, y);
     }
 
     @Override

@@ -22,7 +22,7 @@ def copy_source_in():
 				break
 	
 	for tag, file in files.items():
-		MASSAGES
+		# MASSAGES
 		# print(file, "{}{}/{}.properties".format(MASSAGES, tag, tag))
 		shutil.copy(file, "{}{}/{}.properties".format(MASSAGES, tag, tag))
 

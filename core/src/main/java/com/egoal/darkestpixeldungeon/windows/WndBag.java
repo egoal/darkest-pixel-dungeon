@@ -207,7 +207,7 @@ public class WndBag extends WndTabbed {
             (ItemSpriteSheet.RING_HOLDER));
 
     boolean backpack = (container == Dungeon.hero.getBelongings().backpack);
-    if (!backpack) {
+    if (!backpack && DarkestPixelDungeon.landscape()) {
       count = nCols;
       col = 0;
       row = 1;

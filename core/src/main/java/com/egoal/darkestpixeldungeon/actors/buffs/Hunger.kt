@@ -180,8 +180,8 @@ class Hunger : Buff(), Hero.Doom {
         private const val STEP = 10f
         private const val HUNGER_PER_STEP = 11f
 
-        const val HUNGRY = 350f
-        const val STARVING = 500f
+        const val HUNGRY = 325f
+        const val STARVING = 450f
 
         private const val LEVEL = "level"
         private const val PARTIALDAMAGE = "partialDamage"

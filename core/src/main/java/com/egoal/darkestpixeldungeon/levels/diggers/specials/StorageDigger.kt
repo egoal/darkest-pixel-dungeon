@@ -56,6 +56,10 @@ class StorageDigger : RectDigger() {
                 return prize
         }
 
-        return Random.oneOf(KGenerator.POTION, KGenerator.SCROLL, KGenerator.FOOD, KGenerator.GOLD).generate()
+        return Random.chances(PRIZE_MAP).generate()
+    }
+
+    companion object {
+        private val PRIZE_MAP = hashMapOf(KGenerator.POTION to 1f, KGenerator.SCROLL to 1f, KGenerator.FOOD to 0.5f, KGenerator.GOLD to 0.75f)
     }
 }

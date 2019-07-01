@@ -226,7 +226,7 @@ object KGenerator {
 
     object FOOD : ClassMapGenerator<Food>(hashMapOf(
             Food::class.java to 4f,
-            Pasty::class.java to 1f,
+            Pasty::class.java to 1.25f,
             MysteryMeat::class.java to 0f
     ))
 

@@ -976,7 +976,7 @@ class Hero : Char() {
         if (ch.properties().contains(Property.PHANTOM)) return
 
         // may recover sanity
-        if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.Float(6f, 12f))
+        if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.Float(8f, 15f))
         else if (ch is Mob && ch.maxLvl + 2 >= lvl) {
             val x = buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE // 1f - HP.toFloat() / HT.toFloat()
             val px = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
