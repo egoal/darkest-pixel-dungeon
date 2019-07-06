@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
+import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail
@@ -67,6 +68,8 @@ class Hero : Char() {
     var heroClass = HeroClass.ROGUE
     var subClass = HeroSubClass.NONE
     var heroPerk = HeroPerk(0)
+
+    var SAN = 0f
 
     var atkSkill = 10
     var defSkill = 5
@@ -150,6 +153,9 @@ class Hero : Char() {
             if (it is HeaddressRegeneration)
                 reg += if (it.cursed) -0.1f else (0.05f + reg * 0.2f)
         }
+
+        // rune
+        if (buff(MendingRune.Recovery::class.java) != null) reg += 1f
 
         if (hlvl >= Hunger.HUNGRY) reg *= 0.5f
 

@@ -75,7 +75,7 @@ public class ScrollOfTeleportation extends Scroll {
       }
     } while (pos == -1);
 
-    if (pos == -1) {
+    if (pos == -1 || Dungeon.bossLevel()) {
       GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
     } else {
 

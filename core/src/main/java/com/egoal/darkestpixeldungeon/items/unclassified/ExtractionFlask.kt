@@ -18,6 +18,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
+import com.egoal.darkestpixeldungeon.levels.features.AlchemyPot
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Plant
@@ -141,8 +142,8 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                 GLog.w(Messages.get(this, "refine_failed"))
                 null
             }
-            Random.Int(6) == 0 -> PotionOfToxicGas()
-            else -> KGenerator.POTION.generate() as Potion
+            Random.Int(8) == 0 -> PotionOfToxicGas()
+            else -> AlchemyPot.combinePotion(listOf(s1, s2))
         }
         ++refined
 

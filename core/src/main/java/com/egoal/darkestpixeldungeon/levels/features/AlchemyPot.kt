@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.food.StewedMeat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
+import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
@@ -59,12 +60,12 @@ object AlchemyPot {
     fun VerifyRefinement(items: List<Item>): Pair<Boolean, Item?> {
         return when (items.size) {
             // seed to potion.
-            3 -> if (items.all { it is Plant.Seed }) Pair(true, KGenerator.POTION.generate()) else Pair(false, null)
+            3 -> if (items.all { it is Plant.Seed }) Pair(true, combinePotion(items.map { it as Plant.Seed })) else Pair(false, null)
             2 -> {
                 val pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
                 if (pr != null)
                     return Pair(true, Blandfruit().cook(pr.first as Plant.Seed))
-                
+
                 return Pair(false, null)
             }
             1 -> {
@@ -83,6 +84,8 @@ object AlchemyPot {
         if (result is Potion) {
             Statistics.PotionsCooked++
             Badges.validatePotionsCooked()
+
+            if (result is PotionOfHealing) Dungeon.limitedDrops.cookingHP.count++
         }
     }
 
@@ -91,5 +94,18 @@ object AlchemyPot {
         checker0(item0) && checker1(item1) -> Pair(item0, item1)
         checker0(item1) && checker1(item0) -> Pair(item1, item0)
         else -> null
+    }
+
+    fun combinePotion(seeds: List<Plant.Seed>): Potion {
+        val potioncls = seeds.map { it.alchemyClass }.distinct()
+
+        if (potioncls.size == 1) return potioncls[0].newInstance()
+
+        if ((potioncls.size == 2 && Random.Int(4) == 0) || Random.Int(2) == 0) return KGenerator.POTION.generate() as Potion
+
+        var p = Random.element(potioncls).newInstance()
+        if (p is PotionOfHealing && Random.Int(12) < Dungeon.limitedDrops.cookingHP.count) p = KGenerator.POTION.generate() as Potion
+
+        return p
     }
 }

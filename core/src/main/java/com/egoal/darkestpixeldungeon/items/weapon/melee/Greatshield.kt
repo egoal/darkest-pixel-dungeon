@@ -25,7 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import kotlin.math.round
 
-class Greatshield : MeleeWeapon() {
+class Greatshield : Shield() {
 
     init {
         image = ItemSpriteSheet.GREATSHIELD
@@ -36,24 +36,5 @@ class Greatshield : MeleeWeapon() {
     //12 base, down from 30, +3 per level, down from +6
     override fun max(lvl: Int): Int = 2 * (tier + 1) + lvl * (tier - 2)
 
-    override fun defendDamage(dmg: Damage): Damage {
-        var value = 8 + round(2.5f * level()).toInt()
-
-        if (dmg.to is Hero) {
-            val burden = STRReq() - (dmg.to as Hero).STR()
-            if (burden > 0) value -= 2 * burden
-        }
-
-        if (value > 0) {
-            if (dmg.isFeatured(Damage.Feature.RANGED))
-                value += round(value / 5f).toInt()
-
-            if (dmg.type == Damage.Type.NORMAL)
-                dmg.value -= value
-            else if (dmg.type == Damage.Type.MAGICAL)
-                dmg.value -= value * 4 / 5
-        }
-
-        return dmg
-    }
+    override fun def(level: Int): Int = 8 + 3 * level
 }

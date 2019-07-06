@@ -31,7 +31,7 @@ class Ballista : Mob() {
     init {
         spriteClass = Sprite::class.java
 
-        HT = 75
+        HT = 65
         HP = HT
 
         defenseSkill = 18

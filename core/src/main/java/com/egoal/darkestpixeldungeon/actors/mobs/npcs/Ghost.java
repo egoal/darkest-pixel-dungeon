@@ -331,9 +331,9 @@ public class Ghost extends NPC {
       }
 
       do {
-        weapon = (Weapon) KGenerator.WEAPON.MELEE.INSTANCE.tier(wepTier - 1)
-                .generate();
+        weapon = (Weapon) KGenerator.WEAPON.MELEE.INSTANCE.tier(wepTier - 1).generate();
       } while (!(weapon instanceof MeleeWeapon));
+      weapon.level(0);
       weapon.cursed = false;
       weapon.enchant(null);
 

@@ -85,8 +85,7 @@ public class WndBlacksmith extends Window {
                 .get(WndBlacksmith.class, "select"));
       }
     };
-    btnItem2.setRect(btnItem1.right() + BTN_GAP, btnItem1.top(), BTN_SIZE, 
-            BTN_SIZE);
+    btnItem2.setRect(btnItem1.right() + BTN_GAP, btnItem1.top(), BTN_SIZE, BTN_SIZE);
     add(btnItem2);
 
     btnReforge = new RedButton(Messages.get(this, "reforge")) {

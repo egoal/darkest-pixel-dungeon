@@ -48,6 +48,7 @@ class KingStatuary : NPC() {
             return
         }
 
+        if (crown.isEquipped(Dungeon.hero)) crown.doUnequip(Dungeon.hero, false)
         crown.detach(Dungeon.hero.belongings.backpack)
         GLog.w(M.L(this, "on_wear"))
 

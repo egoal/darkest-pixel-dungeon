@@ -38,6 +38,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CriticalShock;
+import com.egoal.darkestpixeldungeon.effects.WeaponFlash;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -217,13 +218,13 @@ public abstract class Char extends Actor {
       // take!
       int value = enemy.takeDamage(dmg);
       if (value < 0) {
-        // ^^^ this is the only case when time stop! not a good design, but 
+        // ^^^ this is the only case when time stop! not a good design, but
         // works for now.
         enemy.sprite.flash(); // let the player know, "i hit it"
         return true;
       }
 
-      // buffs, dont know why this piece of code exists, 
+      // buffs, dont know why this piece of code exists,
       // maybe the mage? or the attack effect?
       if (buff(FireImbue.class) != null)
         buff(FireImbue.class).proc(enemy);
@@ -233,7 +234,7 @@ public abstract class Char extends Actor {
       if (this == Dungeon.hero)
         Statistics.INSTANCE.setHighestDamage(
                 Math.max(Statistics.INSTANCE.getHighestDamage(), value));
-      
+
       // effects
       // burst blood
       if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
@@ -244,6 +245,8 @@ public abstract class Char extends Actor {
         enemy.sprite.bloodBurstA(sprite.center(), value);
         enemy.sprite.flash();
       }
+
+      // WeaponFlash.Companion.Flash(this, enemy);
 
       if (!enemy.isAlive() && visibleFight) {
         if (enemy == Dungeon.hero) {
@@ -330,7 +333,7 @@ public abstract class Char extends Actor {
             (TimekeepersHourglass.TimeFreeze.class);
     if (tf != null) {
       tf.addDelayedDamage(dmg);
-      return -1; //! be negative  
+      return -1; //! be negative
     }
 
     // life link
@@ -365,7 +368,7 @@ public abstract class Char extends Actor {
     if (dmg.from instanceof Char && isCharmedBy((Char) dmg.from))
       Buff.detach(this, Charm.class);
 
-    // immunities, resistance 
+    // immunities, resistance
     if (!dmg.isFeatured(Damage.Feature.PURE))
       dmg = resistDamage(dmg);
 
@@ -379,7 +382,7 @@ public abstract class Char extends Actor {
     }
 
     // deal with types
-    //todo: the damage number can have different colour refer to the element 
+    //todo: the damage number can have different colour refer to the element
     // they carry
     switch (dmg.type) {
       case NORMAL:
