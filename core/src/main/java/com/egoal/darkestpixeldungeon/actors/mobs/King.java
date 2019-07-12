@@ -293,6 +293,8 @@ public class King extends Mob {
       properties.add(Property.UNDEAD);
       addResistances(Damage.Element.SHADOW, 1.25f);
       addResistances(Damage.Element.HOLY, .667f);
+
+      properties.add(Property.PHANTOM);
     }
 
     @Override

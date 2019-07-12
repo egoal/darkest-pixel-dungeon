@@ -550,7 +550,7 @@ public abstract class Level implements Bundlable {
       protected boolean act() {
         if (mobs.size() < nMobs()) {
 
-          Mob mob = Bestiary.mutable(Dungeon.depth);
+          Mob mob = Bestiary.INSTANCE.mutable(Dungeon.depth);
           mob.state = mob.WANDERING;
           mob.pos = randomRespawnCell();
           if (Dungeon.hero.isAlive() && mob.pos != -1 && distance(Dungeon

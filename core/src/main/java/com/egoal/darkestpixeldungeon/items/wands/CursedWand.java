@@ -162,8 +162,7 @@ public class CursedWand {
             cursedFX(user, bolt, new Callback() {
               public void call() {
                 Char ch = Actor.findChar(bolt.collisionPos);
-                if (ch != null && !ch.properties().contains(Char.Property
-                        .IMMOVABLE)) {
+                if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
                   int count = 10;
                   int pos;
                   do {
@@ -173,8 +172,7 @@ public class CursedWand {
                     }
                   } while (pos == -1);
                   if (pos == -1 || Dungeon.bossLevel()) {
-                    GLog.w(Messages.get(ScrollOfTeleportation.class, 
-                            "no_tele"));
+                    GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
                   } else {
                     ch.pos = pos;
                     if(ch instanceof Mob && ((Mob) ch).state== ((Mob) ch).HUNTING)

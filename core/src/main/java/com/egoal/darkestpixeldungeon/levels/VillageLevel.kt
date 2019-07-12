@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.levels
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.mobs.Glowworm
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.items.KGenerator
@@ -101,8 +102,7 @@ class VillageLevel : RegularLevel() {
         // roberry
         putMobAt(CatRoberry::class.java, 12, 6)
 
-        // putMobAt(Yvette::class.java, 16, 29)
-        // putMobAt(KingStatuary::class.java, 16, 29)
+        // (putMobAt(Glowworm::class.java, 16, 29) as Glowworm).setLevel(1)
     }
 
     override fun onSwitchedIn() {

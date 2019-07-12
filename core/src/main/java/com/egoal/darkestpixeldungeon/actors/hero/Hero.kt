@@ -69,8 +69,6 @@ class Hero : Char() {
     var subClass = HeroSubClass.NONE
     var heroPerk = HeroPerk(0)
 
-    var SAN = 0f
-
     var atkSkill = 10
     var defSkill = 5
     var STR = STARTING_STR
@@ -99,6 +97,8 @@ class Hero : Char() {
     var rangedWeapon: MissileWeapon? = null
     val belongings = Belongings(this)
 
+    lateinit var pressure: Pressure
+
     fun STR(): Int {
         var str = this.STR + if (weakened) -2 else 0
         str += RingOfMight.getBonus(this, RingOfMight.Might::class.java)
@@ -124,7 +124,7 @@ class Hero : Char() {
 
     // can, why
     fun canRead(): Pair<Boolean, String> {
-        val plevel = buff(Pressure::class.java)!!.getLevel()
+        val plevel = pressure.getLevel()
         if (plevel == Pressure.Level.COLLAPSE || plevel == Pressure.Level.NERVOUS)
             return Pair(false, Messages.get(this, "nervous_to_read"))
 
@@ -218,7 +218,7 @@ class Hero : Char() {
     fun live() {
         Buff.affect(this, Regeneration::class.java)
         Buff.affect(this, Hunger::class.java)
-        Buff.affect(this, Pressure::class.java)
+        pressure = Buff.affect(this, Pressure::class.java)
     }
 
     fun tier(): Int = belongings.armor?.tier ?: 0
@@ -234,7 +234,7 @@ class Hero : Char() {
     }
 
     override fun attackSkill(target: Char): Int {
-        var accuracy = buff(Pressure::class.java)!!.accuracyFactor()
+        var accuracy = pressure.accuracyFactor()
 
         if (buff(Drunk::class.java) != null) accuracy *= 0.75f
 
@@ -254,7 +254,7 @@ class Hero : Char() {
 
         if (heroClass == HeroClass.SORCERESS) evasion *= 0.8f
 
-        evasion *= buff(Pressure::class.java)!!.evasionFactor()
+        evasion *= pressure.evasionFactor()
 
         if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
             evasion *= 1.2f
@@ -323,7 +323,7 @@ class Hero : Char() {
         }
 
         // pressure
-        buff(Pressure::class.java)!!.procGivenDamage(dmg)
+        pressure.procGivenDamage(dmg)
 
         buff(Drunk::class.java)?.let { Drunk.procOutcomingDamage(dmg) }
 
@@ -528,7 +528,7 @@ class Hero : Char() {
         }
 
         // keep in mind that SAN is pressure, it increases
-        val rv = buff(Pressure::class.java)!!.upPressure(dmg.value.toFloat()).toInt()
+        val rv = pressure.upPressure(dmg.value.toFloat()).toInt()
         val WARNING = 0x0A0A0A
 
         if (rv > 0 && buff(Ignorant::class.java) == null)
@@ -542,7 +542,7 @@ class Hero : Char() {
     }
 
     fun recoverSanity(value: Float) {
-        val r = buff(Pressure::class.java)!!.downPressure(value)
+        val r = pressure.downPressure(value)
         if (r >= 1f)
             sprite.showStatus(0xFFFFFF, r.toInt().toString())
     }
@@ -984,9 +984,9 @@ class Hero : Char() {
         // may recover sanity
         if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.Float(8f, 15f))
         else if (ch is Mob && ch.maxLvl + 2 >= lvl) {
-            val x = buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE // 1f - HP.toFloat() / HT.toFloat()
+            val x = pressure.pressure / Pressure.MAX_PRESSURE
             val px = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
-            val y = 1f - HP.toFloat() / HT.toFloat() // buff(Pressure::class.java)!!.pressure / Pressure.MAX_PRESSURE
+            val y = 1f - HP.toFloat() / HT.toFloat()
             val py = if (y < 0.5f) 1f else (1f + 3f * (y - 0.5f) * (y - 0.5f))
 
             if (Random.Float() < px * py) recoverSanity(Random.Float(1f, 6f))
@@ -1167,5 +1167,8 @@ class Hero : Char() {
         resistanceNormal = bundle.getFloatArray(RESISTANCE_NORMAL)
 
         belongings.restoreFromBundle(bundle)
+
+        val pre = buff(Pressure::class.java)
+        if (pre != null) pressure = pre
     }
 }

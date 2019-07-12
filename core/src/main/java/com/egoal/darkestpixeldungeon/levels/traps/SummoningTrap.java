@@ -78,7 +78,7 @@ public class SummoningTrap extends Trap {
     ArrayList<Mob> mobs = new ArrayList<>();
 
     for (Integer point : respawnPoints) {
-      Mob mob = Bestiary.mob(Dungeon.depth);
+      Mob mob = Bestiary.INSTANCE.mob(Dungeon.depth);
       mob.state = mob.WANDERING;
       mob.pos = point;
       GameScene.add(mob, DELAY);

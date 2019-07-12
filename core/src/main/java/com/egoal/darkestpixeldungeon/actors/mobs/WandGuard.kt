@@ -36,6 +36,8 @@ class WandGuard : Mob() {
 
         addResistances(Damage.Element.all(), 1.25f, 1f)
         addResistances(Damage.Element.POISON or Damage.Element.FIRE, 100f, 1.25f)
+
+        properties.add(Property.IMMOVABLE)
     }
 
     override fun viewDistance(): Int = 6

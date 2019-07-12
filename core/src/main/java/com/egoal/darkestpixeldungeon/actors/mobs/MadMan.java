@@ -20,7 +20,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 /**
- * Created by 93942 on 8/18/2018.
+ * Created by 93942 on 8/18/2018.b
  */
 
 public class MadMan extends Mob implements Callback {

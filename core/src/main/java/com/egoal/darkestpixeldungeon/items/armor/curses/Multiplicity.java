@@ -70,7 +70,7 @@ public class Multiplicity extends Armor.Glyph {
         } else {
           if (attacker.properties().contains(Char.Property.BOSS) || attacker
                   .properties().contains(Char.Property.MINIBOSS)) {
-            m = Bestiary.mutable(Dungeon.depth % 5 == 0 ? Dungeon.depth - 1 :
+            m = Bestiary.INSTANCE.mutable(Dungeon.depth % 5 == 0 ? Dungeon.depth - 1 :
                     Dungeon.depth);
           } else {
             try {
