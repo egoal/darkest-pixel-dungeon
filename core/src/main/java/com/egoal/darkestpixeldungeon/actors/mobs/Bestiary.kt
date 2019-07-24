@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.watabou.utils.Random
 
 object Bestiary {
@@ -28,6 +29,11 @@ object Bestiary {
     fun mob(depth: Int): Mob = mobClass(depth).newInstance()
 
     fun mutable(depth: Int): Mob? {
+        //todo: rework this.
+        if (depth <= 20 && Statistics.Clock.state != Statistics.ClockTime.State.Day && Random.Int(15) == 0) {
+            return Glowworm(depth)
+        }
+
         var cl = mobClass(depth)
         if (Random.Int(30) == 0) {
             cl = when (cl) {

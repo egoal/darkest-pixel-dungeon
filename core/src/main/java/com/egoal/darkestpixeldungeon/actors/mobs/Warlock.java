@@ -48,7 +48,7 @@ public class Warlock extends Mob implements Callback {
     HP = HT = 70;
     defenseSkill = 18;
 
-    EXP = 11;
+    EXP = 10;
     maxLvl = 21;
 
     loot = KGenerator.POTION.INSTANCE;
@@ -66,7 +66,7 @@ public class Warlock extends Mob implements Callback {
 
   @Override
   public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 8);
+    dmg.value -= Random.NormalIntRange(1, 8);
     return dmg;
   }
 

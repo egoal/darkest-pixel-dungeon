@@ -50,11 +50,11 @@ class Light : Buff() {
     }
 
     override fun attachTo(target: Char): Boolean {
-        if (super.attachTo(target)) {
+        return if (super.attachTo(target)) {
             Dungeon.observe()
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 
@@ -80,10 +80,8 @@ class Light : Buff() {
     }
 
     override fun fx(on: Boolean) {
-        if (on)
-            target.sprite.add(CharSprite.State.ILLUMINATED)
-        else
-            target.sprite.remove(CharSprite.State.ILLUMINATED)
+        if (on) target.sprite.add(CharSprite.State.ILLUMINATED)
+        else target.sprite.remove(CharSprite.State.ILLUMINATED)
     }
 
     override fun toString(): String = Messages.get(this, "name")

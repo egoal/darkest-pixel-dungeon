@@ -117,7 +117,7 @@ public class ItemSpriteSheet {
   public static final int GREATAXE = WEP_TIER5 + 3;
   public static final int GREATSHIELD = WEP_TIER5 + 4;
   public static final int PAIR_SWORDS = WEP_TIER5 + 5;
-  
+
   private static final int MISSILE_WEP = xy(1, 10);  //16 slots
   public static final int DART = MISSILE_WEP + 0;
   public static final int BOOMERANG = MISSILE_WEP + 1;
@@ -144,7 +144,7 @@ public class ItemSpriteSheet {
   public static final int ARMOR_HUNTRESS = ARMOR + 8;
   public static final int DPD_ARMOR_SORCERESS = ARMOR + 9;
   public static final int ARMOR_MAGE_ENHANCED = ARMOR + 10;
-  
+
   private static final int HELMET = xy(1, 12);
   public static final int HELMET_CRUSADER = HELMET + 0;
   public static final int HELMET_BARBARIAN = HELMET + 1;
@@ -225,10 +225,12 @@ public class ItemSpriteSheet {
   public static final int CLOAK_OF_SHEEP = ARTIFACTS + 33;
   public static final int HEART_OF_SATAN = ARTIFACTS + 34;
   public static final int ARTIFACT_EYEBALL = ARTIFACTS + 35;
+  public static final int EYEBALL_PAIR = ARTIFACTS+ 36;
   public static final int RIEMANNIAN_SHIELD = ARTIFACTS + 37;
   public static final int GOLD_PLATE_STATUE = ARTIFACTS + 38;
   public static final int EXTRACTION_FLASK_ENHANCED = ARTIFACTS + 39;
   public static final int ARTIFACT_CLOAK_ENHANCED = ARTIFACTS + 40;
+  public static final int CRACKED_COIN = ARTIFACTS+ 41;
 
   //32 free slots
 

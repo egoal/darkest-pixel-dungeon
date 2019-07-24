@@ -51,7 +51,6 @@ public class Buff extends Actor {
   public HashSet<Class<?>> immunities = new HashSet<Class<?>>();
 
   public boolean attachTo(Char target) {
-
     if (target.immunizedBuffs().contains(getClass()))
       return false;
 

@@ -76,7 +76,8 @@ public class King extends Mob {
     properties.add(Property.UNDEAD);
 
     addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.POISON, 1.2f);
+    addResistances(Damage.Element.POISON| Damage.Element.FIRE, 1.2f);
+    addResistances(Damage.Element.HOLY, 0.75f);
   }
 
   private boolean nextPedestal = true;
@@ -283,7 +284,7 @@ public class King extends Mob {
     {
       spriteClass = UndeadSprite.class;
 
-      HP = HT = 28;
+      HP = HT = 30;
       defenseSkill = 15;
 
       EXP = 0;
@@ -291,10 +292,10 @@ public class King extends Mob {
       state = WANDERING;
 
       properties.add(Property.UNDEAD);
+      properties.add(Property.PHANTOM);
+
       addResistances(Damage.Element.SHADOW, 1.25f);
       addResistances(Damage.Element.HOLY, .667f);
-
-      properties.add(Property.PHANTOM);
     }
 
     @Override

@@ -101,7 +101,7 @@ public class Questioner extends NPC {
       }
       randomPlaceItem(sp, Random.Float() < mimicratio);
 
-      if (index == 2 && Random.Float() < .6f) {
+      if (index == 2 && Random.Float() < .65f) {
         randomPlaceItem(Random.oneOf(KGenerator.HELMET.INSTANCE, 
                 KGenerator.WAND.INSTANCE, 
                 KGenerator.ARTIFACT.INSTANCE).generate(), true);

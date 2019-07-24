@@ -1,11 +1,24 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Light
+import com.egoal.darkestpixeldungeon.actors.buffs.Poison
+import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.TextureFilm
+import com.watabou.utils.Bundle
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import java.util.HashSet
 
 class Glowworm(private var level: Int = 1) : Mob() {
     init {
@@ -18,6 +31,7 @@ class Glowworm(private var level: Int = 1) : Mob() {
         addResistances(Damage.Element.ICE, 0.75f)
 
         setLevel(level)
+        Buff.affect(this, Light::class.java).prolong(Float.MAX_VALUE) // for a whole light...
     }
 
     fun setLevel(lvl: Int) {
@@ -33,10 +47,49 @@ class Glowworm(private var level: Int = 1) : Mob() {
 
     override fun attackSkill(target: Char): Int = 10 + level
 
-    override fun giveDamage(enemy: Char): Damage = Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, enemy)
+    override fun giveDamage(enemy: Char): Damage =
+            Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, enemy).addElement(Damage.Element.POISON)
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply {
-        value -= Random.NormalIntRange(0, level)
+        value -= Random.NormalIntRange(1, level)
+    }
+
+    override fun die(cause: Any?) {
+        super.die(cause)
+
+        // poison & light nearby
+        GameScene.add(Blob.seed(pos, 30, ToxicGas::class.java))
+
+        for (i in PathFinder.NEIGHBOURS8) {
+            Actor.findChar(pos + i)?.let { ch ->
+                if (ch.isAlive) {
+                    Buff.affect(ch, Light::class.java).prolong(20f)
+                    if (ch === Dungeon.hero) {
+                        GLog.w(M.L(Glowworm::class.java, "light"))
+                        Buff.affect(ch, Poison::class.java).set(
+                                (Random.Float(1f, 3f) + level / 2f) * Poison.durationFactor(ch))
+                    }
+                }
+            }
+        }
+    }
+
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(STR_LEVEL, level)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        val hp = HP
+        level = bundle.getInt(STR_LEVEL)
+        setLevel(level)
+        HP = hp
+    }
+
+    //fixme: bad design, to avoid duplicate lights
+    override fun immunizedBuffs(): HashSet<Class<*>> {
+        return if (buff(Light::class.java) != null) hashSetOf(Light::class.java) else hashSetOf()
     }
 
     class Sprite : MobSprite() {
@@ -60,5 +113,9 @@ class Glowworm(private var level: Int = 1) : Mob() {
         }
 
         override fun blood(): Int = 0xFF8BA077.toInt()
+    }
+
+    companion object {
+        private const val STR_LEVEL = "level"
     }
 }

@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
@@ -40,11 +41,13 @@ class WandGuard : Mob() {
         properties.add(Property.IMMOVABLE)
     }
 
-    override fun viewDistance(): Int = 6
-
     private val wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {
         level(Random.IntRange(Dungeon.depth / 4, Dungeon.depth / 3))
     }
+
+    override fun viewDistance(): Int = 6
+
+    override fun description(): String = M.L(this, "desc", wand.name())
 
     override fun canAttack(enemy: Char): Boolean = Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
 

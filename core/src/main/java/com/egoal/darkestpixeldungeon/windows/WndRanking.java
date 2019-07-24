@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.windows;
 
+import com.egoal.darkestpixeldungeon.QuickSlot;
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -253,12 +254,11 @@ public class WndRanking extends WndTabbed {
 
       // quickslots
       pos = 0;
-      for (int i = 0; i < 6; i++) {
+      for (int i = 0; i < QuickSlot.SIZE; i++) {
         float posx = i % 4 * (22 + 1);
         float posy = i / 4 * (22 + 1) + 22 * 6 + 6;
         if (Dungeon.quickslot.getItem(i) != null) {
-          QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot
-                  .getItem(i));
+          QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
           slot.setRect(posx, posy, 22, 22);
 

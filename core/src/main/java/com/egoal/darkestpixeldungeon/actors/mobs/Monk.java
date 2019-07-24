@@ -59,10 +59,8 @@ public class Monk extends Mob {
   @Override
   public Damage giveDamage(Char target) {
     int value = Random.NormalIntRange(12, 25);
-    Damage dmg = new Damage(value, this, target).addElement(Damage.Element
-            .ACID);
-    if (value > 21)
-      dmg.addFeature(Damage.Feature.CRITICAL);
+    Damage dmg = new Damage(value, this, target).addElement(Damage.Element.ACID);
+    if (value > 20) dmg.addFeature(Damage.Feature.CRITICAL);
     return dmg;
   }
 
@@ -73,7 +71,7 @@ public class Monk extends Mob {
 
   @Override
   protected float attackDelay() {
-    return 0.5f;
+    return 0.45f;
   }
 
   @Override

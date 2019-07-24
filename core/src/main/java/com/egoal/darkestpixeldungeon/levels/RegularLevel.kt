@@ -355,7 +355,7 @@ abstract class RegularLevel : Level() {
     }
 
     // traps
-    protected fun nTraps() = Random.NormalIntRange(2, 3 + Dungeon.depth / 2)
+    protected fun nTraps() = Random.NormalIntRange(3, 5 + Dungeon.depth / 2)
 
     protected open fun trapClasses(): Array<Class<out Trap>> = arrayOf(WornTrap::class.java)
 

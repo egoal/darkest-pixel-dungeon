@@ -212,7 +212,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         }
     }
 
-    private fun minDewRequired() = if (reinforced) 2 else 3
+    private fun minDewRequired() = if (reinforced) 3 else 4
 
     private fun purifyWater() {
         val cnt = PathFinder.NEIGHBOURS9.count { Level.water[curUser.pos + it] }

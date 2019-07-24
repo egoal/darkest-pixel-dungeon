@@ -90,8 +90,7 @@ public class DM300 extends Mob {
   @Override
   public Damage giveDamage(Char target) {
     int val = Random.NormalIntRange(20, 25);
-    if (overloaded)
-      val *= 1.2;
+    if (overloaded) val *= 1.25;
 
     return new Damage(val, this, target);
   }
@@ -109,7 +108,6 @@ public class DM300 extends Mob {
 
   @Override
   public boolean act() {
-
     GameScene.add(Blob.seed(pos, 30, ToxicGas.class));
 
     return super.act();

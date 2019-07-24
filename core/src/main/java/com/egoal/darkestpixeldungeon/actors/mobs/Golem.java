@@ -64,7 +64,7 @@ public class Golem extends Mob {
 
   @Override
   public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 12);
+    dmg.value -= Random.NormalIntRange(2, 12);
     return dmg;
   }
 
