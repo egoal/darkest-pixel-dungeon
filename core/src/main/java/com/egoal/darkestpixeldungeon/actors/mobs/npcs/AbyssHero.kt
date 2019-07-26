@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
+import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 
 class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
@@ -53,8 +54,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     }
 
     private fun imitateHeroStatus() {
-        level = Dungeon.hero.lvl / 2 - (2 - Dungeon.depth / 5)
-        if (level > 10) level = 10
+        level = Dungeon.hero.lvl / 2 - (3 - Dungeon.depth / 5)
+        level = GameMath.clamp(level, 1, 10)
 
         defenseSkill = 5 + Dungeon.hero.lvl
         HT = Math.max(Dungeon.hero.HT / 2, Dungeon.hero.HP)

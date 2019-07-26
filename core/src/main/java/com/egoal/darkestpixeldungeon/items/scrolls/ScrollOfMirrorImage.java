@@ -59,7 +59,7 @@ public class ScrollOfMirrorImage extends Scroll {
       MirrorImage mob = new MirrorImage();
       mob.duplicate(curUser);
       GameScene.add(mob);
-      ScrollOfTeleportation.appear(mob, respawnPoints.get(index));
+      ScrollOfTeleportation.Companion.appear(mob, respawnPoints.get(index));
 
       respawnPoints.remove(index);
       nImages--;

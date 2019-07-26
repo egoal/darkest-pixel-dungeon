@@ -157,7 +157,7 @@ public class LloydsBeacon extends Artifact {
     } else if (action == AC_RETURN) {
 
       if (returnDepth == Dungeon.depth) {
-        ScrollOfTeleportation.appear(hero, returnPos);
+        ScrollOfTeleportation.Companion.appear(hero, returnPos);
         Dungeon.level.press(returnPos, hero);
         Dungeon.observe();
         GameScene.updateFog();
@@ -191,7 +191,7 @@ public class LloydsBeacon extends Artifact {
       updateQuickslot();
 
       if (Actor.findChar(target) == curUser) {
-        ScrollOfTeleportation.teleportHero(curUser);
+        ScrollOfTeleportation.Companion.teleportHero(curUser);
         curUser.spendAndNext(1f);
       } else {
         final Ballistica bolt = new Ballistica(curUser.pos, target, 
@@ -199,7 +199,7 @@ public class LloydsBeacon extends Artifact {
         final Char ch = Actor.findChar(bolt.collisionPos);
 
         if (ch == curUser) {
-          ScrollOfTeleportation.teleportHero(curUser);
+          ScrollOfTeleportation.Companion.teleportHero(curUser);
           curUser.spendAndNext(1f);
         } else {
           Sample.INSTANCE.play(Assets.SND_ZAP);

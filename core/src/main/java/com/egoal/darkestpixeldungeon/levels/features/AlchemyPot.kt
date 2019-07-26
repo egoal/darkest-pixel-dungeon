@@ -101,7 +101,7 @@ object AlchemyPot {
 
         if (potioncls.size == 1) return potioncls[0].newInstance()
 
-        if ((potioncls.size == 2 && Random.Int(4) == 0) || Random.Int(2) == 0) return KGenerator.POTION.generate() as Potion
+        if ((potioncls.size == 2 && Random.Int(5) == 0) || Random.Int(3) == 0) return KGenerator.POTION.generate() as Potion
 
         var p = Random.element(potioncls).newInstance()
         if (p is PotionOfHealing && Random.Int(12) < Dungeon.limitedDrops.cookingHP.count) p = KGenerator.POTION.generate() as Potion

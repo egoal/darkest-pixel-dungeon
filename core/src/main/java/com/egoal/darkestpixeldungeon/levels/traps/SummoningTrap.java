@@ -88,7 +88,7 @@ public class SummoningTrap extends Trap {
     //important to process the visuals and pressing of cells last, so spawned
     // mobs have a chance to occupy cells first
     for (Mob mob : mobs) {
-      ScrollOfTeleportation.appear(mob, mob.pos);
+      ScrollOfTeleportation.Companion.appear(mob, mob.pos);
     }
 
   }

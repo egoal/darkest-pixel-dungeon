@@ -38,7 +38,7 @@ public class Displacement extends Armor.Glyph {
     Char defender = (Char) damage.to;
 
     if (defender == Dungeon.hero && Random.Int(20) == 0) {
-      ScrollOfTeleportation.teleportHero(Dungeon.hero);
+      ScrollOfTeleportation.Companion.teleportHero(Dungeon.hero);
       damage.value = 0;
     }
 

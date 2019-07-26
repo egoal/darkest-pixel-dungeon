@@ -155,7 +155,7 @@ public class CursedWand {
       case 2:
         switch (Random.Int(2)) {
           case 0:
-            ScrollOfTeleportation.teleportHero(user);
+            ScrollOfTeleportation.Companion.teleportHero(user);
             wand.wandUsed();
             break;
           case 1:
@@ -359,7 +359,7 @@ public class CursedWand {
           Game.switchScene(InterlevelScene.class);
 
         } else {
-          ScrollOfTeleportation.teleportHero(user);
+          ScrollOfTeleportation.Companion.teleportHero(user);
           wand.wandUsed();
         }
         break;

@@ -38,5 +38,6 @@ class BlandfruitBush : Plant(8) {
             image = ItemSpriteSheet.SEED_BLANDFRUIT
         }
 
+        override fun price(): Int = 20* quantity
     }
 }

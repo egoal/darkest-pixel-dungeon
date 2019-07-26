@@ -233,7 +233,7 @@ public class King extends Mob {
               Buff.prolong(this, LifeLink.class, 10f).linker = undead.id();
             }
 
-            ScrollOfTeleportation.appear(undead, j);
+            ScrollOfTeleportation.Companion.appear(undead, j);
             new Flare(3, 32).color(0x000000, false).show(undead.sprite, 2f);
 
             PathFinder.distance[j] = Integer.MAX_VALUE;

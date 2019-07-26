@@ -311,11 +311,11 @@ public class GameScene extends PixelScene {
 
     switch (InterlevelScene.mode) {
       case RESURRECT:
-        ScrollOfTeleportation.appear(Dungeon.hero, Dungeon.level.entrance);
+        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.level.entrance);
         new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
         break;
       case RETURN:
-        ScrollOfTeleportation.appear(Dungeon.hero, Dungeon.hero.pos);
+        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.hero.pos);
         break;
       case FALL:
         Chasm.INSTANCE.HeroLand();

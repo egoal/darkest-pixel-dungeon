@@ -57,6 +57,8 @@ class PitDigger : RectDigger() {
             if (prize != null) return prize
         }
 
-        return Random.oneOf(KGenerator.POTION, KGenerator.SCROLL, KGenerator.FOOD, KGenerator.GOLD).generate()
+        if(Random.Int(5)==0) return KGenerator.GOLD.generate()
+
+        return Random.oneOf(KGenerator.POTION, KGenerator.SCROLL, KGenerator.FOOD).generate()
     }
 }

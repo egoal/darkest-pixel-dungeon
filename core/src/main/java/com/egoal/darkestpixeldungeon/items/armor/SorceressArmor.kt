@@ -33,7 +33,7 @@ class SorceressArmor : ClassArmor() {
         Sample.INSTANCE.play(Assets.SND_DEGRADE)
         Invisibility.dispel()
 
-        Item.curUser.HP -= Item.curUser.HT / 3
+        Item.curUser.HP -= Item.curUser.HP / 3
         Item.curUser.spendAndNext(Actor.TICK)
     }
 }

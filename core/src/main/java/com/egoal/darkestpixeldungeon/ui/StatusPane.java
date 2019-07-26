@@ -228,10 +228,9 @@ public class StatusPane extends Component {
     float shield = Dungeon.hero.SHLD;
     float max = Dungeon.hero.HT;
 
-    Pressure p = Dungeon.hero.buff(Pressure.class);
-    if (p != null) {
-      san.scale.x = Math.max(0, p.getPressure() / Pressure.MAX_PRESSURE);
-    }
+    Pressure p = Dungeon.hero.pressure;
+
+    san.scale.x = Math.max(0, p.getPressure() / Pressure.MAX_PRESSURE);
 
     // the portrait effect
     if (!Dungeon.hero.isAlive()) {

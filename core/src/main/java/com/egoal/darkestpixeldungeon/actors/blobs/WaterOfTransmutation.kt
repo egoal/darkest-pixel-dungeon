@@ -138,6 +138,9 @@ class WaterOfTransmutation : WellWater() {
     private fun changeHelmet(h: Helmet): Helmet? {
         var n = KGenerator.HELMET.generate() as Helmet
         while (n.javaClass == h.javaClass) n = KGenerator.HELMET.generate() as Helmet
+        n.cursed = h.cursed
+        n.cursedKnown = h.cursedKnown
+
         return n
     }
 

@@ -140,7 +140,7 @@ public class Succubus extends Mob {
       }
     }
 
-    ScrollOfTeleportation.appear(this, cell);
+    ScrollOfTeleportation.Companion.appear(this, cell);
 
     delay = BLINK_DELAY;
   }

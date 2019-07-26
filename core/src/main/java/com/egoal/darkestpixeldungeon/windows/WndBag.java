@@ -105,27 +105,29 @@ public class WndBag extends WndTabbed {
 
   private static Mode lastMode;
   private static Bag lastBag;
+  private static Filter lastFilter;
 
   public WndBag(Bag bag, Listener listener, Mode mode, String title) {
     super();
 
-    create(bag, listener, mode, title);
+    create(bag, listener, mode, null, title);
   }
 
   public WndBag(Bag bag, Listener listener, String title, Filter filter) {
     super();
-    this.filter = filter;
 
-    create(bag, listener, Mode.ALL, title);
+    create(bag, listener, Mode.ALL, filter, title);
   }
 
   // second stage constructor...
-  private void create(Bag bag, Listener listener, Mode mode, String title) {
+  private void create(Bag bag, Listener listener, Mode mode, Filter filter, String title) {
     this.listener = listener;
     this.mode = mode;
+    this.filter = filter;
     this.title = title;
 
     lastMode = mode;
+    lastFilter = filter;
     lastBag = bag;
 
     nCols = DarkestPixelDungeon.landscape() ? COLS_L : COLS_P;
@@ -170,14 +172,9 @@ public class WndBag extends WndTabbed {
 
     if (mode == lastMode && lastBag != null &&
             Dungeon.hero.getBelongings().backpack.contains(lastBag)) {
-
       return new WndBag(lastBag, listener, mode, title);
-
     } else {
-
-      return new WndBag(Dungeon.hero.getBelongings().backpack, listener, mode,
-              title);
-
+      return new WndBag(Dungeon.hero.getBelongings().backpack, listener, mode, title);
     }
   }
 
@@ -264,7 +261,8 @@ public class WndBag extends WndTabbed {
   @Override
   protected void onClick(Tab tab) {
     hide();
-    GameScene.show(new WndBag(((BagTab) tab).bag, listener, mode, title));
+    if(filter!=null) GameScene.show(new WndBag(((BagTab) tab).bag, listener, title, filter));
+    else GameScene.show(new WndBag(((BagTab) tab).bag, listener, mode, title));
   }
 
   @Override
@@ -421,7 +419,7 @@ public class WndBag extends WndTabbed {
         bg.color(NORMAL);
       }
     }
-    
+
     private boolean filterByMode(Item item){
       switch (mode){
         case FOR_SALE:
@@ -431,7 +429,7 @@ public class WndBag extends WndTabbed {
         case UNIDENTIFED:
           return !item.isIdentified();
         case UNIDED_OR_CURSED:
-          return (item instanceof EquipableItem || item instanceof Wand) && 
+          return (item instanceof EquipableItem || item instanceof Wand) &&
                   (!item.isIdentified() || item.cursed);
         case QUICKSLOT:
           return item.defaultAction!=null;
@@ -456,12 +454,12 @@ public class WndBag extends WndTabbed {
         case RING:
           return item instanceof Ring;
         case ALCHEMY:
-          return item instanceof Plant.Seed || item instanceof MysteryMeat || 
+          return item instanceof Plant.Seed || item instanceof MysteryMeat ||
                   (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib()==null);
         case ALL:
           return true;
       }
-      
+
       return false;
     }
 

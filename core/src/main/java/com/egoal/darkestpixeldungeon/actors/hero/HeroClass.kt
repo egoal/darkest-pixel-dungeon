@@ -20,12 +20,14 @@ import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
+import com.egoal.darkestpixeldungeon.items.wands.WandOfFrost
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Icecap
+import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
@@ -156,7 +158,6 @@ enum class HeroClass(private val title: String) {
 
             val b = Boomerang()
             b.identify().collect()
-            // b.enchantByBlueprint()
             Dungeon.quickslot.setSlot(0, b)
 
             hero.heroPerk.add(HeroPerk.Perk.NIGHT_VISION)
@@ -244,12 +245,7 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-//        GreatBlueprint().identify().collect()
-//        WandOfBlastWave().identify().collect()
-//        ArmorKit().collect()
-//        LeatherArmor().identify().collect()
-//        CallysDiary().identify().collect()
-//        WardenSmithNotes().identify().collect()
+//        initDebug(hero)
     }
 
     // called when hero level up

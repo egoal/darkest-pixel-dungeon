@@ -30,7 +30,7 @@ object Bestiary {
 
     fun mutable(depth: Int): Mob? {
         //todo: rework this.
-        if (depth <= 20 && Statistics.Clock.state != Statistics.ClockTime.State.Day && Random.Int(15) == 0) {
+        if (depth <= 20 && Statistics.Clock.state != Statistics.ClockTime.State.Day && Random.Int(12) == 0) {
             return Glowworm(depth)
         }
 
