@@ -296,7 +296,7 @@ class Tengu : Mob() {
             EXP = 0
             maxLvl = 1
 
-            defenseSkill = 0
+            defenseSkill = 10
 
             name = M.L(Tengu::class.java, "name")
         }

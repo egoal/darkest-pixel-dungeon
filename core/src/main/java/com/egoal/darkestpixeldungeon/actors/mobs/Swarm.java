@@ -107,6 +107,7 @@ public class Swarm extends Mob {
         clone.HP = (HP - damage.value) / 2;
         clone.pos = Random.element(candidates);
         clone.state = clone.HUNTING;
+        clone.properties.add(Property.PHANTOM);
 
         if (Dungeon.level.map[clone.pos] == Terrain.DOOR) {
           Door.INSTANCE.Enter(clone.pos, clone);

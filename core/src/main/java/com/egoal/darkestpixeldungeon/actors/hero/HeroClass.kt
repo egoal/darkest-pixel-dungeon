@@ -246,6 +246,8 @@ enum class HeroClass(private val title: String) {
         Dungeon.limitedDrops.seedBag.drop()
 
 //        initDebug(hero)
+//        Sword().upgrade(3).collect()
+//        WandOfFrost().upgrade().identify().collect()
     }
 
     // called when hero level up

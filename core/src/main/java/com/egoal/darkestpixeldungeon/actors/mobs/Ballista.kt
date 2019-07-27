@@ -110,9 +110,10 @@ class Ballista : Mob() {
 
     private fun reload() {
         loaded = true
-        sprite.showStatus(0xffffff, Messages.get(this, "loaded"))
-        if (Dungeon.visible[pos])
+        if (Dungeon.visible[pos]) {
+            sprite.showStatus(0xffffff, Messages.get(this, "loaded"))
             Sample.INSTANCE.play(Assets.SND_RELOAD)
+        }
     }
 
     override fun createLoot(): Item = when (Random.Int(4)) {
