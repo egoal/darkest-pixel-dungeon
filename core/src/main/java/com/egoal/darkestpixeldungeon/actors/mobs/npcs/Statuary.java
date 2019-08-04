@@ -315,7 +315,7 @@ public class Statuary extends NPC {
         } else {
           // must be positive
           if (requireBlood) {
-            hero.HT += Random.Int(5, 10);
+            hero.HT += Random.Int(8, 12);
             GLog.i(Messages.get(this, "upht"));
             if (Random.Int(5) == 0) {
               KindOfWeapon kow = hero.getBelongings().weapon;

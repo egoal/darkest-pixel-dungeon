@@ -3,31 +3,22 @@ package com.egoal.darkestpixeldungeon.actors.hero
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
+import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
-import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
-import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary
-import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes
-import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
-import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf
-import com.egoal.darkestpixeldungeon.items.helmets.MaskOfClown
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
-import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
-import com.egoal.darkestpixeldungeon.items.wands.WandOfFrost
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.plants.Icecap
-import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
@@ -42,12 +33,6 @@ enum class HeroClass(private val title: String) {
             super.initHeroStatus(hero)
             hero.HP += 5 // 25
             hero.HT += 5
-        }
-
-        override fun upgradeHero(hero: Hero) {
-            super.upgradeHero(hero)
-            hero.HT += 1
-            hero.HP += 1
         }
 
         override fun initHeroClass(hero: Hero) {
@@ -69,9 +54,13 @@ enum class HeroClass(private val title: String) {
                 Dungeon.quickslot.setSlot(1, darts)
             }
 
-            hero.heroPerk.add(HeroPerk.Perk.DRUNKARD)
-
             PotionOfHealing().setKnown()
+
+            // perks
+            hero.kHeroPerk.add(Drunkard())
+            hero.kHeroPerk.add(GoodAppetite())
+            hero.kHeroPerk.add(RavenousAppetite())
+            hero.kHeroPerk.add(StrongConstitution())
 
             // resists
             hero.addResistances(Damage.Element.FIRE, 1.1f)
@@ -102,6 +91,9 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(0, staff)
 
             ScrollOfUpgrade().setKnown()
+
+            hero.kHeroPerk.add(GoodAppetite())
+            hero.kHeroPerk.add(WandPerception())
 
             hero.addResistances(Damage.Element.FIRE, 1f, 1.2f)
             hero.addResistances(Damage.Element.POISON, .8f)
@@ -135,8 +127,8 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(0, cloak)
             Dungeon.quickslot.setSlot(1, darts)
 
-            hero.heroPerk.add(HeroPerk.Perk.CRITICAL_STRIKE)
-            hero.heroPerk.add(HeroPerk.Perk.KEEN)
+            hero.kHeroPerk.add(ExtraCritProbability())
+            hero.kHeroPerk.add(Keen())
 
             ScrollOfMagicMapping().setKnown()
 
@@ -160,8 +152,8 @@ enum class HeroClass(private val title: String) {
             b.identify().collect()
             Dungeon.quickslot.setSlot(0, b)
 
-            hero.heroPerk.add(HeroPerk.Perk.NIGHT_VISION)
-            hero.heroPerk.add(HeroPerk.Perk.SHOOTER)
+            hero.kHeroPerk.add(NightVision())
+            hero.kHeroPerk.add(Telepath())
 
             PotionOfMindVision().setKnown()
 
@@ -198,8 +190,8 @@ enum class HeroClass(private val title: String) {
 
             PotionOfToxicGas().identify().collect()
 
-            hero.heroPerk.add(HeroPerk.Perk.SHREWD)
-            hero.heroPerk.add(HeroPerk.Perk.POSITIVE)
+            hero.kHeroPerk.add(Discount())
+            hero.kHeroPerk.add(Optimistic())
 
             // resists and extra resists to poison
             for (i in 0 until Damage.Element.ELEMENT_COUNT)
@@ -216,7 +208,6 @@ enum class HeroClass(private val title: String) {
 
         if (DarkestPixelDungeon.debug()) initDebug(hero)
 
-        initPerks(hero)
         hero.updateAwareness()
     }
 
@@ -248,6 +239,7 @@ enum class HeroClass(private val title: String) {
 //        initDebug(hero)
 //        Sword().upgrade(3).collect()
 //        WandOfFrost().upgrade().identify().collect()
+//        TomeOfMastery().collect()
     }
 
     // called when hero level up
@@ -268,6 +260,8 @@ enum class HeroClass(private val title: String) {
             recoverSanity(min(Random.NormalIntRange(1, lvl * 3 / 4).toFloat(),
                     buff(Pressure::class.java)!!.pressure * 0.3f))
         }
+
+        hero.kHeroPerk.get(StrongConstitution::class.java)?.upgradeHero(hero)
     }
 
     private fun initDebug(hero: Hero) {
@@ -302,11 +296,6 @@ enum class HeroClass(private val title: String) {
         GreatBlueprint().collect()
 
         Amulet().collect()
-    }
-
-    private fun initPerks(hero: Hero) {
-        if (hero.heroPerk.contain(HeroPerk.Perk.CRITICAL_STRIKE))
-            hero.criticalChance += 0.05f
     }
 
     companion object {

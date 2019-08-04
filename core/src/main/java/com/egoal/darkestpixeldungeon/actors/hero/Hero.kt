@@ -6,6 +6,10 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.actors.hero.perks.KHeroPerk
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Keen
+import com.egoal.darkestpixeldungeon.actors.hero.perks.NightVision
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC
@@ -68,6 +72,7 @@ class Hero : Char() {
     var heroClass = HeroClass.ROGUE
     var subClass = HeroSubClass.NONE
     var heroPerk = HeroPerk(0)
+    var kHeroPerk = KHeroPerk()
 
     var atkSkill = 10
     var defSkill = 5
@@ -107,7 +112,7 @@ class Hero : Char() {
 
     override fun viewDistance(): Int {
         var vd = super.viewDistance()
-        if (heroPerk.contain(HeroPerk.Perk.NIGHT_VISION) &&
+        if (kHeroPerk.has(NightVision::class.java) &&
                 (Statistics.Clock.state == Statistics.ClockTime.State.Night ||
                         Statistics.Clock.state == Statistics.ClockTime.State.MidNight))
             vd += 1
@@ -519,9 +524,8 @@ class Hero : Char() {
 
         if (heroClass == HeroClass.WARRIOR) dmg.value += Random.Int(0, 1)
         if (!dmg.isFeatured(Damage.Feature.ACCURATE)) {
-            val resisted = (heroPerk.contain(HeroPerk.Perk.POSITIVE) && Random.Float() < 0.15f) ||
-                    (subClass == HeroSubClass.STARGAZER && Random.Float() < 0.1f)
-            if (resisted) {
+            val chance = kHeroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f
+            if (Random.Float() < chance) {
                 dmg.value = 0
                 sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
             }
@@ -795,8 +799,8 @@ class Hero : Char() {
     }
 
     internal fun updateAwareness() {
-        val w = if (heroPerk.contain(HeroPerk.Perk.KEEN)) 0.85 else 0.9
-        awareness = (1.0 - Math.pow(w, (1 + Math.min(lvl, 9)).toDouble() * 0.5)).toFloat()
+        val w = kHeroPerk.get(Keen::class.java)?.baseAwareness() ?: 0.9f
+        awareness = (1.0 - Math.pow(w.toDouble(), (1 + Math.min(lvl, 9)).toDouble() * 0.5)).toFloat()
     }
 
     override fun add(buff: Buff) {
@@ -1126,6 +1130,7 @@ class Hero : Char() {
         heroClass.storeInBundle(bundle)
         subClass.storeInBundle(bundle)
         heroPerk.storeInBundle(bundle)
+        kHeroPerk.storeInBundle(bundle)
 
         bundle.put(ATTACK, atkSkill)
         bundle.put(DEFENSE, defSkill)
@@ -1150,6 +1155,7 @@ class Hero : Char() {
         heroClass = HeroClass.RestoreFromBundle(bundle)
         subClass = HeroSubClass.RestoreFromBundle(bundle)
         heroPerk = HeroPerk.restoreFromBundle(bundle)
+        kHeroPerk.restoreFromBundle(bundle)
 
         atkSkill = bundle.getInt(ATTACK)
         defSkill = bundle.getInt(DEFENSE)

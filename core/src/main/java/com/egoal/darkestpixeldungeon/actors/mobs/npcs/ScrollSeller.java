@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Discount;
 import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Generator;
@@ -55,11 +56,11 @@ public class ScrollSeller extends DPDShopKeeper {
       wand2.cursed = false;
       addItemToSell(wand2);
     }
-      
+
     addItemToSell(new Stylus().identify());
 
     shuffleItems();
-    
+
     return this;
   }
 
@@ -72,8 +73,9 @@ public class ScrollSeller extends DPDShopKeeper {
   }
 
   private int feeClean() {
-    return (int) (40 * (Dungeon.depth + 4) *
-            (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1.));
+    int fee = 40* (Dungeon.depth+ 4);
+    Discount d = Dungeon.hero.getKHeroPerk().get(Discount.class);
+    return d==null? fee: (int) (fee* d.ratio());
   }
 
   protected void onPlayerClean() {

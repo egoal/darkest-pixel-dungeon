@@ -153,6 +153,7 @@ public class Assets {
   public static final String BUFFS_LARGE = MISCS + "large_buffs.png";
   public static final String SPELL_ICONS = MISCS + "spell_icons.png";
   public static final String PORTRAITS = MISCS + "portraits.png";
+  public static final String PERKS = MISCS+ "perks.png";
 
   // effects
   public static final String SPECKS = MISCS + "specks.png";

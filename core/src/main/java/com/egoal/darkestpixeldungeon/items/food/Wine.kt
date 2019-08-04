@@ -4,13 +4,11 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
-import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
-import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Drunkard
+import com.egoal.darkestpixeldungeon.actors.hero.perks.KHeroPerk
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.potions.Potion.AC_DRINK
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -45,7 +43,7 @@ class Wine : Item() {
             hero.busy()
 
             var value = Math.min(Random.IntRange(15, (Pressure.HeroPressure() * .4f).toInt()), 30)
-            if (hero.heroPerk.contain(HeroPerk.Perk.DRUNKARD)) {
+            if (hero.kHeroPerk.get(Drunkard::class.java) != null) {
                 value += value / 5
                 hero.recoverSanity(value)
             } else {

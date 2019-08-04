@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.actors.hero.perks.GoodAppetite
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
@@ -42,18 +43,7 @@ open class Food(val enery: Float = Hunger.HUNGRY,
             hero.buff(Hunger::class.java)!!.satisfy(enery)
             GLog.i(message)
 
-            when (hero.heroClass) {
-                HeroClass.WARRIOR -> {
-                    if (hero.HP < hero.HT) {
-                        hero.HP = min(hero.HP + 5, hero.HT)
-                        hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)
-                    }
-                }
-                HeroClass.MAGE -> {
-                    Buff.affect(hero, Recharging::class.java, 4f)
-                    ScrollOfRecharging.charge(hero)
-                }
-            }
+            hero.kHeroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, this)
 
             hero.recoverSanity(Random.Float(2f, 7f))
             hero.sprite.operate(hero.pos)

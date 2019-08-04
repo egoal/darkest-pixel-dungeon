@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.PinCushion
 import com.egoal.darkestpixeldungeon.actors.buffs.Unbalance
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.items.EquipableItem
@@ -58,7 +59,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
             if (Dungeon.level.adjacent(Item.curUser.pos, enemy.pos)) {
                 //todo: fixme
                 Item.curUser.rangedWeapon = this
-                val f = if (Item.curUser.heroPerk.contain(HeroPerk.Perk.SHOOTER)) 0.75f else 1.5f
+                val f = if (Item.curUser.heroClass == HeroClass.HUNTRESS) 0.75f else 1.5f
                 Buff.prolong(Item.curUser, Unbalance::class.java, Item.curUser.attackDelay() * f)
 
                 Item.curUser.rangedWeapon = null

@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPerception;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
@@ -251,7 +252,9 @@ public abstract class Wand extends Item {
       identify();
       GLog.w(Messages.get(Wand.class, "identify", name()));
     } else {
-      if (curUser.getHeroClass() == HeroClass.MAGE) levelKnown = true;
+      WandPerception wp = curUser.getKHeroPerk().get(WandPerception.class);
+      if(wp!=null) wp.onWandUsed(this);
+
       updateQuickslot();
     }
 

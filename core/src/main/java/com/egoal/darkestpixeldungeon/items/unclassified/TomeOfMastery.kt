@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe
@@ -114,6 +115,8 @@ class TomeOfMastery : Item() {
                 //^ may lose perk
             }
             HeroSubClass.STARGAZER -> {
+                curUser.kHeroPerk.add(Optimistic())
+
                 val a = Astrolabe().identify()
                 if (a.doPickUp(curUser)) GLog.w(Messages.get(curUser, "you_now_have", a.name()))
                 else Dungeon.level.drop(a, curUser.pos).sprite.drop()

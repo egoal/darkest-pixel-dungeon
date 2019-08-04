@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Discount;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.WindParticle;
@@ -392,9 +393,8 @@ public class DPDShopKeeper extends NPC {
     }
 
     private int buyPrice(Item item) {
-      return (int) (item.sellPrice() *
-              (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75
-                      : 1.));
+      Discount d = Dungeon.hero.getKHeroPerk().get(Discount.class);
+      return d==null? item.sellPrice(): d.buyPrice(item);
     }
 
     private static class ItemButton extends ItemSlot {

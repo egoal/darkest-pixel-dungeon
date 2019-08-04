@@ -157,7 +157,7 @@ object KGenerator {
             PotionOfLevitation::class.java to 10f,
             PotionOfStrength::class.java to 0f,
             PotionOfMindVision::class.java to 20f,
-            PotionOfPhysique::class.java to 5f, 
+            PotionOfPhysique::class.java to 4f,
             PotionOfPurity::class.java to 12f,
             PotionOfInvisibility::class.java to 10f,
             PotionOfMight::class.java to 0f,

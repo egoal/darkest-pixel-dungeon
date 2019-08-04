@@ -118,8 +118,10 @@ public class WndTradeItem extends Window {
     float pos = createDescription(item, true);
 
     // sorceress perk1
-    final int price = (int) (item.sellPrice() *
-            (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1));
+//    final int price = (int) (item.sellPrice() *
+//            (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1));
+
+    final int price = item.sellPrice();
 
     if (canBuy) {
 
