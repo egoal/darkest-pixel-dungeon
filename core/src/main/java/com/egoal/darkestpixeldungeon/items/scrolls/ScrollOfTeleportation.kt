@@ -26,7 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
+import com.egoal.darkestpixeldungeon.actors.hero.perks.IntendedTransportation
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -55,7 +55,7 @@ class ScrollOfTeleportation : Scroll() {
             return
         }
 
-        if (Item.curUser.heroPerk.contain(HeroPerk.Perk.INTENDED_TRANSPORTATION))
+        if (Item.curUser.heroPerk.has(IntendedTransportation::class.java))
             IntendTeleportHero(Item.curUser)
         else {
             teleportHero(Item.curUser)

@@ -11,7 +11,7 @@ import com.watabou.utils.Bundle
 import kotlin.math.min
 
 //todo: may use events to handle this...
-class KHeroPerk : Bundlable {
+class HeroPerk : Bundlable {
     val perks = hashSetOf<Perk>()
 
     fun <T> get(cls: Class<T>): T? where T : Perk = perks.find { cls.isInstance(it) } as T?

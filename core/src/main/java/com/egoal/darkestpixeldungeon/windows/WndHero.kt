@@ -25,11 +25,9 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
-import com.egoal.darkestpixeldungeon.actors.hero.perks.KHeroPerk
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -276,7 +274,7 @@ class WndHero : WndTabbed() {
         var pos = 0f
 
         init {
-            for (perk in Dungeon.hero.kHeroPerk.perks) {
+            for (perk in Dungeon.hero.heroPerk.perks) {
                 val slot = PerkSlot(perk)
                 slot.setRect(0f, pos, slot.icon.width(), slot.icon.height())
                 add(slot)

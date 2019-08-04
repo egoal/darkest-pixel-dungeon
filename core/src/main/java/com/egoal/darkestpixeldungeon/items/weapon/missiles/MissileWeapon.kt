@@ -9,7 +9,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.PinCushion
 import com.egoal.darkestpixeldungeon.actors.buffs.Unbalance
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
@@ -90,7 +89,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         var bonus = RingOfSharpshooting.getBonus(Dungeon.hero, RingOfSharpshooting.Aim::class.java)
 
         // huntress bonus
-        if (Dungeon.hero.heroPerk.contain(HeroPerk.Perk.SHOOTER)) bonus += 3
+        if (Dungeon.hero.heroClass== HeroClass.HUNTRESS) bonus += 3
 
         return base * Math.pow(0.9, bonus.toDouble()).toFloat()
     }

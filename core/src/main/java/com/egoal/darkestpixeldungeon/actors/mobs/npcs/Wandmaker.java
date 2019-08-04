@@ -227,7 +227,7 @@ public class Wandmaker extends NPC {
         node.put(WAND2, wand2);
 
         if (type == 2) {
-          node.put(RITUALPOS, CeremonialCandle.ritualPos);
+          node.put(RITUALPOS, CeremonialCandle.Companion.getRitualPos());
         }
 
       }
@@ -254,7 +254,7 @@ public class Wandmaker extends NPC {
         wand2 = (Wand) node.get(WAND2);
 
         if (type == 2) {
-          CeremonialCandle.ritualPos = node.getInt(RITUALPOS);
+          CeremonialCandle.Companion.setRitualPos(node.getInt(RITUALPOS));
         }
 
       } else {

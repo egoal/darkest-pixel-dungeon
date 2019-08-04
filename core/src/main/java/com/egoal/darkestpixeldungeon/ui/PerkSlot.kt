@@ -26,6 +26,7 @@ class PerkSlot(private val perk: Perk) : Button() {
         if (perk.level > 1 || perk.upgradable()) {
             bottomRight.text("${perk.level}")
             bottomRight.hardlight(0xf1ca3e)
+            bottomRight.measure()
         } else bottomRight.visible = false
     }
 

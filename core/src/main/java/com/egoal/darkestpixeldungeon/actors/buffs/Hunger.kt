@@ -24,11 +24,9 @@ import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
-import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Challenges
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.hero.perks.GoodAppetite
 import com.egoal.darkestpixeldungeon.actors.hero.perks.RavenousAppetite
 import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty
 import com.egoal.darkestpixeldungeon.messages.M
@@ -68,7 +66,7 @@ class Hunger : Buff(), Hero.Doom {
             val hero = target as Hero
 
             if (isStarving) {
-                val dhp = if (hero.kHeroPerk.get(RavenousAppetite::class.java) != null) target.HT / 60f
+                val dhp = if (hero.heroPerk.get(RavenousAppetite::class.java) != null) target.HT / 60f
                 else target.HT / 80f
                 partialDamage += dhp
 

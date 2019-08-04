@@ -1,32 +1,22 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
-import android.provider.MediaStore;
-
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.Journal;
-import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Discount;
 import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
-import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ScrollSellerSprite;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
-import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-
-import java.util.function.DoubleUnaryOperator;
 
 /**
  * Created by 93942 on 8/26/2018.
@@ -74,7 +64,7 @@ public class ScrollSeller extends DPDShopKeeper {
 
   private int feeClean() {
     int fee = 40* (Dungeon.depth+ 4);
-    Discount d = Dungeon.hero.getKHeroPerk().get(Discount.class);
+    Discount d = Dungeon.hero.getHeroPerk().get(Discount.class);
     return d==null? fee: (int) (fee* d.ratio());
   }
 

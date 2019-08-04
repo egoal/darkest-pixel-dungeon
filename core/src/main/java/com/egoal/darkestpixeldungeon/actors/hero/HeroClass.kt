@@ -57,10 +57,10 @@ enum class HeroClass(private val title: String) {
             PotionOfHealing().setKnown()
 
             // perks
-            hero.kHeroPerk.add(Drunkard())
-            hero.kHeroPerk.add(GoodAppetite())
-            hero.kHeroPerk.add(RavenousAppetite())
-            hero.kHeroPerk.add(StrongConstitution())
+            hero.heroPerk.add(Drunkard())
+            hero.heroPerk.add(GoodAppetite())
+            hero.heroPerk.add(RavenousAppetite())
+            hero.heroPerk.add(StrongConstitution())
 
             // resists
             hero.addResistances(Damage.Element.FIRE, 1.1f)
@@ -92,8 +92,8 @@ enum class HeroClass(private val title: String) {
 
             ScrollOfUpgrade().setKnown()
 
-            hero.kHeroPerk.add(GoodAppetite())
-            hero.kHeroPerk.add(WandPerception())
+            hero.heroPerk.add(GoodAppetite())
+            hero.heroPerk.add(WandPerception())
 
             hero.addResistances(Damage.Element.FIRE, 1f, 1.2f)
             hero.addResistances(Damage.Element.POISON, .8f)
@@ -127,8 +127,8 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(0, cloak)
             Dungeon.quickslot.setSlot(1, darts)
 
-            hero.kHeroPerk.add(ExtraCritProbability())
-            hero.kHeroPerk.add(Keen())
+            hero.heroPerk.add(ExtraCritProbability())
+            hero.heroPerk.add(Keen())
 
             ScrollOfMagicMapping().setKnown()
 
@@ -152,8 +152,8 @@ enum class HeroClass(private val title: String) {
             b.identify().collect()
             Dungeon.quickslot.setSlot(0, b)
 
-            hero.kHeroPerk.add(NightVision())
-            hero.kHeroPerk.add(Telepath())
+            hero.heroPerk.add(NightVision())
+            hero.heroPerk.add(Telepath())
 
             PotionOfMindVision().setKnown()
 
@@ -190,8 +190,8 @@ enum class HeroClass(private val title: String) {
 
             PotionOfToxicGas().identify().collect()
 
-            hero.kHeroPerk.add(Discount())
-            hero.kHeroPerk.add(Optimistic())
+            hero.heroPerk.add(Discount())
+            hero.heroPerk.add(Optimistic())
 
             // resists and extra resists to poison
             for (i in 0 until Damage.Element.ELEMENT_COUNT)
@@ -261,7 +261,7 @@ enum class HeroClass(private val title: String) {
                     buff(Pressure::class.java)!!.pressure * 0.3f))
         }
 
-        hero.kHeroPerk.get(StrongConstitution::class.java)?.upgradeHero(hero)
+        hero.heroPerk.get(StrongConstitution::class.java)?.upgradeHero(hero)
     }
 
     private fun initDebug(hero: Hero) {
@@ -272,7 +272,7 @@ enum class HeroClass(private val title: String) {
             // lvl = 20
         }
 
-        hero.heroPerk.add(HeroPerk.Perk.INTENDED_TRANSPORTATION)
+        hero.heroPerk.add(IntendedTransportation())
 
         Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
             quantity(99).identify().collect()

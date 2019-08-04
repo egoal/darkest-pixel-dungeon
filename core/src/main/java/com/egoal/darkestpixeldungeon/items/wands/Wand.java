@@ -26,8 +26,6 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPerception;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
@@ -42,7 +40,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging;
-import com.egoal.darkestpixeldungeon.actors.buffs.SoulMark;
 import com.egoal.darkestpixeldungeon.effects.MagicMissile;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.watabou.noosa.audio.Sample;
@@ -252,7 +249,7 @@ public abstract class Wand extends Item {
       identify();
       GLog.w(Messages.get(Wand.class, "identify", name()));
     } else {
-      WandPerception wp = curUser.getKHeroPerk().get(WandPerception.class);
+      WandPerception wp = curUser.getHeroPerk().get(WandPerception.class);
       if(wp!=null) wp.onWandUsed(this);
 
       updateQuickslot();

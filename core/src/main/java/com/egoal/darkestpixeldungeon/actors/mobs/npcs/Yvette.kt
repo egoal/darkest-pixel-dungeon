@@ -5,7 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
+import com.egoal.darkestpixeldungeon.actors.hero.perks.IntendedTransportation
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.items.Heap
@@ -147,7 +147,7 @@ class Yvette : NPC() {
         Quest.Completed = true
 
         if (foodGotten) {
-            Dungeon.hero.heroPerk.add(HeroPerk.Perk.INTENDED_TRANSPORTATION)
+            Dungeon.hero.heroPerk.add(IntendedTransportation())
             GLog.p(Messages.get(this, "taught", name))
         }
 

@@ -61,6 +61,12 @@ class NightVision : Perk()
 
 class Telepath : Perk()
 
+class Fearless: Perk()
+
+class Assassin: Perk()
+
+class IntendedTransportation: Perk()
+
 class Optimistic : Perk(2) {
     fun resistChance(): Float = 0.05f + 0.1f * level // 0.15-> 0.25
 }

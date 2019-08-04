@@ -8,11 +8,9 @@ import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Discount;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
-import com.egoal.darkestpixeldungeon.effects.particles.WindParticle;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -24,7 +22,6 @@ import com.egoal.darkestpixeldungeon.ui.ItemSlot;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.ui.Window;
-import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.IconTitle;
 import com.egoal.darkestpixeldungeon.windows.WndBag;
 import com.egoal.darkestpixeldungeon.windows.WndTradeItem;
@@ -36,8 +33,6 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import javax.microedition.khronos.opengles.GL;
 
 
 /**
@@ -393,7 +388,7 @@ public class DPDShopKeeper extends NPC {
     }
 
     private int buyPrice(Item item) {
-      Discount d = Dungeon.hero.getKHeroPerk().get(Discount.class);
+      Discount d = Dungeon.hero.getHeroPerk().get(Discount.class);
       return d==null? item.sellPrice(): d.buyPrice(item);
     }
 

@@ -27,8 +27,9 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
@@ -102,9 +103,9 @@ class TomeOfMastery : Item() {
         when (way) {
             HeroSubClass.BERSERKER -> {
                 Buff.affect(curUser, Berserk::class.java)
-                curUser.heroPerk.add(HeroPerk.Perk.FEARLESS)
+                curUser.heroPerk.add(Fearless())
             }
-            HeroSubClass.ASSASSIN -> curUser.heroPerk.add(HeroPerk.Perk.ASSASSIN)
+            HeroSubClass.ASSASSIN -> curUser.heroPerk.add(Assassin())
             HeroSubClass.WARLOCK -> {
                 val uos = UrnOfShadow().identify()
                 if (uos.doPickUp(curUser)) GLog.w(Messages.get(curUser, "you_now_have", uos.name()))
@@ -115,7 +116,7 @@ class TomeOfMastery : Item() {
                 //^ may lose perk
             }
             HeroSubClass.STARGAZER -> {
-                curUser.kHeroPerk.add(Optimistic())
+                curUser.heroPerk.add(Optimistic())
 
                 val a = Astrolabe().identify()
                 if (a.doPickUp(curUser)) GLog.w(Messages.get(curUser, "you_now_have", a.name()))

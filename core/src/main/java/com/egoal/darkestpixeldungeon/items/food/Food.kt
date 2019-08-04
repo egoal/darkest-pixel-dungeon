@@ -3,24 +3,17 @@ package com.egoal.darkestpixeldungeon.items.food
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Statistics
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
-import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.GoodAppetite
-import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 import java.util.ArrayList
-import kotlin.math.min
 
 open class Food(val enery: Float = Hunger.HUNGRY,
                 val hornValue: Int = 3) : Item() {
@@ -43,7 +36,7 @@ open class Food(val enery: Float = Hunger.HUNGRY,
             hero.buff(Hunger::class.java)!!.satisfy(enery)
             GLog.i(message)
 
-            hero.kHeroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, this)
+            hero.heroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, this)
 
             hero.recoverSanity(Random.Float(2f, 7f))
             hero.sprite.operate(hero.pos)

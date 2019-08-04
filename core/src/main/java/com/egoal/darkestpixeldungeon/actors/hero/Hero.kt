@@ -6,10 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.*
-import com.egoal.darkestpixeldungeon.actors.hero.perks.KHeroPerk
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Keen
-import com.egoal.darkestpixeldungeon.actors.hero.perks.NightVision
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
+import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC
@@ -71,8 +68,7 @@ class Hero : Char() {
     // properties
     var heroClass = HeroClass.ROGUE
     var subClass = HeroSubClass.NONE
-    var heroPerk = HeroPerk(0)
-    var kHeroPerk = KHeroPerk()
+    var heroPerk = HeroPerk()
 
     var atkSkill = 10
     var defSkill = 5
@@ -112,7 +108,7 @@ class Hero : Char() {
 
     override fun viewDistance(): Int {
         var vd = super.viewDistance()
-        if (kHeroPerk.has(NightVision::class.java) &&
+        if (heroPerk.has(NightVision::class.java) &&
                 (Statistics.Clock.state == Statistics.ClockTime.State.Night ||
                         Statistics.Clock.state == Statistics.ClockTime.State.MidNight))
             vd += 1
@@ -509,7 +505,7 @@ class Hero : Char() {
             if (dmg.isFeatured(Damage.Feature.CRITICAL))
                 dmgMental.value += Random.Int(2, 6)
 
-            if (!heroPerk.contain(HeroPerk.Perk.FEARLESS) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0)
+            if (!heroPerk.has(Fearless::class.java) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0)
                 dmgMental.value += Random.Int(1, 5)
 
             dmg.value = min(dmg.value, 10)
@@ -524,7 +520,7 @@ class Hero : Char() {
 
         if (heroClass == HeroClass.WARRIOR) dmg.value += Random.Int(0, 1)
         if (!dmg.isFeatured(Damage.Feature.ACCURATE)) {
-            val chance = kHeroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f
+            val chance = heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f
             if (Random.Float() < chance) {
                 dmg.value = 0
                 sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
@@ -799,7 +795,7 @@ class Hero : Char() {
     }
 
     internal fun updateAwareness() {
-        val w = kHeroPerk.get(Keen::class.java)?.baseAwareness() ?: 0.9f
+        val w = heroPerk.get(Keen::class.java)?.baseAwareness() ?: 0.9f
         awareness = (1.0 - Math.pow(w.toDouble(), (1 + Math.min(lvl, 9)).toDouble() * 0.5)).toFloat()
     }
 
@@ -1130,7 +1126,6 @@ class Hero : Char() {
         heroClass.storeInBundle(bundle)
         subClass.storeInBundle(bundle)
         heroPerk.storeInBundle(bundle)
-        kHeroPerk.storeInBundle(bundle)
 
         bundle.put(ATTACK, atkSkill)
         bundle.put(DEFENSE, defSkill)
@@ -1154,8 +1149,7 @@ class Hero : Char() {
 
         heroClass = HeroClass.RestoreFromBundle(bundle)
         subClass = HeroSubClass.RestoreFromBundle(bundle)
-        heroPerk = HeroPerk.restoreFromBundle(bundle)
-        kHeroPerk.restoreFromBundle(bundle)
+        heroPerk.restoreFromBundle(bundle)
 
         atkSkill = bundle.getInt(ATTACK)
         defSkill = bundle.getInt(DEFENSE)

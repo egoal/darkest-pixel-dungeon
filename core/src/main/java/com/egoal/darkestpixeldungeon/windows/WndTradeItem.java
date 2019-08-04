@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -116,10 +115,6 @@ public class WndTradeItem extends Window {
     Item item = heap.peek();
 
     float pos = createDescription(item, true);
-
-    // sorceress perk1
-//    final int price = (int) (item.sellPrice() *
-//            (Dungeon.hero.getHeroPerk().contain(HeroPerk.Perk.SHREWD) ? .75 : 1));
 
     final int price = item.sellPrice();
 

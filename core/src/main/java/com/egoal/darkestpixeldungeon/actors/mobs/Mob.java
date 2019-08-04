@@ -28,9 +28,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Rage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroPerk;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin;
 import com.egoal.darkestpixeldungeon.effects.Wound;
-import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.levels.Level;
@@ -46,7 +45,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Hunger;
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep;
 import com.egoal.darkestpixeldungeon.actors.buffs.SoulMark;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.effects.Surprise;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -454,7 +452,7 @@ public abstract class Mob extends Char {
     if (!enemySeen && enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack
             ()) {
       // surprise attack!
-      if (((Hero) enemy).getHeroPerk().contain(HeroPerk.Perk.ASSASSIN)) {
+      if (((Hero) enemy).getHeroPerk().has(Assassin.class)) {
         // assassin perk
         dmg.value *= 1.25f;
         Wound.hit(this);
