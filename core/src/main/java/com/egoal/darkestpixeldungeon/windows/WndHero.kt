@@ -66,11 +66,11 @@ class WndHero : WndTabbed() {
         buffs = BuffsTab()
         add(buffs)
 
-        details = DetailsTab()
-        add(details)
-
         perks = PerksTab()
         add(perks)
+
+        details = DetailsTab()
+        add(details)
 
         add(object : WndTabbed.LabeledTab(Messages.get(this, "stats")) {
             override fun select(value: Boolean) {
@@ -86,18 +86,18 @@ class WndHero : WndTabbed() {
                 buffs.visible = buffs.active
             }
         })
-        add(object : WndTabbed.LabeledTab(Messages.get(this, "details")) {
-            override fun select(value: Boolean) {
-                super.select(value)
-                details.active = selected
-                details.visible = details.active
-            }
-        })
         add(object : WndTabbed.LabeledTab(Messages.get(this, "perks")) {
             override fun select(value: Boolean) {
                 super.select(value)
                 perks.active = selected
                 perks.visible = perks.active
+            }
+        })
+        add(object : WndTabbed.LabeledTab(Messages.get(this, "details")) {
+            override fun select(value: Boolean) {
+                super.select(value)
+                details.active = selected
+                details.visible = details.active
             }
         })
 
@@ -229,6 +229,21 @@ class WndHero : WndTabbed() {
         }
     }
 
+    private inner class PerksTab : Group() {
+        init {
+            // 5
+            val left = 4f // 116- 20x5- 4x2 = 8
+            val top = 4f
+            for (i in 0 until Dungeon.hero.heroPerk.perks.size) {
+                val slot = PerkSlot(Dungeon.hero.heroPerk.perks[i])
+                val r = i / 5
+                val c = i % 5
+                slot.setRect(left+ (20+ GAP2)*c, top+ (20+ GAP2)* r, 20f, 20f)
+                add(slot)
+            }
+        }
+    }
+
     private inner class DetailsTab : Group() {
         lateinit var resistIcons: SmartTexture
 
@@ -271,21 +286,8 @@ class WndHero : WndTabbed() {
 
     }
 
-    private inner class PerksTab : Group() {
-        var pos = 0f
-
-        init {
-            for (perk in Dungeon.hero.heroPerk.perks) {
-                val slot = PerkSlot(perk)
-                slot.setRect(0f, pos, slot.icon.width(), slot.icon.height())
-                add(slot)
-                pos += GAP2 + slot.height()
-            }
-        }
-    }
-
     companion object {
-        private const val WIDTH = 115
+        private const val WIDTH = 116
         private const val GAP5 = 5
         private const val GAP2 = 2
     }

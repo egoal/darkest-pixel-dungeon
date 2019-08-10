@@ -60,7 +60,10 @@ public class WndChallenges extends Window {
 
       CheckBox cb = new CheckBox(Messages.get(Challenges.class, Challenges
               .INSTANCE.getNAME_IDS()[i]));
-      if(i<3) cb.textColor(0x888888); //todo: fix this
+      if(i<3){
+        cb.textColor(0x888888); //todo: fix this
+        cb.enable(false);
+      }
       cb.checked((checked & Challenges.INSTANCE.getMASKS()[i]) != 0);
       cb.active = editable;
 

@@ -7,12 +7,13 @@ import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.windows.WndMessage
 import com.watabou.gltextures.TextureCache
 import com.watabou.noosa.BitmapText
+import com.watabou.noosa.ColorBlock
 import com.watabou.noosa.Image
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.ui.Button
 
-class PerkSlot(private val perk: Perk) : Button() {
-    lateinit var icon: Image
+open class PerkSlot(protected val perk: Perk) : Button() {
+    private lateinit var icon: Image
     private lateinit var bottomRight: BitmapText
 
     init {

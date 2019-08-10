@@ -132,8 +132,7 @@ class Hunger : Buff(), Hero.Doom {
             GLog.n(Messages.get(this, "cursedhorn"))
         }
 
-        if (!Dungeon.isChallenged(Challenges.NO_FOOD))
-            reduceHunger(energy)
+        reduceHunger(energy)
     }
 
     //directly interacts with hunger, no checks.

@@ -361,7 +361,7 @@ public class Dungeon {
   }
 
   public static boolean souNeeded() {
-    final int SOU_PER_FLOORSET = isChallenged(Challenges.NO_SCROLLS) ? 1 : 3;
+    final int SOU_PER_FLOORSET = isChallenged(Challenges.NO_SCROLLS) ? 1 : 2;
 
     //3 SOU each floor set
     int souLeftThisSet = SOU_PER_FLOORSET - (limitedDrops.upgradeScrolls

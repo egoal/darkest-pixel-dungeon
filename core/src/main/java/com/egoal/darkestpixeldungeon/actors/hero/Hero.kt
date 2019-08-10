@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Earthroot
 import com.egoal.darkestpixeldungeon.plants.Sungrass
@@ -46,6 +47,7 @@ import com.egoal.darkestpixeldungeon.ui.StatusPane
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndResurrect
+import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.Camera
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
@@ -140,6 +142,7 @@ class Hero : Char() {
         if (hlvl >= Hunger.STARVING) return 0f
 
         var reg = regeneration
+        reg += heroPerk.get(LowHealthRegeneration::class.java)?.extraRegeneration(this) ?: 0f
 
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
@@ -260,6 +263,8 @@ class Hero : Char() {
         if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
             evasion *= 1.2f
 
+        evasion *= heroPerk.get(LowHealthDexterous::class.java)?.evasionFactor(this) ?: 1f
+
         val estr = (belongings.armor?.STRReq() ?: 10) - STR()
         if (estr > 0) {
             // heavy
@@ -321,6 +326,11 @@ class Hero : Char() {
                 dmg.value = (dmg.value * 1.5).toInt()
                 dmg.addFeature(Damage.Feature.CRITICAL)
             }
+        }
+
+        if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+            heroPerk.get(PureCrit::class.java)?.procCrit(dmg)
+            heroPerk.get(HardCrit::class.java)?.procCrit(dmg)
         }
 
         // pressure
@@ -448,6 +458,10 @@ class Hero : Char() {
         if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
             // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
             Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
+        }
+
+        if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+            heroPerk.get(VampiricCrit::class.java)?.procCrit(dmg)
         }
 
         return dmg
@@ -785,12 +799,19 @@ class Hero : Char() {
         }
 
         if (upgraded) {
-
             GLog.p(Messages.get(this, "new_level"), lvl)
             sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "level_up"))
             Sample.INSTANCE.play(Assets.SND_LEVELUP)
 
             Badges.validateLevelReached()
+
+            if (lvl % 5 == 0) {
+                // gain a perk
+                val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
+                GameScene.show(WndSelectPerk.CreateWithRandomPositives(
+                        M.L(WndSelectPerk::class.java, "select"), cnt))
+                // todo: player may cancel the window
+            }
         }
     }
 

@@ -130,10 +130,10 @@ class PrisonLevel : RegularLevel() {
         }
     }
 
-    override fun updateFieldOfView(c: Char, fieldOfView: BooleanArray) {
-        super.updateFieldOfView(c, fieldOfView)
-        Log.d("dpd", "luminaries: ${luminaries.size}, lighted: ${Level.lighted.count { it }}")
-    }
+//    override fun updateFieldOfView(c: Char, fieldOfView: BooleanArray) {
+//        super.updateFieldOfView(c, fieldOfView)
+//        Log.d("dpd", "luminaries: ${luminaries.size}, lighted: ${Level.lighted.count { it }}")
+//    }
 
 //    companion object {
 //        fun AddPrisonVisuals(level: Level, group: Group) {

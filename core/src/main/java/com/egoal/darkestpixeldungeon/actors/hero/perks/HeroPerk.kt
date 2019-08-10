@@ -12,16 +12,14 @@ import kotlin.math.min
 
 //todo: may use events to handle this...
 class HeroPerk : Bundlable {
-    val perks = hashSetOf<Perk>()
+    val perks = ArrayList<Perk>()
 
     fun <T> get(cls: Class<T>): T? where T : Perk = perks.find { cls.isInstance(it) } as T?
     fun has(cls: Class<out Perk>): Boolean = get(cls) != null
 
     //todo: merge to upgrade
     fun add(perk: Perk): Boolean {
-        val similar = perks.find {
-            perk.javaClass == it.javaClass
-        }
+        val similar = perks.find { perk.javaClass == it.javaClass }
 
         return if (similar != null) {
             similar.upgrade()

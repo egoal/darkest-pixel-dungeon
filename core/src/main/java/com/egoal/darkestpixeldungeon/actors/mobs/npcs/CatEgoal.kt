@@ -6,16 +6,19 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CatLixSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
+import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import java.util.ArrayList
@@ -70,11 +73,13 @@ class CatEgoal : NPC() {
         val text = if (praised) Messages.get(this, "ans_happy", Dungeon.hero.className())
         else Messages.get(this, "ans_normal")
         yell(text)
+
+        GameScene.show(WndSelectPerk.CreateWithRandomPositives(M.L(this, "from_egoal"), 3))
     }
 
     private val ANSWERED = "answered"
     private val PRAISED = "praised"
-    
+
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
 

@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.*;
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
@@ -1042,7 +1043,7 @@ public abstract class Level implements Bundlable {
             fieldOfView[p + i] = true;
 
         }
-      } else if (((Hero) c).getHeroClass() == HeroClass.HUNTRESS) {
+      } else if (((Hero) c).getHeroPerk().has(Telepath.class)) {
         for (Mob mob : mobs) {
           int p = mob.pos;
           if (distance(c.pos, p) == 2) {

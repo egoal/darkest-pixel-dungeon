@@ -14,6 +14,7 @@ import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import kotlin.math.min
+import kotlin.math.round
 
 class Drunkard : Perk()
 
@@ -32,6 +33,8 @@ class GoodAppetite : Perk() {
             }
         }
     }
+
+    override fun canBeGain(hero: Hero): Boolean = hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE)
 }
 
 class StrongConstitution : Perk(10) {
@@ -61,14 +64,16 @@ class NightVision : Perk()
 
 class Telepath : Perk()
 
-class Fearless: Perk()
+class Fearless : Perk()
 
-class Assassin: Perk()
+class Assassin : Perk()
 
-class IntendedTransportation: Perk()
+class IntendedTransportation : Perk()
 
 class Optimistic : Perk(2) {
     fun resistChance(): Float = 0.05f + 0.1f * level // 0.15-> 0.25
+
+    override fun canBeGain(hero: Hero): Boolean = hero.heroClass != HeroClass.SORCERESS
 }
 
 class Discount : Perk(2) {
@@ -78,7 +83,7 @@ class Discount : Perk(2) {
 }
 
 class VampiricCrit : Perk(10) {
-    fun procCrit(dmg: Damage): Damage {
+    fun procCrit(dmg: Damage) {
         assert(dmg.isFeatured(Damage.Feature.CRITICAL))
 
         val hero = dmg.from as Hero
@@ -89,12 +94,13 @@ class VampiricCrit : Perk(10) {
             sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1)
             sprite.showStatus(CharSprite.POSITIVE, "$eff")
         }
-        return dmg
     }
 }
 
 class PureCrit : Perk() {
-    fun procCrit(dmg: Damage): Damage = dmg.apply { addFeature(Damage.Feature.PURE) }
+    fun procCrit(dmg: Damage) {
+        dmg.addFeature(Damage.Feature.PURE)
+    }
 }
 
 class ExtraCritProbability : Perk(10) {
@@ -116,5 +122,26 @@ class ExtraCritProbability : Perk(10) {
 }
 
 class HardCrit : Perk(10) {
-    fun extraCritRatio(): Float = 0.2f + 0.3f * level
+    fun procCrit(dmg: Damage) {
+        dmg.value += round(dmg.value * extraCritRatio()).toInt()
+    }
+
+    private fun extraCritRatio(): Float = 0.2f + 0.3f * level
 }
+
+class LowHealthDexterous : Perk(3) {
+    fun evasionFactor(hero: Hero): Float {
+        if (hero.HP > hero.HT * 0.3) return 1f
+        return Math.pow(1.25, level.toDouble()).toFloat()
+    }
+}
+
+class LowHealthRegeneration : Perk(10) {
+    fun extraRegeneration(hero: Hero): Float {
+        if (hero.HP > hero.HT * 0.25) return 0f
+
+        return 0.1f + 0.5f * level
+    }
+}
+
+class ExtraPerkChoice : Perk()
