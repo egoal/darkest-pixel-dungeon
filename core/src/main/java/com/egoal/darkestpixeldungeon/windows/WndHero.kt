@@ -144,8 +144,9 @@ class WndHero : WndTabbed() {
                 statSlot(M.L(this, "sanity"), "${p.pressure.toInt()}/${Pressure.MAX_PRESSURE.toInt()}")
 
             // add hunger state slot
-            val hg = hero.buff(Hunger::class.java) as Hunger
-            statSlot(M.L(this, "hunger"), "${hg.hunger()}/${Hunger.STARVING.toInt()}")
+            val hg = hero.buff(Hunger::class.java)
+            if (hg != null)
+                statSlot(M.L(this, "hunger"), "${hg.hunger()}/${Hunger.STARVING.toInt()}")
 
             pos += GAP5.toFloat()
 

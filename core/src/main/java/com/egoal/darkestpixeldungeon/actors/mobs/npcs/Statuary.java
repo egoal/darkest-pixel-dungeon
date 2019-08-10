@@ -12,7 +12,6 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
-import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
@@ -43,7 +42,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -355,7 +353,7 @@ public class Statuary extends NPC {
       for (int n : PathFinder.NEIGHBOURS4) {
         int cell = pos + n;
         if (Level.passable[cell] && Actor.findChar(cell) == null) {
-          DevilGhost.spawnAt(cell);
+          DevilGhost.Companion.SpawnAt(cell);
           if (--count == 0)
             break;
         }

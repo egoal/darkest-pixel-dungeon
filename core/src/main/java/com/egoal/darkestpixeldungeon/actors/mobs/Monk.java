@@ -59,7 +59,7 @@ public class Monk extends Mob {
   @Override
   public Damage giveDamage(Char target) {
     int value = Random.NormalIntRange(12, 25);
-    Damage dmg = new Damage(value, this, target).addElement(Damage.Element.ACID);
+    Damage dmg = new Damage(value, this, target);
     if (value > 20) dmg.addFeature(Damage.Feature.CRITICAL);
     return dmg;
   }

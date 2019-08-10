@@ -18,33 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.actors.mobs;
+package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.Badges;
-import com.egoal.darkestpixeldungeon.actors.Char;
-import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.sprites.AcidicSprite;
-import com.watabou.utils.Random;
+import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.sprites.AcidicSprite
+import com.watabou.utils.Random
 
-public class Acidic extends Scorpio {
+class Acidic : Scorpio() {
+    init {
+        spriteClass = AcidicSprite::class.java
+    }
 
-  {
-    spriteClass = AcidicSprite.class;
-  }
+    override fun defenseProc(dmg: Damage): Damage {
+        val feadback = Random.IntRange(0, dmg.value)
+        if (feadback > 0)
+            (dmg.from as Char).takeDamage(Damage(feadback, this, dmg.from))
 
-  @Override
-  public Damage defenseProc(Damage dmg) {
-    int feadback = Random.IntRange(0, dmg.value);
-    if (feadback > 0)
-      ((Char) dmg.from).takeDamage(new Damage(feadback, this, dmg.from)
-              .addElement(Damage.Element.ACID));
+        return super.defenseProc(dmg)
+    }
 
-    return super.defenseProc(dmg);
-  }
-
-  @Override
-  public void die(Object cause) {
-    super.die(cause);
-    Badges.validateRare(this);
-  }
+    override fun die(cause: Any) {
+        super.die(cause)
+        Badges.validateRare(this)
+    }
 }

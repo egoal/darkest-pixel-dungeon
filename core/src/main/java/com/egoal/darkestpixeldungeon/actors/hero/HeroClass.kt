@@ -159,7 +159,6 @@ enum class HeroClass(private val title: String) {
 
             hero.addResistances(Damage.Element.POISON, 1.2f)
             hero.addResistances(Damage.Element.ICE, .9f)
-            hero.addResistances(Damage.Element.ACID, .9f)
         }
     },
 
