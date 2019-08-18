@@ -47,7 +47,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
   @Override
   protected void onItemSelected(Item item) {
     upgrade(curUser);
-    curUser.recoverSanity(Random.Float(0.5f, 2.5f));
+    curUser.recoverSanity(Random.Float(0.5f, 3.5f));
 
     //logic for telling the user when item properties change from upgrades
     //...yes this is rather messy

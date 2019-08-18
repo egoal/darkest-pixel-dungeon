@@ -11,7 +11,7 @@ import com.egoal.darkestpixeldungeon.ui.Window
 import com.watabou.noosa.ColorBlock
 
 class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
-    private var index = 0
+    protected var index = 0
     private val perkButtons: MutableList<PerkButton>
     private val description: RenderedTextMultiline
     private val confirm: RedButton
@@ -64,8 +64,12 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
     }
 
     private fun addPerkConfirmed() {
-        Dungeon.hero.heroPerk.add(perkButtons[index].perk())
+         Dungeon.hero.heroPerk.add(perkButtons[index].perk())
         // todo: effect here
+    }
+
+    override fun onBackPressed() {
+        // super.onBackPressed()
     }
 
     inner class PerkButton(val index: Int, perk: Perk) : PerkSlot(perk) {
@@ -104,8 +108,7 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
         private const val DESCRIPTION_HEIGHT = 40f
 
         fun CreateWithRandomPositives(title: String, count: Int): WndSelectPerk {
-            val perks = Array(count) { Perk.RandomPositive(Dungeon.hero) }
-            return WndSelectPerk(title, *perks)
+            return WndSelectPerk(title, *Perk.RandomPositives(Dungeon.hero, count).toTypedArray())
         }
     }
 }

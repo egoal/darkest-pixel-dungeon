@@ -72,8 +72,8 @@ class Hero : Char() {
     var subClass = HeroSubClass.NONE
     var heroPerk = HeroPerk()
 
-    var atkSkill = 10
-    var defSkill = 5
+    var atkSkill = 10f
+    var defSkill = 5f
     var STR = STARTING_STR
     var weakened = false
     var awareness = 0.1f
@@ -173,7 +173,7 @@ class Hero : Char() {
     }
 
     fun wandChargeFactor(): Float {
-        var factor = 1f
+        var factor = heroPerk.get(WandCharger::class.java)?.factor() ?: 1f
         belongings.helmet?.let {
             if (it is WizardHat)
                 factor = if (it.cursed) 0.9f else 1.15f
@@ -182,7 +182,7 @@ class Hero : Char() {
     }
 
     fun mentalFactor(): Float {
-        var factor = 1f
+        var factor = heroPerk.get(WandArcane::class.java)?.factor() ?: 1f
         belongings.helmet?.let {
             if (it is CircletEmerald)
                 factor = if (it.cursed) 0.95f else 1.1f
@@ -918,16 +918,13 @@ class Hero : Char() {
     fun search(intentional: Boolean): Boolean {
         var smthFound = false
 
-        val positive = 0
-        val negative = 0
-
         var level = if (intentional) 2 * awareness - awareness * awareness else awareness
 
-        var distance = 1 + positive + negative
-        if (distance <= 0) {
-            level /= (2 - distance).toFloat()
-            distance = 1
-        }
+        val distance = if (heroPerk.has(EfficientSearch::class.java)) 2 else 1
+//        if (distance <= 0) {
+//            level /= (2 - distance).toFloat()
+//            distance = 1
+//        }
 
         val pt = Dungeon.level.cellToPoint(pos)
         val ax = max(pt.x - distance, 0)
@@ -1172,8 +1169,8 @@ class Hero : Char() {
         subClass = HeroSubClass.RestoreFromBundle(bundle)
         heroPerk.restoreFromBundle(bundle)
 
-        atkSkill = bundle.getInt(ATTACK)
-        defSkill = bundle.getInt(DEFENSE)
+        atkSkill = bundle.getFloat(ATTACK)
+        defSkill = bundle.getFloat(DEFENSE)
 
         STR = bundle.getInt(STRENGTH)
         updateAwareness()

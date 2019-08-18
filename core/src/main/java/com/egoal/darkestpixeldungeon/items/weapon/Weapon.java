@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.weapon;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraStrengthPower;
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Arrogant;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
@@ -186,6 +187,8 @@ abstract public class Weapon extends KindOfWeapon {
     int exStr = hero.STR() - STRReq();
     if (exStr > 0) {
       dmg.value += Random.Int(1, exStr);
+      ExtraStrengthPower esp = hero.getHeroPerk().get(ExtraStrengthPower.class);
+      if(esp!=null) esp.affectDamage(dmg, exStr);
     }
 
     dmg.value = imbue.damageFactor(dmg.value);
@@ -239,7 +242,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     return this;
   }
-  
+
   public Weapon enchant(Enchantment ench) {
     enchantment = ench;
     return this;
@@ -289,7 +292,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     private static final Class<?>[] curses = new Class<?>[]{
             Annoying.class, Displacing.class, Exhausting.class, Fragile
-            .class, Sacrificial.class, Wayward.class, Arrogant.class, 
+            .class, Sacrificial.class, Wayward.class, Arrogant.class,
     };
 
     public abstract Damage proc(Weapon weapon, Damage damage);

@@ -78,7 +78,7 @@ object KGenerator {
             ))
 
             object T2 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    NewShortsword::class.java to 6f,
+                    ShortSword::class.java to 6f,
                     HandAxe::class.java to 5f,
                     Spear::class.java to 5f,
                     Quarterstaff::class.java to 4f
@@ -100,7 +100,8 @@ object KGenerator {
                     BattleAxe::class.java to 5f,
                     Flail::class.java to 5f,
                     RunicBlade::class.java to 4f,
-                    AssassinsBlade::class.java to 4f
+                    AssassinsBlade::class.java to 4f,
+                    SpikeShield::class.java to 5f
             ))
 
             object T5 : ClassMapGenerator<MeleeWeapon>(hashMapOf(

@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.PressureIsPower
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -125,6 +126,9 @@ class Pressure : Buff(), Hero.Doom {
             }
             Level.COLLAPSE -> dmg.value /= 2
         }
+
+        (target as Hero).heroPerk.get(PressureIsPower::class.java)?.affectDamage(dmg, target as Hero, this)
+
         return dmg
     }
 

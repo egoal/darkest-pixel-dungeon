@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Combo;
 import com.egoal.darkestpixeldungeon.actors.buffs.SnipersMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Knowledgeable;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
@@ -79,6 +80,8 @@ public class Item implements Bundlable {
   public boolean cursed;
   public boolean cursedKnown;
 
+  public boolean everPicked = false;
+
   // Unique items persist through revival
   public boolean unique = false;
 
@@ -101,15 +104,21 @@ public class Item implements Bundlable {
 
   public boolean doPickUp(Hero hero) {
     if (collect(hero.getBelongings().backpack)) {
+      if(!everPicked) onFirstPick(hero);
+      everPicked = true;
 
       GameScene.pickUp(this);
       Sample.INSTANCE.play(Assets.SND_ITEM);
       hero.spendAndNext(TIME_TO_PICK_UP);
       return true;
-
     } else {
       return false;
     }
+  }
+
+  protected void onFirstPick(Hero hero){
+    Knowledgeable k = hero.getHeroPerk().get(Knowledgeable.class);
+    if (k != null) k.affectItem(this);
   }
 
   public void doDrop(Hero hero) {
@@ -440,6 +449,7 @@ public class Item implements Bundlable {
   private static final String CURSED_KNOWN = "cursedKnown";
   private static final String OLDSLOT = "quickslot";
   private static final String QUICKSLOT = "quickslotpos";
+  private static final String EVER_PICKED = "everpicked";
 
   @Override
   public void storeInBundle(Bundle bundle) {
@@ -448,6 +458,7 @@ public class Item implements Bundlable {
     bundle.put(LEVEL_KNOWN, levelKnown);
     bundle.put(CURSED, cursed);
     bundle.put(CURSED_KNOWN, cursedKnown);
+    bundle.put(EVER_PICKED, everPicked);
     if (Dungeon.quickslot.contains(this)) {
       bundle.put(QUICKSLOT, Dungeon.quickslot.getSlot(this));
     }
@@ -458,6 +469,7 @@ public class Item implements Bundlable {
     quantity = bundle.getInt(QUANTITY);
     levelKnown = bundle.getBoolean(LEVEL_KNOWN);
     cursedKnown = bundle.getBoolean(CURSED_KNOWN);
+    everPicked = bundle.getBoolean(EVER_PICKED);
 
     int level = bundle.getInt(LEVEL);
     if (level > 0) {

@@ -25,11 +25,14 @@ object Door {
 
     fun Leave(pos: Int, ch: Char) {
         if (Dungeon.level.heaps.get(pos) == null) {
-            Level.set(pos, Terrain.DOOR)
-            GameScene.updateMap(pos)
+            // now, only the hero close the door behind
+            if (ch === Dungeon.hero) {
+                Level.set(pos, Terrain.DOOR)
+                GameScene.updateMap(pos)
+            }
 
-            if (ch !== Dungeon.hero && Dungeon.visible[pos])
-                Dungeon.observe()
+//            if (ch !== Dungeon.hero && Dungeon.visible[pos])
+//                Dungeon.observe()
         }
     }
 

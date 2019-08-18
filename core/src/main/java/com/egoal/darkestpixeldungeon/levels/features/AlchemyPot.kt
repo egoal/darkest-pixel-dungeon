@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.egoal.darkestpixeldungeon.actors.hero.perks.BrewEnhancedPotion
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.windows.WndAlchemy
@@ -105,6 +106,8 @@ object AlchemyPot {
 
         var p = Random.element(potioncls).newInstance()
         if (p is PotionOfHealing && Random.Int(12) < Dungeon.limitedDrops.cookingHP.count) p = KGenerator.POTION.generate() as Potion
+
+        Dungeon.hero?.heroPerk?.get(BrewEnhancedPotion::class.java)?.affectPotion(p)
 
         return p
     }

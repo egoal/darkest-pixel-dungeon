@@ -5,7 +5,6 @@ import com.egoal.darkestpixeldungeon.actors.hero.Belongings
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDImpShopkeeper
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
-import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
@@ -30,7 +29,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleAxe
 import com.egoal.darkestpixeldungeon.items.weapon.melee.HandAxe
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Longsword
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Mace
-import com.egoal.darkestpixeldungeon.items.weapon.melee.NewShortsword
+import com.egoal.darkestpixeldungeon.items.weapon.melee.ShortSword
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.levels.LastShopLevel
@@ -101,7 +100,7 @@ class ShopDigger : RectDigger() {
         // armors and weapons 
         when (Dungeon.depth) {
             6 -> {
-                itemsToSpawn.add(if (Random.Int(2) == 0) NewShortsword().identify() else HandAxe().identify())
+                itemsToSpawn.add(if (Random.Int(2) == 0) ShortSword().identify() else HandAxe().identify())
                 itemsToSpawn.add(if (Random.Int(2) == 0) IncendiaryDart().quantity(Random.NormalIntRange(2, 4))
                 else CurareDart().quantity(Random.NormalIntRange(1, 3)))
                 itemsToSpawn.add(LeatherArmor().identify())

@@ -17,5 +17,17 @@ object KRandom {
 
         return null // not reachable
     }
+
+    fun <Key> Chances(map: Map<Key, Float>, count: Int): List<Key> {
+        assert(map.size >= count && count > 0)
+
+        val probmap = HashMap<Key, Float>(map) // copy
+
+        return List(count) {
+            val key = Random.chances(probmap)
+            probmap.remove(key)
+            key
+        }
+    }
 }
 

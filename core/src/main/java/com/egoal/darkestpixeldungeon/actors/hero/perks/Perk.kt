@@ -46,15 +46,33 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
         class LuckFromAuthor : Perk(1000)
 
         fun RandomPositive(hero: Hero): Perk = KRandom.Chances(
-                positives.filter { it.value > 0 && it.key.isAcquireAllowed(hero) })
+                positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) })
                 ?: LuckFromAuthor()
+
+        fun RandomPositives(hero: Hero, count: Int): List<Perk> {
+            val avialables = positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) }
+            return if (avialables.size > count)
+                KRandom.Chances(avialables, count)
+            else {
+                val perks = ArrayList<Perk>()
+                perks.addAll(avialables.keys)
+                for (i in 1..(count - perks.size)) perks.add(LuckFromAuthor())
+                perks
+            }
+        }
 
         fun RandomNegative(hero: Hero): Perk {
             TODO()
         }
 
+        // I mean, just random, give me a perk!
+        fun Random(hero: Hero): Perk{
+            TODO()
+        }
+
         private val positives = mapOf<Perk, Float>(
-                GoodAppetite() to 0f,
+                Drunkard() to 1f,
+                GoodAppetite() to 1f,
                 StrongConstitution() to 1f,
                 Keen() to 1f,
                 WandPerception() to 1f,
@@ -71,7 +89,18 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 HardCrit() to 1f,
                 LowHealthRegeneration() to 1f,
                 LowHealthDexterous() to 1f,
-                ExtraPerkChoice() to 1f
+                ExtraDexterous() to 1f,
+                ExtraDexterousGrowth() to 1f,
+                ExtraPerkChoice() to 1f,
+                BrewEnhancedPotion() to 1f,
+                Knowledgeable() to 1f, // this is not ready
+                EfficientSearch() to 1f,
+                ExtraStrengthPower() to 1f,
+                FastRegeneration() to 1f,
+                EfficientPotionOfHealing() to 1f,
+                PressureIsPower() to 1f,
+                WandCharger() to 1f,
+                WandArcane() to 1f
         )
     }
 }

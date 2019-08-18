@@ -31,10 +31,11 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
+import com.egoal.darkestpixeldungeon.actors.hero.perks.EfficientPotionOfHealing
 import com.egoal.darkestpixeldungeon.messages.Messages
+import kotlin.math.min
 
 class PotionOfHealing : Potion() {
-
     init {
         initials = 2
 
@@ -63,7 +64,7 @@ class PotionOfHealing : Potion() {
 
             GLog.p(Messages.get(this, "heal"))
         } else {
-            val value = Math.min(hero.HT, hero.HT / 3 + 50)
+            val value = recoverValue(hero)
             // directly recover some health, since buff is act later than chars
             val directRecover = value / 3
             hero.HP = Math.min(hero.HT, hero.HP + directRecover)
@@ -79,16 +80,15 @@ class PotionOfHealing : Potion() {
         hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4)
     }
 
-    override fun price(): Int {
-        return if (isKnown)
-            (30.0 * quantity.toDouble() * if (reinforced) 1.5 else 1).toInt()
-        else
-            super
-                    .price()
-    }
+    private fun recoverValue(hero: Hero): Int =
+            if (hero.heroPerk.has(EfficientPotionOfHealing::class.java)) hero.HT * 3 / 2
+            else min(hero.HT, hero.HT / 3 + 40)
+
+    override fun price(): Int =
+            if (isKnown) (30 * quantity * (if (reinforced) 1.5f else 1f)).toInt()
+            else super.price()
 
     companion object {
-
         fun heal(hero: Hero) {
             // called in water of healing, so kept
             hero.HP = hero.HT

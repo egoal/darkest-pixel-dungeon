@@ -134,7 +134,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Longsword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Mace;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
-import com.egoal.darkestpixeldungeon.items.weapon.melee.NewShortsword;
+import com.egoal.darkestpixeldungeon.items.weapon.melee.ShortSword;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.RoundShield;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.RunicBlade;
@@ -305,7 +305,7 @@ public class Generator {
     Category.WEP_T1.probs = new float[]{0, 1, 1, 0, 0, 0.5f, 1, 0.5f};
 
     Category.WEP_T2.classes = new Class<?>[]{
-            NewShortsword.class,
+            ShortSword.class,
             HandAxe.class,
             Spear.class,
             Quarterstaff.class,

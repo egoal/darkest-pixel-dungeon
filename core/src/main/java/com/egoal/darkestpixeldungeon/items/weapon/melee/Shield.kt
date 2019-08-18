@@ -9,7 +9,7 @@ import kotlin.math.round
 abstract class Shield : MeleeWeapon() {
     protected abstract fun def(level: Int): Int
 
-    private fun checkDefend(dmg: Damage): Boolean {
+    protected fun checkDefend(dmg: Damage): Boolean {
         if (dmg.from is Char && dmg.to is Char) {
             val attacker = dmg.from as Char
             val defender = dmg.to as Char
@@ -17,11 +17,15 @@ abstract class Shield : MeleeWeapon() {
                     Random.Float(defender.defenseSkill(attacker).toFloat())
         }
 
-        return true
+        return false
     }
 
     override fun defendDamage(dmg: Damage): Damage {
-        var value = if (checkDefend(dmg)) def(level()) else def(0)
+        return defendValue(dmg, if (checkDefend(dmg)) def(level()) else def(0))
+    }
+
+    protected fun defendValue(dmg: Damage, defValue: Int): Damage {
+        var value = defValue
         if (dmg.to is Hero) {
             val burden = STRReq() - (dmg.to as Hero).STR()
             if (burden > 0) value -= 2 * burden

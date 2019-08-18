@@ -18,18 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-//this class is named as such to avoid conflicts with the ShortSword class, 
-// from pre-0.4.0
-public class NewShortsword extends MeleeWeapon {
+class ShortSword : MeleeWeapon() {
+    init {
+        image = ItemSpriteSheet.SHORTSWORD
 
-  {
-    image = ItemSpriteSheet.SHORTSWORD;
+        tier = 2
+    }
 
-    tier = 2;
-  }
-
+    override fun STRReq(lvl: Int): Int = super.STRReq(lvl) - 1
 }

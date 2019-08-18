@@ -421,46 +421,7 @@ public class WndBag extends WndTabbed {
     }
 
     private boolean filterByMode(Item item){
-      switch (mode){
-        case FOR_SALE:
-          return item.price()>0 && !(item.isEquipped(Dungeon.hero) && item.cursed);
-        case UPGRADEABLE:
-          return item.isUpgradable();
-        case UNIDENTIFED:
-          return !item.isIdentified();
-        case UNIDED_OR_CURSED:
-          return (item instanceof EquipableItem || item instanceof Wand) &&
-                  (!item.isIdentified() || item.cursed);
-        case QUICKSLOT:
-          return item.defaultAction!=null;
-        case WEAPON:
-          return item instanceof MeleeWeapon || item instanceof Boomerang;
-        case ARMOR:
-          return item instanceof Armor;
-        case ENCHANTABLE:
-          return item instanceof MeleeWeapon || item instanceof Boomerang|| item instanceof Armor;
-        case WAND:
-          return item instanceof Wand;
-        case SEED:
-          return item instanceof Plant.Seed;
-        case FOOD:
-          return item instanceof Food;
-        case POTION:
-          return item instanceof Potion;
-        case SCROLL:
-          return item instanceof Scroll;
-        case EQUIPMENT:
-          return item instanceof EquipableItem;
-        case RING:
-          return item instanceof Ring;
-        case ALCHEMY:
-          return item instanceof Plant.Seed || item instanceof MysteryMeat ||
-                  (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib()==null);
-        case ALL:
-          return true;
-      }
-
-      return false;
+        return FilterByMode(item, mode);
     }
 
     @Override
@@ -510,5 +471,49 @@ public class WndBag extends WndTabbed {
 
   public interface Filter {
     boolean enable(Item item);
+  }
+
+  //todo: refactor this
+  public static boolean FilterByMode(Item item, Mode mode){
+      switch (mode){
+          case FOR_SALE:
+              return item.price()>0 && !(item.isEquipped(Dungeon.hero) && item.cursed);
+          case UPGRADEABLE:
+              return item.isUpgradable();
+          case UNIDENTIFED:
+              return !item.isIdentified();
+          case UNIDED_OR_CURSED:
+              return (item instanceof EquipableItem || item instanceof Wand) &&
+                      (!item.isIdentified() || item.cursed);
+          case QUICKSLOT:
+              return item.defaultAction!=null;
+          case WEAPON:
+              return item instanceof MeleeWeapon || item instanceof Boomerang;
+          case ARMOR:
+              return item instanceof Armor;
+          case ENCHANTABLE:
+              return item instanceof MeleeWeapon || item instanceof Boomerang|| item instanceof Armor;
+          case WAND:
+              return item instanceof Wand;
+          case SEED:
+              return item instanceof Plant.Seed;
+          case FOOD:
+              return item instanceof Food;
+          case POTION:
+              return item instanceof Potion;
+          case SCROLL:
+              return item instanceof Scroll;
+          case EQUIPMENT:
+              return item instanceof EquipableItem;
+          case RING:
+              return item instanceof Ring;
+          case ALCHEMY:
+              return item instanceof Plant.Seed || item instanceof MysteryMeat ||
+                      (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib()==null);
+          case ALL:
+              return true;
+      }
+
+      return false;
   }
 }

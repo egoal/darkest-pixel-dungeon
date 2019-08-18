@@ -35,6 +35,12 @@ enum class HeroClass(private val title: String) {
             hero.HT += 5
         }
 
+        override fun upgradeHero(hero: Hero) {
+            super.upgradeHero(hero)
+            hero.HP += 1 // extra +1
+            hero.HT += 1
+        }
+
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
             hero.belongings.weapon = WornShortsword().identify() as Weapon
@@ -60,7 +66,7 @@ enum class HeroClass(private val title: String) {
             hero.heroPerk.add(Drunkard())
             hero.heroPerk.add(GoodAppetite())
             hero.heroPerk.add(RavenousAppetite())
-            hero.heroPerk.add(StrongConstitution())
+            // hero.heroPerk.add(StrongConstitution())
 
             // resists
             hero.addResistances(Damage.Element.FIRE, 1.1f)
@@ -235,10 +241,10 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
+//        SpikeShield().identify().collect()
+//        ShortSword().identify().collect()
 //        initDebug(hero)
-//        Sword().upgrade(3).collect()
-//        WandOfFrost().upgrade().identify().collect()
-//        TomeOfMastery().collect()
+//        Amulet().collect()
     }
 
     // called when hero level up
@@ -261,6 +267,7 @@ enum class HeroClass(private val title: String) {
         }
 
         hero.heroPerk.get(StrongConstitution::class.java)?.upgradeHero(hero)
+        hero.heroPerk.get(ExtraDexterousGrowth::class.java)?.upgradeHero(hero)
     }
 
     private fun initDebug(hero: Hero) {
