@@ -18,25 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class RunicBlade extends MeleeWeapon {
+class Greataxe : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.RUNIC_BLADE;
+    init {
+        image = ItemSpriteSheet.GREATAXE
 
-    tier = 4;
-  }
+        tier = 5
+    }
 
-  //Essentially it's a tier 4 weapon, with tier 3 base max damage, and tier 5
-  // scaling.
-  //equal to tier 4 in damage at +5
+    override fun max(lvl: Int): Int {
+        return 5 * (tier + 3) +    //40 base, up from 30
+                lvl * (tier + 1)   //scaling unchanged
+    }
 
-  @Override
-  public int max(int lvl) {
-    return 5 * (tier) +                  //20 base, down from 25
-            Math.round(lvl * (tier + 2));  //+6 per level, up from +5
-  }
+    override fun STRReq(lvl: Int): Int = super.STRReq(lvl) + 1
+
 }

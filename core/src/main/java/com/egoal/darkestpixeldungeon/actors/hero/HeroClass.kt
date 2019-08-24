@@ -245,6 +245,7 @@ enum class HeroClass(private val title: String) {
 //        ShortSword().identify().collect()
 //        initDebug(hero)
 //        Amulet().collect()
+        SpikeShield().identify().collect()
     }
 
     // called when hero level up

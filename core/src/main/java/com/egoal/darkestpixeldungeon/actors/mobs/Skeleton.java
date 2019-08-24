@@ -76,8 +76,7 @@ public class Skeleton extends Mob {
     for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
       Char ch = findChar(pos + PathFinder.NEIGHBOURS8[i]);
       if (ch != null && ch.isAlive()) {
-        Damage dmg = new Damage(Random.NormalIntRange(4, 10),
-                this, ch).addElement(Damage.Element.SHADOW);
+        Damage dmg = new Damage(Random.NormalIntRange(4, 10), this, ch).addElement(Damage.Element.SHADOW);
         dmg = ch.defendDamage(dmg);
         ch.takeDamage(dmg);
         if (ch == Dungeon.hero && !ch.isAlive()) {

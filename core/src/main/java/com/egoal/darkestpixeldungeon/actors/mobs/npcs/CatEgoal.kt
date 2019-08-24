@@ -6,19 +6,16 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CatLixSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
-import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import java.util.ArrayList
@@ -27,7 +24,8 @@ class CatEgoal : NPC() {
     init {
         spriteClass = CatLixSprite::class.java
 
-        properties.add(Property.IMMOVABLE)
+        // properties.add(Property.IMMOVABLE)
+        state = Wandering()
     }
 
     var answered = false
@@ -37,16 +35,20 @@ class CatEgoal : NPC() {
         sprite.turnTo(pos, Dungeon.hero.pos)
 
         if (answered) {
-            val str = if (praised)
-                Messages.get(this, "happy")
-            else Messages.get(this, "normal", Dungeon.hero.className())
+            val str = if (praised) M.L(this, "happy")
+            else M.L(this, "normal", Dungeon.hero.className())
 
-            tell(str)
+            GameScene.show(object : WndOptions(sprite(), name, str,
+                    M.L(CatEgoal::class.java, "you-moved")){
+                override fun onSelect(index: Int) {
+                    tell(M.L(CatEgoal::class.java, "didi"))
+                }
+            })
         } else
             GameScene.show(object : WndOptions(sprite(), name,
-                    Messages.get(CatEgoal::class.java, "greetings"),
-                    Messages.get(CatEgoal::class.java, "agree"),
-                    Messages.get(CatEgoal::class.java, "disagree")) {
+                    M.L(CatEgoal::class.java, "greetings"),
+                    M.L(CatEgoal::class.java, "agree"),
+                    M.L(CatEgoal::class.java, "disagree")) {
                 override fun onSelect(index: Int) {
                     onAnsweredHero(index)
                 }
@@ -66,15 +68,15 @@ class CatEgoal : NPC() {
                     SkeletonKey(Dungeon.depth))
         }
         if (g.doPickUp(Dungeon.hero))
-            GLog.i(Messages.get(Dungeon.hero, "you_now_have", g.name()))
+            GLog.i(M.L(Dungeon.hero, "you_now_have", g.name()))
         else
             Dungeon.level.drop(g, Dungeon.hero.pos).sprite.drop()
 
-        val text = if (praised) Messages.get(this, "ans_happy", Dungeon.hero.className())
-        else Messages.get(this, "ans_normal")
+        val text = if (praised) M.L(this, "ans_happy", Dungeon.hero.className())
+        else M.L(this, "ans_normal")
         yell(text)
 
-        GameScene.show(WndSelectPerk.CreateWithRandomPositives(M.L(this, "from_egoal"), 3))
+        // GameScene.show(WndSelectPerk.CreateWithRandomPositives(M.L(this, "from_egoal"), 3))
     }
 
     private val ANSWERED = "answered"
@@ -125,12 +127,12 @@ class CatEgoal : NPC() {
                 hero.spend(TIME_TO_OPEN)
                 hero.busy()
 
-                GLog.i(Messages.get(this, "opened"))
+                GLog.i(M.L(this, "opened"))
 
                 // give
                 for (item in items)
                     if (item.doPickUp(hero))
-                        GLog.w(Messages.get(Dungeon.hero, "you_now_have", item.name()))
+                        GLog.w(M.L(Dungeon.hero, "you_now_have", item.name()))
                     else
                         Dungeon.level.drop(item, hero.pos).sprite.drop()
 
@@ -165,4 +167,25 @@ class CatEgoal : NPC() {
     override fun takeDamage(dmg: Damage) = 0
 
     override fun add(buff: Buff) {}
+
+    override fun move(step: Int) {
+        if (!Dungeon.visible[step]) super.move(step)
+    }
+
+    inner class Wandering : AiState {
+        override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
+            enemySeen = false
+
+            if (answered)
+                if (target != -1 && getCloser(target)) {
+                    sprite.place(pos)
+                } else {
+                    target = Dungeon.level.randomDestination()
+                }
+            spend(2f)
+            return true
+        }
+
+        override fun status(): String = M.L(this, "status")
+    }
 }

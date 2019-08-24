@@ -503,6 +503,13 @@ public abstract class Mob extends Char {
   }
 
   @Override
+  protected Damage resistDamage(Damage dmg) {
+    if(dmg.isFeatured(Damage.Feature.DEATH) && properties.contains(Property.BOSS))
+      dmg.value /= 4;
+    return super.resistDamage(dmg);
+  }
+
+  @Override
   public int takeDamage(Damage dmg) {
     Terror.recover(this);
 

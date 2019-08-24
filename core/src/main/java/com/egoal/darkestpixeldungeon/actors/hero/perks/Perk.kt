@@ -99,8 +99,11 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 FastRegeneration() to 1f,
                 EfficientPotionOfHealing() to 1f,
                 PressureIsPower() to 1f,
+                PressureRelieve() to 1f,
                 WandCharger() to 1f,
-                WandArcane() to 1f
+                WandArcane() to 1f,
+                QuickZap() to 1f,
+                ExplodeBrokenShot() to 1f
         )
     }
 }

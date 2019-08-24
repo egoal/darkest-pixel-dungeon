@@ -83,8 +83,7 @@ class WandGuard : Mob() {
 
     // resist magical damage
     override fun resistDamage(dmg: Damage): Damage {
-        if (dmg.type == Damage.Type.MAGICAL)
-            dmg.value /= 4
+        if (dmg.type == Damage.Type.MAGICAL) dmg.value /= 4
 
         return super.resistDamage(dmg)
     }

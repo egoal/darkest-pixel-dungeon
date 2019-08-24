@@ -451,7 +451,7 @@ abstract class RegularLevel : Level() {
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
                 ArmoryDigger::class.java to 0.6f,
                 GardenDigger::class.java to 1f,
-                LaboratoryDigger::class.java to 1.6f,
+                LaboratoryDigger::class.java to 1.5f,
                 LibraryDigger::class.java to 1f,
                 MagicWellDigger::class.java to 1f,
                 PitDigger::class.java to 0f,

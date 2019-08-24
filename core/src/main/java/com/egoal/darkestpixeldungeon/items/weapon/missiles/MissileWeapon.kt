@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.weapon.missiles
 
+import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
@@ -10,6 +11,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Unbalance
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.egoal.darkestpixeldungeon.actors.hero.perks.ExplodeBrokenShot
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
@@ -17,6 +19,8 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
+import com.watabou.noosa.audio.Sample
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.sqrt
@@ -71,6 +75,18 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
                 if (Random.Float() > breakChance()) {
                     if (enemy.isAlive && stick) Buff.affect(enemy, PinCushion::class.java).stick(this)
                     else Dungeon.level.drop(this, enemy.pos).sprite.drop()
+                } else if (Item.curUser.heroPerk.has(ExplodeBrokenShot::class.java)) {
+                    // explode shot
+                    val extra = strCorrection(Item.curUser) + Dungeon.depth
+                    for (i in PathFinder.NEIGHBOURS9) {
+                        Actor.findChar(i + cell)?.let {
+                            if (it.isAlive)
+                                it.takeDamage(Damage(Random.IntRange(min(level()), max(level())) + extra, Item.curUser, it)
+                                        .type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE))
+                        }
+                    }
+
+                    if (Dungeon.visible[cell]) Sample.INSTANCE.play(Assets.SND_BONES)
                 }
             }
         }
@@ -89,7 +105,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         var bonus = RingOfSharpshooting.getBonus(Dungeon.hero, RingOfSharpshooting.Aim::class.java)
 
         // huntress bonus
-        if (Dungeon.hero.heroClass== HeroClass.HUNTRESS) bonus += 3
+        if (Dungeon.hero.heroClass == HeroClass.HUNTRESS) bonus += 3
 
         return base * Math.pow(0.9, bonus.toDouble()).toFloat()
     }

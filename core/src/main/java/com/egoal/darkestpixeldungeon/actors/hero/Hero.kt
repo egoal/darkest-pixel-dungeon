@@ -485,6 +485,8 @@ class Hero : Char() {
                         (belongings.armor as MageArmor).enhanced))
             dmg.value = round(dmg.value * 0.9f).toInt()
 
+        heroPerk.get(PressureRelieve::class.java)?.affectDamage(dmg, this, pressure)
+
         return super.resistDamage(dmg)
     }
 
@@ -805,8 +807,8 @@ class Hero : Char() {
 
             Badges.validateLevelReached()
 
-            if (lvl % 5 == 0) {
-                // gain a perk
+            if ((lvl - 2) % 4 == 0) {
+                //2, 6, 10... gain a perk
                 val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
                 GameScene.show(WndSelectPerk.CreateWithRandomPositives(
                         M.L(WndSelectPerk::class.java, "select"), cnt))

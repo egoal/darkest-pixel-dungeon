@@ -3,10 +3,15 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Random
 import kotlin.math.round
 
 abstract class Shield : MeleeWeapon() {
+    override fun info(): String = if (isIdentified)
+        super.info() + "\n\n" + M.L(Shield::class.java, "block", def(0), def(level()))
+    else super.info()
+
     protected abstract fun def(level: Int): Int
 
     protected fun checkDefend(dmg: Damage): Boolean {

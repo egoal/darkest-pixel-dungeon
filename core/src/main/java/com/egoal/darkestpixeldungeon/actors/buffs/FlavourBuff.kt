@@ -18,21 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.actors.buffs;
+package com.egoal.darkestpixeldungeon.actors.buffs
 
 //buff whose only internal logic is to wait and detach after a time.
-public class FlavourBuff extends Buff {
+open class FlavourBuff : Buff() {
 
-  @Override
-  public boolean act() {
-    detach();
-    return true;
-  }
+    override fun act(): Boolean {
+        detach()
+        return true
+    }
 
-  //flavour buffs can all just rely on cooldown()
-  protected String dispTurns() {
-    //add one turn as buffs act last, we want them to end at 1 visually, even
-    // if they end at 0 internally.
-    return dispTurns(cooldown() + 1f);
-  }
+    //flavour buffs can all just rely on cooldown()
+    protected fun dispTurns(): String {
+        //add one turn as buffs act last, we want them to end at 1 visually, even
+        // if they end at 0 internally.
+        return dispTurns(cooldown() + 1f)
+    }
 }

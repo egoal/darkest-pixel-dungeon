@@ -149,7 +149,6 @@ class Tengu : Mob() {
     }
 
     override fun resistDamage(dmg: Damage): Damage {
-        if (dmg.isFeatured(Damage.Feature.DEATH)) dmg.value /= 5
         if (dmg.type == Damage.Type.MAGICAL) dmg.value = dmg.value * 3 / 4
 
         return super.resistDamage(dmg)

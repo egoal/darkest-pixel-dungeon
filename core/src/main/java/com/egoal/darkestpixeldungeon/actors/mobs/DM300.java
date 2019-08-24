@@ -224,9 +224,6 @@ public class DM300 extends Mob {
 
   @Override
   public Damage resistDamage(Damage dmg) {
-    if (dmg.isFeatured(Damage.Feature.DEATH))
-      dmg.value *= 0.2;
-
     if (!overloaded && dmg.type == Damage.Type.NORMAL)
       dmg.value *= 0.8;
 

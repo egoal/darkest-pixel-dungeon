@@ -120,7 +120,7 @@ public class Astrolabe extends Artifact {
 
     cooldown = NORMAL_COOLDOWN;
     Sample.INSTANCE.play(Assets.SND_ASTROLABE);
-    
+
     boolean invokePositive = Random.Float() < (cursed ? .5f : .75f);
 
     if (!invokePositive && blockNextNegative) {
@@ -157,7 +157,7 @@ public class Astrolabe extends Artifact {
     }
   }
 
-  //fixme: bad parameter, index should be 1 or 2, bad logical 
+  //fixme: bad parameter, index should be 1 or 2, bad logical
   private void invoke(int index) {
     if (index == 1 && cachedInvoker_1 != null) {
       cachedInvoker_1.invoke(curUser, this);
@@ -175,7 +175,7 @@ public class Astrolabe extends Artifact {
   private static Class<?>[] positiveInvokers = new Class<?>[]{
           foresight.class, purgation.class, life_link.class,
           extremely_lucky.class, pardon.class, faith.class,
-          overload.class, guide.class, prophesy.class, sun_strike.class, 
+          overload.class, guide.class, prophesy.class, sun_strike.class,
   };
   private static float[] positiveProbs = new float[]{
           10, 10, 10, 5, 10, 5, 10, 10, 10, 5
@@ -503,7 +503,7 @@ public class Astrolabe extends Artifact {
         if (c.HP > c.HT)
           c.HT = c.HP;
         c.sprite.showStatus(CharSprite.POSITIVE, Integer.toString(dhp));
-        Buff.prolong(c, Vulnerable.class, Vulnerable.DURATION).ratio = 2f;
+        Buff.prolong(c, Vulnerable.class, Vulnerable.DURATION).setRatio(2f);
       }
     }
   }

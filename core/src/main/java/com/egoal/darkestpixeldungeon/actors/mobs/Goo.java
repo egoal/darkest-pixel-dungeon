@@ -144,7 +144,7 @@ public class Goo extends Mob {
   public Damage attackProc(Damage damage) {
     Char enemy = (Char) damage.to;
     if (Random.Int(3) == 0) {
-      Buff.prolong(enemy, Vulnerable.class, 3).ratio = 1.25f;
+      Buff.prolong(enemy, Vulnerable.class, 3).setRatio(1.25f);
       enemy.sprite.burst(0xFF0000, 5);
     }
 
@@ -300,14 +300,6 @@ public class Goo extends Mob {
     if (state != SLEEPING) BossHealthBar.assignBoss(this);
     if ((HP * 2 <= HT)) BossHealthBar.bleed(true);
 
-  }
-
-  @Override
-  public Damage resistDamage(Damage dmg) {
-    if (dmg.isFeatured(Damage.Feature.DEATH))
-      dmg.value *= 0.2f;
-
-    return super.resistDamage(dmg);
   }
 
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

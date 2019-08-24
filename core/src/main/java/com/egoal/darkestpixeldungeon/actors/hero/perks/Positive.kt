@@ -131,7 +131,7 @@ class HardCrit : Perk(5) {
         dmg.value += round(dmg.value * extraCritRatio()).toInt()
     }
 
-    private fun extraCritRatio(): Float = 0.2f + 0.3f * level
+    private fun extraCritRatio(): Float = 0.05f + 0.25f * level
 }
 
 class LowHealthDexterous : Perk(3) {
@@ -191,7 +191,7 @@ class Knowledgeable : Perk(3) {
         if (Random.Float() < identifyChance()) {
             item.identify()
             GLog.w(M.L(this, "identity"))
-        } else if (!item.cursedKnown && Random.Float() < identifyChance() * 2f) {
+        } else if (!item.cursedKnown && Random.Float() < identifyChance()) {
             item.cursedKnown = true
             GLog.w(M.L(this, "know-curse"))
         }
@@ -204,7 +204,7 @@ class EfficientSearch : Perk()
 
 class ExtraStrengthPower : Perk(3) {
     fun affectDamage(dmg: Damage, exStr: Int) {
-        for (i in 1..exStr)
+        for (i in 1..level)
             dmg.value += Random.Int(1, exStr)
     }
 }
@@ -239,6 +239,19 @@ class PressureIsPower : Perk() {
     }
 }
 
+class PressureRelieve : Perk(2) {
+    fun affectDamage(dmg: Damage, hero: Hero, pressure: Pressure) {
+        if (dmg.type != Damage.Type.NORMAL) return
+
+        val p = pressure.pressure / Pressure.MAX_PRESSURE
+        if (p < 0.2f) return
+
+        // 1: -0.05, 2: +0.05
+        val r = 1f - (p - 0.15f + 0.1f * level) * (p - 0.15f + 0.1f * level)  * 0.8f
+        dmg.value = round(dmg.value * r).toInt()
+    }
+}
+
 class WandCharger : Perk(3) {
     fun factor(): Float = 2f - Math.pow(0.9, level.toDouble()).toFloat()
 }
@@ -246,3 +259,7 @@ class WandCharger : Perk(3) {
 class WandArcane : Perk(3) {
     fun factor(): Float = 2f - Math.pow(0.85, level.toDouble()).toFloat()
 }
+
+class QuickZap : Perk()
+
+class ExplodeBrokenShot : Perk()

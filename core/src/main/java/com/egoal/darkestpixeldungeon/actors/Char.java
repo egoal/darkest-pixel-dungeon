@@ -357,7 +357,7 @@ public abstract class Char extends Actor {
     // vulnerable
     Vulnerable v = buff(Vulnerable.class);
     if (v != null) {
-      dmg.value *= v.ratio;
+      dmg.value *= v.getRatio();
     }
 
     // buffs shall remove when take damage

@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.QuickZap;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPerception;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
@@ -255,7 +256,8 @@ public abstract class Wand extends Item {
       updateQuickslot();
     }
 
-    curUser.spendAndNext(TIME_TO_ZAP);
+    float zapTime = curUser.getHeroPerk().has(QuickZap.class)? TIME_TO_ZAP/2f: TIME_TO_ZAP;
+    curUser.spendAndNext(zapTime);
   }
 
   @Override

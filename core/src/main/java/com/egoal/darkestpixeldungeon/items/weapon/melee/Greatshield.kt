@@ -26,7 +26,6 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import kotlin.math.round
 
 class Greatshield : Shield() {
-
     init {
         image = ItemSpriteSheet.GREATSHIELD
 

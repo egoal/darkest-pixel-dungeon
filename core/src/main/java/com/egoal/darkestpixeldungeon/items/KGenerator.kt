@@ -150,14 +150,14 @@ object KGenerator {
     }
 
     object POTION : ClassMapGenerator<Potion>(hashMapOf(
-            PotionOfHealing::class.java to 30f,
+            PotionOfHealing::class.java to 25f,
             PotionOfExperience::class.java to 4f,
             PotionOfToxicGas::class.java to 15f,
             PotionOfParalyticGas::class.java to 10f,
             PotionOfLiquidFlame::class.java to 15f,
             PotionOfLevitation::class.java to 10f,
             PotionOfStrength::class.java to 0f,
-            PotionOfMindVision::class.java to 20f,
+            PotionOfMindVision::class.java to 18f,
             PotionOfPhysique::class.java to 4f,
             PotionOfPurity::class.java to 12f,
             PotionOfInvisibility::class.java to 10f,

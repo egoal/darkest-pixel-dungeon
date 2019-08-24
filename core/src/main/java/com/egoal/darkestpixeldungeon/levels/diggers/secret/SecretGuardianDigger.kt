@@ -69,10 +69,9 @@ class SecretGuardianDigger : Digger() {
         level.mobs.add(guardian)
 
         // prize
-        val prize = when (Random.Int(3)) {
+        val prize = when (Random.Int(2)) {
             0 -> KGenerator.RING.generate()
-            1 -> KGenerator.ARTIFACT.generate()
-            else -> Random.oneOf(KGenerator.WEAPON, KGenerator.ARMOR).generate()
+            else -> KGenerator.ARTIFACT.generate()
         }
         level.drop(prize, level.pointToCell(plat)).type = Heap.Type.CHEST
 
