@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.windows
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
+import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.ui.PerkSlot
@@ -64,8 +65,9 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
     }
 
     private fun addPerkConfirmed() {
-         Dungeon.hero.heroPerk.add(perkButtons[index].perk())
-        // todo: effect here
+        Dungeon.hero.heroPerk.add(perkButtons[index].perk())
+
+        PerkGain.Show(Dungeon.hero!!, perkButtons[index].perk())
     }
 
     override fun onBackPressed() {

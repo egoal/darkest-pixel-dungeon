@@ -111,7 +111,7 @@ public abstract class OptionSlider extends Component {
         pressed = true;
         PointF p = camera().screenToCamera((int) touch.current.x, (int) touch
                 .current.y);
-        sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + 
+        sliderNode.x = GameMath.INSTANCE.gate(sliderBG.x - 2, p.x, sliderBG.x +
                 sliderBG.width() - 2);
         sliderNode.brightness(1.5f);
       }
@@ -121,7 +121,7 @@ public abstract class OptionSlider extends Component {
         if (pressed) {
           PointF p = camera().screenToCamera((int) touch.current.x, (int) 
                   touch.current.y);
-          sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + 
+          sliderNode.x = GameMath.INSTANCE.gate(sliderBG.x - 2, p.x, sliderBG.x +
                   sliderBG.width() - 2);
         }
       }
@@ -131,7 +131,7 @@ public abstract class OptionSlider extends Component {
         if (pressed) {
           PointF p = camera().screenToCamera((int) touch.current.x, (int) 
                   touch.current.y);
-          sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + 
+          sliderNode.x = GameMath.INSTANCE.gate(sliderBG.x - 2, p.x, sliderBG.x +
                   sliderBG.width() - 2);
           sliderNode.resetColor();
 

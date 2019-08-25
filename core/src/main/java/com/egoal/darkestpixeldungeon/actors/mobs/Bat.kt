@@ -46,7 +46,7 @@ class Bat : Mob() {
         flying = true
 
         loot = PotionOfHealing()
-        lootChance = 0.1667f //by default, see die()
+        lootChance = 0.15f //by default, see die()
 
         addResistances(Damage.Element.SHADOW, 1.25f)
     }

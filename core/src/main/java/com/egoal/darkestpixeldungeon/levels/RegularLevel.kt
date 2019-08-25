@@ -79,8 +79,7 @@ abstract class RegularLevel : Level() {
     protected var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
-        if (Dungeon.shopOnLevel())
-            diggers.add(ShopDigger())
+        if (Dungeon.shopOnLevel()) diggers.add(ShopDigger())
 
         return diggers
     }
@@ -239,7 +238,7 @@ abstract class RegularLevel : Level() {
             mobsToSpawn -= trySpawn(normalSpaces[index])
 
             // extra one in the same space
-            if (mobsToSpawn > 0 && Random.Int(4) == 0)
+            if (mobsToSpawn > 0 && Random.Int(3) == 0)
                 mobsToSpawn -= trySpawn(normalSpaces[index])
 
             if (++index >= normalSpaces.size)
@@ -355,7 +354,7 @@ abstract class RegularLevel : Level() {
     }
 
     // traps
-    protected fun nTraps() = Random.NormalIntRange(3, 5 + Dungeon.depth / 2)
+    protected fun nTraps() = Random.NormalIntRange(1, 3 + Dungeon.depth / 2)
 
     protected open fun trapClasses(): Array<Class<out Trap>> = arrayOf(WornTrap::class.java)
 

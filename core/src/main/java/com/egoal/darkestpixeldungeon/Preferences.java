@@ -68,7 +68,7 @@ enum Preferences {
     try {
       int i = get().getInt(key, defValue);
       if (i < min || i > max) {
-        int val = (int) GameMath.gate(min, i, max);
+        int val = (int) GameMath.INSTANCE.gate(min, i, max);
         put(key, val);
         return val;
       } else {

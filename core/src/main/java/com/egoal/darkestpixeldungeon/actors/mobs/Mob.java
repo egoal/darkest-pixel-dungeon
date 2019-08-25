@@ -348,7 +348,7 @@ public abstract class Mob extends Char {
 
       if (!newPath) {
         //checks the next 4 cells in the path for validity
-        int lookAhead = GameMath.clamp(path.size() - 1, 1, 4);
+        int lookAhead = GameMath.INSTANCE.clamp(path.size() - 1, 1, 4);
         for (int i = 0; i < lookAhead; ++i) {
           int c = path.get(i);
           if (!Level.passable[c] ||

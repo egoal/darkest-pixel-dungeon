@@ -60,7 +60,7 @@ public class CellSelector extends TouchArea {
 
   private float zoom(float value) {
 
-    value = GameMath.gate(PixelScene.minZoom, value, PixelScene.maxZoom);
+    value = GameMath.INSTANCE.gate(PixelScene.minZoom, value, PixelScene.maxZoom);
     DarkestPixelDungeon.zoom((int) (value - PixelScene.defaultZoom));
     camera.zoom(value);
 
@@ -147,7 +147,7 @@ public class CellSelector extends TouchArea {
     if (pinching) {
 
       float curSpan = PointF.distance(touch.current, another.current);
-      camera.zoom(GameMath.gate(
+      camera.zoom(GameMath.INSTANCE.gate(
               PixelScene.minZoom,
               startZoom * curSpan / startSpan,
               PixelScene.maxZoom));

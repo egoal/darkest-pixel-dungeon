@@ -68,7 +68,11 @@ class NightVision : Perk()
 
 class Telepath : Perk()
 
-class Fearless : Perk()
+class Fearless : Perk() {
+    override fun canBeGain(hero: Hero): Boolean {
+        return hero.heroClass != HeroClass.WARRIOR
+    }
+}
 
 class Assassin : Perk()
 
@@ -247,7 +251,7 @@ class PressureRelieve : Perk(2) {
         if (p < 0.2f) return
 
         // 1: -0.05, 2: +0.05
-        val r = 1f - (p - 0.15f + 0.1f * level) * (p - 0.15f + 0.1f * level)  * 0.8f
+        val r = 1f - (p - 0.15f + 0.1f * level) * (p - 0.15f + 0.1f * level) * 0.8f
         dmg.value = round(dmg.value * r).toInt()
     }
 }

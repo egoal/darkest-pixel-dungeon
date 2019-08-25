@@ -509,7 +509,7 @@ public class Generator {
 
   public static Armor randomArmor(int floorSet) {
 
-    floorSet = (int) GameMath.gate(0, floorSet, floorSetArmorTierProbs.length
+    floorSet = (int) GameMath.INSTANCE.gate(0, floorSet, floorSetArmorTierProbs.length
             - 1);
 
     try {
@@ -539,7 +539,7 @@ public class Generator {
 
   public static Weapon randomWeapon(int floorSet) {
 
-    floorSet = (int) GameMath.gate(0, floorSet, floorSetWeaponTierProbs
+    floorSet = (int) GameMath.INSTANCE.gate(0, floorSet, floorSetWeaponTierProbs
             .length - 1);
 
     try {

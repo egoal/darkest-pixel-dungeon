@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon
 
+import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 
 // utils & extend functions
@@ -31,3 +32,8 @@ object KRandom {
     }
 }
 
+object KGameMath{
+
+}
+
+//fun GameMath.Compo Lerp(lambda: Float, from: Float, to: Float): Float = from * (1 - lambda) + to * lambda

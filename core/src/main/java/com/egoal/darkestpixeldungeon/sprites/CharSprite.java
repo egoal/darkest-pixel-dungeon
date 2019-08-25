@@ -278,7 +278,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
 
   public void spriteBurst(PointF from, int damage) {
     if (visible) {
-      float str = GameMath.clampf(
+      float str = GameMath.INSTANCE.clampf(
               (float) Math.sqrt((double) damage / ch.HT) * 1.5f, 1f, 1.5f);
       CriticalShock.show(ch, PointF.angle(from, center()), str);
     }

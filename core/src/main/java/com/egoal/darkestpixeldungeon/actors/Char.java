@@ -213,7 +213,7 @@ public abstract class Char extends Actor {
       if (enemy == Dungeon.hero)
         shake = dmg.value / (enemy.HT / 4);
       if (shake > 1f)
-        Camera.main.shake(GameMath.gate(1, shake, 5), .3f);
+        Camera.main.shake(GameMath.INSTANCE.gate(1, shake, 5), .3f);
 
       // take!
       int value = enemy.takeDamage(dmg);

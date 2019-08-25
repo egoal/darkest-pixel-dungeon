@@ -23,11 +23,11 @@ class SkeletonKnight : Mob() {
     init {
         spriteClass = SkeletonKnightSprite::class.java
 
-        HT = 60
+        HT = 50
         HP = HT
         defenseSkill = 0  // no dodge
 
-        EXP = 10
+        EXP = 8
         maxLvl = 16
 
         loot = Wine()

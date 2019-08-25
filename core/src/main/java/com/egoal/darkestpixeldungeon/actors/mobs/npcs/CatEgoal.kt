@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.sprites.CatLixSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
+import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import java.util.ArrayList
@@ -76,7 +77,7 @@ class CatEgoal : NPC() {
         else M.L(this, "ans_normal")
         yell(text)
 
-        // GameScene.show(WndSelectPerk.CreateWithRandomPositives(M.L(this, "from_egoal"), 3))
+//         GameScene.show(WndSelectPerk.CreateWithRandomPositives(M.L(this, "from_egoal"), 3))
     }
 
     private val ANSWERED = "answered"

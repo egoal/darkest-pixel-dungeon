@@ -157,7 +157,7 @@ public class GameScene extends PixelScene {
     DarkestPixelDungeon.lastClass(Dungeon.hero.getHeroClass().ordinal());
 
     super.create();
-    Camera.main.zoom(GameMath.gate(minZoom, defaultZoom + DarkestPixelDungeon
+    Camera.main.zoom(GameMath.INSTANCE.gate(minZoom, defaultZoom + DarkestPixelDungeon
             .zoom(), maxZoom));
 
     scene = this;
