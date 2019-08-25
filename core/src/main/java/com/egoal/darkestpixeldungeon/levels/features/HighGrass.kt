@@ -9,15 +9,14 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.LeafParticle
+
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage
 import com.egoal.darkestpixeldungeon.items.artifacts.SandalsOfNature
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.plants.BlandfruitBush
-import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.utils.Random
 
@@ -63,7 +62,7 @@ object HighGrass {
                     //^ drop seed
                     Level.set(pos, Terrain.GRASS)
 
-                    val seed = KGenerator.SEED.generate()
+                    val seed = Generator.SEED.generate()
                     if (seed is BlandfruitBush.Seed) {
                         if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
                             level.drop(seed, pos).sprite.drop()

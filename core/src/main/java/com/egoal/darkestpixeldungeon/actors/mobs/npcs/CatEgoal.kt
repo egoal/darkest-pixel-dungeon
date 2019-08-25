@@ -7,7 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.messages.M
@@ -16,7 +16,6 @@ import com.egoal.darkestpixeldungeon.sprites.CatLixSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
-import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import java.util.ArrayList
@@ -65,7 +64,7 @@ class CatEgoal : NPC() {
         val g = Gift().apply {
             identify()
             setItems(Food(),
-                    if (praised) KGenerator.SCROLL.generate() else KGenerator.POTION.generate(),
+                    if (praised) Generator.SCROLL.generate() else Generator.POTION.generate(),
                     SkeletonKey(Dungeon.depth))
         }
         if (g.doPickUp(Dungeon.hero))

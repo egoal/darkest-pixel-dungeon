@@ -23,13 +23,13 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Rage
 import com.egoal.darkestpixeldungeon.effects.particles.SparkParticle
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -56,7 +56,7 @@ class Shaman : Mob(), Callback {
         EXP = 6
         maxLvl = 14
 
-        loot = KGenerator.SCROLL
+        loot = Generator.SCROLL
         lootChance = 0.25f
 
         addResistances(Damage.Element.LIGHT, 1.25f)

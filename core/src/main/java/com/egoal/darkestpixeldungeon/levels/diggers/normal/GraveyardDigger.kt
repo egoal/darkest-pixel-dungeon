@@ -1,10 +1,10 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.normal
 
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
@@ -43,7 +43,7 @@ class GraveyardDigger : Digger() {
         val n = Random.IntRange(2, 4)
         val index = Random.Int(n) // random item
         for (i in 0 until n)
-            tryPlaceATomb(if (i == index) KGenerator.generate() else Gold().random())
+            tryPlaceATomb(if (i == index) Generator.generate() else Gold().random())
 
         return dr
     }

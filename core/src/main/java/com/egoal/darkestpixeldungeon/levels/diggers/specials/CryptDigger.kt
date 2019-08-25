@@ -3,7 +3,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.specials
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -59,7 +59,7 @@ class CryptDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
-    private fun prize(level: Level): Item = KGenerator.ARMOR.random(KGenerator.CurrentFloorSet() + 1).apply {
+    private fun prize(level: Level): Item = Generator.ARMOR.random(Generator.CurrentFloorSet() + 1).apply {
         if (!cursed) {
             // not cursed, upgrade and cursed.
             upgrade()

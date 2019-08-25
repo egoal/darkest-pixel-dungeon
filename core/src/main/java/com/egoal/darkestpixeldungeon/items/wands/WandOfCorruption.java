@@ -61,7 +61,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Swarm;
 import com.egoal.darkestpixeldungeon.actors.mobs.Wraith;
 import com.egoal.darkestpixeldungeon.actors.mobs.Yog;
 import com.egoal.darkestpixeldungeon.effects.MagicMissile;
-import com.egoal.darkestpixeldungeon.items.Generator;
+;
 import com.egoal.darkestpixeldungeon.items.armor.curses.Corrosion;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;

@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.weapon.melee
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
@@ -16,7 +17,7 @@ class SpikeShield : Shield() {
     override fun defendDamage(dmg: Damage): Damage {
         val defend = checkDefend(dmg)
         val value = if (defend) def(level()) else def(0)
-        if (defend) // if defend, then must be a Char
+        if (defend && Dungeon.level.adjacent((dmg.from as Char).pos, (dmg.to as Char).pos)) // if defend, then must be a Char
             (dmg.from as Char).takeDamage(proc(Damage(value, dmg.to, dmg.from)))
 
         return defendValue(dmg, value)

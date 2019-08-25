@@ -27,7 +27,6 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.Combo;
-import com.egoal.darkestpixeldungeon.actors.buffs.SnipersMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Knowledgeable;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -91,7 +90,7 @@ public class Item implements Bundlable {
   public static Comparator<Item> itemComparator = new Comparator<Item>() {
     @Override
     public int compare(Item lhs, Item rhs) {
-      return Generator.Category.order(lhs) - Generator.Category.order(rhs);
+      return Generator.INSTANCE.ItemOrder(lhs)- Generator.INSTANCE.ItemOrder(rhs);
     }
   };
 

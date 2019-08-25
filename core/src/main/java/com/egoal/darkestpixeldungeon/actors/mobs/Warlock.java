@@ -26,7 +26,6 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
@@ -51,7 +50,7 @@ public class Warlock extends Mob implements Callback {
     EXP = 10;
     maxLvl = 21;
 
-    loot = KGenerator.POTION.INSTANCE;
+    loot = Generator.POTION.INSTANCE;
     lootChance = 0.75f;
 
     addResistances(Damage.Element.SHADOW, 1.25f);

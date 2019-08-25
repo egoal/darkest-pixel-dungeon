@@ -24,12 +24,11 @@ import com.egoal.darkestpixeldungeon.Journal;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
+;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.quest.CorpseDust;
 import com.egoal.darkestpixeldungeon.items.quest.Embers;
 import com.egoal.darkestpixeldungeon.levels.Level;
-import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
 import com.egoal.darkestpixeldungeon.levels.Terrain;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.diggers.Rect;
@@ -49,8 +48,6 @@ import com.egoal.darkestpixeldungeon.sprites.WandmakerSprite;
 import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-
-import java.util.Collection;
 
 public class Wandmaker extends NPC {
 
@@ -299,13 +296,13 @@ public class Wandmaker extends NPC {
 
       spawned = true;
       given = false;
-      wand1 = (Wand) KGenerator.WAND.INSTANCE.generate();
+      wand1 = (Wand) Generator.WAND.INSTANCE.generate();
       wand1.cursed = false;
       wand1.identify();
       wand1.upgrade();
 
       do {
-        wand2 = (Wand) KGenerator.WAND.INSTANCE.generate();
+        wand2 = (Wand) Generator.WAND.INSTANCE.generate();
       } while (wand2.getClass().equals(wand1.getClass()));
       wand2.cursed = false;
       wand2.identify();

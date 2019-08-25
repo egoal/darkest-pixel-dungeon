@@ -29,8 +29,6 @@ import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
-import com.egoal.darkestpixeldungeon.effects.*;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -40,7 +38,6 @@ import com.egoal.darkestpixeldungeon.sprites.DiscardedItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.PlantSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
-import com.egoal.darkestpixeldungeon.windows.*;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.FogOfWar;
@@ -100,7 +97,6 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.Random;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -394,7 +390,7 @@ public class GameScene extends PixelScene {
 //        GLog.w(Messages.get(this, "secrets"));
 //      }
 
-    //   GLog.n(Messages.format("left artifacts: %d", KGenerator.ARTIFACT.INSTANCE.left()));
+    //   GLog.n(Messages.format("left artifacts: %d", Generator.ARTIFACT.INSTANCE.left()));
 
       InterlevelScene.mode = InterlevelScene.Mode.NONE;
 

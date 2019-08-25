@@ -5,9 +5,8 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.unclassified.PotionTestPaper
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
@@ -30,8 +29,8 @@ open class PotionSeller : DPDShopKeeper() {
         // potions
         val cntItems = Random.NormalIntRange(3, 8)
         repeat(cntItems) {
-            val item = if (Random.Float() < 0.6f) KGenerator.POTION.generate()
-            else KGenerator.SEED.generate()
+            val item = if (Random.Float() < 0.6f) Generator.POTION.generate()
+            else Generator.SEED.generate()
 
             // may be reinforced
             if (item is Potion && item.canBeReinforced() && Random.Float() < 0.3f)

@@ -10,7 +10,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
@@ -159,19 +159,19 @@ class Yvette : NPC() {
         if (Random.Int(2) == 0) {
             var potion: Potion
             do {
-                potion = KGenerator.POTION.generate() as Potion
+                potion = Generator.POTION.generate() as Potion
             } while (potion is PotionOfHealing)
             Dungeon.level.drop(potion, pos)
         } else {
             var scroll: Scroll
             do {
-                scroll = KGenerator.SCROLL.generate() as Scroll
+                scroll = Generator.SCROLL.generate() as Scroll
             } while (scroll is ScrollOfTeleportation)
             Dungeon.level.drop(scroll, pos)
         }
 
         if (Random.Int(3) == 0)
-            Dungeon.level.drop(Random.oneOf(KGenerator.ARTIFACT, KGenerator.RING).generate().apply {
+            Dungeon.level.drop(Random.oneOf(Generator.ARTIFACT, Generator.RING).generate().apply {
                 cursed = false
                 identify()
             }, pos)

@@ -6,7 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.Discount;
 import com.egoal.darkestpixeldungeon.effects.Flare;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
@@ -35,14 +35,14 @@ public class ScrollSeller extends DPDShopKeeper {
     addItemToSell(new ScrollOfRemoveCurse());
     int cntItems = Random.Int(1, 4);
     for (int i = 0; i < cntItems; ++i) {
-      addItemToSell(KGenerator.SCROLL.INSTANCE.generate());
+      addItemToSell(Generator.SCROLL.INSTANCE.generate());
     }
 
-    Item wand = KGenerator.WAND.INSTANCE.generate();
+    Item wand = Generator.WAND.INSTANCE.generate();
     wand.cursed = false;
     addItemToSell(wand);
     if (Random.Float() < .25f) {
-      Item wand2 = KGenerator.WAND.INSTANCE.generate();
+      Item wand2 = Generator.WAND.INSTANCE.generate();
       wand2.cursed = false;
       addItemToSell(wand2);
     }

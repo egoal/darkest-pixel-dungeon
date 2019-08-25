@@ -18,18 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.armor;
+package com.egoal.darkestpixeldungeon.items.potions
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 
-public class LeatherArmor extends Armor {
+class PotionOfExperience : Potion() {
+    init {
+        initials = 0
 
-  {
-    image = ItemSpriteSheet.ARMOR_LEATHER;
-  }
+        bones = true
+    }
 
-  public LeatherArmor() {
-    super(2);
-  }
+    override fun apply(hero: Hero) {
+        setKnown()
+        hero.earnExp(if (reinforced) hero.maxExp() else hero.maxExp() * 2 / 3)
+    }
+
+    override fun price(): Int = if (isKnown) (50 * quantity * if (reinforced) 1.5f else 1f).toInt()
+    else super.price()
+
+    override fun canBeReinforced(): Boolean = !reinforced
 
 }

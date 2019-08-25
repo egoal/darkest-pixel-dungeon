@@ -1,11 +1,10 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.mobs.Piranha
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfInvisibility
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -94,11 +93,11 @@ class PoolDigger : RectDigger() {
         }
 
         //1 floor set higher in probability, never cursed
-        var prize = if (Random.Int(2) == 0) KGenerator.WEAPON.random(KGenerator.CurrentFloorSet() + 1)
-        else KGenerator.ARMOR.random(KGenerator.CurrentFloorSet() + 1)
+        var prize = if (Random.Int(2) == 0) Generator.WEAPON.random(Generator.CurrentFloorSet() + 1)
+        else Generator.ARMOR.random(Generator.CurrentFloorSet() + 1)
         while (prize.cursed)
-            prize = if (Random.Int(2) == 0) KGenerator.WEAPON.random(KGenerator.CurrentFloorSet() + 1)
-            else KGenerator.ARMOR.random(KGenerator.CurrentFloorSet() + 1)
+            prize = if (Random.Int(2) == 0) Generator.WEAPON.random(Generator.CurrentFloorSet() + 1)
+            else Generator.ARMOR.random(Generator.CurrentFloorSet() + 1)
 
         //33% chance for an extra update.
         if (prize !is MissileWeapon && Random.Int(3) == 0)

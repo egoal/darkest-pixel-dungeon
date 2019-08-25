@@ -24,8 +24,8 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Chains;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
+;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.GuardSprite;
@@ -153,7 +153,7 @@ public class Guard extends Mob {
     if (Random.Int(2) == 0) {
       Armor loot;
       do {
-        loot = (Armor) KGenerator.ARMOR.INSTANCE.generate();
+        loot = (Armor) Generator.ARMOR.INSTANCE.generate();
         //50% chance of re-rolling tier 4 or 5 items
       } while (loot.tier >= 4 && Random.Int(2) == 0);
       loot.level(0);

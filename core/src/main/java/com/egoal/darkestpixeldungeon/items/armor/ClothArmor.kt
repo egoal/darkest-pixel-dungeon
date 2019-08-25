@@ -18,21 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.armor;
+package com.egoal.darkestpixeldungeon.items.armor
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class ClothArmor extends Armor {
+class ClothArmor : Armor(1) {
+    init {
+        image = ItemSpriteSheet.ARMOR_CLOTH
 
-  {
-    image = ItemSpriteSheet.ARMOR_CLOTH;
-
-    bones = false; //Finding them in bones would be semi-frequent and 
-    // disappointing.
-  }
-
-  public ClothArmor() {
-    super(1);
-  }
+        bones = false // Finding them in bones would be semi-frequent and disappointing.
+    }
 
 }

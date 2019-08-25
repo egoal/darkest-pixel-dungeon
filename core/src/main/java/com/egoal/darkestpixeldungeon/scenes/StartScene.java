@@ -23,8 +23,7 @@ package com.egoal.darkestpixeldungeon.scenes;
 import com.egoal.darkestpixeldungeon.GamesInProgress;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
@@ -318,7 +317,7 @@ public class StartScene extends PixelScene {
     Dungeon.hero = null;
     InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
-    KGenerator.INSTANCE.reset();
+    Generator.INSTANCE.reset();
 
     if (DarkestPixelDungeon.intro()) {
       DarkestPixelDungeon.intro(false);

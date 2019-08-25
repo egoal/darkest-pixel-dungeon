@@ -1,9 +1,9 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -60,6 +60,6 @@ class StorageDigger : RectDigger() {
     }
 
     companion object {
-        private val PRIZE_MAP = hashMapOf(KGenerator.POTION to 1f, KGenerator.SCROLL to 1f, KGenerator.FOOD to 0.5f, KGenerator.GOLD to 0.75f)
+        private val PRIZE_MAP = hashMapOf(Generator.POTION to 1f, Generator.SCROLL to 1f, Generator.FOOD to 0.5f, Generator.GOLD to 0.75f)
     }
 }

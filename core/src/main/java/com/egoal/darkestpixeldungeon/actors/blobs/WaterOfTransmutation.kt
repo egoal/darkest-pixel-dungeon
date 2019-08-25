@@ -4,7 +4,7 @@ import com.egoal.darkestpixeldungeon.Journal
 import com.egoal.darkestpixeldungeon.effects.BlobEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.items.helmets.Helmet
 import com.egoal.darkestpixeldungeon.items.potions.Potion
@@ -41,9 +41,9 @@ class WaterOfTransmutation : WellWater() {
 
     private fun changeStaff(staff: MagesStaff): MagesStaff? {
         return staff.wandClass()?.let {
-            var wand = KGenerator.WAND.generate() as Wand
+            var wand = Generator.WAND.generate() as Wand
             while (wand.javaClass == it)
-                wand = KGenerator.WAND.generate() as Wand
+                wand = Generator.WAND.generate() as Wand
             wand.level(0)
             staff.imbueWand(wand, null)
 
@@ -52,9 +52,9 @@ class WaterOfTransmutation : WellWater() {
     }
 
     private fun changeWeapon(weap: MeleeWeapon): Weapon? {
-        var newWeap = KGenerator.WEAPON.MELEE.tier(weap.tier).generate()
+        var newWeap = Generator.WEAPON.MELEE.tier(weap.tier).generate()
         while (weap.javaClass == newWeap.javaClass)
-            newWeap = KGenerator.WEAPON.MELEE.tier(weap.tier).generate()
+            newWeap = Generator.WEAPON.MELEE.tier(weap.tier).generate()
 
         val n = newWeap as Weapon
         n.level(0)
@@ -71,8 +71,8 @@ class WaterOfTransmutation : WellWater() {
     }
 
     private fun changeRing(r: Ring): Ring? {
-        var n = KGenerator.RING.generate() as Ring
-        while (n.javaClass == r.javaClass) n = KGenerator.RING.generate() as Ring
+        var n = Generator.RING.generate() as Ring
+        while (n.javaClass == r.javaClass) n = Generator.RING.generate() as Ring
         n.level(0)
 
         val lvl = r.level()
@@ -86,7 +86,7 @@ class WaterOfTransmutation : WellWater() {
     }
 
     private fun changeArtifact(a: Artifact): Artifact? {
-        val n = KGenerator.ARTIFACT.generate()
+        val n = Generator.ARTIFACT.generate()
 
         if (n !is Artifact) return null // if we run out of artifacts, do nothing
 
@@ -99,8 +99,8 @@ class WaterOfTransmutation : WellWater() {
     }
 
     private fun changeWand(w: Wand): Wand? {
-        var n = KGenerator.WAND.generate() as Wand
-        while (n.javaClass == w.javaClass) n = KGenerator.WAND.generate() as Wand
+        var n = Generator.WAND.generate() as Wand
+        while (n.javaClass == w.javaClass) n = Generator.WAND.generate() as Wand
         n.level(0)
 
         n.upgrade(w.level())
@@ -113,15 +113,15 @@ class WaterOfTransmutation : WellWater() {
     }
 
     private fun changeSeed(s: Plant.Seed): Plant.Seed? {
-        var n = KGenerator.SEED.generate() as Plant.Seed
-        while (n.javaClass == s.javaClass) n = KGenerator.SEED.generate() as Plant.Seed
+        var n = Generator.SEED.generate() as Plant.Seed
+        while (n.javaClass == s.javaClass) n = Generator.SEED.generate() as Plant.Seed
 
         return n
     }
 
     private fun changeScroll(s: Scroll): Scroll? = if (s is ScrollOfUpgrade) null else {
-        var n = KGenerator.SCROLL.generate() as Scroll
-        while (n.javaClass == s.javaClass) n = KGenerator.SCROLL.generate() as Scroll
+        var n = Generator.SCROLL.generate() as Scroll
+        while (n.javaClass == s.javaClass) n = Generator.SCROLL.generate() as Scroll
         n
     }
 
@@ -129,15 +129,15 @@ class WaterOfTransmutation : WellWater() {
         is PotionOfStrength -> PotionOfMight()
         is PotionOfMight -> PotionOfStrength()
         else -> {
-            var n = KGenerator.POTION.generate() as Potion
-            while (n.javaClass == p.javaClass) n = KGenerator.POTION.generate() as Potion
+            var n = Generator.POTION.generate() as Potion
+            while (n.javaClass == p.javaClass) n = Generator.POTION.generate() as Potion
             n
         }
     }
 
     private fun changeHelmet(h: Helmet): Helmet? {
-        var n = KGenerator.HELMET.generate() as Helmet
-        while (n.javaClass == h.javaClass) n = KGenerator.HELMET.generate() as Helmet
+        var n = Generator.HELMET.generate() as Helmet
+        while (n.javaClass == h.javaClass) n = Generator.HELMET.generate() as Helmet
         n.cursed = h.cursed
         n.cursedKnown = h.cursedKnown
 

@@ -29,7 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
-import com.egoal.darkestpixeldungeon.items.Generator;
+;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CurareDart;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;

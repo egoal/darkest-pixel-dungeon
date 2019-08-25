@@ -2,13 +2,12 @@ package com.egoal.darkestpixeldungeon.levels.diggers.secret
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
-import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.blobs.RoaringFire
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.mobs.Statue
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.items.Heap
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.*
@@ -70,8 +69,8 @@ class SecretGuardianDigger : Digger() {
 
         // prize
         val prize = when (Random.Int(2)) {
-            0 -> KGenerator.RING.generate()
-            else -> KGenerator.ARTIFACT.generate()
+            0 -> Generator.RING.generate()
+            else -> Generator.ARTIFACT.generate()
         }
         level.drop(prize, level.pointToCell(plat)).type = Heap.Type.CHEST
 

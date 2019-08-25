@@ -42,7 +42,6 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfExperience;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -422,7 +421,7 @@ public class Heap implements Bundlable {
                 .getPotionsCooked() + 1);
         Badges.validatePotionsCooked();
 
-        potion = KGenerator.POTION.INSTANCE.generate();
+        potion = Generator.POTION.INSTANCE.generate();
 
       } else {
 
@@ -436,7 +435,7 @@ public class Heap implements Bundlable {
         Badges.validatePotionsCooked();
 
         if (itemClass == null) {
-          potion = KGenerator.POTION.INSTANCE.generate();
+          potion = Generator.POTION.INSTANCE.generate();
         } else {
           try {
             potion = itemClass.newInstance();
@@ -455,7 +454,7 @@ public class Heap implements Bundlable {
 
       while (potion instanceof PotionOfHealing && Random.Int(10) < Dungeon
               .limitedDrops.cookingHP.count)
-        potion = KGenerator.POTION.INSTANCE.generate();
+        potion = Generator.POTION.INSTANCE.generate();
 
       if (potion instanceof PotionOfHealing)
         Dungeon.limitedDrops.cookingHP.count++;

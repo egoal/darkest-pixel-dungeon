@@ -1,7 +1,6 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import android.util.Log
-import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Bones
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
@@ -9,9 +8,9 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.RotLasher
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.items.Heap
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
@@ -262,7 +261,7 @@ abstract class RegularLevel : Level() {
                 else -> Heap.Type.HEAP
             }
 
-            drop(KGenerator.generate(), randomDropCell()).type = heap
+            drop(Generator.generate(), randomDropCell()).type = heap
         }
 
         // inherent items
@@ -329,7 +328,7 @@ abstract class RegularLevel : Level() {
 
                 map[i] = if (Random.Float() < count / 12f) {
                     if (Random.Float() < 0.015) {
-                        plant(KGenerator.SEED.generate() as Plant.Seed, i)
+                        plant(Generator.SEED.generate() as Plant.Seed, i)
                         Terrain.GRASS
                     } else
                         Terrain.HIGH_GRASS

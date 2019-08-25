@@ -3,13 +3,9 @@ package com.egoal.darkestpixeldungeon.levels
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.mobs.Glowworm
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
-import com.egoal.darkestpixeldungeon.items.KGenerator
-import com.egoal.darkestpixeldungeon.levels.traps.FlockTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -114,7 +110,7 @@ class VillageLevel : RegularLevel() {
 
     override fun createItems() {
 //        for (i in 1..20)
-//            drop(KGenerator.POTION.generate(), xy2cell(15, i + 3))
+//            drop(Generator.POTION.generate(), xy2cell(15, i + 3))
     }
 
     private fun putMobAt(cls: Class<out Mob>, x: Int, y: Int): Mob {

@@ -15,7 +15,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.effects.particles.SacrificialParticle
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -123,7 +123,7 @@ class SacrificialFire : Blob() {
             }
         }
 
-        private fun Prize(): Item = KGenerator.RUNE.generate()
+        private fun Prize(): Item = Generator.RUNE.generate()
     }
 
 }

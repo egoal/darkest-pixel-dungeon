@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
 import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
+import com.egoal.darkestpixeldungeon.items.bags.Bag
 import com.egoal.darkestpixeldungeon.items.books.Book
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary
 import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes
@@ -25,7 +26,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 
-object KGenerator {
+object Generator {
     fun CurrentFloorSet(): Int = Dungeon.depth / 5
 
     abstract class ItemGenerator {
@@ -136,7 +137,7 @@ object KGenerator {
                 CurareDart::class.java to 1f,
                 // 3
                 FlyCutter::class.java to 8f,
-                SeventhDart::class.java to 8f, 
+                SeventhDart::class.java to 8f,
                 // 4
                 Javelin::class.java to 6f,
                 // 5
@@ -397,6 +398,22 @@ object KGenerator {
 
     fun storeInBundle(bundle: Bundle) {
         ARTIFACT.storeInBundle(bundle)
+    }
+
+    // item sort order
+    private val itemCategoryOrder = listOf(
+            Weapon::class.java, Armor::class.java, Helmet::class.java,
+            Potion::class.java, Scroll::class.java,
+            Wand::class.java, Ring::class.java, Artifact::class.java,
+            Plant.Seed::class.java, Food::class.java, Book::class.java,
+            Gold::class.java
+    )
+
+    fun ItemOrder(item: Item): Int {
+        val index = itemCategoryOrder.indexOfFirst { it.isInstance(item) }
+        return if (index >= 0) index else {
+            if (item is Bag) Int.MAX_VALUE else Int.MAX_VALUE - 1
+        }
     }
 }
 

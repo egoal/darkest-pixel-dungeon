@@ -25,7 +25,6 @@ import android.util.Log;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Resident;
-import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
@@ -34,7 +33,6 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*;
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.levels.*;
 import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
@@ -545,7 +543,7 @@ public class Dungeon {
 
       Statistics.INSTANCE.storeInBundle(bundle);
       Journal.INSTANCE.storeInBundle(bundle);
-      KGenerator.INSTANCE.storeInBundle(bundle);
+      Generator.INSTANCE.storeInBundle(bundle);
 
       Scroll.save(bundle);
       Potion.save(bundle);
@@ -608,7 +606,7 @@ public class Dungeon {
 
     version = bundle.getInt(VERSION);
 
-    KGenerator.INSTANCE.reset();
+    Generator.INSTANCE.reset();
 
     Actor.restoreNextID(bundle);
 
@@ -682,7 +680,7 @@ public class Dungeon {
 
     Statistics.INSTANCE.restoreFromBundle(bundle);
     Journal.INSTANCE.restoreFromBundle(bundle);
-    KGenerator.INSTANCE.restoreFromBundle(bundle);
+    Generator.INSTANCE.restoreFromBundle(bundle);
 
     droppedItems = new SparseArray<ArrayList<Item>>();
     for (int i = 2; i <= Statistics.INSTANCE.getDeepestFloor() + 1; i++) {

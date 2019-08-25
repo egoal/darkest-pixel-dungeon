@@ -22,8 +22,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.mobs.Monk;
+;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.windows.WndImp;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -37,7 +37,6 @@ import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.ImpSprite;
-import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -195,7 +194,7 @@ public class Imp extends NPC {
         given = false;
 
         do {
-          reward = (Ring) KGenerator.RING.INSTANCE.generate();
+          reward = (Ring) Generator.RING.INSTANCE.generate();
         } while (reward.cursed);
         reward.upgrade(2);
         reward.cursed = true;

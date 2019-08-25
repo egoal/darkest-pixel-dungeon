@@ -33,14 +33,14 @@ class EmptyLevel : RegularLevel() {
     override fun respawner(): Actor? = null
 
     override fun createItems() {
-//        for(i in 1..20) drop(KGenerator.ARTIFACT.generate(), xy2cell(5, 5+i))
-//        for(i in 1..20) drop(KGenerator.WEAPON.generate(), xy2cell(6, 5+i))
-//        for(i in 1..20) drop(KGenerator.ARMOR.generate(), xy2cell(7, 5+i))
-//        for(i in 1..20) drop(KGenerator.WAND.generate(), xy2cell(8, 5+i))
-//        for(i in 1..20) drop(KGenerator.RING.generate(), xy2cell(9, 5+i))
-//        for(i in 1..20) drop(KGenerator.POTION.generate(), xy2cell(10, 5+i))
-//        for(i in 1..20) drop(KGenerator.SCROLL.generate(), xy2cell(11, 5+i))
-//        for(i in 1..20) drop(KGenerator.SEED.generate(), xy2cell(12, 5+i))
+//        for(i in 1..20) drop(Generator.ARTIFACT.generate(), xy2cell(5, 5+i))
+//        for(i in 1..20) drop(Generator.WEAPON.generate(), xy2cell(6, 5+i))
+//        for(i in 1..20) drop(Generator.ARMOR.generate(), xy2cell(7, 5+i))
+//        for(i in 1..20) drop(Generator.WAND.generate(), xy2cell(8, 5+i))
+//        for(i in 1..20) drop(Generator.RING.generate(), xy2cell(9, 5+i))
+//        for(i in 1..20) drop(Generator.POTION.generate(), xy2cell(10, 5+i))
+//        for(i in 1..20) drop(Generator.SCROLL.generate(), xy2cell(11, 5+i))
+//        for(i in 1..20) drop(Generator.SEED.generate(), xy2cell(12, 5+i))
 
         for (i in 1..20) drop(DriedRose.Companion.Petal(), xy2cell(13, 5 + i))
 

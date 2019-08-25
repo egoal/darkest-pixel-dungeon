@@ -18,18 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.armor;
+package com.egoal.darkestpixeldungeon.items.armor
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class MailArmor extends Armor {
-
-  {
-    image = ItemSpriteSheet.ARMOR_MAIL;
-  }
-
-  public MailArmor() {
-    super(3);
-  }
+class ScaleArmor : Armor(4) {
+    init {
+        image = ItemSpriteSheet.ARMOR_SCALE
+    }
 
 }

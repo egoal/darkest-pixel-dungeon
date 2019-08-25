@@ -22,12 +22,12 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -48,7 +48,7 @@ class Skeleton : Mob() {
         EXP = 5
         maxLvl = 10
 
-        loot = KGenerator.WEAPON.generate()
+        loot = Generator.WEAPON.generate()
         lootChance = 0.175f
 
         properties.add(Property.UNDEAD)
@@ -97,7 +97,7 @@ class Skeleton : Mob() {
         } else {
             var loot: Item
             do {
-                loot = KGenerator.WEAPON.generate()
+                loot = Generator.WEAPON.generate()
                 //50% chance of re-rolling tier 4 or 5 items
             } while (loot is MeleeWeapon && loot.tier >= 4 &&
                     Random.Int(2) == 0)

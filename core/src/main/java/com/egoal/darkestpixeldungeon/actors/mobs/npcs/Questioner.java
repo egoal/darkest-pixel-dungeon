@@ -6,8 +6,8 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
+;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.Heap;
 import com.egoal.darkestpixeldungeon.items.Item;
@@ -88,12 +88,12 @@ public class Questioner extends NPC {
       Item sp = null;
       switch (index) {
         case 0:
-          sp = Random.oneOf(KGenerator.POTION.INSTANCE,
-                  KGenerator.SCROLL.INSTANCE).generate();
+          sp = Random.oneOf(Generator.POTION.INSTANCE,
+                  Generator.SCROLL.INSTANCE).generate();
           break;
         case 1:
-          sp = Random.oneOf(KGenerator.WEAPON.INSTANCE,
-                  KGenerator.ARMOR.INSTANCE).generate();
+          sp = Random.oneOf(Generator.WEAPON.INSTANCE,
+                  Generator.ARMOR.INSTANCE).generate();
           break;
         case 2:
           sp = new Gold().random();
@@ -102,9 +102,9 @@ public class Questioner extends NPC {
       randomPlaceItem(sp, Random.Float() < mimicratio);
 
       if (index == 2 && Random.Float() < .65f) {
-        randomPlaceItem(Random.oneOf(KGenerator.HELMET.INSTANCE, 
-                KGenerator.WAND.INSTANCE, 
-                KGenerator.ARTIFACT.INSTANCE).generate(), true);
+        randomPlaceItem(Random.oneOf(Generator.HELMET.INSTANCE,
+                Generator.WAND.INSTANCE,
+                Generator.ARTIFACT.INSTANCE).generate(), true);
       }
     }
 

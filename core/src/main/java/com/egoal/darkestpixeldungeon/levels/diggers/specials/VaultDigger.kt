@@ -1,9 +1,9 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.items.Heap
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.keys.GoldenKey
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -35,10 +35,10 @@ class VaultDigger : RectDigger() {
             }
             1 -> {
                 // two different categories
-                val c1 = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT)
-                var c2 = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT)
+                val c1 = Random.oneOf(Generator.WAND, Generator.RING, Generator.ARTIFACT)
+                var c2 = Random.oneOf(Generator.WAND, Generator.RING, Generator.ARTIFACT)
                 while (c1 === c2)
-                    c2 = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT)
+                    c2 = Random.oneOf(Generator.WAND, Generator.RING, Generator.ARTIFACT)
 
                 level.drop(c1.generate(), c).type = Heap.Type.CRYSTAL_CHEST
                 level.drop(c2.generate(), c + PathFinder.NEIGHBOURS4[Random.Int(4)]).type = Heap.Type.CRYSTAL_CHEST
@@ -53,6 +53,6 @@ class VaultDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
-    private fun prize(level: Level) = Random.oneOf(KGenerator.WAND, KGenerator.RING, KGenerator.ARTIFACT).generate()
+    private fun prize(level: Level) = Random.oneOf(Generator.WAND, Generator.RING, Generator.ARTIFACT).generate()
 
 }

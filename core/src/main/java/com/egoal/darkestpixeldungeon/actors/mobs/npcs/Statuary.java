@@ -13,7 +13,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.Item;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon;
 import com.egoal.darkestpixeldungeon.items.unclassified.UnholyBlood;
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow;
@@ -377,8 +377,8 @@ public class Statuary extends NPC {
         // give reward, random things
         float rawardRatio = (gold - 100) * .6f / 400f + .3f;
         if (Random.Float() < rawardRatio) {
-          Dungeon.level.drop((Random.Float() < 0.4f ? KGenerator.WEAPON.INSTANCE :
-                  KGenerator.ARMOR.INSTANCE).generate(), hero.pos);
+          Dungeon.level.drop((Random.Float() < 0.4f ? Generator.WEAPON.INSTANCE :
+                  Generator.ARMOR.INSTANCE).generate(), hero.pos);
         }
       }
 
@@ -392,8 +392,8 @@ public class Statuary extends NPC {
       GameScene.updateFog();
 
       // reward
-      Item item = (Random.Float() < 0.4f ? KGenerator.WEAPON.INSTANCE :
-              KGenerator.ARMOR.INSTANCE).generate();
+      Item item = (Random.Float() < 0.4f ? Generator.WEAPON.INSTANCE :
+              Generator.ARMOR.INSTANCE).generate();
       if (item instanceof Armor) {
         ((Armor) item).inscribe(Armor.Glyph.randomCurse());
         item.upgrade(Random.Float() < .1 ? 2 : 1);

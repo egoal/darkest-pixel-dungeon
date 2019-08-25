@@ -10,7 +10,7 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Pushing
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -118,9 +118,9 @@ class Mimic : Mob() {
             // items
             val item = when (Random.Int(5)) {
                 in 0..1 -> Gold().random()
-                2 -> KGenerator.ARMOR.generate()
-                3 -> KGenerator.WEAPON.generate()
-                else -> KGenerator.RING.generate() // 4
+                2 -> Generator.ARMOR.generate()
+                3 -> Generator.WEAPON.generate()
+                else -> Generator.RING.generate() // 4
             }
             m.items.add(item.identify())
 

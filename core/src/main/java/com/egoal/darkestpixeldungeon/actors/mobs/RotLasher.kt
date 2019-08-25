@@ -6,8 +6,8 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
+
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.sprites.RotLasherSprite
 import com.watabou.utils.Random
 import java.util.HashSet
@@ -22,7 +22,7 @@ class RotLasher : Mob() {
         defenseSkill = 0
         EXP = 1
 
-        loot = KGenerator.SEED
+        loot = Generator.SEED
         lootChance = 1f
 
         WANDERING = Waiting()

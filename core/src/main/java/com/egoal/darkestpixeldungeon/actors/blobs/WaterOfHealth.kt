@@ -32,7 +32,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.unclassified.Rune
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -66,7 +66,7 @@ class WaterOfHealth : WellWater() {
         if (item is DewVial && (!item.full || item.rune == null)) {
             item.fill()
             if (item.rune == null)
-                item.collectRune(KGenerator.RUNE.generate() as Rune)
+                item.collectRune(Generator.RUNE.generate() as Rune)
             
             Journal.remove(Journal.Feature.WELL_OF_HEALTH)
             return item

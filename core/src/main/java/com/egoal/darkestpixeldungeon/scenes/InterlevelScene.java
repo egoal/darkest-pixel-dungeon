@@ -25,9 +25,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
-import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
-import com.egoal.darkestpixeldungeon.levels.RegularLevel;
+;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.GameLog;
@@ -38,7 +36,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -92,8 +89,6 @@ public class InterlevelScene extends PixelScene {
       public void run() {
 
         try {
-          Generator.reset();
-          
           switch (mode) {
             case DESCEND:
               descend();

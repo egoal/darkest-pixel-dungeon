@@ -256,7 +256,7 @@ public abstract class Wand extends Item {
       updateQuickslot();
     }
 
-    float zapTime = curUser.getHeroPerk().has(QuickZap.class)? TIME_TO_ZAP/2f: TIME_TO_ZAP;
+    float zapTime = curUser.getHeroPerk().has(QuickZap.class)? 0.45f: TIME_TO_ZAP;
     curUser.spendAndNext(zapTime);
   }
 

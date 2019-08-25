@@ -2,7 +2,7 @@ package com.egoal.darkestpixeldungeon
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
@@ -56,7 +56,7 @@ object Bones {
         depth = 0
 
         if (item is Artifact) {
-            return if (KGenerator.ARTIFACT.remove(item as Artifact)) {
+            return if (Generator.ARTIFACT.remove(item as Artifact)) {
                 try {
                     (item!!.javaClass.newInstance() as Artifact).apply {
                         transferUpgrade(min(item!!.visiblyUpgraded(), 1 + Dungeon.depth * 3 / 10))

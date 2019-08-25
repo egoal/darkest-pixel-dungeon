@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
+import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
@@ -54,8 +55,8 @@ public class Thief extends Mob {
     EXP = 5;
     maxLvl = 10;
 
-    // loot = new MasterThievesArmband().identify();
-    // lootChance = 0.01f;
+     loot = new MasterThievesArmband().identify();
+     lootChance = 0.01f;
 
     FLEEING = new Fleeing();
 

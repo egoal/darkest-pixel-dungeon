@@ -6,7 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDImpShopkeeper
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch
 import com.egoal.darkestpixeldungeon.items.unclassified.Weightstone
@@ -88,13 +88,13 @@ class ShopDigger : RectDigger() {
             if (s.isKnown && Random.Float() < .5f)
                 itemsToSpawn.add(s)
             else
-                itemsToSpawn.add(KGenerator.SCROLL.generate())
+                itemsToSpawn.add(Generator.SCROLL.generate())
 
             val p = PotionOfHealing()
             if (p.isKnown && Random.Float() < .5f)
                 itemsToSpawn.add(p)
             else
-                itemsToSpawn.add(KGenerator.POTION.generate())
+                itemsToSpawn.add(Generator.POTION.generate())
         }
 
         // armors and weapons 
@@ -123,7 +123,7 @@ class ShopDigger : RectDigger() {
                 itemsToSpawn.add(Torch())
             }
         }
-        itemsToSpawn.add(KGenerator.HELMET.generate().apply { cursed = false })
+        itemsToSpawn.add(Generator.HELMET.generate().apply { cursed = false })
         itemsToSpawn.add(Torch().quantity(if (Random.Int(5) == 0) 2 else 1))
 
         if (Random.Float() < (Dungeon.depth / 5) * 0.2f)
@@ -146,8 +146,8 @@ class ShopDigger : RectDigger() {
 
         // specials
         val rare = when (Random.Int(10)) {
-            0 -> KGenerator.WAND.generate()
-            1 -> KGenerator.RING.generate()
+            0 -> Generator.WAND.generate()
+            1 -> Generator.RING.generate()
             else -> Stylus()
         }.apply {
             cursedKnown = false

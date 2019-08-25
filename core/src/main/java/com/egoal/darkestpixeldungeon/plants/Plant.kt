@@ -11,7 +11,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.LeafParticle
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.SandalsOfNature
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
@@ -54,7 +54,7 @@ abstract class Plant(val image: Int) : Bundlable {
 
             if (Random.Int(5 - (naturalismLevel / 2)) == 0) {
                 // extra seed
-                val seed = KGenerator.SEED.generate()
+                val seed = Generator.SEED.generate()
 
                 if (seed is BlandfruitBush.Seed) {
                     if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {

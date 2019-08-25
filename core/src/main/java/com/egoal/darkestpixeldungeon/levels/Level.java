@@ -27,11 +27,10 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Shadows;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath;
+;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger;
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass;
@@ -48,7 +47,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision;
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.particles.FlowParticle;
@@ -209,7 +207,7 @@ public abstract class Level implements Bundlable {
     weakFloorCreated = false;
 
     // some status may be modified during building
-    KGenerator.INSTANCE.stash();
+    Generator.INSTANCE.stash();
     ArrayList<Item> hasDropped = new ArrayList<>();
     ArrayList<Item> dropped = Dungeon.droppedItems.get(Dungeon.depth + 1);
     if (dropped != null) hasDropped.addAll(dropped);
@@ -232,7 +230,7 @@ public abstract class Level implements Bundlable {
         break;
       }
 
-      KGenerator.INSTANCE.recover();
+      Generator.INSTANCE.recover();
     }
 
     if (dropped != null) {
@@ -1089,7 +1087,7 @@ public abstract class Level implements Bundlable {
       return items;
 
     // quota
-    items.add(KGenerator.FOOD.INSTANCE.generate());
+    items.add(Generator.FOOD.INSTANCE.generate());
 
     int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
     float p = (float) Math.pow(0.925, bonus);

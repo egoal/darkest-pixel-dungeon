@@ -1,8 +1,8 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
 import com.egoal.darkestpixeldungeon.Dungeon
+
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.KGenerator
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -45,9 +45,9 @@ class ArmoryDigger : RectDigger() {
     
     companion object {
         private val PrizeGenerators =   hashMapOf(
-                KGenerator.ARMOR to 0.75f, 
-                KGenerator.WEAPON to 1f, 
-                KGenerator.HELMET to 0.45f
+                Generator.ARMOR to 0.75f,
+                Generator.WEAPON to 1f,
+                Generator.HELMET to 0.45f
         )
     }
 }

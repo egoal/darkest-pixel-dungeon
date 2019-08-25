@@ -30,7 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin;
 import com.egoal.darkestpixeldungeon.effects.Wound;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
@@ -587,8 +587,8 @@ public abstract class Mob extends Char {
   @SuppressWarnings("unchecked")
   protected Item createLoot() {
     Item item = null;
-    if (loot instanceof KGenerator.ItemGenerator) {
-      item = ((KGenerator.ItemGenerator) loot).generate();
+    if (loot instanceof Generator.ItemGenerator) {
+      item = ((Generator.ItemGenerator) loot).generate();
     } else if (loot instanceof Class<?>) {
       try {
         item = ((Class<? extends Item>) loot).newInstance().random();

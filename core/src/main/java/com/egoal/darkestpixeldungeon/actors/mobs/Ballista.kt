@@ -10,7 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin
@@ -118,7 +118,7 @@ class Ballista : Mob() {
 
     override fun createLoot(): Item = when (Random.Int(4)) {
         0 -> Javelin(Random.IntRange(1, 3))
-        1 -> KGenerator.WEAPON.MISSSILE.generate()
+        1 -> Generator.WEAPON.MISSSILE.generate()
         else -> Gold().random()
     }
 

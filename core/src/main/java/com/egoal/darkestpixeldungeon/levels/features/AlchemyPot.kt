@@ -24,30 +24,21 @@ import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
-import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.BrewEnhancedPotion
-import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.windows.WndAlchemy
-import com.egoal.darkestpixeldungeon.items.Generator
+
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.KGenerator
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.food.StewedMeat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
-import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Plant
-import com.egoal.darkestpixeldungeon.plants.Sorrowmoss
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Random
-import java.lang.RuntimeException
 
 object AlchemyPot {
     fun Operate(hero: Hero, pos: Int) {
@@ -102,10 +93,10 @@ object AlchemyPot {
 
         if (potioncls.size == 1) return potioncls[0].newInstance()
 
-        if ((potioncls.size == 2 && Random.Float() < 0.35f) || Random.Float() < 0.5f) return KGenerator.POTION.generate() as Potion
+        if ((potioncls.size == 2 && Random.Float() < 0.35f) || Random.Float() < 0.5f) return Generator.POTION.generate() as Potion
 
         var p = Random.element(potioncls).newInstance()
-        if (p is PotionOfHealing && Random.Int(12) < Dungeon.limitedDrops.cookingHP.count) p = KGenerator.POTION.generate() as Potion
+        if (p is PotionOfHealing && Random.Int(12) < Dungeon.limitedDrops.cookingHP.count) p = Generator.POTION.generate() as Potion
 
         Dungeon.hero?.heroPerk?.get(BrewEnhancedPotion::class.java)?.affectPotion(p)
 

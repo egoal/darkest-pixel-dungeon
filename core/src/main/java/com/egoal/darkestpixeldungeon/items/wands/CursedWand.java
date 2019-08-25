@@ -35,10 +35,9 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
-import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
 import com.egoal.darkestpixeldungeon.items.Generator;
-import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
+import com.egoal.darkestpixeldungeon.items.unclassified.Bomb;
+;
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -234,7 +233,7 @@ public class CursedWand {
                     pos == Terrain.EMPTY_DECO ||
                     pos == Terrain.GRASS ||
                     pos == Terrain.HIGH_GRASS) {
-              Dungeon.level.plant((Plant.Seed) KGenerator.SEED.INSTANCE.generate(), pos);
+              Dungeon.level.plant((Plant.Seed) Generator.SEED.INSTANCE.generate(), pos);
             }
             wand.wandUsed();
           }
@@ -409,9 +408,9 @@ public class CursedWand {
             mimic.HP = mimic.HT;
             Item reward;
             do {
-              reward = Random.oneOf(KGenerator.WEAPON.INSTANCE, 
-                      KGenerator.ARMOR.INSTANCE, KGenerator.RING.INSTANCE, 
-                      KGenerator.WAND.INSTANCE).generate();
+              reward = Random.oneOf(Generator.WEAPON.INSTANCE,
+                      Generator.ARMOR.INSTANCE, Generator.RING.INSTANCE,
+                      Generator.WAND.INSTANCE).generate();
             } while (reward.level() < 2 && !(reward instanceof MissileWeapon));
             Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1, 0.5f);
             mimic.getItems().clear();
@@ -454,9 +453,9 @@ public class CursedWand {
         wand.detach(user.getBelongings().backpack);
         Item result;
         do {
-          result = Random.oneOf(KGenerator.WEAPON.INSTANCE,
-                  KGenerator.ARMOR.INSTANCE, KGenerator.RING.INSTANCE,
-                  KGenerator.ARTIFACT.INSTANCE).generate();
+          result = Random.oneOf(Generator.WEAPON.INSTANCE,
+                  Generator.ARMOR.INSTANCE, Generator.RING.INSTANCE,
+                  Generator.ARTIFACT.INSTANCE).generate();
         } while (result.level() < 0 && !(result instanceof MissileWeapon));
         if (result.isUpgradable()) result.upgrade();
         result.cursed = result.cursedKnown = true;

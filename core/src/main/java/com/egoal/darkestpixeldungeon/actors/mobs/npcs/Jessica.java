@@ -1,34 +1,19 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs;
 
-import android.hardware.camera2.DngCreator;
-import android.telecom.Call;
-
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
-import com.egoal.darkestpixeldungeon.items.Generator;
+;
 import com.egoal.darkestpixeldungeon.items.Heap;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
-import com.egoal.darkestpixeldungeon.items.books.Book;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary;
-import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.levels.Level;
-import com.egoal.darkestpixeldungeon.levels.PrisonLevel;
-import com.egoal.darkestpixeldungeon.levels.Terrain;
-import com.egoal.darkestpixeldungeon.levels.VillageLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.plants.Sungrass;
-import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.JessicaSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
-import com.egoal.darkestpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-
-import java.security.cert.TrustAnchor;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Created by 93942 on 5/5/2018.
@@ -143,7 +128,7 @@ public class Jessica extends NPC {
         heap.type = Heap.Type.SKELETON;
         // heap.drop(new Book().setTitle(Book.Title.COLLIES_DIARY));
         heap.drop(new CallysDiary());
-        heap.drop(KGenerator.RING.INSTANCE.generate());
+        heap.drop(Generator.RING.INSTANCE.generate());
 
         heap.pos = level.randomRespawnCell();
         level.heaps.put(heap.pos, heap);

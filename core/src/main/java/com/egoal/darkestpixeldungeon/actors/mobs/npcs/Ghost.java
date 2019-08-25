@@ -27,7 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.mobs.GreatCrab;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
-import com.egoal.darkestpixeldungeon.items.KGenerator;
+import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
@@ -293,7 +293,7 @@ public class Ghost extends NPC {
         Sample.INSTANCE.play(Assets.SND_GHOST);
         processed = true;
         // now the rose can spawn.
-        KGenerator.ARTIFACT.INSTANCE.getProbMap().put(DriedRose.class, 1f);
+        Generator.ARTIFACT.INSTANCE.getProbMap().put(DriedRose.class, 1f);
       }
     }
 
@@ -328,7 +328,7 @@ public class Ghost extends NPC {
       }
 
       do {
-        weapon = (Weapon) KGenerator.WEAPON.MELEE.INSTANCE.tier(wepTier - 1).generate();
+        weapon = (Weapon) Generator.WEAPON.MELEE.INSTANCE.tier(wepTier - 1).generate();
       } while (!(weapon instanceof MeleeWeapon));
       weapon.level(((MeleeWeapon) weapon).tier==1? 1: 0);
       weapon.cursed = false;

@@ -18,33 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.potions;
+package com.egoal.darkestpixeldungeon.items.armor
 
-import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class PotionOfExperience extends Potion {
-
-  {
-    initials = 0;
-
-    bones = true;
-  }
-
-  @Override
-  public void apply(Hero hero) {
-    setKnown();
-    hero.earnExp(reinforced ? hero.maxExp() * 3 / 2 : hero.maxExp());
-  }
-
-  @Override
-  public int price() {
-    return isKnown() ? (int) (50 * quantity * (reinforced ? 1.5 : 1)) : super
-            .price();
-  }
-
-  @Override
-  public boolean canBeReinforced() {
-    return true;
-  }
-
+class PlateArmor : Armor(5) {
+    init {
+        image = ItemSpriteSheet.ARMOR_PLATE
+    }
 }
