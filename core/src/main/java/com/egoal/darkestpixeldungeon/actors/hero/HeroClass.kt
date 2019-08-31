@@ -18,6 +18,7 @@ import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -217,6 +218,8 @@ enum class HeroClass(private val title: String) {
     }
 
     fun title(): String = Messages.get(HeroClass::class.java, title)
+
+    fun description(): String = M.L(HeroClass::class.java, "$title-desc")
 
     abstract fun masteryBadge(): Badges.Badge
     abstract fun spritesheet(): String

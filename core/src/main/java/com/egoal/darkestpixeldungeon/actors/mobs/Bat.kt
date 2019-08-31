@@ -85,7 +85,7 @@ class Bat : Mob() {
         return damage
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         //sets drop chance
         lootChance = 1f / (8 + Dungeon.limitedDrops.batHP.count)
         super.die(cause)

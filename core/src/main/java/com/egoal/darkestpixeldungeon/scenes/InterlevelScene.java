@@ -183,7 +183,7 @@ public class InterlevelScene extends PixelScene {
             public void onBackPressed() {
               super.onBackPressed();
               if (InterlevelScene.mode == Mode.REFLUX)
-                Game.switchScene(StartScene.class);
+                Game.switchScene(NewStartScene.class);
               else {
                 InterlevelScene.mode = Mode.REFLUX;
                 Game.switchScene(InterlevelScene.class);
@@ -265,13 +265,13 @@ public class InterlevelScene extends PixelScene {
     GameLog.wipe();
 
     // init level
-    Dungeon.loadGame(StartScene.curClass);
+    Dungeon.loadGame(NewStartScene.Companion.getCurrentClass());
 
     if (Dungeon.depth == -1) {
       Dungeon.depth = Statistics.INSTANCE.getDeepestFloor();
-      Dungeon.switchLevel(Dungeon.loadLevel(StartScene.curClass), -1);
+      Dungeon.switchLevel(Dungeon.loadLevel(NewStartScene.Companion.getCurrentClass()), -1);
     } else {
-      Dungeon.switchLevel(Dungeon.loadLevel(StartScene.curClass), Dungeon
+      Dungeon.switchLevel(Dungeon.loadLevel(NewStartScene.Companion.getCurrentClass()), Dungeon
               .hero.pos);
     }
   }
@@ -281,8 +281,8 @@ public class InterlevelScene extends PixelScene {
 
     GameLog.wipe();
 
-    Dungeon.loadBackupGame(StartScene.curClass);
-    Level level = Dungeon.loadBackupLevel(StartScene.curClass);
+    Dungeon.loadBackupGame(NewStartScene.Companion.getCurrentClass());
+    Level level = Dungeon.loadBackupLevel(NewStartScene.Companion.getCurrentClass());
     Dungeon.switchLevel(level, Dungeon.hero.pos);
   }
 

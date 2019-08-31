@@ -80,19 +80,19 @@ object Bestiary {
 
             // prison
             6 -> {
-                chances = floatArrayOf(2f, 1f, 0.5f, .5f)
+                chances = floatArrayOf(2f, 1f, 0.5f, 0.5f)
                 classes = arrayOf(Skeleton::class.java, Thief::class.java, Swarm::class.java, Shaman::class.java)
             }
             7 -> {
-                chances = floatArrayOf(3f, 1f, 1f, 1f, .2f)
+                chances = floatArrayOf(3f, 1f, 1f, 1f, 0.2f)
                 classes = arrayOf(Skeleton::class.java, Shaman::class.java, Thief::class.java, Guard::class.java, MadMan::class.java)
             }
             8 -> {
-                chances = floatArrayOf(3f, 2f, 2f, 1f, .5f, 0.02f)
+                chances = floatArrayOf(3f, 2f, 2f, 1f, 0.5f, 0.02f)
                 classes = arrayOf(Skeleton::class.java, Shaman::class.java, Guard::class.java, Thief::class.java, MadMan::class.java, Bat::class.java)
             }
             9 -> {
-                chances = floatArrayOf(3f, 2f, 2f, 1f, 0.6f, 0.1f)
+                chances = floatArrayOf(3f, 2f, 2f, 1f, 0.6f, 0.05f)
                 classes = arrayOf(Skeleton::class.java, Guard::class.java, Shaman::class.java, Thief::class.java, Bat::class.java, SkeletonKnight::class.java)
             }
             10 -> {

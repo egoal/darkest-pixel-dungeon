@@ -38,6 +38,7 @@ import com.egoal.darkestpixeldungeon.levels.*;
 import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.egoal.darkestpixeldungeon.scenes.NewStartScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.egoal.darkestpixeldungeon.windows.WndResurrect;
@@ -183,7 +184,8 @@ public class Dungeon {
 
     Badges.reset();
 
-    StartScene.curClass.initHero(hero);
+//    StartScene.curClass.initHero(hero);
+    NewStartScene.Companion.getCurrentClass().initHero(hero);
   }
 
   public static boolean isChallenged(int mask) {

@@ -12,7 +12,7 @@ import com.egoal.darkestpixeldungeon.ui.Window
 import com.watabou.noosa.ColorBlock
 
 class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
-    protected var index = 0
+    private var index = 0
     private val perkButtons: MutableList<PerkButton>
     private val description: RenderedTextMultiline
     private val confirm: RedButton

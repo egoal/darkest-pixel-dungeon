@@ -563,7 +563,6 @@ public abstract class Mob extends Char {
 
   @Override
   public void die(Object cause) {
-
     super.die(cause);
 
     float lootChance = this.lootChance;

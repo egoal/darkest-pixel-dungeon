@@ -267,3 +267,15 @@ class WandArcane : Perk(3) {
 class QuickZap : Perk()
 
 class ExplodeBrokenShot : Perk()
+
+class ExtraStrength : Perk(3) {
+    override fun onGain() {
+        Dungeon.hero.STR += 1
+    }
+
+    override fun upgrade() {
+        Dungeon.hero.STR++
+    }
+
+    override fun description(): String = M.L(this, "desc", level)
+}

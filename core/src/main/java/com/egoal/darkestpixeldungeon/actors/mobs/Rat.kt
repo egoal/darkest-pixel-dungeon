@@ -18,37 +18,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.actors.mobs;
+package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.actors.Char;
-import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.sprites.RatSprite;
-import com.watabou.utils.Random;
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.sprites.RatSprite
+import com.watabou.utils.Random
 
-public class Rat extends Mob {
+open class Rat : Mob() {
+    init {
+        spriteClass = RatSprite::class.java
 
-  {
-    spriteClass = RatSprite.class;
+        HT = 8
+        HP = HT
+        defenseSkill = 2
 
-    HP = HT = 8;
-    defenseSkill = 2;
+        maxLvl = 5
+    }
 
-    maxLvl = 5;
-  }
+    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(1, 4), this, target)
 
-  @Override
-  public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(1, 4), this, target);
-  }
+    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(0, 1) }
 
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 1);
-    return dmg;
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 8;
-  }
+    override fun attackSkill(target: Char): Int = 8
 }

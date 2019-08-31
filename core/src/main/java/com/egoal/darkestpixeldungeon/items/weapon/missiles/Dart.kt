@@ -20,9 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.missiles
 
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.watabou.utils.Random
 
 class Dart(number: Int = 1) : MissileWeapon(1, stick = true) {
 

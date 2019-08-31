@@ -46,7 +46,7 @@ class SkeletonKnight : Mob() {
     }
 
     override fun giveDamage(target: Char): Damage {
-        return Damage(Random.NormalIntRange(10, 18), this, target).addElement(Damage.Element.SHADOW)
+        return Damage(Random.NormalIntRange(8, 18), this, target).addElement(Damage.Element.SHADOW)
     }
 
     override fun defendDamage(dmg: Damage): Damage {

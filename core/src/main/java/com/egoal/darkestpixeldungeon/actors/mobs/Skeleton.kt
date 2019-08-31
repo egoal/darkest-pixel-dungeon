@@ -66,8 +66,7 @@ class Skeleton : Mob() {
         return dmg
     }
 
-    override fun die(cause: Any) {
-
+    override fun die(cause: Any?) {
         super.die(cause)
 
         var heroKilled = false

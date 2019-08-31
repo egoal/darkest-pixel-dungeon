@@ -23,9 +23,7 @@ package com.egoal.darkestpixeldungeon.scenes;
 import android.opengl.GLES20;
 
 import com.egoal.darkestpixeldungeon.Assets;
-import com.egoal.darkestpixeldungeon.Chrome;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
-import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.TopExceptionHandler;
 import com.egoal.darkestpixeldungeon.effects.BannerSprites;
 import com.egoal.darkestpixeldungeon.effects.Fireball;
@@ -34,13 +32,11 @@ import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.ChangesButton;
 import com.egoal.darkestpixeldungeon.ui.ErrorButton;
 import com.egoal.darkestpixeldungeon.ui.ExitButton;
-import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -110,10 +106,7 @@ public class TitleScene extends PixelScene {
     DashboardItem[] btnsMain = new DashboardItem[]{
             new DashboardItem(Messages.get(this, "play"), 0) {
               @Override
-              protected void onClick() {
-                DarkestPixelDungeon.switchNoFade(StartScene.class);
-
-              }
+              protected void onClick() { DarkestPixelDungeon.switchNoFade(NewStartScene.class); }
             },
             new DashboardItem(Messages.get(this, "rankings"), 2) {
               @Override

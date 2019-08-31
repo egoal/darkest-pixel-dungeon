@@ -5,7 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
-import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import java.util.*
 
@@ -37,9 +37,14 @@ class Pasty : Food(Hunger.STARVING, 5) {
         }
     }
 
+    override fun name(): String = when(holiday){
+        Holiday.XMAS-> M.L(this, "cane")
+        else-> M.L(this, "pasty")
+    }
+
     override fun info(): String = when (holiday) {
-        Holiday.XMAS -> Messages.get(this, "cane_desc")
-        else -> Messages.get(this, "pasty_desc")
+        Holiday.XMAS -> M.L(this, "cane_desc")
+        else -> M.L(this, "pasty_desc")
     }
 
     override fun price(): Int = 20 * quantity
