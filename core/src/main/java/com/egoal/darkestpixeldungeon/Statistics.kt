@@ -149,10 +149,10 @@ object Statistics {
                 hour < 2 || hour >= 22 -> State.MidNight
                 else -> State.Night
             }
-            
+
             // night control
-            if(newState==State.Day && (Dungeon.hero?.buff(MoonNight::class.java)!=null ||
-                            Dungeon.depth> 20|| Dungeon.isChallenged(Challenges.THE_LONG_NIGHT)))
+            if (newState == State.Day && (Dungeon.hero?.buff(MoonNight::class.java) != null ||
+                            Dungeon.depth > 20 || Dungeon.isChallenged(Challenges.THE_LONG_NIGHT)))
                 newState = State.Night
 
             if (newState != state) {
@@ -166,6 +166,12 @@ object Statistics {
                 }
                 GLog.w(info)
             }
+        }
+
+        companion object {
+            const val TIME_SCALE = 0.85f
+
+            fun TimePerDay(): Float = 24f * 60f / TIME_SCALE
         }
     }
 

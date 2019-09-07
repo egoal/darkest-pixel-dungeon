@@ -98,6 +98,9 @@ public abstract class Char extends Actor {
   public float[] resistanceMagical = new float[Damage.Element.ELEMENT_COUNT];
   public float[] resistanceNormal = new float[Damage.Element.ELEMENT_COUNT];
 
+  public float magicalResistance = 1f;
+  public float[] elementalResistance = new float[Damage.Element.ELEMENT_COUNT];
+
   private HashSet<Buff> buffs = new HashSet<>();
 
   {

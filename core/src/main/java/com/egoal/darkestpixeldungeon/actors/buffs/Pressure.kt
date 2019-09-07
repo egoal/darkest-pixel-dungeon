@@ -115,10 +115,8 @@ class Pressure : Buff(), Hero.Doom {
     fun procGivenDamage(dmg: Damage): Damage {
         when (level) {
             Level.CONFIDENT -> {
-                if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Int(10) == 0) {
-                    dmg.addFeature(Damage.Feature.CRITICAL)
-                    dmg.value = dmg.value * 3 / 2
-                } else dmg.value = dmg.value * 11 / 10
+                // crit chance move to hero
+                if (!dmg.isFeatured(Damage.Feature.CRITICAL)) dmg.value = dmg.value * 11 / 10
             }
             Level.NORMAL -> {
             }

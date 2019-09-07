@@ -1,19 +1,26 @@
 package com.egoal.darkestpixeldungeon.actors.hero.perks
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.DungeonTilemap
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
+import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
+import com.egoal.darkestpixeldungeon.items.unclassified.Rune
 import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Random
@@ -270,12 +277,66 @@ class ExplodeBrokenShot : Perk()
 
 class ExtraStrength : Perk(3) {
     override fun onGain() {
-        Dungeon.hero.STR += 1
+        Dungeon.hero.STR++
     }
 
     override fun upgrade() {
+        super.upgrade()
         Dungeon.hero.STR++
     }
 
     override fun description(): String = M.L(this, "desc", level)
+}
+
+abstract class TimingPerk(private val timing: Class<out Timing>, private val triggerOnGain: Boolean = true,
+                          maxlevel: Int = 1, level: Int = 1) : Perk(maxlevel, level) {
+    override fun onGain() {
+        val buff = Buff.affect(Dungeon.hero, timing)
+        if (triggerOnGain) buff.trigger()
+    }
+
+    override fun upgrade() {
+        Dungeon.hero.buff(timing)!!.upgrade()
+        super.upgrade()
+    }
+
+
+    abstract class Timing(protected var time: Float) : Buff() {
+        fun upgrade() {}
+
+        abstract fun trigger()
+
+        override fun act(): Boolean {
+            spend(time)
+            return true
+        }
+    }
+}
+
+class ExtraRuneRegularly : TimingPerk(GainRune::class.java) {
+    class GainRune : TimingPerk.Timing(Statistics.ClockTime.TimePerDay()) {
+        override fun trigger() {
+            val rune = Generator.RUNE.generate() as Rune
+            GameScene.effect(Flare(7, 32f).color(0x66ff66, true).show(
+                    Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(Dungeon.hero.pos), 2f))
+
+            val dewVial = Dungeon.hero.belongings.getItem(DewVial::class.java)
+            if (dewVial == null || dewVial.rune != null) {
+                Dungeon.level.drop(rune, Dungeon.hero.pos)
+            } else {
+                dewVial.rune = rune
+                GLog.w(M.L(ExtraRuneRegularly::class.java, "generated", rune.name()))
+            }
+        }
+    }
+}
+
+class AngryBared : Perk() {
+    fun procGivenDamage(dmg: Damage, hero: Hero) {
+        if (noArmor(hero)) dmg.value += dmg.value / 4
+    }
+
+    fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 0.75f else 1f
+
+    private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
 }

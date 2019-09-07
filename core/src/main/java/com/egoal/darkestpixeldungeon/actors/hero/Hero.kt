@@ -190,6 +190,21 @@ class Hero : Char() {
         return factor
     }
 
+    fun criticalChance(): Float {
+        if (buff(CriticalRune.Critical::class.java) != null) return 1f
+
+        var c = criticalChance
+        if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.09f
+
+        val level = RingOfCritical.getBonus(this, RingOfCritical.Critical::class.java)
+        if (level > 0) {
+            c += 0.01f * level
+            c *= Math.pow(1.15, level.toDouble()).toFloat()
+        }
+
+        return c
+    }
+
     // followers
     fun holdFollowers(level: Level) {
         followers.clear()
@@ -314,18 +329,12 @@ class Hero : Char() {
         // helmet
         belongings.helmet?.let { belongings.helmet.procGivenDamage(dmg) }
 
+        heroPerk.get(AngryBared::class.java)?.procGivenDamage(dmg, this)
+
         // critical
-        buff(CriticalRune.Critical::class.java)?.let {
-            dmg.value = (dmg.value * 1.4f).toInt()
+        if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < criticalChance()) {
+            dmg.value = (dmg.value * 1.5).toInt()
             dmg.addFeature(Damage.Feature.CRITICAL)
-        }
-        if (!dmg.isFeatured(Damage.Feature.CRITICAL)) {
-            val chance = criticalChance * Math.pow(1.15,
-                    RingOfCritical.getBonus(this, RingOfCritical.Critical::class.java).toDouble()).toFloat()
-            if (Random.Float() < chance) {
-                dmg.value = (dmg.value * 1.5).toInt()
-                dmg.addFeature(Damage.Feature.CRITICAL)
-            }
         }
 
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
@@ -444,6 +453,7 @@ class Hero : Char() {
         }
 
         speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
+        speed *= heroPerk.get(AngryBared::class.java)?.speedFactor(this) ?: 1f
 
         return speed
     }

@@ -104,7 +104,9 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 WandArcane() to 1f,
                 QuickZap() to 1f,
                 ExplodeBrokenShot() to 1f,
-                ExtraStrength() to 1f
+                ExtraStrength() to 0.75f,
+                ExtraRuneRegularly() to 0.8f,
+                AngryBared() to 0.8f
         )
     }
 }

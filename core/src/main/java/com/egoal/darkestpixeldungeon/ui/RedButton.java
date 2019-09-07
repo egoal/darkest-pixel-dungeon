@@ -69,7 +69,7 @@ public class RedButton extends Button {
     PixelScene.align(text);
 
     if (icon != null) {
-      icon.x = x + text.x - icon.width() - 2;
+      icon.x = text.x - icon.width() - 2;
       icon.y = y + (height - icon.height()) / 2;
       PixelScene.align(icon);
     }

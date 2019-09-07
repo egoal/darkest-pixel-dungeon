@@ -10,7 +10,7 @@ class Resident: Actor(){
     }
     
     override fun act(): Boolean {
-        Statistics.Clock.spend(TICK* TIME_SCALE)
+        Statistics.Clock.spend(TICK* Statistics.ClockTime.TIME_SCALE)
         
         spend(TICK)
         return true 
@@ -20,6 +20,5 @@ class Resident: Actor(){
         lateinit var Instance: Resident
         
         private const val TICK = 1f
-        private const val TIME_SCALE = 0.85f
     }
 }

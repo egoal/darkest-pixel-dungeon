@@ -93,14 +93,15 @@ class NewStartScene : PixelScene() {
         }
         add(btnLoadGame)
 
-        slider = ClassSlideBar().apply { centered(w / 2f, buttonY - 20f) }
-        add(slider)
-
         val challenge = ChallengeButton()
-        challenge.setPos((w - challenge.width()) / 2f, slider.btnClassName.top() - challenge.height() - 5f)
+        /// challenge.setPos((w - challenge.width()) / 2f, slider.btnClassName.top() - challenge.height() - 5f)
+        challenge.setPos((w - challenge.width()) / 2f, buttonY - challenge.height() - 5f)
         add(challenge)
 
-        val centralHeight = challenge.top() - title.y - title.height()
+        slider = ClassSlideBar().apply { centered(w / 2f, challenge.top() - 20f) }
+        add(slider)
+
+        val centralHeight = (challenge.top() - 20f) - 10f - title.y - title.height()
         val shieldW = width / 4
         val shieldH = min(centralHeight, shieldW)
         val shieldTop = title.y + title.height + (centralHeight - shieldH) / 2f
@@ -165,13 +166,13 @@ class NewStartScene : PixelScene() {
 
     private fun updateClass(cl: HeroClass) {
         shields[CurrentClass]!!.visible = false
-        CurrentClass = cl
-        shields[cl]!!.visible = true
-        shields[cl]!!.showSpeckEffects()
+        slider.highlightDot(CurrentClass.ordinal, false)
 
-        slider.btnClassName.text(CurrentClass.title().toUpperCase())
-        slider.btnClassName.textColor(if (Badges.isUnlocked(CurrentClass.masteryBadge()))
-            MASTERY_HIGHLIGHTED else BASIC_HIGHLIGHTED)
+        CurrentClass = cl
+
+        shields[CurrentClass]!!.visible = true
+        shields[CurrentClass]!!.showSpeckEffects()
+        slider.highlightDot(CurrentClass.ordinal, true)
 
         if (!IsLocked(CurrentClass)) {
             unlock.visible = false
@@ -247,12 +248,15 @@ class NewStartScene : PixelScene() {
     }
 
     private inner class ClassSlideBar : Group() {
-        val btnLeft: RedButton
-        val btnRight: RedButton
-        val btnClassName: RedButton
+        val btnLeft: IconButton
+        val btnRight: IconButton
+        val dots: Array<Image>
 
         init {
-            btnLeft = object : RedButton("<-") {
+            btnLeft = object : IconButton(Image().apply {
+                flipHorizontal = true
+                copy(Icons.get(Icons.ARROW_RIGHT))
+            }) {
                 override fun onClick() {
                     super.onClick()
                     val values = enumValues<HeroClass>()
@@ -262,7 +266,8 @@ class NewStartScene : PixelScene() {
                 }
             }
             add(btnLeft)
-            btnRight = object : RedButton("->") {
+
+            btnRight = object : IconButton(Icons.get(Icons.ARROW_RIGHT)) {
                 override fun onClick() {
                     super.onClick()
                     val values = enumValues<HeroClass>()
@@ -272,23 +277,34 @@ class NewStartScene : PixelScene() {
                 }
             }
             add(btnRight)
-            btnClassName = object : RedButton("Class") {
-                init {
-                    bg.visible = false
-                }
-            }
-            add(btnClassName)
+
+            dots = Array(enumValues<HeroClass>().size) { Icons.get(Icons.DOT_OFF) }
+            for (dot in dots) add(dot)
         }
 
         fun centered(x: Float, y: Float) {
-            val btnWidth = 40f
-            val arrowWidth = 30f
-            val btnHeight = 20f
-            val GAP = 5f
+            val DOT_GAP = 3f
+            val DOT_SIZE = dots[0].width()
+            val DOTS_Width = (dots.size - 1) * DOT_GAP + dots.size * DOT_SIZE
 
-            btnLeft.setRect(x - btnWidth / 2f - GAP - arrowWidth, y - btnHeight / 2f, arrowWidth, btnHeight)
-            btnClassName.setRect(btnLeft.right() + GAP, btnLeft.top(), btnWidth, btnHeight)
-            btnRight.setRect(btnClassName.right() + GAP, btnLeft.top(), arrowWidth, btnHeight)
+            val GAP = 10f
+            val ARROW_HEIGHT = 20f
+            val ARROW_WIDTH = 20f
+
+            val dotLeft = x - DOTS_Width / 2f
+
+            for (pr in dots.withIndex()) {
+                pr.value.x = dotLeft + pr.index * (DOT_GAP + DOT_SIZE)
+                pr.value.y = y
+            }
+
+            btnLeft.setRect(dotLeft - GAP - ARROW_WIDTH, y - ARROW_HEIGHT / 2, ARROW_WIDTH, ARROW_HEIGHT)
+            btnRight.setRect(x + DOTS_Width / 2f + GAP, btnLeft.top(), ARROW_WIDTH, ARROW_HEIGHT)
+        }
+
+        fun highlightDot(idx: Int, on: Boolean) {
+            if (on) dots[idx].copy(Icons.get(Icons.DOT_ON))
+            else dots[idx].copy(Icons.get(Icons.DOT_OFF))
         }
     }
 
@@ -296,6 +312,7 @@ class NewStartScene : PixelScene() {
         private lateinit var avatar: Image
         private lateinit var emitter: Emitter
         private var brightness: Float = 0f
+        private lateinit var name: RenderedText
 
         init {
             avatar.frame(heroClass.ordinal * WIDTH, 0, WIDTH, HEIGHT)
@@ -303,6 +320,10 @@ class NewStartScene : PixelScene() {
 
             brightness = if (IsLocked(heroClass)) MIN_BRIGHTNESS else 1f
             updateBrightness()
+
+            name.text(heroClass.title().toUpperCase())
+            name.hardlight(if (Badges.isUnlocked(heroClass.masteryBadge()))
+                MASTERY_HIGHLIGHTED else BASIC_HIGHLIGHTED)
         }
 
         override fun createChildren() {
@@ -313,14 +334,21 @@ class NewStartScene : PixelScene() {
 
             emitter = BitmaskEmitter(avatar)
             add(emitter)
+
+            name = renderText(9)
+            add(name)
         }
 
         override fun layout() {
             super.layout()
 
             avatar.x = x + (width - avatar.width()) / 2f
-            avatar.y = y + (height - avatar.height()) / 2f
+            avatar.y = y + (height - avatar.height() - name.height()) / 2f
             align(avatar)
+
+            name.x = x + (width - name.width()) / 2f
+            name.y = avatar.y + avatar.height() + SCALE
+            align(name)
         }
 
         fun showSpeckEffects() {

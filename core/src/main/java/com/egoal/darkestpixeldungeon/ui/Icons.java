@@ -62,6 +62,11 @@ public enum Icons {
   CHALLENGE_ON,
   RESUME,
 
+  DOT_OFF, 
+  DOT_ON, 
+
+  ARROW_RIGHT, 
+
   LIX;
 
   public Image get() {
@@ -172,6 +177,15 @@ public enum Icons {
         break;
       case RESUME:
         icon.frame(icon.texture.uvRect(13, 53, 24, 64));
+        break;
+      case DOT_OFF:
+        icon.frame(icon.texture.uvRect(109, 42, 114, 47));
+        break;
+      case DOT_ON:
+        icon.frame(icon.texture.uvRect(114, 42, 119, 47));
+        break;
+      case ARROW_RIGHT:
+        icon.frame(icon.texture.uvRect(109, 47, 116, 59));
         break;
     }
 
