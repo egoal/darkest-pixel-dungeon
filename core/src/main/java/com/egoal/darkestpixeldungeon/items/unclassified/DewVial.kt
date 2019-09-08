@@ -109,7 +109,7 @@ class DewVial : Item() {
         return desc
     }
 
-    private fun dhp(hero: Hero): Int = ((if (hero.heroClass == HeroClass.HUNTRESS) 0.05f else 0.03f) * hero.HT).toInt() + 1
+    private fun dhp(hero: Hero): Int = ((if (hero.heroClass == HeroClass.SORCERESS) 0.05f else 0.03f) * hero.HT).toInt() + 1
 
     private fun consume(vol: Int, hero: Hero) {
         volume -= vol

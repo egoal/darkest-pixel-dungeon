@@ -21,12 +21,12 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.wands.Wand;
-import com.egoal.darkestpixeldungeon.levels.traps.LightningTrap;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.GreatCrabSprite;
@@ -35,17 +35,12 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 public class GreatCrab extends Crab {
 
   {
+    PropertyConfiger.INSTANCE.set(this, GreatCrab.class.getSimpleName());
+
     spriteClass = GreatCrabSprite.class;
 
-    HP = HT = 25;
-    defenseSkill = 0; //see damage()
     baseSpeed = 1f;
-
-    EXP = 6;
-
     state = WANDERING;
-
-    properties.add(Property.MINIBOSS);
   }
 
   private int moving = 0;

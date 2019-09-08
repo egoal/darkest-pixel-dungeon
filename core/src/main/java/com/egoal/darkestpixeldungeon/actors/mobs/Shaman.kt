@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Damage
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Rage
@@ -47,29 +48,15 @@ class Shaman : Mob(), Callback {
     init {
         spriteClass = ShamanSprite::class.java
 
-        HT = 18
-        HP = HT
-        defenseSkill = 8
-
+        PropertyConfiger.set(this, javaClass.simpleName)
         HUNTING = HuntingAI()
 
-        EXP = 6
-        maxLvl = 14
-
         loot = Generator.SCROLL
-        lootChance = 0.25f
-
-        addResistances(Damage.Element.LIGHT, 1.25f)
     }
 
     private var buffcd = 0f //todo: rework skilled ai
 
-
-    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(2, 8), this, target).addElement(Damage.Element.LIGHT)
-
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(0, 4); }
-
-    override fun attackSkill(target: Char): Int = 11
+    override fun giveDamage(target: Char): Damage =super.giveDamage(enemy).addElement(Damage.Element.LIGHT)
 
     override fun canAttack(enemy: Char): Boolean = Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
 

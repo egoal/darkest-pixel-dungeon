@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -39,39 +40,17 @@ import java.util.HashSet;
 public class Elemental extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, Elemental.class.getSimpleName());
     spriteClass = ElementalSprite.class;
 
-    HP = HT = 65;
-    defenseSkill = 20;
-
-    EXP = 10;
-    maxLvl = 20;
+    loot = new PotionOfLiquidFlame();
 
     flying = true;
-
-    loot = new PotionOfLiquidFlame();
-    lootChance = 0.1f;
-
-    properties.add(Property.DEMONIC);
-    addResistances(Damage.Element.FIRE, 2f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(16, 26), this, target).addElement
-            (Damage.Element.FIRE);
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 5);
-    return dmg;
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 25;
+    return super.giveDamage(target).addElement(Damage.Element.FIRE);
   }
 
   @Override

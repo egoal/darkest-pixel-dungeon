@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
@@ -30,24 +31,10 @@ open class Crab : Mob() {
     init {
         spriteClass = CrabSprite::class.java
 
-        HT = 15
-        HP = HT
-        defenseSkill = 5
-        baseSpeed = 2f
-
-        EXP = 4
-        maxLvl = 9
-
+        PropertyConfiger.set(this, javaClass.simpleName)
         loot = MysteryMeat()
-        lootChance = 0.167f
 
-        addResistances(Damage.Element.LIGHT, .8f)
-        addResistances(Damage.Element.ICE, 1.1f)
+        addResistances(Damage.Element.LIGHT, -0.2f)
+        addResistances(Damage.Element.ICE, 0.1f)
     }
-
-    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(1, 8), this, target)
-
-    override fun attackSkill(target: Char): Int = 12
-
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { dmg.value -= Random.NormalIntRange(0, 4) }
 }

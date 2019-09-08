@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Badges;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -55,8 +56,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import org.intellij.lang.annotations.Identifier;
-
 import java.util.HashSet;
 
 public class King extends Mob {
@@ -66,18 +65,9 @@ public class King extends Mob {
   {
     spriteClass = KingSprite.class;
 
-    HP = HT = 300;
-    EXP = 40;
-    defenseSkill = 25;
+    PropertyConfiger.INSTANCE.set(this, King.class.getSimpleName());
 
     Undead.count = 0;
-
-    properties.add(Property.BOSS);
-    properties.add(Property.UNDEAD);
-
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.POISON| Damage.Element.FIRE, 1.2f);
-    addResistances(Damage.Element.HOLY, 0.75f);
   }
 
   private boolean nextPedestal = true;
@@ -100,22 +90,6 @@ public class King extends Mob {
     super.restoreFromBundle(bundle);
     nextPedestal = bundle.getBoolean(PEDESTAL);
     BossHealthBar.assignBoss(this);
-  }
-
-  @Override
-  public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(25, 40), this, target);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 32;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 14);
-    return dmg;
   }
 
   @Override
@@ -275,20 +249,10 @@ public class King extends Mob {
     public static int count = 0;
 
     {
+      PropertyConfiger.INSTANCE.set(this, "King.Undead");
+
       spriteClass = UndeadSprite.class;
-
-      HP = HT = 30;
-      defenseSkill = 15;
-
-      EXP = 0;
-
       state = WANDERING;
-
-      properties.add(Property.UNDEAD);
-      properties.add(Property.PHANTOM);
-
-      addResistances(Damage.Element.SHADOW, 1.25f);
-      addResistances(Damage.Element.HOLY, .667f);
     }
 
     @Override
@@ -301,16 +265,6 @@ public class King extends Mob {
     protected void onRemove() {
       count--;
       super.onRemove();
-    }
-
-    @Override
-    public Damage giveDamage(Char target) {
-      return new Damage(Random.NormalIntRange(15, 25), this, target);
-    }
-
-    @Override
-    public int attackSkill(Char target) {
-      return 16;
     }
 
     @Override
@@ -339,12 +293,6 @@ public class King extends Mob {
       if (Dungeon.visible[pos]) {
         Sample.INSTANCE.play(Assets.SND_BONES);
       }
-    }
-
-    @Override
-    public Damage defendDamage(Damage dmg) {
-      dmg.value -= Random.NormalIntRange(0, 5);
-      return dmg;
     }
 
     private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

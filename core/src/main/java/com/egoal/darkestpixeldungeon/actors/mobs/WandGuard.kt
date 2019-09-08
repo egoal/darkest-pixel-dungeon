@@ -5,7 +5,6 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
@@ -33,10 +32,10 @@ class WandGuard : Mob() {
         HP = HT
 
         state = WANDERING
-        defenseSkill = 0 // cannot dodge 
+        defSkill = 0f // cannot dodge
 
-        addResistances(Damage.Element.all(), 1.25f, 1f)
-        addResistances(Damage.Element.POISON or Damage.Element.FIRE, 100f, 1.25f)
+        addResistances(Damage.Element.all(), 1.25f)
+        magicalResistance = 100f
 
         properties.add(Property.IMMOVABLE)
     }

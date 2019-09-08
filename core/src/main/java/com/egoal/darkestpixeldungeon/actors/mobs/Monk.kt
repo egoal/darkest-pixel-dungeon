@@ -21,14 +21,13 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp
-import com.egoal.darkestpixeldungeon.items.KindOfWeapon
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -36,7 +35,6 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.MonkSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
-import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
 import java.util.HashSet
@@ -47,32 +45,17 @@ open class Monk : Mob() {
     init {
         spriteClass = MonkSprite::class.java
 
-        HT = 70
-        HP = HT
-        defenseSkill = 30
-
-        EXP = 11
-        maxLvl = 21
-
+        PropertyConfiger.set(this, javaClass.simpleName)
         loot = Food()
-        lootChance = 0.064f
-
-        addResistances(Damage.Element.SHADOW, 1.25f)
-        addResistances(Damage.Element.HOLY, .667f)
     }
 
     override fun giveDamage(target: Char): Damage {
-        val value = Random.NormalIntRange(12, 25)
-        val dmg = Damage(value, this, target)
-        if (value > 20) dmg.addFeature(Damage.Feature.CRITICAL)
+        val dmg = super.giveDamage(target)
+        if (dmg.value > 20) dmg.addFeature(Damage.Feature.CRITICAL)
         return dmg
     }
 
-    override fun attackSkill(target: Char): Int = 30
-
     override fun attackDelay(): Float = 0.45f
-
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(0, 2) }
 
     override fun die(cause: Any) {
         Imp.Quest.process(this)

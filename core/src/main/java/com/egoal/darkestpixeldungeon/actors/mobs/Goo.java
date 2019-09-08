@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
@@ -58,20 +59,11 @@ import java.util.HashSet;
 public class Goo extends Mob {
 
   {
-    HP = HT = 100;
-    EXP = 10;
-    defenseSkill = 8;
     spriteClass = GooSprite.class;
 
+    PropertyConfiger.INSTANCE.set(this, Goo.class.getSimpleName());
+
     loot = new LloydsBeacon().identify();
-    lootChance = 0.333f;
-
-    properties.add(Property.BOSS);
-    properties.add(Property.DEMONIC);
-
-    addResistances(Damage.Element.FIRE, 0.667f);
-    addResistances(Damage.Element.POISON, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   private int pumpedUp = 0;
@@ -101,27 +93,20 @@ public class Goo extends Mob {
   }
 
   @Override
-  public int attackSkill(Char target) {
-    int attack = 10;
-    if (HP * 2 <= HT) attack = 15;
-    if (pumpedUp > 0) attack *= 2;
+  public float attackSkill(Char target) {
+    float attack = 10f;
+    if (HP * 2 <= HT) attack = 15f;
+    if (pumpedUp > 0) attack *= 2f;
     return attack;
   }
 
   @Override
-  public int defenseSkill(Char enemy) {
-    return (int) (super.defenseSkill(enemy) * ((HP * 2 <= HT) ? 1.5 : 1));
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 2);
-    return dmg;
+  public float defenseSkill(Char enemy) {
+    return super.defenseSkill(enemy) * ((HP * 2 <= HT) ? 1.5f : 1f);
   }
 
   @Override
   public boolean act() {
-
     // healing in the water, and update health bar animation
     if (Level.water[pos] && HP < HT) {
       sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);

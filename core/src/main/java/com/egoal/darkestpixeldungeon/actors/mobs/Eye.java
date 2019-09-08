@@ -21,10 +21,10 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
@@ -44,25 +44,15 @@ import java.util.HashSet;
 public class Eye extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, Eye.class.getSimpleName());
+
     spriteClass = EyeSprite.class;
-
-    HP = HT = 100;
-    defenseSkill = 20;
-
-    EXP = 13;
-    maxLvl = 25;
 
     flying = true;
 
     HUNTING = new Hunting();
 
     loot = new Dewdrop();
-    lootChance = 0.5f;
-
-    properties.add(Property.DEMONIC);
-
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   @Override
@@ -72,19 +62,7 @@ public class Eye extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(15, 25), this, target)
-            .type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 30;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 10);
-    return dmg;
+    return super.giveDamage(target).addElement(Damage.Element.SHADOW);
   }
 
   private Ballistica beam;

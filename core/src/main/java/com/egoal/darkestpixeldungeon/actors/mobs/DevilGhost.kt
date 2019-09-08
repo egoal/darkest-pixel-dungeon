@@ -17,7 +17,6 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.tweeners.AlphaTweener
-import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
 /**
@@ -53,7 +52,7 @@ class DevilGhost : Wraith() {
 
     override fun adjustStats(level: Int) {
         this.level = level
-        defenseSkill = 10 + level * 2
+        defSkill = 10f + level * 2f
         enemySeen = true
     }
 

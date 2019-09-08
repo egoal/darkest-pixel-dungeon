@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
@@ -32,7 +33,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
@@ -65,21 +65,11 @@ import java.util.HashSet;
 public class Yog extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, Yog.class.getSimpleName());
+
     spriteClass = YogSprite.class;
 
-    HP = HT = 300;
-
-    EXP = 50;
-
     state = PASSIVE;
-
-    properties.add(Property.BOSS);
-    properties.add(Property.IMMOVABLE);
-    properties.add(Property.DEMONIC);
-
-    addResistances(Damage.Element.POISON, 1.25f);
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   public Yog() {
@@ -226,36 +216,17 @@ public class Yog extends Mob {
     private static final int REGENERATION = 4;
 
     {
+      PropertyConfiger.INSTANCE.set(this, "Yog.RottingFist");
+
       spriteClass = RottingFistSprite.class;
-
-      HP = HT = 300;
-      defenseSkill = 25;
-
-      EXP = 0;
 
       state = WANDERING;
 
       properties.add(Property.BOSS);
       properties.add(Property.DEMONIC);
 
-      addResistances(Damage.Element.POISON, 1.25f);
-      addResistances(Damage.Element.HOLY, .667f);
-    }
-
-    @Override
-    public int attackSkill(Char target) {
-      return 36;
-    }
-
-    @Override
-    public Damage giveDamage(Char target) {
-      return new Damage(Random.NormalIntRange(20, 50), this, target);
-    }
-
-    @Override
-    public Damage defendDamage(Damage dmg) {
-      dmg.value -= Random.NormalIntRange(0, 15);
-      return dmg;
+      addResistances(Damage.Element.POISON, 0.2f);
+      addResistances(Damage.Element.HOLY, -0.25f);
     }
 
     @Override
@@ -327,38 +298,10 @@ public class Yog extends Mob {
   public static class BurningFist extends Mob {
 
     {
+      PropertyConfiger.INSTANCE.set(this, "Yog.BurningFist");
+
       spriteClass = BurningFistSprite.class;
-
-      HP = HT = 200;
-      defenseSkill = 25;
-
-      EXP = 0;
-
       state = WANDERING;
-
-      properties.add(Property.BOSS);
-      properties.add(Property.DEMONIC);
-
-      addResistances(Damage.Element.POISON, 1.25f);
-      addResistances(Damage.Element.SHADOW, 1.25f);
-      addResistances(Damage.Element.HOLY, .667f);
-      addResistances(Damage.Element.ICE, .5f);
-    }
-
-    @Override
-    public int attackSkill(Char target) {
-      return 36;
-    }
-
-    @Override
-    public Damage giveDamage(Char target) {
-      return new Damage(Random.NormalIntRange(26, 32), this, target);
-    }
-
-    @Override
-    public Damage defendDamage(Damage dmg) {
-      dmg.value -= Random.NormalIntRange(0, 15);
-      return dmg;
     }
 
     @Override
@@ -453,37 +396,11 @@ public class Yog extends Mob {
   }
 
   public static class Larva extends Mob {
-
     {
+      PropertyConfiger.INSTANCE.set(this, "Yog.Larva");
+
       spriteClass = LarvaSprite.class;
-
-      HP = HT = 25;
-      defenseSkill = 20;
-
-      EXP = 0;
-
       state = HUNTING;
-
-      properties.add(Property.DEMONIC);
-      addResistances(Damage.Element.POISON, 1.25f);
-      addResistances(Damage.Element.HOLY, .667f);
-    }
-
-    @Override
-    public int attackSkill(Char target) {
-      return 30;
-    }
-
-    @Override
-    public Damage giveDamage(Char target) {
-      return new Damage(Random.NormalIntRange(22, 30), this, target);
-    }
-
-    @Override
-    public Damage defendDamage(Damage dmg) {
-      dmg.value -= Random.NormalIntRange(0, 8);
-      return dmg;
     }
   }
-
 }

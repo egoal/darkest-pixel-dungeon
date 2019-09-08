@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Web;
@@ -38,37 +39,17 @@ import java.util.HashSet;
 public class Spinner extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, Spinner.class.getSimpleName());
+
     spriteClass = SpinnerSprite.class;
-
-    HP = HT = 50;
-    defenseSkill = 14;
-
-    EXP = 9;
-    maxLvl = 16;
-
     loot = new MysteryMeat();
-    lootChance = 0.125f;
 
     FLEEING = new Fleeing();
-
-    addResistances(Damage.Element.POISON, 1.25f);
   }
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(10, 25), this, target).addElement
-            (Damage.Element.POISON);
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 6);
-    return dmg;
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 20;
+    return super.giveDamage(target).addElement(Damage.Element.POISON);
   }
 
   @Override

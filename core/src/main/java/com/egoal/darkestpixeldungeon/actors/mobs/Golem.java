@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
@@ -34,38 +35,14 @@ import java.util.HashSet;
 public class Golem extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, Golem.class.getSimpleName());
+
     spriteClass = GolemSprite.class;
-
-    HP = HT = 85;
-    defenseSkill = 18;
-
-    EXP = 12;
-    maxLvl = 22;
-    
-    properties.add(Property.MACHINE);
-    
-    addResistances(Damage.Element.LIGHT, .75f);
-  }
-
-  @Override
-  public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(25, 40), this, target);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 28;
   }
 
   @Override
   protected float attackDelay() {
     return 1.5f;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(2, 12);
-    return dmg;
   }
 
   @Override

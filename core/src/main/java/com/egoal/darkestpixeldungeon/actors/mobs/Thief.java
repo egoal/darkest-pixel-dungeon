@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
@@ -47,22 +48,13 @@ public class Thief extends Mob {
   public Item item;
 
   {
+    PropertyConfiger.INSTANCE.set(this, Thief.class.getSimpleName());
+
     spriteClass = ThiefSprite.class;
 
-    HP = HT = 20;
-    defenseSkill = 6;
-
-    EXP = 5;
-    maxLvl = 10;
-
      loot = new MasterThievesArmband().identify();
-     lootChance = 0.01f;
 
     FLEEING = new Fleeing();
-
-    properties.add(Property.DEMONIC);
-    addResistances(Damage.Element.POISON, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   private static final String ITEM = "item";
@@ -110,22 +102,6 @@ public class Thief extends Mob {
       return super.createLoot();
     } else
       return new Gold(Random.NormalIntRange(80, 200));
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 12;
-  }
-
-  @Override
-  public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(1, 10), this, target);
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 3);
-    return dmg;
   }
 
   @Override

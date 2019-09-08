@@ -20,9 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
@@ -37,19 +37,11 @@ import java.util.HashSet;
 public class RotHeart extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, RotHeart.class.getSimpleName());
+
     spriteClass = RotHeartSprite.class;
 
-    HP = HT = 80;
-    defenseSkill = 0;
-
-    EXP = 4;
-
     state = PASSIVE;
-
-    properties.add(Property.IMMOVABLE);
-    properties.add(Property.MINIBOSS);
-
-    addResistances(Damage.Element.POISON, 100f, 1.5f);
   }
 
   @Override
@@ -98,22 +90,6 @@ public class RotHeart extends Mob {
   public void die(Object cause) {
     super.die(cause);
     Dungeon.level.drop(new Rotberry.Seed(), pos).sprite.drop();
-  }
-
-  @Override
-  public Damage giveDamage(Char target) {
-    return new Damage(0, this, target);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 0;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 5);
-    return dmg;
   }
 
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

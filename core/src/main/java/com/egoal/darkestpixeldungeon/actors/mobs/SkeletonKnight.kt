@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
@@ -23,21 +24,8 @@ class SkeletonKnight : Mob() {
     init {
         spriteClass = SkeletonKnightSprite::class.java
 
-        HT = 50
-        HP = HT
-        defenseSkill = 0  // no dodge
-
-        EXP = 8
-        maxLvl = 16
-
+        PropertyConfiger.set(this, javaClass.simpleName)
         loot = Wine()
-        lootChance = .1f
-
-        properties.add(Property.UNDEAD)
-
-        addResistances(Damage.Element.FIRE, .75f)
-        addResistances(Damage.Element.SHADOW, 1.5f)
-        addResistances(Damage.Element.HOLY, .667f)
     }
 
     override fun act(): Boolean {
@@ -45,17 +33,7 @@ class SkeletonKnight : Mob() {
         return super.act()
     }
 
-    override fun giveDamage(target: Char): Damage {
-        return Damage(Random.NormalIntRange(8, 18), this, target).addElement(Damage.Element.SHADOW)
-    }
-
-    override fun defendDamage(dmg: Damage): Damage {
-        if (dmg.type == Damage.Type.NORMAL)
-            dmg.value -= Random.NormalIntRange(0, 6)
-        return dmg
-    }
-
-    override fun attackSkill(target: Char): Int = 18
+    override fun giveDamage(target: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
 
     private fun canCounter(): Boolean {
         return buff(Paralysis::class.java) == null

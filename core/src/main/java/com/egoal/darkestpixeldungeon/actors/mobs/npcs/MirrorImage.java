@@ -71,12 +71,12 @@ public class MirrorImage extends NPC {
 
   public void duplicate(Hero hero) {
     tier = hero.tier();
-    attack = hero.attackSkill(hero);
+    attack = (int)hero.attackSkill(hero);
     damage = hero.giveDamage(Nobody.INSTANCE).value;
   }
 
   @Override
-  public int attackSkill(Char target) {
+  public float attackSkill(Char target) {
     return attack;
   }
 

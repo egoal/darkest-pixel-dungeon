@@ -214,7 +214,7 @@ class Yvette : NPC() {
     // unbreakable
     override fun reset() = true // no removed on reset
 
-    override fun defenseSkill(enemy: Char) = 1000
+    override fun defenseSkill(enemy: Char) = 1000f
 
     override fun takeDamage(dmg: Damage) = 0
 

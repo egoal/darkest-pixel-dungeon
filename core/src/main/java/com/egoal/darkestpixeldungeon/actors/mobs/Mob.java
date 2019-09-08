@@ -83,8 +83,6 @@ public abstract class Mob extends Char {
 
   protected int target = -1;
 
-  protected int defenseSkill = 0;
-
   public int EXP = 1;
   public int maxLvl = Hero.MAX_LEVEL;
 
@@ -96,6 +94,13 @@ public abstract class Mob extends Char {
 
   public boolean hostile = true;  // 敌对
   public boolean ally = false;  // 同盟
+
+    protected Object loot = null;
+    public float lootChance = 0;
+
+    public int minDamage, maxDamage;
+  public Damage.Type typeDamage;
+    public int minDefense, maxDefense;
 
   private static final String STATE = "state";
   private static final String SEEN = "seen";
@@ -177,6 +182,19 @@ public abstract class Mob extends Char {
 
     return state.act(enemyInFOV, justAlerted);
   }
+
+    @Override
+    public Damage giveDamage(Char enemy) {
+        // default normal damage
+        return new Damage(Random.NormalIntRange(minDamage, maxDamage), this, enemy).type(typeDamage);
+    }
+
+    @Override
+    public Damage defendDamage(Damage dmg) {
+        // normal defend, do nothing
+        dmg.value -= Random.NormalIntRange(minDefense, maxDefense);
+        return dmg;
+    }
 
   protected Char chooseEnemy() {
 
@@ -431,13 +449,17 @@ public abstract class Mob extends Char {
   }
 
   @Override
-  public int defenseSkill(Char enemy) {
+  public float attackSkill(Char target) {
+    return atkSkill;
+  }
+
+  @Override
+  public float defenseSkill(Char enemy) {
     boolean seen = enemySeen || (enemy == Dungeon.hero && !Dungeon.hero
             .canSurpriseAttack());
     if (seen && paralysed == 0) {
-      int defenseSkill = this.defenseSkill;
-      int penalty = RingOfAccuracy.getBonus(enemy, RingOfAccuracy.Accuracy
-              .class);
+      int defenseSkill = (int)defSkill;
+      int penalty = RingOfAccuracy.getBonus(enemy, RingOfAccuracy.Accuracy.class);
       if (penalty != 0 && enemy == Dungeon.hero)
         defenseSkill *= Math.pow(0.75, penalty);
       return defenseSkill;
@@ -493,13 +515,6 @@ public abstract class Mob extends Char {
     if (state != PASSIVE) {
       state = HUNTING;
     }
-  }
-
-  @Override
-  public Damage giveDamage(Char enemy) {
-    Damage dmg = super.giveDamage(enemy);
-    if(buff(Weakness.class)!=null) dmg.value *= 0.75f;
-    return dmg;
   }
 
   @Override
@@ -579,9 +594,6 @@ public abstract class Mob extends Char {
       GLog.i(Messages.get(this, "died"));
     }
   }
-
-  protected Object loot = null;
-  protected float lootChance = 0;
 
   @SuppressWarnings("unchecked")
   protected Item createLoot() {

@@ -20,13 +20,11 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
-import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff;
-import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -50,21 +48,11 @@ public class Succubus extends Mob {
   private int delay = 0;
 
   {
+    PropertyConfiger.INSTANCE.set(this, Succubus.class.getSimpleName());
+
     spriteClass = SuccubusSprite.class;
 
-    HP = HT = 80;
-    defenseSkill = 25;
-
-    EXP = 12;
-    maxLvl = 25;
-
     loot = new ScrollOfLullaby();
-    lootChance = 0.05f;
-
-    properties.add(Property.DEMONIC);
-
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   @Override
@@ -74,14 +62,7 @@ public class Succubus extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(22, 30), this, target).addElement(
-            Damage.Element.ICE);
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 10);
-    return dmg;
+    return super.giveDamage(target).addElement(Damage.Element.ICE);
   }
 
   @Override
@@ -143,11 +124,6 @@ public class Succubus extends Mob {
     ScrollOfTeleportation.Companion.appear(this, cell);
 
     delay = BLINK_DELAY;
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 40;
   }
 
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

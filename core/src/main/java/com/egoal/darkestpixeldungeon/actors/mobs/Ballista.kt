@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok
@@ -29,34 +30,14 @@ class Ballista : Mob() {
     private var loaded = true
 
     init {
+        PropertyConfiger.set(this, javaClass.simpleName)
+
         spriteClass = Sprite::class.java
-
-        HT = 65
-        HP = HT
-
-        defenseSkill = 18
-
-        EXP = 12
-        maxLvl = 22
-
-        lootChance = 0.3f
-
-        properties.add(Property.MACHINE)
-
-        addResistances(Damage.Element.LIGHT, 0.75f)
     }
 
     override fun viewDistance(): Int = 6
 
-    override fun giveDamage(enemy: Char): Damage =
-            Damage(Random.NormalIntRange(16, 30), this, enemy).addFeature(Damage.Feature.RANGED)
-
-    override fun attackSkill(target: Char?): Int = 30
-
-    override fun defendDamage(dmg: Damage): Damage {
-        dmg.value -= Random.NormalIntRange(0, 12)
-        return super.defendDamage(dmg)
-    }
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addFeature(Damage.Feature.RANGED)
 
     override fun canAttack(enemy: Char): Boolean {
         val trace = Ballistica(pos, enemy.pos, Ballistica.PROJECTILE)

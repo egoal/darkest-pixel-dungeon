@@ -238,7 +238,7 @@ class WndHero : WndTabbed() {
                 val slot = PerkSlot(Dungeon.hero.heroPerk.perks[i])
                 val r = i / 5
                 val c = i % 5
-                slot.setRect(left+ (20+ GAP2)*c, top+ (20+ GAP2)* r, 20f, 20f)
+                slot.setRect(left + (20 + GAP2) * c, top + (20 + GAP2) * r, 20f, 20f)
                 add(slot)
             }
         }
@@ -260,7 +260,7 @@ class WndHero : WndTabbed() {
 
             resistIcons = TextureCache.get(Assets.DPD_CONS_ICONS)
 
-            val rt = PixelScene.renderText(Messages.get(this, "resistance"), 8)
+            val rt = PixelScene.renderText(Messages.get(this, "elemental_resistance"), 8)
             rt.y = thetop
             add(rt)
 
@@ -269,17 +269,22 @@ class WndHero : WndTabbed() {
             for (i in 0 until Damage.Element.ELEMENT_COUNT) {
                 val icon = Image(resistIcons)
                 icon.frame(ICON_SIZE * i, 16, ICON_SIZE, ICON_SIZE)
+                icon.x = GAP5.toFloat()
                 icon.y = rt.y + rt.height() + ((GAP5 + ICON_SIZE) * i).toFloat()
                 add(icon)
 
-                val txt = PixelScene.renderText(String.format("%3.2f/%3.2f",
-                        hero.resistanceNormal[i], hero.resistanceMagical[i]), 8)
+                val txt = PixelScene.renderText(String.format("%+2d%%", (hero.elementalResistance[i]* 100).toInt()), 8)
                 txt.x = icon.width + GAP5
                 txt.y = (icon.height - txt.baseLine()) / 2 + icon.y
                 add(txt)
 
                 thetop = icon.y + icon.height() + GAP5.toFloat()
             }
+
+            val rt2 = PixelScene.renderText(M.L(this, "magical_resistance", (hero.magicalResistance* 100).toInt()), 8)
+            rt2.y = thetop
+            add(rt2)
+            thetop += rt2.height() + GAP5.toFloat()
 
             return thetop
         }

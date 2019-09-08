@@ -54,7 +54,7 @@ public class Piranha extends Mob {
     super();
 
     HP = HT = 10 + Dungeon.depth * 5;
-    defenseSkill = 10 + Dungeon.depth * 2;
+    defSkill = 10 + Dungeon.depth * 2;
   }
 
   @Override
@@ -96,7 +96,7 @@ public class Piranha extends Mob {
   }
 
   @Override
-  public int attackSkill(Char target) {
+  public float attackSkill(Char target) {
     return 20 + Dungeon.depth * 2;
   }
 

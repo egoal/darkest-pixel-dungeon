@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.sprites.RatSprite
@@ -29,16 +30,6 @@ open class Rat : Mob() {
     init {
         spriteClass = RatSprite::class.java
 
-        HT = 8
-        HP = HT
-        defenseSkill = 2
-
-        maxLvl = 5
+        PropertyConfiger.set(this, javaClass.simpleName)
     }
-
-    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(1, 4), this, target)
-
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(0, 1) }
-
-    override fun attackSkill(target: Char): Int = 8
 }

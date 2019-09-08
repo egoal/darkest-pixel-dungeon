@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.effects.Chains;
@@ -47,24 +48,10 @@ public class Guard extends Mob {
   private boolean chainsUsed = false;
 
   {
+    PropertyConfiger.INSTANCE.set(this, Guard.class.getSimpleName());
+
     spriteClass = GuardSprite.class;
-
-    HP = HT = 40;
-    defenseSkill = 10;
-
-    EXP = 6;
-    maxLvl = 14;
-
     loot = null;    //see createloot.
-    lootChance = 0.25f;
-
-    properties.add(Property.DEMONIC);
-    addResistances(Damage.Element.HOLY, .8f);
-  }
-
-  @Override
-  public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(4, 12), this, target);
   }
 
   @Override
@@ -134,17 +121,6 @@ public class Guard extends Mob {
     }
     chainsUsed = true;
     return true;
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 14;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 6);
-    return dmg;
   }
 
   @Override

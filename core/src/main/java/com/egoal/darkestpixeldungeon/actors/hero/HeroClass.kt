@@ -70,9 +70,9 @@ enum class HeroClass(private val title: String) {
             // hero.heroPerk.add(StrongConstitution())
 
             // resists
-            hero.addResistances(Damage.Element.FIRE, 1.1f)
-            hero.addResistances(Damage.Element.LIGHT, .9f)
-            hero.addResistances(Damage.Element.SHADOW, .8f, .9f)
+            hero.addResistances(Damage.Element.FIRE, 0.1f)
+            hero.addResistances(Damage.Element.LIGHT, -0.1f)
+            hero.addResistances(Damage.Element.SHADOW, -0.2f)
         }
     },
 
@@ -102,9 +102,9 @@ enum class HeroClass(private val title: String) {
             hero.heroPerk.add(GoodAppetite())
             hero.heroPerk.add(WandPerception())
 
-            hero.addResistances(Damage.Element.FIRE, 1f, 1.2f)
-            hero.addResistances(Damage.Element.POISON, .8f)
-            hero.addResistances(Damage.Element.LIGHT, 1.1f)
+            hero.addResistances(Damage.Element.FIRE, 0.1f)
+            hero.addResistances(Damage.Element.POISON, -0.2f)
+            hero.addResistances(Damage.Element.LIGHT, 0.1f)
         }
     },
 
@@ -139,9 +139,9 @@ enum class HeroClass(private val title: String) {
 
             ScrollOfMagicMapping().setKnown()
 
-            hero.addResistances(Damage.Element.POISON, 1.2f)
-            hero.addResistances(Damage.Element.ICE, .8f, .9f)
-            hero.addResistances(Damage.Element.SHADOW, .9f, 1.1f)
+            hero.addResistances(Damage.Element.POISON, 0.2f)
+            hero.addResistances(Damage.Element.ICE, -0.2f)
+            hero.addResistances(Damage.Element.SHADOW, -0.1f)
         }
     },
 
@@ -164,8 +164,8 @@ enum class HeroClass(private val title: String) {
 
             PotionOfMindVision().setKnown()
 
-            hero.addResistances(Damage.Element.POISON, 1.2f)
-            hero.addResistances(Damage.Element.ICE, .9f)
+            hero.addResistances(Damage.Element.POISON, 0.2f)
+            hero.addResistances(Damage.Element.ICE, -0.1f)
         }
     },
 
@@ -200,9 +200,8 @@ enum class HeroClass(private val title: String) {
             hero.heroPerk.add(Optimistic())
 
             // resists and extra resists to poison
-            for (i in 0 until Damage.Element.ELEMENT_COUNT)
-                hero.addResistances(1 shl i, 1.25f, 1f)
-            hero.addResistances(Damage.Element.POISON, 2f)
+            hero.addResistances(Damage.Element.all(), 0.15f)
+            hero.addResistances(Damage.Element.POISON, 0.5f)
         }
     };
 
@@ -230,7 +229,11 @@ enum class HeroClass(private val title: String) {
     }
 
     // common
-    protected open fun initHeroStatus(hero: Hero) {}
+    protected open fun initHeroStatus(hero: Hero) {
+        hero.atkSkill = 10f
+        hero.defSkill = 5f
+        hero.magicalResistance = 0.2f
+    }
 
     protected open fun initHeroClass(hero: Hero) {
         hero.belongings.armor = ClothArmor().identify() as Armor

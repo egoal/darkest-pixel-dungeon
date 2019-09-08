@@ -61,7 +61,7 @@ public class Jessica extends NPC {
   }
 
   @Override
-  public int defenseSkill(Char enemy) {
+  public float defenseSkill(Char enemy) {
     return 1000;
   }
 

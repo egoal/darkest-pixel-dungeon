@@ -1,5 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors;
 
+import java.util.HashMap;
+
 /**
  * Created by 93942 on 4/30/2018.
  */
@@ -31,6 +33,21 @@ public class Damage {
       for (int i = 0; i < ELEMENT_COUNT; ++i)
         a |= 0x01 << i;
       return a;
+    }
+
+    public static int String2Element(String string){
+      return names.get(string);
+    }
+
+    private static final HashMap<String, Integer> names = new HashMap<>();
+    static {
+      names.put("NONE", NONE);
+      names.put("FIRE", FIRE);
+      names.put("POISON", POISON);
+      names.put("ICE", ICE);
+      names.put("LIGHT", LIGHT);
+      names.put("SHADOW", SHADOW);
+      names.put("HOLY", HOLY);
     }
   }
 

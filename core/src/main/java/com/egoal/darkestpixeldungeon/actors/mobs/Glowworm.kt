@@ -26,9 +26,9 @@ class Glowworm(private var level: Int = 1) : Mob() {
 
         flying = true
 
-        addResistances(Damage.Element.FIRE, 1.25f)
-        addResistances(Damage.Element.POISON, 2f)
-        addResistances(Damage.Element.ICE, 0.75f)
+        addResistances(Damage.Element.FIRE, 0.2f)
+        addResistances(Damage.Element.POISON, 0.5f)
+        addResistances(Damage.Element.ICE, -0.2f)
 
         setLevel(level)
         Buff.affect(this, Light::class.java).prolong(Float.MAX_VALUE) // for a whole light...
@@ -42,10 +42,9 @@ class Glowworm(private var level: Int = 1) : Mob() {
         EXP = level / 3 + 1
         maxLvl = level + 2
 
-        defenseSkill = 3 + level
+        defSkill = 3f + level
+        atkSkill = 10f+ level
     }
-
-    override fun attackSkill(target: Char): Int = 10 + level
 
     override fun giveDamage(enemy: Char): Damage =
             Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, enemy).addElement(Damage.Element.POISON)

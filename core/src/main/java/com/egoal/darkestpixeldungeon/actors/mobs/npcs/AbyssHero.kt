@@ -12,7 +12,6 @@ import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
@@ -45,7 +44,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     private fun initLevelStatus(lvl: Int) {
         level = lvl
 
-        defenseSkill = 10 + 2 * level
+        defSkill = 10f + 2f * level
         HT = 20 + level * 5
         HP = HT
 
@@ -57,7 +56,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         level = Dungeon.hero.lvl / 2 - (3 - Dungeon.depth / 5)
         level = GameMath.clamp(level, 1, 10)
 
-        defenseSkill = 5 + Dungeon.hero.lvl
+        defSkill = 5f + Dungeon.hero.lvl
         HT = Math.max(Dungeon.hero.HT / 2, Dungeon.hero.HP)
         HP = HT
 
@@ -84,7 +83,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     override fun isFollower(): Boolean = true
 
-    override fun attackSkill(target: Char): Int = 10 + level * 2
+    override fun attackSkill(target: Char): Float = 10f + level * 2f
 
     override fun giveDamage(enemy: Char): Damage {
         val dmg = Damage(Random.IntRange(1 + level, 5 + 8 * level), this, enemy).addElement(Damage.Element.SHADOW)

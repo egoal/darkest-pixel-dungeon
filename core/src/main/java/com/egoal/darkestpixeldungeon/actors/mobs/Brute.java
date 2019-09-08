@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
@@ -37,18 +38,10 @@ import java.util.HashSet;
 public class Brute extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, Brute.class.getSimpleName());
     spriteClass = BruteSprite.class;
 
-    HP = HT = 40;
-    defenseSkill = 15;
-
-    EXP = 8;
-    maxLvl = 15;
-
     loot = Gold.class;
-    lootChance = 0.5f;
-
-    addResistances(Damage.Element.SHADOW, .75f);
   }
 
   private boolean enraged = false;
@@ -62,23 +55,12 @@ public class Brute extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    Damage damage = new Damage(Random.NormalIntRange(8, 24), this, target);
+    Damage damage = super.giveDamage(target);
     if (enraged) {
       damage.value *= Random.Float(1.25f, 1.75f);
       damage.addFeature(Damage.Feature.CRITICAL);
     }
     return damage;
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 20;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 8);
-    return dmg;
   }
 
   @Override

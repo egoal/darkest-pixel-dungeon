@@ -20,11 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
-import android.widget.GridLayout;
-
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
@@ -57,7 +56,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.sql.DatabaseMetaData;
 import java.util.HashSet;
 
 public class DM300 extends Mob {
@@ -65,19 +63,8 @@ public class DM300 extends Mob {
   {
     spriteClass = DM300Sprite.class;
 
-    HP = HT = 200;
-    EXP = 30;
-    defenseSkill = 18;
-
+    PropertyConfiger.INSTANCE.set(this, DM300.class.getSimpleName());
     loot = new CapeOfThorns().identify();
-    lootChance = 0.333f;
-
-    properties.add(Property.BOSS);
-    properties.add(Property.MACHINE);
-
-    addResistances(Damage.Element.ICE, .8f);
-    addResistances(Damage.Element.POISON, 100.f, 1.5f);
-    addResistances(Damage.Element.LIGHT, .667f);
   }
 
   private boolean overloaded = false;
@@ -89,20 +76,9 @@ public class DM300 extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    int val = Random.NormalIntRange(20, 25);
-    if (overloaded) val *= 1.25;
+    Damage dmg = super.giveDamage(target);
+    if (overloaded) dmg.value *= 1.25;
 
-    return new Damage(val, this, target);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 28;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 10);
     return dmg;
   }
 

@@ -20,13 +20,13 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.sprites.ScorpioSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
-import com.egoal.darkestpixeldungeon.actors.buffs.Light;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing;
@@ -36,22 +36,11 @@ import com.watabou.utils.Random;
 public class Scorpio extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, Scorpio.class.getSimpleName());
+
     spriteClass = ScorpioSprite.class;
 
-    HP = HT = 95;
-    defenseSkill = 24;
-
-    EXP = 14;
-    maxLvl = 25;
-
     loot = new PotionOfHealing();
-    lootChance = 0.2f;
-
-    properties.add(Property.DEMONIC);
-
-    addResistances(Damage.Element.POISON, 1.25f);
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   @Override
@@ -61,19 +50,7 @@ public class Scorpio extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(26, 36), this, target).addElement
-            (Damage.Element.POISON).addFeature(Damage.Feature.RANGED);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 36;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 16);
-    return dmg;
+    return super.giveDamage(target).addElement(Damage.Element.POISON).addFeature(Damage.Feature.RANGED);
   }
 
   @Override

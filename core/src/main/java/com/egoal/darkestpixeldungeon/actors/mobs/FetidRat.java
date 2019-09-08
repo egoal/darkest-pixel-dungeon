@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -36,32 +37,10 @@ import java.util.HashSet;
 public class FetidRat extends Rat {
 
   {
+    PropertyConfiger.INSTANCE.set(this, FetidRat.class.getSimpleName());
     spriteClass = FetidRatSprite.class;
 
-    HP = HT = 20;
-    defenseSkill = 5;
-
-    EXP = 4;
-
     state = WANDERING;
-
-    properties.add(Property.MINIBOSS);
-    properties.add(Property.DEMONIC);
-
-    addResistances(Damage.Element.POISON, 1.25f);
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .8f);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 12;
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(0, 2);
-    return dmg;
   }
 
   @Override

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
@@ -42,36 +43,16 @@ public class Warlock extends Mob implements Callback {
   private static final float TIME_TO_ZAP = 1f;
 
   {
+    PropertyConfiger.INSTANCE.set(this, Warlock.class.getSimpleName());
+
     spriteClass = WarlockSprite.class;
 
-    HP = HT = 70;
-    defenseSkill = 18;
-
-    EXP = 10;
-    maxLvl = 21;
-
     loot = Generator.POTION.INSTANCE;
-    lootChance = 0.75f;
-
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
   }
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(16, 22), this, target).addElement
-            (Damage.Element.SHADOW).addFeature(Damage.Feature.RANGED);
-  }
-
-  @Override
-  public Damage defendDamage(Damage dmg) {
-    dmg.value -= Random.NormalIntRange(1, 8);
-    return dmg;
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 25;
+    return super.giveDamage(target).addElement(Damage.Element.SHADOW).addFeature(Damage.Feature.RANGED);
   }
 
   @Override

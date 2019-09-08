@@ -63,7 +63,7 @@ public class Statue extends Mob {
     weapon.enchant(Weapon.Enchantment.random());
 
     HP = HT = 15 + Dungeon.depth * 5;
-    defenseSkill = 4 + Dungeon.depth;
+    defSkill = 4 + Dungeon.depth;
   }
 
   private static final String WEAPON = "weapon";
@@ -103,8 +103,8 @@ public class Statue extends Mob {
   }
 
   @Override
-  public int attackSkill(Char target) {
-    return (int) ((9 + Dungeon.depth) * weapon.ACC);
+  public float attackSkill(Char target) {
+    return (9 + Dungeon.depth) * weapon.ACC;
   }
 
   @Override

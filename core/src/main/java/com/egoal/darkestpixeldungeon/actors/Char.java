@@ -86,6 +86,9 @@ public abstract class Char extends Actor {
   public int HP;
   public int SHLD;
 
+  public float atkSkill = 0f;
+  public float defSkill = 0f;
+
   protected float baseSpeed = 1;
   protected PathFinder.Path path;
 
@@ -95,17 +98,13 @@ public abstract class Char extends Actor {
   public int invisible = 0;
 
   // resistances
-  public float[] resistanceMagical = new float[Damage.Element.ELEMENT_COUNT];
-  public float[] resistanceNormal = new float[Damage.Element.ELEMENT_COUNT];
-
   public float magicalResistance = 1f;
   public float[] elementalResistance = new float[Damage.Element.ELEMENT_COUNT];
 
   private HashSet<Buff> buffs = new HashSet<>();
 
   {
-    Arrays.fill(resistanceMagical, 1f);
-    Arrays.fill(resistanceNormal, 1f);
+    Arrays.fill(elementalResistance, 0f);
   }
 
   @Override
@@ -188,7 +187,7 @@ public abstract class Char extends Actor {
       if (this instanceof Hero && ((Hero) this).getRangedWeapon() != null && (
               (Hero) this).getSubClass() == HeroSubClass.SNIPER) {
         // sniper's perk: ignore defence
-      } else if (!dmg.isFeatured(Damage.Feature.PURE))
+      } else if (dmg.type!= Damage.Type.MAGICAL && !dmg.isFeatured(Damage.Feature.PURE))
         dmg = enemy.defendDamage(dmg);
 
       dmg = attackProc(dmg);
@@ -424,17 +423,10 @@ public abstract class Char extends Actor {
     return dmg.value;
   }
 
-  public void addResistances(int element, float magical, float normal) {
-    for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i) {
-      if ((element & 0x01 << i) != 0) {
-        resistanceMagical[i] = magical;
-        resistanceNormal[i] = normal;
-      }
-    }
-  }
-
-  public void addResistances(int ele, float r) {
-    addResistances(ele, r, r);
+  public void addResistances(int element, float r) {
+      for(int i=0; i< Damage.Element.ELEMENT_COUNT; ++i)
+          if((element & (0x01<< i))!= 0)
+              elementalResistance[i] = r;
   }
 
   protected Damage resistDamage(Damage dmg) {
@@ -451,30 +443,24 @@ public abstract class Char extends Actor {
         return dmg;
       }
 
-    float[] resistance = null;
-    if (dmg.type == Damage.Type.NORMAL)
-      resistance = resistanceNormal;
-    else if (dmg.type == Damage.Type.MAGICAL)
-      resistance = resistanceMagical;
+    // elemental resistance
+    for(int of=0; of< Damage.Element.ELEMENT_COUNT; ++of)
+      if(dmg.isFeatured(0x01<< of))
+          dmg.value -= Math.round(dmg.value* elementalResistance[of]);
 
-    if (resistance != null) {
-      for (int of = 0; of < Damage.Element.ELEMENT_COUNT; ++of) {
-        int ele = 0x01 << of;
-        if (dmg.hasElement(ele))
-          dmg.value = Math.round(dmg.value / resistance[of]);
-      }
-    }
+    if(dmg.type== Damage.Type.MAGICAL)
+      dmg.value -= Math.round(dmg.value* magicalResistance);
 
     return dmg;
   }
 
   // attack or edoge ratio
-  public int attackSkill(Char target) {
-    return 0;
+  public float attackSkill(Char target) {
+    return atkSkill;
   }
 
-  public int defenseSkill(Char enemy) {
-    return 0;
+  public float defenseSkill(Char enemy) {
+    return defSkill;
   }
 
   public String defenseVerb() {

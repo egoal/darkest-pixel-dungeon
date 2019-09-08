@@ -72,8 +72,6 @@ class Hero : Char() {
     var subClass = HeroSubClass.NONE
     var heroPerk = HeroPerk()
 
-    var atkSkill = 10f
-    var defSkill = 5f
     var STR = STARTING_STR
     var weakened = false
     var awareness = 0.1f
@@ -252,7 +250,7 @@ class Hero : Char() {
         return res
     }
 
-    override fun attackSkill(target: Char): Int {
+    override fun attackSkill(target: Char): Float {
         var accuracy = pressure.accuracyFactor()
 
         if (buff(Drunk::class.java) != null) accuracy *= 0.75f
@@ -262,10 +260,10 @@ class Hero : Char() {
 
         if (belongings.helmet is MaskOfHorror && belongings.helmet.cursed) accuracy *= 0.75f
 
-        return (atkSkill * accuracy).toInt()
+        return atkSkill * accuracy
     }
 
-    override fun defenseSkill(enemy: Char): Int {
+    override fun defenseSkill(enemy: Char): Float {
         var bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
         var evasion = Math.pow(1.125, bonus.toDouble()).toFloat()
 
@@ -283,16 +281,15 @@ class Hero : Char() {
         val estr = (belongings.armor?.STRReq() ?: 10) - STR()
         if (estr > 0) {
             // heavy
-            return (defSkill * evasion / Math.pow(1.5, estr.toDouble())).toInt()
+            return defSkill * evasion / Math.pow(1.5, estr.toDouble()).toFloat()
         } else {
             // ligh
             bonus = if (heroClass == HeroClass.ROGUE) -estr else 0
 
             if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
                 bonus += 5 + belongings.armor.level() * 3 / 2
-            return Math.round((defSkill + bonus) * evasion)
+            return (defSkill + bonus) * evasion
         }
-
     }
 
     fun canSurpriseAttack(): Boolean {
@@ -1138,15 +1135,15 @@ class Hero : Char() {
         }
 
         //
-        private const val ATTACK = "attackSkill"
-        private const val DEFENSE = "defenseSkill"
+        private const val ATTACK = "atkSkill"
+        private const val DEFENSE = "defSkill"
         private const val STRENGTH = "STR"
         private const val LEVEL = "lvl"
         private const val EXPERIENCE = "exp"
         private const val CRITICAL = "critical"
         private const val REGENERATION = "regeneration"
-        private const val RESISTANCE_MAGICAL = "resistance_magical"
-        private const val RESISTANCE_NORMAL = "resistance_normal"
+        private const val ELEMENTAL_RESISTANCE = "elemental_resistance"
+        private const val MAGICAL_RESISTANCE = "magical_resistance"
     }
 
     // store
@@ -1168,8 +1165,8 @@ class Hero : Char() {
         bundle.put(CRITICAL, criticalChance)
         bundle.put(REGENERATION, regeneration)
 
-        bundle.put(RESISTANCE_MAGICAL, resistanceMagical)
-        bundle.put(RESISTANCE_NORMAL, resistanceNormal)
+        bundle.put(ELEMENTAL_RESISTANCE, elementalResistance)
+        bundle.put(MAGICAL_RESISTANCE, magicalResistance)
 
         belongings.storeInBundle(bundle)
     }
@@ -1193,8 +1190,8 @@ class Hero : Char() {
         criticalChance = bundle.getFloat(CRITICAL)
         regeneration = bundle.getFloat(REGENERATION)
 
-        resistanceMagical = bundle.getFloatArray(RESISTANCE_MAGICAL)
-        resistanceNormal = bundle.getFloatArray(RESISTANCE_NORMAL)
+        elementalResistance = bundle.getFloatArray(ELEMENTAL_RESISTANCE)
+        magicalResistance = bundle.getFloat(MAGICAL_RESISTANCE)
 
         belongings.restoreFromBundle(bundle)
 

@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
@@ -39,32 +40,12 @@ import com.watabou.utils.Random
 
 class Skeleton : Mob() {
     init {
+        PropertyConfiger.set(this, javaClass.simpleName)
+
         spriteClass = SkeletonSprite::class.java
-
-        HT = 25
-        HP = HT
-        defenseSkill = 9
-
-        EXP = 5
-        maxLvl = 10
-
         loot = Generator.WEAPON.generate()
-        lootChance = 0.175f
-
-        properties.add(Property.UNDEAD)
-
-        addResistances(Damage.Element.FIRE, .75f)
-        addResistances(Damage.Element.HOLY, .667f)
     }
 
-    override fun giveDamage(target: Char): Damage {
-        return Damage(Random.NormalIntRange(2, 10), this, target)
-    }
-
-    override fun defendDamage(dmg: Damage): Damage {
-        dmg.value -= Random.NormalIntRange(1, 2)
-        return dmg
-    }
 
     override fun die(cause: Any?) {
         super.die(cause)
@@ -105,6 +86,4 @@ class Skeleton : Mob() {
             loot
         }
     }
-
-    override fun attackSkill(target: Char): Int = 12
 }

@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
@@ -41,27 +42,16 @@ import com.watabou.utils.Random;
 public class GnollTrickster extends Gnoll {
 
   {
+    PropertyConfiger.INSTANCE.set(this, GnollTrickster.class.getSimpleName());
+
     spriteClass = GnollTricksterSprite.class;
-
-    HP = HT = 20;
-    defenseSkill = 5;
-
-    EXP = 5;
 
     state = WANDERING;
 
     loot = new CurareDart().random();
-    lootChance = 1f;
-
-    properties.add(Property.MINIBOSS);
   }
 
   private int combo = 0;
-
-  @Override
-  public int attackSkill(Char target) {
-    return 16;
-  }
 
   @Override
   protected boolean canAttack(Char enemy) {

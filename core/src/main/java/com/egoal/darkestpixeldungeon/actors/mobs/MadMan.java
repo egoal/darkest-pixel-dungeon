@@ -28,7 +28,7 @@ public class MadMan extends Mob implements Callback {
     spriteClass = Sprite.class;
 
     HP = HT = 10 + 2 * Dungeon.depth;
-    defenseSkill = 5 + Dungeon.depth;
+    defSkill = 5 + Dungeon.depth;
 
     EXP = Math.min(3 + Dungeon.depth / 2, 12);
     maxLvl = Dungeon.depth + 3;
@@ -36,8 +36,8 @@ public class MadMan extends Mob implements Callback {
     loot = new Humanity();
     lootChance = 0.25f; // default chance, check create loot
 
-    addResistances(Damage.Element.SHADOW, 2f);
-    addResistances(Damage.Element.HOLY, .5f);
+    addResistances(Damage.Element.SHADOW, 0.5f);
+    addResistances(Damage.Element.HOLY, -0.5f);
   }
 
   private static final float TIME_TO_SHOUT = 1f;
@@ -63,8 +63,8 @@ public class MadMan extends Mob implements Callback {
   }
 
   @Override
-  public int attackSkill(Char target) {
-    return 10 + Dungeon.depth;
+  public float attackSkill(Char target) {
+    return 10f + Dungeon.depth;
   }
 
   @Override

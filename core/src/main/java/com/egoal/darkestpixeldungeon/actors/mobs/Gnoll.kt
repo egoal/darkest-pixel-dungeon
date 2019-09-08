@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
@@ -30,21 +31,7 @@ open class Gnoll : Mob() {
     init {
         spriteClass = GnollSprite::class.java
 
-        HT = 12
-        HP = HT
-        defenseSkill = 4
-
-        EXP = 2
-        maxLvl = 8
-
+        PropertyConfiger.set(this, javaClass.simpleName)
         loot = Gold::class.java
-        lootChance = 0.3f
     }
-
-    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(1, 5), this, target)
-
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { dmg.value -= Random.IntRange(0, 2) }
-
-    override fun attackSkill(target: Char): Int = 10
-
 }

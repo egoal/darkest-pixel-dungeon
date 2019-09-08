@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -32,17 +33,10 @@ import java.util.HashSet
 
 class Tengu : Mob() {
     init {
+        PropertyConfiger.set(this, javaClass.simpleName)
+
         spriteClass = TenguSprite::class.java
-
-        HT = 120
-        HP = HT
-        EXP = 20
-        defenseSkill = 15
-
         HUNTING = Hunting()
-
-        properties.add(Property.BOSS)
-        addResistances(Damage.Element.POISON, 1.25f, 1f)
     }
 
     override fun viewDistance(): Int = 6
@@ -54,12 +48,7 @@ class Tengu : Mob() {
         phantoms.addAll(Dungeon.level.mobs.filter { it is Phantom }.map { it as Phantom })
     }
 
-    override fun giveDamage(enemy: Char): Damage =
-            Damage(Random.NormalIntRange(6, 18), this, enemy).addFeature(Damage.Feature.RANGED)
-
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(0, 5) }
-
-    override fun attackSkill(target: Char): Int = 20
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addFeature(Damage.Feature.RANGED)
 
     override fun checkHit(dmg: Damage): Boolean {
         return super.checkHit(dmg) && (!dmg.isFeatured(Damage.Feature.RANGED) || super.checkHit(dmg))
@@ -146,12 +135,6 @@ class Tengu : Mob() {
         }
 
         return value
-    }
-
-    override fun resistDamage(dmg: Damage): Damage {
-        if (dmg.type == Damage.Type.MAGICAL) dmg.value = dmg.value * 3 / 4
-
-        return super.resistDamage(dmg)
     }
 
     override fun die(cause: Any?) {
@@ -295,7 +278,7 @@ class Tengu : Mob() {
             EXP = 0
             maxLvl = 1
 
-            defenseSkill = 10
+            defSkill = 10f
 
             name = M.L(Tengu::class.java, "name")
         }
@@ -307,7 +290,7 @@ class Tengu : Mob() {
             HT = tengu.HT
         }
 
-        override fun attackSkill(target: Char): Int = 20
+        override fun attackSkill(target: Char): Float = 20f
 
         override fun takeDamage(dmg: Damage): Int {
             HP = 0

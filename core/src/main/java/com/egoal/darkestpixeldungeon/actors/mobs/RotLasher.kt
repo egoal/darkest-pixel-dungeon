@@ -19,7 +19,7 @@ class RotLasher : Mob() {
         HP = 1
         HT = 1
 
-        defenseSkill = 0
+        defSkill = 0f
         EXP = 1
 
         loot = Generator.SEED
@@ -30,8 +30,8 @@ class RotLasher : Mob() {
 
         properties.add(Property.IMMOVABLE)
 
-        addResistances(Damage.Element.POISON, 2f)
-        addResistances(Damage.Element.FIRE, 0.2f)
+        addResistances(Damage.Element.POISON, 0.5f)
+        addResistances(Damage.Element.FIRE, -0.2f)
     }
 
     private var level = 1
@@ -44,7 +44,7 @@ class RotLasher : Mob() {
         EXP = level / 3 + 1
         maxLvl = level + 2
 
-        defenseSkill = 3 + level
+        defSkill = 3f + level
         enemySeen = true
     }
 
@@ -55,7 +55,7 @@ class RotLasher : Mob() {
         return super.act()
     }
 
-    override fun attackSkill(target: Char): Int = 10 + level
+    override fun attackSkill(target: Char): Float = 10f + level
 
     override fun giveDamage(enemy: Char): Damage = Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, enemy)
 

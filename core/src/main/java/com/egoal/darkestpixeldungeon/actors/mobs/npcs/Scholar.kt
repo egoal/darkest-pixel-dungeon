@@ -37,7 +37,7 @@ class Scholar : NPC() {
         return super.act()
     }
 
-    override fun defenseSkill(enemy: Char): Int = 1000
+    override fun defenseSkill(enemy: Char): Float = 1000f
 
     override fun takeDamage(dmg: Damage): Int = 0
 

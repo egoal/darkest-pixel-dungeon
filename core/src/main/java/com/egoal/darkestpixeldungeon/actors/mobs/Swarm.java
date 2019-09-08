@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
@@ -46,16 +47,9 @@ public class Swarm extends Mob {
   {
     spriteClass = SwarmSprite.class;
 
-    HP = HT = 50;
-    defenseSkill = 5;
-
-    EXP = 3;
-    maxLvl = 9;
-
-    flying = true;
+    PropertyConfiger.INSTANCE.set(this, Swarm.class.getSimpleName());
 
     loot = new PotionOfHealing();
-    lootChance = 0.1667f; //by default, see die()
   }
 
   private static final float SPLIT_DELAY = 1f;
@@ -121,11 +115,6 @@ public class Swarm extends Mob {
     }
 
     return super.defenseProc(damage);
-  }
-
-  @Override
-  public int attackSkill(Char target) {
-    return 10;
   }
 
   private Swarm split() {
