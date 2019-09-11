@@ -30,6 +30,6 @@ open class Rat : Mob() {
     init {
         spriteClass = RatSprite::class.java
 
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Rat")
     }
 }

@@ -35,7 +35,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 public class GreatCrab extends Crab {
 
   {
-    PropertyConfiger.INSTANCE.set(this, GreatCrab.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "GreatCrab");
 
     spriteClass = GreatCrabSprite.class;
 

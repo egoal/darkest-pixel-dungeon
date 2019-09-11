@@ -61,7 +61,7 @@ public class Goo extends Mob {
   {
     spriteClass = GooSprite.class;
 
-    PropertyConfiger.INSTANCE.set(this, Goo.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Goo");
 
     loot = new LloydsBeacon().identify();
   }

@@ -20,19 +20,32 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
-import com.egoal.darkestpixeldungeon.sprites.CrabSprite
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.sprites.AlbinoSprite
 import com.watabou.utils.Random
 
-open class Crab : Mob() {
+class Albino : Rat() {
     init {
-        PropertyConfiger.set(this, "Crab")
+        spriteClass = AlbinoSprite::class.java
 
-        spriteClass = CrabSprite::class.java
-        loot = MysteryMeat()
-        baseSpeed = 2f
+        HT = 15
+        HP = HT
+    }
+
+    override fun die(cause: Any) {
+        super.die(cause)
+        Badges.validateRare(this)
+    }
+
+    override fun attackProc(dmg: Damage): Damage {
+        if (Random.Int(2) == 0) {
+            Buff.affect(enemy, Bleeding::class.java).set(dmg.value)
+        }
+
+        return dmg
     }
 }

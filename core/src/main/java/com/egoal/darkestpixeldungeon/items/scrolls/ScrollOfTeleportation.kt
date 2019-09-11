@@ -124,7 +124,6 @@ class ScrollOfTeleportation : Scroll() {
         }
 
         fun appear(ch: Char, pos: Int) {
-
             ch.sprite.interruptMotion()
 
             ch.move(pos)

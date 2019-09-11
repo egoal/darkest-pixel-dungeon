@@ -53,9 +53,11 @@ public class Wraith extends Mob {
     flying = true;
 
     properties.add(Property.UNDEAD);
-    
-    addResistances(Damage.Element.SHADOW, 1.25f);
-    addResistances(Damage.Element.HOLY, .667f);
+
+    defSkill = 1000f;
+
+    addResistances(Damage.Element.SHADOW, 0.25f);
+    addResistances(Damage.Element.HOLY, -0.5f);
   }
 
   private static final String LEVEL = "level";
@@ -75,8 +77,7 @@ public class Wraith extends Mob {
 
   @Override
   public Damage giveDamage(Char target) {
-    return new Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this,
-            target);
+    return new Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, target);
   }
 
   @Override

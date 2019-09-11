@@ -42,7 +42,7 @@ import com.watabou.utils.Random;
 public class GnollTrickster extends Gnoll {
 
   {
-    PropertyConfiger.INSTANCE.set(this, GnollTrickster.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "GnollTrickster");
 
     spriteClass = GnollTricksterSprite.class;
 

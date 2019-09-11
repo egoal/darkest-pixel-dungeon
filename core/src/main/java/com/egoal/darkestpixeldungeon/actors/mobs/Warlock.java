@@ -43,7 +43,7 @@ public class Warlock extends Mob implements Callback {
   private static final float TIME_TO_ZAP = 1f;
 
   {
-    PropertyConfiger.INSTANCE.set(this, Warlock.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Warlock");
 
     spriteClass = WarlockSprite.class;
 

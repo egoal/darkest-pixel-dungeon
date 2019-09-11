@@ -66,7 +66,7 @@ class PotionOfHealing : Potion() {
         } else {
             val value = recoverValue(hero)
             // directly recover some health, since buff is act later than chars
-            val directRecover = value / 3
+            val directRecover = value / 4
             hero.HP = Math.min(hero.HT, hero.HP + directRecover)
 
             val m = hero.buff(Mending::class.java)

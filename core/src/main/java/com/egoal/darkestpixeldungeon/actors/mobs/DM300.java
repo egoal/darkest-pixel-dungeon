@@ -63,7 +63,7 @@ public class DM300 extends Mob {
   {
     spriteClass = DM300Sprite.class;
 
-    PropertyConfiger.INSTANCE.set(this, DM300.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "DM300");
     loot = new CapeOfThorns().identify();
   }
 

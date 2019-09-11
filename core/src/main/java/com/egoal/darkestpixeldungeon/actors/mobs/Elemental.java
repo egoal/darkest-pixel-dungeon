@@ -40,7 +40,7 @@ import java.util.HashSet;
 public class Elemental extends Mob {
 
   {
-    PropertyConfiger.INSTANCE.set(this, Elemental.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Elemental");
     spriteClass = ElementalSprite.class;
 
     loot = new PotionOfLiquidFlame();

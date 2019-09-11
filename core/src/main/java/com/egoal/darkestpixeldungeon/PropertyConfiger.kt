@@ -67,6 +67,8 @@ object PropertyConfiger {
         mob.minDefense = mp.minDefend
         mob.maxDefense = mp.maxDefend
 
+        mob.magicalResistance = mp.magicalResistance
+
         for(pr in mp.elementalResistances) mob.addResistances(pr.key, pr.value)
         for(p in mp.properties) mob.properties().add(p)
 

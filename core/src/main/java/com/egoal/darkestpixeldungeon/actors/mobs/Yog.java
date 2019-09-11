@@ -65,7 +65,7 @@ import java.util.HashSet;
 public class Yog extends Mob {
 
   {
-    PropertyConfiger.INSTANCE.set(this, Yog.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Yog");
 
     spriteClass = YogSprite.class;
 

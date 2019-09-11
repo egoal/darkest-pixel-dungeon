@@ -38,7 +38,7 @@ import java.util.HashSet;
 public class Brute extends Mob {
 
   {
-    PropertyConfiger.INSTANCE.set(this, Brute.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Brute");
     spriteClass = BruteSprite.class;
 
     loot = Gold.class;

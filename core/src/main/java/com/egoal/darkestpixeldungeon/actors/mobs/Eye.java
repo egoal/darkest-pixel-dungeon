@@ -44,7 +44,7 @@ import java.util.HashSet;
 public class Eye extends Mob {
 
   {
-    PropertyConfiger.INSTANCE.set(this, Eye.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Eye");
 
     spriteClass = EyeSprite.class;
 

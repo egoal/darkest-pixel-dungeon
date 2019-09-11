@@ -34,7 +34,7 @@ import com.watabou.utils.Random
 class Bat : Mob() {
 
     init {
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Bat")
 
         spriteClass = BatSprite::class.java
         loot = PotionOfHealing()
@@ -49,7 +49,7 @@ class Bat : Mob() {
         return if (Random.Int(4) == 0)
             Damage(Random.NormalIntRange(1, 5), this, target).type(Damage.Type.MENTAL)
         else {
-            val dmg = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
+            val dmg = super.giveDamage(target).addElement(Damage.Element.SHADOW)
             if (Statistics.Clock.state != Statistics.ClockTime.State.Day)
                 dmg.value += dmg.value / 4
 

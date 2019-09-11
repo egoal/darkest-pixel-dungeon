@@ -39,7 +39,7 @@ import java.util.HashSet;
 public class Spinner extends Mob {
 
   {
-    PropertyConfiger.INSTANCE.set(this, Spinner.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Spinner");
 
     spriteClass = SpinnerSprite.class;
     loot = new MysteryMeat();

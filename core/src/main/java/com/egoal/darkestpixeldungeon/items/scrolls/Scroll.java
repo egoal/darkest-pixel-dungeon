@@ -93,6 +93,9 @@ public abstract class Scroll extends Item {
   {
     stackable = true;
     defaultAction = AC_READ;
+
+    cursed = false;
+    cursedKnown = true;
   }
 
   @SuppressWarnings("unchecked")

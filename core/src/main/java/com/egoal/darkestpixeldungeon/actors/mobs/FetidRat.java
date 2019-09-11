@@ -37,7 +37,7 @@ import java.util.HashSet;
 public class FetidRat extends Rat {
 
   {
-    PropertyConfiger.INSTANCE.set(this, FetidRat.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "FetidRat");
     spriteClass = FetidRatSprite.class;
 
     state = WANDERING;

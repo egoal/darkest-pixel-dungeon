@@ -20,19 +20,33 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
-import com.egoal.darkestpixeldungeon.sprites.CrabSprite
-import com.watabou.utils.Random
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Chill
+import com.egoal.darkestpixeldungeon.actors.buffs.Frost
+import com.egoal.darkestpixeldungeon.items.quest.Embers
+import com.egoal.darkestpixeldungeon.sprites.NewbornElementalSprite
 
-open class Crab : Mob() {
+class NewbornElemental : Elemental() {
+
     init {
-        PropertyConfiger.set(this, "Crab")
+        PropertyConfiger.set(this, "NewbornElemental")
 
-        spriteClass = CrabSprite::class.java
-        loot = MysteryMeat()
-        baseSpeed = 2f
+        spriteClass = NewbornElementalSprite::class.java
+        HP = HT / 2
+    }
+
+    override fun add(buff: Buff) {
+        if (buff is Frost || buff is Chill) {
+            die(buff)
+        } else {
+            super.add(buff)
+        }
+    }
+
+    override fun die(cause: Any) {
+        super.die(cause)
+        Dungeon.level.drop(Embers(), pos).sprite.drop()
     }
 }

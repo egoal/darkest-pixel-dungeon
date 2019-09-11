@@ -18,37 +18,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.actors.mobs;
+package com.egoal.darkestpixeldungeon.items.potions
 
-import com.egoal.darkestpixeldungeon.Badges;
-import com.egoal.darkestpixeldungeon.actors.Char;
-import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
-import com.egoal.darkestpixeldungeon.sprites.AlbinoSprite;
-import com.watabou.utils.Random;
+import com.egoal.darkestpixeldungeon.actors.blobs.ParalyticGas
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.watabou.noosa.audio.Sample
 
-public class Albino extends Rat {
-
-  {
-    spriteClass = AlbinoSprite.class;
-
-    HP = HT = 15;
-  }
-
-  @Override
-  public void die(Object cause) {
-    super.die(cause);
-    Badges.validateRare(this);
-  }
-
-  @Override
-  public Damage attackProc(Damage dmg) {
-
-    if (Random.Int(2) == 0) {
-      Buff.affect(enemy, Bleeding.class).set(dmg.value);
+class PotionOfParalyticGas : Potion() {
+    init {
+        initials = 8
     }
 
-    return dmg;
-  }
+    override fun shatter(cell: Int) {
+
+        if (Dungeon.visible[cell]) {
+            setKnown()
+
+            splash(cell)
+            Sample.INSTANCE.play(Assets.SND_SHATTER)
+        }
+
+        GameScene.add(Blob.seed(cell, 1000, ParalyticGas::class.java))
+    }
+
+    override fun price(): Int = if (isKnown) (quantity * if (reinforced) 60 else 40) else super.price()
 }

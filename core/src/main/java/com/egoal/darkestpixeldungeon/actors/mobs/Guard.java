@@ -48,7 +48,7 @@ public class Guard extends Mob {
   private boolean chainsUsed = false;
 
   {
-    PropertyConfiger.INSTANCE.set(this, Guard.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Guard");
 
     spriteClass = GuardSprite.class;
     loot = null;    //see createloot.

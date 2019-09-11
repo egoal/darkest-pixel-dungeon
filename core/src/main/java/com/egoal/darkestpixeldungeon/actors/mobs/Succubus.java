@@ -48,7 +48,7 @@ public class Succubus extends Mob {
   private int delay = 0;
 
   {
-    PropertyConfiger.INSTANCE.set(this, Succubus.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Succubus");
 
     spriteClass = SuccubusSprite.class;
 

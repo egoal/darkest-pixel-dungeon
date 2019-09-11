@@ -37,7 +37,7 @@ import java.util.HashSet;
 public class RotHeart extends Mob {
 
   {
-    PropertyConfiger.INSTANCE.set(this, RotHeart.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "RotHeart");
 
     spriteClass = RotHeartSprite.class;
 

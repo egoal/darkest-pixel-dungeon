@@ -40,7 +40,7 @@ import com.watabou.utils.Random
 
 class Skeleton : Mob() {
     init {
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Skeleton")
 
         spriteClass = SkeletonSprite::class.java
         loot = Generator.WEAPON.generate()

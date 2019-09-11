@@ -23,16 +23,33 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
-import com.egoal.darkestpixeldungeon.sprites.CrabSprite
+import com.egoal.darkestpixeldungeon.actors.buffs.Amok
+import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
+import com.egoal.darkestpixeldungeon.actors.buffs.Terror
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp
+import com.egoal.darkestpixeldungeon.sprites.GolemSprite
 import com.watabou.utils.Random
 
-open class Crab : Mob() {
-    init {
-        PropertyConfiger.set(this, "Crab")
+import java.util.HashSet
 
-        spriteClass = CrabSprite::class.java
-        loot = MysteryMeat()
-        baseSpeed = 2f
+class Golem : Mob() {
+    init {
+        PropertyConfiger.set(this, "Golem")
+
+        spriteClass = GolemSprite::class.java
+    }
+
+    override fun attackDelay(): Float = 1.5f
+
+    override fun die(cause: Any) {
+        Imp.Quest.process(this)
+
+        super.die(cause)
+    }
+
+    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
+
+    companion object {
+        private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java, Sleep::class.java)
     }
 }

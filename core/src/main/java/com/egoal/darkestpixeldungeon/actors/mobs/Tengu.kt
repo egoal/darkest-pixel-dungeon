@@ -33,7 +33,7 @@ import java.util.HashSet
 
 class Tengu : Mob() {
     init {
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Tengu")
 
         spriteClass = TenguSprite::class.java
         HUNTING = Hunting()

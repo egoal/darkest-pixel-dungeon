@@ -314,7 +314,7 @@ abstract class TimingPerk(private val timing: Class<out Timing>, private val tri
 }
 
 class ExtraRuneRegularly : TimingPerk(GainRune::class.java) {
-    class GainRune : TimingPerk.Timing(Statistics.ClockTime.TimePerDay()) {
+    class GainRune : TimingPerk.Timing(Statistics.ClockTime.TimePerDay()/ 2f) {
         override fun trigger() {
             val rune = Generator.RUNE.generate() as Rune
             GameScene.effect(Flare(7, 32f).color(0x66ff66, true).show(

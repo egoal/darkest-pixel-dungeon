@@ -30,7 +30,7 @@ class Ballista : Mob() {
     private var loaded = true
 
     init {
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Ballista")
 
         spriteClass = Sprite::class.java
     }

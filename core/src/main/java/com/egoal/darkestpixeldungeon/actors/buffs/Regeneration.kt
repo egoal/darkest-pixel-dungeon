@@ -42,6 +42,8 @@ class Regeneration : Buff() {
                         (target as Hero).resting = false
                     }
                 }
+
+                if (dreg < 0 && !target.isAlive) target.die(this)
             } else dreg = 0f
 
             spend(1f)

@@ -34,8 +34,8 @@ class WandGuard : Mob() {
         state = WANDERING
         defSkill = 0f // cannot dodge
 
-        addResistances(Damage.Element.all(), 1.25f)
-        magicalResistance = 100f
+        addResistances(Damage.Element.all(), 0.1f)
+        magicalResistance = 1f
 
         properties.add(Property.IMMOVABLE)
     }

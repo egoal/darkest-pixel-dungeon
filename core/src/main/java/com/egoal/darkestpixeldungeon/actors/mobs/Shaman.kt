@@ -48,7 +48,7 @@ class Shaman : Mob(), Callback {
     init {
         spriteClass = ShamanSprite::class.java
 
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Shaman")
         HUNTING = HuntingAI()
 
         loot = Generator.SCROLL
@@ -56,7 +56,7 @@ class Shaman : Mob(), Callback {
 
     private var buffcd = 0f //todo: rework skilled ai
 
-    override fun giveDamage(target: Char): Damage =super.giveDamage(enemy).addElement(Damage.Element.LIGHT)
+    override fun giveDamage(target: Char): Damage =super.giveDamage(target).addElement(Damage.Element.LIGHT)
 
     override fun canAttack(enemy: Char): Boolean = Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
 

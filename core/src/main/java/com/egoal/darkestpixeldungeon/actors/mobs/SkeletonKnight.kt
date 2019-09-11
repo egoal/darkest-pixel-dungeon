@@ -24,7 +24,7 @@ class SkeletonKnight : Mob() {
     init {
         spriteClass = SkeletonKnightSprite::class.java
 
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "SkeletonKnight")
         loot = Wine()
     }
 
@@ -33,7 +33,7 @@ class SkeletonKnight : Mob() {
         return super.act()
     }
 
-    override fun giveDamage(target: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
+    override fun giveDamage(target: Char): Damage = super.giveDamage(target).addElement(Damage.Element.SHADOW)
 
     private fun canCounter(): Boolean {
         return buff(Paralysis::class.java) == null

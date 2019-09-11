@@ -47,7 +47,7 @@ public class Piranha extends Mob {
 
     EXP = 0;
     
-    addResistances(Damage.Element.LIGHT, .5f);
+    addResistances(Damage.Element.LIGHT, -0.5f);
   }
 
   public Piranha() {

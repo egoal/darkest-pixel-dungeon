@@ -98,9 +98,9 @@ public abstract class Mob extends Char {
     protected Object loot = null;
     public float lootChance = 0;
 
-    public int minDamage, maxDamage;
-  public Damage.Type typeDamage;
-    public int minDefense, maxDefense;
+    public int minDamage = 0, maxDamage = 0;
+  public Damage.Type typeDamage = Damage.Type.NORMAL;
+    public int minDefense = 0, maxDefense = 0;
 
   private static final String STATE = "state";
   private static final String SEEN = "seen";

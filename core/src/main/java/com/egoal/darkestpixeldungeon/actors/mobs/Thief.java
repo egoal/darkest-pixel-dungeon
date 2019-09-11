@@ -48,7 +48,7 @@ public class Thief extends Mob {
   public Item item;
 
   {
-    PropertyConfiger.INSTANCE.set(this, Thief.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Thief");
 
     spriteClass = ThiefSprite.class;
 

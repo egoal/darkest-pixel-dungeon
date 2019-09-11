@@ -65,7 +65,7 @@ public class King extends Mob {
   {
     spriteClass = KingSprite.class;
 
-    PropertyConfiger.INSTANCE.set(this, King.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "King");
 
     Undead.count = 0;
   }

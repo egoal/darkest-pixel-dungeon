@@ -45,7 +45,7 @@ open class Monk : Mob() {
     init {
         spriteClass = MonkSprite::class.java
 
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Monk")
         loot = Food()
     }
 

@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
+import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
@@ -178,7 +179,15 @@ enum class HeroClass(private val title: String) {
             super.upgradeHero(hero)
             hero.HT -= 1
             hero.HP -= 1
-            hero.regeneration += 0.003f
+            hero.regeneration += 0.005f
+        }
+
+        override fun initHeroStatus(hero: Hero) {
+            super.initHeroStatus(hero)
+
+            hero.magicalResistance = 0.25f
+            hero.addResistances(Damage.Element.all(), 0.1f)
+            hero.addResistances(Damage.Element.POISON, 0.5f)
         }
 
         override fun initHeroClass(hero: Hero) {
@@ -198,10 +207,6 @@ enum class HeroClass(private val title: String) {
 
             hero.heroPerk.add(Discount())
             hero.heroPerk.add(Optimistic())
-
-            // resists and extra resists to poison
-            hero.addResistances(Damage.Element.all(), 0.15f)
-            hero.addResistances(Damage.Element.POISON, 0.5f)
         }
     };
 
@@ -247,11 +252,9 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-//        SpikeShield().identify().collect()
-//        ShortSword().identify().collect()
-//        initDebug(hero)
-//        Amulet().collect()
-//        SpikeShield().identify().collect()
+//        PotionOfFrost().identify().collect()
+//        WandOfMagicMissile().identify().collect()
+//        MailArmor().upgrade(10).identify().collect()
     }
 
     // called when hero level up
@@ -265,7 +268,7 @@ enum class HeroClass(private val title: String) {
             defSkill++
 
             criticalChance += 0.4f / 100f
-            regeneration += 0.015f
+            regeneration += 0.02f
 
             if (lvl < 10) updateAwareness()
 

@@ -45,10 +45,9 @@ import java.util.ArrayList;
 public class Swarm extends Mob {
 
   {
+    PropertyConfiger.INSTANCE.set(this, "Swarm");
+
     spriteClass = SwarmSprite.class;
-
-    PropertyConfiger.INSTANCE.set(this, Swarm.class.getSimpleName());
-
     loot = new PotionOfHealing();
   }
 

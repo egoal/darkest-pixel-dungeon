@@ -36,7 +36,7 @@ import com.watabou.utils.Random;
 public class Scorpio extends Mob {
 
   {
-    PropertyConfiger.INSTANCE.set(this, Scorpio.class.getSimpleName());
+    PropertyConfiger.INSTANCE.set(this, "Scorpio");
 
     spriteClass = ScorpioSprite.class;
 

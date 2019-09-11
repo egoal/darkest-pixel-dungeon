@@ -41,7 +41,7 @@ public class Bee extends Mob {
     flying = true;
     state = WANDERING;
 
-    addResistances(Damage.Element.POISON, 1.25f);
+    addResistances(Damage.Element.POISON, 0.2f);
   }
 
   private int level;

@@ -86,6 +86,9 @@ abstract class Plant(val image: Int) : Bundlable {
         init {
             stackable = true
             defaultAction = AC_PLANT
+
+            cursedKnown = true
+            cursed = false
         }
 
         override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_PLANT) }

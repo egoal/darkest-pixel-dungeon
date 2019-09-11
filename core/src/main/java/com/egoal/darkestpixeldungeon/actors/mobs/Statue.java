@@ -44,10 +44,8 @@ public class Statue extends Mob {
     EXP = 0;
     state = PASSIVE;
 
-    addResistances(Damage.Element.POISON, 1.25f);
-    addResistances(Damage.Element.FIRE, 1.25f);
-    addResistances(Damage.Element.LIGHT, 1.25f);
-    addResistances(Damage.Element.SHADOW, 1.25f);
+    addResistances(Damage.Element.all(), 0.15f);
+    magicalResistance = 0.2f;
   }
 
   protected Weapon weapon;

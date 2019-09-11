@@ -27,6 +27,5 @@ public class RingOfAccuracy extends Ring {
     return new Accuracy();
   }
 
-  public class Accuracy extends RingBuff {
-  }
+  public class Accuracy extends RingBuff { }
 }

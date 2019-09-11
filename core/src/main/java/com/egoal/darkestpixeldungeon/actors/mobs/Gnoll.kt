@@ -31,7 +31,7 @@ open class Gnoll : Mob() {
     init {
         spriteClass = GnollSprite::class.java
 
-        PropertyConfiger.set(this, javaClass.simpleName)
+        PropertyConfiger.set(this, "Gnoll")
         loot = Gold::class.java
     }
 }

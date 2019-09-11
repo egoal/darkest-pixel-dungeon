@@ -100,6 +100,11 @@ public class Potion extends Item {
   public boolean ownedByFruit = false;
   public boolean reinforced = false;
 
+  {
+    cursedKnown = true;
+    cursed = false;
+  }
+
   public boolean canBeReinforced() {
     return false;
   }

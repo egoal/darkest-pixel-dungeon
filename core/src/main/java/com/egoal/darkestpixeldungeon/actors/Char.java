@@ -98,7 +98,7 @@ public abstract class Char extends Actor {
   public int invisible = 0;
 
   // resistances
-  public float magicalResistance = 1f;
+  public float magicalResistance = 0f;
   public float[] elementalResistance = new float[Damage.Element.ELEMENT_COUNT];
 
   private HashSet<Buff> buffs = new HashSet<>();
@@ -371,8 +371,7 @@ public abstract class Char extends Actor {
       Buff.detach(this, Charm.class);
 
     // immunities, resistance
-    if (!dmg.isFeatured(Damage.Feature.PURE))
-      dmg = resistDamage(dmg);
+    if (!dmg.isFeatured(Damage.Feature.PURE)) dmg = resistDamage(dmg);
 
     // buffs when take damage
     if (buff(Paralysis.class) != null) {
@@ -450,6 +449,8 @@ public abstract class Char extends Actor {
 
     if(dmg.type== Damage.Type.MAGICAL)
       dmg.value -= Math.round(dmg.value* magicalResistance);
+
+    if(dmg.value<0) dmg.value = 0;
 
     return dmg;
   }
