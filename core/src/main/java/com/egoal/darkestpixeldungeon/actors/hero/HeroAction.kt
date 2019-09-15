@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.hero
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.buffs.Disarm
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC
@@ -292,7 +293,7 @@ abstract class HeroAction(var dst: Int = 0) {
     class Attack(var target: Char) : HeroAction() {
         override fun act(hero: Hero): Boolean {
             hero.enemy = target
-            if (target.isAlive && hero.canAttack(target) && !hero.isCharmedBy(target)) {
+            if (target.isAlive && hero.canAttack(target) && !hero.isCharmedBy(target) && hero.buff(Disarm::class.java)==null) {
                 Invisibility.dispel()
                 hero.spend(hero.attackDelay())
                 hero.sprite.attack(target.pos)

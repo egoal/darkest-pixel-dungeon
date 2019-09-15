@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.levels
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.mobs.AshesSkull
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -32,7 +33,6 @@ class VillageLevel : RegularLevel() {
         for (i in 0 until length) {
             when (map[i]) {
                 Terrain.EMBERS -> map[i] = Terrain.WATER // water flag
-                // Terrain.LOCKED_DOOR -> map[i] = Terrain.EMPTY // npc pos flag
             }
         }
 
@@ -98,7 +98,7 @@ class VillageLevel : RegularLevel() {
         // roberry
         putMobAt(CatRoberry::class.java, 12, 6)
 
-        // (putMobAt(Glowworm::class.java, 16, 29) as Glowworm).setLevel(1)
+        // putMobAt(AshesSkull::class.java, 16, 29)
     }
 
     override fun onSwitchedIn() {

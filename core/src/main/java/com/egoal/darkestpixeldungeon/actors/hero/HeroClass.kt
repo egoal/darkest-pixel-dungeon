@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.*
@@ -185,7 +186,7 @@ enum class HeroClass(private val title: String) {
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
 
-            hero.magicalResistance = 0.25f
+            hero.magicalResistance = 0.2f
             hero.addResistances(Damage.Element.all(), 0.1f)
             hero.addResistances(Damage.Element.POISON, 0.5f)
         }
@@ -237,7 +238,7 @@ enum class HeroClass(private val title: String) {
     protected open fun initHeroStatus(hero: Hero) {
         hero.atkSkill = 10f
         hero.defSkill = 5f
-        hero.magicalResistance = 0.2f
+        hero.magicalResistance = 0.15f
     }
 
     protected open fun initHeroClass(hero: Hero) {
@@ -252,9 +253,14 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-//        PotionOfFrost().identify().collect()
-//        WandOfMagicMissile().identify().collect()
-//        MailArmor().upgrade(10).identify().collect()
+//        hero.atkSkill += 10f
+//        hero.defSkill += 10f
+//        hero.STR += 4
+//        Sword().upgrade().collect()
+//        MailArmor().upgrade().collect()
+//        EyeballOfTheElder.Left().collect()
+//        EyeballOfTheElder.Right().collect()
+//        EyeballOfTheElder().collect()
     }
 
     // called when hero level up

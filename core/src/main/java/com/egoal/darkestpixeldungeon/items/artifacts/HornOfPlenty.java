@@ -94,7 +94,7 @@ public class HornOfPlenty extends Artifact {
         if (chargesToUse > charge) chargesToUse = charge;
         hero.buff(Hunger.class).satisfy((Hunger.STARVING / 10) * chargesToUse);
 
-        //if you get at least 80 food energy from the horn
+        //if you get at least 80 food recoverValue from the horn
         switch (hero.getHeroClass()) {
           case WARRIOR:
             if (hero.HP < hero.HT) {

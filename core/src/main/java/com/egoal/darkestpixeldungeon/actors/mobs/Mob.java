@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage;
+import com.egoal.darkestpixeldungeon.actors.buffs.Disarm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Rage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -97,6 +98,8 @@ public abstract class Mob extends Char {
 
     protected Object loot = null;
     public float lootChance = 0;
+
+    public boolean isLiving = true; // is living things?
 
     public int minDamage = 0, maxDamage = 0;
   public Damage.Type typeDamage = Damage.Type.NORMAL;
@@ -742,7 +745,7 @@ public abstract class Mob extends Char {
     @Override
     public boolean act(boolean enemyInFOV, boolean justAlerted) {
       enemySeen = enemyInFOV;
-      if (enemyInFOV && !isCharmedBy(enemy) && canAttack(enemy)) {
+      if (enemyInFOV && !isCharmedBy(enemy) && buff(Disarm.class)==null && canAttack(enemy)) {
 
         return doAttack(enemy);
 

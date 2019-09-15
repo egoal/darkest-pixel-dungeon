@@ -1,5 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors;
 
+import com.egoal.darkestpixeldungeon.messages.M;
+
 import java.util.HashMap;
 
 /**
@@ -14,7 +16,12 @@ public class Damage {
   public enum Type {
     NORMAL,
     MAGICAL,
-    MENTAL,
+    MENTAL;
+
+    @Override
+    public String toString() {
+      return M.INSTANCE.L(this, super.toString().toLowerCase());
+    }
   }
 
   public static class Element {

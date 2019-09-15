@@ -53,7 +53,7 @@ public class Statuary extends NPC {
 
   {
     spriteClass = StatuarySprite.class;
-
+    isLiving = false;
     properties.add(Property.IMMOVABLE);
   }
 

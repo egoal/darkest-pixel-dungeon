@@ -231,6 +231,10 @@ class Hero : Char() {
 
     fun givenName(): String = if (name == Messages.get(this, "name")) className() else name
 
+    fun say(color: Int, text: String, vararg args: Any) {
+        sprite.showStatus(color, text, args)
+    }
+
     // called on enter or resurrect the level
     fun live() {
         Buff.affect(this, Regeneration::class.java)
@@ -619,7 +623,7 @@ class Hero : Char() {
         var newFound = false
 
         var target: Mob? = null
-        for (mob in Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] && it.hostile }) {
+        for (mob in Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] && it.hostile && it.isLiving }) {
             visible.add(mob)
             if (!visibleEnemies.contains(mob))
                 newFound = true

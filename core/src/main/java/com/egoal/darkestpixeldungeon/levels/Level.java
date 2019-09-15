@@ -999,8 +999,7 @@ public abstract class Level implements Bundlable {
             c.buff(Shadows.class) == null && c.isAlive();
     if (sighted) {
       updateLightMap();
-      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(),
-              c.seeDistance());
+      ShadowCaster.castShadowRecursively(cx, cy, fieldOfView, c.viewDistance(), c.seeDistance());
     } else {
       BArray.setFalse(fieldOfView);
     }
@@ -1009,7 +1008,7 @@ public abstract class Level implements Bundlable {
     //Currently only the hero can get mind vision
     if (c.isAlive() && c == Dungeon.hero) {
       for (Buff b : c.buffs(MindVision.class)) {
-        sense = Math.max(((MindVision) b).distance, sense);
+        sense = Math.max(((MindVision) b).getDistance(), sense);
       }
     }
 
@@ -1032,17 +1031,17 @@ public abstract class Level implements Bundlable {
       Dungeon.hero.getMindVisionEnemies().clear();
       if (c.buff(MindVision.class) != null) {
         for (Mob mob : mobs) {
+          if(!mob.isLiving) continue;
+
           int p = mob.pos;
+          if (!fieldOfView[p]) Dungeon.hero.getMindVisionEnemies().add(mob);
 
-          if (!fieldOfView[p]) {
-            Dungeon.hero.getMindVisionEnemies().add(mob);
-          }
-          for (int i : PathFinder.NEIGHBOURS9)
-            fieldOfView[p + i] = true;
-
+          for (int i : PathFinder.NEIGHBOURS9) fieldOfView[p + i] = true;
         }
       } else if (((Hero) c).getHeroPerk().has(Telepath.class)) {
         for (Mob mob : mobs) {
+          if(!mob.isLiving) continue;
+
           int p = mob.pos;
           if (distance(c.pos, p) == 2) {
 

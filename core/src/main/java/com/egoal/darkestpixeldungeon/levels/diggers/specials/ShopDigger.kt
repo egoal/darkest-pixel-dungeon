@@ -18,6 +18,7 @@ import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster
+import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.OverpricedRation
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.Potion
@@ -134,6 +135,7 @@ class ShopDigger : RectDigger() {
         itemsToSpawn.add(OverpricedRation())
         itemsToSpawn.add(OverpricedRation())
         itemsToSpawn.add(Wine())
+        itemsToSpawn.add(BrownAle())
 
         // no bombs anymore
 

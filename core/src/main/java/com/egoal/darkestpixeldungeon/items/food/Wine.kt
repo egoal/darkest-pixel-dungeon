@@ -4,23 +4,28 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
-import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Drunkard
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 
 import java.util.ArrayList
+import kotlin.math.min
 
 /**
  * Created by 93942 on 5/31/2018.
  */
 
-class Wine : Item() {
+private const val AC_DRINK = "drink"
+private const val TIME_TO_DRINK = 2f
+
+open class Wine : Item() {
     init {
         image = ItemSpriteSheet.DPD_WINE
         defaultAction = AC_DRINK
@@ -41,16 +46,18 @@ class Wine : Item() {
             hero.spend(TIME_TO_DRINK)
             hero.busy()
 
-            var value = Math.min(Random.IntRange(15, (Pressure.HeroPressure() * .4f).toInt()), 30)
+            var value = recoverValue(hero)
             if (hero.heroPerk.get(Drunkard::class.java) != null) {
                 value += value / 5
                 hero.recoverSanity(value)
+
+                if(this is BrownAle)
+                    hero.say(CharSprite.DEFAULT, M.L(BrownAle::class.java, "hard_to_drink"))
             } else {
                 hero.recoverSanity(value)
                 // get drunk
                 Buff.prolong(hero, Drunk::class.java, Drunk.duration(hero))
-                hero.takeDamage(Damage(hero.HP / 4, this, hero).type(Damage.Type
-                        .MAGICAL).addFeature(Damage.Feature.PURE))
+                hero.takeDamage(Damage(hero.HP / 4, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE))
             }
 
             hero.sprite.operate(hero.pos)
@@ -59,14 +66,19 @@ class Wine : Item() {
         }
     }
 
+    protected open fun recoverValue(hero: Hero): Float = min(Random.Float(15f, hero.pressure.pressure * 0.4f), 30f)
+
     override fun price(): Int = 20 * quantity()
 
     override fun isUpgradable(): Boolean = false
+}
 
-    companion object {
-        private const val AC_DRINK = "drink"
-        private const val TIME_TO_DRINK = 2f
+class BrownAle : Wine() {
+    init {
+        image = ItemSpriteSheet.BROWN_ALE
     }
 
+    override fun recoverValue(hero: Hero): Float = min(Random.Float(10f, hero.pressure.pressure* 0.3f), 22.5f)
 
+    override fun price(): Int = 15 * quantity()
 }

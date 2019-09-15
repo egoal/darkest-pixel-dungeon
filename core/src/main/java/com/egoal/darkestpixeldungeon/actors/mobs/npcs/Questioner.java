@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 public class Questioner extends NPC {
   {
     spriteClass = Sprite.class;
-
+    isLiving = false;
     properties.add(Property.IMMOVABLE);
   }
 

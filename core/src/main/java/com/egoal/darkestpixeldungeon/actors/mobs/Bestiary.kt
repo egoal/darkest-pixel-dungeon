@@ -102,16 +102,16 @@ object Bestiary {
 
             // caves
             11 -> {
-                chances = floatArrayOf(1.5f, .5f, 0.2f)
-                classes = arrayOf(Bat::class.java, SkeletonKnight::class.java, Brute::class.java)
+                chances = floatArrayOf(1.5f, .5f, .4f, 0.2f)
+                classes = arrayOf(Bat::class.java, AshesSkull::class.java, SkeletonKnight::class.java, Brute::class.java)
             }
             12 -> {
-                chances = floatArrayOf(1f, 1f, .5f, .2f)
-                classes = arrayOf(Bat::class.java, Brute::class.java, SkeletonKnight::class.java, MadMan::class.java)
+                chances = floatArrayOf(1f, .75f, 1f, 1f, .2f)
+                classes = arrayOf(Bat::class.java, AshesSkull::class.java, Brute::class.java, SkeletonKnight::class.java, MadMan::class.java)
             }
             13 -> {
-                chances = floatArrayOf(1f, 1f, .2f, 3f, 1f, 0.25f, 0.02f, .02f)
-                classes = arrayOf(Bat::class.java, SkeletonKnight::class.java, MadMan::class.java, Brute::class.java, Spinner::class.java, Ballista::class.java, Elemental::class.java, Monk::class.java)
+                chances = floatArrayOf(1f, .75f, 1f, .2f, 3f, 1f, 0.25f, 0.02f, .02f)
+                classes = arrayOf(Bat::class.java, AshesSkull::class.java, SkeletonKnight::class.java, MadMan::class.java, Brute::class.java, Spinner::class.java, Ballista::class.java, Elemental::class.java, Monk::class.java)
             }
             14 -> {
                 chances = floatArrayOf(1f, 1f, 3f, 4f, .75f, 0.02f, 0.01f)

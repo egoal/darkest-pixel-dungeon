@@ -107,6 +107,7 @@ public class Assets {
   public static final String REN = ACTORS + "ren.png";
   public static final String KING_STATUARY = ACTORS+ "king_statuary.png";
   public static final String GLOWWORM = ACTORS+ "glowworm.png";
+  public static final String SKULL = ACTORS+ "skull.png";
 
   // levels=====================================================================
   // tile
@@ -236,7 +237,8 @@ public class Assets {
   public static final String SND_MIMIC = SOUNDS + "snd_mimic.ogg";
   public static final String SND_ASTROLABE = SOUNDS + "snd_astrolabe.ogg";
   public static final String SND_CRITICAL = SOUNDS + "snd_critical.ogg";
-  public static final String SND_RELOAD = SOUNDS + "snd_reload.mp3";
+  public static final String SND_RELOAD = SOUNDS + "snd_reload.ogg";
+  public static final String SND_HOWL = SOUNDS+ "snd_howl.ogg";
 
   // spd legacy=================================================================
   public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";

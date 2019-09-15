@@ -307,6 +307,7 @@ abstract class TimingPerk(private val timing: Class<out Timing>, private val tri
         abstract fun trigger()
 
         override fun act(): Boolean {
+            trigger()
             spend(time)
             return true
         }
