@@ -25,6 +25,15 @@ import com.egoal.darkestpixeldungeon.Statistics
 import com.watabou.utils.Random
 
 object Bestiary {
+    private const val CONFIG_FILE = "bestiary"
+
+    private fun FullMobClassName(simpleName: String) = "com.egoal.darkestpixeldungeon.actors.mobs.$simpleName"
+
+    fun<T> InstanceBySimpleName(simpleName: String): T = Class.forName(FullMobClassName(simpleName)).newInstance() as T
+
+    init {
+
+    }
 
     fun mob(depth: Int): Mob = mobClass(depth).newInstance()
 
@@ -114,8 +123,8 @@ object Bestiary {
                 classes = arrayOf(Bat::class.java, AshesSkull::class.java, SkeletonKnight::class.java, MadMan::class.java, Brute::class.java, Spinner::class.java, Ballista::class.java, Elemental::class.java, Monk::class.java)
             }
             14 -> {
-                chances = floatArrayOf(1f, 1f, 3f, 4f, .75f, 0.02f, 0.01f)
-                classes = arrayOf(Bat::class.java, SkeletonKnight::class.java, Brute::class.java, Spinner::class.java, Ballista::class.java, Elemental::class.java, Monk::class.java)
+                chances = floatArrayOf(0.5f, 0.5f, 1f, 3f, 4f, .75f, 0.02f, 0.01f)
+                classes = arrayOf(Bat::class.java, AshesSkull::class.java, SkeletonKnight::class.java, Brute::class.java, Spinner::class.java, Ballista::class.java, Elemental::class.java, Monk::class.java)
             }
             15 -> {
                 chances = floatArrayOf(1f)

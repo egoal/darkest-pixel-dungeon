@@ -121,7 +121,7 @@ public class StartScene extends PixelScene {
     btnNewGame = new GameButton(Messages.get(this, "new")) {
       @Override
       protected void onClick() {
-        if (GamesInProgress.check(curClass) != null) {
+        if (GamesInProgress.INSTANCE.check(curClass) != null) {
           StartScene.this.add(new WndOptions(
                   Messages.get(StartScene.class, "really"),
                   Messages.get(StartScene.class, "warning"),
@@ -268,11 +268,11 @@ public class StartScene extends PixelScene {
     if (!locked) {
       unlock.visible = false;
 
-      GamesInProgress.Info info = GamesInProgress.check(curClass);
+      GamesInProgress.Info info = GamesInProgress.INSTANCE.check(curClass);
       if (info != null) {
         btnLoad.visible = true;
         btnLoad.secondary(Messages.format(Messages.get(this, "depth_level"),
-                info.depth, info.level), info.challenges);
+                info.getDepth(), info.getLevel()), info.getChallenges());
         btnNewGame.visible = true;
         btnNewGame.secondary(Messages.get(this, "erase"), false);
 

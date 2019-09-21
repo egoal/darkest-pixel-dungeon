@@ -1,6 +1,5 @@
 package com.egoal.darkestpixeldungeon.scenes
 
-import android.graphics.drawable.Icon
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.effects.BannerSprites
@@ -81,15 +80,17 @@ class NewStartScene : PixelScene() {
 
         btnLoadGame = object : GameButton(M.L(this, "load")) {
             override fun onClick() {
-                InterlevelScene.mode = InterlevelScene.Mode.CONTINUE
+                InterlevelScene.mode = if (GamesInProgress.check(CurrentClass)!!.isBackup)
+                    InterlevelScene.Mode.REFLUX else InterlevelScene.Mode.CONTINUE
+
                 Game.switchScene(InterlevelScene::class.java)
             }
 
-            override fun onLongClick(): Boolean {
-                InterlevelScene.mode = InterlevelScene.Mode.REFLUX
-                Game.switchScene(InterlevelScene::class.java)
-                return false
-            }
+//            override fun onLongClick(): Boolean {
+//                InterlevelScene.mode = InterlevelScene.Mode.REFLUX
+//                Game.switchScene(InterlevelScene::class.java)
+//                return false
+//            }
         }
         add(btnLoadGame)
 
@@ -180,7 +181,8 @@ class NewStartScene : PixelScene() {
             val info = GamesInProgress.check(CurrentClass)
             if (info != null) {
                 btnLoadGame.visible = true
-                btnLoadGame.secondary(M.L(this, "depth_level", info.depth, info.level), info.challenges)
+                val str = if (info.isBackup) M.L(this, "back_up") else M.L(this, "depth_level", info.depth, info.level)
+                btnLoadGame.secondary(str, info.challenges)
 
                 btnNewGame.visible = true
                 btnNewGame.secondary(M.L(this, "erase"), false)
@@ -361,21 +363,6 @@ class NewStartScene : PixelScene() {
             avatar.rm = avatar.am
             avatar.bm = avatar.rm
             avatar.gm = avatar.bm
-        }
-    }
-
-    private class WndClasses : Window() {
-        init {
-            var h = GAP
-            for (cls in enumValues<HeroClass>()) {
-                val btn = RedButton(cls.title())
-                btn.setRect(0f, h, WIDTH_P, 20f)
-                add(btn)
-
-                h += 20f + GAP
-            }
-
-            resize(WIDTH_P.toInt(), h.toInt())
         }
     }
 

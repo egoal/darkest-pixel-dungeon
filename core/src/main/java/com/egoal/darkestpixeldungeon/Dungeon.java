@@ -62,7 +62,7 @@ import java.util.HashSet;
 public class Dungeon {
 
   public static int initialDepth_ = -1;
-  public static final String VERSION_STRING = "0.4.0-1-2";
+  public static final String VERSION_STRING = "0.4.0-2-1";
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -488,7 +488,7 @@ public class Dungeon {
               .getHeroClass()) : null);
       saveLevel(doBackup ? backupLevelFile(hero.getHeroClass()) : null);
 
-      GamesInProgress.set(hero.getHeroClass(), depth, hero.getLvl(),
+      GamesInProgress.INSTANCE.set(hero.getHeroClass(), depth, hero.getLvl(),
               challenges != 0);
 
     } else if (WndResurrect.instance != null) {
@@ -570,7 +570,7 @@ public class Dungeon {
       }
 
     } catch (IOException e) {
-      GamesInProgress.setUnknown(hero.getHeroClass());
+      GamesInProgress.INSTANCE.setUnknown(hero.getHeroClass());
       DarkestPixelDungeon.reportException(e);
     }
   }
@@ -731,7 +731,7 @@ public class Dungeon {
       Game.instance.deleteFile(backupGameFile(cl));
     }
 
-    GamesInProgress.delete(cl);
+    GamesInProgress.INSTANCE.delete(cl);
   }
 
   public static Bundle gameBundle(String fileName) throws IOException {
@@ -744,10 +744,10 @@ public class Dungeon {
   }
 
   public static void preview(GamesInProgress.Info info, Bundle bundle) {
-    info.depth = bundle.getInt(DEPTH);
-    info.challenges = (bundle.getInt(CHALLENGES) != 0);
-    if (info.depth == -1) {
-      info.depth = bundle.getInt("maxDepth");  // FIXME
+    info.setDepth(bundle.getInt(DEPTH));
+    info.setChallenges((bundle.getInt(CHALLENGES) != 0));
+    if (info.getDepth() == -1) {
+      info.setDepth(bundle.getInt("maxDepth"));  // FIXME
     }
     Hero.Companion.Preview(info, bundle.getBundle(HERO));
   }

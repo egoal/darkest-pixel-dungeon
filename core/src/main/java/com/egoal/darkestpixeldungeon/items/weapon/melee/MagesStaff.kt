@@ -51,7 +51,7 @@ class MagesStaff(w: Wand? = null) : MeleeWeapon() {
             identify()
             cursed = false
             maxCharges = kotlin.math.min(maxCharges + 1, 10)
-            curCharges = maxCharges
+            curCharges = w.curCharges
         }
         wand = w
         name = M.L(wand!!, "staff_name")

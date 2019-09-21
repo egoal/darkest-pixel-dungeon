@@ -48,7 +48,7 @@ class AshesSkull : Mob() {
 
         // copy from guard
         return if (jumpcd <= 0 && state == HUNTING && paralysed <= 0 && enemy != null && enemy.invisible == 0 &&
-                Level.fieldOfView[enemy.pos] && Dungeon.level.distance(pos, enemy.pos) <= 4 &&
+                Level.fieldOfView[enemy.pos] && Dungeon.level.distance(pos, enemy.pos) <= 6 &&
                 !Dungeon.level.adjacent(pos, enemy.pos) && jump(enemy))
             false
         else super.act()
@@ -87,7 +87,7 @@ class AshesSkull : Mob() {
 
         val dis = Dungeon.level.distance(pos, Dungeon.hero.pos)
         if (Dungeon.hero.isAlive && dis <= 3) {
-            val dmg = Damage(Random.NormalIntRange(3, 8), this, Dungeon.hero).type(Damage.Type.MENTAL)
+            val dmg = Damage(Random.NormalIntRange(2, 8), this, Dungeon.hero).type(Damage.Type.MENTAL)
             Dungeon.hero.takeDamage(dmg)
         }
 

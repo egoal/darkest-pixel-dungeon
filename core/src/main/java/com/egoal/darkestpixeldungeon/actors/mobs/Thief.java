@@ -108,6 +108,7 @@ public class Thief extends Mob {
   public Damage attackProc(Damage dmg) {
     Char enemy = (Char) dmg.to;
     if (item == null && enemy instanceof Hero && steal((Hero) enemy)) {
+      enemy.takeDamage(new Damage(Random.IntRange(1, 5), this, enemy).type(Damage.Type.MENTAL));
       state = FLEEING;
     }
 
@@ -203,7 +204,7 @@ public class Thief extends Mob {
           if (item != null) {
             GLog.n(Messages.get(Thief.class, "escapes", item.name()));
             if(Dungeon.hero.isAlive())
-              Dungeon.hero.takeDamage(new Damage(Random.IntRange(3, 5), this, Dungeon.hero).
+              Dungeon.hero.takeDamage(new Damage(Random.IntRange(2, 6), this, Dungeon.hero).
                     type(Damage.Type.MENTAL).addFeature(Damage.Feature.PURE));
           }
           item = null;

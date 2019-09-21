@@ -25,6 +25,8 @@ import android.opengl.GLES20;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.TopExceptionHandler;
+import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
+import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
 import com.egoal.darkestpixeldungeon.effects.BannerSprites;
 import com.egoal.darkestpixeldungeon.effects.Fireball;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -173,7 +175,7 @@ public class TitleScene extends PixelScene {
 
     // version & changes
     // add sdp version
-    BitmapText sdpVersion = new BitmapText("v 0.4.2b", pixelFont);
+    BitmapText sdpVersion = new BitmapText("spd v0.4.2b", pixelFont);
     sdpVersion.measure();
     sdpVersion.hardlight(0x888888);
     sdpVersion.x = w - sdpVersion.width();

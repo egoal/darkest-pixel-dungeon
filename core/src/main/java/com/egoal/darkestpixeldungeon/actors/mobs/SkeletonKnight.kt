@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
+import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
@@ -25,7 +26,7 @@ class SkeletonKnight : Mob() {
         spriteClass = SkeletonKnightSprite::class.java
 
         PropertyConfiger.set(this, "SkeletonKnight")
-        loot = Wine()
+        loot = if (Random.Float() < 0.5f) Wine() else BrownAle()
     }
 
     override fun act(): Boolean {

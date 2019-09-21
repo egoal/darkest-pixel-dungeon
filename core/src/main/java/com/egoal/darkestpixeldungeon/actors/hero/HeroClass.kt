@@ -106,7 +106,8 @@ enum class HeroClass(private val title: String) {
 
             hero.addResistances(Damage.Element.FIRE, 0.1f)
             hero.addResistances(Damage.Element.POISON, -0.2f)
-            hero.addResistances(Damage.Element.LIGHT, 0.1f)
+            hero.addResistances(Damage.Element.LIGHT, -0.1f)
+            hero.addResistances(Damage.Element.SHADOW, 0.1f)
         }
     },
 
@@ -168,6 +169,7 @@ enum class HeroClass(private val title: String) {
 
             hero.addResistances(Damage.Element.POISON, 0.2f)
             hero.addResistances(Damage.Element.ICE, -0.1f)
+            hero.addResistances(Damage.Element.FIRE, -0.2f)
         }
     },
 
@@ -198,7 +200,6 @@ enum class HeroClass(private val title: String) {
 
             val flask = ExtractionFlask()
             flask.identify().collect()
-            // Dungeon.quickslot.setSlot(0, flask)
 
             val darts = Dart(6)
             darts.identify().collect()

@@ -18,6 +18,7 @@ import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
+import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
 class WandGuard : Mob() {
@@ -40,7 +41,7 @@ class WandGuard : Mob() {
         properties.add(Property.IMMOVABLE)
     }
 
-    private val wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {
+    private var wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {
         level(Random.IntRange(Dungeon.depth / 4, Dungeon.depth / 3))
     }
 
@@ -64,7 +65,7 @@ class WandGuard : Mob() {
                 Dungeon.fail(dmg.from.javaClass)
                 GLog.n(Messages.capitalize(Messages.get(Char::class.java, "kill", (dmg.from as Char).name)))
             }
-            
+
             //todo: i cannot use Wand::onZap(): coupling with Hero, may find way out
             //todo: fire wand performs not well
         }
@@ -102,7 +103,19 @@ class WandGuard : Mob() {
 
     override fun getFurther(target: Int): Boolean = true
 
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(WAND, wand)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        wand = bundle.get(WAND) as DamageWand
+    }
+
     companion object {
+        private const val WAND = "wand"
+
         private const val TIME_TO_ZAP = 1f
 
         private val WAND_PROBS = hashMapOf<Class<out DamageWand>, Float>(

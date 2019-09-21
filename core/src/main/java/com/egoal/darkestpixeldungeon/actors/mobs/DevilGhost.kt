@@ -52,7 +52,7 @@ class DevilGhost : Wraith() {
 
     override fun adjustStats(level: Int) {
         this.level = level
-        defSkill = 10f + level * 2f
+        defSkill = 20f + level * 2f
         enemySeen = true
     }
 

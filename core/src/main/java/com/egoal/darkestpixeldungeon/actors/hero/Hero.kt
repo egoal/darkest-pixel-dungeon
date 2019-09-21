@@ -789,6 +789,7 @@ class Hero : Char() {
 
     fun earnExp(gained: Int) {
         exp += gained
+        exp += heroPerk.get(QuickLearner::class.java)?.extraExp(gained) ?: 0
 
         val percent = gained.toFloat() / maxExp().toFloat()
         buff(EtherealChains.chainsRecharge::class.java)?.gainExp(percent)

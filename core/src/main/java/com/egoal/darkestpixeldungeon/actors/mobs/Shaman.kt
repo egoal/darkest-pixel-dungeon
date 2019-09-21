@@ -56,7 +56,7 @@ class Shaman : Mob(), Callback {
 
     private var buffcd = 0f //todo: rework skilled ai
 
-    override fun giveDamage(target: Char): Damage =super.giveDamage(target).addElement(Damage.Element.LIGHT)
+    override fun giveDamage(target: Char): Damage = super.giveDamage(target).addElement(Damage.Element.LIGHT)
 
     override fun canAttack(enemy: Char): Boolean = Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
 
@@ -73,15 +73,12 @@ class Shaman : Mob(), Callback {
 
             spend(TIME_TO_ZAP)
 
-            val dmg = Damage(Random.NormalIntRange(3, 10),
-                    this, enemy).type(Damage.Type.MAGICAL).addElement(Damage
-                    .Element.LIGHT)
+            val dmg = giveDamage(enemy).addFeature(Damage.Feature.RANGED)
 
             if (enemy.checkHit(dmg)) {
                 if (Level.water[enemy.pos] && !enemy.flying)
                     dmg.value = (dmg.value.toFloat() * 1.5f).toInt()
 
-                enemy.defendDamage(dmg)
                 enemy.takeDamage(dmg)
 
                 enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3)
@@ -125,7 +122,7 @@ class Shaman : Mob(), Callback {
 
                 if (nearbys.isNotEmpty()) {
                     buffRage(Random.element(nearbys))
-                    return true 
+                    return true
                 } else if (buff(Rage::class.java) == null) {
                     buffRage(this@Shaman)
                     return true
@@ -136,6 +133,8 @@ class Shaman : Mob(), Callback {
         }
 
         private fun buffRage(mob: Mob) {
+            if (mob !== this@Shaman && enemy != null) mob.beckon(enemy.pos)
+
             Buff.prolong(mob, Rage::class.java, 10f)
             buffcd = COOLDOWN_BUFF
 

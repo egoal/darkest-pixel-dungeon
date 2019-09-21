@@ -7,14 +7,13 @@ import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.windows.WndMessage
 import com.watabou.gltextures.TextureCache
 import com.watabou.noosa.BitmapText
-import com.watabou.noosa.ColorBlock
 import com.watabou.noosa.Image
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.ui.Button
 
 open class PerkSlot(protected val perk: Perk) : Button() {
     private lateinit var icon: Image
-    private lateinit var bottomRight: BitmapText
+    private lateinit var topRight: BitmapText
 
     init {
         setPerk()
@@ -25,10 +24,10 @@ open class PerkSlot(protected val perk: Perk) : Button() {
         icon.frame(film.get(index))
 
         if (perk.level > 1 || perk.upgradable()) {
-            bottomRight.text("${perk.level}")
-            bottomRight.hardlight(0xf1ca3e)
-            bottomRight.measure()
-        } else bottomRight.visible = false
+            topRight.text("${perk.level}")
+            topRight.hardlight(0xf1ca3e)
+            topRight.measure()
+        } else topRight.visible = false
     }
 
     override fun createChildren() {
@@ -37,8 +36,8 @@ open class PerkSlot(protected val perk: Perk) : Button() {
         icon = Image(icons)
         add(icon)
 
-        bottomRight = BitmapText(PixelScene.pixelFont)
-        add(bottomRight)
+        topRight = BitmapText(PixelScene.pixelFont)
+        add(topRight)
     }
 
     override fun layout() {
@@ -47,8 +46,8 @@ open class PerkSlot(protected val perk: Perk) : Button() {
         icon.x = x + (width - icon.width) / 2
         icon.y = y + (height - icon.height) / 2
 
-        bottomRight.x = x + (width - bottomRight.width())
-        bottomRight.y = y + (height - bottomRight.height())
+        topRight.x = x + (width - topRight.width())
+        topRight.y = y // - (height - topRight.height())
     }
 
     override fun onClick() {

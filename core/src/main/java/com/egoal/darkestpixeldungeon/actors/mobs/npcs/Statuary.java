@@ -252,7 +252,8 @@ public class Statuary extends NPC {
             if (a.glyph == null)
               a.glyph = Armor.Glyph.randomCurse();
           }
-        }
+        }else
+          hero.takeDamage(new Damage(Random.IntRange(3, 12), this, hero).type(Damage.Type.MENTAL));
 
         if (Dungeon.visible[pos]) {
           CellEmitter.get(pos).burst(ShadowParticle.UP, 5);

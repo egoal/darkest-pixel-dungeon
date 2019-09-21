@@ -27,7 +27,7 @@ class ArmoryDigger : RectDigger() {
 
         Set(level, rect.random(1), Terrain.STATUE)
 
-        val n = Random.IntRange(1, 3)
+        val n = Random.IntRange(2, 3)
         for (i in 1..n) {
             var pos: Int
             do {
@@ -47,7 +47,7 @@ class ArmoryDigger : RectDigger() {
         private val PrizeGenerators =   hashMapOf(
                 Generator.ARMOR to 0.75f,
                 Generator.WEAPON to 1f,
-                Generator.HELMET to 0.45f
+                Generator.HELMET to 0.5f
         )
     }
 }

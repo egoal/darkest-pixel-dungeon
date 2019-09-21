@@ -52,7 +52,7 @@ public class Warlock extends Mob implements Callback {
 
   @Override
   public Damage giveDamage(Char target) {
-    return super.giveDamage(target).addElement(Damage.Element.SHADOW).addFeature(Damage.Feature.RANGED);
+    return super.giveDamage(target).addElement(Damage.Element.SHADOW);
   }
 
   @Override
@@ -83,15 +83,13 @@ public class Warlock extends Mob implements Callback {
   private void zap() {
     spend(TIME_TO_ZAP);
 
-    Damage dmg = new Damage(Random.Int(12, 18), this, enemy).
-            type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
+    Damage dmg = giveDamage(enemy).addFeature(Damage.Feature.RANGED);
 
     if (enemy.checkHit(dmg)) {
       if (enemy == Dungeon.hero && Random.Int(2) == 0) {
         Buff.prolong(enemy, Weakness.class, Weakness.duration(enemy));
       }
 
-      enemy.defendDamage(dmg);
       enemy.takeDamage(dmg);
 
       if (!enemy.isAlive() && enemy == Dungeon.hero) {

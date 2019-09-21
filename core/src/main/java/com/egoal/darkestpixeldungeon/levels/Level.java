@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath;
 ;
 import com.egoal.darkestpixeldungeon.items.Generator;
+import com.egoal.darkestpixeldungeon.items.food.BrownAle;
 import com.egoal.darkestpixeldungeon.items.food.Wine;
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -1106,7 +1107,7 @@ public abstract class Level implements Bundlable {
     }
     if (Dungeon.wineNeeded()) {
       if (Random.Float() > p) items.add(new Wine());
-      items.add(new Wine());
+      items.add(Random.Float()<0.6f? new Wine(): new BrownAle());
       Dungeon.limitedDrops.wine.count++;
     }
     if (Dungeon.scrollOfLullabyNeed()) {

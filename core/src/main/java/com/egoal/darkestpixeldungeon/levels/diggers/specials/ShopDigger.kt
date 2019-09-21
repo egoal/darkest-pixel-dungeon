@@ -134,7 +134,7 @@ class ShopDigger : RectDigger() {
 
         itemsToSpawn.add(OverpricedRation())
         itemsToSpawn.add(OverpricedRation())
-        itemsToSpawn.add(Wine())
+        itemsToSpawn.add(if (Random.Float() < 0.4f) Wine() else BrownAle())
         itemsToSpawn.add(BrownAle())
 
         // no bombs anymore
@@ -203,7 +203,7 @@ class ShopDigger : RectDigger() {
             Dungeon.limitedDrops.seedBag.drop()
             return SeedPouch()
 
-        } else if (scrolls >= potions && scrolls >= wands && 
+        } else if (scrolls >= potions && scrolls >= wands &&
                 !Dungeon.limitedDrops.scrollBag.dropped()) {
             Dungeon.limitedDrops.scrollBag.drop()
             return ScrollHolder()

@@ -11,7 +11,7 @@ private const val STR_LEVEL = "level"
 abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
     open fun description(): String = M.L(this, "desc")
 
-    open fun image(): Int = 0
+    open fun image(): Int = PerkImageSheet.NONE
 
     open fun upgradable(): Boolean = level < maxLevel
 
@@ -106,7 +106,8 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 ExplodeBrokenShot() to 1f,
                 ExtraStrength() to 0.75f,
                 ExtraRuneRegularly() to 0.8f,
-                AngryBared() to 0.8f
+                AngryBared() to 0.8f,
+                QuickLearner() to 1f
         )
     }
 }
