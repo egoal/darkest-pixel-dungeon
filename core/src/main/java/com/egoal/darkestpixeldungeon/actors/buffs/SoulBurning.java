@@ -43,16 +43,13 @@ public class SoulBurning extends Buff implements Hero.Doom {
   @Override
   public boolean act() {
     if (target.isAlive()) {
-      // hp damage: scales from 7 to 3 depending on hp
-      int maxDmg = 3 + Math.round(5 * target.HP / (float) target.HT);
+      int maxDmg = Dungeon.depth;
       int dmgHP = Random.Int(2, maxDmg);
 
       if (target instanceof Hero) {
         //todo: affect hero
       } else {
-        target.takeDamage(new Damage(dmgHP,
-                this, target).type(Damage.Type.MAGICAL).addElement(Damage
-                .Element.SHADOW));
+        target.takeDamage(new Damage(dmgHP, this, target).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW));
       }
     } else {
       detach();

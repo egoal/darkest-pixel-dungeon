@@ -494,13 +494,8 @@ public abstract class Mob extends Char {
     }
 
     // process buff: soul mark
-    if (buff(SoulMark.class) != null) {
-      int restoration = Math.min(dmg.value, HP);
-      Dungeon.hero.buff(Hunger.class).satisfy(restoration * 0.5f);
-      Dungeon.hero.HP = (int) Math.ceil(Math.min(Dungeon.hero.HT, Dungeon
-              .hero.HP + restoration * .3f));
-      Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-    }
+    SoulMark sm = buff(SoulMark.class);
+    if(sm!=null) sm.affectHero(Dungeon.hero,  Math.min(dmg.value, HP));
 
     return dmg;
   }
