@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.QuickSlot;
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite;
@@ -34,6 +35,7 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.ui.BadgesList;
 import com.egoal.darkestpixeldungeon.ui.Icons;
 import com.egoal.darkestpixeldungeon.ui.ItemSlot;
+import com.egoal.darkestpixeldungeon.ui.PerkSlot;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.ui.ScrollPane;
 import com.egoal.darkestpixeldungeon.ui.Window;
@@ -102,10 +104,10 @@ public class WndRanking extends WndTabbed {
   private void createControls() {
 
     String[] labels =
-            {Messages.get(this, "stats"), Messages.get(this, "items"),
-                    Messages.get(this, "badges")};
+            {Messages.get(this, "stats"), Messages.get(this, "perks"),
+                    Messages.get(this, "items"), Messages.get(this, "badges")};
     Group[] pages =
-            {new StatsTab(), new ItemsTab(), new BadgesTab()};
+            {new StatsTab(), new PerksTab(), new ItemsTab(), new BadgesTab()};
 
     for (int i = 0; i < pages.length; i++) {
 
@@ -223,6 +225,29 @@ public class WndRanking extends WndTabbed {
       parent.add(txt);
 
       return pos + GAP + txt.baseLine();
+    }
+  }
+
+  private class PerksTab extends Group{
+    public PerksTab(){
+      super();
+
+      int i=0;
+      for(final Perk perk : Dungeon.hero.getHeroPerk().getPerks()){
+        float x = i% 4* 23f;
+        float y = i/ 4* 23f;
+
+        PerkSlot ps = new PerkSlot(perk){
+          @Override
+          protected void onClick() {
+            Game.scene().add(new WndMessage(perk.description()));
+          }
+        };
+        ps.setRect(x, y, 22f, 22f);
+
+        add(ps);
+        ++i;
+      }
     }
   }
 
