@@ -45,7 +45,7 @@ public class DisarmingTrap extends Trap {
 
   @Override
   public void activate() {
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
 
     if (heap != null) {
       int cell = Dungeon.level.randomRespawnCell();
@@ -54,7 +54,7 @@ public class DisarmingTrap extends Trap {
         Item item = heap.pickUp();
         Dungeon.level.drop(item, cell).seen = true;
         for (int i : PathFinder.NEIGHBOURS9)
-          Dungeon.level.visited[cell + i] = true;
+          Dungeon.level.getVisited()[cell + i] = true;
         GameScene.updateFog();
 
         Sample.INSTANCE.play(Assets.SND_TELEPORT);
@@ -76,7 +76,7 @@ public class DisarmingTrap extends Trap {
 
           Dungeon.level.drop(weapon, cell).seen = true;
           for (int i : PathFinder.NEIGHBOURS9)
-            Dungeon.level.visited[cell + i] = true;
+            Dungeon.level.getVisited()[cell + i] = true;
           GameScene.updateFog();
 
           GLog.w(Messages.get(this, "disarm"));

@@ -34,7 +34,7 @@ public class LockedFloor extends Buff {
   public boolean act() {
     spend(TICK);
 
-    if (!Dungeon.level.locked)
+    if (!Dungeon.level.getLocked())
       detach();
 
     if (left >= 1)

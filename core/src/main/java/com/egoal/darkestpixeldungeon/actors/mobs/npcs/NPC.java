@@ -41,12 +41,12 @@ public abstract class NPC extends Mob {
 
   // never overlap with an item
   protected void throwItem() {
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) {
       int n;
       do {
         n = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-      } while (!Level.passable[n] && !Level.avoid[n]);
+      } while (!Level.Companion.getPassable()[n] && !Level.Companion.getAvoid()[n]);
       Dungeon.level.drop(heap.pickUp(), n).sprite.drop(pos);
     }
   }

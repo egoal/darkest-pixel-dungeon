@@ -77,7 +77,7 @@ public class Goo extends Mob {
     if (pumpedUp > 0) {
       // pumped attack
       pumpedUp = 0;
-      PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), 2);
+      PathFinder.buildDistanceMap(pos, BArray.not(Level.Companion.getSolid(), null), 2);
       for (int i = 0; i < PathFinder.distance.length; i++) {
         if (PathFinder.distance[i] < Integer.MAX_VALUE)
           CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
@@ -108,7 +108,7 @@ public class Goo extends Mob {
   @Override
   public boolean act() {
     // healing in the water, and update health bar animation
-    if (Level.water[pos] && HP < HT) {
+    if (Level.Companion.getWater()[pos] && HP < HT) {
       sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
       if (HP * 2 == HT) {
         BossHealthBar.bleed(false);
@@ -156,7 +156,7 @@ public class Goo extends Mob {
     if (pumpedUp == 1) {
       // pumped an extra turn
       ((GooSprite) sprite).pumpUp();
-      PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), 2);
+      PathFinder.buildDistanceMap(pos, BArray.not(Level.Companion.getSolid(), null), 2);
       for (int i = 0; i < PathFinder.distance.length; i++) {
         if (PathFinder.distance[i] < Integer.MAX_VALUE)
           GameScene.add(Blob.seed(i, 2, GooWarn.class));
@@ -191,7 +191,7 @@ public class Goo extends Mob {
 
       for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
         int j = pos + PathFinder.NEIGHBOURS9[i];
-        if (!Level.solid[j]) {
+        if (!Level.Companion.getSolid()[j]) {
           GameScene.add(Blob.seed(j, 2, GooWarn.class));
         }
       }

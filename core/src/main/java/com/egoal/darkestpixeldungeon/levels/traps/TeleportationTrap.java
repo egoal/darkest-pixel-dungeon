@@ -77,7 +77,7 @@ public class TeleportationTrap extends Trap {
       }
     }
 
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
 
     if (heap != null) {
       int cell = Dungeon.level.randomRespawnCell();

@@ -38,7 +38,6 @@ import com.egoal.darkestpixeldungeon.levels.*;
 import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
-import com.egoal.darkestpixeldungeon.scenes.NewStartScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.egoal.darkestpixeldungeon.windows.WndResurrect;
@@ -185,7 +184,7 @@ public class Dungeon {
     Badges.reset();
 
 //    StartScene.curClass.initHero(hero);
-    NewStartScene.Companion.getCurrentClass().initHero(hero);
+    StartScene.Companion.getCurrentClass().initHero(hero);
   }
 
   public static boolean isChallenged(int mask) {
@@ -279,7 +278,7 @@ public class Dungeon {
     Actor.clear();
 
     level.reset();
-    switchLevel(level, level.entrance);
+    switchLevel(level, level.getEntrance());
   }
 
   public static boolean shopOnLevel() {
@@ -300,7 +299,7 @@ public class Dungeon {
 
     Dungeon.level = level;
     if (pos < 0 || pos >= level.length()) {
-      pos = level.exit;
+      pos = level.getExit();
     }
     Dungeon.level.onSwitchedIn();
 
@@ -794,7 +793,7 @@ public class Dungeon {
     int len = bx - ax + 1;
     int pos = ax + ay * level.width();
     for (int y = ay; y <= by; y++, pos += level.width()) {
-      BArray.or(level.visited, visible, pos, len, level.visited);
+      BArray.or(level.getVisited(), visible, pos, len, level.getVisited());
     }
 
     if (hero.buff(MindVision.class) != null || hero.buff(Awareness.class) !=
@@ -821,7 +820,7 @@ public class Dungeon {
 
     setupPassable();
     if (ch.flying || ch.buff(Amok.class) != null) {
-      BArray.or(pass, Level.avoid, passable);
+      BArray.or(pass, Level.Companion.getAvoid(), passable);
     } else {
       System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());
     }
@@ -840,13 +839,13 @@ public class Dungeon {
                              boolean[] visible) {
 
     if (level.adjacent(from, to)) {
-      return Actor.findChar(to) == null && (pass[to] || Level.avoid[to]) ? to
+      return Actor.findChar(to) == null && (pass[to] || Level.Companion.getAvoid()[to]) ? to
               : -1;
     }
 
     setupPassable();
     if (ch.flying || ch.buff(Amok.class) != null) {
-      BArray.or(pass, Level.avoid, passable);
+      BArray.or(pass, Level.Companion.getAvoid(), passable);
     } else {
       System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());
     }
@@ -866,7 +865,7 @@ public class Dungeon {
 
     setupPassable();
     if (ch.flying) {
-      BArray.or(pass, Level.avoid, passable);
+      BArray.or(pass, Level.Companion.getAvoid(), passable);
     } else {
       System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());
     }

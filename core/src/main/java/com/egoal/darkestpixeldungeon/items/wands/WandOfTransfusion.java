@@ -74,7 +74,7 @@ public class WandOfTransfusion extends Wand {
     int cell = beam.collisionPos;
 
     Char ch = Actor.findChar(cell);
-    Heap heap = Dungeon.level.heaps.get(cell);
+    Heap heap = Dungeon.level.getHeaps().get(cell);
 
     //this wand does a bunch of different things depending on what it targets.
 
@@ -142,15 +142,15 @@ public class WandOfTransfusion extends Wand {
       }
 
       //if we find some trampled grass...
-    } else if (Dungeon.level.map[cell] == Terrain.GRASS) {
+    } else if (Dungeon.level.getMap()[cell] == Terrain.GRASS) {
 
       //regrow one grass tile, suuuuuper useful...
-      Dungeon.level.set(cell, Terrain.HIGH_GRASS);
+      Dungeon.level.Companion.set(cell, Terrain.HIGH_GRASS);
       GameScene.updateMap(cell);
       CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
 
       //If we find embers...
-    } else if (Dungeon.level.map[cell] == Terrain.EMBERS) {
+    } else if (Dungeon.level.getMap()[cell] == Terrain.EMBERS) {
 
       //30% + 3%*lvl chance to grow a random plant, or just regrow grass.
       if (Random.Float() <= 0.3f + level() * 0.03f) {
@@ -158,7 +158,7 @@ public class WandOfTransfusion extends Wand {
         CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 8);
         GameScene.updateMap(cell);
       } else {
-        Dungeon.level.set(cell, Terrain.HIGH_GRASS);
+        Dungeon.level.Companion.set(cell, Terrain.HIGH_GRASS);
         GameScene.updateMap(cell);
         CellEmitter.get(cell).burst(LeafParticle.LEVEL_SPECIFIC, 4);
       }

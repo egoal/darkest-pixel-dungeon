@@ -50,7 +50,7 @@ class PoolDigger : RectDigger() {
             val p = Piranha()
             do {
                 p.pos = level.pointToCell(rect.random())
-            } while (level.map[p.pos] != Terrain.WATER || level.findMob(p.pos) != null)
+            } while (level.map[p.pos] != Terrain.WATER || level.findMobAt(p.pos) != null)
             level.mobs.add(p)
         }
 
@@ -78,7 +78,7 @@ class PoolDigger : RectDigger() {
             val p = Piranha()
             do {
                 p.pos = level.pointToCell(rect.random(2))
-            } while (level.map[p.pos] != Terrain.WATER || level.findMob(p.pos) != null)
+            } while (level.map[p.pos] != Terrain.WATER || level.findMobAt(p.pos) != null)
             level.mobs.add(p)
         }
 

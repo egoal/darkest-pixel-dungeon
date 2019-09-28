@@ -43,18 +43,17 @@ public class Regrowth extends Blob {
         for (int j = area.top; j < area.bottom; j++) {
           cell = i + j * Dungeon.level.width();
           if (off[cell] > 0) {
-            int c = Dungeon.level.map[cell];
+            int c = Dungeon.level.getMap()[cell];
             int c1 = c;
             if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain
                     .EMPTY_DECO) {
               c1 = cur[cell] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS;
-            } else if (c == Terrain.GRASS && cur[cell] > 9 && Dungeon.level
-                    .plants.get(cell) == null) {
+            } else if (c == Terrain.GRASS && cur[cell] > 9 && Dungeon.level.getPlants().get(cell) == null) {
               c1 = Terrain.HIGH_GRASS;
             }
 
             if (c1 != c) {
-              Level.set(cell, c1);
+              Level.Companion.set(cell, c1);
               GameScene.updateMap(cell);
             }
 

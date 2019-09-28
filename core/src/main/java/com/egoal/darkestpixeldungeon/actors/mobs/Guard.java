@@ -56,13 +56,13 @@ public class Guard extends Mob {
 
   @Override
   protected boolean act() {
-    Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
+    Dungeon.level.updateFieldOfView(this, Level.Companion.getFieldOfView());
 
     if (state == HUNTING &&
             paralysed <= 0 &&
             enemy != null &&
             enemy.invisible == 0 &&
-            Level.fieldOfView[enemy.pos] &&
+            Level.Companion.getFieldOfView()[enemy.pos] &&
             Dungeon.level.distance(pos, enemy.pos) < 5 &&
             !Dungeon.level.adjacent(pos, enemy.pos) &&
             Random.Int(3) == 0 &&
@@ -82,13 +82,12 @@ public class Guard extends Mob {
 
     Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
-    if (chain.collisionPos != enemy.pos || chain.path.size() < 2 || Level
-            .pit[chain.path.get(1)])
+    if (chain.collisionPos != enemy.pos || chain.path.size() < 2 || Level.Companion.getPit()[chain.path.get(1)])
       return false;
     else {
       int newPos = -1;
       for (int i : chain.subPath(1, chain.dist)) {
-        if (!Level.solid[i] && Actor.findChar(i) == null) {
+        if (!Level.Companion.getSolid()[i] && Actor.findChar(i) == null) {
           newPos = i;
           break;
         }

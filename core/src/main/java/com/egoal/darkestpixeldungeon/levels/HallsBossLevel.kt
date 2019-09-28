@@ -53,20 +53,13 @@ class HallsBossLevel : Level() {
     private var enteredArena = false
     private var keyDropped = false
 
-    override fun tilesTex(): String? {
-        return Assets.TILES_HALLS
-    }
+    override fun tilesTex(): String = Assets.TILES_HALLS
 
-    override fun waterTex(): String? {
-        return Assets.WATER_HALLS
-    }
+    override fun waterTex(): String = Assets.WATER_HALLS
 
-    override fun trackMusic(): String {
-        return if (enteredArena && !keyDropped)
-            Assets.TRACK_FINAL_INTRO
-        else
-            Assets.TRACK_CHAPTER_5
-    }
+
+    override fun trackMusic(): String = if (enteredArena && !keyDropped) Assets.TRACK_FINAL_INTRO
+    else Assets.TRACK_CHAPTER_5
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

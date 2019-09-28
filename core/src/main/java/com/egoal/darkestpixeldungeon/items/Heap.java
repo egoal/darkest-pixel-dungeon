@@ -480,7 +480,7 @@ public class Heap implements Bundlable {
   }
 
   public void destroy() {
-    Dungeon.level.heaps.remove(this.pos);
+    Dungeon.level.getHeaps().remove(this.pos);
     if (sprite != null) {
       sprite.kill();
     }

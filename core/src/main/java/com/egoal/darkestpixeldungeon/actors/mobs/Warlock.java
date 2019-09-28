@@ -69,7 +69,7 @@ public class Warlock extends Mob implements Callback {
 
     } else {
 
-      boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
+      boolean visible = Level.Companion.getFieldOfView()[pos] || Level.Companion.getFieldOfView()[enemy.pos];
       if (visible) {
         sprite.zap(enemy.pos);
       } else {

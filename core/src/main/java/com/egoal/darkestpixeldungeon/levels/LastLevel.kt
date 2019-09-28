@@ -79,7 +79,7 @@ class LastLevel : Level() {
         return visuals
     }
 
-    override fun restoreFromBundle(bundle: Bundle?) {
+    override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         disableChasms()
     }

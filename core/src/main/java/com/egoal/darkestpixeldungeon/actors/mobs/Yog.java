@@ -84,7 +84,7 @@ public class Yog extends Mob {
       fist1.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
       fist2.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
     }
-    while (!Level.passable[fist1.pos] || !Level.passable[fist2.pos] ||
+    while (!Level.Companion.getPassable()[fist1.pos] || !Level.Companion.getPassable()[fist2.pos] ||
             fist1.pos == fist2.pos);
 
     GameScene.add(fist1);
@@ -105,7 +105,7 @@ public class Yog extends Mob {
   public int takeDamage(Damage dmg) {
     HashSet<Mob> fists = new HashSet<>();
 
-    for (Mob mob : Dungeon.level.mobs)
+    for (Mob mob : Dungeon.level.getMobs())
       if (mob instanceof RottingFist || mob instanceof BurningFist)
         fists.add(mob);
 
@@ -131,7 +131,7 @@ public class Yog extends Mob {
 
     for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
       int p = pos + PathFinder.NEIGHBOURS8[i];
-      if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
+      if (Actor.findChar(p) == null && (Level.Companion.getPassable()[p] || Level.Companion.getAvoid()[p])) {
         spawnPoints.add(p);
       }
     }
@@ -144,7 +144,7 @@ public class Yog extends Mob {
       Actor.addDelayed(new Pushing(larva, pos, larva.pos), -1);
     }
 
-    for (Mob mob : Dungeon.level.mobs) {
+    for (Mob mob : Dungeon.level.getMobs()) {
       if (mob instanceof BurningFist || mob instanceof RottingFist || mob
               instanceof Larva) {
         mob.aggro(enemy);
@@ -165,7 +165,7 @@ public class Yog extends Mob {
     // remove view mark
     Buff.detach(Dungeon.hero, ViewMark.class);
 
-    for (Mob mob : (Iterable<Mob>) Dungeon.level.mobs.clone()) {
+    for (Mob mob : (Iterable<Mob>) Dungeon.level.getMobs().clone()) {
       if (mob instanceof BurningFist || mob instanceof RottingFist) {
         mob.die(cause);
       }
@@ -243,7 +243,7 @@ public class Yog extends Mob {
     @Override
     public boolean act() {
 
-      if (Level.water[pos] && HP < HT) {
+      if (Level.Companion.getWater()[pos] && HP < HT) {
         sprite.emitter().burst(ShadowParticle.UP, 2);
         HP += REGENERATION;
       }

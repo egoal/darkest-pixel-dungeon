@@ -109,7 +109,7 @@ public abstract class Char extends Actor {
 
   @Override
   protected boolean act() {
-    Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
+    Dungeon.level.updateFieldOfView(this, Level.Companion.getFieldOfView());
     return false;
   }
 
@@ -157,10 +157,8 @@ public abstract class Char extends Actor {
         vd = 6;
         break;
       case Night:
-        vd = 3;
-        break;
       case MidNight:
-        vd = 2;
+        vd = 3;
         break;
     }
 
@@ -594,7 +592,7 @@ public abstract class Char extends Actor {
     if (Dungeon.level.adjacent(step, pos) && buff(Vertigo.class) != null) {
       sprite.interruptMotion();
       int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-      if (!(Level.passable[newPos] || Level.avoid[newPos]) || findChar
+      if (!(Level.Companion.getPassable()[newPos] || Level.Companion.getAvoid()[newPos]) || findChar
               (newPos) != null)
         return;
       else {
@@ -603,13 +601,13 @@ public abstract class Char extends Actor {
       }
     }
 
-    if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
+    if (Dungeon.level.getMap()[pos] == Terrain.OPEN_DOOR) {
       Door.INSTANCE.Leave(pos, this);
     }
 
     pos = step;
 
-    if (flying && Dungeon.level.map[pos] == Terrain.DOOR) {
+    if (flying && Dungeon.level.getMap()[pos] == Terrain.DOOR) {
       Door.INSTANCE.Enter(pos, this);
     }
 

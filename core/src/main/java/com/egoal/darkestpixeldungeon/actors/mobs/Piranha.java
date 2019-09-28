@@ -59,16 +59,16 @@ public class Piranha extends Mob {
 
   @Override
   protected boolean act() {
-    if (!Level.water[pos]) {
+    if (!Level.Companion.getWater()[pos]) {
       die(null);
       sprite.killAndErase();
       return true;
     } else {
       //this causes pirahna to move away when a door is closed on them.
-      Dungeon.level.updateFieldOfView(this, Level.fieldOfView);
+      Dungeon.level.updateFieldOfView(this, Level.Companion.getFieldOfView());
       enemy = chooseEnemy();
       if (state == this.HUNTING &&
-              !(enemy != null && enemy.isAlive() && Level.fieldOfView[enemy
+              !(enemy != null && enemy.isAlive() && Level.Companion.getFieldOfView()[enemy
                       .pos] && enemy.invisible <= 0)) {
         state = this.WANDERING;
         int oldPos = pos;
@@ -132,8 +132,8 @@ public class Piranha extends Mob {
     }
 
     int step = Dungeon.findStep(this, pos, target,
-            Level.water,
-            Level.fieldOfView);
+            Level.Companion.getWater(),
+            Level.Companion.getFieldOfView());
     if (step != -1) {
       move(step);
       return true;
@@ -145,8 +145,8 @@ public class Piranha extends Mob {
   @Override
   protected boolean getFurther(int target) {
     int step = Dungeon.flee(this, pos, target,
-            Level.water,
-            Level.fieldOfView);
+            Level.Companion.getWater(),
+            Level.Companion.getFieldOfView());
     if (step != -1) {
       move(step);
       return true;

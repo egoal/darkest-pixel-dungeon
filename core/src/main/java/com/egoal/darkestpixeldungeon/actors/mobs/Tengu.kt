@@ -169,7 +169,7 @@ class Tengu : Mob() {
 
     private fun jumpPhantomAttack(enemypos: Int) {
         val availables = PathFinder.NEIGHBOURS8.map { it + enemypos }.filter {
-            Level.passable[it] && Dungeon.level.findMob(it) == null
+            Level.passable[it] && Dungeon.level.findMobAt(it) == null
         }
 
         // hide health bar,
@@ -206,7 +206,7 @@ class Tengu : Mob() {
     private fun jumpAway(curpos: Int) {
         val JUMP_MIN_DISTANCE = 5
 
-        var newpos = -1
+        var newpos: Int
         val waterpos = (Dungeon.level as PrisonBossLevel).hallCenter()
         val waterOK = Dungeon.level.distance(waterpos, curpos) >= 4 &&
                 Actor.findChar(waterpos) == null &&

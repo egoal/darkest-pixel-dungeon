@@ -44,7 +44,7 @@ class MassGraveDigger : RectDigger() {
             val s = Skeleton()
             do {
                 s.pos = level.pointToCell(rect.random())
-            } while (level.map[s.pos] != Terrain.EMPTY_SP || level.findMob(s.pos) != null)
+            } while (level.map[s.pos] != Terrain.EMPTY_SP || level.findMobAt(s.pos) != null)
             level.mobs.add(s)
         }
 

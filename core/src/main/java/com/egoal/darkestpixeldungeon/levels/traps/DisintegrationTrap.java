@@ -57,7 +57,7 @@ public class DisintegrationTrap extends Trap {
       Sample.INSTANCE.play(Assets.SND_RAY);
     }
 
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) heap.explode();
 
     Char ch = Actor.findChar(pos);

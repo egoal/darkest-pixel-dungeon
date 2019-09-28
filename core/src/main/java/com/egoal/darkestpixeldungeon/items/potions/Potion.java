@@ -288,7 +288,7 @@ public class Potion extends Item {
 
   @Override
   protected void onThrow(int cell) {
-    if (Dungeon.level.map[cell] == Terrain.WELL || Level.pit[cell]) {
+    if (Dungeon.level.getMap()[cell] == Terrain.WELL || Level.Companion.getPit()[cell]) {
 
       super.onThrow(cell);
 
@@ -384,7 +384,7 @@ public class Potion extends Item {
     final int color = ItemSprite.pick(image, 8, 10);
     Splash.at(cell, color, 5);
 
-    Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
+    Fire fire = (Fire) Dungeon.level.getBlobs().get(Fire.class);
     if (fire != null)
       fire.clear(cell);
 

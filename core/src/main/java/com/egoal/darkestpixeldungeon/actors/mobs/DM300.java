@@ -106,7 +106,7 @@ public class DM300 extends Mob {
   public void move(int step) {
     super.move(step);
 
-    if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && HP < HT) {
+    if (Dungeon.level.getMap()[step] == Terrain.INACTIVE_TRAP && HP < HT) {
 
       HP += Random.Int(1, HT - HP);
       sprite.emitter().burst(ElmoParticle.FACTORY, 5);
@@ -131,10 +131,10 @@ public class DM300 extends Mob {
       Camera.main.shake(3, 0.7f);
       Sample.INSTANCE.play(Assets.SND_ROCKS);
 
-      if (Level.water[cell]) {
+      if (Level.Companion.getWater()[cell]) {
         GameScene.ripple(cell);
-      } else if (Dungeon.level.map[cell] == Terrain.EMPTY) {
-        Level.set(cell, Terrain.EMPTY_DECO);
+      } else if (Dungeon.level.getMap()[cell] == Terrain.EMPTY) {
+        Level.Companion.set(cell, Terrain.EMPTY_DECO);
         GameScene.updateMap(cell);
       }
     }

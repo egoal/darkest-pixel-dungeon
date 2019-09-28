@@ -43,14 +43,14 @@ public class ScrollOfRage extends Scroll {
   @Override
   protected void doRead() {
 
-    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+    for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0])) {
       mob.beckon(curUser.pos);
-      if (Level.fieldOfView[mob.pos]) {
+      if (Level.Companion.getFieldOfView()[mob.pos]) {
         Buff.prolong(mob, Amok.class, 5f);
       }
     }
 
-    for (Heap heap : Dungeon.level.heaps.values()) {
+    for (Heap heap : Dungeon.level.getHeaps().values()) {
       if (heap.type == Heap.Type.MIMIC) {
         Mimic m = Mimic.Companion.SpawnAt(heap.pos, heap.items);
         if (m != null) {

@@ -84,7 +84,7 @@ public class Swarm extends Mob {
 
     if (HP >= damage.value + 2) {
       ArrayList<Integer> candidates = new ArrayList<>();
-      boolean[] passable = Level.passable;
+      boolean[] passable = Level.Companion.getPassable();
 
       int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos
               - Dungeon.level.width()};
@@ -102,7 +102,7 @@ public class Swarm extends Mob {
         clone.state = clone.HUNTING;
         clone.properties.add(Property.PHANTOM);
 
-        if (Dungeon.level.map[clone.pos] == Terrain.DOOR) {
+        if (Dungeon.level.getMap()[clone.pos] == Terrain.DOOR) {
           Door.INSTANCE.Enter(clone.pos, clone);
         }
 

@@ -23,7 +23,6 @@ package com.egoal.darkestpixeldungeon.items.potions
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
@@ -44,7 +43,7 @@ class PotionOfFrost : Potion() {
 
         if (reinforced) {
             for (offset in PathFinder.NEIGHBOURS9) {
-                Dungeon.level.findMob(cell + offset)?.let { Buff.prolong(it, Frost::class.java, Frost.DURATION) }
+                Dungeon.level.findMobAt(cell + offset)?.let { Buff.prolong(it, Frost::class.java, Frost.DURATION) }
 
                 if (Dungeon.level.distance(curUser.pos, cell) <= 1) {
                     Buff.prolong(curUser, Frost::class.java, Frost.DURATION)

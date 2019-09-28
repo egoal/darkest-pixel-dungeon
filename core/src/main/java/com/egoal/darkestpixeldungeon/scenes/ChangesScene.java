@@ -167,15 +167,13 @@ public class ChangesScene extends PixelScene {
   }
 
   private RedButton createChangeButton(final String version) {
-    RedButton btnVersion = new RedButton(version) {
+    return new RedButton(version) {
       @Override
       protected void onClick() {
         parent.add(new ChangesWindow(
                 Messages.get(ChangesScene.class, "info" + version)));
       }
     };
-
-    return btnVersion;
   }
 
   private static class ChangesWindow extends WndMessage {

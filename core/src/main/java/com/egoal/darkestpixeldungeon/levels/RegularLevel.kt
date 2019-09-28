@@ -75,6 +75,8 @@ abstract class RegularLevel : Level() {
         return true
     }
 
+    fun secretDoors(): Int = map.count { it == Terrain.SECRET_DOOR }
+
     protected var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
@@ -199,7 +201,7 @@ abstract class RegularLevel : Level() {
                 val s = randomSpace(DigResult.Type.Normal)
                 do {
                     ps.pos = pointToCell(s!!.rect.random())
-                } while (findMob(ps.pos) != null || !Level.passable[ps.pos])
+                } while (findMobAt(ps.pos) != null || !Level.passable[ps.pos])
                 mobs.add(ps)
             }
 
@@ -209,7 +211,7 @@ abstract class RegularLevel : Level() {
                 val s = randomSpace(DigResult.Type.Normal)
                 do {
                     ps.pos = pointToCell(s!!.rect.random())
-                } while (findMob(ps.pos) != null || !Level.passable[ps.pos])
+                } while (findMobAt(ps.pos) != null || !Level.passable[ps.pos])
                 mobs.add(ps)
             }
         }
@@ -222,7 +224,7 @@ abstract class RegularLevel : Level() {
             val mob = Bestiary.mob(Dungeon.depth).apply {
                 pos = pointToCell(space.rect.random())
             }
-            if (passable[mob.pos] && findMob(mob.pos) == null) {
+            if (passable[mob.pos] && findMobAt(mob.pos) == null) {
                 mobs.add(mob)
                 1
             } else 0
@@ -363,7 +365,7 @@ abstract class RegularLevel : Level() {
         val trapChances = trapChances()
         val trapClasses = trapClasses()
 
-        val validCells = (1 until length).filter { map[it] == Terrain.EMPTY && findMob(it) == null }.shuffled()
+        val validCells = (1 until length).filter { map[it] == Terrain.EMPTY && findMobAt(it) == null }.shuffled()
         var traps = Math.min(nTraps(), (validCells.size * 0.15).toInt())
 
         Log.d("dpd", "would add $traps traps.")
@@ -418,7 +420,7 @@ abstract class RegularLevel : Level() {
             val s = randomSpace(DigResult.Type.Normal, 1)
             if (s != null) {
                 val cell = pointToCell(s.rect.random())
-                if (passable[cell] && findMob(cell) == null)
+                if (passable[cell] && findMobAt(cell) == null)
                     return cell
             }
         }

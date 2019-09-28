@@ -353,7 +353,7 @@ public class Statuary extends NPC {
       int count = Random.Int(4) == 0 ? 2 : 1;
       for (int n : PathFinder.NEIGHBOURS4) {
         int cell = pos + n;
-        if (Level.passable[cell] && Actor.findChar(cell) == null) {
+        if (Level.Companion.getPassable()[cell] && Actor.findChar(cell) == null) {
           DevilGhost.Companion.SpawnAt(cell);
           if (--count == 0)
             break;
@@ -387,8 +387,8 @@ public class Statuary extends NPC {
     } else {
       // blasphemy, lost memory, give a cursed armor or weapo
       // lost memory
-      Arrays.fill(Dungeon.level.mapped, false);
-      Arrays.fill(Dungeon.level.visited, false);
+      Arrays.fill(Dungeon.level.getMapped(), false);
+      Arrays.fill(Dungeon.level.getVisited(), false);
       StatusPane.needsCompassUpdate = true;
       GameScene.updateFog();
 

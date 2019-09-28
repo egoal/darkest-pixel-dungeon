@@ -44,7 +44,7 @@ public class Annoying extends Weapon.Enchantment {
     Char attacker = (Char) damage.from;
 
     if (Random.Int(20) == 0) {
-      for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+      for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0])) {
         mob.beckon(attacker.pos);
       }
       attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 

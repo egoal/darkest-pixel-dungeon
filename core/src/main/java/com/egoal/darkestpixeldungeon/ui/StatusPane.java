@@ -109,10 +109,10 @@ public class StatusPane extends Component {
     portrait = HeroSprite.Portrait(Dungeon.hero.getHeroClass(), lastTier);
     add(portrait);
 
-    int compassTarget = Dungeon.level.exit;
+    int compassTarget = Dungeon.level.getExit();
     if (Dungeon.hero != null) {
       if (Dungeon.hero.getBelongings().getItem(Amulet.class) != null)
-        compassTarget = Dungeon.level.entrance;
+        compassTarget = Dungeon.level.getEntrance();
     }
 
     compass = new Compass(compassTarget);

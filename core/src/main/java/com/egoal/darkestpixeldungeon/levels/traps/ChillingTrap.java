@@ -48,7 +48,7 @@ public class ChillingTrap extends Trap {
       Sample.INSTANCE.play(Assets.SND_SHATTER);
     }
 
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) heap.freeze();
 
     Char ch = Actor.findChar(pos);

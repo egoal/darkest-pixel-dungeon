@@ -57,7 +57,7 @@ public class WandOfFrost extends DamageWand {
   @Override
   protected void onZap(Ballistica bolt) {
 
-    Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
+    Heap heap = Dungeon.level.getHeaps().get(bolt.collisionPos);
     if (heap != null) {
       heap.freeze();
     }
@@ -83,7 +83,7 @@ public class WandOfFrost extends DamageWand {
               .addElement(Damage.Element.ICE));
 
       if (ch.isAlive()) {
-        if (Level.water[ch.pos])
+        if (Level.Companion.getWater()[ch.pos])
           Buff.prolong(ch, Chill.class, 4 + level());
         else
           Buff.prolong(ch, Chill.class, 2 + level());

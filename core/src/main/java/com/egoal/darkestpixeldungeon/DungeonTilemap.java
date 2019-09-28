@@ -39,7 +39,7 @@ public class DungeonTilemap extends Tilemap {
     super(
             Dungeon.level.tilesTex(),
             new TextureFilm(Dungeon.level.tilesTex(), SIZE, SIZE));
-    map(Dungeon.level.map, Dungeon.level.width());
+    map(Dungeon.level.getMap(), Dungeon.level.width());
 
     instance = this;
   }
@@ -106,6 +106,6 @@ public class DungeonTilemap extends Tilemap {
 
   @Override
   protected boolean needsRender(int pos) {
-    return (Level.discoverable[pos] || Dungeon.level.map[pos] == Terrain.CHASM) && Dungeon.level.map[pos] != Terrain.WATER;
+    return (Level.Companion.getDiscoverable()[pos] || Dungeon.level.getMap()[pos] == Terrain.CHASM) && Dungeon.level.getMap()[pos] != Terrain.WATER;
   }
 }

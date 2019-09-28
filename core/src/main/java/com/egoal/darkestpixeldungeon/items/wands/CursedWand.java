@@ -137,7 +137,7 @@ public class CursedWand {
       case 1:
         cursedFX(user, bolt, new Callback() {
           public void call() {
-            int c = Dungeon.level.map[bolt.collisionPos];
+            int c = Dungeon.level.getMap()[bolt.collisionPos];
             if (c == Terrain.EMPTY ||
                     c == Terrain.EMBERS ||
                     c == Terrain.EMPTY_DECO ||
@@ -319,7 +319,7 @@ public class CursedWand {
               sheep.pos = ch.pos;
               ch.destroy();
               ch.sprite.killAndErase();
-              Dungeon.level.mobs.remove(ch);
+              Dungeon.level.getMobs().remove(ch);
               HealthIndicator.instance.target(null);
               GameScene.add(sheep);
               CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
@@ -349,7 +349,7 @@ public class CursedWand {
           Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
           if (buff != null) buff.detach();
 
-          for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+          for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0]))
             if (mob instanceof GhostHero) mob.destroy();
 
           InterlevelScene.mode = InterlevelScene.Mode.RETURN;
@@ -378,7 +378,7 @@ public class CursedWand {
       //great forest fire!
       case 0:
         for (int i = 0; i < Dungeon.level.length(); i++) {
-          int c = Dungeon.level.map[i];
+          int c = Dungeon.level.getMap()[i];
           if (c == Terrain.EMPTY ||
                   c == Terrain.EMBERS ||
                   c == Terrain.EMPTY_DECO ||

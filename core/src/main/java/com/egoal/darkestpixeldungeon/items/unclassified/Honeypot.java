@@ -80,7 +80,7 @@ public class Honeypot extends Item {
 
   @Override
   protected void onThrow(int cell) {
-    if (Level.pit[cell]) {
+    if (Level.Companion.getPit()[cell]) {
       super.onThrow(cell);
     } else {
       Dungeon.level.drop(shatter(null, cell), cell);
@@ -97,7 +97,7 @@ public class Honeypot extends Item {
     int newPos = pos;
     if (Actor.findChar(pos) != null) {
       ArrayList<Integer> candidates = new ArrayList<Integer>();
-      boolean[] passable = Level.passable;
+      boolean[] passable = Level.Companion.getPassable();
 
       for (int n : PathFinder.NEIGHBOURS4) {
         int c = pos + n;

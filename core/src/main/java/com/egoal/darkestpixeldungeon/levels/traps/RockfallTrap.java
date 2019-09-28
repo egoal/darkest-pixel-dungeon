@@ -58,7 +58,7 @@ public class RockfallTrap extends Trap {
 
     for (int i : PathFinder.NEIGHBOURS9) {
 
-      if (Level.solid[pos + i])
+      if (Level.Companion.getSolid()[pos + i])
         continue;
 
       if (Dungeon.visible[pos + i]) {
@@ -87,7 +87,7 @@ public class RockfallTrap extends Trap {
       }
     }
     
-    for(Mob mob: Dungeon.level.mobs.toArray(new Mob[0])){
+    for(Mob mob: Dungeon.level.getMobs().toArray(new Mob[0])){
       if(Dungeon.level.distance(mob.pos, pos)< 12)
         mob.beckon(pos);
     }

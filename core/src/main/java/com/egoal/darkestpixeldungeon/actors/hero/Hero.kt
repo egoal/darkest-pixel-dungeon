@@ -108,6 +108,7 @@ class Hero : Char() {
 
     override fun viewDistance(): Int {
         var vd = super.viewDistance()
+        if (Statistics.Clock.state == Statistics.ClockTime.State.MidNight) vd -= 1
         if (heroPerk.has(NightVision::class.java) &&
                 (Statistics.Clock.state == Statistics.ClockTime.State.Night ||
                         Statistics.Clock.state == Statistics.ClockTime.State.MidNight))
@@ -217,7 +218,7 @@ class Hero : Char() {
 
     fun restoreFollowers(level: Level, heropos: Int) {
         val avals = PathFinder.NEIGHBOURS8.map { it + heropos }.filter {
-            !Level.solid[it] && level.findMob(it) == null
+            !Level.solid[it] && level.findMobAt(it) == null
         }.shuffled()
 
         for (i in 0 until min(avals.size, followers.size)) {

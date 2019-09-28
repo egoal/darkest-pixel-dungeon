@@ -131,7 +131,7 @@ public class Jessica extends NPC {
         heap.drop(Generator.RING.INSTANCE.generate());
 
         heap.pos = level.randomRespawnCell();
-        level.heaps.put(heap.pos, heap);
+        level.getHeaps().put(heap.pos, heap);
 
 //        level.heaps.put(level.randomRespawnCell(), heap);
         spawned_ = true;

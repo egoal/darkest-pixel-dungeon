@@ -19,7 +19,7 @@ import com.watabou.noosa.ui.Button
 import com.watabou.utils.Callback
 import kotlin.math.min
 
-class NewStartScene : PixelScene() {
+class StartScene : PixelScene() {
     private lateinit var btnLoadGame: GameButton
     private lateinit var btnNewGame: GameButton
     private val shields = hashMapOf<HeroClass, ClassShield>()
@@ -63,11 +63,11 @@ class NewStartScene : PixelScene() {
         btnNewGame = object : GameButton(M.L(this, "new")) {
             override fun onClick() {
                 if (GamesInProgress.check(CurrentClass) != null) {
-                    this@NewStartScene.add(object : WndOptions(
-                            M.L(NewStartScene::class.java, "really"),
-                            M.L(NewStartScene::class.java, "warning"),
-                            M.L(NewStartScene::class.java, "yes"),
-                            M.L(NewStartScene::class.java, "no")) {
+                    this@StartScene.add(object : WndOptions(
+                            M.L(StartScene::class.java, "really"),
+                            M.L(StartScene::class.java, "warning"),
+                            M.L(StartScene::class.java, "yes"),
+                            M.L(StartScene::class.java, "no")) {
                         override fun onSelect(index: Int) {
                             if (index == 0) startNewGame()
                         }
@@ -111,7 +111,7 @@ class NewStartScene : PixelScene() {
             val shield = object : ClassShield(cl) {
                 override fun onTouchDown() {
                     Sample.INSTANCE.play(Assets.SND_CLICK, 1f, 1f, 1.2f)
-                    this@NewStartScene.add(WndClass(heroClass))
+                    this@StartScene.add(WndClass(heroClass))
                 }
             }
             shield.setRect(shieldLeft, shieldTop, shieldW, shieldH)
@@ -138,8 +138,8 @@ class NewStartScene : PixelScene() {
         fadeIn()
 
         Badges.loadingListener = Callback {
-            if (Game.scene() === this@NewStartScene)
-                DarkestPixelDungeon.switchNoFade(NewStartScene::class.java)
+            if (Game.scene() === this@StartScene)
+                DarkestPixelDungeon.switchNoFade(StartScene::class.java)
         }
     }
 
@@ -428,14 +428,14 @@ class NewStartScene : PixelScene() {
 
         override fun onClick() {
             if (Badges.isUnlocked(Badges.Badge.VICTORY)) {
-                this@NewStartScene.add(object : WndChallenges(DarkestPixelDungeon.challenges(), true) {
+                this@StartScene.add(object : WndChallenges(DarkestPixelDungeon.challenges(), true) {
                     override fun onBackPressed() {
                         super.onBackPressed()
                         image.copy(Icons.get(if (DarkestPixelDungeon.challenges() > 0) Icons.CHALLENGE_ON else Icons.CHALLENGE_OFF))
                     }
                 })
             } else
-                this@NewStartScene.add(WndMessage(M.L(NewStartScene::class.java, "need_to_win")))
+                this@StartScene.add(WndMessage(M.L(StartScene::class.java, "need_to_win")))
         }
     }
 }

@@ -98,7 +98,7 @@ public class Frost extends FlavourBuff {
     super.detach();
     if (target.paralysed > 0)
       target.paralysed--;
-    if (Level.water[target.pos])
+    if (Level.Companion.getWater()[target.pos])
       prolong(target, Chill.class, 4f);
   }
 

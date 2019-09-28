@@ -58,9 +58,9 @@ public class PotionOfLiquidFlame extends Potion {
       new Bomb().explode(cell);
     } else {
       for (int offset : PathFinder.NEIGHBOURS9) {
-        if (Level.flamable[cell + offset]
+        if (Level.Companion.getFlamable()[cell + offset]
                 || Actor.findChar(cell + offset) != null
-                || Dungeon.level.heaps.get(cell + offset) != null) {
+                || Dungeon.level.getHeaps().get(cell + offset) != null) {
 
           GameScene.add(Blob.seed(cell + offset, 2, Fire.class));
         } else {

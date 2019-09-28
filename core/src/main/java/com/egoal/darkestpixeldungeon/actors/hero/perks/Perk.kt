@@ -71,6 +71,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
         }
 
         private val positives = mapOf<Perk, Float>(
+                LuckFromAuthor() to 0.01f, // hhh
                 Drunkard() to 1f,
                 GoodAppetite() to 1f,
                 StrongConstitution() to 1f,
@@ -108,6 +109,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 ExtraRuneRegularly() to 0.8f,
                 AngryBared() to 0.8f,
                 QuickLearner() to 1f
+//                LevelPerception() to 1f
         )
     }
 }

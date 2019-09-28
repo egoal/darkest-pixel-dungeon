@@ -118,16 +118,16 @@ public class Questioner extends NPC {
 
     do {
       heap.pos = Dungeon.level.pointToCell(heldRect.random(0));
-    } while (!Level.passable[heap.pos] || Dungeon.level.heaps.get(heap.pos) !=
+    } while (!Level.Companion.getPassable()[heap.pos] || Dungeon.level.getHeaps().get(heap.pos) !=
             null);
 
-    Dungeon.level.heaps.put(heap.pos, heap);
+    Dungeon.level.getHeaps().put(heap.pos, heap);
     GameScene.add(heap);
   }
 
   private void open() {
     // destroy wall
-    Level.set(pos, Terrain.EMBERS);
+    Level.Companion.set(pos, Terrain.EMBERS);
     GameScene.updateMap(pos);
     Dungeon.observe();
 

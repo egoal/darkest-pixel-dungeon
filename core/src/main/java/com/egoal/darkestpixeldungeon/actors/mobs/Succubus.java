@@ -81,7 +81,7 @@ public class Succubus extends Mob {
 
   @Override
   protected boolean getCloser(int target) {
-    if (Level.fieldOfView[target] && Dungeon.level.distance(pos, target) > 2
+    if (Level.Companion.getFieldOfView()[target] && Dungeon.level.distance(pos, target) > 2
             && delay <= 0) {
 
       blink(target);
@@ -105,11 +105,11 @@ public class Succubus extends Mob {
     if (Actor.findChar(cell) != null && cell != this.pos)
       cell = route.path.get(route.dist - 1);
 
-    if (Level.avoid[cell]) {
+    if (Level.Companion.getAvoid()[cell]) {
       ArrayList<Integer> candidates = new ArrayList<>();
       for (int n : PathFinder.NEIGHBOURS8) {
         cell = route.collisionPos + n;
-        if (Level.passable[cell] && Actor.findChar(cell) == null) {
+        if (Level.Companion.getPassable()[cell] && Actor.findChar(cell) == null) {
           candidates.add(cell);
         }
       }

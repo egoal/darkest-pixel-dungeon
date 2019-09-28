@@ -12,6 +12,8 @@ class SpikeShield : Shield() {
         DLY = 1.5f // slow
     }
 
+    override fun max(lvl: Int): Int = 3 * (tier + 1) + lvl * tier
+
     override fun def(level: Int): Int = 4 + 2 * level // like a round shield
 
     override fun defendDamage(dmg: Damage): Damage {

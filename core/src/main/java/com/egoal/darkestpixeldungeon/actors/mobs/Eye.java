@@ -76,7 +76,7 @@ public class Eye extends Mob {
     if (beamCooldown == 0) {
       Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
 
-      if (enemy.invisible == 0 && Level.fieldOfView[enemy.pos] && aim.subPath
+      if (enemy.invisible == 0 && Level.Companion.getFieldOfView()[enemy.pos] && aim.subPath
               (1, aim.dist).contains(enemy.pos)) {
         beam = aim;
         beamTarget = aim.collisionPos;
@@ -149,7 +149,7 @@ public class Eye extends Mob {
 
     for (int pos : beam.subPath(1, beam.dist)) {
 
-      if (Level.flamable[pos]) {
+      if (Level.Companion.getFlamable()[pos]) {
 
         Dungeon.level.destroy(pos);
         GameScene.updateMap(pos);

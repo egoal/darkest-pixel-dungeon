@@ -68,7 +68,7 @@ public class TenguSprite extends MobSprite {
 
     isMoving = true;
 
-    if (Level.water[to]) {
+    if (Level.Companion.getWater()[to]) {
       GameScene.ripple(to);
     }
 

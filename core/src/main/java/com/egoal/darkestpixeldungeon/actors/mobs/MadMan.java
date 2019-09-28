@@ -89,7 +89,7 @@ public class MadMan extends Mob implements Callback {
     if (Dungeon.level.distance(pos, enemy.pos) <= 1)
       return super.doAttack(enemy);
 
-    boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
+    boolean visible = Level.Companion.getFieldOfView()[pos] || Level.Companion.getFieldOfView()[enemy.pos];
 
     if (visible) {
       sprite.zap(enemy.pos);

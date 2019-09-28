@@ -57,11 +57,11 @@ public class FlockTrap extends Trap {
       }
 
       protected boolean act() {
-        PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), 2);
+        PathFinder.buildDistanceMap(pos, BArray.not(Level.Companion.getSolid(), null), 2);
         for (int i = 0; i < PathFinder.distance.length; i++) {
           if (PathFinder.distance[i] < Integer.MAX_VALUE)
             if (Dungeon.level.insideMap(i) && Actor.findChar(i) == null && !
-                    (Level.pit[i])) {
+                    (Level.Companion.getPit()[i])) {
               Sheep sheep = new Sheep();
               sheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
               sheep.pos = i;

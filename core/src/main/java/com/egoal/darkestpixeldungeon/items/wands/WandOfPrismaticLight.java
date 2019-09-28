@@ -107,10 +107,10 @@ public class WandOfPrismaticLight extends DamageWand {
       for (int n : PathFinder.NEIGHBOURS9) {
         int cell = c + n;
 
-        if (Level.discoverable[cell])
-          Dungeon.level.mapped[cell] = true;
+        if (Level.Companion.getDiscoverable()[cell])
+          Dungeon.level.getMapped()[cell] = true;
 
-        int terr = Dungeon.level.map[cell];
+        int terr = Dungeon.level.getMap()[cell];
         if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
           Dungeon.level.discover(cell);

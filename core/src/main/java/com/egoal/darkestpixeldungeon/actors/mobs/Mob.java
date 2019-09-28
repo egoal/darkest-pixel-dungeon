@@ -180,8 +180,7 @@ public abstract class Mob extends Char {
 
     enemy = chooseEnemy();
 
-    boolean enemyInFOV = enemy != null && enemy.isAlive() && Level
-            .fieldOfView[enemy.pos] && enemy.invisible <= 0;
+    boolean enemyInFOV = enemy != null && enemy.isAlive() && Level.Companion.getFieldOfView()[enemy.pos] && enemy.invisible <= 0;
 
     return state.act(enemyInFOV, justAlerted);
   }
@@ -231,8 +230,8 @@ public abstract class Mob extends Char {
       if (buff(Corruption.class) != null) {
 
         //look for enemy mobs to attack, which are also not corrupted
-        for (Mob mob : Dungeon.level.mobs)
-          if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob
+        for (Mob mob : Dungeon.level.getMobs())
+          if (mob != this && Level.Companion.getFieldOfView()[mob.pos] && mob.hostile && mob
                   .buff(Corruption.class) == null)
             enemies.add(mob);
         if (enemies.size() > 0) return Random.element(enemies);
@@ -244,14 +243,14 @@ public abstract class Mob extends Char {
       } else if (buff(Amok.class) != null) {
 
         //try to find an enemy mob to attack first.
-        for (Mob mob : Dungeon.level.mobs)
-          if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile)
+        for (Mob mob : Dungeon.level.getMobs())
+          if (mob != this && Level.Companion.getFieldOfView()[mob.pos] && mob.hostile)
             enemies.add(mob);
         if (enemies.size() > 0) return Random.element(enemies);
 
         //try to find ally mobs to attack second.
-        for (Mob mob : Dungeon.level.mobs)
-          if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
+        for (Mob mob : Dungeon.level.getMobs())
+          if (mob != this && Level.Companion.getFieldOfView()[mob.pos] && mob.ally)
             enemies.add(mob);
         if (enemies.size() > 0) return Random.element(enemies);
 
@@ -261,8 +260,8 @@ public abstract class Mob extends Char {
       } else {
 
         //try to find ally mobs to attack.
-        for (Mob mob : Dungeon.level.mobs)
-          if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
+        for (Mob mob : Dungeon.level.getMobs())
+          if (mob != this && Level.Companion.getFieldOfView()[mob.pos] && mob.ally)
             enemies.add(mob);
 
         //and add the hero to the list of targets.
@@ -327,7 +326,7 @@ public abstract class Mob extends Char {
 
       path = null;
 
-      if (Actor.findChar(target) == null && Level.passable[target])
+      if (Actor.findChar(target) == null && Level.Companion.getPassable()[target])
         step = target;
 
     } else {
@@ -372,7 +371,7 @@ public abstract class Mob extends Char {
         int lookAhead = GameMath.INSTANCE.clamp(path.size() - 1, 1, 4);
         for (int i = 0; i < lookAhead; ++i) {
           int c = path.get(i);
-          if (!Level.passable[c] ||
+          if (!Level.Companion.getPassable()[c] ||
                   (Dungeon.visible[c] && Actor.findChar(c) != null)) {
             newPath = true;
             break;
@@ -381,8 +380,8 @@ public abstract class Mob extends Char {
       }
 
       if (newPath)
-        path = Dungeon.findPath(this, pos, target, Level.passable,
-                Level.fieldOfView);
+        path = Dungeon.findPath(this, pos, target, Level.Companion.getPassable(),
+                Level.Companion.getFieldOfView());
 
       // if the path is too long, don't go there
       if (path == null || (state == HUNTING && path.size() >
@@ -400,8 +399,7 @@ public abstract class Mob extends Char {
   }
 
   protected boolean getFurther(int target) {
-    int step = Dungeon.flee(this, pos, target, Level.passable, Level
-            .fieldOfView);
+    int step = Dungeon.flee(this, pos, target, Level.Companion.getPassable(), Level.Companion.getFieldOfView());
     if (step != -1) {
       move(step);
       return true;
@@ -539,7 +537,7 @@ public abstract class Mob extends Char {
 
     super.destroy();
 
-    Dungeon.level.mobs.remove(this);
+    Dungeon.level.getMobs().remove(this);
 
     if (Dungeon.hero.isAlive()) {
       if (hostile) {
@@ -548,7 +546,7 @@ public abstract class Mob extends Char {
         Badges.validateMonstersSlain();
         Statistics.INSTANCE.setQualifiedForNoKilling(false);
 
-        if (Dungeon.level.feeling == Level.Feeling.DARK) {
+        if (Dungeon.level.getFeeling() == Level.Feeling.DARK) {
           Statistics.INSTANCE.setNightHunt(Statistics.INSTANCE.getNightHunt()
                   + 1);
         } else {
@@ -662,7 +660,7 @@ public abstract class Mob extends Char {
         target = enemy.pos;
 
         if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-          for (Mob mob : Dungeon.level.mobs) {
+          for (Mob mob : Dungeon.level.getMobs()) {
             if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob
                     .HUNTING)
               mob.beckon(target);
@@ -703,7 +701,7 @@ public abstract class Mob extends Char {
         target = enemy.pos;
 
         if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-          for (Mob mob : Dungeon.level.mobs) {
+          for (Mob mob : Dungeon.level.getMobs()) {
             if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob
                     .HUNTING)
               mob.beckon(target);

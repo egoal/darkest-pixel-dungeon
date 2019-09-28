@@ -594,7 +594,7 @@ public class Astrolabe extends Artifact {
     @Override
     public void onSelect(Integer cell) {
       if (cell != null) {
-        if (Dungeon.level.visited[cell] || Dungeon.level.mapped[cell]) {
+        if (Dungeon.level.getVisited()[cell] || Dungeon.level.getMapped()[cell]) {
           Buff.prolong(user_, buff.class, 2f).target = cell;
 
           user_.spend(TIME_TO_CHANT);
@@ -632,14 +632,14 @@ public class Astrolabe extends Artifact {
               CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
             }
 
-            if (Level.flamable[c]) {
+            if (Level.Companion.getFlamable()[c]) {
               Dungeon.level.destroy(c);
               GameScene.updateMap(c);
               terrainAffected = true;
             }
 
             //destroys items / triggers bombs caught in the blast.
-            Heap heap = Dungeon.level.heaps.get(c);
+            Heap heap = Dungeon.level.getHeaps().get(c);
             if (heap != null) heap.explode();
 
             Char ch = Actor.findChar(c);

@@ -56,7 +56,7 @@ class ChaliceOfBlood : Artifact() {
 
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
-        if (isEquipped(hero) && !cursed && volume > 1f)
+        if (isEquipped(hero) && !cursed && volume >= 1f)
             actions.add(AC_DRINK)
         return actions
     }
@@ -77,7 +77,7 @@ class ChaliceOfBlood : Artifact() {
 
     private fun consume(hero: Hero) {
         // like dew vial, but more powerful
-        val dp = hero.HT.toFloat() * 0.05f + 1f
+        val dp = hero.HT.toFloat() * 0.1f + 1f
         val need = ((hero.HT - hero.HP).toFloat() / dp).toInt()
         val consumed = if (volume > need) need else volume.toInt()
 
@@ -127,7 +127,7 @@ class ChaliceOfBlood : Artifact() {
         updateSprite()
     }
 
-    override fun passiveBuff(): Artifact.ArtifactBuff = Store()
+    override fun passiveBuff(): ArtifactBuff = Store()
 
     override fun desc(): String {
         var desc = super.desc()

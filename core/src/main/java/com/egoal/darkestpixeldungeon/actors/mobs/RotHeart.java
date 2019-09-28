@@ -78,7 +78,7 @@ public class RotHeart extends Mob {
   @Override
   public void destroy() {
     super.destroy();
-    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size
+    for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[Dungeon.level.getMobs().size
             ()])) {
       if (mob instanceof RotLasher) {
         mob.die(null);

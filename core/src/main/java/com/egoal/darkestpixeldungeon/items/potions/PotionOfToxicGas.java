@@ -62,7 +62,7 @@ public class PotionOfToxicGas extends Potion {
   
   private void reinforced_shatter(int cell) {
     for (int offset : PathFinder.NEIGHBOURS9) {
-      Mob mob = Dungeon.level.findMob(cell + offset);
+      Mob mob = Dungeon.level.findMobAt(cell + offset);
       if (mob != null) {
         reinforced_affect(mob);
       }

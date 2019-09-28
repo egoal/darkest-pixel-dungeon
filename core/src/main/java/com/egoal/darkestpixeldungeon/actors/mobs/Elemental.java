@@ -71,7 +71,7 @@ public class Elemental extends Mob {
         sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
       }
     } else if (buff instanceof Frost || buff instanceof Chill) {
-      if (Level.water[this.pos])
+      if (Level.Companion.getWater()[this.pos])
         takeDamage(new Damage(Random.NormalIntRange(HT / 2, HT), buff, this)
                 .addElement(Damage.Element.ICE));
       else

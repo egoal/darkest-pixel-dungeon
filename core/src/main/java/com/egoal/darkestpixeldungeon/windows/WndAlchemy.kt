@@ -37,7 +37,7 @@ class WndAlchemy : Window() {
                     super.onSlotClick()
                     // give back to bag failed.
                     if (item != null && !item!!.collect())
-                        Dungeon.level.drop(item, Dungeon.hero.pos)
+                        Dungeon.level.drop(item!!, Dungeon.hero.pos)
                     item(null)
                     GameScene.selectItem(itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy::class.java, "select"))
                 }
@@ -100,7 +100,7 @@ class WndAlchemy : Window() {
             for (btn in inputButtons) {
                 if (btn.item != null)
                     if (!btn.item!!.collect())
-                        Dungeon.level.drop(btn.item, Dungeon.hero.pos)
+                        Dungeon.level.drop(btn.item!!, Dungeon.hero.pos)
             }
         }
 

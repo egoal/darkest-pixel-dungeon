@@ -41,17 +41,17 @@ public class WndInfoCell extends Window {
 
     super();
 
-    int tile = Dungeon.level.map[cell];
-    if (Level.water[cell]) {
+    int tile = Dungeon.level.getMap()[cell];
+    if (Level.Companion.getWater()[cell]) {
       tile = Terrain.WATER;
-    } else if (Level.pit[cell]) {
+    } else if (Level.Companion.getPit()[cell]) {
       tile = Terrain.CHASM;
     }
 
     CustomTileVisual vis = null;
     int x = cell % Dungeon.level.width();
     int y = cell / Dungeon.level.width();
-    for (CustomTileVisual i : Dungeon.level.customTiles) {
+    for (CustomTileVisual i : Dungeon.level.getCustomTiles()) {
       if ((x >= i.tileX && x < i.tileX + i.tileW) &&
               (y >= i.tileY && y < i.tileY + i.tileH)) {
         if (i.desc() != null) {
@@ -88,7 +88,7 @@ public class WndInfoCell extends Window {
     RenderedTextMultiline info = PixelScene.renderMultiline(6);
     add(info);
 
-    for (Blob blob : Dungeon.level.blobs.values()) {
+    for (Blob blob : Dungeon.level.getBlobs().values()) {
       if (blob.cur[cell] > 0 && blob.tileDesc() != null) {
         if (desc.length() > 0) {
           desc += "\n\n";

@@ -28,10 +28,12 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.LevelPerception;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.DiscardedItemSprite;
@@ -190,7 +192,7 @@ public class GameScene extends PixelScene {
     customTiles = new Group();
     terrain.add(customTiles);
 
-    for (CustomTileVisual visual : Dungeon.level.customTiles) {
+    for (CustomTileVisual visual : Dungeon.level.getCustomTiles()) {
       addCustomTile(visual.create());
     }
 
@@ -200,25 +202,25 @@ public class GameScene extends PixelScene {
     traps = new Group();
     add(traps);
 
-    int size = Dungeon.level.traps.size();
+    int size = Dungeon.level.getTraps().size();
     for (int i = 0; i < size; i++) {
-      addTrapSprite(Dungeon.level.traps.valueAt(i));
+      addTrapSprite(Dungeon.level.getTraps().valueAt(i));
     }
 
     plants = new Group();
     add(plants);
 
-    size = Dungeon.level.plants.size();
+    size = Dungeon.level.getPlants().size();
     for (int i = 0; i < size; i++) {
-      addPlantSprite(Dungeon.level.plants.valueAt(i));
+      addPlantSprite(Dungeon.level.getPlants().valueAt(i));
     }
 
     heaps = new Group();
     add(heaps);
 
-    size = Dungeon.level.heaps.size();
+    size = Dungeon.level.getHeaps().size();
     for (int i = 0; i < size; i++) {
-      addHeapSprite(Dungeon.level.heaps.valueAt(i));
+      addHeapSprite(Dungeon.level.getHeaps().valueAt(i));
     }
 
     emitters = new Group();
@@ -228,7 +230,7 @@ public class GameScene extends PixelScene {
     mobs = new Group();
     add(mobs);
 
-    for (Mob mob : Dungeon.level.mobs) {
+    for (Mob mob : Dungeon.level.getMobs()) {
       addMobSprite(mob);
       if (Statistics.INSTANCE.getAmuletObtained()) {
         mob.beckon(Dungeon.hero.pos);
@@ -241,7 +243,7 @@ public class GameScene extends PixelScene {
     gases = new Group();
     add(gases);
 
-    for (Blob blob : Dungeon.level.blobs.values()) {
+    for (Blob blob : Dungeon.level.getBlobs().values()) {
       blob.emitter = null;
       addBlobSprite(blob);
     }
@@ -307,7 +309,7 @@ public class GameScene extends PixelScene {
 
     switch (InterlevelScene.mode) {
       case RESURRECT:
-        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.level.entrance);
+        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.level.getEntrance());
         new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
         break;
       case RETURN:
@@ -370,7 +372,7 @@ public class GameScene extends PixelScene {
         Sample.INSTANCE.play(Assets.SND_DESCEND);
       }
 
-      switch (Dungeon.level.feeling) {
+      switch (Dungeon.level.getFeeling()) {
         case CHASM:
           GLog.w(Messages.get(this, "chasm"));
           break;
@@ -385,10 +387,11 @@ public class GameScene extends PixelScene {
           break;
         default:
       }
-//      if (Dungeon.level instanceof RegularLevel &&
-//              ((RegularLevel) Dungeon.level).secretDoors > 3) {
-//        GLog.w(Messages.get(this, "secrets"));
-//      }
+
+      if(Dungeon.level instanceof RegularLevel &&
+              Dungeon.hero.getHeroPerk().has(LevelPerception.class) &&
+              ((RegularLevel) Dungeon.level).secretDoors()>0)
+        GLog.n(Messages.get(this, "secrets"));
 
     //   GLog.n(Messages.format("left artifacts: %d", Generator.ARTIFACT.INSTANCE.left()));
 
@@ -635,13 +638,13 @@ public class GameScene extends PixelScene {
   }
 
   public static void add(Mob mob) {
-    Dungeon.level.mobs.add(mob);
+    Dungeon.level.getMobs().add(mob);
     Actor.add(mob);
     scene.addMobSprite(mob);
   }
 
   public static void add(Mob mob, float delay) {
-    Dungeon.level.mobs.add(mob);
+    Dungeon.level.getMobs().add(mob);
     Actor.addDelayed(mob, delay);
     scene.addMobSprite(mob);
   }
@@ -693,7 +696,7 @@ public class GameScene extends PixelScene {
 
   public static void resetMap() {
     if (scene != null) {
-      scene.tiles.map(Dungeon.level.map, Dungeon.level.width());
+      scene.tiles.map(Dungeon.level.getMap(), Dungeon.level.width());
     }
     updateFog();
   }
@@ -735,7 +738,7 @@ public class GameScene extends PixelScene {
 
   public static void afterObserve() {
     if (scene != null) {
-      for (Mob mob : Dungeon.level.mobs) {
+      for (Mob mob : Dungeon.level.getMobs()) {
         if (mob.sprite != null)
           mob.sprite.visible = Dungeon.visible[mob.pos];
       }
@@ -874,8 +877,7 @@ public class GameScene extends PixelScene {
       return;
     }
 
-    if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level
-            .visited[cell] && !Dungeon.level.mapped[cell])) {
+    if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level.getVisited()[cell] && !Dungeon.level.getMapped()[cell])) {
       GameScene.show(new WndMessage(Messages.get(GameScene.class,
               "dont_know")));
       return;
@@ -897,19 +899,19 @@ public class GameScene extends PixelScene {
       }
     }
 
-    Heap heap = Dungeon.level.heaps.get(cell);
+    Heap heap = Dungeon.level.getHeaps().get(cell);
     if (heap != null && heap.seen) {
       objects.add(heap);
       names.add(Messages.titleCase(heap.toString()));
     }
 
-    Plant plant = Dungeon.level.plants.get(cell);
+    Plant plant = Dungeon.level.getPlants().get(cell);
     if (plant != null) {
       objects.add(plant);
       names.add(Messages.titleCase(plant.getPlantName()));
     }
 
-    Trap trap = Dungeon.level.traps.get(cell);
+    Trap trap = Dungeon.level.getTraps().get(cell);
     if (trap != null && trap.visible) {
       objects.add(trap);
       names.add(Messages.titleCase(trap.name));

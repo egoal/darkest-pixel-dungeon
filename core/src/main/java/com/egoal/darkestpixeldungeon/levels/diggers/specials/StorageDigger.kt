@@ -49,7 +49,7 @@ class StorageDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
-    private fun prize(level: Level): Item? {
+    private fun prize(level: Level): Item {
         if (Random.Int(2) != 0) {
             val prize = level.findPrizeItem()
             if (prize != null)

@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
@@ -24,10 +25,13 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.IconTitle
 import com.egoal.darkestpixeldungeon.windows.WndTitledMessage
 import com.watabou.noosa.audio.Sample
+import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.lang.RuntimeException
 import java.util.ArrayList
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.round
 
 class UrnOfShadow : Artifact() {
@@ -91,8 +95,11 @@ class UrnOfShadow : Artifact() {
 
     override fun desc(): String = super.desc() + "\n\n" + M.L(this, "desc_hint")
 
+    private fun spells(): List<String> = listOf(CAST_SOUL_SIPHON, CAST_SOUL_BURN, CAST_SOUL_MARK, CAST_DEMENTAGE)
+
     private fun cost(spell: String): Int {
         return when (spell) {
+            CAST_SOUL_SIPHON -> 2
             CAST_SOUL_BURN -> 3
             CAST_SOUL_MARK -> 5
             CAST_DEMENTAGE -> 10
@@ -102,11 +109,43 @@ class UrnOfShadow : Artifact() {
 
     private fun cast(spell: String) {
         when (spell) {
+            CAST_SOUL_SIPHON -> castSoulSiphon()
             CAST_SOUL_BURN -> castSoulBurn()
             CAST_SOUL_MARK -> castSoulMark()
             CAST_DEMENTAGE -> castDementage()
             else -> throw RuntimeException("undefined spell.")
         }
+    }
+
+    private fun castSoulSiphon() {
+        caster.onChar = { ch: Char ->
+            if (ch === Item.curUser) GLog.w(M.L(UrnOfShadow::class.java, "not_yourself"))
+            else {
+                volume -= 2
+                Item.curUser.sprite.zap(ch.pos)
+                Item.curUser.spend(1f)
+                Item.curUser.busy()
+
+                MagicMissile.shadow(Item.curUser.sprite.parent, Item.curUser.pos, ch.pos) {
+                    if (ch.buff(Dementage::class.java) != null) {
+                        // recover
+                        val value = Random.IntRange(10, ch.HT / 3)
+                        val dhp = min(value, ch.HT - ch.HP)
+                        if (dhp > 0) {
+                            Item.curUser.HP = max(1, Item.curUser.HP - dhp / 2)
+                            ch.HP += dhp
+                            ch.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 2)
+                        }
+                    } else {
+                        Buff.prolong(ch, Senile::class.java, Senile.DURATION).ratio = 0.2f + 0.05f * (level())
+                    }
+                    Item.curUser.next()
+                }
+                Sample.INSTANCE.play(Assets.SND_ZAP)
+            }
+        }
+
+        GameScene.selectCell(caster)
     }
 
     private fun castSoulBurn() {
@@ -224,14 +263,13 @@ class UrnOfShadow : Artifact() {
         private const val BTN_HEIGHT = 20f
         private const val GAP = 2f
 
+        private const val CAST_SOUL_SIPHON = "soul_siphon"
         private const val CAST_SOUL_BURN = "soul_burn"
         private const val CAST_SOUL_MARK = "soul_mark"
         private const val CAST_DEMENTAGE = "dementage"
 
         private const val WIDTH_CAST_BUTTON = 60f
         private const val WIDTH_HELP_BUTTON = 15f
-
-        private const val TIME_TO_CAST = 1
     }
 
     inner class WndUrnOfShadow : Window() {
@@ -244,9 +282,7 @@ class UrnOfShadow : Artifact() {
             add(title)
 
             var y = title.bottom()
-            y = addCastAndHelpButton(CAST_SOUL_BURN, y + GAP)
-            y = addCastAndHelpButton(CAST_SOUL_MARK, y + GAP)
-            y = addCastAndHelpButton(CAST_DEMENTAGE, y + GAP)
+            for (spell in spells()) y = addCastAndHelpButton(spell, y + GAP)
 
             resize(WIN_WIDTH.toInt(), (y + GAP).toInt())
         }

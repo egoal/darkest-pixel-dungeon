@@ -98,8 +98,7 @@ public class EtherealChains extends Artifact {
 
     @Override
     public void onSelect(Integer target) {
-      if (target != null && (Dungeon.level.visited[target] || Dungeon.level
-              .mapped[target])) {
+      if (target != null && (Dungeon.level.getVisited()[target] || Dungeon.level.getMapped()[target])) {
 
         //ballistica does not go through walls on pre-rework boss arenas
         // egoal: no, ur free now
@@ -115,7 +114,7 @@ public class EtherealChains extends Artifact {
         if (Actor.findChar(chain.collisionPos) != null) {
           int newPos = -1;
           for (int i : chain.subPath(1, chain.dist)) {
-            if (!Level.solid[i] && Actor.findChar(i) == null) {
+            if (!Level.Companion.getSolid()[i] && Actor.findChar(i) == null) {
               newPos = i;
               break;
             }
@@ -155,17 +154,17 @@ public class EtherealChains extends Artifact {
             }));
           }
 
-        } else if (Level.solid[chain.path.get(chain.dist)]
-                || (chain.dist > 0 && Level.solid[chain.path.get(chain.dist -
+        } else if (Level.Companion.getSolid()[chain.path.get(chain.dist)]
+                || (chain.dist > 0 && Level.Companion.getSolid()[chain.path.get(chain.dist -
                 1)])
-                || (chain.path.size() > chain.dist + 1 && Level.solid[chain
+                || (chain.path.size() > chain.dist + 1 && Level.Companion.getSolid()[chain
                 .path.get(chain.dist + 1)])
                 //if the player is trying to grapple the edge of the map, let
                 // them.
                 || (chain.path.size() == chain.dist + 1)) {
           int newPos = -1;
           for (int i : chain.subPath(1, chain.dist)) {
-            if (!Level.solid[i] && Actor.findChar(i) == null) newPos = i;
+            if (!Level.Companion.getSolid()[i] && Actor.findChar(i) == null) newPos = i;
           }
           if (newPos == -1) {
             GLog.w(Messages.get(EtherealChains.class, "does_nothing"));

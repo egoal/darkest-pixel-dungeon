@@ -143,7 +143,7 @@ public class Blob extends Actor {
 
   protected void evolve() {
 
-    boolean[] blocking = Level.solid;
+    boolean[] blocking = Level.Companion.getSolid();
     int cell;
     for (int i = area.top - 1; i <= area.bottom; i++) {
       for (int j = area.left - 1; j <= area.right; j++) {
@@ -224,10 +224,10 @@ public class Blob extends Actor {
   public static <T extends Blob> T seed(int cell, int amount, Class<T> type) {
     try {
 
-      T gas = (T) Dungeon.level.blobs.get(type);
+      T gas = (T) Dungeon.level.getBlobs().get(type);
       if (gas == null) {
         gas = type.newInstance();
-        Dungeon.level.blobs.put(type, gas);
+        Dungeon.level.getBlobs().put(type, gas);
       }
 
       gas.seed(Dungeon.level, cell, amount);

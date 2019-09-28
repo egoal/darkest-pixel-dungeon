@@ -409,7 +409,7 @@ class AngryBared : Perk() {
         if (noArmor(hero)) dmg.value += dmg.value / 4
     }
 
-    fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 0.75f else 1f
+    fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 0.7f else 1f
 
     private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
 }
@@ -440,4 +440,8 @@ class QuickLearner : Perk(3) {
         super.restoreFromBundle(bundle)
         dexp = bundle.getFloat("dexp")
     }
+}
+
+class LevelPerception: Perk(){
+    override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }

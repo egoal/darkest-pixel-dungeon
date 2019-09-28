@@ -183,7 +183,7 @@ public class InterlevelScene extends PixelScene {
             public void onBackPressed() {
               super.onBackPressed();
               if (InterlevelScene.mode == Mode.REFLUX)
-                Game.switchScene(NewStartScene.class);
+                Game.switchScene(StartScene.class);
               else {
                 InterlevelScene.mode = Mode.REFLUX;
                 Game.switchScene(InterlevelScene.class);
@@ -218,7 +218,7 @@ public class InterlevelScene extends PixelScene {
       Dungeon.depth++;
       level = Dungeon.loadLevel(Dungeon.hero.getHeroClass());
     }
-    Dungeon.switchLevel(level, level.entrance);
+    Dungeon.switchLevel(level, level.getEntrance());
   }
 
   private void fall() throws IOException {
@@ -245,7 +245,7 @@ public class InterlevelScene extends PixelScene {
     Dungeon.saveAll();
     Dungeon.depth--;
     Level level = Dungeon.loadLevel(Dungeon.hero.getHeroClass());
-    Dungeon.switchLevel(level, level.exit);
+    Dungeon.switchLevel(level, level.getExit());
   }
 
   private void returnTo() throws IOException {
@@ -265,13 +265,13 @@ public class InterlevelScene extends PixelScene {
     GameLog.wipe();
 
     // init level
-    Dungeon.loadGame(NewStartScene.Companion.getCurrentClass());
+    Dungeon.loadGame(StartScene.Companion.getCurrentClass());
 
     if (Dungeon.depth == -1) {
       Dungeon.depth = Statistics.INSTANCE.getDeepestFloor();
-      Dungeon.switchLevel(Dungeon.loadLevel(NewStartScene.Companion.getCurrentClass()), -1);
+      Dungeon.switchLevel(Dungeon.loadLevel(StartScene.Companion.getCurrentClass()), -1);
     } else {
-      Dungeon.switchLevel(Dungeon.loadLevel(NewStartScene.Companion.getCurrentClass()), Dungeon
+      Dungeon.switchLevel(Dungeon.loadLevel(StartScene.Companion.getCurrentClass()), Dungeon
               .hero.pos);
     }
   }
@@ -281,8 +281,8 @@ public class InterlevelScene extends PixelScene {
 
     GameLog.wipe();
 
-    Dungeon.loadBackupGame(NewStartScene.Companion.getCurrentClass());
-    Level level = Dungeon.loadBackupLevel(NewStartScene.Companion.getCurrentClass());
+    Dungeon.loadBackupGame(StartScene.Companion.getCurrentClass());
+    Level level = Dungeon.loadBackupLevel(StartScene.Companion.getCurrentClass());
     Dungeon.switchLevel(level, Dungeon.hero.pos);
   }
 
@@ -291,11 +291,11 @@ public class InterlevelScene extends PixelScene {
     Actor.fixTime();
     Dungeon.hero.holdFollowers(Dungeon.level);
 
-    if (Dungeon.level.locked) {
+    if (Dungeon.level.getLocked()) {
       Dungeon.hero.resurrect(Dungeon.depth);
       Dungeon.depth--;
       Level level = Dungeon.newLevel();
-      Dungeon.switchLevel(level, level.entrance);
+      Dungeon.switchLevel(level, level.getEntrance());
     } else {
       Dungeon.hero.resurrect(-1);
       Dungeon.resetLevel();
@@ -310,8 +310,8 @@ public class InterlevelScene extends PixelScene {
     Dungeon.depth--;
     Level level = Dungeon.newLevel();
     //FIXME this only partially addresses issues regarding weak floors.
-    Level.weakFloorCreated = false;
-    Dungeon.switchLevel(level, level.entrance);
+    Level.Companion.setWeakFloorCreated(false);
+    Dungeon.switchLevel(level, level.getEntrance());
   }
 
   @Override

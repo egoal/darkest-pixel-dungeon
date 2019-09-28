@@ -45,8 +45,8 @@ public class ScrollOfLullaby extends Scroll {
     Sample.INSTANCE.play(Assets.SND_LULLABY);
     Invisibility.dispel();
 
-    for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-      if (Level.fieldOfView[mob.pos]) {
+    for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0])) {
+      if (Level.Companion.getFieldOfView()[mob.pos]) {
         Buff.affect(mob, Drowsy.class);
         mob.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 5);
       }

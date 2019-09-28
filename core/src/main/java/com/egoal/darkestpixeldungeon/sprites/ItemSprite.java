@@ -221,12 +221,12 @@ public class ItemSprite extends MovieClip {
       place(heap.pos);
 
       if (visible) {
-        boolean water = Level.water[heap.pos];
+        boolean water = Level.Companion.getWater()[heap.pos];
 
         if (water) {
           GameScene.ripple(heap.pos);
         } else {
-          int cell = Dungeon.level.map[heap.pos];
+          int cell = Dungeon.level.getMap()[heap.pos];
           water = (cell == Terrain.WELL || cell == Terrain.ALCHEMY);
         }
 

@@ -36,7 +36,7 @@ public class Foliage extends Blob {
   @Override
   protected void evolve() {
 
-    int[] map = Dungeon.level.map;
+    int[] map = Dungeon.level.getMap();
 
     boolean visible = false;
 

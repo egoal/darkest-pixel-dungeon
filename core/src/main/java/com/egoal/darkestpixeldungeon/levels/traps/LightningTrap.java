@@ -72,7 +72,7 @@ public class LightningTrap extends Trap {
       ch.sprite.parent.add(new Lightning(arcs, null));
     }
 
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) {
       //TODO: this should probably charge staffs too
       Item item = heap.items.peek();

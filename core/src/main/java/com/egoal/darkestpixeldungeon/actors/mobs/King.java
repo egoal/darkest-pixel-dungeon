@@ -165,7 +165,7 @@ public class King extends Mob {
   @Override
   public void aggro(Char ch) {
     super.aggro(ch);
-    for (Mob mob : Dungeon.level.mobs) {
+    for (Mob mob : Dungeon.level.getMobs()) {
       if (mob instanceof Undead) {
         mob.aggro(ch);
       }
@@ -183,7 +183,7 @@ public class King extends Mob {
     sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
     Sample.INSTANCE.play(Assets.SND_CHALLENGE);
 
-    boolean[] passable = Level.passable.clone();
+    boolean[] passable = Level.Companion.getPassable().clone();
     for (Char c : Actor.chars()) {
       passable[c.pos] = false;
     }

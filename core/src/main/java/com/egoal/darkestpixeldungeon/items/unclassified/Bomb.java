@@ -90,14 +90,14 @@ public class Bomb extends Item {
 
   @Override
   protected void onThrow(int cell) {
-    if (!Level.pit[cell] && lightingFuse) {
+    if (!Level.Companion.getPit()[cell] && lightingFuse) {
       Actor.addDelayed(fuse = new Fuse().ignite(this), 2);
     }
     if (Actor.findChar(cell) != null && !(Actor.findChar(cell) instanceof 
             Hero)) {
       ArrayList<Integer> candidates = new ArrayList<>();
       for (int i : PathFinder.NEIGHBOURS8)
-        if (Level.passable[cell + i])
+        if (Level.Companion.getPassable()[cell + i])
           candidates.add(cell + i);
       int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
       Dungeon.level.drop(this, newCell).sprite.drop(cell);
@@ -132,14 +132,14 @@ public class Bomb extends Item {
           CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
         }
 
-        if (Level.flamable[c]) {
+        if (Level.Companion.getFlamable()[c]) {
           Dungeon.level.destroy(c);
           GameScene.updateMap(c);
           terrainAffected = true;
         }
 
         //destroys items / triggers bombs caught in the blast.
-        Heap heap = Dungeon.level.heaps.get(c);
+        Heap heap = Dungeon.level.getHeaps().get(c);
         if (heap != null)
           heap.explode();
 
@@ -243,7 +243,7 @@ public class Bomb extends Item {
       }
 
       //look for our bomb, remove it from its heap, and blow it up.
-      for (Heap heap : Dungeon.level.heaps.values()) {
+      for (Heap heap : Dungeon.level.getHeaps().values()) {
         if (heap.items.contains(bomb)) {
           heap.items.remove(bomb);
 

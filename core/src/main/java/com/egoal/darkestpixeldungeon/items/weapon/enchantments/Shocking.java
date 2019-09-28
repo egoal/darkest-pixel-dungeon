@@ -83,7 +83,7 @@ public class Shocking extends Weapon.Enchantment {
 
     affected.add(ch);
 
-    ch.takeDamage(new Damage(Level.water[ch.pos] && !ch.flying ? (int) 
+    ch.takeDamage(new Damage(Level.Companion.getWater()[ch.pos] && !ch.flying ? (int)
             (damage * 2) : damage,
             this, ch).addElement(Damage.Element.LIGHT));
 

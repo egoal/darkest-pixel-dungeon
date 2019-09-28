@@ -60,7 +60,7 @@ public class WarpingTrap extends Trap {
       for (int i = 1; i < Dungeon.depth; i++) depths[i - 1] = i;
       int depth = 1 + Math.max(Random.chances(depths), Random.chances(depths));
 
-      Heap heap = Dungeon.level.heaps.get(pos);
+      Heap heap = Dungeon.level.getHeaps().get(pos);
       if (heap != null) {
         ArrayList<Item> dropped = Dungeon.droppedItems.get(depth);
         if (dropped == null) {
@@ -77,7 +77,7 @@ public class WarpingTrap extends Trap {
         Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
         if (buff != null) buff.detach();
 
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+        for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0]))
           if (mob instanceof GhostHero) mob.destroy();
 
         InterlevelScene.mode = InterlevelScene.Mode.RETURN;
@@ -87,7 +87,7 @@ public class WarpingTrap extends Trap {
       } else if (ch != null) {
         ch.destroy();
         ch.sprite.killAndErase();
-        Dungeon.level.mobs.remove(ch);
+        Dungeon.level.getMobs().remove(ch);
       }
 
     }

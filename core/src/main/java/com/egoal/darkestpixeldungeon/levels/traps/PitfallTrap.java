@@ -42,7 +42,7 @@ public class PitfallTrap extends Trap {
 
   @Override
   public void activate() {
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
 
     if (heap != null) {
       for (Item item : heap.items) {
@@ -50,7 +50,7 @@ public class PitfallTrap extends Trap {
       }
       heap.sprite.kill();
       GameScene.discard(heap);
-      Dungeon.level.heaps.remove(pos);
+      Dungeon.level.getHeaps().remove(pos);
     }
 
     Char ch = Actor.findChar(pos);
@@ -68,17 +68,16 @@ public class PitfallTrap extends Trap {
 
     //if making a pit here wouldn't block any paths, make a pit tile instead 
     // of a disarmed trap tile.
-    if (!(Dungeon.level.solid[pos - Dungeon.level.width()] && Dungeon.level
-            .solid[pos + Dungeon.level.width()])
-            && !(Dungeon.level.solid[pos - 1] && Dungeon.level.solid[pos +
+    if (!(Dungeon.level.Companion.getSolid()[pos - Dungeon.level.width()] && Dungeon.level.Companion.getSolid()[pos + Dungeon.level.width()])
+            && !(Dungeon.level.Companion.getSolid()[pos - 1] && Dungeon.level.Companion.getSolid()[pos +
             1])) {
 
-      int c = Dungeon.level.map[pos - Dungeon.level.width()];
+      int c = Dungeon.level.getMap()[pos - Dungeon.level.width()];
 
       if (c == Terrain.WALL || c == Terrain.WALL_DECO) {
-        Level.set(pos, Terrain.CHASM_WALL);
+        Level.Companion.set(pos, Terrain.CHASM_WALL);
       } else {
-        Level.set(pos, Terrain.CHASM_FLOOR);
+        Level.Companion.set(pos, Terrain.CHASM_FLOOR);
       }
 
       sprite.parent.add(new WindParticle.Wind(pos));

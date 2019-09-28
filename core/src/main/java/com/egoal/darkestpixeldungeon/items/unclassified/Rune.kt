@@ -100,7 +100,7 @@ class TreasureRune : Rune() {
 
     override fun affect(hero: Hero) {
         Gold().random().apply {
-            quantity = (quantity * Random.Float(2f, 3f)).toInt()
+            quantity = (quantity * Random.Float(2.5f, 4f)).toInt()
         }.doPickUp(hero)
     }
 }

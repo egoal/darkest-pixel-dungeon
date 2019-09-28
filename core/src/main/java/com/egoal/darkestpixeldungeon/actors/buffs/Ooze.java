@@ -71,7 +71,7 @@ public class Ooze extends Buff {
       
       spend(TICK);
     }
-    if (Level.water[target.pos]) {
+    if (Level.Companion.getWater()[target.pos]) {
       detach();
     }
     return true;

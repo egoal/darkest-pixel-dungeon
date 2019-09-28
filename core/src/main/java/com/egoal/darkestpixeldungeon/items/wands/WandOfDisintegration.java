@@ -82,7 +82,7 @@ public class WandOfDisintegration extends DamageWand {
         chars.add(ch);
       }
 
-      if (Level.flamable[c]) {
+      if (Level.Companion.getFlamable()[c]) {
 
         Dungeon.level.destroy(c);
         GameScene.updateMap(c);
@@ -90,7 +90,7 @@ public class WandOfDisintegration extends DamageWand {
 
       }
 
-      if (Level.solid[c])
+      if (Level.Companion.getSolid()[c])
         terrainPassed++;
 
       CellEmitter.center(c).burst(PurpleParticle.BURST, Random.IntRange(1, 2));

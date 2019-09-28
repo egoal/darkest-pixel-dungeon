@@ -25,8 +25,6 @@ import android.opengl.GLES20;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.TopExceptionHandler;
-import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary;
-import com.egoal.darkestpixeldungeon.actors.mobs.Rat;
 import com.egoal.darkestpixeldungeon.effects.BannerSprites;
 import com.egoal.darkestpixeldungeon.effects.Fireball;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -108,7 +106,7 @@ public class TitleScene extends PixelScene {
     DashboardItem[] btnsMain = new DashboardItem[]{
             new DashboardItem(Messages.get(this, "play"), 0) {
               @Override
-              protected void onClick() { DarkestPixelDungeon.switchNoFade(NewStartScene.class); }
+              protected void onClick() { DarkestPixelDungeon.switchNoFade(StartScene.class); }
             },
             new DashboardItem(Messages.get(this, "rankings"), 2) {
               @Override

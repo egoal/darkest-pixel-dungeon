@@ -39,7 +39,7 @@ public class Fire extends Blob {
   @Override
   protected void evolve() {
 
-    boolean[] flamable = Level.flamable;
+    boolean[] flamable = Level.Companion.getFlamable();
     int cell;
     int fire;
 
@@ -55,7 +55,7 @@ public class Fire extends Blob {
           fire = cur[cell] - 1;
           if (flamable[cell] && Random.Int(fire + 1) == 0) {
 
-            int oldTile = Dungeon.level.map[cell];
+            int oldTile = Dungeon.level.getMap()[cell];
             Dungeon.level.destroy(cell);
 
             observe = true;
@@ -97,12 +97,12 @@ public class Fire extends Blob {
       Buff.affect(ch, Burning.class).reignite(ch);
     }
 
-    Heap heap = Dungeon.level.heaps.get(pos);
+    Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) {
       heap.burn();
     }
 
-    Plant plant = Dungeon.level.plants.get(pos);
+    Plant plant = Dungeon.level.getPlants().get(pos);
     if (plant != null) {
       plant.wither();
     }

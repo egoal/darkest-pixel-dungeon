@@ -56,17 +56,17 @@ public class PotionOfPurity extends Potion {
   @Override
   public void shatter(int cell) {
 
-    PathFinder.buildDistanceMap(cell, BArray.not(Level.losBlocking, null), 
+    PathFinder.buildDistanceMap(cell, BArray.not(Level.Companion.getLosBlocking(), null),
             DISTANCE);
 
     boolean procd = false;
 
     Blob[] blobs = {
-            Dungeon.level.blobs.get(ToxicGas.class),
-            Dungeon.level.blobs.get(ParalyticGas.class),
-            Dungeon.level.blobs.get(ConfusionGas.class),
-            Dungeon.level.blobs.get(StenchGas.class),
-            Dungeon.level.blobs.get(VenomGas.class)
+            Dungeon.level.getBlobs().get(ToxicGas.class),
+            Dungeon.level.getBlobs().get(ParalyticGas.class),
+            Dungeon.level.getBlobs().get(ConfusionGas.class),
+            Dungeon.level.getBlobs().get(StenchGas.class),
+            Dungeon.level.getBlobs().get(VenomGas.class)
     };
 
     for (int j = 0; j < blobs.length; j++) {

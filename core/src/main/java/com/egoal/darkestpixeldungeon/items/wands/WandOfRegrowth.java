@@ -72,7 +72,7 @@ public class WandOfRegrowth extends Wand {
 
     //ignore tiles which can't have anything grow in them.
     for (Iterator<Integer> i = affectedCells.iterator(); i.hasNext(); ) {
-      int c = Dungeon.level.map[i.next()];
+      int c = Dungeon.level.getMap()[i.next()];
       if (!(c == Terrain.EMPTY ||
               c == Terrain.EMBERS ||
               c == Terrain.EMPTY_DECO ||
@@ -95,11 +95,11 @@ public class WandOfRegrowth extends Wand {
     placePlants(numPlants, numDews, numPods, numStars);
 
     for (int i : affectedCells) {
-      int c = Dungeon.level.map[i];
+      int c = Dungeon.level.getMap()[i];
       if (c == Terrain.EMPTY ||
               c == Terrain.EMBERS ||
               c == Terrain.EMPTY_DECO) {
-        Level.set(i, Terrain.GRASS);
+        Level.Companion.set(i, Terrain.GRASS);
       }
 
       Char ch = Actor.findChar(i);
@@ -110,7 +110,7 @@ public class WandOfRegrowth extends Wand {
   }
 
   private void spreadRegrowth(int cell, float strength) {
-    if (strength >= 0 && Level.passable[cell] && !Level.losBlocking[cell]) {
+    if (strength >= 0 && Level.Companion.getPassable()[cell] && !Level.Companion.getLosBlocking()[cell]) {
       affectedCells.add(cell);
       if (strength >= 1.5f) {
         spreadRegrowth(cell + PathFinder.CIRCLE[left(direction)], strength -
@@ -121,7 +121,7 @@ public class WandOfRegrowth extends Wand {
       } else {
         visualCells.add(cell);
       }
-    } else if (!Level.passable[cell] || Level.losBlocking[cell])
+    } else if (!Level.Companion.getPassable()[cell] || Level.Companion.getLosBlocking()[cell])
       visualCells.add(cell);
   }
 
@@ -206,7 +206,7 @@ public class WandOfRegrowth extends Wand {
     float strength = maxDist;
     for (int c : bolt.subPath(1, dist)) {
       strength--; //as we start at dist 1, not 0.
-      if (!Level.losBlocking[c]) {
+      if (!Level.Companion.getLosBlocking()[c]) {
         affectedCells.add(c);
         spreadRegrowth(c + PathFinder.CIRCLE[left(direction)], strength - 1);
         spreadRegrowth(c + PathFinder.CIRCLE[direction], strength - 1);
@@ -264,7 +264,7 @@ public class WandOfRegrowth extends Wand {
 
       ArrayList<Integer> candidates = new ArrayList<Integer>();
       for (int i : PathFinder.NEIGHBOURS8) {
-        if (Level.passable[getPos() + i]) {
+        if (Level.Companion.getPassable()[getPos() + i]) {
           candidates.add(getPos() + i);
         }
       }
@@ -298,7 +298,7 @@ public class WandOfRegrowth extends Wand {
 
       ArrayList<Integer> candidates = new ArrayList<Integer>();
       for (int i : PathFinder.NEIGHBOURS8) {
-        if (Level.passable[getPos() + i]) {
+        if (Level.Companion.getPassable()[getPos() + i]) {
           candidates.add(getPos() + i);
         }
       }

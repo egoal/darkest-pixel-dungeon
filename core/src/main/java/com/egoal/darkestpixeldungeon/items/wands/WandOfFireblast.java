@@ -75,7 +75,7 @@ public class WandOfFireblast extends DamageWand {
 
     for (int cell : affectedCells) {
 
-      if (Level.flamable[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
+      if (Level.Companion.getFlamable()[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
         GameScene.add(Blob.seed(cell, 1 + chargesPerCast(), Fire.class));
       Char ch = Actor.findChar(cell);
       if (ch != null) {
@@ -101,7 +101,7 @@ public class WandOfFireblast extends DamageWand {
 
   //burn... BURNNNNN!.....
   private void spreadFlames(int cell, float strength) {
-    if (strength >= 0 && Level.passable[cell]) {
+    if (strength >= 0 && Level.Companion.getPassable()[cell]) {
       affectedCells.add(cell);
       if (strength >= 1.5f) {
         visualCells.remove(cell);
@@ -113,7 +113,7 @@ public class WandOfFireblast extends DamageWand {
       } else {
         visualCells.add(cell);
       }
-    } else if (!Level.passable[cell])
+    } else if (!Level.Companion.getPassable()[cell])
       visualCells.add(cell);
   }
 

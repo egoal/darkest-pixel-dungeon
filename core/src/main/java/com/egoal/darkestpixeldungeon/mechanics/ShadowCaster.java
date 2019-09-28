@@ -51,7 +51,7 @@ public final class ShadowCaster {
 
     fieldOfView[y * Dungeon.level.width() + x] = true;
 
-    boolean[] losBlocking = Level.losBlocking;
+    boolean[] losBlocking = Level.Companion.getLosBlocking();
     Obstacles obs = new Obstacles();
 
     scanSector(viewDistance, seeDistance, fieldOfView, losBlocking, obs, x,
@@ -104,7 +104,7 @@ public final class ShadowCaster {
 
             // Do nothing
           } else {
-            if (p <= viewDistance || Level.lighted[pos]) {
+            if (p <= viewDistance || Level.Companion.getLighted()[pos]) {
               // in view or lighted
               fieldOfView[pos] = true;
             }
@@ -173,7 +173,7 @@ public final class ShadowCaster {
     //set source cell to true
     fieldOfView[y * Dungeon.level.width() + x] = true;
 
-    boolean[] losBlocking = Level.losBlocking;
+    boolean[] losBlocking = Level.Companion.getLosBlocking();
 
     //scans octants, clockwise
     scanOctant(viewDistance, seeDistance, fieldOfView, losBlocking, 1, x, y, 
@@ -235,7 +235,7 @@ public final class ShadowCaster {
       for (col = start; col <= end; col++) {
         if (cell < 0 || cell >= Dungeon.level.length()) continue;
         
-        if (row <= viewDistance || Level.lighted[cell])
+        if (row <= viewDistance || Level.Companion.getLighted()[cell])
           fov[cell] = true;
 
         if (blocking[cell]) {

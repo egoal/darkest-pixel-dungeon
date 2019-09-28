@@ -68,7 +68,7 @@ public class Alchemy extends Blob {
   }
 
   public static void transmute(int cell) {
-    Heap heap = Dungeon.level.heaps.get(cell);
+    Heap heap = Dungeon.level.getHeaps().get(cell);
     if (heap != null) {
 
       Item result = heap.transmute();

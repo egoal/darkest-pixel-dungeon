@@ -125,14 +125,14 @@ public class Bee extends Mob {
 
       //if already targeting something, and that thing is still alive and 
       // near the pot, keeping targeting it.
-      if (enemy != null && enemy.isAlive() && Dungeon.level.mobs.contains(enemy)
-              && Level.fieldOfView[enemy.pos] && enemy.invisible == 0
+      if (enemy != null && enemy.isAlive() && Dungeon.level.getMobs().contains(enemy)
+              && Level.Companion.getFieldOfView()[enemy.pos] && enemy.invisible == 0
               && Dungeon.level.distance(enemy.pos, potPos) <= 3)
         return enemy;
 
       //find all mobs near the pot
       HashSet<Char> enemies = new HashSet<>();
-      for (Mob mob : Dungeon.level.mobs)
+      for (Mob mob : Dungeon.level.getMobs())
         if (!(mob instanceof Bee) && Dungeon.level.distance(mob.pos, potPos) 
                 <= 3 && (mob.hostile || mob.ally))
           enemies.add(mob);

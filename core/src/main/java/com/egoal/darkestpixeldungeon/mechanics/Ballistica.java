@@ -109,14 +109,13 @@ public class Ballistica {
     while (Dungeon.level.insideMap(cell)) {
 
       //if we're in a wall, collide with the previous cell along the path.
-      if (stopTerrain && cell != sourcePos && !Level.passable[cell] && !Level
-              .avoid[cell]) {
+      if (stopTerrain && cell != sourcePos && !Level.Companion.getPassable()[cell] && !Level.Companion.getAvoid()[cell]) {
         collide(path.get(path.size() - 1));
       }
 
       path.add(cell);
 
-      if ((stopTerrain && cell != sourcePos && Level.losBlocking[cell])
+      if ((stopTerrain && cell != sourcePos && Level.Companion.getLosBlocking()[cell])
               || (cell != sourcePos && stopChars && Actor.findChar(cell) != 
               null)
               || (cell == to && stopTarget)) {

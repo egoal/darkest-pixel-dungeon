@@ -66,7 +66,7 @@ class LastShopLevel : RegularLevel() {
             var pos: Int
             do {
                 pos = pointToCell(space.rect.random())
-            } while (pos == entrance || traps.get(pos) != null || findMob(pos) != null)
+            } while (pos == entrance || traps.get(pos) != null || findMobAt(pos) != null)
             map[pos] = Terrain.SIGN
         }
     }

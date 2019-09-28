@@ -274,7 +274,7 @@ public class Ghost extends NPC {
       do {
         ghost.pos = level.randomRespawnCell();
       } while (ghost.pos == -1);
-      level.mobs.add(ghost);
+      level.getMobs().add(ghost);
 
       spawned = true;
       // 2: fetid rat, 3: gnoll trickster, 4: great crab

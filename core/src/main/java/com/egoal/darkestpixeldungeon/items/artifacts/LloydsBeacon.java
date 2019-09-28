@@ -166,7 +166,7 @@ public class LloydsBeacon extends Artifact {
         Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
         if (buff != null) buff.detach();
 
-        for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+        for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0]))
           if (mob instanceof GhostHero) mob.destroy();
 
         InterlevelScene.mode = InterlevelScene.Mode.RETURN;

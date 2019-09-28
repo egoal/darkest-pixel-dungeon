@@ -189,7 +189,7 @@ class PrisonBossLevel : Level() {
         }
     }
 
-    override fun drop(item: Item?, cell: Int): Heap {
+    override fun drop(item: Item, cell: Int): Heap {
         if (item is SkeletonKey) {
             // oh no, tengu died...
             unseal()
