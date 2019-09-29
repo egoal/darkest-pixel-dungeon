@@ -235,7 +235,7 @@ class BrewEnhancedPotion : Perk(3) {
     override fun image(): Int = PerkImageSheet.BREW_ENHANCED
 
     fun affectPotion(p: Potion) {
-        if (p.canBeReinforced() && Random.Float() < (0.05f + 0.15f * level))
+        if (p.canBeReinforced() && Random.Float() < (0.1f + 0.2f * level))
             p.reinforce()
     }
 }
