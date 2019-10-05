@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
+import com.egoal.darkestpixeldungeon.sprites.DollSprite;
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite;
 import com.egoal.darkestpixeldungeon.windows.WndHero;
 import com.egoal.darkestpixeldungeon.windows.WndJournal;

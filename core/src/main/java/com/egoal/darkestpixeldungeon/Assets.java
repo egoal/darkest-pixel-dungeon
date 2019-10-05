@@ -37,6 +37,10 @@ public class Assets {
   public static final String HUNTRESS = ACTORS + "ranger.png";
   public static final String DPD_SORCERESS = ACTORS + "sorceress.png";
 
+  public static final String HERO_BODY = ACTORS+ "hero/body.png";
+  public static final String HERO_HEAD = ACTORS+ "hero/head.png";
+  public static final String HERO_ARMOR = ACTORS+ "hero/armor.png";
+
   // npc
   public static final String PET = ACTORS + "pet.png";
   public static final String GHOST = ACTORS + "ghost.png";

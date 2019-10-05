@@ -37,6 +37,7 @@ import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.DiscardedItemSprite;
+import com.egoal.darkestpixeldungeon.sprites.DollSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.PlantSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -113,6 +114,7 @@ public class GameScene extends PixelScene {
   private SkinnedBlock water;
   private DungeonTilemap tiles;
   private FogOfWar fog;
+  private DollSprite heroDoll;
   private HeroSprite hero;
 
   private StatusPane pane;
@@ -258,6 +260,12 @@ public class GameScene extends PixelScene {
     add(statuses);
 
     add(emoicons);
+
+//    heroDoll = new DollSprite();
+//    heroDoll.place(Dungeon.hero.pos+ 1);
+//    heroDoll.updateArmor();
+//    mobs.add(heroDoll);
+//    heroDoll.addComponencts();
 
     hero = new HeroSprite();
     hero.place(Dungeon.hero.pos);
