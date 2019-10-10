@@ -23,8 +23,10 @@ package com.egoal.darkestpixeldungeon.messages;
 import java.util.Locale;
 
 public enum Languages {
-  ENGLISH("english", "", Status.REVIEWED, new String[]{"Egoal"},
-          new String[]{"endlesssolitude", " 路人NPC", " 1834515403a"}),
+  ENGLISH("english", "", Status.REVIEWED,
+          new String[]{"Egoal", "endlesssolitude", " 路人NPC"},
+          new String[]{" 1834515403a", "MrKukurykpl", "Omicronrg9",
+                  "Piedro0", " riwansia", "shenlingfeiniao"}),
 
   //  RUSSIAN("русский", "ru", Status.REVIEWED, new 
   // String[]{"ConsideredHamster",
