@@ -15,6 +15,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CatLixSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
@@ -24,7 +25,6 @@ class CatEgoal : NPC() {
     init {
         spriteClass = CatLixSprite::class.java
 
-        // properties.add(Property.IMMOVABLE)
         state = Wandering()
     }
 
@@ -38,21 +38,14 @@ class CatEgoal : NPC() {
             val str = if (praised) M.L(this, "happy")
             else M.L(this, "normal", Dungeon.hero.className())
 
-            GameScene.show(object : WndOptions(sprite(), name, str,
-                    M.L(CatEgoal::class.java, "you-moved")){
-                override fun onSelect(index: Int) {
-                    tell(M.L(CatEgoal::class.java, "didi"))
-                }
-            })
+            WndDialogue.Show(this, str, M.L(this, "you-moved")) {
+                tell(M.L(CatEgoal::class.java, "didi"))
+            }
         } else
-            GameScene.show(object : WndOptions(sprite(), name,
-                    M.L(CatEgoal::class.java, "greetings"),
-                    M.L(CatEgoal::class.java, "agree"),
-                    M.L(CatEgoal::class.java, "disagree")) {
-                override fun onSelect(index: Int) {
-                    onAnsweredHero(index)
-                }
-            })
+            WndDialogue.Show(this, M.L(this, "greetings"), M.L(this, "agree"),
+                    M.L(this, "disagree")) {
+                onAnsweredHero(it)
+            }
 
         return false
     }

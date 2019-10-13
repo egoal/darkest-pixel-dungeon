@@ -14,6 +14,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ShopkeeperSprite
 import com.egoal.darkestpixeldungeon.windows.WndBadge
 import com.egoal.darkestpixeldungeon.windows.WndBag
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.utils.Bundle
 import kotlin.collections.ArrayList
@@ -48,17 +49,15 @@ open class Merchant : NPC() {
     override fun interact(): Boolean {
         Journal.add(M.T(name))
         val actions = actions()
-        val options = actions.map { M.L(this, it) }.toTypedArray()
-        GameScene.show(object : WndOptions(sprite(), name, greeting(), *options) {
-            override fun onSelect(index: Int) {
-                execute(actions[index])
-            }
-        })
+        val options = actions.map { M.L(this, "ac_" + it) }.toTypedArray()
+        WndDialogue.Show(this, greeting(), *options) {
+            execute(actions[it])
+        }
 
         return false
     }
 
-    ///
+    /// merchant
     protected fun actions(): ArrayList<String> = arrayListOf(AC_BUY, AC_SELL)
 
     protected fun execute(action: String) {
@@ -74,7 +73,7 @@ open class Merchant : NPC() {
         //todo: may move painter things here
     }
 
-    protected fun addItemToSell(item: Item, checkSimilar: Boolean = false): Boolean {
+    fun addItemToSell(item: Item, checkSimilar: Boolean = false): Boolean {
         if (items.contains(item)) return true
 
         if (checkSimilar) {
@@ -95,6 +94,10 @@ open class Merchant : NPC() {
     }
 
     private fun removeItemFromSell(item: Item) = items.remove(item)
+
+    fun shuffleItems() {
+        items.shuffle()
+    }
 
     protected fun flee() {
         Journal.remove(M.T(name))

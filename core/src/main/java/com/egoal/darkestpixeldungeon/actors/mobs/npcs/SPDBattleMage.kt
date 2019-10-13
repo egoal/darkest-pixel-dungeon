@@ -6,10 +6,12 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.items.unclassified.Amulet
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Random
@@ -28,14 +30,9 @@ class SPDBattleMage : NPC() {
         } else {
         }
 
-        GameScene.show(object : WndOptions(Sprite(), name,
-                Messages.get(SPDBattleMage::class.java, "greetings"),
-                Messages.get(SPDBattleMage::class.java, "ac_yourself"),
-                Messages.get(SPDBattleMage::class.java, "ac_suggest")) {
-            override fun onSelect(index: Int) {
-                onSelectHero(index)
-            }
-        })
+        WndDialogue.Show(this, M.L(this, "greetings"), M.L(this, "ac_yourself"), M.L(this, "ac_suggest")) {
+            onSelectHero(it)
+        }
 
         return false
     }

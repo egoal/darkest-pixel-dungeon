@@ -13,7 +13,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
-class CatRoberry : NPC() {
+class CatRawberry : NPC() {
     init {
         spriteClass = Sprite::class.java
 
@@ -38,8 +38,8 @@ class CatRoberry : NPC() {
         val ins = Dungeon.hero.belongings.getItem(cls)
         return if (ins != null) {
             ins.detach(Dungeon.hero.belongings.backpack)
-            GLog.w(Messages.get(CatRoberry::class.java, "give-meat", ins.name()))
-            yell(Messages.get(CatRoberry::class.java, words))
+            GLog.w(Messages.get(CatRawberry::class.java, "give-meat", ins.name()))
+            yell(Messages.get(CatRawberry::class.java, words))
             true
         } else false
     }
@@ -48,7 +48,7 @@ class CatRoberry : NPC() {
         val pos = Dungeon.level.randomRespawnCell()
         ScrollOfTeleportation.appear(this, pos)
         yell(Messages.get(this, "keke"))
-        GLog.i(Messages.get(CatRoberry::class.java, "blinked"))
+        GLog.i(Messages.get(CatRawberry::class.java, "blinked"))
     }
 
     companion object {

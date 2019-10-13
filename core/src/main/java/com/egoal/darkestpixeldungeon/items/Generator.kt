@@ -79,6 +79,7 @@ object Generator {
             ))
 
             object T2 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
+                    Dirk::class.java to 5f,
                     ShortSword::class.java to 6f,
                     HandAxe::class.java to 5f,
                     Spear::class.java to 5f,

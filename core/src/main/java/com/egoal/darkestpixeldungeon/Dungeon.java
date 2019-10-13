@@ -168,14 +168,14 @@ public class Dungeon {
     chapters = new HashSet<Integer>();
 
     // quest init
-    Ghost.Quest.reset();
+    Ghost.Quest.INSTANCE.reset();
     Wandmaker.Quest.reset();
     Blacksmith.Quest.reset();
     Imp.Quest.reset();
 
     Alchemist.Quest.reset();
     Statuary.Reset();
-    Jessica.Quest.reset();
+    Jessica.Quest.INSTANCE.reset();
     Yvette.Quest.INSTANCE.Reset();
 
     hero = new Hero();
@@ -530,13 +530,13 @@ public class Dungeon {
       bundle.put(CHAPTERS, ids);
 
       Bundle quests = new Bundle();
-      Ghost.Quest.storeInBundle(quests);
+      Ghost.Quest.INSTANCE.storeInBundle(quests);
       Wandmaker.Quest.storeInBundle(quests);
       Blacksmith.Quest.storeInBundle(quests);
       Imp.Quest.storeInBundle(quests);
       // dpd save
       Alchemist.Quest.storeInBundle(quests);
-      Jessica.Quest.storeInBundle(quests);
+      Jessica.Quest.INSTANCE.storeInBundle(quests);
       Yvette.Quest.INSTANCE.StoreInBundle(quests);
       Statuary.save(quests);
 
@@ -643,25 +643,25 @@ public class Dungeon {
 
       Bundle quests = bundle.getBundle(QUESTS);
       if (!quests.isNull()) {
-        Ghost.Quest.restoreFromBundle(quests);
+        Ghost.Quest.INSTANCE.restoreFromBundle(quests);
         Wandmaker.Quest.restoreFromBundle(quests);
         Blacksmith.Quest.restoreFromBundle(quests);
         Imp.Quest.restoreFromBundle(quests);
 
         // dpd, restore quests
         Alchemist.Quest.restoreFromBundle(quests);
-        Jessica.Quest.restoreFromBundle(quests);
+        Jessica.Quest.INSTANCE.restoreFromBundle(quests);
         Statuary.load(quests);
         Yvette.Quest.INSTANCE.RestoreFromBundle(quests);
       } else {
-        Ghost.Quest.reset();
+        Ghost.Quest.INSTANCE.reset();
         Wandmaker.Quest.reset();
         Blacksmith.Quest.reset();
         Imp.Quest.reset();
 
         // dpd
         Alchemist.Quest.reset();
-        Jessica.Quest.reset();
+        Jessica.Quest.INSTANCE.reset();
         Yvette.Quest.INSTANCE.Reset();
       }
     }

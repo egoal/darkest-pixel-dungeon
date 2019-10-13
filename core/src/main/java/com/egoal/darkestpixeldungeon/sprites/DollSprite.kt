@@ -1,17 +1,22 @@
 package com.egoal.darkestpixeldungeon.sprites
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.watabou.gltextures.TextureCache
+import com.watabou.glwrap.Vertexbuffer
+import com.watabou.noosa.Camera
 import com.watabou.noosa.Game
 import com.watabou.noosa.Image
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Callback
+import com.watabou.utils.Point
 import com.watabou.utils.PointF
+import org.w3c.dom.Text
 
-// paper doll
+// paper doll for hero
 
 class DollSprite : CharSprite() {
     private lateinit var fly: IndexedAnimation
@@ -22,24 +27,21 @@ class DollSprite : CharSprite() {
     private val armor = Armor()
 
     init {
-        texture(Assets.HERO_BODY)
+        initBodyAnimation()
 
         link(Dungeon.hero)
+        updateHead()
         updateArmor()
+
+        armor.flipHorizontal = flipHorizontal
+        head.flipHorizontal = head.flipHorizontal
 
         if (ch.isAlive) idle() else die()
     }
 
-    fun addComponencts() {
-        // body, armor, head
-        parent.add(armor)
-        parent.add(head)
-    }
-
-    fun updateArmor() {
-        // val flim = TextureFilm()
-        val bodytex = TextureCache.get(Assets.HERO_BODY)
-        val body = TextureFilm(bodytex, FRAME_WIDTH, FRAME_HEIGHT)
+    private fun initBodyAnimation() {
+        texture(Assets.HERO_BODY)
+        val body = TextureFilm(texture, FRAME_WIDTH, FRAME_HEIGHT)
 
         idle = IndexedAnimation(1, true)
         idle.frames(body, 0, 0, 0, 1, 0, 0, 1, 1)
@@ -65,13 +67,23 @@ class DollSprite : CharSprite() {
         read.frames(body, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19)
     }
 
+    fun updateHead() {
+        val hero = ch as Hero
+        head.row(hero.heroClass.ordinal)
+    }
+
+    fun updateArmor() {
+        val hero = ch as Hero
+        val tier = hero.tier()
+        //todo: clear up
+        if (tier == 0 && (hero.heroClass != HeroClass.HUNTRESS && hero.heroClass != HeroClass.SORCERESS))
+            armor.row(0)
+        else armor.row(tier + 1)
+    }
+
     override fun place(cell: Int) {
         super.place(cell)
-        val pt = worldToCamera(cell)
-        armor.point(pt)
-        head.point(pt)
-
-        // Camera.main.target = this
+         Camera.main.target = this
     }
 
     override fun turnTo(from: Int, to: Int) {
@@ -83,7 +95,7 @@ class DollSprite : CharSprite() {
     override fun move(from: Int, to: Int) {
         super.move(from, to)
         if (ch.flying) play(fly)
-        // Camera.main.target = this
+         Camera.main.target = this
     }
 
     override fun jump(from: Int, to: Int, callback: Callback?) {
@@ -105,6 +117,10 @@ class DollSprite : CharSprite() {
     override fun update() {
         sleeping = ch.isAlive && (ch as Hero).resting
         super.update()
+
+        // sync pos
+        head.point(point())
+        armor.point(point())
     }
 
     override fun updateAnimation() {
@@ -135,6 +151,12 @@ class DollSprite : CharSprite() {
         }
     }
 
+    override fun draw() {
+        super.draw()
+        head.draw()
+        armor.draw()
+    }
+
     fun sprint(on: Boolean): Boolean {
         run.delay = if (on) 0.667f / RUN_FRAMERATE else 1f / RUN_FRAMERATE
         return on
@@ -161,7 +183,7 @@ class DollSprite : CharSprite() {
             val tex = TextureCache.get(texFile)
             texture(tex)
             texRows = TextureFilm(tex, tex.width, FRAME_HEIGHT)
-            set(4, 0)
+            set(0, 0)
         }
 
         fun set(row: Int, col: Int) {
@@ -201,13 +223,17 @@ class DollSprite : CharSprite() {
         }
 
         fun Avatar(hc: HeroClass, tier: Int): Image {
-            val patch = Tiers().get(0)
-            val avatar = Image(Assets.HERO_BODY)
-            val frame = avatar.texture.uvRect(1, 0, FRAME_WIDTH, FRAME_HEIGHT)
-            frame.offset(patch.left, patch.top)
-            avatar.frame(frame)
+            return DollSprite().apply {
 
-            return avatar
+            }
+
+//            val patch = Tiers().get(0)
+//            val avatar = Image(Assets.HERO_BODY)
+//            val frame = avatar.texture.uvRect(1, 0, FRAME_WIDTH, FRAME_HEIGHT)
+//            frame.offset(patch.left, patch.top)
+//            avatar.frame(frame)
+//
+//            return avatar
         }
 
         fun Portrait(hc: HeroClass, tier: Int): Image {

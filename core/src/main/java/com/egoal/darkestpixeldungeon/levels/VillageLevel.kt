@@ -3,7 +3,6 @@ package com.egoal.darkestpixeldungeon.levels
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.mobs.AshesSkull
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -96,9 +95,9 @@ class VillageLevel : RegularLevel() {
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
         // roberry
-        putMobAt(CatRoberry::class.java, 12, 6)
+        putMobAt(CatRawberry::class.java, 12, 6)
 
-        // putMobAt(AshesSkull::class.java, 16, 29)
+         putMobAt(Merchant::class.java, 16, 29)
     }
 
     override fun onSwitchedIn() {
