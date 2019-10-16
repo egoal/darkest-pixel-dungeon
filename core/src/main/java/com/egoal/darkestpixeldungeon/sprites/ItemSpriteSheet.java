@@ -159,6 +159,7 @@ public class ItemSpriteSheet {
   public static final int HELMET_RANGER = HELMET + 9;
   public static final int TURTLE_SCARF_BLUE = HELMET+ 10;
   // 3 scarf here.
+  public static final int LITTLE_PAIL = HELMET+ 14;
 
   //16 free slots
 

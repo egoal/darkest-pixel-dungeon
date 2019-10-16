@@ -41,7 +41,6 @@ import java.util.Collections;
 
 //* the new transaction system
 public class DPDShopKeeper extends NPC {
-
   {
     spriteClass = ShopkeeperSprite.class;
 
@@ -97,6 +96,10 @@ public class DPDShopKeeper extends NPC {
 
   @Override
   protected boolean act() {
+    if(wouldFlee){
+      flee();
+      return true;
+    }
     throwItem();
 
     sprite.turnTo(pos, Dungeon.hero.pos);
@@ -104,10 +107,13 @@ public class DPDShopKeeper extends NPC {
     return true;
   }
 
+  private boolean wouldFlee = false;
+
   @Override
   public int takeDamage(Damage dmg) {
     if (super.takeDamage(dmg) >= 0)
-      flee();
+      // flee();
+      wouldFlee = true; // delay
     return 0;
   }
 

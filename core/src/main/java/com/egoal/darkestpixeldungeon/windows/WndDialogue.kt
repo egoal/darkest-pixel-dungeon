@@ -9,26 +9,27 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline
 import com.egoal.darkestpixeldungeon.ui.Window
+import com.watabou.noosa.Image
 import com.watabou.noosa.NinePatch
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.ui.Button
 
 // refactor from wnd options
-abstract class WndDialogue(who: Char, what: String, vararg options: String) : Window() {
+abstract class WndDialogue(image: Image?, text: String, what: String, vararg options: String) : Window() {
     init {
         val width = if (DarkestPixelDungeon.landscape()) WIDTH_L else WIDTH_P
 
         val innerWidth = (width - MARGIN * 2).toInt()
 
         var top = MARGIN
-        if (who is Mob) {
-            val title = IconTitle(who.sprite(), who.name).apply {
+        if (image != null) {
+            val title = IconTitle(image, text).apply {
                 setRect(MARGIN, MARGIN, innerWidth.toFloat(), 0f)
             }
             add(title)
             top = title.bottom() + MARGIN
         } else {
-            val tf = PixelScene.renderMultiline(who.name, 9).apply {
+            val tf = PixelScene.renderMultiline(text, 9).apply {
                 hardlight(TITLE_COLOR)
                 setPos(MARGIN, MARGIN)
                 maxWidth(innerWidth)
@@ -74,8 +75,8 @@ abstract class WndDialogue(who: Char, what: String, vararg options: String) : Wi
 
         private const val MARGIN = 2f
 
-        fun Show(char: Char, content: String, vararg options: String, callback: (Int) -> Unit) {
-            GameScene.show(object : WndDialogue(char, content, *options) {
+        fun Show(mob: Mob, content: String, vararg options: String, callback: (Int) -> Unit) {
+            GameScene.show(object : WndDialogue(mob.sprite(), mob.name, content, *options) {
                 override fun onSelect(idx: Int) {
                     callback(idx)
                 }
@@ -88,9 +89,9 @@ abstract class WndDialogue(who: Char, what: String, vararg options: String) : Wi
     }
 
     open class OptionButton(line: String) : Button() {
-        val background: NinePatch = Chrome.get(Chrome.Type.DIALOG_OPTION)
-        val text: RenderedTextMultiline = PixelScene.renderMultiline(line, 6)
-        val dot = PixelScene.createText("-", 6f)
+        private val background: NinePatch = Chrome.get(Chrome.Type.DIALOG_OPTION)
+        private val text: RenderedTextMultiline = PixelScene.renderMultiline(line, 6)
+        private val dot = PixelScene.createText("-", 6f)
 
         init {
             add(background)

@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Alchemist extends NPC {
+public class Alchemist extends NPC.Unbreakable {
   {
     name = Messages.get(this, "name");
     spriteClass = AlchemistSprite.class;
@@ -123,26 +123,6 @@ public class Alchemist extends NPC {
   @Override
   public boolean reset() {
     return true;
-  }
-
-  @Override
-  protected boolean act() {
-    throwItem();
-    return super.act();
-  }
-
-  @Override
-  public float defenseSkill(Char enemy) {
-    return 1000;
-  }
-
-  @Override
-  public int takeDamage(Damage dmg) {
-    return 0;
-  }
-
-  @Override
-  public void add(Buff buff) {
   }
 
   public static class Quest {

@@ -207,6 +207,14 @@ class ExtraDexterous : Perk(5) {
     private fun extraDef(): Int = 3 * level
 }
 
+class ExtraEvasion : Perk(5) {
+    override fun image(): Int = PerkImageSheet.DEX_EXTRA
+
+    fun prob(): Float = 0.075f * level
+
+    override fun description(): String = M.L(this, "desc", (prob() * 100).toInt())
+}
+
 class ExtraDexterousGrowth : Perk(5) {
     override fun image(): Int = PerkImageSheet.DEX_GROWTH
 
@@ -442,6 +450,6 @@ class QuickLearner : Perk(3) {
     }
 }
 
-class LevelPerception: Perk(){
+class LevelPerception : Perk() {
     override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }

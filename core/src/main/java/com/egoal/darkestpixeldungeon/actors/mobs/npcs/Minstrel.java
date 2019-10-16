@@ -19,7 +19,7 @@ import com.watabou.noosa.TextureFilm;
  * Created by 93942 on 10/10/2018.
  */
 
-public class Minstrel extends NPC{
+public class Minstrel extends NPC.Unbreakable{
   {
     spriteClass = MinstrelSprite.class;
   }
@@ -55,22 +55,7 @@ public class Minstrel extends NPC{
       die(null);
     }
     
-    throwItem();
     return super.act();
-  }
-
-  @Override
-  public float defenseSkill(Char enemy) {
-    return 1000;
-  }
-
-  @Override
-  public int takeDamage(Damage dmg) {
-    return 0;
-  }
-
-  @Override
-  public void add(Buff buff) {
   }
 
   private void onSelectHello(int index){

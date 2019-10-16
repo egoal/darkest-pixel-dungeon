@@ -62,7 +62,7 @@ object Generator {
 
     object WEAPON : ItemGenerator() {
         private val floorSetTierProbs = arrayOf(
-                floatArrayOf(20f, 60f, 10f, 5f, 5f),
+                floatArrayOf(15f, 60f, 10f, 5f, 5f),
                 floatArrayOf(10f, 25f, 50f, 15f, 5f),
                 floatArrayOf(0f, 10f, 40f, 40f, 10f),
                 floatArrayOf(0f, 5f, 20f, 50f, 25f),
@@ -338,6 +338,7 @@ object Generator {
             HelmetBarbarian::class.java to 1f,
             HelmetCrusader::class.java to 1f,
             HoodApprentice::class.java to 1f,
+            LittlePail::class.java to 1f,
             CircletEmerald::class.java to 1f,
             CrownOfDwarf::class.java to 0f, // by king 
             HeaddressRegeneration::class.java to 1f,

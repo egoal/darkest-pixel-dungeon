@@ -13,7 +13,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 
-class CatRawberry : NPC() {
+class CatRawberry : NPC.Unbreakable() {
     init {
         spriteClass = Sprite::class.java
 
@@ -71,17 +71,5 @@ class CatRawberry : NPC() {
         }
     }
 
-    // unbreakable
     override fun reset() = true
-
-    override fun act(): Boolean {
-        throwItem()
-        return super.act()
-    }
-
-    override fun defenseSkill(enemy: Char): Float = 1000f
-
-    override fun takeDamage(dmg: Damage): Int = 0
-
-    override fun add(buff: Buff) = Unit
 }

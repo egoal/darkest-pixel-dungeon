@@ -29,40 +29,40 @@ import com.watabou.gltextures.TextureCache;
 import android.graphics.RectF;
 
 public class TextureFilm {
-	
+
 	private static final RectF FULL = new RectF( 0, 0, 1, 1 );
-	
+
 	private int texWidth;
 	private int texHeight;
-	
+
 	protected HashMap<Object,RectF> frames = new HashMap<Object, RectF>();
-	
+
 	public TextureFilm( Object tx ) {
-		
+
 		SmartTexture texture = TextureCache.get( tx );
-		
+
 		texWidth = texture.width;
 		texHeight = texture.height;
-		
+
 		add( null, FULL );
 	}
-	
+
 	public TextureFilm( SmartTexture texture, int width ) {
 		this( texture, width, texture.height );
 	}
-	
+
 	public TextureFilm( Object tx, int width, int height ) {
-		
+
 		SmartTexture texture = TextureCache.get( tx );
-		
+
 		texWidth = texture.width;
 		texHeight = texture.height;
-		
+
 		float uw = (float)width / texWidth;
 		float vh = (float)height / texHeight;
 		int cols = texWidth / width;
 		int rows = texHeight / height;
-		
+
 		for (int i=0; i < rows; i++) {
 			for (int j=0; j < cols; j++) {
 				RectF rect = new RectF( j * uw, i * vh, (j+1) * uw, (i+1) * vh );
@@ -70,18 +70,21 @@ public class TextureFilm {
 			}
 		}
 	}
-	
+
 	public TextureFilm( TextureFilm atlas, Object key, int width, int height ) {
-	
+
 		texWidth = atlas.texWidth;
 		texHeight = atlas.texHeight;
-		
+
 		RectF patch = atlas.get( key );
-		
+
 		float uw = (float)width / texWidth;
 		float vh = (float)height / texHeight;
-		int cols = (int)(width( patch ) / width);
-		int rows = (int)(height( patch ) / height);
+//		int cols = (int)(width( patch ) / width);
+//		int rows = (int)(height( patch ) / height);
+
+		int cols = Math.round(width(patch))/ width;
+		int rows = Math.round(height(patch))/ height;
 		
 		for (int i=0; i < rows; i++) {
 			for (int j=0; j < cols; j++) {
@@ -91,19 +94,19 @@ public class TextureFilm {
 			}
 		}
 	}
-	
+
 	public void add( Object id, RectF rect ) {
 		frames.put( id, rect );
 	}
-	
+
 	public RectF get( Object id ) {
 		return frames.get( id );
 	}
-	
+
 	public float width( RectF frame ) {
 		return frame.width() * texWidth;
 	}
-	
+
 	public float height( RectF frame ) {
 		return frame.height() * texHeight;
 	}

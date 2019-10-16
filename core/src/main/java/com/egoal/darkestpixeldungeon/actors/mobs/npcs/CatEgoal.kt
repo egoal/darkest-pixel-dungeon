@@ -21,7 +21,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import java.util.ArrayList
 
-class CatEgoal : NPC() {
+class CatEgoal : NPC.Unbreakable() {
     init {
         spriteClass = CatLixSprite::class.java
 
@@ -147,19 +147,7 @@ class CatEgoal : NPC() {
         }
     }
 
-    // unbreakable
     override fun reset() = true
-
-    override fun act(): Boolean {
-        throwItem()
-        return super.act()
-    }
-
-    override fun defenseSkill(enemy: Char): Float = 1000f
-
-    override fun takeDamage(dmg: Damage) = 0
-
-    override fun add(buff: Buff) {}
 
     override fun move(step: Int) {
         if (!Dungeon.visible[step]) super.move(step)

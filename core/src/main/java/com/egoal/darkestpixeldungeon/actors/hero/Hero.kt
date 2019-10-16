@@ -46,6 +46,7 @@ import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
 import com.egoal.darkestpixeldungeon.ui.StatusPane
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
 import com.egoal.darkestpixeldungeon.windows.WndResurrect
 import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.Camera
@@ -269,6 +270,10 @@ class Hero : Char() {
     }
 
     override fun defenseSkill(enemy: Char): Float {
+        // todo: make it a property
+        val ee = heroPerk.get(ExtraEvasion::class.java)
+        if (ee != null && Random.Float() < ee.prob()) return 1000f
+
         var bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
         var evasion = Math.pow(1.125, bonus.toDouble()).toFloat()
 
@@ -804,6 +809,17 @@ class Hero : Char() {
             if (lvl < MAX_LEVEL) {
                 upgraded = true
                 heroClass.upgradeHero(this)
+
+                if ((lvl - 2) % 4 == 0) {
+                    //2, 6, 10... gain a perk
+                    val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
+                    GameScene.show(WndSelectPerk.CreateWithRandomPositives(
+                            M.L(WndSelectPerk::class.java, "select"), cnt))
+                }
+
+                if (lvl == 12 && Dungeon.hero.subClass == HeroSubClass.NONE) {
+                    WndMasterSubclass.Show(this)
+                }
             } else {
                 Buff.prolong(this, Bless::class.java, 30f)
                 exp = 0
@@ -819,14 +835,6 @@ class Hero : Char() {
             Sample.INSTANCE.play(Assets.SND_LEVELUP)
 
             Badges.validateLevelReached()
-
-            if ((lvl - 2) % 4 == 0) {
-                //2, 6, 10... gain a perk
-                val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
-                GameScene.show(WndSelectPerk.CreateWithRandomPositives(
-                        M.L(WndSelectPerk::class.java, "select"), cnt))
-                // todo: player may cancel the window
-            }
         }
     }
 

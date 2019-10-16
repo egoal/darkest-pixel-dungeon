@@ -58,8 +58,7 @@ import java.lang.RuntimeException
 
 import java.util.HashSet
 
-class Ghost : NPC() {
-
+class Ghost : NPC.Unbreakable() {
     init {
         spriteClass = GhostSprite::class.java
 
@@ -68,38 +67,19 @@ class Ghost : NPC() {
         state = WANDERING
     }
 
-    init {
-
-        Sample.INSTANCE.load(Assets.SND_GHOST)
-    }
-
     override fun act(): Boolean {
         if (Quest.completed())
             target = Dungeon.hero.pos
         return super.act()
     }
 
-    override fun defenseSkill(enemy: Char): Float {
-        return 1000f
-    }
-
     override fun speed(): Float {
         return if (Quest.completed()) 2f else 0.5f
     }
 
-    override fun chooseEnemy(): Char? {
-        return null
-    }
+    override fun chooseEnemy(): Char? = null
 
-    override fun takeDamage(dmg: Damage): Int {
-        return 0
-    }
-
-    override fun add(buff: Buff) {}
-
-    override fun reset(): Boolean {
-        return true
-    }
+    override fun reset(): Boolean = true
 
     override fun interact(): Boolean {
         sprite.turnTo(pos, Dungeon.hero.pos)
@@ -204,16 +184,6 @@ class Ghost : NPC() {
         var weapon: Weapon? = null
         var armor: Armor? = null
 
-        private val NODE = "sadGhost"
-
-        private val SPAWNED = "spawned"
-        private val TYPE = "type"
-        private val GIVEN = "given"
-        private val PROCESSED = "processed"
-        private val DEPTH = "depth"
-        private val WEAPON = "weapon"
-        private val ARMOR = "armor"
-
         fun reset() {
             spawned = false
 
@@ -255,8 +225,8 @@ class Ghost : NPC() {
 
                 depth = node.getInt(DEPTH)
 
-                weapon = node.get(WEAPON) as Weapon
-                armor = node.get(ARMOR) as Armor
+                weapon = node.get(WEAPON) as Weapon?
+                armor = node.get(ARMOR) as Armor?
             } else {
                 reset()
             }
@@ -301,9 +271,7 @@ class Ghost : NPC() {
             Journal.remove(Messages.get(Ghost::class.java, "name"))
         }
 
-        fun completed(): Boolean {
-            return spawned && processed
-        }
+        fun completed(): Boolean = spawned && processed
 
         private fun PreparePrize() {
             //50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
@@ -358,12 +326,16 @@ class Ghost : NPC() {
     }
 
     companion object {
+        private const val NODE = "sadGhost"
 
-        private val IMMUNITIES = HashSet<Class<*>>()
+        private const val SPAWNED = "spawned"
+        private const val TYPE = "type"
+        private const val GIVEN = "given"
+        private const val PROCESSED = "processed"
+        private const val DEPTH = "depth"
+        private const val WEAPON = "weapon"
+        private const val ARMOR = "armor"
 
-        init {
-            IMMUNITIES.add(Paralysis::class.java)
-            IMMUNITIES.add(Roots::class.java)
-        }
+        private val IMMUNITIES = hashSetOf<Class<*>>(Paralysis::class.java, Roots::class.java)
     }
 }

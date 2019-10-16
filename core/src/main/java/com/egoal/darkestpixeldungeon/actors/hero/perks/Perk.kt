@@ -66,7 +66,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
         }
 
         // I mean, just random, give me a perk!
-        fun Random(hero: Hero): Perk{
+        fun Random(hero: Hero): Perk {
             TODO()
         }
 
@@ -90,7 +90,8 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 HardCrit() to 1f,
                 LowHealthRegeneration() to 1f,
                 LowHealthDexterous() to 1f,
-                ExtraDexterous() to 1f,
+                // ExtraDexterous() to 1f,
+                ExtraEvasion() to 1f,
                 ExtraDexterousGrowth() to 1f,
                 ExtraPerkChoice() to 1f,
                 BrewEnhancedPotion() to 1f,

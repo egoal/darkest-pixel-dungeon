@@ -20,12 +20,14 @@ import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.egoal.darkestpixeldungeon.windows.WndQuest
 import com.watabou.noosa.TextureFilm
@@ -55,20 +57,14 @@ class Yvette : NPC() {
         }
 
         if (questGiven) {
-            GameScene.show(object : WndOptions(Sprite(), name, Messages.get(this, "reminder"),
-                    Messages.get(this, "opt-ok"), Messages.get(this, "opt-betray")) {
-                override fun onSelect(index: Int) {
-                    onAnswered(index)
-                }
-            })
+            WndDialogue.Show(this, M.L(this, "reminder"), M.L(this, "opt-ok"), M.L(this, "opt-betray")) {
+                onAnswered(it)
+            }
         } else {
             questGiven = true
-            GameScene.show(object : WndOptions(Sprite(), name, Messages.get(this, "task"),
-                    Messages.get(this, "opt-onit"), Messages.get(this, "opt-betray")) {
-                override fun onSelect(index: Int) {
-                    onAnswered(index)
-                }
-            })
+            WndDialogue.Show(this, M.L(this, "task"), M.L(this, "opt-onit"), M.L(this, "opt-betray")) {
+                onAnswered(it)
+            }
         }
 
         return false

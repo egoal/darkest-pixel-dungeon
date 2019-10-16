@@ -315,7 +315,7 @@ public class CursedWand {
                     && !ch.properties().contains(Char.Property.BOSS)
                     && !ch.properties().contains(Char.Property.MINIBOSS)) {
               Sheep sheep = new Sheep();
-              sheep.lifespan = 10;
+              sheep.setLifespan(10);
               sheep.pos = ch.pos;
               ch.destroy();
               ch.sprite.killAndErase();

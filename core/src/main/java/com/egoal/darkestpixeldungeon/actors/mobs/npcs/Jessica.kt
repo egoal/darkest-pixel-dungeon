@@ -20,7 +20,7 @@ import com.watabou.utils.Random
  * Created by 93942 on 5/5/2018.
  */
 
-class Jessica : NPC() {
+class Jessica : NPC.Unbreakable() {
     init {
         spriteClass = JessicaSprite::class.java
     }
@@ -32,7 +32,7 @@ class Jessica : NPC() {
             val cd = Dungeon.hero.belongings.getItem(CallysDiary::class.java)
             if (cd == null) {
                 WndDialogue.Show(this, M.L(this, "please"), M.L(this, "ok"), M.L(this, "sorry")) {
-                    Quest.given_ = true
+                    if (it == 0) Quest.given_ = true
                 }
             } else {
                 cd.detach(Dungeon.hero.belongings.backpack)
@@ -52,21 +52,6 @@ class Jessica : NPC() {
         return true
     }
 
-    override fun act(): Boolean {
-        throwItem()
-        return super.act()
-    }
-
-    override fun defenseSkill(enemy: Char): Float {
-        return 1000f
-    }
-
-    override fun takeDamage(dmg: Damage): Int {
-        return 0
-    }
-
-    override fun add(buff: Buff) {}
-
     override fun description(): String {
         return Messages.get(this, if (Quest.completed_) "desc_2" else "desc")
     }
@@ -78,11 +63,11 @@ class Jessica : NPC() {
         var completed_: Boolean = false
 
         // bundle
-        private val NODE = "jessica"
+        private const val NODE = "jessica"
 
-        private val SPAWNED = "spawned"
-        private val GIVEN = "given"
-        private val COMPLETED = "completed"
+        private const val SPAWNED = "spawned"
+        private const val GIVEN = "given"
+        private const val COMPLETED = "completed"
 
         fun reset() {
             spawned_ = false

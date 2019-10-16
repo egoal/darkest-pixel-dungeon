@@ -28,12 +28,14 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.ui.PerkSlot
+import com.egoal.darkestpixeldungeon.ui.RedButton
 import com.egoal.darkestpixeldungeon.ui.Window
 import com.watabou.gltextures.SmartTexture
 import com.watabou.gltextures.TextureCache
@@ -126,8 +128,19 @@ class WndHero : WndTabbed() {
                 title.label((hero.givenName() + "\n" + Messages.get(this, "title",
                         hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH))
             title.color(Window.SHPX_COLOR)
-            title.setRect(0f, 0f, WIDTH.toFloat(), 0f)
+            title.setRect(0f, 0f, WIDTH / 2f, 0f)
             add(title)
+
+            if (hero.lvl >= 12 && hero.subClass == HeroSubClass.NONE) {
+                val btn = object : RedButton(M.L(this, "choose_way")) {
+                    override fun onClick() {
+                        hide()
+                        WndMasterSubclass.Show(hero)
+                    }
+                }
+                btn.setRect(title.right() + GAP5, title.top(), 40f, title.height())
+                add(btn)
+            }
 
             pos = title.bottom() + 2 * GAP5
 
@@ -273,7 +286,7 @@ class WndHero : WndTabbed() {
                 icon.y = rt.y + rt.height() + ((GAP5 + ICON_SIZE) * i).toFloat()
                 add(icon)
 
-                val txt = PixelScene.renderText(String.format("%+2d%%", (hero.elementalResistance[i]* 100).toInt()), 8)
+                val txt = PixelScene.renderText(String.format("%+2d%%", (hero.elementalResistance[i] * 100).toInt()), 8)
                 txt.x = icon.width + GAP5
                 txt.y = (icon.height - txt.baseLine()) / 2 + icon.y
                 add(txt)
@@ -281,7 +294,7 @@ class WndHero : WndTabbed() {
                 thetop = icon.y + icon.height() + GAP5.toFloat()
             }
 
-            val rt2 = PixelScene.renderText(M.L(this, "magical_resistance", (hero.magicalResistance* 100).toInt()), 8)
+            val rt2 = PixelScene.renderText(M.L(this, "magical_resistance", (hero.magicalResistance * 100).toInt()), 8)
             rt2.y = thetop
             add(rt2)
             thetop += rt2.height() + GAP5.toFloat()
