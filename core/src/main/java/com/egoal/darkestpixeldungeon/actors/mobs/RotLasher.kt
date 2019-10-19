@@ -31,7 +31,7 @@ class RotLasher : Mob() {
         properties.add(Property.IMMOVABLE)
 
         addResistances(Damage.Element.POISON, 0.5f)
-        addResistances(Damage.Element.FIRE, -0.2f)
+        addResistances(Damage.Element.FIRE, -1f)
     }
 
     private var level = 1

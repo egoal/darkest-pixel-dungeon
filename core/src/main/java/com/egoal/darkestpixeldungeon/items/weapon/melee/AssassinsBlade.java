@@ -32,13 +32,13 @@ public class AssassinsBlade extends MeleeWeapon {
   {
     image = ItemSpriteSheet.ASSASSINS_BLADE;
 
-    tier = 4;
+    setTier(4);
   }
 
   @Override
   public int max(int lvl) {
-    return 4 * (tier + 1) +    //20 base, down from 25
-            lvl * (tier + 1);   //scaling unchanged
+    return 4 * (getTier() + 1) +    //20 base, down from 25
+            lvl * (getTier() + 1);   //scaling unchanged
   }
 
   @Override

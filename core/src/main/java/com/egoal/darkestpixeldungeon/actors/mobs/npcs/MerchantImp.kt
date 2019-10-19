@@ -17,12 +17,12 @@ import com.watabou.utils.Random
  * Created by 93942 on 8/21/2018.
  */
 
-class DPDImpShopkeeper : DPDShopKeeper() {
+class MerchantImp : Merchant() {
     init {
         spriteClass = ImpSprite::class.java
     }
 
-    override fun initSellItems(): DPDShopKeeper {
+    override fun initSellItems() {
         // devil would be place by painter, here, add extra items
         repeat(2) {
             addItemToSell(Generator.POTION.generate())
@@ -48,8 +48,6 @@ class DPDImpShopkeeper : DPDShopKeeper() {
         addItemToSell(PlateArmor().identify())
 
         repeat(3) { addItemToSell(Torch()) }
-
-        return this
     }
 
     override fun flee() {

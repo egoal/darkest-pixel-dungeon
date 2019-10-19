@@ -10,9 +10,9 @@ class PlagueDoctor : PotionSeller() {
         spriteClass = Sprite::class.java
     }
 
-    override fun initSellItems(): DPDShopKeeper {
+    override fun initSellItems() {
         addItemToSell(PotionOfToxicGas())
-        return super.initSellItems()
+        super.initSellItems()
     }
 
     class Sprite : MobSprite() {

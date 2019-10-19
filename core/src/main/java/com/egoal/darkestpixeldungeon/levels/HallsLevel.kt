@@ -5,7 +5,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
-import com.egoal.darkestpixeldungeon.levels.diggers.specials.ShopDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.MerchantDigger
 import com.egoal.darkestpixeldungeon.levels.traps.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Game
@@ -46,7 +46,7 @@ class HallsLevel : RegularLevel() {
         // less diggers, but more specials
         val diggers = selectDiggers(Random.NormalIntRange(2, 3), 12)
         if (Dungeon.shopOnLevel())
-            diggers.add(ShopDigger())
+            diggers.add(MerchantDigger())
 
         return diggers
     }

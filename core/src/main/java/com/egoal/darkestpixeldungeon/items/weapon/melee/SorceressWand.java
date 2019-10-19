@@ -13,7 +13,7 @@ public class SorceressWand extends MeleeWeapon {
 
   {
     image = ItemSpriteSheet.DPD_SORCERESS_WAND;
-    tier = 1;
+    setTier(1);
     DLY = 1.f;
     unique = true;
 
@@ -32,14 +32,14 @@ public class SorceressWand extends MeleeWeapon {
   // 1~7
   @Override
   public int max(int lvl) {
-    return 4 * tier + 3 +    //base
-            lvl * (tier + 1);   //level scaling
+    return 4 * getTier() + 3 +    //base
+            lvl * (getTier() + 1);   //level scaling
   }
 
   @Override
   public int STRReq(int lvl) {
     lvl = Math.max(0, lvl);
     //strength req decreases at +1,+3,+6,+10,etc.
-    return (7 + tier * 2) - (int) (Math.sqrt(8 * lvl + 1) - 1) / 2;
+    return (7 + getTier() * 2) - (int) (Math.sqrt(8 * lvl + 1) - 1) / 2;
   }
 }

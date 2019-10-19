@@ -463,7 +463,7 @@ public class GameScene extends PixelScene {
             tagAction != action.visible ||
             tagResume != resume.visible) {
 
-      //we only want to change the layout when new tags pop in, not when 
+      //we only want to change the layout when new tags pop in, not when
       // existing ones leave.
       boolean tagAppearing = (attack.active && !tagAttack) ||
               (loot.visible && !tagLoot) ||
@@ -857,7 +857,7 @@ public class GameScene extends PixelScene {
     WndBag wnd = new WndBag(Dungeon.hero.getBelongings().backpack, listener,
             title, filter);
     scene.addToFront(wnd);
-    
+
     return wnd;
   }
 
@@ -950,12 +950,7 @@ public class GameScene extends PixelScene {
       GameScene.show(new WndInfoMob((Mob) o));
     } else if (o instanceof Heap) {
       Heap heap = (Heap) o;
-      if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek()
-              .price() > 0) {
-        GameScene.show(new WndTradeItem(heap, false));
-      } else {
-        GameScene.show(new WndInfoItem(heap));
-      }
+      GameScene.show(new WndInfoItem(heap));
     } else if (o instanceof Plant) {
       GameScene.show(new WndInfoPlant((Plant) o));
     } else if (o instanceof Trap) {

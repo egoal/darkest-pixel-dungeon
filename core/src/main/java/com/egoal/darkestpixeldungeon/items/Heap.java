@@ -73,7 +73,6 @@ public class Heap implements Bundlable {
 
   public enum Type {
     HEAP,
-    FOR_SALE,
     CHEST,
     LOCKED_CHEST,
     CRYSTAL_CHEST,
@@ -95,7 +94,6 @@ public class Heap implements Bundlable {
   public int image() {
     switch (type) {
       case HEAP:
-      case FOR_SALE:
         return size() > 0 ? items.peek().image() : 0;
       case CHEST:
       case MIMIC:
@@ -116,7 +114,7 @@ public class Heap implements Bundlable {
   }
 
   public ItemSprite.Glowing glowing() {
-    return (type == Type.HEAP || type == Type.FOR_SALE) && items.size() > 0 ?
+    return (type == Type.HEAP) && items.size() > 0 ?
             items.peek().glowing() : null;
   }
 
@@ -186,7 +184,7 @@ public class Heap implements Bundlable {
 
   public void drop(Item item) {
 
-    if (item.stackable && type != Type.FOR_SALE) {
+    if (item.stackable) {
 
       for (Item i : items) {
         if (i.isSimilar(item)) {
@@ -199,14 +197,14 @@ public class Heap implements Bundlable {
 
     }
 
-    if (item instanceof Dewdrop && type != Type.FOR_SALE) {
+    if (item instanceof Dewdrop) {
       items.add(item);
     } else {
       items.addFirst(item);
     }
 
     if (sprite != null) {
-      if (type == Type.HEAP || type == Type.FOR_SALE)
+      if (type == Type.HEAP)
         sprite.view(items.peek());
       else
         sprite.view(image(), glowing());

@@ -256,6 +256,7 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
+        MasterThievesArmband().collect()
 //        hero.atkSkill += 10f
 //        hero.defSkill += 10f
 //        hero.STR += 4

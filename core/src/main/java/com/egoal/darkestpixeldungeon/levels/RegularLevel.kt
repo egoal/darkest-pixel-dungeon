@@ -80,7 +80,7 @@ abstract class RegularLevel : Level() {
     protected var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
-        if (Dungeon.shopOnLevel()) diggers.add(ShopDigger())
+        if (Dungeon.shopOnLevel()) diggers.add(MerchantDigger())
 
         return diggers
     }
@@ -197,7 +197,8 @@ abstract class RegularLevel : Level() {
         if (Dungeon.depth in 1 until 20) {
             val psProb = if (Dungeon.shopOnLevel()) .1f else .2f
             if (Random.Float() < psProb) {
-                val ps = PotionSeller.Random().initSellItems()
+                val ps = PotionSeller.Random()
+                ps.initSellItems()
                 val s = randomSpace(DigResult.Type.Normal)
                 do {
                     ps.pos = pointToCell(s!!.rect.random())
@@ -207,12 +208,13 @@ abstract class RegularLevel : Level() {
 
             val ssProb = if (Dungeon.shopOnLevel()) .08f else .18f
             if (Random.Float() < ssProb) {
-                val ps = ScrollSeller().initSellItems()
+                val ss = ScrollSeller()
+                ss.initSellItems()
                 val s = randomSpace(DigResult.Type.Normal)
                 do {
-                    ps.pos = pointToCell(s!!.rect.random())
-                } while (findMobAt(ps.pos) != null || !Level.passable[ps.pos])
-                mobs.add(ps)
+                    ss.pos = pointToCell(s!!.rect.random())
+                } while (findMobAt(ss.pos) != null || !Level.passable[ss.pos])
+                mobs.add(ss)
             }
         }
     }
@@ -457,7 +459,7 @@ abstract class RegularLevel : Level() {
                 PitDigger::class.java to 0f,
                 PoolDigger::class.java to 1f,
                 QuestionerDigger::class.java to 1f,
-                ShopDigger::class.java to 0f,
+                MerchantDigger::class.java to 0f,
                 StatuaryDigger::class.java to 1f,
                 StatueDigger::class.java to 1f,
                 StorageDigger::class.java to 0.8f,

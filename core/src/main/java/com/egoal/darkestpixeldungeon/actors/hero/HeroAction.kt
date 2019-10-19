@@ -120,7 +120,7 @@ abstract class HeroAction(var dst: Int = 0) {
             if (Dungeon.level.adjacent(hero.pos, dst) || hero.pos == dst) {
                 val heap = Dungeon.level.heaps.get(dst)
 
-                if (heap != null && (heap.type != Heap.Type.HEAP && heap.type != Heap.Type.FOR_SALE)) {
+                if (heap != null && (heap.type != Heap.Type.HEAP)) {
                     if ((heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type.CRYSTAL_CHEST) &&
                             hero.belongings.specialKeys[Dungeon.depth] < 1) {
                         GLog.w(Messages.get(hero, "locked_chest"))
@@ -145,23 +145,6 @@ abstract class HeroAction(var dst: Int = 0) {
                     hero.sprite.operate(dst)
                 } else
                     hero.ready()
-                return false
-            }
-
-            return goThere(hero)
-        }
-    }
-
-    // old style heap shop
-    class Buy(dst: Int) : HeroAction(dst) {
-        override fun act(hero: Hero): Boolean {
-            if (hero.pos == dst || Dungeon.level.adjacent(hero.pos, dst)) {
-                hero.ready()
-                Dungeon.level.heaps.get(dst)?.let {
-                    if (it.type == Heap.Type.FOR_SALE && it.size() == 1)
-                        GameScene.show(WndTradeItem(it, true))
-                }
-
                 return false
             }
 

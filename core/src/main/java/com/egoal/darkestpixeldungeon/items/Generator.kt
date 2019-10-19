@@ -71,10 +71,11 @@ object Generator {
 
         object MELEE : ItemGenerator() {
             object T1 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    WornShortsword::class.java to 0f,
+                    WornShortsword::class.java to 1f,
                     Knuckles::class.java to 1f,
                     Dagger::class.java to 1f,
                     MagesStaff::class.java to 0f,
+                    SorceressWand::class.java to 0f,
                     BattleGloves::class.java to 1f
             ))
 

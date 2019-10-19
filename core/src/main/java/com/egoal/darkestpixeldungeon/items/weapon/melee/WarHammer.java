@@ -27,14 +27,14 @@ public class WarHammer extends MeleeWeapon {
   {
     image = ItemSpriteSheet.WAR_HAMMER;
 
-    tier = 5;
+    setTier(5);
     ACC = 1.15f; //15% boost to accuracy
   }
 
   @Override
   public int max(int lvl) {
-    return 4 * (tier + 1) +    //24 base, down from 30
-            lvl * (tier + 1);   //scaling unchanged
+    return 4 * (getTier() + 1) +    //24 base, down from 30
+            lvl * (getTier() + 1);   //scaling unchanged
   }
 
 }

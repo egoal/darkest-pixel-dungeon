@@ -6,7 +6,7 @@ import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
-import com.egoal.darkestpixeldungeon.levels.diggers.specials.ShopDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.MerchantDigger
 import com.egoal.darkestpixeldungeon.levels.traps.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -63,7 +63,7 @@ open class SewerLevel : RegularLevel() {
         // less diggers
         val diggers = selectDiggers(Random.NormalIntRange(1, 3), Random.IntRange(11, 13))
         if (Dungeon.shopOnLevel())
-            diggers.add(ShopDigger())
+            diggers.add(MerchantDigger())
 
         return diggers
     }

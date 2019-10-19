@@ -27,14 +27,14 @@ public class Whip extends MeleeWeapon {
   {
     image = ItemSpriteSheet.WHIP;
 
-    tier = 3;
+    setTier(3);
     RCH = 3;    //lots of extra reach
   }
 
   @Override
   public int max(int lvl) {
-    return 3 * (tier + 1) +    //12 base, down from 20
-            lvl * (tier);     //+3 per level, down from +4
+    return 3 * (getTier() + 1) +    //12 base, down from 20
+            lvl * (getTier());     //+3 per level, down from +4
   }
 
 }

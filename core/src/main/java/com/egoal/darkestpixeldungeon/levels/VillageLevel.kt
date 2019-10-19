@@ -5,6 +5,9 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
+import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
@@ -97,7 +100,14 @@ class VillageLevel : RegularLevel() {
         // roberry
         putMobAt(CatRawberry::class.java, 12, 6)
 
-         putMobAt(Merchant::class.java, 16, 29)
+        // putMobAt(Merchant::class.java, 16, 29)
+        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
+            for (i in 1..10) addItemToSell(Generator.generate())
+        }
+        (putMobAt(ScrollSeller::class.java, 15, 27) as ScrollSeller).apply {
+            addItemToSell(Dart(8))
+            addItemToSell(BattleGloves())
+        }
     }
 
     override fun onSwitchedIn() {

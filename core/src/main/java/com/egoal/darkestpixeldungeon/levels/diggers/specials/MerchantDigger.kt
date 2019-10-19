@@ -2,8 +2,8 @@ package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDImpShopkeeper
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.DPDShopKeeper
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.MerchantImp
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Merchant
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
@@ -51,8 +51,8 @@ import java.util.ArrayList
  * Created by 93942 on 2018/12/8.
  */
 
-class ShopDigger : RectDigger() {
-    private lateinit var shopkeeper: DPDShopKeeper
+class MerchantDigger : RectDigger() {
+    private lateinit var shopkeeper: Merchant
 
     override fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(3, 6), Random.IntRange(3, 6))
 
@@ -65,7 +65,8 @@ class ShopDigger : RectDigger() {
 
         if (!::shopkeeper.isInitialized) {
             // generate items, place shopkeeper, this would call only once.
-            shopkeeper = (if (level is LastShopLevel) DPDImpShopkeeper() else DPDShopKeeper()).initSellItems()
+            shopkeeper = if (level is LastShopLevel) MerchantImp() else Merchant()
+            shopkeeper.initSellItems()
             for (item in GenerateItems())
                 shopkeeper.addItemToSell(item)
         }
@@ -73,7 +74,7 @@ class ShopDigger : RectDigger() {
         shopkeeper.pos = level.pointToCell(rect.center)
         level.mobs.add(shopkeeper)
 
-        if (shopkeeper is DPDImpShopkeeper)
+        if (shopkeeper is MerchantImp)
             for (i in PathFinder.NEIGHBOURS9)
                 Set(level, shopkeeper.pos + i, Terrain.WATER)
 

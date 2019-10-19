@@ -773,12 +773,9 @@ class Hero : Char() {
         // moving to an item doesn't auto-pickup when enemies are near...
         // but only for standard heaps, chests and similar open as normal.
         if (heap != null && (visibleEnemies.size == 0 || cell == pos ||
-                        (heap.type != Heap.Type.HEAP && heap.type != Heap.Type.FOR_SALE))) {
+                        (heap.type != Heap.Type.HEAP))) {
             return when (heap.type) {
                 Heap.Type.HEAP -> HeroAction.PickUp(cell)
-                Heap.Type.FOR_SALE ->
-                    if (heap.size() == 1 && heap.peek().price() > 0) HeroAction.Buy(cell)
-                    else HeroAction.PickUp(cell)
                 else -> HeroAction.OpenChest(cell)
             }
         }

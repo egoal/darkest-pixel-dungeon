@@ -35,5 +35,3 @@ object KRandom {
 object KGameMath{
 
 }
-
-//fun GameMath.Compo Lerp(lambda: Float, from: Float, to: Float): Float = from * (1 - lambda) + to * lambda

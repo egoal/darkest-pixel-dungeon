@@ -27,7 +27,7 @@ public class Claymore extends MeleeWeapon {
   {
     image = ItemSpriteSheet.Claymore;
 
-    tier = 5;
+    setTier(5);
   }
 
 }
