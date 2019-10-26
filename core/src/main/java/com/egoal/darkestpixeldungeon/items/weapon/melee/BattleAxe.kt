@@ -18,16 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Longsword extends MeleeWeapon {
+class BattleAxe : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.LONGSWORD;
+    init {
+        image = ItemSpriteSheet.BATTLE_AXE
 
-    setTier(4);
-  }
+        tier = 4
+        ACC = 1.175f //17.5% boost to accuracy
+    }
+
+    override fun max(lvl: Int): Int {
+        return 4 * (tier + 1) +    //20 base, down from 25
+                lvl * (tier + 1)   //scaling unchanged
+    }
 
 }

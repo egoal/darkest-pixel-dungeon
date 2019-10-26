@@ -18,29 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Knuckles extends MeleeWeapon {
+class Claymore : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.KNUCKLEDUSTER;
+    init {
+        image = ItemSpriteSheet.Claymore
 
-    setTier(1);
-    DLY = 0.5f; //2x speed
-  }
-
-  @Override
-  public int min(int lvl) {
-    return getTier() + 1 + //base
-            lvl;    //level scaling
-  }
-
-  @Override
-  public int max(int lvl) {
-    return 3 * (getTier() + 1) +    //6 base, down from 10
-            lvl * getTier();       //+1 per level, down from +2
-  }
+        tier = 5
+    }
 
 }

@@ -1,8 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.unclassified
 
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Chrome
-import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
@@ -145,6 +143,10 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         ++refined
 
         potion?.let {
+            //todo: may use AlchemyPot::OnCombined
+            Statistics.PotionsCooked++
+            Badges.validatePotionsCooked()
+
             //^ refined okay, do inscribe
             GLog.p(Messages.get(this, "refine", potion.name()))
             if (!potion.doPickUp(curUser))

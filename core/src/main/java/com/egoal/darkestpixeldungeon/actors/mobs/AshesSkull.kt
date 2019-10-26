@@ -86,7 +86,7 @@ class AshesSkull : Mob() {
         super.die(cause)
 
         val dis = Dungeon.level.distance(pos, Dungeon.hero.pos)
-        if (Dungeon.hero.isAlive && dis <= 3) {
+        if (Dungeon.hero.isAlive && dis <= 2) {
             val dmg = Damage(Random.NormalIntRange(2, 8), this, Dungeon.hero).type(Damage.Type.MENTAL)
             Dungeon.hero.takeDamage(dmg)
         }

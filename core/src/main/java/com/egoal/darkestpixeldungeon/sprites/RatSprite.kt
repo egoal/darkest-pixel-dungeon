@@ -18,23 +18,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.sprites
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.Assets
+import com.watabou.noosa.TextureFilm
 
-public class Whip extends MeleeWeapon {
+open class RatSprite : MobSprite() {
+    init {
+        texture(Assets.RAT)
 
-  {
-    image = ItemSpriteSheet.WHIP;
+        val frames = TextureFilm(texture, 16, 15)
 
-    setTier(3);
-    RCH = 3;    //lots of extra reach
-  }
+        idle = Animation(2, true)
+        idle.frames(frames, 0, 0, 0, 1)
 
-  @Override
-  public int max(int lvl) {
-    return 3 * (getTier() + 1) +    //12 base, down from 20
-            lvl * (getTier());     //+3 per level, down from +4
-  }
+        run = Animation(10, true)
+        run.frames(frames, 6, 7, 8, 9, 10)
 
+        attack = Animation(15, false)
+        attack.frames(frames, 2, 3, 4, 5, 0)
+
+        die = Animation(10, false)
+        die.frames(frames, 11, 12, 13, 14)
+
+        play(idle)
+    }
 }

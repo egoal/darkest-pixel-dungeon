@@ -91,7 +91,7 @@ class Questioner : NPC.Unbreakable() {
         open()
     }
 
-    private fun randomPlaceItem(item: Item?, mimic: Boolean) {
+    private fun randomPlaceItem(item: Item, mimic: Boolean) {
         val heap = Heap()
         heap.type = if (mimic) Heap.Type.MIMIC else Heap.Type.CHEST
         heap.drop(item)

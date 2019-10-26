@@ -307,7 +307,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
         levitation.pour(Speck.factory(Speck.JET), 0.02f);
         break;
       case INVISIBLE:
-        PotionOfInvisibility.melt(ch);
+        PotionOfInvisibility.Companion.melt(ch);
         break;
       case PARALYSED:
         paused = true;

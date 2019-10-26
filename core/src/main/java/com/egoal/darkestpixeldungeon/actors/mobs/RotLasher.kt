@@ -10,7 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.sprites.RotLasherSprite
 import com.watabou.utils.Random
-import java.util.HashSet
+import kotlin.math.min
 
 class RotLasher : Mob() {
     init {
@@ -31,7 +31,7 @@ class RotLasher : Mob() {
         properties.add(Property.IMMOVABLE)
 
         addResistances(Damage.Element.POISON, 0.5f)
-        addResistances(Damage.Element.FIRE, -1f)
+        addResistances(Damage.Element.FIRE, -2f)
     }
 
     private var level = 1
@@ -50,7 +50,7 @@ class RotLasher : Mob() {
 
     override fun act(): Boolean {
         if (enemy == null || !Dungeon.level.adjacent(pos, enemy.pos))
-            HP = Math.min(HT, HP + 3)
+            HP = min(HT, HP + 3)
 
         return super.act()
     }

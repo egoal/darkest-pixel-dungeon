@@ -252,7 +252,7 @@ public class Goo extends Mob {
     Dungeon.level.unseal();
 
     GameScene.bossSlain();
-    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).getSprite().drop();
 
     Badges.validateBossSlain();
 

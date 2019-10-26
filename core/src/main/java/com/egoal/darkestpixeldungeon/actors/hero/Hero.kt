@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Lance
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -168,8 +169,10 @@ class Hero : Char() {
 
     //todo: refactor helmet immersion
     fun arcaneFactor(): Float {
-        if (belongings.helmet is HoodApprentice) return 1.15f
-        return 1f
+        var factor = heroPerk.get(WandArcane::class.java)?.factor() ?: 1f
+        if (belongings.helmet is HoodApprentice) factor *= 1.15f
+
+        return factor
     }
 
     fun wandChargeFactor(): Float {
@@ -182,7 +185,7 @@ class Hero : Char() {
     }
 
     fun mentalFactor(): Float {
-        var factor = heroPerk.get(WandArcane::class.java)?.factor() ?: 1f
+        var factor = 1f
         belongings.helmet?.let {
             if (it is CircletEmerald)
                 factor = if (it.cursed) 0.95f else 1.1f
@@ -306,7 +309,8 @@ class Hero : Char() {
         if (belongings.weapon == null || belongings.weapon !is Weapon) return true
         if (STR() < (belongings.weapon as Weapon).STRReq()) return false
 
-        if (belongings.weapon is Flail && rangedWeapon == null) return false
+        if (rangedWeapon == null &&
+                (belongings.weapon is Flail || belongings.weapon is Lance)) return false
 
         return true
     }

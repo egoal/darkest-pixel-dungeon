@@ -18,23 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class HandAxe extends MeleeWeapon {
+class Whip : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.HAND_AXE;
+    init {
+        image = ItemSpriteSheet.WHIP
 
-    setTier(2);
-    ACC = 1.225f; //22.5% boost to accuracy
-  }
+        tier = 3
+        RCH = 3    //lots of extra reach
+    }
 
-  @Override
-  public int max(int lvl) {
-    return 4 * (getTier() + 1) +    //12 base, down from 15
-            lvl * (getTier() + 1);   //scaling unchanged
-  }
+    override fun max(lvl: Int): Int {
+        return 3 * (tier + 1) +    //12 base, down from 20
+                lvl * tier     //+3 per level, down from +4
+    }
 
 }

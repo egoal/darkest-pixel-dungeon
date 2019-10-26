@@ -82,13 +82,11 @@ class Pressure : Buff(), Hero.Doom {
     override fun act(): Boolean {
         spend(procStep())
 
-        if (Dungeon.level.locked) return true
-
-
         if (target.isAlive) {
             if (Dungeon.depth > 0 && Random.Int(10) == 0) {
                 //^ up pressure, not in the village
-                upPressure(1f + Random.Float(Dungeon.depth.toFloat() / 4f))
+                val value = (if (Dungeon.level.locked) 2f else 1f) + Random.Float(Dungeon.depth / 4f)
+                upPressure(value)
             }
 
             // mental damage

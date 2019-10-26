@@ -546,19 +546,19 @@ public class GameScene extends PixelScene {
   }
 
   private void addHeapSprite(Heap heap) {
-    ItemSprite sprite = heap.sprite = (ItemSprite) heaps.recycle(ItemSprite
-            .class);
+    ItemSprite sprite =(ItemSprite)heaps.recycle(ItemSprite.class);
+    heap.sprite =  sprite;
     sprite.revive();
     sprite.link(heap);
     heaps.add(sprite);
   }
 
   private void addDiscardedSprite(Heap heap) {
-    heap.sprite = (DiscardedItemSprite) heaps.recycle(DiscardedItemSprite
-            .class);
-    heap.sprite.revive();
-    heap.sprite.link(heap);
-    heaps.add(heap.sprite);
+    heap.setSprite((DiscardedItemSprite) heaps.recycle(DiscardedItemSprite
+            .class));
+    heap.getSprite().revive();
+    heap.getSprite().link(heap);
+    heaps.add(heap.getSprite());
   }
 
   private void addPlantSprite(Plant plant) {
@@ -908,7 +908,7 @@ public class GameScene extends PixelScene {
     }
 
     Heap heap = Dungeon.level.getHeaps().get(cell);
-    if (heap != null && heap.seen) {
+    if (heap != null && heap.getSeen()) {
       objects.add(heap);
       names.add(Messages.titleCase(heap.toString()));
     }

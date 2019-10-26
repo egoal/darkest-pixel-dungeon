@@ -460,7 +460,7 @@ public class CursedWand {
         if (result.isUpgradable()) result.upgrade();
         result.cursed = result.cursedKnown = true;
         GLog.w(Messages.get(CursedWand.class, "transmogrify"));
-        Dungeon.level.drop(result, user.pos).sprite.drop();
+        Dungeon.level.drop(result, user.pos).getSprite().drop();
         wand.wandUsed();
         break;
     }

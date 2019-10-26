@@ -583,7 +583,7 @@ public abstract class Mob extends Char {
     if (Random.Float() < lootChance && Dungeon.hero.getLvl() <= maxLvl + 2) {
       Item loot = createLoot();
       if (loot != null)
-        Dungeon.level.drop(loot, pos).sprite.drop();
+        Dungeon.level.drop(loot, pos).getSprite().drop();
     }
 
     if (Dungeon.hero.isAlive() && !Dungeon.visible[pos]) {

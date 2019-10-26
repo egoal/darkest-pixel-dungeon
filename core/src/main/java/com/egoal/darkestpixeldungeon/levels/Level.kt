@@ -25,7 +25,6 @@ import android.util.Log
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.BrownAle
@@ -39,7 +38,6 @@ import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.WellWater
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness
@@ -74,10 +72,6 @@ import com.watabou.noosa.Group
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.*
 
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.util.ArrayList
 import java.util.Arrays
 import java.util.HashMap
@@ -274,7 +268,7 @@ abstract class Level : Bundlable {
         var collection = bundle.getCollection(HEAPS)
         for (h in collection) {
             val heap = h as Heap
-            if (!heap.isEmpty)
+            if (!heap.empty())
                 heaps.put(heap.pos, heap)
         }
 
@@ -468,7 +462,7 @@ abstract class Level : Bundlable {
     private fun respawnTime(): Float = when (Statistics.Clock.state) {
         Statistics.ClockTime.State.Day -> 50f
         Statistics.ClockTime.State.Night -> 40f
-        Statistics.ClockTime.State.MidNight -> 30f
+        Statistics.ClockTime.State.MidNight -> 35f
     }
 
     open fun respawner(): Actor? = object : Actor() {
@@ -685,7 +679,7 @@ abstract class Level : Bundlable {
             // including dropping items.
             val heap = Heap()
             heap.sprite = ItemSprite()
-            val sprite = heap.sprite
+            val sprite = heap.sprite!!
             sprite.link(heap)
             return heap
         }

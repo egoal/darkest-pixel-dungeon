@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -97,7 +98,7 @@ class VillageLevel : RegularLevel() {
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
-        // roberry
+        // rawberry
         putMobAt(CatRawberry::class.java, 12, 6)
 
         // putMobAt(Merchant::class.java, 16, 29)
@@ -107,6 +108,7 @@ class VillageLevel : RegularLevel() {
         (putMobAt(ScrollSeller::class.java, 15, 27) as ScrollSeller).apply {
             addItemToSell(Dart(8))
             addItemToSell(BattleGloves())
+            addItemToSell(TomeOfPerk())
         }
     }
 

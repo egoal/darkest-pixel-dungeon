@@ -41,7 +41,7 @@ public class WndInfoItem extends Window {
 
     super();
 
-    if (heap.type == Heap.Type.HEAP) {
+    if (heap.getType() == Heap.Type.HEAP) {
 
       Item item = heap.peek();
 

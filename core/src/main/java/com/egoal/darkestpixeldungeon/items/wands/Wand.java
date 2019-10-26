@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.QuickZap;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.StealthCaster;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPerception;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
@@ -374,7 +375,8 @@ public abstract class Wand extends Item {
             });
           }
 
-          Invisibility.dispel();
+          if(!curUser.getHeroPerk().has(StealthCaster.class))
+            Invisibility.dispel();
 
         } else {
 

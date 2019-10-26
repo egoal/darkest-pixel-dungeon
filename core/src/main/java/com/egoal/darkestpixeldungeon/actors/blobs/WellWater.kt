@@ -73,7 +73,7 @@ open class WellWater : Blob() {
             return true
         } else {
             Dungeon.level.heaps.get(pos)?.let { heap ->
-                val oldItem = heap.peek()
+                val oldItem = heap.peek()!!
                 val newItem = affectItem(oldItem)
 
                 if (newItem != null) {

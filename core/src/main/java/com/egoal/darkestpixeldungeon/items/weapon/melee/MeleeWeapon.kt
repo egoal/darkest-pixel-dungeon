@@ -38,9 +38,11 @@ open class MeleeWeapon : Weapon() {
     fun safeUpgrade(): Item = upgrade(enchantment != null)
 
     override fun STRReq(lvl: Int): Int {
-        var lvl = Math.max(0, lvl)
+        val l = max(0, lvl)
+        return 8 + tier * 2 - (l + 1) / 2 // +1, +3, +5, +7
+//        var lvl = Math.max(0, lvl)
         //strength req decreases at +1,+3,+6,+10,etc.
-        return 8 + tier * 2 - (Math.sqrt((8 * lvl + 1).toDouble()) - 1).toInt() / 2
+//        return 8 + tier * 2 - (Math.sqrt((8 * lvl + 1).toDouble()) - 1).toInt() / 2
     }
 
     override fun info(): String {

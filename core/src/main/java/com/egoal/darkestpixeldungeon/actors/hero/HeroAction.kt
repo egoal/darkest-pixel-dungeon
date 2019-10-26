@@ -47,7 +47,6 @@ import com.egoal.darkestpixeldungeon.scenes.InterlevelScene
 import com.egoal.darkestpixeldungeon.scenes.SurfaceScene
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndMessage
-import com.egoal.darkestpixeldungeon.windows.WndTradeItem
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
@@ -81,7 +80,7 @@ abstract class HeroAction(var dst: Int = 0) {
                 if (heap != null) {
                     val item = heap.peek()
 
-                    if (item.doPickUp(hero)) {
+                    if (item!!.doPickUp(hero)) {
                         heap.pickUp()
 
                         if (item is Dewdrop || item is TimekeepersHourglass.Companion.SandBag ||
@@ -98,11 +97,11 @@ abstract class HeroAction(var dst: Int = 0) {
                                 GLog.i(Messages.get(hero, "you_now_have", item.name()))
                         }
 
-                        if (!heap.isEmpty) GLog.i(Messages.get(hero, "something_else"))
+                        if (!heap.empty()) GLog.i(Messages.get(hero, "something_else"))
 
                         hero.curAction = null
                     } else {
-                        heap.sprite.drop()
+                        heap.sprite!!.drop()
                         hero.ready()
                     }
                 } else

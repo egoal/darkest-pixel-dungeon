@@ -52,7 +52,7 @@ public class DisarmingTrap extends Trap {
 
       if (cell != -1) {
         Item item = heap.pickUp();
-        Dungeon.level.drop(item, cell).seen = true;
+        Dungeon.level.drop(item, cell).setSeen(true);
         for (int i : PathFinder.NEIGHBOURS9)
           Dungeon.level.getVisited()[cell + i] = true;
         GameScene.updateFog();
@@ -74,7 +74,7 @@ public class DisarmingTrap extends Trap {
           Dungeon.quickslot.clearItem(weapon);
           weapon.updateQuickslot();
 
-          Dungeon.level.drop(weapon, cell).seen = true;
+          Dungeon.level.drop(weapon, cell).setSeen(true);
           for (int i : PathFinder.NEIGHBOURS9)
             Dungeon.level.getVisited()[cell + i] = true;
           GameScene.updateFog();

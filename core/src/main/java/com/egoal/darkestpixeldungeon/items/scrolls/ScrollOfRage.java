@@ -51,8 +51,8 @@ public class ScrollOfRage extends Scroll {
     }
 
     for (Heap heap : Dungeon.level.getHeaps().values()) {
-      if (heap.type == Heap.Type.MIMIC) {
-        Mimic m = Mimic.Companion.SpawnAt(heap.pos, heap.items);
+      if (heap.getType() == Heap.Type.MIMIC) {
+        Mimic m = Mimic.Companion.SpawnAt(heap.getPos(), heap.getItems());
         if (m != null) {
           m.beckon(curUser.pos);
           heap.destroy();

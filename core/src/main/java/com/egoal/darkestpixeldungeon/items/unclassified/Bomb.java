@@ -100,7 +100,7 @@ public class Bomb extends Item {
         if (Level.Companion.getPassable()[cell + i])
           candidates.add(cell + i);
       int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
-      Dungeon.level.drop(this, newCell).sprite.drop(cell);
+      Dungeon.level.drop(this, newCell).getSprite().drop(cell);
     } else
       super.onThrow(cell);
   }
@@ -244,10 +244,10 @@ public class Bomb extends Item {
 
       //look for our bomb, remove it from its heap, and blow it up.
       for (Heap heap : Dungeon.level.getHeaps().values()) {
-        if (heap.items.contains(bomb)) {
-          heap.items.remove(bomb);
+        if (heap.getItems().contains(bomb)) {
+          heap.getItems().remove(bomb);
 
-          bomb.explode(heap.pos);
+          bomb.explode(heap.getPos());
 
           Actor.remove(this);
           return true;

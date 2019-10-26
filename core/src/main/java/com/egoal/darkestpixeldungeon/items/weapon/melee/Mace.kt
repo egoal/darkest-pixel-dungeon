@@ -18,32 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.sprites;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.Assets;
-import com.watabou.noosa.TextureFilm;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class RatSprite extends MobSprite {
+class Mace : MeleeWeapon() {
 
-  public RatSprite() {
-    super();
+    init {
+        image = ItemSpriteSheet.MACE
 
-    texture(Assets.RAT);
+        tier = 3
+        ACC = 1.2f //20% boost to accuracy
+    }
 
-    TextureFilm frames = new TextureFilm(texture, 16, 15);
+    override fun max(lvl: Int): Int {
+        return 4 * (tier + 1) +    //16 base, down from 20
+                lvl * (tier + 1)   //scaling unchanged
+    }
 
-    idle = new Animation(2, true);
-    idle.frames(frames, 0, 0, 0, 1);
-
-    run = new Animation(10, true);
-    run.frames(frames, 6, 7, 8, 9, 10);
-
-    attack = new Animation(15, false);
-    attack.frames(frames, 2, 3, 4, 5, 0);
-
-    die = new Animation(10, false);
-    die.frames(frames, 11, 12, 13, 14);
-
-    play(idle);
-  }
 }

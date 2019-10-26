@@ -18,16 +18,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class WornShortsword extends MeleeWeapon {
+class Spear : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.WORN_SHORTSWORD;
+    init {
+        image = ItemSpriteSheet.SPEAR
 
-    setTier(1);
-  }
+        tier = 2
+        DLY = 1.5f //0.67x speed
+        RCH = 2    //extra reach
+    }
+
+    override fun max(lvl: Int): Int {
+        return Math.round(6.67f * (tier + 1)) +    //20 base, up from 15
+                lvl * Math.round(1.33f * (tier + 1)) //+4 per level, up from +3
+    }
 
 }

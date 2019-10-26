@@ -262,7 +262,7 @@ public class Statuary extends NPC {
       }
 
       //todo: reconsider the unholy blood
-      Dungeon.level.drop(new UnholyBlood().identify(), hero.pos).sprite.drop();
+      Dungeon.level.drop(new UnholyBlood().identify(), hero.pos).getSprite().drop();
     }
 
     return true;
@@ -330,8 +330,7 @@ public class Statuary extends NPC {
                     (4) == 0) {
               Dungeon.limitedDrops.chaliceOfBlood.count = 1;
 
-              Dungeon.level.drop(new ChaliceOfBlood().random(), hero.pos)
-                      .sprite.drop();
+              Dungeon.level.drop(new ChaliceOfBlood().random(), hero.pos).getSprite().drop();
               hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
               Sample.INSTANCE.play(Assets.SND_BURNING);
 

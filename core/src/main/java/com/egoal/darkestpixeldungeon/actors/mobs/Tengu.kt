@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
+import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
@@ -142,8 +143,7 @@ class Tengu : Mob() {
         Buff.detach(Dungeon.hero, Ignorant::class.java)
         Buff.detach(Dungeon.hero, MoonNight::class.java)
 
-//        if (Dungeon.hero.subClass == HeroSubClass.NONE)
-//            Dungeon.level.drop(TomeOfMastery(), pos).sprite.drop()
+        Dungeon.level.drop(TomeOfPerk(), pos).sprite.drop()
         Dungeon.level.drop(MoonStone(), pos).sprite.drop()
         Dungeon.level.drop(SkeletonKey(Dungeon.depth), pos).sprite.drop()
 

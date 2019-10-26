@@ -18,23 +18,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class BattleAxe extends MeleeWeapon {
+class Knuckles : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.BATTLE_AXE;
+    init {
+        image = ItemSpriteSheet.KNUCKLEDUSTER
 
-    setTier(4);
-    ACC = 1.175f; //17.5% boost to accuracy
-  }
+        tier = 1
+        DLY = 0.5f //2x speed
+    }
 
-  @Override
-  public int max(int lvl) {
-    return 4 * (getTier() + 1) +    //20 base, down from 25
-            lvl * (getTier() + 1);   //scaling unchanged
-  }
+    override fun min(lvl: Int): Int {
+        return tier + 1 + //base
+
+                lvl    //level scaling
+    }
+
+    override fun max(lvl: Int): Int {
+        return 3 * (tier + 1) +    //6 base, down from 10
+                lvl * tier       //+1 per level, down from +2
+    }
 
 }

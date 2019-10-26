@@ -22,7 +22,7 @@ open class TextBook : Book() {
 
     fun page(i: Int): String = Messages.get(this, "page$i")
 
-    override fun doRead() {
+    override fun doRead(hero: Hero) {
         identify()
         GameScene.show(WndTextBook(this))
     }

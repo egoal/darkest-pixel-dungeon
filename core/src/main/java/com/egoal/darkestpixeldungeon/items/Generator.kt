@@ -112,7 +112,8 @@ object Generator {
                     WarHammer::class.java to 5f,
                     Glaive::class.java to 5f,
                     Greataxe::class.java to 4f,
-                    Greatshield::class.java to 4f
+                    Greatshield::class.java to 4f,
+                    Lance::class.java to 5f
             ))
 
             private val Ts = arrayOf(T1, T2, T3, T4, T5)

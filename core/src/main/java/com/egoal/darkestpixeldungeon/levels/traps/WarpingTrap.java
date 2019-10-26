@@ -66,7 +66,7 @@ public class WarpingTrap extends Trap {
         if (dropped == null) {
           Dungeon.droppedItems.put(depth, dropped = new ArrayList<Item>());
         }
-        for (Item item : heap.items) {
+        for (Item item : heap.getItems()) {
           dropped.add(item);
         }
         heap.destroy();

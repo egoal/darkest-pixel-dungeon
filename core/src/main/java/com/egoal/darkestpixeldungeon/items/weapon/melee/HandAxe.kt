@@ -18,29 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Flail extends MeleeWeapon {
+class HandAxe : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.FLAIL;
+    init {
+        image = ItemSpriteSheet.HAND_AXE
 
-    setTier(4);
-    DLY = 1.25f; //0.8x speed
-    //also cannot surprise attack, see Hero.canSurpriseAttack
-  }
+        tier = 2
+        ACC = 1.225f //22.5% boost to accuracy
+    }
 
-  @Override
-  public int min(int lvl) {
-    return getTier() +  //base unchanged
-            lvl * 2;  //+2 per level, up from +1
-  }
+    override fun max(lvl: Int): Int {
+        return 4 * (tier + 1) +    //12 base, down from 15
+                lvl * (tier + 1)   //scaling unchanged
+    }
 
-  @Override
-  public int max(int lvl) {
-    return Math.round(6.33f * (getTier() + 1)) +    //32 base, up from 25
-            lvl * Math.round(1.33f * (getTier() + 1)); //+6.67 per level, up from +5
-  }
 }

@@ -18,23 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Mace extends MeleeWeapon {
+class Scimitar : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.MACE;
+    init {
+        image = ItemSpriteSheet.SCIMITAR
 
-    setTier(3);
-    ACC = 1.2f; //20% boost to accuracy
-  }
+        tier = 3
+        DLY = 0.8f //1.25x speed
+    }
 
-  @Override
-  public int max(int lvl) {
-    return 4 * (getTier() + 1) +    //16 base, down from 20
-            lvl * (getTier() + 1);   //scaling unchanged
-  }
+    override fun max(lvl: Int): Int {
+        return 4 * (tier + 1) +    //16 base, down from 20
+                lvl * (tier + 1)   //+1 per level, down from +2
+    }
 
 }

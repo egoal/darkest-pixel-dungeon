@@ -179,7 +179,7 @@ public class DM300 extends Mob {
     super.die(cause);
 
     GameScene.bossSlain();
-    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).getSprite().drop();
 
     Badges.validateBossSlain();
 

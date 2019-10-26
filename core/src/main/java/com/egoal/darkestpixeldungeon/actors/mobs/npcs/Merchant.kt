@@ -69,14 +69,16 @@ open class Merchant : NPC() {
     }
 
     /// merchant
-    open protected fun actions(): ArrayList<String> = arrayListOf(AC_BUY, AC_SELL)
+    protected open fun actions(): ArrayList<String> = arrayListOf(AC_BUY, AC_SELL)
 
-    open protected fun execute(action: String) {
+    private var wndBag: Window? = null
+
+    protected open fun execute(action: String) {
         if (action == AC_BUY) {
             if (items.isEmpty()) tell(M.L(this, "nothing_more"))
             else GameScene.show(WndShop())
         } else if (action == AC_SELL) {
-            sell()
+            wndBag = sell()
         }
     }
 
@@ -116,7 +118,9 @@ open class Merchant : NPC() {
 
                 override fun hide() {
                     super.hide()
-                    this@Merchant.sell() // show again
+                    // show again
+                    wndBag?.hide()
+                    this@Merchant.execute(AC_SELL)
                 }
             }
 

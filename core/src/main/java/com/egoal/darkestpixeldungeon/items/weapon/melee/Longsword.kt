@@ -18,16 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.melee;
+package com.egoal.darkestpixeldungeon.items.weapon.melee
 
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class Claymore extends MeleeWeapon {
+class Longsword : MeleeWeapon() {
 
-  {
-    image = ItemSpriteSheet.Claymore;
+    init {
+        image = ItemSpriteSheet.LONGSWORD
 
-    setTier(5);
-  }
+        tier = 4
+    }
 
 }

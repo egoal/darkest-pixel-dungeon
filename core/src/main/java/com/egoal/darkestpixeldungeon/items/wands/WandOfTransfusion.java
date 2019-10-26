@@ -121,7 +121,7 @@ public class WandOfTransfusion extends Wand {
 
 
       //if we find an item...
-    } else if (heap != null && heap.type == Heap.Type.HEAP) {
+    } else if (heap != null && heap.getType() == Heap.Type.HEAP) {
       Item item = heap.peek();
 
       //30% + 10%*lvl chance to uncurse the item and reset it to base level 

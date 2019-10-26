@@ -59,7 +59,7 @@ public class Alchemist extends NPC.Unbreakable {
           if (dv.doPickUp(Dungeon.hero)) {
             GLog.i(Messages.get(Dungeon.hero, "you_now_have", dv.name()));
           } else
-            Dungeon.level.drop(dv, Dungeon.hero.pos).sprite.drop();
+            Dungeon.level.drop(dv, Dungeon.hero.pos).getSprite().drop();
 
           Dungeon.limitedDrops.dewVial.drop();
         }
@@ -105,7 +105,7 @@ public class Alchemist extends NPC.Unbreakable {
         PotionTestPaper ptp = new PotionTestPaper();
         if (ptp.doPickUp(Dungeon.hero)) {
         } else {
-          Dungeon.level.drop(ptp, Dungeon.hero.pos).sprite.drop();
+          Dungeon.level.drop(ptp, Dungeon.hero.pos).getSprite().drop();
         }
       }
 

@@ -175,8 +175,7 @@ class Yvette : NPC() {
                 cursed = false
                 identify()
             }, pos)
-        else
-            Dungeon.level.drop(RangerHat().identify(), pos)
+        else Dungeon.level.drop(RangerHat().identify(), pos)
 
         destroy()
         (sprite as Sprite).leave()
@@ -188,9 +187,10 @@ class Yvette : NPC() {
 
         Dungeon.hero.takeDamage(Damage(Random.Int(4, 10), Dungeon.hero, Dungeon.hero).type(Damage.Type.MENTAL))
 
-        Dungeon.level.drop(Bow(), pos)
+//        Dungeon.level.drop(Bow(), pos)
         Dungeon.level.drop(IronKey(20), pos)
         Dungeon.level.drop(RangerHat().identify(), pos)
+        Dungeon.level.drop(Generator.WEAPON.generate(), pos)
         Dungeon.level.drop(YvettesDiary(), pos)
 
         Wound.hit(pos)
@@ -232,8 +232,8 @@ class Yvette : NPC() {
             type = Heap.Type.SKELETON
             drop(IronKey(20))
             drop(YvettesDiary())
-            drop(Bow())
-
+            drop(Generator.WEAPON.generate())
+            drop(Generator.ARMOR.generate())
         }
     }
 

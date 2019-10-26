@@ -74,7 +74,7 @@ public class Blacksmith extends NPC.Unbreakable {
           if (pick.doPickUp(Dungeon.hero)) {
             GLog.i(Messages.get(Dungeon.hero, "you_now_have", pick.name()));
           } else {
-            Dungeon.level.drop(pick, Dungeon.hero.pos).sprite.drop();
+            Dungeon.level.drop(pick, Dungeon.hero.pos).getSprite().drop();
           }
         }
       });

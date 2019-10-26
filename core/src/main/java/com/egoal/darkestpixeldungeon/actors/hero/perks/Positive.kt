@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.round
 
 class Drunkard : Perk() {
@@ -333,13 +334,13 @@ class PressureRelieve : Perk(2) {
 class WandCharger : Perk(3) {
     override fun image(): Int = PerkImageSheet.WAND_CHARGE
 
-    fun factor(): Float = 2f - Math.pow(0.9, level.toDouble()).toFloat()
+    fun factor(): Float = 2f - 0.85f.pow(level)
 }
 
 class WandArcane : Perk(3) {
     override fun image(): Int = PerkImageSheet.WAND_ARCANE
 
-    fun factor(): Float = 2f - Math.pow(0.85, level.toDouble()).toFloat()
+    fun factor(): Float = 2f - 0.8f.pow(level)
 }
 
 class QuickZap : Perk() {
@@ -453,3 +454,6 @@ class QuickLearner : Perk(3) {
 class LevelPerception : Perk() {
     override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }
+
+class StealthCaster: Perk()
+

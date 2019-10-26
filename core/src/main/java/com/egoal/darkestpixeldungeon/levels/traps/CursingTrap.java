@@ -60,7 +60,7 @@ public class CursingTrap extends Trap {
 
     Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) {
-      for (Item item : heap.items) {
+      for (Item item : heap.getItems()) {
         if (item.isUpgradable())
           curse(item);
       }

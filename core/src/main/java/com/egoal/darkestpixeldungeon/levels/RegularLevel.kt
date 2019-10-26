@@ -190,7 +190,7 @@ abstract class RegularLevel : Level() {
     override fun nMobs(): Int = when (Dungeon.depth) {
         0, 1 -> 0
         in 2..4 -> 3 + Dungeon.depth % 5 + Random.Int(5)
-        else -> 3 + Dungeon.depth % 5 + Random.Int(8)
+        else -> 3 + Dungeon.depth % 5 + Random.Int(7)
     }
 
     protected fun createSellers() {
