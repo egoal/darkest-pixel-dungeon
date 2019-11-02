@@ -19,6 +19,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 import com.watabou.utils.PointF
 import com.watabou.utils.Random
+import kotlin.math.pow
 import kotlin.math.round
 
 class WandOfFrost : DamageWand() {
@@ -30,22 +31,26 @@ class WandOfFrost : DamageWand() {
 
     override fun max(lvl: Int): Int = 8 + 5 * lvl
 
+    override fun giveDamage(enemy: Char): Damage {
+        return super.giveDamage(enemy).addElement(Damage.Element.ICE)
+    }
+
     override fun onZap(attack: Ballistica) {
         Dungeon.level.heaps.get(attack.collisionPos)?.freeze()
 
         Actor.findChar(attack.collisionPos)?.let { ch ->
-            var dmg = damageRoll()
+            val dmg = giveDamage(ch)
 
             // nothing to do wit a frozen target
             if (ch.buff(Frost::class.java) != null) return
 
             if (ch.buff(Chill::class.java) != null) {
                 val chill = ch.buff(Chill::class.java).cooldown()
-                dmg = round(dmg * Math.pow(0.95, chill.toDouble())).toInt()
+                dmg.value = round(dmg.value * 0.95f.pow(chill)).toInt()
             } else
                 ch.sprite.burst(0xff99ccff.toInt(), level() / 2 + 2)
 
-            ch.takeDamage(Damage(dmg, Item.curUser, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element.ICE))
+            ch.takeDamage(dmg)
 
             if (ch.isAlive) {
                 val duration = if (Level.water[ch.pos]) 4 + level() else 2 + level()

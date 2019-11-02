@@ -42,7 +42,7 @@ class WandOfMagicMissile : DamageWand() {
 
     override fun onZap(bolt: Ballistica) {
         Actor.findChar(bolt.collisionPos)?.let { ch ->
-            ch.takeDamage(Damage(damageRoll(), Item.curUser, ch).type(Damage.Type.MAGICAL))
+            ch.takeDamage(giveDamage(ch))
 
             ch.sprite.burst(-0x1, level() / 2 + 2)
         }

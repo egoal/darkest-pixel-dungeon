@@ -163,7 +163,7 @@ public enum Rankings {
     //save handler information
     Bundle handler = new Bundle();
     Scroll.saveSelectively(handler, belongings.backpack.items);
-    Potion.saveSelectively(handler, belongings.backpack.items);
+    Potion.Companion.saveSelectively(handler, belongings.backpack.items);
     //include worn rings
     if (belongings.misc1 != null)
       belongings.backpack.items.add(belongings.misc1);
@@ -189,7 +189,7 @@ public enum Rankings {
 
     Bundle handler = data.getBundle(HANDLERS);
     Scroll.restore(handler);
-    Potion.restore(handler);
+    Potion.Companion.restore(handler);
     Ring.restore(handler);
 
     Badges.loadLocal(data.getBundle(BADGES));

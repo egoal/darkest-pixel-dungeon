@@ -1,0 +1,67 @@
+Darkest Pixel Dungeon version 0.4.0
+
+English localization ready. Great thanks to all translation contributors! 
+
+Didnt expect to be so soon, may not post a prerelease next time.
+
+Check reddit post for some changes info: https://www.reddit.com/r/PixelDungeon/comments/ddim5y/darkest_pixel_dungeon_version_040/
+
+Download: https://github.com/egoal/darkest-pixel-dungeon/releases
+
+
+
+Darkest Pixel Dungeon version 0.4.0 prerelease
+
+This is a major update, with PRERELEASE I mean: the English localization is still missing. 
+
+Key Feature: More than 30 PERKS added in to the adventure, each perk gives hero a new ability. Start from level 2, hero now get a random perk(choose from 3) every 4 level. The cost is, decrease one SoU in each chapter. (2 for each chapter now).
+
+Download: https://github.com/egoal/darkest-pixel-dungeon/releases
+
+Check reddit post: https://www.reddit.com/r/PixelDungeon/comments/dava7v/darkest_pixel_dungeon_version_040_prerelease/
+
+Darkest Pixel Dungeon v0.3.2a
+
+A minor version concentrated on bug fix, and, intend to be the last release of 0.3.
+
+Download: https://github.com/egoal/darkest-pixel-dungeon/releases
+
+Check reddit post: https://www.reddit.com/r/PixelDungeon/comments/ciew25/mod_darkest_pixel_dungeon_v032a/
+
+Darkest Pixel Dungeon v0.3.2
+
+Initial release with English translation! 
+
+Source: https://github.com/egoal/darkest-pixel-dungeon
+
+Download: https://github.com/egoal/darkest-pixel-dungeon/releases
+
+Check reddit post: https://www.reddit.com/r/PixelDungeon/comments/c7tbzo/mod_darkest_pixel_dungeon_v032/
+
+Darkest Pixel Dungeon Wiki!
+
+greet thanks to , we now have Darkest PD on wiki: https://www.reddit.com/r/PixelDungeon/comments/cxx6vi/darkest_pixel_dungeon_wiki/
+
+check reddit post: https://www.reddit.com/r/PixelDungeon/comments/cxx6vi/darkest_pixel_dungeon_wiki/
+
+name: Egoal the Cat
+desc：在这个充满了形形色色奇怪角色的地方，有一只会说话的猫倒也不是什么值得惊奇的事了。
+interact: 
+喵呜，你好啊，冒险者。这里真是一个平静安宁的地方，你也这么觉得对吧？你是我见过的最阳光的冒险者，因为本喵没有感觉到你心头的压力。\n\n喵呜，那么问题来了：\n_Egoal_是不是个很不错的家伙呢？
+    当然：你的回答真令本喵很高兴，喵呜~不过这次我没有礼物给你喵。祝你好运啦，%s！
+    我不知道他是谁：喵呜，你听说过_黑暗的像素地牢_吗？如果有机会，希望你也能去那里继续你的冒险，喵，你会去的对吧，以一个冒险者的身份。
+
+1 moonstone just turn situation to night, currently may only in coordination with a enhanced potion of mindvision, but the night 
+
+i) this might be a little technical, i dont have an idea if we should put this there. 
+terrains such as Wal, Closed Door, blocks the hero's sight, the field of view is calculated refer to the hero's see distance, and whether a tile is transparent or not, this is the common way. in Darkest PD, a little difference is the light, 
+for example, hero has a see distance of 8, view distance 4, then a tile(if not blocked by those walls) with distance less than 4 would be see, but suppose this tile is far at 6, which is out of view distance, but in the see distance, then, if this tile is lighted, the hero could see it.
+this is why i explain see distance as the maximum distance the hero could see, while the view distance as the distance the hero could see without light
+and, whether a tile is lighted depends all the luminaries in the dungeon, the candle on the wall, the torch in your hand, and the glowworm. so, your torch also lights the path for the enemies.
+
+ii) the purify process takes turns to finish, during the process, the other functions of the flask is disabled, like the rune in dew vial would ban the heal action
+
+"help me", "yes", "no", "leave"
+    1: "i need food", "give", "no", "leave"
+    2: "oh...", "leave"
+

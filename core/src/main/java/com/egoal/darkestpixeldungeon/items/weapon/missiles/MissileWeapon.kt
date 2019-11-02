@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.ExplodeBrokenShot
+import com.egoal.darkestpixeldungeon.actors.hero.perks.RangedShot
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
@@ -23,6 +24,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.ArrayList
+import kotlin.math.round
 import kotlin.math.sqrt
 
 abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false) : Weapon() {
@@ -139,11 +141,14 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         if (strc > 0) value += Random.Int(1, strc)
 
         value = imbue.damageFactor(value)
-        return Damage(value, hero, target).addFeature(Damage.Feature.RANGED)
+        val dmg = Damage(value, hero, target).addFeature(Damage.Feature.RANGED)
+        hero.heroPerk.get(RangedShot::class.java)?.affectDamage(dmg)
+
+        return dmg
     }
 
     override fun random(): Item = this.apply {
-        quantity = Random.Int(8 - tier, 18 - tier * 2)
+        quantity = Random.Int(6 - tier, 16 - tier * 2)
     }
 
     override fun isUpgradable(): Boolean = false
@@ -162,7 +167,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
 
         val fix = sqrt(2f * tier - 1f) * (if (hero.subClass == HeroSubClass.SNIPER) 1.5f else 1f)
 
-        return Math.round(dstr * fix)
+        return round(dstr * fix).toInt()
     }
 
     override fun info(): String {

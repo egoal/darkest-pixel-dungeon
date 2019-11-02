@@ -119,7 +119,7 @@ open class Merchant : NPC() {
                 override fun hide() {
                     super.hide()
                     // show again
-                    wndBag?.hide()
+                    wndBag = null
                     this@Merchant.execute(AC_SELL)
                 }
             }

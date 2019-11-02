@@ -552,7 +552,7 @@ public class Astrolabe extends Artifact {
         Ballistica shot = new Ballistica(curUser.pos, c.pos, Ballistica
                 .MAGIC_BOLT);
         if (shot.path.size() > shot.dist + 1)
-          WandOfBlastWave.throwChar(c,
+          WandOfBlastWave.Companion.throwChar(c,
                   new Ballistica(c.pos, shot.path.get(shot.dist + 1),
                           Ballistica.MAGIC_BOLT), 3);
       }

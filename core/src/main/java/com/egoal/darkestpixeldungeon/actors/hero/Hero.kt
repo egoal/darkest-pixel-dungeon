@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.blobs.SacrificialFire
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
@@ -369,6 +370,12 @@ class Hero : Char() {
             dmg.addFeature(Damage.Feature.ACCURATE)
 
         return dmg
+    }
+
+    fun procWandDamage(dmg: Damage) {
+        dmg.value = round(dmg.value * arcaneFactor()).toInt()
+
+        heroPerk.get(ArcaneCrit::class.java)?.affectDamage(this, dmg)
     }
 
     override fun defendDamage(dmg: Damage): Damage {
@@ -1038,6 +1045,11 @@ class Hero : Char() {
 
         buff(BloodSuck::class.java)?.onEnemySlayed(ch)
         buff(ChaliceOfBlood.Store::class.java)?.onEnemySlayed(ch)
+        buff(SacrificialFire.Marked::class.java)?.onEnemySlayed(ch)
+        if (rangedWeapon != null) {
+            // killed by a ranged weapon
+            heroPerk.get(FinishingShot::class.java)?.onKilledChar(this, ch, rangedWeapon!!)
+        }
 
         GLog.i(Messages.capitalize(Messages.get(Char::class.java, "defeat", ch.name)))
     }

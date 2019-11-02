@@ -49,6 +49,8 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import org.jetbrains.annotations.NotNull;
+
 public class WandOfPrismaticLight extends DamageWand {
 
   {
@@ -65,6 +67,12 @@ public class WandOfPrismaticLight extends DamageWand {
     return 5 + 3 * lvl;
   }
 
+  @NotNull
+  @Override
+  public Damage giveDamage(@NotNull Char enemy) {
+    return super.giveDamage(enemy).addElement(Damage.Element.HOLY);
+  }
+
   @Override
   protected void onZap(Ballistica beam) {
     Char ch = Actor.findChar(beam.collisionPos);
@@ -77,8 +85,6 @@ public class WandOfPrismaticLight extends DamageWand {
   }
 
   private void affectTarget(Char ch) {
-    int dmg = damageRoll();
-
     // view mark
     Buff.prolong(ch, ViewMark.class, 4f + level()).observer = curUser.id();
 
@@ -97,8 +103,7 @@ public class WandOfPrismaticLight extends DamageWand {
       ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level());
     }
 
-    ch.takeDamage(new Damage(dmg, curUser, ch).type(Damage.Type.MAGICAL)
-            .addElement(Damage.Element.HOLY));
+    ch.takeDamage(giveDamage(ch));
   }
 
   private void affectMap(Ballistica beam) {

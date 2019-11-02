@@ -21,14 +21,17 @@
 package com.egoal.darkestpixeldungeon.items.wands
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Random
+import kotlin.math.round
 
 // for wands that directly damage a target
 // wands with AOE effects count here (e.g. fireblast), but wands with indrect
 // damage do not (e.g. venom, transfusion)
 abstract class DamageWand : Wand() {
-
     fun min(): Int = min(level())
 
     abstract fun min(lvl: Int): Int
@@ -37,9 +40,15 @@ abstract class DamageWand : Wand() {
 
     abstract fun max(lvl: Int): Int
 
-    fun damageRoll(): Int = Math.round(Random.NormalIntRange(min(), max()) * Dungeon.hero.arcaneFactor())
+    open fun giveDamage(enemy: Char): Damage {
+        val dmg = Damage(damageRoll(), Item.curUser, enemy).type(Damage.Type.MAGICAL)
+        Item.curUser!!.procWandDamage(dmg)
+        return dmg
+    }
 
-    fun damageRoll(lvl: Int): Int = Math.round(Random.NormalIntRange(min(lvl), max(lvl)) * Dungeon.hero.arcaneFactor())
+    fun damageRoll(): Int = round(Random.NormalIntRange(min(), max()) * Dungeon.hero.arcaneFactor()).toInt()
+
+    fun damageRoll(lvl: Int): Int = round(Random.NormalIntRange(min(lvl), max(lvl)) * Dungeon.hero.arcaneFactor()).toInt()
 
     override fun statsDesc(): String = if (levelKnown) M.L(this, "stats_desc", min(), max())
     else M.L(this, "stats_desc", min(0), max(0))

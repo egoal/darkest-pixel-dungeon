@@ -48,7 +48,7 @@ enum class HeroClass(private val title: String) {
             super.initHeroClass(hero)
             hero.belongings.weapon = WornShortsword().identify() as Weapon
 
-            val darts = Dart(3)
+            val darts = Dart(4)
             darts.identify().collect()
 
             Wine().collect()

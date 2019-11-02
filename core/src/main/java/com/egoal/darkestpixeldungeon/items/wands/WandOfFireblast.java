@@ -43,6 +43,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 
 public class WandOfFireblast extends DamageWand {
@@ -64,6 +66,12 @@ public class WandOfFireblast extends DamageWand {
             1));
   }
 
+  @NotNull
+  @Override
+  public Damage giveDamage(@NotNull Char enemy) {
+    return super.giveDamage(enemy).addElement(Damage.Element.FIRE);
+  }
+
   //the actual affected cells
   private HashSet<Integer> affectedCells;
   //the cells to trace fire shots to, for visual effects.
@@ -80,10 +88,7 @@ public class WandOfFireblast extends DamageWand {
       Char ch = Actor.findChar(cell);
       if (ch != null) {
 
-        int damage = damageRoll();
-
-        ch.takeDamage(new Damage(damage, curUser, ch).type(Damage.Type.MAGICAL)
-                .addElement(Damage.Element.FIRE));
+        ch.takeDamage(giveDamage(ch));
         Buff.affect(ch, Burning.class).reignite(ch);
         switch (chargesPerCast()) {
           case 1:

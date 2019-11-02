@@ -146,7 +146,7 @@ public class Dungeon {
     Actor.resetNextID();
 
     Scroll.initLabels();
-    Potion.initColors();
+    Potion.Companion.initColors();
     Ring.initGems();
 
     Statistics.INSTANCE.reset();
@@ -547,7 +547,7 @@ public class Dungeon {
       Generator.INSTANCE.storeInBundle(bundle);
 
       Scroll.save(bundle);
-      Potion.save(bundle);
+      Potion.Companion.save(bundle);
       Ring.save(bundle);
 
       Actor.storeNextID(bundle);
@@ -620,7 +620,7 @@ public class Dungeon {
     Dungeon.depth = -1;
 
     Scroll.restore(bundle);
-    Potion.restore(bundle);
+    Potion.Companion.restore(bundle);
     Ring.restore(bundle);
 
     quickslot.restorePlaceholders(bundle);

@@ -41,6 +41,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class WandOfLightning extends DamageWand {
@@ -61,6 +63,12 @@ public class WandOfLightning extends DamageWand {
     return 8 + 5 * lvl;
   }
 
+  @NotNull
+  @Override
+  public Damage giveDamage(@NotNull Char enemy) {
+    return super.giveDamage(enemy).addElement(Damage.Element.LIGHT);
+  }
+
   @Override
   protected void onZap(Ballistica bolt) {
 
@@ -73,9 +81,9 @@ public class WandOfLightning extends DamageWand {
     int max = 10 + 5 * level();
 
     for (Char ch : affected) {
-      ch.takeDamage(new Damage(Math.round(damageRoll() * multipler),
-              curUser, ch).type(Damage.Type.MAGICAL).addElement(Damage.Element
-              .LIGHT));
+      Damage dmg = giveDamage(ch);
+      dmg.value = Math.round(dmg.value* multipler);
+      ch.takeDamage(dmg);
 
       if (ch == Dungeon.hero) Camera.main.shake(2, 0.3f);
       ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);

@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.hero.perks
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.Statistics
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
@@ -19,6 +20,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
 import com.egoal.darkestpixeldungeon.items.unclassified.Rune
 import com.egoal.darkestpixeldungeon.items.wands.Wand
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
@@ -347,8 +349,38 @@ class QuickZap : Perk() {
     override fun image(): Int = PerkImageSheet.WAND_QUICK_ZAP
 }
 
+class StealthCaster : Perk()
+
+class ArcaneCrit : Perk(5) {
+    fun affectDamage(hero: Hero, dmg: Damage) {
+        if (Random.Float() < prob(hero))
+            dmg.value = round(dmg.value * 1.75f).toInt()
+    }
+
+    private fun prob(hero: Hero): Float {
+        var prob = hero.criticalChance // base chance, not affected by rune, pressure etc.
+        if (level > 1) prob += 0.09f * (level - 1)
+        return prob
+    }
+}
+
 class ExplodeBrokenShot : Perk() {
     override fun image(): Int = PerkImageSheet.SHOT_EXPLODE
+}
+
+class RangedShot : Perk() {
+    fun affectDamage(dmg: Damage) {
+        val dis = Dungeon.level.distance((dmg.from as Char).pos, (dmg.to as Char).pos)
+        if (dis > 1) {
+            dmg.value = round(dmg.value * (3f - 1.8f * 0.9f.pow(dis - 2))).toInt()
+        }
+    }
+}
+
+class FinishingShot : Perk() {
+    fun onKilledChar(hero: Hero, ch: Char, weapon: MissileWeapon) {
+        hero.spend(weapon.DLY * 2.5f)
+    }
 }
 
 class ExtraStrength : Perk(3) {
@@ -454,6 +486,4 @@ class QuickLearner : Perk(3) {
 class LevelPerception : Perk() {
     override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }
-
-class StealthCaster: Perk()
 

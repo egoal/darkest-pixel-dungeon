@@ -167,7 +167,7 @@ public class DM300 extends Mob {
       Ballistica shot = new Ballistica(tgt.pos, opposite, Ballistica
               .MAGIC_BOLT);
 
-      WandOfBlastWave.throwChar(tgt, shot, 1);
+      WandOfBlastWave.Companion.throwChar(tgt, shot, 1);
     }
 
     return super.attackProc(dmg);

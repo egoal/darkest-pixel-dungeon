@@ -156,6 +156,8 @@ class Yvette : NPC() {
 
         Dungeon.hero.recoverSanity(Random.Float(4f, 10f))
 
+        Dungeon.level.drop(Generator.WEAPON.generate(), pos)
+
         if (Random.Int(2) == 0) {
             var potion: Potion
             do {

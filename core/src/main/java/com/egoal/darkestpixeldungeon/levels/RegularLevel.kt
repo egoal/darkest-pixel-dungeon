@@ -28,6 +28,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import kotlin.math.max
+import kotlin.math.min
 
 abstract class RegularLevel : Level() {
     init {
@@ -253,7 +254,7 @@ abstract class RegularLevel : Level() {
         var nItems = 3
 
         // bonus from wealth
-        val bonus = Math.min(10, RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
+        val bonus = min(10, RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
         while (Random.Float() < .25f + bonus * 0.05f)
             ++nItems
 
@@ -268,7 +269,10 @@ abstract class RegularLevel : Level() {
             drop(Generator.generate(), randomDropCell()).type = heap
         }
 
-        // inherent items
+        // extra missile weapon
+        drop(Generator.WEAPON.MISSSILE.generate(), randomDropCell())
+
+        // inherent items, not dropped in generation
         for (item in itemsToSpawn) {
             var c = randomDropCell()
             // never drop scroll on fire trap

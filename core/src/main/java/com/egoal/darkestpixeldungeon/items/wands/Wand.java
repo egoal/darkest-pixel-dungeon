@@ -345,7 +345,7 @@ public abstract class Wand extends Item {
 
         curUser.sprite.zap(cell);
 
-        //attempts to target the cell aimed at if something is there, 
+        //attempts to target the cell aimed at if something is there,
         // otherwise targets the collision pos.
         if (Actor.findChar(target) != null)
           QuickSlotButton.target(Actor.findChar(target));
