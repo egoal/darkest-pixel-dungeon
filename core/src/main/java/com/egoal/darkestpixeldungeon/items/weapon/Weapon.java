@@ -152,8 +152,7 @@ abstract public class Weapon extends KindOfWeapon {
     float ACC = this.ACC;
 
     if (this instanceof MissileWeapon) {
-      int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim
-              .class);
+      int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
       ACC *= (float) (Math.pow(1.2, bonus));
     }
 

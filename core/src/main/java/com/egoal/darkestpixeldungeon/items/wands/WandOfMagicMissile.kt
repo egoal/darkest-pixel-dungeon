@@ -20,13 +20,13 @@
  */
 package com.egoal.darkestpixeldungeon.items.wands
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
@@ -42,6 +42,7 @@ class WandOfMagicMissile : DamageWand() {
 
     override fun onZap(bolt: Ballistica) {
         Actor.findChar(bolt.collisionPos)?.let { ch ->
+            onMissileHit(ch, Dungeon.hero)
             ch.takeDamage(giveDamage(ch))
 
             ch.sprite.burst(-0x1, level() / 2 + 2)

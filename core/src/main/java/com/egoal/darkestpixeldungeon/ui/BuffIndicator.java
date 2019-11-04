@@ -102,6 +102,7 @@ public class BuffIndicator extends Component {
   public static final int MENDING = 57;
   public static final int UNBALANCE = 58;
   public static final int DISARM = 59;
+  public static final int TIME_DILATION = 60;
 
   public static final int SIZE = 7;
 

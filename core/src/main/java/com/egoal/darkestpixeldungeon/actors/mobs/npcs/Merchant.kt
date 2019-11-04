@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.ui.Window
 import com.egoal.darkestpixeldungeon.windows.*
 import com.watabou.noosa.BitmapText
 import com.watabou.noosa.ColorBlock
+import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import kotlin.collections.ArrayList
@@ -71,14 +72,13 @@ open class Merchant : NPC() {
     /// merchant
     protected open fun actions(): ArrayList<String> = arrayListOf(AC_BUY, AC_SELL)
 
-    private var wndBag: Window? = null
 
     protected open fun execute(action: String) {
         if (action == AC_BUY) {
             if (items.isEmpty()) tell(M.L(this, "nothing_more"))
             else GameScene.show(WndShop())
         } else if (action == AC_SELL) {
-            wndBag = sell()
+            sell()
         }
     }
 
@@ -119,12 +119,13 @@ open class Merchant : NPC() {
                 override fun hide() {
                     super.hide()
                     // show again
-                    wndBag = null
+                    // WndBag.ResetLastBag()
                     this@Merchant.execute(AC_SELL)
                 }
             }
 
-            GameScene.show(wnd)
+            // GameScene.show(wnd)
+            Game.scene().addToFront(wnd)
         }
     }
 
@@ -136,7 +137,7 @@ open class Merchant : NPC() {
         //todo: may move painter things here
     }
 
-    open protected fun onStealFailed(hero: Hero) {
+    protected open fun onStealFailed(hero: Hero) {
         yell(M.L(this, "thief"))
         flee()
     }

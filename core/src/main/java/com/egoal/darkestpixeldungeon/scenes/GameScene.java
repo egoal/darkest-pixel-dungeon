@@ -87,7 +87,6 @@ import com.egoal.darkestpixeldungeon.windows.WndInfoTrap;
 import com.egoal.darkestpixeldungeon.windows.WndMessage;
 import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.egoal.darkestpixeldungeon.windows.WndStory;
-import com.egoal.darkestpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;

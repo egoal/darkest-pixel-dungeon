@@ -31,9 +31,8 @@ class Jessica : NPC.Unbreakable() {
         if (!Quest.completed_) {
             val cd = Dungeon.hero.belongings.getItem(CallysDiary::class.java)
             if (cd == null) {
-                WndDialogue.Show(this, M.L(this, "please"), M.L(this, "ok"), M.L(this, "sorry")) {
-                    if (it == 0) Quest.given_ = true
-                }
+                Quest.given_ = true
+                WndDialogue.Show(this, M.L(this, "please"), M.L(this, "ok"), M.L(this, "sorry")) {}
             } else {
                 cd.detach(Dungeon.hero.belongings.backpack)
                 GLog.w(Messages.get(this, "return_book"))

@@ -357,6 +357,8 @@ class Hero : Char() {
         // pressure
         pressure.procGivenDamage(dmg)
 
+        buff(SeeThrough::class.java)?.processDamage(dmg)
+
         buff(Drunk::class.java)?.let { Drunk.procOutcomingDamage(dmg) }
 
         if (dmg.value < 0) dmg.value = 0
@@ -596,8 +598,10 @@ class Hero : Char() {
     }
 
     public override fun spend(time: Float) {
-        if (buff(TimekeepersHourglass.TimeFreeze::class.java)?.processTime(time) != true)
-            super.spend(time)
+        if (buff(TimekeepersHourglass.TimeFreeze::class.java)?.processTime(time) != true) {
+            if (buff(TimeDilation::class.java) != null) spend(time / 3f)
+            else super.spend(time)
+        }
     }
 
     fun busy() {
@@ -1024,6 +1028,10 @@ class Hero : Char() {
         belongings.getItem(UrnOfShadow::class.java)?.collectSoul(mob)
 
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
+    }
+
+    fun onEvasion(dmg: Damage){
+        heroPerk.get(CounterStrike::class.java)?.procEvasionDamage(dmg)
     }
 
     // called when killed a char by attack

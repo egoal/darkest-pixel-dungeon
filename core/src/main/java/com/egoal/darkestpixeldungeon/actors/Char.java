@@ -261,6 +261,8 @@ public abstract class Char extends Actor {
 
       return true;
     } else {
+      if(enemy==Dungeon.hero) Dungeon.hero.onEvasion(dmg);
+
       // missed
       if (visibleFight) {
         String str = enemy.defenseVerb();

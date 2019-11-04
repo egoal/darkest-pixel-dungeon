@@ -37,7 +37,6 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.watabou.noosa.Game
-import com.watabou.noosa.Group
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
@@ -80,6 +79,8 @@ class WandOfBlastWave : DamageWand() {
 
         //throws the char at the center of the blast
         Actor.findChar(bolt.collisionPos)?.let {
+            onMissileHit(it, Dungeon.hero)
+
             it.takeDamage(giveDamage(it))
             if (it.isAlive && bolt.path.size > bolt.dist + 1) {
                 val traj = Ballistica(it.pos, bolt.path[bolt.dist + 1], Ballistica.MAGIC_BOLT)

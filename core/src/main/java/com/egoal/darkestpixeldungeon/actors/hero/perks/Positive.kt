@@ -3,11 +3,10 @@ package com.egoal.darkestpixeldungeon.actors.hero.perks
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.Statistics
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
-import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.effects.Flare
@@ -218,6 +217,15 @@ class ExtraEvasion : Perk(5) {
     override fun description(): String = M.L(this, "desc", (prob() * 100).toInt())
 }
 
+// cs go!
+class CounterStrike : Perk() {
+    fun procEvasionDamage(dmg: Damage) {
+        if (dmg.type == Damage.Type.NORMAL && !dmg.isFeatured(Damage.Feature.RANGED)) {
+            Buff.affect(dmg.to as Hero, SeeThrough::class.java, 2f).enemyid = (dmg.from as Actor).id()
+        }
+    }
+}
+
 class ExtraDexterousGrowth : Perk(5) {
     override fun image(): Int = PerkImageSheet.DEX_GROWTH
 
@@ -364,6 +372,12 @@ class ArcaneCrit : Perk(5) {
     }
 }
 
+class WandPiercing : Perk() {
+    fun onHit(char: Char) {
+        char.magicalResistance -= 0.15f // fixme:
+    }
+}
+
 class ExplodeBrokenShot : Perk() {
     override fun image(): Int = PerkImageSheet.SHOT_EXPLODE
 }
@@ -379,7 +393,7 @@ class RangedShot : Perk() {
 
 class FinishingShot : Perk() {
     fun onKilledChar(hero: Hero, ch: Char, weapon: MissileWeapon) {
-        hero.spend(weapon.DLY * 2.5f)
+        Buff.prolong(hero, TimeDilation::class.java, 1f + weapon.DLY)
     }
 }
 

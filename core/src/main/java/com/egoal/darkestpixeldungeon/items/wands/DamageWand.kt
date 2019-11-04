@@ -23,6 +23,8 @@ package com.egoal.darkestpixeldungeon.items.wands
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Random
@@ -52,4 +54,9 @@ abstract class DamageWand : Wand() {
 
     override fun statsDesc(): String = if (levelKnown) M.L(this, "stats_desc", min(), max())
     else M.L(this, "stats_desc", min(0), max(0))
+
+    //todo: refactor the missile handle
+    open fun onMissileHit(char: Char, hero: Hero){
+        hero.heroPerk.get(WandPiercing::class.java)?.onHit(char)
+    }
 }

@@ -11,6 +11,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
 
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
@@ -254,7 +255,7 @@ abstract class RegularLevel : Level() {
         var nItems = 3
 
         // bonus from wealth
-        val bonus = min(10, RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
+        val bonus = min(10, Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
         while (Random.Float() < .25f + bonus * 0.05f)
             ++nItems
 
@@ -270,7 +271,15 @@ abstract class RegularLevel : Level() {
         }
 
         // extra missile weapon
-        drop(Generator.WEAPON.MISSSILE.generate(), randomDropCell())
+        run {
+            val p = Random.Float()
+            val item = when {
+                p < 0.2 -> Generator.WEAPON.MISSSILE.generate()
+                p < 0.5 -> Generator.generate()
+                else -> null
+            }
+            if (item != null) drop(item, randomDropCell())
+        }
 
         // inherent items, not dropped in generation
         for (item in itemsToSpawn) {

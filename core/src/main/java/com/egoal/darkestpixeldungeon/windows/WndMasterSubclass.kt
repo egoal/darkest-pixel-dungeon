@@ -47,6 +47,11 @@ class WndMasterSubclass(way1: HeroSubClass, way2: HeroSubClass) : Window() {
         resize(WIDTH.toInt(), btnCancel.bottom().toInt())
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        GameScene.show(WndMessage(M.L(WndMasterSubclass::class.java, "tip")))
+    }
+
     companion object {
         private const val WIDTH = 120f
         private const val BTN_HEIGHT = 18f

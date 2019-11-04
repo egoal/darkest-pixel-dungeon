@@ -39,6 +39,8 @@ class WandOfFrost : DamageWand() {
         Dungeon.level.heaps.get(attack.collisionPos)?.freeze()
 
         Actor.findChar(attack.collisionPos)?.let { ch ->
+            onMissileHit(ch, Dungeon.hero)
+
             val dmg = giveDamage(ch)
 
             // nothing to do wit a frozen target

@@ -17,8 +17,10 @@ import com.egoal.darkestpixeldungeon.effects.particles.SacrificialParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
@@ -78,9 +80,11 @@ class SacrificialFire : Blob() {
     }
 
     class Marked : FlavourBuff() {
-        override fun toString(): String = "marked"
+        override fun icon(): Int = BuffIndicator.SACRIFICE
 
-        override fun desc(): String = "marked as immolator"
+        override fun toString(): String = M.L(this, "name")
+
+        override fun desc(): String = M.L(this, "desc", dispTurns())
 
         fun onEnemySlayed(ch: Char) {
             if (Sacrifice(ch)) detach()

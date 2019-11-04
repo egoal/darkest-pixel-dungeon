@@ -102,14 +102,14 @@ class VillageLevel : RegularLevel() {
         putMobAt(CatRawberry::class.java, 12, 6)
 
         // putMobAt(Merchant::class.java, 16, 29)
-        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
-            for (i in 1..10) addItemToSell(Generator.generate())
-        }
-        (putMobAt(ScrollSeller::class.java, 15, 27) as ScrollSeller).apply {
-            addItemToSell(Dart(8))
-            addItemToSell(BattleGloves())
-            addItemToSell(TomeOfPerk())
-        }
+//        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
+//            for (i in 1..10) addItemToSell(Generator.generate())
+//        }
+//        (putMobAt(ScrollSeller::class.java, 15, 27) as ScrollSeller).apply {
+//            addItemToSell(Dart(8))
+//            addItemToSell(BattleGloves())
+//            addItemToSell(TomeOfPerk())
+//        }
     }
 
     override fun onSwitchedIn() {
