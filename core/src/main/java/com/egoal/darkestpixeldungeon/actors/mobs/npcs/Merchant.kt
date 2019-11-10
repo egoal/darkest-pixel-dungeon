@@ -72,7 +72,6 @@ open class Merchant : NPC() {
     /// merchant
     protected open fun actions(): ArrayList<String> = arrayListOf(AC_BUY, AC_SELL)
 
-
     protected open fun execute(action: String) {
         if (action == AC_BUY) {
             if (items.isEmpty()) tell(M.L(this, "nothing_more"))
@@ -119,7 +118,6 @@ open class Merchant : NPC() {
                 override fun hide() {
                     super.hide()
                     // show again
-                    // WndBag.ResetLastBag()
                     this@Merchant.execute(AC_SELL)
                 }
             }

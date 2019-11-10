@@ -25,6 +25,8 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
+import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Random
@@ -56,7 +58,11 @@ abstract class DamageWand : Wand() {
     else M.L(this, "stats_desc", min(0), max(0))
 
     //todo: refactor the missile handle
-    open fun onMissileHit(char: Char, hero: Hero){
+    open fun onMissileHit(char: Char, hero: Hero, dmg: Damage) {
         hero.heroPerk.get(WandPiercing::class.java)?.onHit(char)
+
+        //todo: critical effects
+        if (dmg.isFeatured(Damage.Feature.CRITICAL))
+            CellEmitter.center(char.pos).burst(BlastParticle.FACTORY, 10)
     }
 }

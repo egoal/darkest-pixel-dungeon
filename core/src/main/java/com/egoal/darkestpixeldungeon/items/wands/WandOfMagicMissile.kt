@@ -36,14 +36,15 @@ class WandOfMagicMissile : DamageWand() {
         image = ItemSpriteSheet.WAND_MAGIC_MISSILE
     }
 
-    override fun min(lvl: Int): Int = 2 + lvl
+    override fun min(lvl: Int): Int = 2 + 2 * lvl
 
-    override fun max(lvl: Int): Int = 8 + 2 * lvl
+    override fun max(lvl: Int): Int = 10 + lvl * 5 / 2
 
     override fun onZap(bolt: Ballistica) {
         Actor.findChar(bolt.collisionPos)?.let { ch ->
-            onMissileHit(ch, Dungeon.hero)
-            ch.takeDamage(giveDamage(ch))
+            val dmg = giveDamage(ch)
+            onMissileHit(ch, Dungeon.hero, dmg)
+            ch.takeDamage(dmg)
 
             ch.sprite.burst(-0x1, level() / 2 + 2)
         }

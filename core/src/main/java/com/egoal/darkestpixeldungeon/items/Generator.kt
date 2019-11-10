@@ -195,7 +195,8 @@ object Generator {
             WandOfBlastWave::class.java to 3f,
             WandOfFrost::class.java to 3f,
             WandOfPrismaticLight::class.java to 3f,
-            WandOfTransfusion::class.java to 3f,
+            // WandOfTransfusion::class.java to 3f,
+            WandOfAbel::class.java to 3f,
             WandOfCorruption::class.java to 3f,
             WandOfRegrowth::class.java to 3f
     ))
@@ -368,7 +369,7 @@ object Generator {
     ))
 
     // 
-    private val categoryMap = hashMapOf(
+    private val InitCategoryMap = hashMapOf(
             WEAPON to 100f,
             ARMOR to 60f,
             POTION to 500f,
@@ -384,7 +385,23 @@ object Generator {
             RUNE to 0f
     )
 
-    fun generate(): Item = Random.chances(categoryMap).generate()
+    private val categoryMap = HashMap<ItemGenerator, Float>()
+
+    init {
+        ResetCategoryProbs()
+    }
+
+    fun ResetCategoryProbs() {
+        categoryMap.clear()
+        for (pr in InitCategoryMap) categoryMap[pr.key] = pr.value
+    }
+
+    fun generate(): Item {
+        val cat = Random.chances(categoryMap)
+        categoryMap[cat] = categoryMap[cat]!! / 2f
+
+        return cat.generate()
+    }
 
     fun reset() {
         ARTIFACT.reset()

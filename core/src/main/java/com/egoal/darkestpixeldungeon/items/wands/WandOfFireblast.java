@@ -62,8 +62,7 @@ public class WandOfFireblast extends DamageWand {
 
   //1x/1.5x/2.25x damage
   public int max(int lvl) {
-    return (int) Math.round((5 + 3 * lvl) * Math.pow(1.5f, chargesPerCast() -
-            1));
+    return (int) Math.round((7 + 3 * lvl) * Math.pow(1.5f, chargesPerCast() - 1));
   }
 
   @NotNull

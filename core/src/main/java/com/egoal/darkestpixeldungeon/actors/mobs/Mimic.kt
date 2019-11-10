@@ -103,6 +103,7 @@ class Mimic : Mob() {
                 this.pos = pos
                 state = HUNTING
             }
+            m.items.addAll(items)
             GameScene.add(m, 1f)
             m.sprite.turnTo(pos, Dungeon.hero.pos)
 

@@ -185,7 +185,8 @@ class LowHealthDexterous : Perk(3) {
 
     fun evasionFactor(hero: Hero): Float {
         if (hero.HP > hero.HT * 0.3) return 1f
-        return Math.pow(1.25, level.toDouble()).toFloat()
+
+        return 1.25f.pow(level)
     }
 }
 
@@ -221,7 +222,7 @@ class ExtraEvasion : Perk(5) {
 class CounterStrike : Perk() {
     fun procEvasionDamage(dmg: Damage) {
         if (dmg.type == Damage.Type.NORMAL && !dmg.isFeatured(Damage.Feature.RANGED)) {
-            Buff.affect(dmg.to as Hero, SeeThrough::class.java, 2f).enemyid = (dmg.from as Actor).id()
+            Buff.affect(dmg.to as Hero, SeeThrough::class.java, 1.1f).enemyid = (dmg.from as Actor).id()
         }
     }
 }
@@ -344,13 +345,13 @@ class PressureRelieve : Perk(2) {
 class WandCharger : Perk(3) {
     override fun image(): Int = PerkImageSheet.WAND_CHARGE
 
-    fun factor(): Float = 2f - 0.85f.pow(level)
+    fun factor(): Float = 2f - 0.8f.pow(level)
 }
 
 class WandArcane : Perk(3) {
     override fun image(): Int = PerkImageSheet.WAND_ARCANE
 
-    fun factor(): Float = 2f - 0.8f.pow(level)
+    fun factor(): Float = 1f + 0.2f * level // 2f - 0.8f.pow(level)
 }
 
 class QuickZap : Perk() {

@@ -178,6 +178,7 @@ public class ItemSpriteSheet {
   public static final int WAND_WARDING = WANDS + 10;
   public static final int WAND_REGROWTH = WANDS + 11;
   public static final int WAND_TRANSFUSION = WANDS + 12;
+  public static final int WAND_SWAP = WANDS+ 13;
 
   private static final int RINGS = xy(1, 15);  //16 slots
   public static final int RING_GARNET = RINGS + 0;

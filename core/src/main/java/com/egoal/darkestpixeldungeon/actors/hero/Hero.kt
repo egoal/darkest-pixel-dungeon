@@ -414,8 +414,7 @@ class Hero : Char() {
         var speed = super.speed()
 
         val hlvl = RingOfHaste.getBonus(this, RingOfHaste.Haste::class.java)
-        if (hlvl != 0)
-            speed *= Math.pow(1.2, hlvl.toDouble()).toFloat()
+        if (hlvl != 0) speed *= 1.2f.pow(hlvl)
 
         belongings.armor?.let {
             if (it.hasGlyph(Swiftness::class.java))
@@ -426,9 +425,10 @@ class Hero : Char() {
 
         buff(HasteRune.Haste::class.java)?.let { speed *= 3f }
 
-        val estr = if (belongings.armor != null) belongings.armor.STRReq() - STR() else 0
+        var estr = if (belongings.armor != null) belongings.armor.STRReq() - STR() else 0
+        estr += if (belongings.weapon is Weapon) (belongings.weapon as Weapon).STRReq() - STR() else 0
         if (estr > 0)
-            return speed / Math.pow(1.2, estr.toDouble()).toFloat()
+            return speed / 1.2f.pow(estr)
         else {
             if ((sprite as HeroSprite).sprint(subClass == HeroSubClass.FREERUNNER && !isStarving()))
                 speed *= if (invisible > 0) 2f else 1.5f
@@ -599,7 +599,7 @@ class Hero : Char() {
 
     public override fun spend(time: Float) {
         if (buff(TimekeepersHourglass.TimeFreeze::class.java)?.processTime(time) != true) {
-            if (buff(TimeDilation::class.java) != null) spend(time / 3f)
+            if (buff(TimeDilation::class.java) != null) super.spend(time / 3f)
             else super.spend(time)
         }
     }
@@ -1030,7 +1030,7 @@ class Hero : Char() {
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
     }
 
-    fun onEvasion(dmg: Damage){
+    fun onEvasion(dmg: Damage) {
         heroPerk.get(CounterStrike::class.java)?.procEvasionDamage(dmg)
     }
 

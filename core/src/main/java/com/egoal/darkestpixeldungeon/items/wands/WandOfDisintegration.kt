@@ -49,7 +49,7 @@ class WandOfDisintegration : DamageWand() {
 
     override fun min(lvl: Int): Int = 2 + lvl
 
-    override fun max(lvl: Int): Int = 6 + 4 * lvl
+    override fun max(lvl: Int): Int = 8 + 4 * lvl
 
     override fun giveDamage(enemy: Char): Damage {
         return super.giveDamage(enemy).addFeature(Damage.Feature.PURE)

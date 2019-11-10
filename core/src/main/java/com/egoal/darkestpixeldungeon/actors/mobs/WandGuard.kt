@@ -125,7 +125,8 @@ class WandGuard : Mob() {
                 WandOfFireblast::class.java to 4f,
                 WandOfBlastWave::class.java to 3f,
                 WandOfFrost::class.java to 3f,
-                WandOfPrismaticLight::class.java to 3f
+                WandOfPrismaticLight::class.java to 3f,
+                WandOfVenom::class.java to 3f
         )
 
         class Sprite : MobSprite() {

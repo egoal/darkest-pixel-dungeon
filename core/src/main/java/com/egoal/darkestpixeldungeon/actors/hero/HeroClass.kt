@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
+import com.egoal.darkestpixeldungeon.items.wands.WandOfAbel
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
@@ -270,6 +271,8 @@ enum class HeroClass(private val title: String) {
 //        EyeballOfTheElder.Left().collect()
 //        EyeballOfTheElder.Right().collect()
 //        EyeballOfTheElder().collect()
+//        WandOfAbel().identify().collect()
+//        hero.heroPerk.add(FinishingShot())
     }
 
     // called when hero level up

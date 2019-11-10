@@ -6,7 +6,9 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
 import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -102,14 +104,14 @@ class VillageLevel : RegularLevel() {
         putMobAt(CatRawberry::class.java, 12, 6)
 
         // putMobAt(Merchant::class.java, 16, 29)
-//        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
-//            for (i in 1..10) addItemToSell(Generator.generate())
-//        }
-//        (putMobAt(ScrollSeller::class.java, 15, 27) as ScrollSeller).apply {
-//            addItemToSell(Dart(8))
-//            addItemToSell(BattleGloves())
-//            addItemToSell(TomeOfPerk())
-//        }
+        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
+            for (i in 1..10) addItemToSell(Generator.generate())
+        }
+        (putMobAt(ScrollSeller::class.java, 15, 27) as ScrollSeller).apply {
+            addItemToSell(Dart(8))
+            addItemToSell(BattleGloves())
+            addItemToSell(TomeOfPerk())
+        }
     }
 
     override fun onSwitchedIn() {
@@ -122,6 +124,11 @@ class VillageLevel : RegularLevel() {
     override fun createItems() {
 //        for (i in 1..20)
 //            drop(Generator.POTION.generate(), xy2cell(15, i + 3))
+        drop(MasterThievesArmband().apply {
+            identify()
+            level(5)
+        }, xy2cell(16, 30))
+        drop(Gold(500), xy2cell(16, 30))
     }
 
     private fun putMobAt(cls: Class<out Mob>, x: Int, y: Int): Mob {

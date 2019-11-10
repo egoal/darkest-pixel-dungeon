@@ -185,6 +185,7 @@ abstract class Level : Bundlable {
             customTiles.clear()
             luminaries.clear()
 
+            Generator.ResetCategoryProbs()
             if (build(i)) {
                 Log.d("dpd", String.format("level build okay after %d trails.", i))
                 break
@@ -685,8 +686,7 @@ abstract class Level : Bundlable {
         }
 
         // don't drop on them
-        if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain
-                        .ENCHANTING_STATION) {
+        if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain.ENCHANTING_STATION) {
             var n: Int
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)]
@@ -709,13 +709,11 @@ abstract class Level : Bundlable {
                 GameScene.add(heap)
             }
 
-        } else if (heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type
-                        .CRYSTAL_CHEST) {
-
+        } else if (heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type.CRYSTAL_CHEST) {
             var n: Int
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)]
-            } while (!Level.passable[n] && !Level.avoid[n])
+            } while (!passable[n] && !avoid[n])
             return drop(item, n)
 
         }

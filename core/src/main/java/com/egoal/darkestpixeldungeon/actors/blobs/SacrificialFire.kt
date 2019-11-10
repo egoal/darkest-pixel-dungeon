@@ -40,7 +40,7 @@ class SacrificialFire : Blob() {
                 it.sprite.emitter().burst(SacrificialParticle.FACTORY, 20)
                 Sample.INSTANCE.play(Assets.SND_BURNING)
             }
-            Buff.prolong(it, Marked::class.java, 30f)
+            Buff.prolong(it, Marked::class.java, 50f)
         }
 
         if (Dungeon.visible[pos])

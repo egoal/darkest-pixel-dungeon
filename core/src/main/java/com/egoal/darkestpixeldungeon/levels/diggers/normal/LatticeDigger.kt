@@ -23,9 +23,20 @@ class LatticeDigger : RectDigger() {
         // lattice paint
         val tile = if (Random.Int(4) == 0) Terrain.CHASM else Terrain.WALL
 
-        for (r in 1 until rect.height step 2)
-            for (c in 1 until rect.width step 2)
-                Set(level, rect.x1 + c, rect.y1 + r, tile)
+        for (r in 1 until rect.height step 2) {
+            var c = rect.x1 + 1
+            Set(level, c, rect.y1 + r, tile)
+            c++
+            while (c < rect.x2) {
+                if (level.map[level.xy2cell(c - 1, rect.y1 + r)] != tile || Random.Float() < 0.5f)
+                    Set(level, c, rect.y1 + r, tile)
+                c++
+            }
+        }
+
+//        for (r in 1 until rect.height step 2)
+//            for (c in 1 until rect.width step 2)
+//                Set(level, rect.x1 + c, rect.y1 + r, tile)
 
         return dr
     }

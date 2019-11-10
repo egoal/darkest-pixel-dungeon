@@ -54,7 +54,7 @@ class WandOfBlastWave : DamageWand() {
 
     override fun min(lvl: Int): Int = 1 + lvl
 
-    override fun max(lvl: Int): Int = 5 + 3 * lvl
+    override fun max(lvl: Int): Int = 7 + 3 * lvl
 
     override fun onZap(bolt: Ballistica) {
         Sample.INSTANCE.play(Assets.SND_BLAST)
@@ -79,9 +79,10 @@ class WandOfBlastWave : DamageWand() {
 
         //throws the char at the center of the blast
         Actor.findChar(bolt.collisionPos)?.let {
-            onMissileHit(it, Dungeon.hero)
+            val dmg = giveDamage(it)
+            onMissileHit(it, Dungeon.hero, dmg)
+            it.takeDamage(dmg)
 
-            it.takeDamage(giveDamage(it))
             if (it.isAlive && bolt.path.size > bolt.dist + 1) {
                 val traj = Ballistica(it.pos, bolt.path[bolt.dist + 1], Ballistica.MAGIC_BOLT)
                 val str = level() + 3
