@@ -44,7 +44,7 @@ class Greataxe : MeleeWeapon() {
         val pos = (dmg.to as Char).pos
         for (i in PathFinder.NEIGHBOURS8) {
             val mob = Dungeon.level.findMobAt(pos + i)
-            if (mob != null && mob.hostile)
+            if (mob != null && mob.camp == Char.Camp.ENEMY)
                 mob.takeDamage(mob.defendDamage(Damage(dmg.value / 2, dmg.from, dmg.to).type(dmg.type)))
         }
 

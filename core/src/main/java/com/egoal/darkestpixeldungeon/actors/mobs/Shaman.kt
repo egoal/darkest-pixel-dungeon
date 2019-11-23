@@ -116,7 +116,7 @@ class Shaman : Mob(), Callback {
                 // ^ cannot attack or is face to face, find nearby friends to give Rage
                 // others are preferred
                 val nearbys = Dungeon.level.mobs.filter { mob ->
-                    !(mob === this@Shaman) && mob.hostile && mob.buff(Rage::class.java) == null &&
+                    !(mob === this@Shaman) && mob.camp == camp && mob.buff(Rage::class.java) == null &&
                             Level.fieldOfView[mob.pos] && Dungeon.level.distance(pos, mob.pos) <= 4
                 }
 

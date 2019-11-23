@@ -68,6 +68,8 @@ class Hero : Char() {
 
         HT = 20
         HP = HT
+
+        camp = Camp.HERO
     }
 
     // properties
@@ -222,7 +224,7 @@ class Hero : Char() {
     fun holdFollowers(level: Level) {
         followers.clear()
 
-        level.mobs.filterTo(followers) { it.isFollower }
+        level.mobs.filterTo(followers) { it.camp == Camp.HERO }
         level.mobs.removeAll(followers)
 
         // todo: MAX FOLLOWERS CONTROL
@@ -678,7 +680,7 @@ class Hero : Char() {
         var newFound = false
 
         var target: Mob? = null
-        for (mob in Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] && it.hostile && it.isLiving }) {
+        for (mob in Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] && it.camp == Camp.ENEMY && it.isLiving }) {
             visible.add(mob)
             if (!visibleEnemies.contains(mob))
                 newFound = true
@@ -814,7 +816,11 @@ class Hero : Char() {
         // character there
         val ch = Actor.findChar(cell)
         if (Level.fieldOfView[cell] && ch is Mob) {
-            return if (ch is NPC && !ch.hostile) HeroAction.Interact(ch) else HeroAction.Attack(ch)
+            //todo: make it clean
+            if (ch.camp == Camp.ENEMY) return HeroAction.Attack(ch)
+            if (ch is NPC) return HeroAction.Interact(ch)
+            //
+            return HeroAction.InteractAlly(ch)
         }
 
         // heap there

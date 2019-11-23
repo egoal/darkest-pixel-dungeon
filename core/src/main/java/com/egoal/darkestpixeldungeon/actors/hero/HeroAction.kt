@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Disarm
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
@@ -41,11 +42,13 @@ import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.AlchemyPot
 import com.egoal.darkestpixeldungeon.levels.features.EnchantingStation
 import com.egoal.darkestpixeldungeon.levels.features.Sign
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.scenes.InterlevelScene
 import com.egoal.darkestpixeldungeon.scenes.SurfaceScene
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndMessage
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Game
@@ -167,6 +170,26 @@ abstract class HeroAction(var dst: Int = 0) {
         }
     }
 
+    class InteractAlly(var mob: Mob) : HeroAction() {
+        override fun act(hero: Hero): Boolean {
+            hero.ready()
+
+            if (mob.camp == Char.Camp.HERO) {
+                //todo: refactor
+                WndDialogue.Show(mob, mob.description() + "\n\n" + M.L(Mob::class.java, "ally", mob.name) + "\n" + mob.state.status(),
+                        M.L(Mob::class.java, "follow"),
+                        M.L(Mob::class.java, "wander")) {
+                    if (it == 0) {
+                        if (mob.state != mob.FOLLOW_HERO) mob.state = mob.FOLLOW_HERO
+                    } else {
+                        if (mob.state == mob.FOLLOW_HERO) mob.state = mob.WANDERING
+                    }
+                }
+            }
+            return false
+        }
+    }
+
     class Unlock(door: Int) : HeroAction(door) {
         override fun act(hero: Hero): Boolean {
             if (Dungeon.level.adjacent(hero.pos, dst)) {
@@ -275,7 +298,7 @@ abstract class HeroAction(var dst: Int = 0) {
     class Attack(var target: Char) : HeroAction() {
         override fun act(hero: Hero): Boolean {
             hero.enemy = target
-            if (target.isAlive && hero.canAttack(target) && !hero.isCharmedBy(target) && hero.buff(Disarm::class.java)==null) {
+            if (target.isAlive && hero.canAttack(target) && !hero.isCharmedBy(target) && hero.buff(Disarm::class.java) == null) {
                 Invisibility.dispel()
                 hero.spend(hero.attackDelay())
                 hero.sprite.attack(target.pos)

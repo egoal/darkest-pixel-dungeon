@@ -26,8 +26,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         state = WANDERING
         enemy = null
 
-        hostile = !friendly
-        ally = friendly
+        camp = if (friendly) Camp.HERO else Camp.ENEMY
 
         if (friendly)
             initLevelStatus(level)
@@ -81,8 +80,6 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         return true
     }
 
-    override fun isFollower(): Boolean = true
-
     override fun attackSkill(target: Char): Float = 10f + level * 2f
 
     override fun giveDamage(enemy: Char): Damage {
@@ -126,22 +123,9 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         return super.getCloser(theTarget)
     }
 
-    override fun chooseEnemy(): Char? {
-        if (hostile) return super.chooseEnemy()
-
-        if (enemy == null || !enemy.isAlive || !Dungeon.level.mobs.contains(enemy) || state == WANDERING) {
-            val avls = Dungeon.level.mobs.filter {
-                it.hostile && Level.fieldOfView[it.pos] && it.state != it.PASSIVE
-            }
-            enemy = if (avls.isEmpty()) null else Random.element(avls)
-        }
-
-        return enemy
-    }
-
     // strengthen
     override fun attackProc(dmg: Damage): Damage {
-        if (!hostile) {
+        if (camp == Camp.HERO) {
             (dmg.to as Mob?)?.let {
                 earnExp(it.EXP.toFloat() * (dmg.value.toFloat() / it.HT.toFloat()))
             }
@@ -158,7 +142,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     // voice
     fun onSpawned() {
-        if (hostile) yell(Messages.get(this, "defeat-me"))
+        if (camp == Camp.ENEMY) yell(Messages.get(this, "defeat-me"))
         else {
             // on each summon, gain exp
             earnExp(maxExp / 5f)
@@ -171,15 +155,13 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(TIME_LEFT, timeLeft)
-        bundle.put(ALLY, ally)
-        bundle.put(HOSTILE, hostile)
+        bundle.put(CAMP, camp)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         timeLeft = bundle.getFloat(TIME_LEFT)
-        ally = bundle.getBoolean(ALLY)
-        hostile = bundle.getBoolean(HOSTILE)
+        camp = bundle.getEnum(CAMP, Camp::class.java)
     }
 
     override fun die(cause: Any?) {
@@ -190,8 +172,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     companion object {
         private const val TIME_LEFT = "time-left"
-        private const val ALLY = "ally"
-        private const val HOSTILE = "hostile"
+        private const val CAMP = "camp"
 
         fun Instance(): AbyssHero? = Dungeon.level.mobs.find { it is AbyssHero } as AbyssHero?
 

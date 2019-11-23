@@ -81,7 +81,7 @@ public class WandOfTransfusion extends Wand {
     //if we find a character..
     if (ch != null && ch instanceof Mob) {
       //heals an ally, or charmed/corrupted enemy
-      if (((Mob) ch).ally || ch.buff(Charm.class) != null || ch.buff
+      if (ch.camp== Char.Camp.HERO || ch.buff(Charm.class) != null || ch.buff
               (Corruption.class) != null) {
 
         int missingHP = ch.HT - ch.HP;
@@ -109,7 +109,7 @@ public class WandOfTransfusion extends Wand {
 
         float duration = 5 + level();
         new Charm.Attacher(curUser.id(), (int)duration).attachTo(ch);
-        
+
         duration *= Random.Float(0.75f, 1f);
         new Charm.Attacher(ch.id(), (int)duration).attachTo(curUser);
 
@@ -124,7 +124,7 @@ public class WandOfTransfusion extends Wand {
     } else if (heap != null && heap.getType() == Heap.Type.HEAP) {
       Item item = heap.peek();
 
-      //30% + 10%*lvl chance to uncurse the item and reset it to base level 
+      //30% + 10%*lvl chance to uncurse the item and reset it to base level
       // if degraded.
       if (item != null && Random.Float() <= 0.3f + level() * 0.1f) {
         if (item.cursed) {

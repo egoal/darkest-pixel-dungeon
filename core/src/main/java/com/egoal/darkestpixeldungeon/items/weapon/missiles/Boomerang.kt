@@ -85,7 +85,7 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
         for (i in 0 until PathFinder.distance.size)
             if (PathFinder.distance[i] < Int.MAX_VALUE) {
                 val other = Actor.findChar(i)
-                if (other !== ch && other is Mob && other.hostile) return other
+                if (other !== ch && other is Mob && other.camp == Char.Camp.ENEMY) return other
             }
         return null
     }

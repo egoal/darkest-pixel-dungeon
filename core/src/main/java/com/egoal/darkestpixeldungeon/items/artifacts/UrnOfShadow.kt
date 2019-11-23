@@ -72,7 +72,9 @@ class UrnOfShadow : Artifact() {
 
         if (Dungeon.level.distance(Item.curUser.pos, mob.pos) > COLLECT_RANGE) return
 
-        if (!mob.hostile || mob.properties().contains(Char.Property.UNDEAD)) return
+        if (mob.camp != Char.Camp.ENEMY ||
+                mob.properties().contains(Char.Property.UNDEAD) ||
+                mob.properties().contains(Char.Property.PHANTOM)) return
 
         if (isFull) {
             GLog.w(M.L(this, "full"))
@@ -197,7 +199,7 @@ class UrnOfShadow : Artifact() {
             else if (ch.buff(Corruption::class.java) != null) GLog.w(M.L(UrnOfShadow::class.java, "already_dementage"))
             else if (ch.properties().contains(Char.Property.BOSS) || ch.properties().contains(Char.Property.MINIBOSS))
                 GLog.w(M.L(UrnOfShadow::class.java, "boss"))
-            else if (ch is Mob && (!ch.hostile || ch.properties().contains(Char.Property.UNDEAD) ||
+            else if (ch is Mob && (ch.camp != Char.Camp.ENEMY || ch.properties().contains(Char.Property.UNDEAD) ||
                             ch.immunizedBuffs().contains(Dementage::class.java)))
                 GLog.w(M.L(UrnOfShadow::class.java, "no_soul"))
             else {

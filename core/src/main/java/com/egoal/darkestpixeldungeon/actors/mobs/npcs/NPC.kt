@@ -38,7 +38,7 @@ abstract class NPC : Mob() {
         HP = HT
         EXP = 0
 
-        hostile = false
+        camp = Camp.NEUTRAL
         state = PASSIVE
     }
 

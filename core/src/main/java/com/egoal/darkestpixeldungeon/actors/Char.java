@@ -103,6 +103,11 @@ public abstract class Char extends Actor {
 
   private HashSet<Buff> buffs = new HashSet<>();
 
+  public enum Camp{
+    HERO, NEUTRAL, ENEMY,
+  }
+  public Camp camp;
+
   {
     Arrays.fill(elementalResistance, 0f);
   }
