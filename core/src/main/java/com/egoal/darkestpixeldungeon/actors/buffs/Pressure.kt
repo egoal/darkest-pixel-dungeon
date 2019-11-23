@@ -1,9 +1,11 @@
 package com.egoal.darkestpixeldungeon.actors.buffs
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PressureIsPower
+import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -85,8 +87,7 @@ class Pressure : Buff(), Hero.Doom {
         if (target.isAlive) {
             if (Dungeon.depth > 0 && Random.Int(10) == 0) {
                 //^ up pressure, not in the village
-                val value = (if (Dungeon.level.locked) 2f else 1f) + Random.Float(Dungeon.depth / 4f)
-                upPressure(value)
+                upPressure(procValue())
             }
 
             // mental damage
@@ -105,6 +106,16 @@ class Pressure : Buff(), Hero.Doom {
         }
 
         return true
+    }
+
+    private fun procValue(): Float {
+        var value = if (Dungeon.level.locked) 2f else 1f
+        value += Random.Float(Dungeon.depth / 5f)
+        if (Statistics.Clock.state == Statistics.ClockTime.State.MidNight &&
+                !com.egoal.darkestpixeldungeon.levels.Level.lighted[target.pos])
+            value *= 1.25f
+
+        return value
     }
 
     private fun procStep(): Float = if (target === Dungeon.hero) 10f * (target as Hero).mentalFactor() else 10f

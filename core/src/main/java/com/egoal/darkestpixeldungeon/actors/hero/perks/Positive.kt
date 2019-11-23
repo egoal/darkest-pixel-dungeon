@@ -308,7 +308,7 @@ class FastRegeneration : Perk(5) {
         onGain()
     }
 
-    private fun extraReg(): Float = 0.1f * level
+    private fun extraReg(): Float = 0.15f * level
 }
 
 class EfficientPotionOfHealing : Perk() {
@@ -394,21 +394,29 @@ class RangedShot : Perk() {
 
 class FinishingShot : Perk() {
     fun onKilledChar(hero: Hero, ch: Char, weapon: MissileWeapon) {
-        Buff.prolong(hero, TimeDilation::class.java, 1f + weapon.DLY)
+        Buff.prolong(hero, TimeDilation::class.java, 0.5f + weapon.DLY)
     }
 }
 
 class ExtraStrength : Perk(3) {
     override fun image(): Int = PerkImageSheet.STRENGTH_EXTRA
 
+    override fun onLose() {
+        super.onLose()
+        Dungeon.hero.STR -= str()
+    }
+
     override fun onGain() {
-        Dungeon.hero.STR++
+        Dungeon.hero.STR += str()
     }
 
     override fun upgrade() {
+        onLose()
         super.upgrade()
-        Dungeon.hero.STR++
+        onGain()
     }
+
+    private fun str(): Int = level
 
     override fun description(): String = M.L(this, "desc", level)
 }
@@ -458,7 +466,7 @@ class ExtraRuneRegularly : TimingPerk(GainRune::class.java) {
     }
 }
 
-class AngryBared : Perk() {
+class BaredAngry : Perk() {
     override fun image(): Int = PerkImageSheet.BARED_ANGRY
 
     fun procGivenDamage(dmg: Damage, hero: Hero) {
@@ -466,6 +474,14 @@ class AngryBared : Perk() {
     }
 
     fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 0.7f else 1f
+
+    private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
+}
+
+class BaredSwiftness : Perk() {
+    fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 1.2f else 1f
+
+    fun evasionProb(hero: Hero): Float = if (noArmor(hero)) 0.12f else 0f
 
     private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
 }
@@ -496,6 +512,12 @@ class QuickLearner : Perk(3) {
         super.restoreFromBundle(bundle)
         dexp = bundle.getFloat("dexp")
     }
+}
+
+class ExtraMagicalResistance : Perk(3) {
+    fun ratio(): Float = 0.05f + level * 0.15f
+
+    override fun description(): String = M.L(this, "desc", (ratio() * 100).toInt())
 }
 
 class LevelPerception : Perk() {

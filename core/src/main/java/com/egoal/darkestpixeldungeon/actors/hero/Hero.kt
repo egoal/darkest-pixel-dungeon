@@ -109,6 +109,15 @@ class Hero : Char() {
         return str
     }
 
+    override fun magicalResistance(): Float {
+        var mr = super.magicalResistance()
+        heroPerk.get(ExtraMagicalResistance::class.java)?.let {
+            mr = 1f - (1f - mr) * (1f - it.ratio())
+        }
+
+        return mr
+    }
+
     override fun viewDistance(): Int {
         var vd = super.viewDistance()
         if (Statistics.Clock.state == Statistics.ClockTime.State.MidNight) vd -= 1
@@ -198,12 +207,12 @@ class Hero : Char() {
         if (buff(CriticalRune.Critical::class.java) != null) return 1f
 
         var c = criticalChance
-        if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.09f
+        if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
 
         val level = RingOfCritical.getBonus(this, RingOfCritical.Critical::class.java)
         if (level > 0) {
             c += 0.01f * level
-            c *= Math.pow(1.15, level.toDouble()).toFloat()
+            c *= 1.15f.pow(level)
         }
 
         return c
@@ -273,10 +282,21 @@ class Hero : Char() {
         return atkSkill * accuracy
     }
 
+    private fun evasionProbability(): Float {
+        var e = 0f
+        heroPerk.get(ExtraEvasion::class.java)?.let {
+            e += it.prob()
+        }
+        heroPerk.get(BaredSwiftness::class.java)?.let {
+            e += it.evasionProb(this)
+        }
+
+        return e
+    }
+
     override fun defenseSkill(enemy: Char): Float {
-        // todo: make it a property
-        val ee = heroPerk.get(ExtraEvasion::class.java)
-        if (ee != null && Random.Float() < ee.prob()) return 1000f
+        // evasion check
+        if (Random.Float() < evasionProbability()) return 1000f
 
         var bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
         var evasion = Math.pow(1.125, bonus.toDouble()).toFloat()
@@ -341,7 +361,7 @@ class Hero : Char() {
         // helmet
         belongings.helmet?.let { belongings.helmet.procGivenDamage(dmg) }
 
-        heroPerk.get(AngryBared::class.java)?.procGivenDamage(dmg, this)
+        heroPerk.get(BaredAngry::class.java)?.procGivenDamage(dmg, this)
 
         // critical
         if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < criticalChance()) {
@@ -376,6 +396,12 @@ class Hero : Char() {
 
     fun procWandDamage(dmg: Damage) {
         dmg.value = round(dmg.value * arcaneFactor()).toInt()
+
+        val bonus = RingOfSharpshooting.getBonus(this, RingOfSharpshooting.Aim::class.java)
+        if (bonus != 0) {
+            val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
+            dmg.value = round(dmg.value * ratio).toInt()
+        }
 
         heroPerk.get(ArcaneCrit::class.java)?.affectDamage(this, dmg)
     }
@@ -423,6 +449,10 @@ class Hero : Char() {
                 speed *= (1.5f + 0.05f * it.level())
         }
 
+        heroPerk.get(BaredSwiftness::class.java)?.let {
+            speed *= it.speedFactor(this)
+        }
+
         buff(HasteRune.Haste::class.java)?.let { speed *= 3f }
 
         var estr = if (belongings.armor != null) belongings.armor.STRReq() - STR() else 0
@@ -468,21 +498,19 @@ class Hero : Char() {
             //Normally putting furor speed on unarmed attacks would be unnecessary
             //But there's going to be that one guy who gets a furor+force ring combo
             //This is for that one guy, you shall get your fists of fury!
-            speed *= 0.25f + 0.75f * Math.pow(0.8,
-                    RingOfFuror.getBonus(this, RingOfFuror.Furor::class.java).toDouble()).toFloat()
+            speed *= 0.25f + 0.75f * 0.8f.pow(RingOfFuror.getBonus(this, RingOfFuror.Furor::class.java))
         }
 
         speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
-        speed *= heroPerk.get(AngryBared::class.java)?.speedFactor(this) ?: 1f
+        speed *= heroPerk.get(BaredAngry::class.java)?.speedFactor(this) ?: 1f
 
         return speed
     }
 
     override fun attackProc(dmg: Damage): Damage {
-        (rangedWeapon ?: belongings.weapon)?.proc(dmg)
+        val wep = (rangedWeapon ?: belongings.weapon) as Weapon?
 
-        if (dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0 && Random.Int(10) == 0)
-            recoverSanity(min(Random.Int(dmg.value / 6) + 1, 10).toFloat())
+        wep?.proc(dmg)
 
         // snipper perk
         if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
@@ -490,7 +518,13 @@ class Hero : Char() {
             Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
         }
 
+        // critical damage
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+            // recover sanity
+            val str = wep?.STRReq() ?: 10
+            if (dmg.value > 0 && Random.Int(15 - str / 2) == 0)
+                recoverSanity(min(Random.Int(dmg.value / 6) + 1, 10).toFloat())
+
             heroPerk.get(VampiricCrit::class.java)?.procCrit(dmg)
         }
 
@@ -897,6 +931,7 @@ class Hero : Char() {
             HP = HT / 4
             //ensures that you'll get to act first in almost any case, to prevent 
             // reviving and then instantly dieing again.
+            recoverSanity(min(20f, pressure.pressure * 0.25f))
             Buff.detach(this, Paralysis::class.java)
             spend(-cooldown())
 

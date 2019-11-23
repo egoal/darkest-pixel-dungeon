@@ -88,19 +88,4 @@ class RiemannianManifoldShield : Artifact() {
 
         return desc
     }
-
-    override fun storeInBundle(bundle: Bundle) {
-        super.storeInBundle(bundle)
-        bundle.put(COOLDOWN, cooldown)
-    }
-
-    override fun restoreFromBundle(bundle: Bundle) {
-        super.restoreFromBundle(bundle)
-        cooldown = bundle.getInt(COOLDOWN)
-    }
-
-    companion object {
-        private const val COOLDOWN = "cooldown"
-    }
-
 }

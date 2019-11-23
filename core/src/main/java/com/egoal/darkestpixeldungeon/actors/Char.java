@@ -148,6 +148,10 @@ public abstract class Char extends Actor {
     }
   }
 
+  public float magicalResistance(){
+      return magicalResistance;
+  }
+
   public int viewDistance() {
     if (buff(SharpVision.class) != null) return seeDistance();
 
@@ -446,7 +450,7 @@ public abstract class Char extends Actor {
           dmg.value -= Math.round(dmg.value* elementalResistance[of]);
 
     if(dmg.type== Damage.Type.MAGICAL)
-      dmg.value -= Math.round(dmg.value* magicalResistance);
+      dmg.value -= Math.round(dmg.value* magicalResistance());
 
     if(dmg.value<0) dmg.value = 0;
 

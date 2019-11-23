@@ -114,7 +114,9 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 FinishingShot() to 1f,
                 ExtraStrength() to 0.75f,
                 ExtraRuneRegularly() to 0.8f,
-                AngryBared() to 0.8f,
+                BaredAngry() to 0.8f,
+                BaredSwiftness() to 1f,
+                ExtraMagicalResistance() to 1f,
                 QuickLearner() to 1f
 //                LevelPerception() to 1f
         )

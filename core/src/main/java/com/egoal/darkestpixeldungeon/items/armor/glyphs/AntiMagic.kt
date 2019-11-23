@@ -18,28 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.armor.glyphs;
+package com.egoal.darkestpixeldungeon.items.armor.glyphs
 
-import com.egoal.darkestpixeldungeon.actors.Char;
-import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.items.armor.Armor;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.armor.Armor
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
-public class AntiMagic extends Armor.Glyph {
+class AntiMagic : Armor.Glyph() {
+    override fun proc(armor: Armor, damage: Damage): Damage {
+        if (damage.type == Damage.Type.MAGICAL)
+            damage.value = damage.value * 3 / 4
 
-  private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing(0x88EEFF);
+        return damage
+    }
 
-  @Override
-  public Damage proc(Armor armor, Damage damage) {
-    if (damage.type == Damage.Type.MAGICAL)
-      damage.value *= 0.75f;
+    override fun glowing(): ItemSprite.Glowing = TEAL
 
-    return damage;
-  }
+    companion object {
 
-  @Override
-  public ItemSprite.Glowing glowing() {
-    return TEAL;
-  }
-
+        private val TEAL = ItemSprite.Glowing(0x88EEFF)
+    }
 }

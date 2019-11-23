@@ -230,7 +230,6 @@ public class Astrolabe extends Artifact {
   @Override
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
-    cooldown = bundle.getInt(COOLDOWN);
     blockNextNegative = bundle.getBoolean(BLOCK_NEXT_NEGATIVE);
     nextNegativeIsImprison = bundle.getBoolean(NEXT_IS_IMPRISON);
 

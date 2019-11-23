@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.windows
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
+import com.egoal.darkestpixeldungeon.actors.hero.perks.PerkImageSheet
 import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
@@ -18,6 +19,11 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
     private val confirm: RedButton
 
     init {
+        val perks = ArrayList<Perk>().apply {
+            addAll(perks)
+            add(RandomAnotherPerk())
+        }
+
         val width = (perks.size * BUTTON_SIZE + (perks.size + 1) * MARGIN).toInt()
 
         val titleLine = PixelScene.renderMultiline(title.capitalize(), 9)
@@ -65,9 +71,18 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
     }
 
     private fun addPerkConfirmed() {
-        Dungeon.hero.heroPerk.add(perkButtons[index].perk())
+        var perk = perkButtons[index].perk()
+        if (perk is RandomAnotherPerk) {
+            val perks = perkButtons.map { it.perk().javaClass }
+            for (i in 1..10) {
+                perk = Perk.RandomPositive(Dungeon.hero)
+                if (perk.javaClass !in perks) break
+            }
+        }
 
-        PerkGain.Show(Dungeon.hero!!, perkButtons[index].perk())
+        Dungeon.hero.heroPerk.add(perk)
+
+        PerkGain.Show(Dungeon.hero!!, perk)
     }
 
     override fun onBackPressed() {
@@ -102,6 +117,10 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
         fun setSelected(b: Boolean) {
             bg.alpha(if (b) 1f else 0f)
         }
+    }
+
+    class RandomAnotherPerk : Perk() {
+        override fun image(): Int = PerkImageSheet.REROLL
     }
 
     companion object {

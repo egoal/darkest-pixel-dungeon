@@ -75,7 +75,6 @@ abstract public class Weapon extends KindOfWeapon {
   public float DLY = 1f;  // Speed modifier
   public int RCH = 1;    // Reach modifier (only applies to melee hits)
 
-  // 灌注
   public enum Imbue {
     NONE(1.0f, 1.00f),
     LIGHT(0.7f, 0.67f),
@@ -153,7 +152,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     if (this instanceof MissileWeapon) {
       int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
-      ACC *= (float) (Math.pow(1.2, bonus));
+      ACC *= (float) (Math.pow(1.1, bonus));
     }
 
     return encumbrance > 0 ? (float) (ACC / Math.pow(1.5, encumbrance)) : ACC;

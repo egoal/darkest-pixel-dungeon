@@ -159,7 +159,6 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
     stealthed = bundle.getBoolean(STEALTHED);
-    cooldown = bundle.getInt(COOLDOWN);
     enhanced = bundle.getBoolean(ENHANCED);
     if (enhanced) enchantByBlueprint();
 

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.wands
 
+import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -29,6 +30,7 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
+import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 import kotlin.math.round
 
@@ -62,7 +64,9 @@ abstract class DamageWand : Wand() {
         hero.heroPerk.get(WandPiercing::class.java)?.onHit(char)
 
         //todo: critical effects
-        if (dmg.isFeatured(Damage.Feature.CRITICAL))
-            CellEmitter.center(char.pos).burst(BlastParticle.FACTORY, 10)
+        if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+            Sample.INSTANCE.play(Assets.SND_BLAST)
+            CellEmitter.center(char.pos).burst(BlastParticle.FACTORY, 20)
+        }
     }
 }

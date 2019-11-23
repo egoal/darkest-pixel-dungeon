@@ -110,8 +110,7 @@ public abstract class Wand extends Item {
     if (super.collect(container)) {
       if (container.owner != null) {
         if (container instanceof WandHolster)
-          charge(container.owner, ((WandHolster) container)
-                  .HOLSTER_SCALE_FACTOR);
+          charge(container.owner, ((WandHolster) container).HOLSTER_SCALE_FACTOR);
         else
           charge(container.owner);
       }

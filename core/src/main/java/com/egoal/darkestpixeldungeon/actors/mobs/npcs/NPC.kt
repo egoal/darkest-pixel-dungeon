@@ -64,7 +64,7 @@ abstract class NPC : Mob() {
 
     abstract class Unbreakable : NPC() {
         override fun act(): Boolean {
-            throwItem()
+            if (properties.contains(Property.IMMOVABLE)) throwItem()
             return super.act()
         }
 

@@ -159,12 +159,12 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                         val x = exp(refined.toFloat() / 4f)
                         val p = x / (x + 1f) * .5f
                         if (Random.Float() < p) {
-                            when (Random.Int(3)) {
-                                0 -> it.enchant(Venomous())
-                                1 -> it.enchant(Unstable())
+                            val i = Random.Int(3)
+                            when {
+                                (i == 0 && it.enchantment !is Venomous) -> it.enchant(Venomous())
+                                (i == 1 && it.enchantment !is Unstable) -> it.enchant(Unstable())
                                 else -> it.enchant()
                             }
-
                             GLog.w(Messages.get(this, "inscribed"))
                         }
                     } else

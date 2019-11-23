@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
@@ -104,8 +105,6 @@ enum class HeroClass(private val title: String) {
 
             hero.heroPerk.add(GoodAppetite())
             hero.heroPerk.add(WandPerception())
-
-//            UrnOfShadow().identify().collect()
 
             hero.addResistances(Damage.Element.FIRE, 0.1f)
             hero.addResistances(Damage.Element.POISON, -0.2f)
@@ -273,6 +272,8 @@ enum class HeroClass(private val title: String) {
 //        EyeballOfTheElder().collect()
 //        WandOfAbel().identify().collect()
 //        hero.heroPerk.add(FinishingShot())
+//        hero.heroPerk.add(ExtraPerkChoice())
+//        TomeOfPerk().identify().collect()
     }
 
     // called when hero level up

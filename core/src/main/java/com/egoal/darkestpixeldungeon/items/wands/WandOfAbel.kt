@@ -36,7 +36,7 @@ class WandOfAbel : DamageWand() {
         val ch = Actor.findChar(bolt.collisionPos)
         if (ch != null) {
             // swap
-            if (!ch.properties().contains(Char.Property.IMMOVABLE)) {
+            if (!ch.rooted && !Dungeon.hero.rooted && !ch.properties().contains(Char.Property.IMMOVABLE)) {
                 swap(ch, Dungeon.hero)
                 Dungeon.observe()
             }

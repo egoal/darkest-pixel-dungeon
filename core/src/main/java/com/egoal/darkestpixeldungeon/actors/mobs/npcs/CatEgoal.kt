@@ -150,7 +150,7 @@ class CatEgoal : NPC.Unbreakable() {
     override fun reset() = true
 
     override fun move(step: Int) {
-        if (!Dungeon.visible[step]) super.move(step)
+        if (!Dungeon.visible[pos] && !Dungeon.visible[step]) super.move(step)
     }
 
     inner class Wandering : AiState {

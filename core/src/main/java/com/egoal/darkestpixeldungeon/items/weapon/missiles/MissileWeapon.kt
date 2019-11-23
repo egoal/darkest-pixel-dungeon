@@ -24,6 +24,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.ArrayList
+import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
 
@@ -103,13 +104,9 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
     }
 
     protected open fun breakChance(): Float {
-        val base = 0.65f - Math.pow(1.25, tier.toDouble()).toFloat() / 6f
-        var bonus = RingOfSharpshooting.getBonus(Dungeon.hero, RingOfSharpshooting.Aim::class.java)
-
-        // huntress bonus
-        if (Dungeon.hero.heroClass == HeroClass.HUNTRESS) bonus += 3
-
-        return base * Math.pow(0.9, bonus.toDouble()).toFloat()
+        var bc = 0.65f - 1.25f.pow(tier) / 6f // base
+        if (Dungeon.hero.heroClass == HeroClass.HUNTRESS) bc *= 0.7f
+        return bc
     }
 
     override fun proc(dmg: Damage): Damage {
@@ -142,6 +139,12 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
 
         value = imbue.damageFactor(value)
         val dmg = Damage(value, hero, target).addFeature(Damage.Feature.RANGED)
+
+        val bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim::class.java)
+        if (bonus != 0) {
+            val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
+            dmg.value = round(dmg.value * ratio).toInt()
+        }
         hero.heroPerk.get(RangedShot::class.java)?.affectDamage(dmg)
 
         return dmg

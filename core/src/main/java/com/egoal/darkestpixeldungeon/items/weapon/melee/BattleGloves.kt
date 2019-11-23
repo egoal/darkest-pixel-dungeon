@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import kotlin.math.pow
 
 /**
  * Created by 93942 on 8/16/2018.
@@ -20,9 +21,7 @@ class BattleGloves : MeleeWeapon() {
     // 3+2*x, lower base damage
     override fun max(lvl: Int): Int = 3 * tier + lvl * (tier + 1)
 
-    override fun STRReq(lvl: Int): Int = Math.max(0, 9 - Math.max(0, lvl))
+    override fun STRReq(lvl: Int): Int = super.STRReq(lvl) - 2
 
-    override fun speedFactor(hero: Hero): Float {
-        return super.speedFactor(hero) * Math.pow(0.9, level().toDouble()).toFloat()
-    }
+    override fun speedFactor(hero: Hero): Float = super.speedFactor(hero) * 0.9f.pow(level())
 }

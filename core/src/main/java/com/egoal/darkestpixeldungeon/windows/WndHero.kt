@@ -46,6 +46,7 @@ import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.ui.Button
 
 import java.util.Locale
+import kotlin.math.round
 
 // window shown when press the status pane avatar
 class WndHero : WndTabbed() {
@@ -56,7 +57,7 @@ class WndHero : WndTabbed() {
     private val perks: PerksTab
 
     private val icons: SmartTexture = TextureCache.get(Assets.BUFFS_LARGE)
-    private val perkIcons = TextureCache.get(Assets.PERKS)
+    // private val perkIcons = TextureCache.get(Assets.PERKS)
     private val film: TextureFilm
 
     init {
@@ -267,8 +268,8 @@ class WndHero : WndTabbed() {
 
         }
 
-        private fun layoutResistances(thetop: Float): Float {
-            var thetop = thetop
+        private fun layoutResistances(top: Float): Float {
+            var thetop = top
             val ICON_SIZE = 8
 
             resistIcons = TextureCache.get(Assets.DPD_CONS_ICONS)
@@ -294,10 +295,22 @@ class WndHero : WndTabbed() {
                 thetop = icon.y + icon.height() + GAP5.toFloat()
             }
 
-            val rt2 = PixelScene.renderText(M.L(this, "magical_resistance", (hero.magicalResistance * 100).toInt()), 8)
+            val rt2 = PixelScene.renderText(M.L(this, "magical_resistance", (hero.magicalResistance() * 100).toInt()), 8)
             rt2.y = thetop
             add(rt2)
             thetop += rt2.height() + GAP5.toFloat()
+
+            val crit = PixelScene.renderText(M.L(this, "critical_chance", round(hero.criticalChance() * 100).toInt()), 8)
+            crit.y = thetop
+            add(crit)
+            thetop += crit.height() + GAP5.toFloat()
+
+            if (hero.isAlive) {
+                val reg = PixelScene.renderText(M.L(this, "regeneration", hero.regenerateSpeed()), 8)
+                reg.y = thetop
+                add(reg)
+                thetop += crit.height() + GAP5.toFloat()
+            }
 
             return thetop
         }
