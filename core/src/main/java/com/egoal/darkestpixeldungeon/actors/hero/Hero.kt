@@ -577,6 +577,8 @@ class Hero : Char() {
             dmg.value = ceil(dmg.value.toDouble() *
                     Math.pow(0.85, tenacity * (HT - HP).toDouble() / HT.toDouble())).toInt()
 
+        buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
+
         val dmgToken = super.takeDamage(dmg)
         if (isAlive) {
             // extra mental damage

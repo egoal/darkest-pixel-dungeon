@@ -84,7 +84,8 @@ object Generator {
                     ShortSword::class.java to 6f,
                     HandAxe::class.java to 5f,
                     Spear::class.java to 5f,
-                    Quarterstaff::class.java to 4f
+                    Quarterstaff::class.java to 4f,
+                    Sickle::class.java to 5f
             ))
 
             object T3 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
@@ -245,6 +246,7 @@ object Generator {
             CapeOfThorns::class.java to 0f, // by DM300
             ChaliceOfBlood::class.java to 0f,  // by statuary
             CloakOfShadows::class.java to 0f, // for rouge
+            CrackedCoin::class.java to 1f,
             HornOfPlenty::class.java to 1f,
             MasterThievesArmband::class.java to 0f, // by thief
             SandalsOfNature::class.java to 1f,

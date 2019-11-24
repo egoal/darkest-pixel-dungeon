@@ -92,6 +92,8 @@ public class ItemSpriteSheet {
   public static final int SPEAR = WEP_TIER2 + 2;
   public static final int QUARTERSTAFF = WEP_TIER2 + 3;
   public static final int DIRK = WEP_TIER2 + 4;
+  public static final int WITHERED_LEG = WEP_TIER2+ 5;
+  public static final int SICKLE = WEP_TIER2+ 6;
 
   private static final int WEP_TIER3 = xy(1, 7);   //16 slots
   public static final int SWORD = WEP_TIER3 + 0;

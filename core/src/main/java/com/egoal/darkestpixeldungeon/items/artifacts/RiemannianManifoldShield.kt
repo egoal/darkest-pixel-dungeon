@@ -50,7 +50,7 @@ class RiemannianManifoldShield : Artifact() {
     }
 
     // recharge buff
-    override fun passiveBuff(): Artifact.ArtifactBuff = Recharge()
+    override fun passiveBuff(): ArtifactBuff = Recharge()
 
     inner class Recharge : Artifact.ArtifactBuff() {
         override fun act(): Boolean {

@@ -13,8 +13,10 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Stunning
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 
@@ -39,7 +41,7 @@ class WandOfAbel : DamageWand() {
             if (!ch.rooted && !Dungeon.hero.rooted && !ch.properties().contains(Char.Property.IMMOVABLE)) {
                 swap(ch, Dungeon.hero)
                 Dungeon.observe()
-            }
+            } else GLog.w(M.L(this, "cannot_swap"))
 
             val dmg = giveDamage(ch)
             onMissileHit(ch, Item.curUser, dmg)
