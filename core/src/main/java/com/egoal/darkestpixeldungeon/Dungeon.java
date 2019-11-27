@@ -61,7 +61,7 @@ import java.util.HashSet;
 public class Dungeon {
 
   public static int initialDepth_ = -1;
-  public static final String VERSION_STRING = "0.4.1-2";
+  public static final String VERSION_STRING = "0.4.1-3";
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -97,6 +97,9 @@ public class Dungeon {
     chaliceOfBlood, // only the statuary drop this now
     demonicSkull,
     handOfElder,
+
+    ceremonialDaggerUsed,
+    ceremonialDagger,
 
     //containers
     dewVial,
@@ -173,7 +176,7 @@ public class Dungeon {
     Blacksmith.Quest.reset();
     Imp.Quest.reset();
 
-    Alchemist.Quest.reset();
+    Alchemist.Quest.INSTANCE.reset();
     Statuary.Reset();
     Jessica.Quest.INSTANCE.reset();
     Yvette.Quest.INSTANCE.Reset();
@@ -384,7 +387,15 @@ public class Dungeon {
   }
 
   public static boolean wineNeeded() {
-    int wineLeftThisSet = 1 - (limitedDrops.wine.count - depth / 5);
+    int wineLeftThisSet = 1 - (limitedDrops.wine.count - depth / 10);
+    if (wineLeftThisSet <= 0) return false;
+
+    int floorThisSet = depth % 5;
+    return Random.Int(5 - floorThisSet) < wineLeftThisSet;
+  }
+
+  public static boolean daggerNeeded() {
+    int wineLeftThisSet = 1 - (limitedDrops.ceremonialDagger.count - depth / 5);
     if (wineLeftThisSet <= 0) return false;
 
     int floorThisSet = depth % 5;
@@ -535,7 +546,7 @@ public class Dungeon {
       Blacksmith.Quest.storeInBundle(quests);
       Imp.Quest.storeInBundle(quests);
       // dpd save
-      Alchemist.Quest.storeInBundle(quests);
+      Alchemist.Quest.INSTANCE.storeInBundle(quests);
       Jessica.Quest.INSTANCE.storeInBundle(quests);
       Yvette.Quest.INSTANCE.StoreInBundle(quests);
       Statuary.save(quests);
@@ -649,7 +660,7 @@ public class Dungeon {
         Imp.Quest.restoreFromBundle(quests);
 
         // dpd, restore quests
-        Alchemist.Quest.restoreFromBundle(quests);
+        Alchemist.Quest.INSTANCE.restoreFromBundle(quests);
         Jessica.Quest.INSTANCE.restoreFromBundle(quests);
         Statuary.load(quests);
         Yvette.Quest.INSTANCE.RestoreFromBundle(quests);
@@ -660,7 +671,7 @@ public class Dungeon {
         Imp.Quest.reset();
 
         // dpd
-        Alchemist.Quest.reset();
+        Alchemist.Quest.INSTANCE.reset();
         Jessica.Quest.INSTANCE.reset();
         Yvette.Quest.INSTANCE.Reset();
       }

@@ -16,13 +16,10 @@ class SpikeShield : Shield() {
 
     override fun def(level: Int): Int = 4 + 2 * level // like a round shield
 
-    override fun defendDamage(dmg: Damage): Damage {
-        val defend = checkDefend(dmg)
-        val value = if (defend) def(level()) else def(0)
-        if (defend && Dungeon.level.adjacent((dmg.from as Char).pos, (dmg.to as Char).pos)) // if defend, then must be a Char
-            (dmg.from as Char).takeDamage(proc(Damage(value, dmg.to, dmg.from)))
-
-        return defendValue(dmg, value)
+    override fun defendValue(dmg: Damage, defValue: Int): Damage {
+        if (Dungeon.level.adjacent((dmg.from as Char).pos, (dmg.to as Char).pos)) // if defend, then must be a Char
+            (dmg.from as Char).takeDamage(proc(Damage(defValue, dmg.to, dmg.from)))
+        return super.defendValue(dmg, defValue)
     }
 
     override fun STRReq(lvl: Int): Int = super.STRReq(lvl) + 1

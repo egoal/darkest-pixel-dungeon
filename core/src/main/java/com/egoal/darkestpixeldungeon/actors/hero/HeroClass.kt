@@ -6,18 +6,14 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
-import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
-import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
-import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
-import com.egoal.darkestpixeldungeon.items.wands.WandOfAbel
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
@@ -256,9 +252,11 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-        Sickle().identify().collect()
-        CrackedCoin().identify().collect()
-        Dungeon.gold += 200
+//        hero.heroPerk.add(FinishingShot())
+//        Sickle().identify().collect()
+//        CeremonialDagger().quantity(30).collect()
+//        CrackedCoin().identify().collect()
+//        Dungeon.gold += 200
 //        MasterThievesArmband().collect()
 //        hero.atkSkill += 10f
 //        Spear().identify().collect()

@@ -1,7 +1,9 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 
@@ -12,6 +14,11 @@ class PlagueDoctor : PotionSeller() {
 
     override fun initSellItems() {
         addItemToSell(PotionOfToxicGas())
+        addItemToSell(CeremonialDagger())
+        if (com.watabou.utils.Random.Float() < 0.3f)
+            addItemToSell(CeremonialDagger())
+        Dungeon.limitedDrops.ceremonialDagger.count++
+
         super.initSellItems()
     }
 

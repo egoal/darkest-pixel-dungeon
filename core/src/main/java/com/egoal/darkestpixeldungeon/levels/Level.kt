@@ -58,6 +58,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
 import com.egoal.darkestpixeldungeon.levels.features.Door
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
@@ -76,6 +77,7 @@ import java.util.ArrayList
 import java.util.Arrays
 import java.util.HashMap
 import java.util.HashSet
+import kotlin.math.pow
 
 abstract class Level : Bundlable {
 
@@ -955,12 +957,9 @@ abstract class Level : Bundlable {
         items.add(Generator.FOOD.generate())
 
         val bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java)
-        val p = Math.pow(0.925, bonus.toDouble()).toFloat()
+        val p = 0.925f.pow(bonus)
         if (Dungeon.posNeeded()) {
-            items.add(if (Random.Float() > p)
-                PotionOfMight()
-            else
-                PotionOfStrength())
+            items.add(if (Random.Float() > p) PotionOfMight() else PotionOfStrength())
             Dungeon.limitedDrops.strengthPotions.count++
         }
         if (Dungeon.souNeeded()) {
@@ -986,10 +985,18 @@ abstract class Level : Bundlable {
         // torch
         run {
             val prop = 0.3f - Dungeon.depth / 5 * 0.025f
-            while (Random.Float() < prop) items.add(Torch())
+            var cnt = 0
+            while (Random.Float() < prop && cnt++ < 5) items.add(Torch())
         }
 
-        // extra wine?
+        // dagger
+        run {
+            val prob = 1f / (2 * Dungeon.limitedDrops.ceremonialDagger.count + 5f)
+            if (Dungeon.daggerNeeded() || Random.Float() < prob) {
+                items.add(CeremonialDagger())
+                Dungeon.limitedDrops.ceremonialDagger.count++
+            }
+        }
 
         // specials
         val rose = Dungeon.hero.belongings.getItem(DriedRose::class.java)

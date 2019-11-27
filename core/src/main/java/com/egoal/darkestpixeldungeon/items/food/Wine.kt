@@ -48,7 +48,7 @@ open class Wine : Item() {
 
             var value = recoverValue(hero)
             if (hero.heroPerk.get(Drunkard::class.java) != null) {
-                value += value / 5
+                value += value / 4
                 hero.recoverSanity(value)
 
                 if(this is BrownAle)
@@ -57,7 +57,7 @@ open class Wine : Item() {
                 hero.recoverSanity(value)
                 // get drunk
                 Buff.prolong(hero, Drunk::class.java, Drunk.duration(hero))
-                hero.takeDamage(Damage(hero.HP / 4, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE))
+                // hero.takeDamage(Damage(hero.HP / 4, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE))
             }
 
             hero.sprite.operate(hero.pos)

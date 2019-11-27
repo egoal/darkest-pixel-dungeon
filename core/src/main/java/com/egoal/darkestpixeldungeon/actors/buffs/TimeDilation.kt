@@ -10,7 +10,7 @@ class TimeDilation : FlavourBuff() {
 
     override fun attachTo(target: Char?): Boolean {
         if(super.attachTo(target)){
-            GameScene.setColorLayer(0x0066994c)
+            GameScene.setColorLayer(0x4c006699)
             return true
         }
 

@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Earthroot
 import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
@@ -34,7 +35,8 @@ class HeartOfSatan : Artifact() {
         if (action == AC_PRICK) {
             if (prickValue() > hero.HP * 3 / 4) {
                 // warning
-                GameScene.show(object : WndOptions(Messages.get(this, "name"), Messages.get(this, "prick_warn"),
+                GameScene.show(object : WndOptions(ItemSprite(this), Messages.get(this, "name"),
+                        Messages.get(this, "prick_warn"),
                         Messages.get(this, "yes"), Messages.get(this, "no")) {
                     override fun onSelect(index: Int) {
                         if (index == 0) prick(hero)
@@ -50,9 +52,7 @@ class HeartOfSatan : Artifact() {
     private fun prick(hero: Hero) {
         val dmg = Damage(prickValue(), this, hero)
 
-        hero.buff(Earthroot.Armor::class.java)?.let {
-            dmg.value = it.absorb(dmg.value)
-        }
+        hero.buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
 
         hero.defendDamage(dmg)
         hero.sprite.operate(hero.pos)
@@ -82,9 +82,9 @@ class HeartOfSatan : Artifact() {
         var desc = super.desc()
         if (isEquipped(Dungeon.hero)) {
             if (cursed)
-                desc += "\n\n"+ Messages.get(this, "desc_cursed")
+                desc += "\n\n" + Messages.get(this, "desc_cursed")
             else if (level() > 0)
-                desc += "\n\n"+ Messages.get(this, "desc_hint")
+                desc += "\n\n" + Messages.get(this, "desc_hint")
         }
 
         return desc

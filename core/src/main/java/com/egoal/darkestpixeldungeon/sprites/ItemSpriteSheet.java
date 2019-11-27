@@ -135,6 +135,7 @@ public class ItemSpriteSheet {
   public static final int FLY_CUTTER = MISSILE_WEP + 9;
   public static final int ENHANCED_BOOMERANG = MISSILE_WEP + 10;
   public static final int DART_SEVENTH = MISSILE_WEP+ 11;
+  public static final int CEREMONIAL_DAGGER = MISSILE_WEP+ 12;
 
   private static final int ARMOR = xy(1, 11);  //16 slots
   public static final int ARMOR_CLOTH = ARMOR + 0;

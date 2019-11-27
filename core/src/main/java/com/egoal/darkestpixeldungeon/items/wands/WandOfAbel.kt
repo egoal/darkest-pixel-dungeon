@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Stunning
@@ -19,6 +20,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
+import com.watabou.utils.Random
 
 class WandOfAbel : DamageWand() {
     init {
@@ -48,7 +50,7 @@ class WandOfAbel : DamageWand() {
             ch.takeDamage(dmg)
 
             if (ch.isAlive)
-                Buff.prolong(ch, Paralysis::class.java, 0.5f + level() / 6f)
+                Buff.prolong(ch, Paralysis::class.java, 0.4f + level() / 5f)
 
             return
         }
@@ -77,7 +79,13 @@ class WandOfAbel : DamageWand() {
     }
 
     override fun onHit(staff: MagesStaff, damage: Damage) {
-        Stunning().proc(staff, damage)
+//        Stunning().proc(staff, damage)
+        if (Random.Float() < 0.3f) {
+            val defender = damage.to as Char
+            Buff.prolong(defender, Paralysis::class.java, Random.Float(1f, 2f))
+            defender.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12)
+        }
+
     }
 
     override fun staffFx(particle: MagesStaff.StaffParticle) {

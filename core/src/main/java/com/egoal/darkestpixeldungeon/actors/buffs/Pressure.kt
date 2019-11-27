@@ -113,7 +113,7 @@ class Pressure : Buff(), Hero.Doom {
         value += Random.Float(Dungeon.depth / 5f)
         if (Statistics.Clock.state == Statistics.ClockTime.State.MidNight &&
                 !com.egoal.darkestpixeldungeon.levels.Level.lighted[target.pos])
-            value *= 1.25f
+            value *= 1.5f
 
         return value
     }

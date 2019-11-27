@@ -271,10 +271,12 @@ class WndHero : WndTabbed() {
         private fun layoutResistances(top: Float): Float {
             var thetop = top
             val ICON_SIZE = 8
+            val FONT_SIZE = 6
+            val GAP = 3f
 
             resistIcons = TextureCache.get(Assets.DPD_CONS_ICONS)
 
-            val rt = PixelScene.renderText(Messages.get(this, "elemental_resistance"), 8)
+            val rt = PixelScene.renderText(M.L(this, "elemental_resistance"), FONT_SIZE)
             rt.y = thetop
             add(rt)
 
@@ -283,38 +285,34 @@ class WndHero : WndTabbed() {
             for (i in 0 until Damage.Element.ELEMENT_COUNT) {
                 val icon = Image(resistIcons)
                 icon.frame(ICON_SIZE * i, 16, ICON_SIZE, ICON_SIZE)
-                icon.x = GAP5.toFloat()
-                icon.y = rt.y + rt.height() + ((GAP5 + ICON_SIZE) * i).toFloat()
+                icon.x = GAP
+                icon.y = rt.y + rt.height() + ((GAP + ICON_SIZE) * i).toFloat()
                 add(icon)
 
-                val txt = PixelScene.renderText(String.format("%+2d%%", (hero.elementalResistance[i] * 100).toInt()), 8)
-                txt.x = icon.width + GAP5
+                val txt = PixelScene.renderText(String.format("%+2d%%", (hero.elementalResistance[i] * 100).toInt()), FONT_SIZE)
+                txt.x = icon.width + GAP
                 txt.y = (icon.height - txt.baseLine()) / 2 + icon.y
                 add(txt)
 
-                thetop = icon.y + icon.height() + GAP5.toFloat()
+                thetop = icon.y + icon.height() + GAP
             }
 
-            val rt2 = PixelScene.renderText(M.L(this, "magical_resistance", (hero.magicalResistance() * 100).toInt()), 8)
-            rt2.y = thetop
-            add(rt2)
-            thetop += rt2.height() + GAP5.toFloat()
-
-            val crit = PixelScene.renderText(M.L(this, "critical_chance", round(hero.criticalChance() * 100).toInt()), 8)
-            crit.y = thetop
-            add(crit)
-            thetop += crit.height() + GAP5.toFloat()
-
-            if (hero.isAlive) {
-                val reg = PixelScene.renderText(M.L(this, "regeneration", hero.regenerateSpeed()), 8)
-                reg.y = thetop
-                add(reg)
-                thetop += crit.height() + GAP5.toFloat()
-            }
+            thetop = addLine(thetop, M.L(this, "magical_resistance", (hero.magicalResistance() * 100).toInt()))
+            thetop = addLine(thetop, M.L(this, "critical_chance", round(hero.criticalChance() * 100).toInt()))
+            thetop = addLine(thetop, M.L(this, "evasion_chance", round(hero.evasionProbability() * 100).toInt()))
+            if (hero.isAlive)
+                thetop = addLine(thetop, M.L(this, "regeneration", hero.regenerateSpeed()))
 
             return thetop
         }
 
+        private fun addLine(top: Float, line: String): Float {
+            val lbl = PixelScene.renderText(line, 6)
+            lbl.y = top
+            add(lbl)
+
+            return top + lbl.height() + 3f
+        }
     }
 
     companion object {

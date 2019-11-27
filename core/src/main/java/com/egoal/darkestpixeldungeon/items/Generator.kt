@@ -139,6 +139,7 @@ object Generator {
                 SwallowDart::class.java to 10f,
                 IncendiaryDart::class.java to 1f,
                 CurareDart::class.java to 1f,
+                CeremonialDagger::class.java to 1f,
                 // 3
                 FlyCutter::class.java to 8f,
                 SeventhDart::class.java to 8f,

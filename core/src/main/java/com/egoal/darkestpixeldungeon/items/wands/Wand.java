@@ -361,8 +361,7 @@ public abstract class Wand extends Item {
                     .pos, target, Ballistica.MAGIC_BOLT));
             if (!curWand.cursedKnown) {
               curWand.cursedKnown = true;
-              GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name
-                      ()));
+              GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));
             }
           } else {
             curWand.cursedKnown = true;

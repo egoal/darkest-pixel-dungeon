@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.effects;
 
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
+import com.egoal.darkestpixeldungeon.effects.particles.ElectronParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.LeafParticle;
 import com.egoal.darkestpixeldungeon.effects.particles.PoisonParticle;
@@ -169,6 +170,13 @@ public class MagicMissile extends Emitter {
     missile.reset(from, to, callback);
     missile.size(4);
     missile.pour(RainbowParticle.BURST, 0.01f);
+  }
+
+  public static void electronics(Group group, int from, int to, Callback callback){
+    MagicMissile missile = ((MagicMissile)group.recycle(MagicMissile.class));
+    missile.reset(from, to, callback);
+    missile.size(4);
+    missile.pour(ElectronParticle.Companion.getFACTORY(), 0.01f);
   }
 
   @Override

@@ -37,10 +37,12 @@ class Sickle : MeleeWeapon() {
                     if (Dungeon.level.map[cell] == Terrain.HIGH_GRASS || Dungeon.level.map[cell] == Terrain.HIGH_GRASS_COLLECTED) {
                         affected = true
 
+                        val harvest = Dungeon.level.map[cell] == Terrain.HIGH_GRASS
                         Level.set(cell, Terrain.GRASS)
-                        HighGrass.Harvest(Dungeon.level, cell, hero)?.let {
-                            Dungeon.level.drop(it, cell).sprite.drop()
-                        }
+                        if (harvest)
+                            HighGrass.Harvest(Dungeon.level, cell, hero)?.let {
+                                Dungeon.level.drop(it, cell).sprite.drop()
+                            }
 
                         GameScene.updateMap(cell)
 

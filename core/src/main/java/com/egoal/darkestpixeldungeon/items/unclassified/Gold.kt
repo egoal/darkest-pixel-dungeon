@@ -28,11 +28,8 @@ class Gold(value: Int = 1) : Item() {
     override fun actions(hero: Hero): ArrayList<String> = ArrayList()
 
     override fun doPickUp(hero: Hero): Boolean {
-        var greedyCollect = 0
-        hero.buff(GoldPlatedStatue.Greedy::class.java)?.let { greedy ->
-            greedyCollect = max(1, greedy.extraCollect(quantity))
-        }
-
+        val greedyCollect = hero.buff(GoldPlatedStatue.Greedy::class.java)?.extraCollect(quantity)
+                ?: 0
 
         val get = quantity + greedyCollect
 

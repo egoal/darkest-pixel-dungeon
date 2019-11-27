@@ -39,7 +39,7 @@ open class MeleeWeapon : Weapon() {
 
     override fun STRReq(lvl: Int): Int {
         val l = max(0, lvl)
-        return 8 + tier * 2 - (l + 1) / 2 // +1, +3, +5, +7
+        return imbue.strFix() + 8 + tier * 2 - (l + 1) / 2 // +1, +3, +5, +7
 //        var lvl = Math.max(0, lvl)
         //strength req decreases at +1,+3,+6,+10,etc.
 //        return 8 + tier * 2 - (Math.sqrt((8 * lvl + 1).toDouble()) - 1).toInt() / 2

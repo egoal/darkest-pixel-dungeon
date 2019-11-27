@@ -284,16 +284,23 @@ class Hero : Char() {
         return atkSkill * accuracy
     }
 
-    private fun evasionProbability(): Float {
-        var e = 0f
+    fun evasionProbability(): Float {
+        var e = 1f
+
+        // GameMath.ProbabilityPlus()
         heroPerk.get(ExtraEvasion::class.java)?.let {
-            e += it.prob()
+            e *= 1f - it.prob()
         }
         heroPerk.get(BaredSwiftness::class.java)?.let {
-            e += it.evasionProb(this)
+            e *= 1f - it.evasionProb(this)
         }
+        heroPerk.get(LowHealthDexterous::class.java)?.let {
+            e *= 1f - it.extraEvasion(this)
+        }
+        if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
+            e *= 1f - 0.2f
 
-        return e
+        return 1 - e
     }
 
     override fun defenseSkill(enemy: Char): Float {
@@ -301,18 +308,13 @@ class Hero : Char() {
         if (Random.Float() < evasionProbability()) return 1000f
 
         var bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
-        var evasion = Math.pow(1.125, bonus.toDouble()).toFloat()
+        var evasion = 1.125f.pow(bonus)
 
         if (paralysed > 0) evasion *= 0.5f
 
         if (heroClass == HeroClass.SORCERESS) evasion *= 0.8f
 
         evasion *= pressure.evasionFactor()
-
-        if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
-            evasion *= 1.2f
-
-        evasion *= heroPerk.get(LowHealthDexterous::class.java)?.evasionFactor(this) ?: 1f
 
         val estr = (belongings.armor?.STRReq() ?: 10) - STR()
         if (estr > 0) {
@@ -534,7 +536,7 @@ class Hero : Char() {
     }
 
     override fun defenseProc(dmg: Damage): Damage {
-        buff(Earthroot.Armor::class.java)?.let { dmg.value = it.absorb(dmg.value) }
+        buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
         buff(Sungrass.Health::class.java)?.absorb(dmg.value)
 
         belongings.armor?.let { belongings.armor.proc(dmg) }
@@ -582,18 +584,16 @@ class Hero : Char() {
         val dmgToken = super.takeDamage(dmg)
         if (isAlive) {
             // extra mental damage
-            val dmgMental = Damage(0, dmg.from, dmg.to).type(Damage.Type.MENTAL)
-
+            var value = 0f
             if (dmg.from is Char && !Dungeon.visible[(dmg.from as Char).pos]) // attack from nowhere
-                dmgMental.value += Random.Int(1, 5)
+                value += Random.Float(1f, 7f)
             if (dmg.isFeatured(Damage.Feature.CRITICAL))
-                dmgMental.value += Random.Int(2, 6)
+                value += Random.Float(2f, 8f)
 
             if (!heroPerk.has(Fearless::class.java) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0)
-                dmgMental.value += Random.Int(1, 5)
+                value += Random.Float(1f, 5f)
 
-            dmg.value = min(dmg.value, 10)
-            takeMentalDamage(dmgMental)
+            takeMentalDamage(Damage(min(round(value).toInt(), 15), dmg.from, dmg.to).type(Damage.Type.MENTAL))
         }
 
         return dmgToken

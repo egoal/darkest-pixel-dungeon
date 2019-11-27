@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.levels
 
+import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
@@ -15,6 +16,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 

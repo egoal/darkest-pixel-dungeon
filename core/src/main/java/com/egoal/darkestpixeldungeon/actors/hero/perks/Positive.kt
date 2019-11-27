@@ -183,10 +183,10 @@ class HardCrit : Perk(5) {
 class LowHealthDexterous : Perk(3) {
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_DEX
 
-    fun evasionFactor(hero: Hero): Float {
-        if (hero.HP > hero.HT * 0.3) return 1f
+    fun extraEvasion(hero: Hero): Float {
+        if (hero.HP > hero.HT * 0.3f) return 0f
 
-        return 1.25f.pow(level)
+        return 0.2f * 1.5f.pow(level)
     }
 }
 
@@ -210,7 +210,7 @@ class ExtraDexterous : Perk(5) {
     private fun extraDef(): Int = 3 * level
 }
 
-class ExtraEvasion : Perk(5) {
+class ExtraEvasion : Perk(4) {
     override fun image(): Int = PerkImageSheet.DEX_EXTRA
 
     fun prob(): Float = 0.075f * level
@@ -220,6 +220,8 @@ class ExtraEvasion : Perk(5) {
 
 // cs go!
 class CounterStrike : Perk() {
+    override fun image(): Int = PerkImageSheet.COUNTER_STRIKE
+
     fun procEvasionDamage(dmg: Damage) {
         if (dmg.type == Damage.Type.NORMAL && !dmg.isFeatured(Damage.Feature.RANGED)) {
             Buff.affect(dmg.to as Hero, SeeThrough::class.java, 1.1f).enemyid = (dmg.from as Actor).id()
@@ -358,9 +360,13 @@ class QuickZap : Perk() {
     override fun image(): Int = PerkImageSheet.WAND_QUICK_ZAP
 }
 
-class StealthCaster : Perk()
+class StealthCaster : Perk() {
+    override fun image(): Int = PerkImageSheet.STEALTH_CASTER
+}
 
 class ArcaneCrit : Perk(5) {
+    override fun image(): Int = PerkImageSheet.ARCANE_CRIT
+
     fun affectDamage(hero: Hero, dmg: Damage) {
         if (Random.Float() < prob(hero))
             dmg.value = round(dmg.value * 1.75f).toInt()
@@ -374,6 +380,8 @@ class ArcaneCrit : Perk(5) {
 }
 
 class WandPiercing : Perk() {
+    override fun image(): Int = PerkImageSheet.WAND_PIERCING
+
     fun onHit(char: Char) {
         char.magicalResistance -= 0.15f // fixme:
     }
@@ -384,6 +392,8 @@ class ExplodeBrokenShot : Perk() {
 }
 
 class RangedShot : Perk() {
+    override fun image(): Int = PerkImageSheet.RANGED_SHOT
+
     fun affectDamage(dmg: Damage) {
         val dis = Dungeon.level.distance((dmg.from as Char).pos, (dmg.to as Char).pos)
         if (dis > 1) {
@@ -393,8 +403,10 @@ class RangedShot : Perk() {
 }
 
 class FinishingShot : Perk() {
+    override fun image(): Int = PerkImageSheet.FINISHING_SHOT
+
     fun onKilledChar(hero: Hero, ch: Char, weapon: MissileWeapon) {
-        Buff.prolong(hero, TimeDilation::class.java, 0.5f + weapon.DLY)
+        Buff.prolong(hero, TimeDilation::class.java, 0.5f + weapon.DLY / 2f)
     }
 }
 
@@ -479,6 +491,8 @@ class BaredAngry : Perk() {
 }
 
 class BaredSwiftness : Perk() {
+    override fun image(): Int = PerkImageSheet.BARED_SWIFTNESS
+
     fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 1.2f else 1f
 
     fun evasionProb(hero: Hero): Float = if (noArmor(hero)) 0.12f else 0f
@@ -515,6 +529,8 @@ class QuickLearner : Perk(3) {
 }
 
 class ExtraMagicalResistance : Perk(3) {
+    override fun image(): Int = PerkImageSheet.MAGICAL_RESISTANCE
+
     fun ratio(): Float = 0.05f + level * 0.15f
 
     override fun description(): String = M.L(this, "desc", (ratio() * 100).toInt())

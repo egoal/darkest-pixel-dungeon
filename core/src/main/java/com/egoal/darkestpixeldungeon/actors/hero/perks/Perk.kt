@@ -43,7 +43,9 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
 
     companion object {
         // in case run out of perks
-        class LuckFromAuthor : Perk(1000)
+        class LuckFromAuthor : Perk(1000) {
+            override fun image(): Int = PerkImageSheet.LUCK_FROM_ME
+        }
 
         fun RandomPositive(hero: Hero): Perk = KRandom.Chances(
                 positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) })
