@@ -50,7 +50,7 @@ class WandOfAbel : DamageWand() {
             ch.takeDamage(dmg)
 
             if (ch.isAlive)
-                Buff.prolong(ch, Paralysis::class.java, 0.4f + level() / 5f)
+                Buff.prolong(ch, Paralysis::class.java, 0.2f + level() / 5f)
 
             return
         }
@@ -80,7 +80,7 @@ class WandOfAbel : DamageWand() {
 
     override fun onHit(staff: MagesStaff, damage: Damage) {
 //        Stunning().proc(staff, damage)
-        if (Random.Float() < 0.3f) {
+        if (Random.Float() < 0.25f) {
             val defender = damage.to as Char
             Buff.prolong(defender, Paralysis::class.java, Random.Float(1f, 2f))
             defender.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12)
@@ -88,8 +88,10 @@ class WandOfAbel : DamageWand() {
 
     }
 
+    override fun particleColor(): Int = 0x9efaff
+
     override fun staffFx(particle: MagesStaff.StaffParticle) {
-        particle.color(0x9efaff)
+        particle.color(particleColor())
         particle.am = 0.6f
         particle.setLifespan(0.6f)
         particle.acc.set(0f, 40f)

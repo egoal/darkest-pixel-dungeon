@@ -22,7 +22,7 @@ class WandDigger : RectDigger() {
     }
 
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
-        Fill(level, rect, Terrain.EMPTY)
+        Fill(level, rect, Terrain.EMPTY_SP)
         val lastRowTile = Terrain.STATUE
         val plat = rect.center
         when (wall.direction) {
@@ -52,8 +52,8 @@ class WandDigger : RectDigger() {
             if (level.map[it] == Terrain.EMPTY)
                 level.map[it] = Terrain.EMPTY_SP
         }
-        
-        guard.pos = cen 
+
+        guard.pos = cen
         level.mobs.add(guard)
 
         level.addItemToSpawn(IronKey(Dungeon.depth))

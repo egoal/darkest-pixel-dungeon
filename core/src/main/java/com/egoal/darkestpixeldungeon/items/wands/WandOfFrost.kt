@@ -83,8 +83,10 @@ class WandOfFrost : DamageWand() {
         }
     }
 
+    override fun particleColor(): Int = 0x88CCFF
+
     override fun staffFx(particle: MagesStaff.StaffParticle) {
-        particle.color(0x88CCFF)
+        particle.color(particleColor())
         particle.am = 0.6f
         particle.setLifespan(1.5f)
         val angle = Random.Float(PointF.PI2)

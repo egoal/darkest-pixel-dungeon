@@ -119,8 +119,10 @@ class WandOfBlastWave : DamageWand() {
         Sample.INSTANCE.play(Assets.SND_ZAP)
     }
 
+    override fun particleColor(): Int = 0x664422
+
     override fun staffFx(particle: MagesStaff.StaffParticle) {
-        particle.color(0x664422)
+        particle.color(particleColor())
         particle.am = 0.6f
         particle.setLifespan(2f)
         particle.speed.polar(Random.Float(PointF.PI2), 0.3f)

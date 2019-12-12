@@ -52,4 +52,9 @@ object GameMath {
 //    }
 
     fun Lerp(lambda: Float, from: Float, to: Float): Float = from * (1 - lambda) + to * lambda
+
+    fun ProbabilityPlus(a: Float, b: Float): Float = 1f - (1 - a) * (1 - b)
+
+    fun ProbabilityPlus(vararg ps: Float): Float = 1f - ps.fold(1f) { s, i -> s * (1 - i) }
+
 }

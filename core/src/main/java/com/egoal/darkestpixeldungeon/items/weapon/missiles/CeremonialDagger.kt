@@ -43,7 +43,7 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
         super.execute(hero, action)
 
         if (action == AC_USE) {
-            if (prickValue(hero) > hero.HP * 3 / 4) {
+            if (prickValue(hero) > hero.HP * 2 / 3) {
                 GameScene.show(object : WndOptions(ItemSprite(this), M.L(this, "name"),
                         M.L(this, "prick_warn"),
                         M.L(this, "yes"), M.L(this, "no")) {
@@ -57,16 +57,16 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
 
     override fun price(): Int = 50 * quantity
 
-    private fun prickValue(hero: Hero): Int = hero.HT / 4 + hero.HT / 10 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
-    private fun bleedValue(hero: Hero): Int = hero.HT / 8 + hero.HT / 20 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
+    private fun prickValue(hero: Hero): Int = hero.HT / 5 + hero.HT / 10 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
+    private fun bleedValue(hero: Hero): Int = hero.HT / 10 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
 
     private fun prick(hero: Hero) {
         detach(hero.belongings.backpack)
 
-        val dmg = Damage(prickValue(hero), this, hero)
-        hero.buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
+        val dmg = Damage(prickValue(hero), this, hero).addFeature(Damage.Feature.PURE)
+        // hero.buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
+        // hero.defendDamage(dmg)
 
-        hero.defendDamage(dmg)
         hero.sprite.operate(hero.pos)
         hero.spend(TIME_TO_USE)
         hero.busy()
@@ -92,6 +92,6 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
 
     companion object {
         private const val AC_USE = "use"
-        private const val TIME_TO_USE = 2f
+        private const val TIME_TO_USE = 1f
     }
 }

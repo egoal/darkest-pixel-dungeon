@@ -344,7 +344,8 @@ abstract class RegularLevel : Level() {
                 val count = PathFinder.NEIGHBOURS8.count { grass[i + it] }
 
                 map[i] = if (Random.Float() < count / 12f) {
-                    if (Random.Float() < 0.015) {
+                    if (Random.Float() < 0.015 && Dungeon.depth > 0) {
+                        //^^ not in the village
                         plant(Generator.SEED.generate() as Plant.Seed, i)
                         Terrain.GRASS
                     } else

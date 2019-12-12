@@ -74,8 +74,10 @@ class WandOfVenom : DamageWand() {
         Venomous().proc(staff, damage)
     }
 
+    override fun particleColor(): Int = 0x8844FF
+
     override fun staffFx(particle: MagesStaff.StaffParticle) {
-        particle.color(0x8844FF)
+        particle.color(particleColor())
         particle.am = 0.6f
         particle.setLifespan(0.6f)
         particle.acc.set(0f, 40f)

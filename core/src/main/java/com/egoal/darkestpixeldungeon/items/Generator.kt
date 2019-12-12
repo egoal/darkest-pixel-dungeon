@@ -63,10 +63,10 @@ object Generator {
     object WEAPON : ItemGenerator() {
         private val floorSetTierProbs = arrayOf(
                 floatArrayOf(15f, 60f, 10f, 5f, 5f),
-                floatArrayOf(10f, 25f, 50f, 15f, 5f),
-                floatArrayOf(0f, 10f, 40f, 40f, 10f),
-                floatArrayOf(0f, 5f, 20f, 50f, 25f),
-                floatArrayOf(0f, 2f, 8f, 20f, 70f)
+                floatArrayOf(10f, 25f, 50f, 20f, 10f),
+                floatArrayOf(0f, 10f, 40f, 40f, 20f),
+                floatArrayOf(0f, 0f, 20f, 50f, 30f),
+                floatArrayOf(0f, 0f, 10f, 20f, 70f)
         )
 
         object MELEE : ItemGenerator() {

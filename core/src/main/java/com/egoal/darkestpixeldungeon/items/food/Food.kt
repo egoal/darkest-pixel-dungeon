@@ -22,6 +22,7 @@ open class Food(val enery: Float = Hunger.HUNGRY,
         image = ItemSpriteSheet.RATION
 
         bones = true
+        defaultAction = AC_EAT
     }
 
     val message: String = Messages.get(this, "eat_msg")

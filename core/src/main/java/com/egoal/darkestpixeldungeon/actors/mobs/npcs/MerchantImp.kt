@@ -28,7 +28,6 @@ class MerchantImp : Merchant() {
             addItemToSell(Generator.POTION.generate())
         }
 
-        addItemToSell(ScrollOfIdentify())
         addItemToSell(ScrollOfRemoveCurse())
         addItemToSell(ScrollOfMagicMapping())
         addItemToSell(Generator.SCROLL.generate())
@@ -38,8 +37,7 @@ class MerchantImp : Merchant() {
             else Generator.SCROLL.generate())
         }
 
-        addItemToSell(if (Random.Int(2) == 0) Claymore().identify()
-        else WarHammer().identify())
+        addItemToSell(Generator.WEAPON.MELEE.T5.generate().identify())
 
         repeat(2) {
             addItemToSell(Generator.WEAPON.MISSSILE.generate())

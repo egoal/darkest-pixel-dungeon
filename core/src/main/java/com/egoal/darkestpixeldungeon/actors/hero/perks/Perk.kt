@@ -86,6 +86,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 IntendedTransportation() to 0f,
                 Optimistic() to 1f,
                 Discount() to 1f,
+                GreedyMidas() to 1f,
                 VampiricCrit() to 0.75f,
                 PureCrit() to 1f,
                 ExtraCritProbability() to 1f,

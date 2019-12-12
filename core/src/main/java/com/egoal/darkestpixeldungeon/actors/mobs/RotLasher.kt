@@ -5,11 +5,13 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.sprites.RotLasherSprite
 import com.watabou.utils.Random
+import kotlin.math.max
 import kotlin.math.min
 
 class RotLasher : Mob() {
@@ -61,6 +63,11 @@ class RotLasher : Mob() {
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply {
         value -= Random.NormalIntRange(0, level)
+    }
+
+    override fun resistDamage(dmg: Damage): Damage {
+        if (dmg.from is Burning) dmg.value = max(dmg.value, HT / 2) // burned...
+        return super.resistDamage(dmg)
     }
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES

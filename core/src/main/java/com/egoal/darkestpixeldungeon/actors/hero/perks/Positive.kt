@@ -17,6 +17,7 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.unclassified.Rune
 import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
@@ -122,6 +123,12 @@ class Discount : Perk(2) {
     fun buyPrice(item: Item): Int = (item.sellPrice() * ratio()).toInt()
 
     fun ratio(): Float = 1f - 0.25f * level
+}
+
+class GreedyMidas : Perk() {
+    fun procGold(gold: Gold) = gold.apply {
+        if (Random.Float() < 0.33f) gold.quantity(round(gold.quantity() * 4.33f).toInt())
+    }
 }
 
 class VampiricCrit : Perk(5) {
@@ -368,8 +375,10 @@ class ArcaneCrit : Perk(5) {
     override fun image(): Int = PerkImageSheet.ARCANE_CRIT
 
     fun affectDamage(hero: Hero, dmg: Damage) {
-        if (Random.Float() < prob(hero))
+        if (Random.Float() < prob(hero)) {
             dmg.value = round(dmg.value * 1.75f).toInt()
+            dmg.addFeature(Damage.Feature.CRITICAL)
+        }
     }
 
     private fun prob(hero: Hero): Float {

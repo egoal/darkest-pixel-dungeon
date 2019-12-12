@@ -108,10 +108,13 @@ class Hunger : Buff(), Hero.Doom {
                 }
             }
 
-            val step = if ((target as Hero).heroClass === HeroClass.ROGUE)
-                STEP * 1.2f
-            else
-                STEP
+
+            val step = when {
+                target.buff(Drunk::class.java) != null -> STEP / 5f
+                (target as Hero).heroClass == HeroClass.ROGUE -> STEP * 1.2f
+                else -> STEP
+            }
+
             spend(if (target.buff(Shadows::class.java) == null) step else step * 1.5f)
 
         } else {

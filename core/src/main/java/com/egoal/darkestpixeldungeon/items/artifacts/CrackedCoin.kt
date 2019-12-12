@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Lightning
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.effects.particles.ElectronParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
@@ -38,8 +39,8 @@ class CrackedCoin : Artifact() {
         levelCap = 10
         exp = 0
 
-        charge = 0
         chargeCap = 100
+        charge = chargeCap
 
         defaultAction = AC_SHELL
         usesTargeting = true
@@ -172,7 +173,7 @@ class CrackedCoin : Artifact() {
         override fun desc(): String = M.L(this, "desc", dpg())
     }
 
-    private fun shellCost(): Int = 10 * level()
+    private fun shellCost(): Int = 10 + 5 * level()
 
     val arcs = ArrayList<Lightning.Arc>()
 
@@ -204,7 +205,11 @@ class CrackedCoin : Artifact() {
 
             hero.spendAndNext(1f)
         })
-        MagicMissile.electronics(hero.sprite.parent, shot.sourcePos, shot.collisionPos, null)
+        for (c in shot.subPath(1, shot.dist))
+            if (Dungeon.visible[c])
+                CellEmitter.center(c).burst(ElectronParticle.FACTORY, Random.Int(4, 10))
+        // MagicMissile.electronics(hero.sprite.parent, shot.sourcePos, shot.collisionPos, null)
+
         Sample.INSTANCE.play(Assets.SND_LIGHTNING)
     }
 

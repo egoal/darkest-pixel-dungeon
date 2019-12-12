@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
 import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
+import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.ui.ItemSlot;
@@ -211,17 +212,27 @@ public class WndBag extends WndTabbed {
     }
 
     // Items in the bag
+    // todo: fix the size bug because of golden-claw
+      Item goldClaw = null;
     for (Item item : container.items) {
+      if(item instanceof GoldenClaw){
+          goldClaw = item;
+          continue;
+      }
       placeItem(item);
     }
 
     // Free Space
-    while (count - (backpack ? 6 : nCols) < container.size) {
+    while (count - (backpack ? 6 : nCols) < (backpack? container.size-1: container.size)) {
       placeItem(null);
     }
 
     // Gold
     if (backpack) {
+        row = nRows - 1;
+        col = nCols- 2;
+        placeItem(goldClaw);
+
       row = nRows - 1;
       col = nCols - 1;
       placeItem(new Gold(Dungeon.gold));

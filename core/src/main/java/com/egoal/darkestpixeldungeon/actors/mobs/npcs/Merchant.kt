@@ -70,66 +70,14 @@ open class Merchant : NPC() {
     }
 
     /// merchant
-    protected open fun actions(): ArrayList<String> = arrayListOf(AC_BUY, AC_SELL)
+    protected open fun actions(): ArrayList<String> = arrayListOf(AC_BUY)
 
     protected open fun execute(action: String) {
         if (action == AC_BUY) {
             if (items.isEmpty()) tell(M.L(this, "nothing_more"))
             else GameScene.show(WndShop())
-        } else if (action == AC_SELL) {
-            sell()
         }
     }
-
-    private val selectorSell = WndBag.Listener {
-        if (it != null) {
-            val options: Array<String> = if (it.quantity() == 1)
-                arrayOf(M.L(WndTradeItem::class.java, "sell", it.price()),
-                        M.L(WndTradeItem::class.java, "cancel"))
-            else {
-                val priceTotal = it.price()
-                arrayOf(M.L(WndTradeItem::class.java, "sell_1", priceTotal / it.quantity()),
-                        M.L(WndTradeItem::class.java, "sell_all", it.price()),
-                        M.L(WndTradeItem::class.java, "cancel"))
-            }
-            val wnd = object : WndOptions(ItemSprite(it), it.name(), it.info(), *options) {
-                override fun onSelect(index: Int) {
-                    if (index == options.size - 1) return
-                    if (options.size == 3 && index == 0) sellOne(it)
-                    else sell(it)
-                }
-
-                private fun sell(item: Item) {
-                    val hero = Dungeon.hero
-                    if (item.isEquipped(hero) && !(item as EquipableItem).doUnequip(hero, false)) return
-
-                    item.detachAll(hero.belongings.backpack)
-                    Gold(item.price()).doPickUp(hero)
-                }
-
-                private fun sellOne(item: Item) {
-                    assert(item.quantity() > 1)
-
-                    val hero = Dungeon.hero
-                    val detached = item.detach(hero.belongings.backpack)
-                    Gold(detached.price()).doPickUp(hero)
-                }
-
-                override fun hide() {
-                    super.hide()
-                    // show again
-                    this@Merchant.execute(AC_SELL)
-                }
-            }
-
-            // GameScene.show(wnd)
-            Game.scene().addToFront(wnd)
-        }
-    }
-
-    protected fun sell(): WndBag = GameScene.selectItem(selectorSell, WndBag.Mode.FOR_SALE,
-            M.L(this, "select_to_sell"))
-
 
     open fun initSellItems() {
         //todo: may move painter things here
@@ -194,7 +142,6 @@ open class Merchant : NPC() {
         private const val ITEM_STR = "item"
 
         private const val AC_BUY = "buy"
-        private const val AC_SELL = "sell"
 
         //
         private const val SLOT_COLS = 5

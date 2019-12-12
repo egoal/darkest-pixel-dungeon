@@ -27,11 +27,14 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
+import com.egoal.darkestpixeldungeon.effects.Splash
 import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.PointF
 import com.watabou.utils.Random
+import kotlin.math.PI
 import kotlin.math.round
 
 // for wands that directly damage a target
@@ -59,6 +62,8 @@ abstract class DamageWand : Wand() {
     override fun statsDesc(): String = if (levelKnown) M.L(this, "stats_desc", min(), max())
     else M.L(this, "stats_desc", min(0), max(0))
 
+    protected open fun particleColor(): Int = 0xffffff
+
     //todo: refactor the missile handle
     open fun onMissileHit(char: Char, hero: Hero, dmg: Damage) {
         hero.heroPerk.get(WandPiercing::class.java)?.onHit(char)
@@ -66,7 +71,8 @@ abstract class DamageWand : Wand() {
         //todo: critical effects
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
             Sample.INSTANCE.play(Assets.SND_BLAST)
-            CellEmitter.center(char.pos).burst(BlastParticle.FACTORY, 20)
+            Splash.at(char.sprite.center(), PointF.angle(hero.sprite.center(), char.sprite.center()),
+                    PI.toFloat() / 3f, particleColor(), Random.NormalIntRange(12, 20))
         }
     }
 }

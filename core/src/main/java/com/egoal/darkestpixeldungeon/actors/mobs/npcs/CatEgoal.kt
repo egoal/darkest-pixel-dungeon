@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
+import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CatLixSprite
@@ -58,6 +59,7 @@ class CatEgoal : NPC.Unbreakable() {
             identify()
             setItems(Food(),
                     if (praised) Generator.SCROLL.generate() else Generator.POTION.generate(),
+                    GoldenClaw(),
                     SkeletonKey(Dungeon.depth))
         }
         if (g.doPickUp(Dungeon.hero))

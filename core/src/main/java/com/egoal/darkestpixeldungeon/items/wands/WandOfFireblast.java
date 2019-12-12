@@ -193,6 +193,11 @@ public class WandOfFireblast extends DamageWand {
   }
 
   @Override
+  protected int particleColor() {
+    return 0xEE7722;
+  }
+
+  @Override
   public void staffFx(MagesStaff.StaffParticle particle) {
     particle.color(0xEE7722);
     particle.am = 0.5f;

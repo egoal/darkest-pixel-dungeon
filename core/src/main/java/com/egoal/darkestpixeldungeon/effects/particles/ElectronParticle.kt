@@ -13,7 +13,6 @@ class ElectronParticle : PixelParticle.Shrinking() {
         lifespan = 0.6f
 
         // acc.set(0f, Random.Float())
-
     }
 
     fun reset(x: Float, y: Float) {
@@ -34,7 +33,7 @@ class ElectronParticle : PixelParticle.Shrinking() {
         this.y = y
         left = lifespan
 
-        size = 2f
+        size = Random.Float(2f, 3f)
         speed.polar(Random.Float(PointF.PI2), Random.Float(16f, 32f))
     }
 

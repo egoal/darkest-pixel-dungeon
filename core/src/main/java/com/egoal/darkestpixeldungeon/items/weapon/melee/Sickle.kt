@@ -68,6 +68,8 @@ class Sickle : MeleeWeapon() {
         return super.proc(dmg)
     }
 
+    override fun STRReq(lvl: Int): Int = super.STRReq(lvl) + 1
+
     companion object {
         private const val CUT = "cut"
     }

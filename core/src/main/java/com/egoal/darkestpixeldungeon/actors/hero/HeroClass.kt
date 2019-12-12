@@ -14,6 +14,8 @@ import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
+import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
+import com.egoal.darkestpixeldungeon.items.wands.WandOfFrost
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
@@ -252,6 +254,10 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
+//        hero.heroPerk.add(GreedyMidas())
+//        GoldenClaw().collect()
+
+//        CrackedCoin().identify().collect()
 //        hero.heroPerk.add(FinishingShot())
 //        Sickle().identify().collect()
 //        CeremonialDagger().quantity(30).collect()
@@ -285,7 +291,7 @@ enum class HeroClass(private val title: String) {
             HP += 5
 
             atkSkill++
-            defSkill++
+            defSkill += 0.75f
 
             criticalChance += 0.4f / 100f
             regeneration += 0.02f

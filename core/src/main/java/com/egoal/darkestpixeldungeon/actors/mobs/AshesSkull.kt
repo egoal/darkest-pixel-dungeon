@@ -29,7 +29,7 @@ class AshesSkull : Mob() {
     private var jumpcd = 0
     private var moving = 0
 
-    override fun viewDistance(): Int = 6
+    // override fun viewDistance(): Int = 6
 
     override fun getCloser(target: Int): Boolean {
         // move slower, like great crab

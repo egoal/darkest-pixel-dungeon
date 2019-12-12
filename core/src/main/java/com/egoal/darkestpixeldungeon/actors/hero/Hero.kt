@@ -60,7 +60,6 @@ import com.watabou.utils.Random
 import java.util.*
 import kotlin.math.*
 
-// refactor may finish someday...
 class Hero : Char() {
     init {
         actPriority = 0
@@ -422,7 +421,7 @@ class Hero : Char() {
             belongings.armor?.let {
                 dr = Random.NormalIntRange(it.DRMin(), it.DRMax())
 
-                var estr = belongings.armor.STRReq() - STR()
+                val estr = belongings.armor.STRReq() - STR()
                 if (estr > 0) {
                     // heavy
                     dr = max(dr - 2 * estr, 0)
