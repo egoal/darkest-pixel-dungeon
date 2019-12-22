@@ -33,9 +33,9 @@ class CityLevel : RegularLevel() {
             LightningTrap::class.java, RockfallTrap::class.java, OozeTrap::class.java,
             WeakeningTrap::class.java, CursingTrap::class.java, FlockTrap::class.java,
             GuardianTrap::class.java, PitfallTrap::class.java, SummoningTrap::class.java,
-            TeleportationTrap::class.java, DisarmingTrap::class.java, WarpingTrap::class.java)
+            TeleportationTrap::class.java, DisarmingTrap::class.java, WarpingTrap::class.java, FreakingTrap::class.java)
 
-    override fun trapChances(): FloatArray = floatArrayOf(8f, 8f, 8f, 8f, 4f, 4f, 4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f)
+    override fun trapChances(): FloatArray = floatArrayOf(8f, 8f, 8f, 8f, 4f, 4f, 4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f, 2f)
 
     override fun decorate() {
         for (i in 0 until length()) {

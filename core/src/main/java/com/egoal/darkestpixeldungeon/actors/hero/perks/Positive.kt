@@ -126,8 +126,16 @@ class Discount : Perk(2) {
 }
 
 class GreedyMidas : Perk() {
+    override fun image(): Int = PerkImageSheet.GREEDY_MIDAS
+
     fun procGold(gold: Gold) = gold.apply {
-        if (Random.Float() < 0.33f) gold.quantity(round(gold.quantity() * 4.33f).toInt())
+        val p = Random.Float()
+        val q = gold.quantity() * when {
+            p < 0.33f -> 4.33f
+            p < 0.001f -> 10f
+            else -> 1f
+        }
+        quantity(round(q).toInt())
     }
 }
 

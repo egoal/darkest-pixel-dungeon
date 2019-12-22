@@ -51,7 +51,10 @@ object PerkImageSheet {
     const val BARED_SWIFTNESS = 45
     const val MAGICAL_RESISTANCE = 46
     const val LUCK_FROM_ME = 47
+
     const val COUNTER_STRIKE = 48
+    const val GREEDY_MIDAS = 49
+
 
     private const val NEGATIVE = 64
     const val APPETITE_RAVENOUS = NEGATIVE + 0

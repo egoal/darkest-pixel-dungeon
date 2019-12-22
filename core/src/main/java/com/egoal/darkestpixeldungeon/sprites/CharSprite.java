@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.sprites;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.effects.BlurSprite;
+import com.egoal.darkestpixeldungeon.effects.BubbleText;
 import com.egoal.darkestpixeldungeon.effects.CriticalShock;
 import com.egoal.darkestpixeldungeon.effects.FloatingText;
 import com.egoal.darkestpixeldungeon.effects.TorchHalo;
@@ -155,6 +156,15 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
         FloatingText.show(x + width * 0.5f, y, text, color);
       }
     }
+  }
+
+  public void showSentence(int color, String text, Object... args){
+    if(!visible) return;
+
+    if(args.length> 0)
+      text = Messages.format(text, args);
+
+    BubbleText.Companion.Show(this, width/2f, -height/4f, text, color);
   }
 
   public void idle() {

@@ -247,8 +247,17 @@ class Hero : Char() {
 
     fun givenName(): String = if (name == Messages.get(this, "name")) className() else name
 
-    fun say(color: Int, text: String, vararg args: Any) {
-        sprite.showStatus(color, text, args)
+    fun sayShort(tag: String, vararg args: Any) {
+        say(HeroLines.Line(tag, args))
+    }
+
+    fun say(text: String) {
+        val color = if (pressure.getLevel() > Pressure.Level.NORMAL) CharSprite.NEGATIVE else CharSprite.DEFAULT
+        say(text, color)
+    }
+
+    fun say(text: String, color: Int) {
+        sprite.showSentence(color, text)
     }
 
     // called on enter or resurrect the level
@@ -582,15 +591,30 @@ class Hero : Char() {
 
         val dmgToken = super.takeDamage(dmg)
         if (isAlive) {
+            //todo: refactor
+            var tag: String? = null
+            val maySay = { p: Float, str: String ->
+                if (tag == null && Random.Float() < p) tag = str
+            }
+
             // extra mental damage
             var value = 0f
-            if (dmg.from is Char && !Dungeon.visible[(dmg.from as Char).pos]) // attack from nowhere
+            if (dmg.from is Char && !Dungeon.visible[(dmg.from as Char).pos]) { // attack from nowhere
                 value += Random.Float(1f, 7f)
-            if (dmg.isFeatured(Damage.Feature.CRITICAL))
+                maySay(0.2f, HeroLines.WHAT)
+            }
+            if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
                 value += Random.Float(2f, 8f)
+                maySay(0.2f, HeroLines.DAMN)
+            }
 
-            if (!heroPerk.has(Fearless::class.java) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0)
+            if (!heroPerk.has(Fearless::class.java) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0) {
                 value += Random.Float(1f, 5f)
+                maySay(0.4f, HeroLines.I_MAY_DIE)
+                maySay(0.3f, HeroLines.MY_WEAPON_IS_BAD)
+            }
+
+            if (tag != null) sayShort(tag!!)
 
             takeMentalDamage(Damage(min(round(value).toInt(), 15), dmg.from, dmg.to).type(Damage.Type.MENTAL))
         }
@@ -865,6 +889,7 @@ class Hero : Char() {
 
                 if ((lvl - 2) % 4 == 0) {
                     //2, 6, 10... gain a perk
+                    interrupt()
                     val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
                     GameScene.show(WndSelectPerk.CreateWithRandomPositives(
                             M.L(WndSelectPerk::class.java, "select"), cnt))
@@ -886,6 +911,8 @@ class Hero : Char() {
             GLog.p(Messages.get(this, "new_level"), lvl)
             sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "level_up"))
             Sample.INSTANCE.play(Assets.SND_LEVELUP)
+
+            if (pressure.getLevel() > Pressure.Level.NORMAL) sayShort(HeroLines.USELESS)
 
             Badges.validateLevelReached()
         }
@@ -952,6 +979,7 @@ class Hero : Char() {
             Statistics.AnkhsUsed += 1
 
             GhostHero.Instance()?.sayAnhk()
+            if (belongings.getItem(Ankh::class.java) == null) sayShort(HeroLines.WHAT_ABOUT_NEXT)
             return
         }
 
@@ -1067,6 +1095,7 @@ class Hero : Char() {
     }
 
     fun onMobDied(mob: Mob) {
+        if (mob.properties().contains(Property.PHANTOM)) return
         belongings.getItem(UrnOfShadow::class.java)?.collectSoul(mob)
 
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
@@ -1088,7 +1117,14 @@ class Hero : Char() {
             val y = 1f - HP.toFloat() / HT.toFloat()
             val py = if (y < 0.5f) 1f else (1f + 3f * (y - 0.5f) * (y - 0.5f))
 
-            if (Random.Float() < px * py) recoverSanity(Random.Float(1f, 6f))
+            if (Random.Float() < px * py) {
+                recoverSanity(Random.Float(1f, 6f))
+
+                if (pressure.getLevel() > Pressure.Level.NORMAL) {
+                    sayShort(HeroLines.WHAT_ABOUT_NEXT)
+                } else if (Random.Float() < 0.3f) sayShort(HeroLines.GRIN)
+                else sayShort(HeroLines.DIE)
+            }
         }
 
         if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)

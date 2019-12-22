@@ -38,9 +38,9 @@ class HallsLevel : RegularLevel() {
             WeakeningTrap::class.java, CursingTrap::class.java, FlockTrap::class.java,
             GrimTrap::class.java, GuardianTrap::class.java, SummoningTrap::class.java,
             TeleportationTrap::class.java, DisarmingTrap::class.java, DistortionTrap::class.java,
-            WarpingTrap::class.java)
+            WarpingTrap::class.java, FreakingTrap::class.java)
 
-    override fun trapChances(): FloatArray = floatArrayOf(8f, 8f, 8f, 8f, 8f, 4f, 4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f, 1f)
+    override fun trapChances(): FloatArray = floatArrayOf(8f, 8f, 8f, 8f, 8f, 4f, 4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f, 1f, 2f)
 
     override fun chooseDiggers(): ArrayList<Digger> {
         // less diggers, but more specials

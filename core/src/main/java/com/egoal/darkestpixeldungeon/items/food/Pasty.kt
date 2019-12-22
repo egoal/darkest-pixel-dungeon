@@ -37,9 +37,14 @@ class Pasty : Food(Hunger.STARVING, 5) {
         }
     }
 
-    override fun name(): String = when(holiday){
-        Holiday.XMAS-> M.L(this, "cane")
-        else-> M.L(this, "pasty")
+    override fun name(): String = when (holiday) {
+        Holiday.XMAS -> M.L(this, "cane")
+        else -> M.L(this, "pasty")
+    }
+
+    override fun image(): Int = when (holiday) {
+        Holiday.XMAS -> ItemSpriteSheet.CANDY_CANE
+        else -> ItemSpriteSheet.PASTY
     }
 
     override fun info(): String = when (holiday) {

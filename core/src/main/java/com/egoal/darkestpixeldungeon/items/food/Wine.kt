@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Drunkard
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
@@ -52,7 +53,7 @@ open class Wine : Item() {
                 hero.recoverSanity(value)
 
                 if(this is BrownAle)
-                    hero.say(CharSprite.DEFAULT, M.L(BrownAle::class.java, "hard_to_drink"))
+                    hero.sayShort(HeroLines.AWFUL)
             } else {
                 hero.recoverSanity(value)
                 // get drunk

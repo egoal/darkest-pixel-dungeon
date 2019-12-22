@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.LevelPerception;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.effects.BubbleText;
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -138,6 +139,7 @@ public class GameScene extends PixelScene {
   private Group spells;
   private Group statuses;
   private Group emoicons;
+  private Group sentences;
 
   private Toolbar toolbar;
   private Toast prompt;
@@ -259,6 +261,9 @@ public class GameScene extends PixelScene {
     add(statuses);
 
     add(emoicons);
+
+    sentences = new Group();
+    add(sentences);
 
 //    heroDoll = new DollSprite();
 //    heroDoll.place(Dungeon.hero.pos+ 1);
@@ -691,6 +696,10 @@ public class GameScene extends PixelScene {
   public static FloatingText status() {
     return scene != null ? (FloatingText) scene.statuses.recycle(FloatingText
             .class) : null;
+  }
+
+  public static BubbleText sentence() {
+    return scene != null? (BubbleText)scene.sentences.recycle(BubbleText.class): null;
   }
 
   public static void pickUp(Item item) {

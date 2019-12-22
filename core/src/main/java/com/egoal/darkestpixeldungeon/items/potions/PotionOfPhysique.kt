@@ -4,6 +4,7 @@ import android.util.Log
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
@@ -39,7 +40,7 @@ class PotionOfPhysique : Potion() {
         if (super.doPickUp(hero)) {
             if (!isIdentified && hero.heroClass == HeroClass.SORCERESS) {
                 identify()
-                GLog.n(M.L(this, "amazed"))
+                hero.sayShort(HeroLines.THIS_IS_IT)
             }
             return true
         }

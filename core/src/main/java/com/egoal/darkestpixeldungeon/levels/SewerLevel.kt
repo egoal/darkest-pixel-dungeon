@@ -37,10 +37,10 @@ open class SewerLevel : RegularLevel() {
     override fun trapClasses(): Array<Class<out Trap>> = if (Dungeon.depth == 1) arrayOf(WornTrap::class.java) else
         arrayOf(ChillingTrap::class.java, ToxicTrap::class.java, WornTrap::class.java,
                 AlarmTrap::class.java, OozeTrap::class.java, FlockTrap::class.java,
-                SummoningTrap::class.java, TeleportationTrap::class.java)
+                SummoningTrap::class.java, TeleportationTrap::class.java, FreakingTrap::class.java)
 
     override fun trapChances() = if (Dungeon.depth == 1) floatArrayOf(1f) else
-        floatArrayOf(4f, 4f, 4f, 2f, 2f, 1f, 1f, 1f)
+        floatArrayOf(4f, 4f, 4f, 2f, 2f, 1f, 1f, 1f, 1f)
 
     override fun decorate() {
         for (i in 0 until width())

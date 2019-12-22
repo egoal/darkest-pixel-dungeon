@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -68,7 +69,7 @@ class AshesSkull : Mob() {
             move(dst)
             // no press, its flying
             if (attackFromShadow && target === Dungeon.hero) {
-                target.say(CharSprite.NEGATIVE, "!!!")
+                target.sayShort(HeroLines.WHAT)
                 target.takeDamage(Damage(Random.Int(1, 5), this@AshesSkull, target).type(Damage.Type.MENTAL))
             }
             target.takeDamage(giveDamage(target).type(Damage.Type.MAGICAL)) // shift to magical
@@ -87,6 +88,8 @@ class AshesSkull : Mob() {
 
         val dis = Dungeon.level.distance(pos, Dungeon.hero.pos)
         if (Dungeon.hero.isAlive && dis <= 2) {
+            if(Random.Int(4)==0) Dungeon.hero.sayShort(HeroLines.BAD_NOISE)
+
             val dmg = Damage(Random.NormalIntRange(2, 8), this, Dungeon.hero).type(Damage.Type.MENTAL)
             Dungeon.hero.takeDamage(dmg)
         }

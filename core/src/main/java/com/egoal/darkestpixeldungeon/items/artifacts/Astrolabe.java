@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -153,6 +154,7 @@ public class Astrolabe extends Artifact {
         cachedInvoker_2 = ivk;
       }
     } else {
+      if(Random.Int(4)==0) curUser.sayShort(HeroLines.DAMN);
       ivk.invoke(curUser, this);
     }
   }

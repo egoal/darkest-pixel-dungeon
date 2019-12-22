@@ -5,7 +5,9 @@ import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.perks.GoodAppetite
+import com.egoal.darkestpixeldungeon.effects.BubbleText
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -35,7 +37,6 @@ open class Food(val enery: Float = Hunger.HUNGRY,
         if (action == AC_EAT) {
             detach(hero.belongings.backpack)
             hero.buff(Hunger::class.java)!!.satisfy(enery)
-            GLog.i(message)
 
             hero.heroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, this)
 
@@ -49,6 +50,8 @@ open class Food(val enery: Float = Hunger.HUNGRY,
 
             Statistics.FoodEaten++
             Badges.validateFoodEaten()
+
+            hero.say(message)
         }
     }
 

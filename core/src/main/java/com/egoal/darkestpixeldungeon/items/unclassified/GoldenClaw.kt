@@ -30,7 +30,7 @@ class GoldenClaw : Item() {
 
     override fun isUpgradable(): Boolean = false
 
-    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_USE) }
+    override fun actions(hero: Hero): ArrayList<String> = arrayListOf(AC_USE)
 
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)
@@ -75,7 +75,6 @@ class GoldenClaw : Item() {
                 }
 
                 private fun addGold(hero: Hero, q: Int) {
-                    // todo: effects
                     val g = Gold(q)
                     hero.heroPerk.get(GreedyMidas::class.java)?.procGold(g)
                     if (g.quantity() > q) {
@@ -83,13 +82,11 @@ class GoldenClaw : Item() {
                                 hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f))
                     }
 
-                    g.doPickUp(hero)
-                }
+                    hero.sprite.operate(hero.pos)
+                    hero.spend(1f)
+                    hero.busy()
 
-                override fun hide() {
-                    super.hide()
-                    // show again
-                    // execute(Dungeon.hero, AC_USE)
+                    g.doPickUp(hero)
                 }
             }
 
