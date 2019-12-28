@@ -14,7 +14,7 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest
  * Created by 93942 on 4/29/2018.
  */
 
-class Scholar : NPC() {
+class Scholar : NPC.Unbreakable() {
 
     init {
         name = Messages.get(this, "name")
@@ -29,17 +29,5 @@ class Scholar : NPC() {
         return false
     }
 
-    // unbreakable
     override fun reset(): Boolean = true
-
-    override fun act(): Boolean {
-        throwItem()
-        return super.act()
-    }
-
-    override fun defenseSkill(enemy: Char): Float = 1000f
-
-    override fun takeDamage(dmg: Damage): Int = 0
-
-    override fun add(buff: Buff) {}
 }

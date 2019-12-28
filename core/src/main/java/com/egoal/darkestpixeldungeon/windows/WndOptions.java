@@ -93,8 +93,8 @@ public class WndOptions extends Window {
       RedButton btn = new RedButton(options[i]) {
         @Override
         protected void onClick() {
-          hide();
           onSelect(index);
+          hide();
         }
       };
       btn.setRect(MARGIN, pos, width - MARGIN * 2, BUTTON_HEIGHT);

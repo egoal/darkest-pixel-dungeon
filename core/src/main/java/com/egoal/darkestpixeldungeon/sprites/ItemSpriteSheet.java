@@ -76,6 +76,7 @@ public class ItemSpriteSheet {
   public static final int ENHANCED_SEAL = SINGLE_USE + 16;
   public static final int DPD_CAT_GIFT = SINGLE_USE + 17;
   public static final int GREAT_BLUEPRINT = SINGLE_USE + 18;
+  public static final int GOLDEN_CLAW = SINGLE_USE+ 19;
 
   private static final int WEP_TIER1 = xy(1, 5);   //16 slots
   public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;
@@ -92,6 +93,8 @@ public class ItemSpriteSheet {
   public static final int SPEAR = WEP_TIER2 + 2;
   public static final int QUARTERSTAFF = WEP_TIER2 + 3;
   public static final int DIRK = WEP_TIER2 + 4;
+  public static final int WITHERED_LEG = WEP_TIER2+ 5;
+  public static final int SICKLE = WEP_TIER2+ 6;
 
   private static final int WEP_TIER3 = xy(1, 7);   //16 slots
   public static final int SWORD = WEP_TIER3 + 0;
@@ -118,6 +121,7 @@ public class ItemSpriteSheet {
   public static final int GREATAXE = WEP_TIER5 + 3;
   public static final int GREATSHIELD = WEP_TIER5 + 4;
   public static final int PAIR_SWORDS = WEP_TIER5 + 5;
+  public static final int LANCE = WEP_TIER5+ 6;
 
   private static final int MISSILE_WEP = xy(1, 10);  //16 slots
   public static final int DART = MISSILE_WEP + 0;
@@ -132,6 +136,7 @@ public class ItemSpriteSheet {
   public static final int FLY_CUTTER = MISSILE_WEP + 9;
   public static final int ENHANCED_BOOMERANG = MISSILE_WEP + 10;
   public static final int DART_SEVENTH = MISSILE_WEP+ 11;
+  public static final int CEREMONIAL_DAGGER = MISSILE_WEP+ 12;
 
   private static final int ARMOR = xy(1, 11);  //16 slots
   public static final int ARMOR_CLOTH = ARMOR + 0;
@@ -159,6 +164,7 @@ public class ItemSpriteSheet {
   public static final int HELMET_RANGER = HELMET + 9;
   public static final int TURTLE_SCARF_BLUE = HELMET+ 10;
   // 3 scarf here.
+  public static final int LITTLE_PAIL = HELMET+ 14;
 
   //16 free slots
 
@@ -176,6 +182,7 @@ public class ItemSpriteSheet {
   public static final int WAND_WARDING = WANDS + 10;
   public static final int WAND_REGROWTH = WANDS + 11;
   public static final int WAND_TRANSFUSION = WANDS + 12;
+  public static final int WAND_SWAP = WANDS+ 13;
 
   private static final int RINGS = xy(1, 15);  //16 slots
   public static final int RING_GARNET = RINGS + 0;

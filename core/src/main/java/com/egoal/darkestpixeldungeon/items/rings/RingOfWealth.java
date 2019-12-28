@@ -27,6 +27,5 @@ public class RingOfWealth extends Ring {
     return new Wealth();
   }
 
-  public class Wealth extends RingBuff {
-  }
+  public class Wealth extends RingBuff { }
 }

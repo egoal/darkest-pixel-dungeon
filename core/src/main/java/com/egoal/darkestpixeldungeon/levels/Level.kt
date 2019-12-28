@@ -25,7 +25,6 @@ import android.util.Log
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.buffs.Shadows
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.BrownAle
@@ -39,7 +38,6 @@ import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.ui.CustomTileVisual
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.WellWater
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness
@@ -60,6 +58,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
 import com.egoal.darkestpixeldungeon.levels.features.Door
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
@@ -74,14 +73,11 @@ import com.watabou.noosa.Group
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.*
 
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.util.ArrayList
 import java.util.Arrays
 import java.util.HashMap
 import java.util.HashSet
+import kotlin.math.pow
 
 abstract class Level : Bundlable {
 
@@ -191,6 +187,7 @@ abstract class Level : Bundlable {
             customTiles.clear()
             luminaries.clear()
 
+            Generator.ResetCategoryProbs()
             if (build(i)) {
                 Log.d("dpd", String.format("level build okay after %d trails.", i))
                 break
@@ -274,7 +271,7 @@ abstract class Level : Bundlable {
         var collection = bundle.getCollection(HEAPS)
         for (h in collection) {
             val heap = h as Heap
-            if (!heap.isEmpty)
+            if (!heap.empty())
                 heaps.put(heap.pos, heap)
         }
 
@@ -468,7 +465,7 @@ abstract class Level : Bundlable {
     private fun respawnTime(): Float = when (Statistics.Clock.state) {
         Statistics.ClockTime.State.Day -> 50f
         Statistics.ClockTime.State.Night -> 40f
-        Statistics.ClockTime.State.MidNight -> 30f
+        Statistics.ClockTime.State.MidNight -> 35f
     }
 
     open fun respawner(): Actor? = object : Actor() {
@@ -685,14 +682,13 @@ abstract class Level : Bundlable {
             // including dropping items.
             val heap = Heap()
             heap.sprite = ItemSprite()
-            val sprite = heap.sprite
+            val sprite = heap.sprite!!
             sprite.link(heap)
             return heap
         }
 
         // don't drop on them
-        if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain
-                        .ENCHANTING_STATION) {
+        if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain.ENCHANTING_STATION) {
             var n: Int
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)]
@@ -715,13 +711,11 @@ abstract class Level : Bundlable {
                 GameScene.add(heap)
             }
 
-        } else if (heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type
-                        .CRYSTAL_CHEST) {
-
+        } else if (heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type.CRYSTAL_CHEST) {
             var n: Int
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)]
-            } while (!Level.passable[n] && !Level.avoid[n])
+            } while (!passable[n] && !avoid[n])
             return drop(item, n)
 
         }
@@ -963,12 +957,9 @@ abstract class Level : Bundlable {
         items.add(Generator.FOOD.generate())
 
         val bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java)
-        val p = Math.pow(0.925, bonus.toDouble()).toFloat()
+        val p = 0.925f.pow(bonus)
         if (Dungeon.posNeeded()) {
-            items.add(if (Random.Float() > p)
-                PotionOfMight()
-            else
-                PotionOfStrength())
+            items.add(if (Random.Float() > p) PotionOfMight() else PotionOfStrength())
             Dungeon.limitedDrops.strengthPotions.count++
         }
         if (Dungeon.souNeeded()) {
@@ -994,10 +985,18 @@ abstract class Level : Bundlable {
         // torch
         run {
             val prop = 0.3f - Dungeon.depth / 5 * 0.025f
-            while (Random.Float() < prop) items.add(Torch())
+            var cnt = 0
+            while (Random.Float() < prop && cnt++ < 5) items.add(Torch())
         }
 
-        // extra wine?
+        // dagger
+        run {
+            val prob = 1f / (2 * Dungeon.limitedDrops.ceremonialDagger.count + 5f)
+            if (Dungeon.daggerNeeded() || Random.Float() < prob) {
+                items.add(CeremonialDagger())
+                Dungeon.limitedDrops.ceremonialDagger.count++
+            }
+        }
 
         // specials
         val rose = Dungeon.hero.belongings.getItem(DriedRose::class.java)

@@ -112,7 +112,7 @@ public class Piranha extends Mob {
 
   @Override
   public void die(Object cause) {
-    Dungeon.level.drop(new MysteryMeat(), pos).sprite.drop();
+    Dungeon.level.drop(new MysteryMeat(), pos).getSprite().drop();
     super.die(cause);
 
     Statistics.INSTANCE.setPiranhasKilled(Statistics.INSTANCE.getPiranhasKilled()+1);

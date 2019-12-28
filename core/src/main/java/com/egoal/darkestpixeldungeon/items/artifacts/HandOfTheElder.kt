@@ -11,6 +11,7 @@ import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.rings.*
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -209,7 +210,7 @@ class HandOfTheElder : Artifact() {
             }
         }
 
-        override fun prompt(): String = Messages.get(HandOfTheElder::class.java, "point_prompt")
+        override fun prompt(): String = M.L(HandOfTheElder::class.java, "point_prompt")
     }
 
     companion object {

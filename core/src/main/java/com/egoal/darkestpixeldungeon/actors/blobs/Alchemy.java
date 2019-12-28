@@ -67,17 +67,6 @@ public class Alchemy extends Blob {
     area.union(cell % level.width(), cell / level.width());
   }
 
-  public static void transmute(int cell) {
-    Heap heap = Dungeon.level.getHeaps().get(cell);
-    if (heap != null) {
-
-      Item result = heap.transmute();
-      if (result != null) {
-        Dungeon.level.drop(result, cell).sprite.drop(cell);
-      }
-    }
-  }
-
   @Override
   public void use(BlobEmitter emitter) {
     super.use(emitter);

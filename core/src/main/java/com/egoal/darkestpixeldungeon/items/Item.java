@@ -122,8 +122,7 @@ public class Item implements Bundlable {
 
   public void doDrop(Hero hero) {
     hero.spendAndNext(TIME_TO_DROP);
-    Dungeon.level.drop(detachAll(hero.getBelongings().backpack), hero.pos)
-            .sprite
+    Dungeon.level.drop(detachAll(hero.getBelongings().backpack), hero.pos).getSprite()
             .drop(hero.pos);
   }
 
@@ -162,8 +161,8 @@ public class Item implements Bundlable {
 
   protected void onThrow(int cell) {
     Heap heap = Dungeon.level.drop(this, cell);
-    if (!heap.isEmpty()) {
-      heap.sprite.drop(cell);
+    if (!heap.empty()) {
+      heap.getSprite().drop(cell);
     }
   }
 

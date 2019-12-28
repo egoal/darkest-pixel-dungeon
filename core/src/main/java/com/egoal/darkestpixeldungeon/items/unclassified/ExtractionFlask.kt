@@ -1,8 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.unclassified
 
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Chrome
-import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
@@ -145,6 +143,10 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         ++refined
 
         potion?.let {
+            //todo: may use AlchemyPot::OnCombined
+            Statistics.PotionsCooked++
+            Badges.validatePotionsCooked()
+
             //^ refined okay, do inscribe
             GLog.p(Messages.get(this, "refine", potion.name()))
             if (!potion.doPickUp(curUser))
@@ -157,12 +159,12 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                         val x = exp(refined.toFloat() / 4f)
                         val p = x / (x + 1f) * .5f
                         if (Random.Float() < p) {
-                            when (Random.Int(3)) {
-                                0 -> it.enchant(Venomous())
-                                1 -> it.enchant(Unstable())
+                            val i = Random.Int(3)
+                            when {
+                                (i == 0 && it.enchantment !is Venomous) -> it.enchant(Venomous())
+                                (i == 1 && it.enchantment !is Unstable) -> it.enchant(Unstable())
                                 else -> it.enchant()
                             }
-
                             GLog.w(Messages.get(this, "inscribed"))
                         }
                     } else

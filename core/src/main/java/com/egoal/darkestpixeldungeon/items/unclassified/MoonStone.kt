@@ -19,7 +19,7 @@ class MoonStone : Item() {
         defaultAction = AC_USE
     }
 
-    override fun actions(hero: Hero?): ArrayList<String> = super.actions(hero).apply { add(AC_USE) }
+    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_USE) }
 
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)

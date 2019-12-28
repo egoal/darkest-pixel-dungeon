@@ -45,10 +45,10 @@ public class PitfallTrap extends Trap {
     Heap heap = Dungeon.level.getHeaps().get(pos);
 
     if (heap != null) {
-      for (Item item : heap.items) {
+      for (Item item : heap.getItems()) {
         Dungeon.dropToChasm(item);
       }
-      heap.sprite.kill();
+      heap.getSprite().kill();
       GameScene.discard(heap);
       Dungeon.level.getHeaps().remove(pos);
     }

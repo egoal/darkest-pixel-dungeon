@@ -37,6 +37,7 @@ public class Chrome {
     TAB_UNSELECTED,
     
     DPD_BOOK,
+    DIALOG_OPTION,
   }
 
   ;
@@ -66,6 +67,8 @@ public class Chrome {
         return new NinePatch(Asset, 75, 22, 8, 13, 3, 7, 3, 5);
       case DPD_BOOK:
         return new NinePatch(Asset, 64, 40, 24, 24, 3, 3, 3, 3);
+      case DIALOG_OPTION:
+        return new NinePatch(Asset, 108, 0, 8, 8, 2);
       default:
         return null;
     }

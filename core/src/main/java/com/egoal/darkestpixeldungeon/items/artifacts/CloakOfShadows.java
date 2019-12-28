@@ -144,14 +144,12 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
   }
 
   private static final String STEALTHED = "stealthed";
-  private static final String COOLDOWN = "cooldown";
   private static final String ENHANCED = "enhanced";
 
   @Override
   public void storeInBundle(Bundle bundle) {
     super.storeInBundle(bundle);
     bundle.put(STEALTHED, stealthed);
-    bundle.put(COOLDOWN, cooldown);
     bundle.put(ENHANCED, enhanced);
   }
 
@@ -159,7 +157,6 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
     stealthed = bundle.getBoolean(STEALTHED);
-    cooldown = bundle.getInt(COOLDOWN);
     enhanced = bundle.getBoolean(ENHANCED);
     if (enhanced) enchantByBlueprint();
 

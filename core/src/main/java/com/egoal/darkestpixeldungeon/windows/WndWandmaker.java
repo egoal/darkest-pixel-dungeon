@@ -97,7 +97,7 @@ public class WndWandmaker extends Window {
     if (reward.doPickUp(Dungeon.hero)) {
       GLog.i(Messages.get(Dungeon.hero, "you_now_have", reward.name()));
     } else {
-      Dungeon.level.drop(reward, wandmaker.pos).sprite.drop();
+      Dungeon.level.drop(reward, wandmaker.pos).getSprite().drop();
     }
 
     wandmaker.yell(Messages.get(this, "farewell", Dungeon.hero.givenName()));

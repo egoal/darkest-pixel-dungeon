@@ -419,10 +419,12 @@ class EyeballOfTheElder : Artifact() {
 
         private fun Combin(hero: Hero) {
             val detach = { it: EquipableItem ->
+                val cursed = it.cursed
                 if (it.isEquipped(hero)) {
                     it.cursed = false
                     it.doUnequip(hero, false)
                 }
+                it.cursed = cursed
                 it.detachAll(hero.belongings.backpack)
             }
 
@@ -435,7 +437,7 @@ class EyeballOfTheElder : Artifact() {
             EyeballOfTheElder().apply {
                 level(left.level())
                 cursed = left.cursed || right.cursed
-                cursedKnown = left.cursedKnown && right.cursedKnown
+                cursedKnown = true
             }.collect()
 
             GLog.n(M.L(EyeballOfTheElder::class.java, "combined"))

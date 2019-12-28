@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.QuickZap;
+import com.egoal.darkestpixeldungeon.actors.hero.perks.StealthCaster;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPerception;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
@@ -109,8 +110,7 @@ public abstract class Wand extends Item {
     if (super.collect(container)) {
       if (container.owner != null) {
         if (container instanceof WandHolster)
-          charge(container.owner, ((WandHolster) container)
-                  .HOLSTER_SCALE_FACTOR);
+          charge(container.owner, ((WandHolster) container).HOLSTER_SCALE_FACTOR);
         else
           charge(container.owner);
       }
@@ -344,7 +344,7 @@ public abstract class Wand extends Item {
 
         curUser.sprite.zap(cell);
 
-        //attempts to target the cell aimed at if something is there, 
+        //attempts to target the cell aimed at if something is there,
         // otherwise targets the collision pos.
         if (Actor.findChar(target) != null)
           QuickSlotButton.target(Actor.findChar(target));
@@ -361,8 +361,7 @@ public abstract class Wand extends Item {
                     .pos, target, Ballistica.MAGIC_BOLT));
             if (!curWand.cursedKnown) {
               curWand.cursedKnown = true;
-              GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name
-                      ()));
+              GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));
             }
           } else {
             curWand.cursedKnown = true;
@@ -374,7 +373,8 @@ public abstract class Wand extends Item {
             });
           }
 
-          Invisibility.dispel();
+          if(!curUser.getHeroPerk().has(StealthCaster.class))
+            Invisibility.dispel();
 
         } else {
 

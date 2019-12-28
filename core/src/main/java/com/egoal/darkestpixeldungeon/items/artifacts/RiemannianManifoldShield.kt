@@ -50,7 +50,7 @@ class RiemannianManifoldShield : Artifact() {
     }
 
     // recharge buff
-    override fun passiveBuff(): Artifact.ArtifactBuff = Recharge()
+    override fun passiveBuff(): ArtifactBuff = Recharge()
 
     inner class Recharge : Artifact.ArtifactBuff() {
         override fun act(): Boolean {
@@ -88,19 +88,4 @@ class RiemannianManifoldShield : Artifact() {
 
         return desc
     }
-
-    override fun storeInBundle(bundle: Bundle) {
-        super.storeInBundle(bundle)
-        bundle.put(COOLDOWN, cooldown)
-    }
-
-    override fun restoreFromBundle(bundle: Bundle) {
-        super.restoreFromBundle(bundle)
-        cooldown = bundle.getInt(COOLDOWN)
-    }
-
-    companion object {
-        private const val COOLDOWN = "cooldown"
-    }
-
 }

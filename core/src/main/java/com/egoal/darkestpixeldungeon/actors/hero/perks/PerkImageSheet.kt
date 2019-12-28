@@ -42,7 +42,20 @@ object PerkImageSheet {
     const val EXP_EXTRA = 36
     const val WINE_DRUNKARD = 37
     const val LEVEL_PERCEPTION = 38
+    const val REROLL = 39
+    const val STEALTH_CASTER = 40
+    const val ARCANE_CRIT = 41
+    const val WAND_PIERCING = 42
+    const val RANGED_SHOT = 43
+    const val FINISHING_SHOT = 44
+    const val BARED_SWIFTNESS = 45
+    const val MAGICAL_RESISTANCE = 46
+    const val LUCK_FROM_ME = 47
 
-    private const val NEGATIVE = 48
+    const val COUNTER_STRIKE = 48
+    const val GREEDY_MIDAS = 49
+
+
+    private const val NEGATIVE = 64
     const val APPETITE_RAVENOUS = NEGATIVE + 0
 }

@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Disarm
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
@@ -41,13 +42,14 @@ import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.AlchemyPot
 import com.egoal.darkestpixeldungeon.levels.features.EnchantingStation
 import com.egoal.darkestpixeldungeon.levels.features.Sign
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.scenes.InterlevelScene
 import com.egoal.darkestpixeldungeon.scenes.SurfaceScene
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndMessage
-import com.egoal.darkestpixeldungeon.windows.WndTradeItem
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
@@ -81,7 +83,7 @@ abstract class HeroAction(var dst: Int = 0) {
                 if (heap != null) {
                     val item = heap.peek()
 
-                    if (item.doPickUp(hero)) {
+                    if (item!!.doPickUp(hero)) {
                         heap.pickUp()
 
                         if (item is Dewdrop || item is TimekeepersHourglass.Companion.SandBag ||
@@ -98,11 +100,11 @@ abstract class HeroAction(var dst: Int = 0) {
                                 GLog.i(Messages.get(hero, "you_now_have", item.name()))
                         }
 
-                        if (!heap.isEmpty) GLog.i(Messages.get(hero, "something_else"))
+                        if (!heap.empty()) GLog.i(Messages.get(hero, "something_else"))
 
                         hero.curAction = null
                     } else {
-                        heap.sprite.drop()
+                        heap.sprite!!.drop()
                         hero.ready()
                     }
                 } else
@@ -120,7 +122,7 @@ abstract class HeroAction(var dst: Int = 0) {
             if (Dungeon.level.adjacent(hero.pos, dst) || hero.pos == dst) {
                 val heap = Dungeon.level.heaps.get(dst)
 
-                if (heap != null && (heap.type != Heap.Type.HEAP && heap.type != Heap.Type.FOR_SALE)) {
+                if (heap != null && (heap.type != Heap.Type.HEAP)) {
                     if ((heap.type == Heap.Type.LOCKED_CHEST || heap.type == Heap.Type.CRYSTAL_CHEST) &&
                             hero.belongings.specialKeys[Dungeon.depth] < 1) {
                         GLog.w(Messages.get(hero, "locked_chest"))
@@ -152,23 +154,6 @@ abstract class HeroAction(var dst: Int = 0) {
         }
     }
 
-    // old style heap shop
-    class Buy(dst: Int) : HeroAction(dst) {
-        override fun act(hero: Hero): Boolean {
-            if (hero.pos == dst || Dungeon.level.adjacent(hero.pos, dst)) {
-                hero.ready()
-                Dungeon.level.heaps.get(dst)?.let {
-                    if (it.type == Heap.Type.FOR_SALE && it.size() == 1)
-                        GameScene.show(WndTradeItem(it, true))
-                }
-
-                return false
-            }
-
-            return goThere(hero)
-        }
-    }
-
     class Interact(var npc: NPC) : HeroAction() {
         override fun act(hero: Hero): Boolean {
             if (Dungeon.level.adjacent(hero.pos, npc.pos)) {
@@ -181,6 +166,26 @@ abstract class HeroAction(var dst: Int = 0) {
                 return true
 
             hero.ready()
+            return false
+        }
+    }
+
+    class InteractAlly(var mob: Mob) : HeroAction() {
+        override fun act(hero: Hero): Boolean {
+            hero.ready()
+
+            if (mob.camp == Char.Camp.HERO) {
+                //todo: refactor
+                WndDialogue.Show(mob, mob.description() + "\n\n" + M.L(Mob::class.java, "ally", mob.name) + "\n" + mob.state.status(),
+                        M.L(Mob::class.java, "follow"),
+                        M.L(Mob::class.java, "wander")) {
+                    if (it == 0) {
+                        if (mob.state != mob.FOLLOW_HERO) mob.state = mob.FOLLOW_HERO
+                    } else {
+                        if (mob.state == mob.FOLLOW_HERO) mob.state = mob.WANDERING
+                    }
+                }
+            }
             return false
         }
     }
@@ -293,7 +298,7 @@ abstract class HeroAction(var dst: Int = 0) {
     class Attack(var target: Char) : HeroAction() {
         override fun act(hero: Hero): Boolean {
             hero.enemy = target
-            if (target.isAlive && hero.canAttack(target) && !hero.isCharmedBy(target) && hero.buff(Disarm::class.java)==null) {
+            if (target.isAlive && hero.canAttack(target) && !hero.isCharmedBy(target) && hero.buff(Disarm::class.java) == null) {
                 Invisibility.dispel()
                 hero.spend(hero.attackDelay())
                 hero.sprite.attack(target.pos)

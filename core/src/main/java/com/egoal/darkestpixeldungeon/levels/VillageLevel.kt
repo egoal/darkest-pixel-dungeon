@@ -1,12 +1,24 @@
 package com.egoal.darkestpixeldungeon.levels
 
+import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.mobs.AshesSkull
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
+import com.egoal.darkestpixeldungeon.actors.buffs.Dementage
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.actors.mobs.Rat
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
+import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
+import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
+import com.egoal.darkestpixeldungeon.levels.traps.PrizeTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -40,8 +52,9 @@ class VillageLevel : RegularLevel() {
         paintWater()
         paintGrass()
 
-//        setTrap(FlockTrap().reveal(), xy2cell(16, 28))
-//        map[xy2cell(16, 28)] = Terrain.TRAP
+//        val cell = xy2cell(15, 26)
+//        setTrap(PrizeTrap().reveal(), cell)
+//         map[cell] = Terrain.TRAP
 
         return true
     }
@@ -95,10 +108,19 @@ class VillageLevel : RegularLevel() {
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
-        // roberry
-        putMobAt(CatRoberry::class.java, 12, 6)
+        // rawberry
+        putMobAt(CatRawberry::class.java, 12, 6)
 
-        // putMobAt(AshesSkull::class.java, 16, 29)
+        // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
+        // putMobAt(Merchant::class.java, 16, 29)
+//        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
+//            for (i in 1..10) addItemToSell(Generator.generate())
+//        }
+//        (putMobAt(ScrollSeller::class.java, 15, 27) as ScrollSeller).apply {
+//            addItemToSell(Dart(8))
+//            addItemToSell(BattleGloves())
+//            addItemToSell(TomeOfPerk())
+//        }
     }
 
     override fun onSwitchedIn() {
@@ -111,6 +133,11 @@ class VillageLevel : RegularLevel() {
     override fun createItems() {
 //        for (i in 1..20)
 //            drop(Generator.POTION.generate(), xy2cell(15, i + 3))
+//        drop(MasterThievesArmband().apply {
+//            identify()
+//            level(5)
+//        }, xy2cell(16, 30))
+//        drop(Gold(500), xy2cell(16, 30))
     }
 
     private fun putMobAt(cls: Class<out Mob>, x: Int, y: Int): Mob {

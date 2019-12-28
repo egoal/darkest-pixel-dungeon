@@ -41,7 +41,7 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
         state = WANDERING
         enemy = null
 
-        ally = true
+        camp = Camp.HERO
 
         defSkill = (Dungeon.hero.lvl + 4) * 2f
         HT = 10 + roseLevel * 5
@@ -50,8 +50,6 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
     }
 
     private var cdCure = 0f
-
-    override fun isFollower(): Boolean = true
 
     override fun interact(): Boolean {
         if (!DriedRose.TalkedTo) {
@@ -119,17 +117,6 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
         } else target
 
         return super.getCloser(theTarget)
-    }
-
-    override fun chooseEnemy(): Char? {
-        if (enemy == null || !enemy.isAlive || !Dungeon.level.mobs.contains(enemy) || state == WANDERING) {
-            val avls = Dungeon.level.mobs.filter {
-                it.hostile && Level.fieldOfView[it.pos] && it.state != it.PASSIVE
-            }
-            enemy = if (avls.isEmpty()) null else Random.element(avls)
-        }
-
-        return enemy
     }
 
     override fun canAttack(enemy: Char): Boolean = Dungeon.level.distance(pos, enemy.pos) <= 4 &&

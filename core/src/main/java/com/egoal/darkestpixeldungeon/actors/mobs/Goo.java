@@ -128,7 +128,7 @@ public class Goo extends Mob {
   @Override
   public Damage attackProc(Damage damage) {
     Char enemy = (Char) damage.to;
-    if (Random.Int(3) == 0) {
+    if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Int(3) == 0) {
       Buff.prolong(enemy, Vulnerable.class, 3).setRatio(1.25f);
       enemy.sprite.burst(0xFF0000, 5);
     }
@@ -252,7 +252,7 @@ public class Goo extends Mob {
     Dungeon.level.unseal();
 
     GameScene.bossSlain();
-    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).getSprite().drop();
 
     Badges.validateBossSlain();
 

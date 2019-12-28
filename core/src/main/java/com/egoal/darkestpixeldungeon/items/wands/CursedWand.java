@@ -315,7 +315,7 @@ public class CursedWand {
                     && !ch.properties().contains(Char.Property.BOSS)
                     && !ch.properties().contains(Char.Property.MINIBOSS)) {
               Sheep sheep = new Sheep();
-              sheep.lifespan = 10;
+              sheep.setLifespan(10);
               sheep.pos = ch.pos;
               ch.destroy();
               ch.sprite.killAndErase();
@@ -460,7 +460,7 @@ public class CursedWand {
         if (result.isUpgradable()) result.upgrade();
         result.cursed = result.cursedKnown = true;
         GLog.w(Messages.get(CursedWand.class, "transmogrify"));
-        Dungeon.level.drop(result, user.pos).sprite.drop();
+        Dungeon.level.drop(result, user.pos).getSprite().drop();
         wand.wandUsed();
         break;
     }

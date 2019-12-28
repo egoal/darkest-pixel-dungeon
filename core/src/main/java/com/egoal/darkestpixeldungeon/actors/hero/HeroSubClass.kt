@@ -20,7 +20,24 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero
 
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
+import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.effects.SpellSprite
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe
+import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
+import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.utils.GLog
+import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 
 enum class HeroSubClass(private val title: String) {
@@ -54,6 +71,41 @@ enum class HeroSubClass(private val title: String) {
         private const val SUBCLASS = "subClass"
 
         fun RestoreFromBundle(bundle: Bundle): HeroSubClass = valueOf(bundle.getString(SUBCLASS))
+
+        fun Choose(hero: Hero, way: HeroSubClass) {
+            hero.subClass = way
+
+            Sample.INSTANCE.play(Assets.SND_MASTERY)
+            SpellSprite.show(hero, SpellSprite.MASTERY)
+            hero.sprite.emitter().burst(Speck.factory(Speck.MASTERY), 12)
+
+            GLog.w(M.L(TomeOfMastery::class.java, "way", way.title()))
+
+            // on choose
+            when (way) {
+                BERSERKER -> {
+                    Buff.affect(hero, Berserk::class.java)
+                    hero.heroPerk.add(Fearless())
+                }
+                ASSASSIN -> hero.heroPerk.add(Assassin())
+                WARLOCK -> {
+                    val uos = UrnOfShadow().identify()
+                    if (uos.doPickUp(hero)) GLog.w(Messages.get(hero, "you_now_have", uos.name()))
+                    else Dungeon.level.drop(uos, hero.pos).sprite.drop()
+                }
+                WITCH -> {
+                    hero.belongings.getItem(ExtractionFlask::class.java)?.reinforce()
+                    //^ may lose perk
+                }
+                STARGAZER -> {
+                    hero.heroPerk.add(Optimistic())
+
+                    val a = Astrolabe().identify()
+                    if (a.doPickUp(hero)) GLog.w(Messages.get(hero, "you_now_have", a.name()))
+                    else Dungeon.level.drop(a, hero.pos).sprite.drop()
+                }
+            }
+        }
     }
 
 }

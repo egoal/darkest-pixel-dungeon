@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.LevelPerception;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.effects.BubbleText;
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -37,6 +38,7 @@ import com.egoal.darkestpixeldungeon.levels.RegularLevel;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.sprites.DiscardedItemSprite;
+import com.egoal.darkestpixeldungeon.sprites.DollSprite;
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
 import com.egoal.darkestpixeldungeon.sprites.PlantSprite;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -86,7 +88,6 @@ import com.egoal.darkestpixeldungeon.windows.WndInfoTrap;
 import com.egoal.darkestpixeldungeon.windows.WndMessage;
 import com.egoal.darkestpixeldungeon.windows.WndOptions;
 import com.egoal.darkestpixeldungeon.windows.WndStory;
-import com.egoal.darkestpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -113,6 +114,7 @@ public class GameScene extends PixelScene {
   private SkinnedBlock water;
   private DungeonTilemap tiles;
   private FogOfWar fog;
+  private DollSprite heroDoll;
   private HeroSprite hero;
 
   private StatusPane pane;
@@ -137,6 +139,7 @@ public class GameScene extends PixelScene {
   private Group spells;
   private Group statuses;
   private Group emoicons;
+  private Group sentences;
 
   private Toolbar toolbar;
   private Toast prompt;
@@ -258,6 +261,15 @@ public class GameScene extends PixelScene {
     add(statuses);
 
     add(emoicons);
+
+    sentences = new Group();
+    add(sentences);
+
+//    heroDoll = new DollSprite();
+//    heroDoll.place(Dungeon.hero.pos+ 1);
+//    heroDoll.updateArmor();
+//    mobs.add(heroDoll);
+//    heroDoll.addComponencts();
 
     hero = new HeroSprite();
     hero.place(Dungeon.hero.pos);
@@ -455,7 +467,7 @@ public class GameScene extends PixelScene {
             tagAction != action.visible ||
             tagResume != resume.visible) {
 
-      //we only want to change the layout when new tags pop in, not when 
+      //we only want to change the layout when new tags pop in, not when
       // existing ones leave.
       boolean tagAppearing = (attack.active && !tagAttack) ||
               (loot.visible && !tagLoot) ||
@@ -538,19 +550,19 @@ public class GameScene extends PixelScene {
   }
 
   private void addHeapSprite(Heap heap) {
-    ItemSprite sprite = heap.sprite = (ItemSprite) heaps.recycle(ItemSprite
-            .class);
+    ItemSprite sprite =(ItemSprite)heaps.recycle(ItemSprite.class);
+    heap.sprite =  sprite;
     sprite.revive();
     sprite.link(heap);
     heaps.add(sprite);
   }
 
   private void addDiscardedSprite(Heap heap) {
-    heap.sprite = (DiscardedItemSprite) heaps.recycle(DiscardedItemSprite
-            .class);
-    heap.sprite.revive();
-    heap.sprite.link(heap);
-    heaps.add(heap.sprite);
+    heap.setSprite((DiscardedItemSprite) heaps.recycle(DiscardedItemSprite
+            .class));
+    heap.getSprite().revive();
+    heap.getSprite().link(heap);
+    heaps.add(heap.getSprite());
   }
 
   private void addPlantSprite(Plant plant) {
@@ -684,6 +696,10 @@ public class GameScene extends PixelScene {
   public static FloatingText status() {
     return scene != null ? (FloatingText) scene.statuses.recycle(FloatingText
             .class) : null;
+  }
+
+  public static BubbleText sentence() {
+    return scene != null? (BubbleText)scene.sentences.recycle(BubbleText.class): null;
   }
 
   public static void pickUp(Item item) {
@@ -849,7 +865,7 @@ public class GameScene extends PixelScene {
     WndBag wnd = new WndBag(Dungeon.hero.getBelongings().backpack, listener,
             title, filter);
     scene.addToFront(wnd);
-    
+
     return wnd;
   }
 
@@ -900,7 +916,7 @@ public class GameScene extends PixelScene {
     }
 
     Heap heap = Dungeon.level.getHeaps().get(cell);
-    if (heap != null && heap.seen) {
+    if (heap != null && heap.getSeen()) {
       objects.add(heap);
       names.add(Messages.titleCase(heap.toString()));
     }
@@ -942,12 +958,7 @@ public class GameScene extends PixelScene {
       GameScene.show(new WndInfoMob((Mob) o));
     } else if (o instanceof Heap) {
       Heap heap = (Heap) o;
-      if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek()
-              .price() > 0) {
-        GameScene.show(new WndTradeItem(heap, false));
-      } else {
-        GameScene.show(new WndInfoItem(heap));
-      }
+      GameScene.show(new WndInfoItem(heap));
     } else if (o instanceof Plant) {
       GameScene.show(new WndInfoPlant((Plant) o));
     } else if (o instanceof Trap) {

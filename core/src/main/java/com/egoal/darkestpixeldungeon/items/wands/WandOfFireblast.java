@@ -43,6 +43,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 
 public class WandOfFireblast extends DamageWand {
@@ -60,8 +62,13 @@ public class WandOfFireblast extends DamageWand {
 
   //1x/1.5x/2.25x damage
   public int max(int lvl) {
-    return (int) Math.round((5 + 3 * lvl) * Math.pow(1.5f, chargesPerCast() -
-            1));
+    return (int) Math.round((7 + 3 * lvl) * Math.pow(1.5f, chargesPerCast() - 1));
+  }
+
+  @NotNull
+  @Override
+  public Damage giveDamage(@NotNull Char enemy) {
+    return super.giveDamage(enemy).addElement(Damage.Element.FIRE);
   }
 
   //the actual affected cells
@@ -80,10 +87,7 @@ public class WandOfFireblast extends DamageWand {
       Char ch = Actor.findChar(cell);
       if (ch != null) {
 
-        int damage = damageRoll();
-
-        ch.takeDamage(new Damage(damage, curUser, ch).type(Damage.Type.MAGICAL)
-                .addElement(Damage.Element.FIRE));
+        ch.takeDamage(giveDamage(ch));
         Buff.affect(ch, Burning.class).reignite(ch);
         switch (chargesPerCast()) {
           case 1:
@@ -186,6 +190,11 @@ public class WandOfFireblast extends DamageWand {
       return Messages.get(this, "stats_desc", chargesPerCast(), min(), max());
     else
       return Messages.get(this, "stats_desc", chargesPerCast(), min(0), max(0));
+  }
+
+  @Override
+  protected int particleColor() {
+    return 0xEE7722;
   }
 
   @Override

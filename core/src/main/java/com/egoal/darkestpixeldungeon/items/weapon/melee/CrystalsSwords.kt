@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
+import kotlin.math.pow
 
 /**
  * Created by 93942 on 8/16/2018.
@@ -24,7 +25,7 @@ class CrystalsSwords : MeleeWeapon() {
         val dmg = super.giveDamage(hero, target)
 
         // chance to deal 2 times damage
-        val c = .15f + .35f * (1f - Math.pow(.7, level() / 3.0).toFloat())
+        val c = .15f + .35f * (1f - 0.7f.pow(level() / 3f))
 
         if (Random.Float() < c) {
             dmg.value *= 2

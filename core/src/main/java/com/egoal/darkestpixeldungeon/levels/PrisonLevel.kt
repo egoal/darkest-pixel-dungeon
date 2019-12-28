@@ -39,9 +39,9 @@ class PrisonLevel : RegularLevel() {
             SpearTrap::class.java, ToxicTrap::class.java, AlarmTrap::class.java,
             FlashingTrap::class.java, GrippingTrap::class.java, ParalyticTrap::class.java,
             LightningTrap::class.java, OozeTrap::class.java, ConfusionTrap::class.java,
-            FlockTrap::class.java, SummoningTrap::class.java, TeleportationTrap::class.java)
+            FlockTrap::class.java, SummoningTrap::class.java, TeleportationTrap::class.java, FreakingTrap::class.java)
 
-    override fun trapChances(): FloatArray = floatArrayOf(4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f, 1f, 1f)
+    override fun trapChances(): FloatArray = floatArrayOf(4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f, 1f, 1f, 1f)
 
     override fun createItems() {
         Jessica.Quest.spawnBook(this)

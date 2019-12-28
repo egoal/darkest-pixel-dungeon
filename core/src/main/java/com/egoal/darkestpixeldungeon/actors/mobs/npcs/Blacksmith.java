@@ -44,18 +44,12 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Blacksmith extends NPC {
+public class Blacksmith extends NPC.Unbreakable {
 
   {
     spriteClass = BlacksmithSprite.class;
 
     properties.add(Property.IMMOVABLE);
-  }
-
-  @Override
-  protected boolean act() {
-    throwItem();
-    return super.act();
   }
 
   @Override
@@ -80,7 +74,7 @@ public class Blacksmith extends NPC {
           if (pick.doPickUp(Dungeon.hero)) {
             GLog.i(Messages.get(Dungeon.hero, "you_now_have", pick.name()));
           } else {
-            Dungeon.level.drop(pick, Dungeon.hero.pos).sprite.drop();
+            Dungeon.level.drop(pick, Dungeon.hero.pos).getSprite().drop();
           }
         }
       });
@@ -200,20 +194,6 @@ public class Blacksmith extends NPC {
     Quest.reforged = true;
 
     Journal.INSTANCE.remove(Messages.get(Blacksmith.class, "name"));
-  }
-
-  @Override
-  public float defenseSkill(Char enemy) {
-    return 1000;
-  }
-
-  @Override
-  public int takeDamage(Damage dmg) {
-    return 0;
-  }
-
-  @Override
-  public void add(Buff buff) {
   }
 
   @Override

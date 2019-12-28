@@ -11,6 +11,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
 
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
@@ -21,6 +22,7 @@ import com.egoal.darkestpixeldungeon.levels.diggers.normal.*
 import com.egoal.darkestpixeldungeon.levels.diggers.secret.*
 import com.egoal.darkestpixeldungeon.levels.diggers.specials.*
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap
+import com.egoal.darkestpixeldungeon.levels.traps.PrizeTrap
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap
 import com.egoal.darkestpixeldungeon.plants.Plant
@@ -28,6 +30,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import kotlin.math.max
+import kotlin.math.min
 
 abstract class RegularLevel : Level() {
     init {
@@ -80,7 +83,7 @@ abstract class RegularLevel : Level() {
     protected var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
-        if (Dungeon.shopOnLevel()) diggers.add(ShopDigger())
+        if (Dungeon.shopOnLevel()) diggers.add(MerchantDigger())
 
         return diggers
     }
@@ -190,14 +193,15 @@ abstract class RegularLevel : Level() {
     override fun nMobs(): Int = when (Dungeon.depth) {
         0, 1 -> 0
         in 2..4 -> 3 + Dungeon.depth % 5 + Random.Int(5)
-        else -> 3 + Dungeon.depth % 5 + Random.Int(8)
+        else -> 3 + Dungeon.depth % 5 + Random.Int(7)
     }
 
     protected fun createSellers() {
         if (Dungeon.depth in 1 until 20) {
             val psProb = if (Dungeon.shopOnLevel()) .1f else .2f
             if (Random.Float() < psProb) {
-                val ps = PotionSeller.Random().initSellItems()
+                val ps = PotionSeller.Random()
+                ps.initSellItems()
                 val s = randomSpace(DigResult.Type.Normal)
                 do {
                     ps.pos = pointToCell(s!!.rect.random())
@@ -207,12 +211,13 @@ abstract class RegularLevel : Level() {
 
             val ssProb = if (Dungeon.shopOnLevel()) .08f else .18f
             if (Random.Float() < ssProb) {
-                val ps = ScrollSeller().initSellItems()
+                val ss = ScrollSeller()
+                ss.initSellItems()
                 val s = randomSpace(DigResult.Type.Normal)
                 do {
-                    ps.pos = pointToCell(s!!.rect.random())
-                } while (findMobAt(ps.pos) != null || !Level.passable[ps.pos])
-                mobs.add(ps)
+                    ss.pos = pointToCell(s!!.rect.random())
+                } while (findMobAt(ss.pos) != null || !Level.passable[ss.pos])
+                mobs.add(ss)
             }
         }
     }
@@ -251,7 +256,7 @@ abstract class RegularLevel : Level() {
         var nItems = 3
 
         // bonus from wealth
-        val bonus = Math.min(10, RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
+        val bonus = min(10, Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
         while (Random.Float() < .25f + bonus * 0.05f)
             ++nItems
 
@@ -266,7 +271,18 @@ abstract class RegularLevel : Level() {
             drop(Generator.generate(), randomDropCell()).type = heap
         }
 
-        // inherent items
+        // extra missile weapon
+        run {
+            val p = Random.Float()
+            val item = when {
+                p < 0.2 -> Generator.WEAPON.MISSSILE.generate()
+                p < 0.5 -> Generator.generate()
+                else -> null
+            }
+            if (item != null) drop(item, randomDropCell())
+        }
+
+        // inherent items, not dropped in generation
         for (item in itemsToSpawn) {
             var c = randomDropCell()
             // never drop scroll on fire trap
@@ -329,7 +345,8 @@ abstract class RegularLevel : Level() {
                 val count = PathFinder.NEIGHBOURS8.count { grass[i + it] }
 
                 map[i] = if (Random.Float() < count / 12f) {
-                    if (Random.Float() < 0.015) {
+                    if (Random.Float() < 0.015 && Dungeon.depth > 0) {
+                        //^^ not in the village
                         plant(Generator.SEED.generate() as Plant.Seed, i)
                         Terrain.GRASS
                     } else
@@ -366,17 +383,30 @@ abstract class RegularLevel : Level() {
         val trapClasses = trapClasses()
 
         val validCells = (1 until length).filter { map[it] == Terrain.EMPTY && findMobAt(it) == null }.shuffled()
-        var traps = Math.min(nTraps(), (validCells.size * 0.15).toInt())
+        var traps = min(nTraps(), (validCells.size * 0.15).toInt())
 
-        Log.d("dpd", "would add $traps traps.")
+        // todo:
+        // bonus from wealth
+        var nPrize = 1
+        val bonus = min(10, Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
+        while (Random.Float() < .25f + bonus * 0.05f)
+            ++nPrize
 
-        for (i in validCells) {
-            val trap = trapClasses[Random.chances(trapChances)].newInstance().hide()
-            setTrap(trap, i)
+        val trapsToSpawn = List(min(traps + nPrize, validCells.size)) {
+            if (it < traps)
+                trapClasses[Random.chances(trapChances)].newInstance().hide()
+            else
+                PrizeTrap().hide()
+        }
 
-            map[i] = if (trap.visible) Terrain.TRAP else Terrain.SECRET_TRAP
+        Log.d("dpd", "would add ${trapsToSpawn.size} traps, of which ${trapsToSpawn.size- traps} are prizes.")
 
-            if (--traps <= 0) break
+        for (pr in trapsToSpawn.withIndex()) {
+            val cell = validCells[pr.index]
+            val trap = pr.value
+
+            setTrap(trap, cell)
+            map[cell] = if (trap.visible) Terrain.TRAP else Terrain.SECRET_TRAP
         }
     }
 
@@ -457,7 +487,7 @@ abstract class RegularLevel : Level() {
                 PitDigger::class.java to 0f,
                 PoolDigger::class.java to 1f,
                 QuestionerDigger::class.java to 1f,
-                ShopDigger::class.java to 0f,
+                MerchantDigger::class.java to 0f,
                 StatuaryDigger::class.java to 1f,
                 StatueDigger::class.java to 1f,
                 StorageDigger::class.java to 0.8f,

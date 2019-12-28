@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Challenges
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.perks.RavenousAppetite
 import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty
 import com.egoal.darkestpixeldungeon.messages.M
@@ -71,13 +72,13 @@ class Hunger : Buff(), Hero.Doom {
                 partialDamage += dhp
 
                 if (partialDamage > 1) {
-                    target.takeDamage(Damage(partialDamage.toInt(),
-                            this, target).type(Damage.Type.MAGICAL).addFeature(Damage
-                            .Feature.PURE))
+                    target.takeDamage(Damage(partialDamage.toInt(), this, target)
+                            .type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE))
                     if (target.isAlive) {
-                        target.takeDamage(Damage(Random.Int(0, partialDamage.toInt() + 1),
-                                this, target).type(Damage.Type.MENTAL).addFeature(Damage
-                                .Feature.PURE))
+                        target.takeDamage(Damage(Random.Int(0, partialDamage.toInt() + 1), this, target)
+                                .type(Damage.Type.MENTAL).addFeature(Damage.Feature.PURE))
+                        if (Random.Float() < 0.2f)
+                            (target as Hero).sayShort(HeroLines.WHY_NOT_EAT)
                     }
                     partialDamage -= partialDamage.toInt().toFloat()
                 }
@@ -108,10 +109,13 @@ class Hunger : Buff(), Hero.Doom {
                 }
             }
 
-            val step = if ((target as Hero).heroClass === HeroClass.ROGUE)
-                STEP * 1.2f
-            else
-                STEP
+
+            val step = when {
+                target.buff(Drunk::class.java) != null -> STEP / 5f
+                (target as Hero).heroClass == HeroClass.ROGUE -> STEP * 1.2f
+                else -> STEP
+            }
+
             spend(if (target.buff(Shadows::class.java) == null) step else step * 1.5f)
 
         } else {

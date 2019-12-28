@@ -48,12 +48,12 @@ abstract class Book : Item() {
         if (action == AC_READ) {
             val pr = hero.canRead()
 
-            if (pr.first) doRead()
+            if (pr.first) doRead(hero)
             else GLog.n(pr.second)
         }
     }
 
-    protected abstract fun doRead()
+    protected abstract fun doRead(hero: Hero)
 
     override fun isUpgradable(): Boolean = false
 

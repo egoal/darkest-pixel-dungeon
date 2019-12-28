@@ -19,13 +19,13 @@ import com.watabou.utils.Random
  * Created by 93942 on 8/26/2018.
  */
 
-open class PotionSeller : DPDShopKeeper() {
+open class PotionSeller : Merchant() {
 
     init {
         spriteClass = PotionSellerSprite::class.java
     }
 
-    override fun initSellItems(): DPDShopKeeper {
+    override fun initSellItems() {
         // potions
         val cntItems = Random.NormalIntRange(3, 8)
         repeat(cntItems) {
@@ -39,20 +39,18 @@ open class PotionSeller : DPDShopKeeper() {
         }
         addItemToSell(PotionOfHealing())
         addItemToSell(PotionTestPaper().quantity(Random.Int(1, 3)))
-        
+
         shuffleItems()
-        return this
     }
 
-    override fun onPlayerStealFailed(hero: Hero) {
+    override fun onStealFailed(hero: Hero) {
         Sample.INSTANCE.play(Assets.SND_SHATTER)
 
-        if (Random.Float() < .7f)
-            GameScene.add(Blob.seed(hero.pos, 1000, ToxicGas::class.java))
-        else
-            GameScene.add(Blob.seed(hero.pos, 2, Fire::class.java))
+        if (Random.Float() < .7f) GameScene.add(Blob.seed(hero.pos, 1000, ToxicGas::class.java))
+        else GameScene.add(Blob.seed(hero.pos, 2, Fire::class.java))
 
-        super.onPlayerStealFailed(hero)
+        super.onStealFailed(hero)
+
     }
 
     companion object {

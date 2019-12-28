@@ -43,7 +43,6 @@ public class Buff extends Actor {
     POSITIVE, NEGATIVE, NEUTRAL, SILENT
   }
 
-  ;
   public buffType type = buffType.SILENT;
 
   public HashSet<Class<?>> resistances = new HashSet<Class<?>>();

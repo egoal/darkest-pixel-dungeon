@@ -28,12 +28,14 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.ui.PerkSlot
+import com.egoal.darkestpixeldungeon.ui.RedButton
 import com.egoal.darkestpixeldungeon.ui.Window
 import com.watabou.gltextures.SmartTexture
 import com.watabou.gltextures.TextureCache
@@ -44,6 +46,7 @@ import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.ui.Button
 
 import java.util.Locale
+import kotlin.math.round
 
 // window shown when press the status pane avatar
 class WndHero : WndTabbed() {
@@ -54,7 +57,7 @@ class WndHero : WndTabbed() {
     private val perks: PerksTab
 
     private val icons: SmartTexture = TextureCache.get(Assets.BUFFS_LARGE)
-    private val perkIcons = TextureCache.get(Assets.PERKS)
+    // private val perkIcons = TextureCache.get(Assets.PERKS)
     private val film: TextureFilm
 
     init {
@@ -126,8 +129,19 @@ class WndHero : WndTabbed() {
                 title.label((hero.givenName() + "\n" + Messages.get(this, "title",
                         hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH))
             title.color(Window.SHPX_COLOR)
-            title.setRect(0f, 0f, WIDTH.toFloat(), 0f)
+            title.setRect(0f, 0f, WIDTH / 2f, 0f)
             add(title)
+
+            if (hero.lvl >= 12 && hero.subClass == HeroSubClass.NONE) {
+                val btn = object : RedButton(M.L(this, "choose_way")) {
+                    override fun onClick() {
+                        hide()
+                        WndMasterSubclass.Show(hero)
+                    }
+                }
+                btn.setRect(title.right() + GAP5, title.top(), 40f, title.height())
+                add(btn)
+            }
 
             pos = title.bottom() + 2 * GAP5
 
@@ -254,13 +268,15 @@ class WndHero : WndTabbed() {
 
         }
 
-        private fun layoutResistances(thetop: Float): Float {
-            var thetop = thetop
+        private fun layoutResistances(top: Float): Float {
+            var thetop = top
             val ICON_SIZE = 8
+            val FONT_SIZE = 6
+            val GAP = 3f
 
             resistIcons = TextureCache.get(Assets.DPD_CONS_ICONS)
 
-            val rt = PixelScene.renderText(Messages.get(this, "elemental_resistance"), 8)
+            val rt = PixelScene.renderText(M.L(this, "elemental_resistance"), FONT_SIZE)
             rt.y = thetop
             add(rt)
 
@@ -269,26 +285,34 @@ class WndHero : WndTabbed() {
             for (i in 0 until Damage.Element.ELEMENT_COUNT) {
                 val icon = Image(resistIcons)
                 icon.frame(ICON_SIZE * i, 16, ICON_SIZE, ICON_SIZE)
-                icon.x = GAP5.toFloat()
-                icon.y = rt.y + rt.height() + ((GAP5 + ICON_SIZE) * i).toFloat()
+                icon.x = GAP
+                icon.y = rt.y + rt.height() + ((GAP + ICON_SIZE) * i).toFloat()
                 add(icon)
 
-                val txt = PixelScene.renderText(String.format("%+2d%%", (hero.elementalResistance[i]* 100).toInt()), 8)
-                txt.x = icon.width + GAP5
+                val txt = PixelScene.renderText(String.format("%+2d%%", (hero.elementalResistance[i] * 100).toInt()), FONT_SIZE)
+                txt.x = icon.width + GAP
                 txt.y = (icon.height - txt.baseLine()) / 2 + icon.y
                 add(txt)
 
-                thetop = icon.y + icon.height() + GAP5.toFloat()
+                thetop = icon.y + icon.height() + GAP
             }
 
-            val rt2 = PixelScene.renderText(M.L(this, "magical_resistance", (hero.magicalResistance* 100).toInt()), 8)
-            rt2.y = thetop
-            add(rt2)
-            thetop += rt2.height() + GAP5.toFloat()
+            thetop = addLine(thetop, M.L(this, "magical_resistance", (hero.magicalResistance() * 100).toInt()))
+            thetop = addLine(thetop, M.L(this, "critical_chance", round(hero.criticalChance() * 100).toInt()))
+            thetop = addLine(thetop, M.L(this, "evasion_chance", round(hero.evasionProbability() * 100).toInt()))
+            if (hero.isAlive)
+                thetop = addLine(thetop, M.L(this, "regeneration", hero.regenerateSpeed()))
 
             return thetop
         }
 
+        private fun addLine(top: Float, line: String): Float {
+            val lbl = PixelScene.renderText(line, 6)
+            lbl.y = top
+            add(lbl)
+
+            return top + lbl.height() + 3f
+        }
     }
 
     companion object {

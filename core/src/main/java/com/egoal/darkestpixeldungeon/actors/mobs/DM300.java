@@ -167,7 +167,7 @@ public class DM300 extends Mob {
       Ballistica shot = new Ballistica(tgt.pos, opposite, Ballistica
               .MAGIC_BOLT);
 
-      WandOfBlastWave.throwChar(tgt, shot, 1);
+      WandOfBlastWave.Companion.throwChar(tgt, shot, 1);
     }
 
     return super.attackProc(dmg);
@@ -179,7 +179,7 @@ public class DM300 extends Mob {
     super.die(cause);
 
     GameScene.bossSlain();
-    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).sprite.drop();
+    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).getSprite().drop();
 
     Badges.validateBossSlain();
 

@@ -52,6 +52,7 @@ public class TrapSprite extends Image {
   public static final int DIAMOND = 4;
   public static final int CROSSHAIR = 5;
   public static final int LARGE_DOT = 6;
+  public  static  final int ELLIPSE = 7;
 
 
   public TrapSprite() {

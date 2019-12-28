@@ -41,7 +41,7 @@ class Golem : Mob() {
 
     override fun attackDelay(): Float = 1.5f
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         Imp.Quest.process(this)
 
         super.die(cause)

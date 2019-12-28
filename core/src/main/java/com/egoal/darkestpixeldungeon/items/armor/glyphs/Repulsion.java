@@ -43,7 +43,7 @@ public class Repulsion extends Armor.Glyph {
       int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
       Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, 
               Ballistica.MAGIC_BOLT);
-      WandOfBlastWave.throwChar(attacker, trajectory, 2);
+      WandOfBlastWave.Companion.throwChar(attacker, trajectory, 2);
     }
 
     return damage;

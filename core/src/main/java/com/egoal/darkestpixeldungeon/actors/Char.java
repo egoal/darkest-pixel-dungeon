@@ -103,6 +103,11 @@ public abstract class Char extends Actor {
 
   private HashSet<Buff> buffs = new HashSet<>();
 
+  public enum Camp{
+    HERO, NEUTRAL, ENEMY,
+  }
+  public Camp camp;
+
   {
     Arrays.fill(elementalResistance, 0f);
   }
@@ -146,6 +151,10 @@ public abstract class Char extends Actor {
         ((Buff) b).attachTo(this);
       }
     }
+  }
+
+  public float magicalResistance(){
+      return magicalResistance;
   }
 
   public int viewDistance() {
@@ -261,6 +270,8 @@ public abstract class Char extends Actor {
 
       return true;
     } else {
+      if(enemy==Dungeon.hero) Dungeon.hero.onEvasion(dmg);
+
       // missed
       if (visibleFight) {
         String str = enemy.defenseVerb();
@@ -444,7 +455,7 @@ public abstract class Char extends Actor {
           dmg.value -= Math.round(dmg.value* elementalResistance[of]);
 
     if(dmg.type== Damage.Type.MAGICAL)
-      dmg.value -= Math.round(dmg.value* magicalResistance);
+      dmg.value -= Math.round(dmg.value* magicalResistance());
 
     if(dmg.value<0) dmg.value = 0;
 

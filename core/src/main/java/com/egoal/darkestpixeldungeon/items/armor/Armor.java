@@ -289,7 +289,7 @@ public class Armor extends EquipableItem {
     String info = desc();
 
     if (levelKnown) {
-      info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(), 
+      info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(),
               DRMax(), STRReq());
 
       if (STRReq() > Dungeon.hero.STR()) {
@@ -299,7 +299,7 @@ public class Armor extends EquipableItem {
         info += " " + Messages.get(Armor.class, "excess_str");
       }
     } else {
-      info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), 
+      info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0),
               DRMax(0), STRReq(0));
 
       if (STRReq(0) > Dungeon.hero.STR()) {
@@ -368,9 +368,11 @@ public class Armor extends EquipableItem {
     if (glyph != null) effectiveTier += glyph.tierSTRAdjust();
     effectiveTier = Math.max(0, effectiveTier);
 
+    return 8 + Math.round(effectiveTier * 2) - (lvl + 1) / 2; // +1, +3, +5, +7
+
     //strength req decreases at +1,+3,+6,+10,etc.
-    return (8 + Math.round(effectiveTier * 2)) - (int) (Math.sqrt(8 * lvl + 
-            1) - 1) / 2;
+//    return (8 + Math.round(effectiveTier * 2)) - (int) (Math.sqrt(8 * lvl +
+//            1) - 1) / 2;
   }
 
   @Override
@@ -442,7 +444,7 @@ public class Armor extends EquipableItem {
             2, 2, 2};
 
     private static final Class<?>[] curses = new Class<?>[]{
-            AntiEntropy.class, Corrosion.class, Displacement.class, 
+            AntiEntropy.class, Corrosion.class, Displacement.class,
             Metabolism.class, Multiplicity.class, Stench.class
     };
 

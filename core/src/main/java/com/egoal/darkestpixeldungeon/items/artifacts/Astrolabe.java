@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.Speck;
@@ -153,6 +154,7 @@ public class Astrolabe extends Artifact {
         cachedInvoker_2 = ivk;
       }
     } else {
+      if(Random.Int(4)==0) curUser.sayShort(HeroLines.DAMN);
       ivk.invoke(curUser, this);
     }
   }
@@ -230,7 +232,6 @@ public class Astrolabe extends Artifact {
   @Override
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
-    cooldown = bundle.getInt(COOLDOWN);
     blockNextNegative = bundle.getBoolean(BLOCK_NEXT_NEGATIVE);
     nextNegativeIsImprison = bundle.getBoolean(NEXT_IS_IMPRISON);
 
@@ -552,7 +553,7 @@ public class Astrolabe extends Artifact {
         Ballistica shot = new Ballistica(curUser.pos, c.pos, Ballistica
                 .MAGIC_BOLT);
         if (shot.path.size() > shot.dist + 1)
-          WandOfBlastWave.throwChar(c,
+          WandOfBlastWave.Companion.throwChar(c,
                   new Ballistica(c.pos, shot.path.get(shot.dist + 1),
                           Ballistica.MAGIC_BOLT), 3);
       }

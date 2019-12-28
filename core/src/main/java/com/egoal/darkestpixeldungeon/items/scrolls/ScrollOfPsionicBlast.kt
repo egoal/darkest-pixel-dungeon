@@ -21,13 +21,10 @@
 package com.egoal.darkestpixeldungeon.items.scrolls
 
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
@@ -55,8 +52,9 @@ class ScrollOfPsionicBlast : Scroll() {
         }
 
         curUser.takeDamage(Damage(Math.max(curUser.HT / 5, curUser.HP / 2), this, curUser).type(Damage.Type.MAGICAL))
-        Buff.prolong(curUser, Paralysis::class.java, Random.Float(4f, 6f))
-        Buff.prolong(curUser, Blindness::class.java, Random.Float(6f, 9f))
+//        Buff.prolong(curUser, Paralysis::class.java, Random.Float(4f, 6f))
+//        Buff.prolong(curUser, Blindness::class.java, Random.Float(6f, 9f))
+        Buff.prolong(Item.curUser, Weakness::class.java, Random.Float(6f, 12f))
         Dungeon.observe()
 
         setKnown()

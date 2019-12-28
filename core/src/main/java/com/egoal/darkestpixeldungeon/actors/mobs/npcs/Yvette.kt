@@ -20,12 +20,14 @@ import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.egoal.darkestpixeldungeon.windows.WndQuest
 import com.watabou.noosa.TextureFilm
@@ -55,20 +57,14 @@ class Yvette : NPC() {
         }
 
         if (questGiven) {
-            GameScene.show(object : WndOptions(Sprite(), name, Messages.get(this, "reminder"),
-                    Messages.get(this, "opt-ok"), Messages.get(this, "opt-betray")) {
-                override fun onSelect(index: Int) {
-                    onAnswered(index)
-                }
-            })
+            WndDialogue.Show(this, M.L(this, "reminder"), M.L(this, "opt-ok"), M.L(this, "opt-betray")) {
+                onAnswered(it)
+            }
         } else {
             questGiven = true
-            GameScene.show(object : WndOptions(Sprite(), name, Messages.get(this, "task"),
-                    Messages.get(this, "opt-onit"), Messages.get(this, "opt-betray")) {
-                override fun onSelect(index: Int) {
-                    onAnswered(index)
-                }
-            })
+            WndDialogue.Show(this, M.L(this, "task"), M.L(this, "opt-onit"), M.L(this, "opt-betray")) {
+                onAnswered(it)
+            }
         }
 
         return false
@@ -160,6 +156,8 @@ class Yvette : NPC() {
 
         Dungeon.hero.recoverSanity(Random.Float(4f, 10f))
 
+        Dungeon.level.drop(Generator.WEAPON.generate(), pos)
+
         if (Random.Int(2) == 0) {
             var potion: Potion
             do {
@@ -179,8 +177,7 @@ class Yvette : NPC() {
                 cursed = false
                 identify()
             }, pos)
-        else
-            Dungeon.level.drop(RangerHat().identify(), pos)
+        else Dungeon.level.drop(RangerHat().identify(), pos)
 
         destroy()
         (sprite as Sprite).leave()
@@ -192,9 +189,10 @@ class Yvette : NPC() {
 
         Dungeon.hero.takeDamage(Damage(Random.Int(4, 10), Dungeon.hero, Dungeon.hero).type(Damage.Type.MENTAL))
 
-        Dungeon.level.drop(Bow(), pos)
+//        Dungeon.level.drop(Bow(), pos)
         Dungeon.level.drop(IronKey(20), pos)
         Dungeon.level.drop(RangerHat().identify(), pos)
+        Dungeon.level.drop(Generator.WEAPON.generate(), pos)
         Dungeon.level.drop(YvettesDiary(), pos)
 
         Wound.hit(pos)
@@ -236,8 +234,8 @@ class Yvette : NPC() {
             type = Heap.Type.SKELETON
             drop(IronKey(20))
             drop(YvettesDiary())
-            drop(Bow())
-
+            drop(Generator.WEAPON.generate())
+            drop(Generator.ARMOR.generate())
         }
     }
 

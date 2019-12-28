@@ -9,7 +9,7 @@ import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.diggers.LevelDigger
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.*
-import com.egoal.darkestpixeldungeon.levels.diggers.specials.ShopDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.MerchantDigger
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Group
 import com.watabou.utils.Random
@@ -39,7 +39,7 @@ class LastShopLevel : RegularLevel() {
 
         for (i in 1..4) diggers.add(Random.chances(normalDiggers).newInstance())
         if (Imp.Quest.isCompleted())
-            diggers.add(ShopDigger())
+            diggers.add(MerchantDigger())
 
         return diggers
     }

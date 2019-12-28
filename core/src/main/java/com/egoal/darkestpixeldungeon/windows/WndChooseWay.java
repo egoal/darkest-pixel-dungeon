@@ -35,7 +35,7 @@ public class WndChooseWay extends Window {
   private static final int BTN_HEIGHT = 18;
   private static final float GAP = 2;
 
-  public WndChooseWay(final TomeOfMastery tome, final HeroSubClass way1, 
+  public WndChooseWay(final TomeOfMastery tome, final HeroSubClass way1,
                       final HeroSubClass way2) {
 
     super();
@@ -47,7 +47,7 @@ public class WndChooseWay extends Window {
     add(titlebar);
 
     RenderedTextMultiline hl = PixelScene.renderMultiline(6);
-    hl.text(way1.desc() + "\n\n" + way2.desc() + "\n\n" + Messages.get(this, 
+    hl.text(way1.desc() + "\n\n" + way2.desc() + "\n\n" + Messages.get(this,
             "message"), WIDTH);
     hl.setPos(titlebar.left(), titlebar.bottom() + GAP);
     add(hl);
@@ -69,7 +69,7 @@ public class WndChooseWay extends Window {
         tome.choose(way2);
       }
     };
-    btnWay2.setRect(btnWay1.right() + GAP, btnWay1.top(), btnWay1.width(), 
+    btnWay2.setRect(btnWay1.right() + GAP, btnWay1.top(), btnWay1.width(),
             BTN_HEIGHT);
     add(btnWay2);
 

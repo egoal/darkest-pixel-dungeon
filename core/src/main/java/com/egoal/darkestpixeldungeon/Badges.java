@@ -479,7 +479,7 @@ public class Badges {
 
   public static void validateAllPotionsIdentified() {
     if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-            !local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion.allKnown
+            !local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion.Companion.allKnown
             ()) {
 
       Badge badge = Badge.ALL_POTIONS_IDENTIFIED;

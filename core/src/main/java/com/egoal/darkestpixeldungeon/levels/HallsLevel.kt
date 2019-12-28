@@ -5,7 +5,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
-import com.egoal.darkestpixeldungeon.levels.diggers.specials.ShopDigger
+import com.egoal.darkestpixeldungeon.levels.diggers.specials.MerchantDigger
 import com.egoal.darkestpixeldungeon.levels.traps.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.Game
@@ -38,15 +38,15 @@ class HallsLevel : RegularLevel() {
             WeakeningTrap::class.java, CursingTrap::class.java, FlockTrap::class.java,
             GrimTrap::class.java, GuardianTrap::class.java, SummoningTrap::class.java,
             TeleportationTrap::class.java, DisarmingTrap::class.java, DistortionTrap::class.java,
-            WarpingTrap::class.java)
+            WarpingTrap::class.java, FreakingTrap::class.java)
 
-    override fun trapChances(): FloatArray = floatArrayOf(8f, 8f, 8f, 8f, 8f, 4f, 4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f, 1f)
+    override fun trapChances(): FloatArray = floatArrayOf(8f, 8f, 8f, 8f, 8f, 4f, 4f, 4f, 4f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 1f, 1f, 1f, 2f)
 
     override fun chooseDiggers(): ArrayList<Digger> {
         // less diggers, but more specials
         val diggers = selectDiggers(Random.NormalIntRange(2, 3), 12)
         if (Dungeon.shopOnLevel())
-            diggers.add(ShopDigger())
+            diggers.add(MerchantDigger())
 
         return diggers
     }

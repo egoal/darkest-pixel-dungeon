@@ -14,7 +14,7 @@ class Drunk : Vertigo() {
     override fun desc(): String = Messages.get(this, "desc", dispTurns())
 
     companion object {
-        private const val BASE_DURATION = 20f
+        private const val BASE_DURATION = 30f
         
         fun duration(ch: Char): Float {
             val r = ch.buff(RingOfElements.Resistance::class.java)

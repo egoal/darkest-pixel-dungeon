@@ -75,7 +75,9 @@ class WandGuard : Mob() {
         return true
     }
 
-    override fun giveDamage(enemy: Char): Damage = Damage(wand.damageRoll(), this, enemy).type(Damage.Type.MAGICAL)
+    private fun damageRoll(): Int = Random.NormalIntRange(2 + 2 * wand.level(), 8 + 3 * wand.level())
+
+    override fun giveDamage(enemy: Char): Damage = Damage(damageRoll(), this, enemy).type(Damage.Type.MAGICAL)
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply {
         value -= Random.NormalIntRange(value / 4, value / 2)
@@ -125,7 +127,8 @@ class WandGuard : Mob() {
                 WandOfFireblast::class.java to 4f,
                 WandOfBlastWave::class.java to 3f,
                 WandOfFrost::class.java to 3f,
-                WandOfPrismaticLight::class.java to 3f
+                WandOfPrismaticLight::class.java to 3f,
+                WandOfVenom::class.java to 3f
         )
 
         class Sprite : MobSprite() {

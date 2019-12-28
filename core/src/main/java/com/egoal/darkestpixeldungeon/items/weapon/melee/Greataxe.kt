@@ -20,10 +20,13 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.melee
 
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.watabou.utils.PathFinder
 
 class Greataxe : MeleeWeapon() {
-
     init {
         image = ItemSpriteSheet.GREATAXE
 
@@ -37,4 +40,14 @@ class Greataxe : MeleeWeapon() {
 
     override fun STRReq(lvl: Int): Int = super.STRReq(lvl) + 1
 
+    override fun proc(dmg: Damage): Damage {
+        val pos = (dmg.to as Char).pos
+        for (i in PathFinder.NEIGHBOURS8) {
+            val mob = Dungeon.level.findMobAt(pos + i)
+            if (mob != null && mob.camp == Char.Camp.ENEMY)
+                mob.takeDamage(mob.defendDamage(Damage(dmg.value / 2, dmg.from, dmg.to).type(dmg.type)))
+        }
+
+        return super.proc(dmg)
+    }
 }

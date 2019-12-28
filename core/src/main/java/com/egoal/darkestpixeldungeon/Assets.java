@@ -37,6 +37,10 @@ public class Assets {
   public static final String HUNTRESS = ACTORS + "ranger.png";
   public static final String DPD_SORCERESS = ACTORS + "sorceress.png";
 
+  public static final String HERO_BODY = ACTORS+ "hero/body.png";
+  public static final String HERO_HEAD = ACTORS+ "hero/head.png";
+  public static final String HERO_ARMOR = ACTORS+ "hero/armor.png";
+
   // npc
   public static final String PET = ACTORS + "pet.png";
   public static final String GHOST = ACTORS + "ghost.png";
@@ -239,6 +243,7 @@ public class Assets {
   public static final String SND_CRITICAL = SOUNDS + "snd_critical.ogg";
   public static final String SND_RELOAD = SOUNDS + "snd_reload.ogg";
   public static final String SND_HOWL = SOUNDS+ "snd_howl.ogg";
+  public static final String SND_BLOCK = SOUNDS+ "snd_block.ogg";
 
   // spd legacy=================================================================
   public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";

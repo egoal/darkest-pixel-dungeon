@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.plants
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfParalyticGas
@@ -50,7 +51,7 @@ class Earthroot : Plant(5) {
     class Seed : Plant.Seed(Earthroot::class.java, PotionOfParalyticGas::class.java) {
         init {
             image = ItemSpriteSheet.SEED_EARTHROOT
-            
+
             bones = true
         }
     }
@@ -76,7 +77,11 @@ class Earthroot : Plant(5) {
             return true
         }
 
-        fun absorb(damage: Int): Int = if (level <= damage - damage / 2) {
+        fun procTakenDamage(dmg: Damage) {
+            dmg.value = absorb(dmg.value)
+        }
+
+        private fun absorb(damage: Int): Int = if (level <= damage - damage / 2) {
             detach()
             damage - level
         } else {

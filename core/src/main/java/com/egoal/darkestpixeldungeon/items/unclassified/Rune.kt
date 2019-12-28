@@ -41,7 +41,7 @@ abstract class Rune : Item() {
             vial.collectRune(this)
 
             Sample.INSTANCE.play(Assets.SND_DEWDROP)
-            hero.spendAndNext(Item.TIME_TO_PICK_UP)
+            hero.spendAndNext(TIME_TO_PICK_UP)
 
             return true
         }
@@ -60,7 +60,7 @@ class MendingRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0x00ff00)
 
     override fun affect(hero: Hero) {
-        Buff.prolong(hero, Recovery::class.java, 100f)
+        Buff.prolong(hero, Recovery::class.java, 200f)
     }
 
     class Recovery : FlavourBuff()

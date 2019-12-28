@@ -62,27 +62,30 @@ object Generator {
 
     object WEAPON : ItemGenerator() {
         private val floorSetTierProbs = arrayOf(
-                floatArrayOf(20f, 60f, 10f, 5f, 5f),
-                floatArrayOf(10f, 25f, 50f, 15f, 5f),
-                floatArrayOf(0f, 10f, 40f, 40f, 10f),
-                floatArrayOf(0f, 5f, 20f, 50f, 25f),
-                floatArrayOf(0f, 2f, 8f, 20f, 70f)
+                floatArrayOf(15f, 60f, 10f, 5f, 5f),
+                floatArrayOf(10f, 25f, 50f, 20f, 10f),
+                floatArrayOf(0f, 10f, 40f, 40f, 20f),
+                floatArrayOf(0f, 0f, 20f, 50f, 30f),
+                floatArrayOf(0f, 0f, 10f, 20f, 70f)
         )
 
         object MELEE : ItemGenerator() {
             object T1 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    WornShortsword::class.java to 0f,
+                    WornShortsword::class.java to 1f,
                     Knuckles::class.java to 1f,
                     Dagger::class.java to 1f,
                     MagesStaff::class.java to 0f,
+                    SorceressWand::class.java to 0f,
                     BattleGloves::class.java to 1f
             ))
 
             object T2 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
+                    Dirk::class.java to 5f,
                     ShortSword::class.java to 6f,
                     HandAxe::class.java to 5f,
                     Spear::class.java to 5f,
-                    Quarterstaff::class.java to 4f
+                    Quarterstaff::class.java to 4f,
+                    Sickle::class.java to 5f
             ))
 
             object T3 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
@@ -110,7 +113,8 @@ object Generator {
                     WarHammer::class.java to 5f,
                     Glaive::class.java to 5f,
                     Greataxe::class.java to 4f,
-                    Greatshield::class.java to 4f
+                    Greatshield::class.java to 4f,
+                    Lance::class.java to 5f
             ))
 
             private val Ts = arrayOf(T1, T2, T3, T4, T5)
@@ -135,6 +139,7 @@ object Generator {
                 SwallowDart::class.java to 10f,
                 IncendiaryDart::class.java to 1f,
                 CurareDart::class.java to 1f,
+                CeremonialDagger::class.java to 1f,
                 // 3
                 FlyCutter::class.java to 8f,
                 SeventhDart::class.java to 8f,
@@ -192,7 +197,8 @@ object Generator {
             WandOfBlastWave::class.java to 3f,
             WandOfFrost::class.java to 3f,
             WandOfPrismaticLight::class.java to 3f,
-            WandOfTransfusion::class.java to 3f,
+            // WandOfTransfusion::class.java to 3f,
+            WandOfAbel::class.java to 3f,
             WandOfCorruption::class.java to 3f,
             WandOfRegrowth::class.java to 3f
     ))
@@ -241,6 +247,7 @@ object Generator {
             CapeOfThorns::class.java to 0f, // by DM300
             ChaliceOfBlood::class.java to 0f,  // by statuary
             CloakOfShadows::class.java to 0f, // for rouge
+            CrackedCoin::class.java to 1f,
             HornOfPlenty::class.java to 1f,
             MasterThievesArmband::class.java to 0f, // by thief
             SandalsOfNature::class.java to 1f,
@@ -337,6 +344,7 @@ object Generator {
             HelmetBarbarian::class.java to 1f,
             HelmetCrusader::class.java to 1f,
             HoodApprentice::class.java to 1f,
+            LittlePail::class.java to 1f,
             CircletEmerald::class.java to 1f,
             CrownOfDwarf::class.java to 0f, // by king 
             HeaddressRegeneration::class.java to 1f,
@@ -364,7 +372,7 @@ object Generator {
     ))
 
     // 
-    private val categoryMap = hashMapOf(
+    private val InitCategoryMap = hashMapOf(
             WEAPON to 100f,
             ARMOR to 60f,
             POTION to 500f,
@@ -380,7 +388,23 @@ object Generator {
             RUNE to 0f
     )
 
-    fun generate(): Item = Random.chances(categoryMap).generate()
+    private val categoryMap = HashMap<ItemGenerator, Float>()
+
+    init {
+        ResetCategoryProbs()
+    }
+
+    fun ResetCategoryProbs() {
+        categoryMap.clear()
+        for (pr in InitCategoryMap) categoryMap[pr.key] = pr.value
+    }
+
+    fun generate(): Item {
+        val cat = Random.chances(categoryMap)
+        categoryMap[cat] = categoryMap[cat]!! / 2f
+
+        return cat.generate()
+    }
 
     fun reset() {
         ARTIFACT.reset()

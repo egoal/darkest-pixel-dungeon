@@ -89,7 +89,7 @@ public class RotHeart extends Mob {
   @Override
   public void die(Object cause) {
     super.die(cause);
-    Dungeon.level.drop(new Rotberry.Seed(), pos).sprite.drop();
+    Dungeon.level.drop(new Rotberry.Seed(), pos).getSprite().drop();
   }
 
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

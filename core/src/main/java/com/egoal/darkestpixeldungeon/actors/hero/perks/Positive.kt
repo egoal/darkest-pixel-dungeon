@@ -3,10 +3,10 @@ package com.egoal.darkestpixeldungeon.actors.hero.perks
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.Statistics
+import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
-import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.effects.Flare
@@ -17,8 +17,10 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.unclassified.Rune
 import com.egoal.darkestpixeldungeon.items.wands.Wand
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
@@ -26,6 +28,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.round
 
 class Drunkard : Perk() {
@@ -122,6 +125,20 @@ class Discount : Perk(2) {
     fun ratio(): Float = 1f - 0.25f * level
 }
 
+class GreedyMidas : Perk() {
+    override fun image(): Int = PerkImageSheet.GREEDY_MIDAS
+
+    fun procGold(gold: Gold) = gold.apply {
+        val p = Random.Float()
+        val q = gold.quantity() * when {
+            p < 0.33f -> 4.33f
+            p < 0.001f -> 10f
+            else -> 1f
+        }
+        quantity(round(q).toInt())
+    }
+}
+
 class VampiricCrit : Perk(5) {
     override fun image(): Int = PerkImageSheet.CRIT_VAMP
 
@@ -181,9 +198,10 @@ class HardCrit : Perk(5) {
 class LowHealthDexterous : Perk(3) {
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_DEX
 
-    fun evasionFactor(hero: Hero): Float {
-        if (hero.HP > hero.HT * 0.3) return 1f
-        return Math.pow(1.25, level.toDouble()).toFloat()
+    fun extraEvasion(hero: Hero): Float {
+        if (hero.HP > hero.HT * 0.3f) return 0f
+
+        return 0.2f * 1.5f.pow(level)
     }
 }
 
@@ -205,6 +223,25 @@ class ExtraDexterous : Perk(5) {
     }
 
     private fun extraDef(): Int = 3 * level
+}
+
+class ExtraEvasion : Perk(4) {
+    override fun image(): Int = PerkImageSheet.DEX_EXTRA
+
+    fun prob(): Float = 0.075f * level
+
+    override fun description(): String = M.L(this, "desc", (prob() * 100).toInt())
+}
+
+// cs go!
+class CounterStrike : Perk() {
+    override fun image(): Int = PerkImageSheet.COUNTER_STRIKE
+
+    fun procEvasionDamage(dmg: Damage) {
+        if (dmg.type == Damage.Type.NORMAL && !dmg.isFeatured(Damage.Feature.RANGED)) {
+            Buff.affect(dmg.to as Hero, SeeThrough::class.java, 1.1f).enemyid = (dmg.from as Actor).id()
+        }
+    }
 }
 
 class ExtraDexterousGrowth : Perk(5) {
@@ -288,7 +325,7 @@ class FastRegeneration : Perk(5) {
         onGain()
     }
 
-    private fun extraReg(): Float = 0.1f * level
+    private fun extraReg(): Float = 0.15f * level
 }
 
 class EfficientPotionOfHealing : Perk() {
@@ -325,34 +362,90 @@ class PressureRelieve : Perk(2) {
 class WandCharger : Perk(3) {
     override fun image(): Int = PerkImageSheet.WAND_CHARGE
 
-    fun factor(): Float = 2f - Math.pow(0.9, level.toDouble()).toFloat()
+    fun factor(): Float = 2f - 0.8f.pow(level)
 }
 
 class WandArcane : Perk(3) {
     override fun image(): Int = PerkImageSheet.WAND_ARCANE
 
-    fun factor(): Float = 2f - Math.pow(0.85, level.toDouble()).toFloat()
+    fun factor(): Float = 1f + 0.2f * level // 2f - 0.8f.pow(level)
 }
 
 class QuickZap : Perk() {
     override fun image(): Int = PerkImageSheet.WAND_QUICK_ZAP
 }
 
+class StealthCaster : Perk() {
+    override fun image(): Int = PerkImageSheet.STEALTH_CASTER
+}
+
+class ArcaneCrit : Perk(5) {
+    override fun image(): Int = PerkImageSheet.ARCANE_CRIT
+
+    fun affectDamage(hero: Hero, dmg: Damage) {
+        if (Random.Float() < prob(hero)) {
+            dmg.value = round(dmg.value * 1.75f).toInt()
+            dmg.addFeature(Damage.Feature.CRITICAL)
+        }
+    }
+
+    private fun prob(hero: Hero): Float {
+        var prob = hero.criticalChance // base chance, not affected by rune, pressure etc.
+        if (level > 1) prob += 0.09f * (level - 1)
+        return prob
+    }
+}
+
+class WandPiercing : Perk() {
+    override fun image(): Int = PerkImageSheet.WAND_PIERCING
+
+    fun onHit(char: Char) {
+        char.magicalResistance -= 0.15f // fixme:
+    }
+}
+
 class ExplodeBrokenShot : Perk() {
     override fun image(): Int = PerkImageSheet.SHOT_EXPLODE
+}
+
+class RangedShot : Perk() {
+    override fun image(): Int = PerkImageSheet.RANGED_SHOT
+
+    fun affectDamage(dmg: Damage) {
+        val dis = Dungeon.level.distance((dmg.from as Char).pos, (dmg.to as Char).pos)
+        if (dis > 1) {
+            dmg.value = round(dmg.value * (3f - 1.8f * 0.9f.pow(dis - 2))).toInt()
+        }
+    }
+}
+
+class FinishingShot : Perk() {
+    override fun image(): Int = PerkImageSheet.FINISHING_SHOT
+
+    fun onKilledChar(hero: Hero, ch: Char, weapon: MissileWeapon) {
+        Buff.prolong(hero, TimeDilation::class.java, 0.5f + weapon.DLY / 2f)
+    }
 }
 
 class ExtraStrength : Perk(3) {
     override fun image(): Int = PerkImageSheet.STRENGTH_EXTRA
 
+    override fun onLose() {
+        super.onLose()
+        Dungeon.hero.STR -= str()
+    }
+
     override fun onGain() {
-        Dungeon.hero.STR++
+        Dungeon.hero.STR += str()
     }
 
     override fun upgrade() {
+        onLose()
         super.upgrade()
-        Dungeon.hero.STR++
+        onGain()
     }
+
+    private fun str(): Int = level
 
     override fun description(): String = M.L(this, "desc", level)
 }
@@ -402,7 +495,7 @@ class ExtraRuneRegularly : TimingPerk(GainRune::class.java) {
     }
 }
 
-class AngryBared : Perk() {
+class BaredAngry : Perk() {
     override fun image(): Int = PerkImageSheet.BARED_ANGRY
 
     fun procGivenDamage(dmg: Damage, hero: Hero) {
@@ -410,6 +503,16 @@ class AngryBared : Perk() {
     }
 
     fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 0.7f else 1f
+
+    private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
+}
+
+class BaredSwiftness : Perk() {
+    override fun image(): Int = PerkImageSheet.BARED_SWIFTNESS
+
+    fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 1.2f else 1f
+
+    fun evasionProb(hero: Hero): Float = if (noArmor(hero)) 0.12f else 0f
 
     private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
 }
@@ -442,6 +545,15 @@ class QuickLearner : Perk(3) {
     }
 }
 
-class LevelPerception: Perk(){
+class ExtraMagicalResistance : Perk(3) {
+    override fun image(): Int = PerkImageSheet.MAGICAL_RESISTANCE
+
+    fun ratio(): Float = 0.05f + level * 0.15f
+
+    override fun description(): String = M.L(this, "desc", (ratio() * 100).toInt())
+}
+
+class LevelPerception : Perk() {
     override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }
+

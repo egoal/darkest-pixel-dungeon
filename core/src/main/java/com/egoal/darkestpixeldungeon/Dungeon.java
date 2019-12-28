@@ -61,7 +61,7 @@ import java.util.HashSet;
 public class Dungeon {
 
   public static int initialDepth_ = -1;
-  public static final String VERSION_STRING = ""; // "0.4.0-2-1";
+  public static final String VERSION_STRING = "";
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -97,6 +97,9 @@ public class Dungeon {
     chaliceOfBlood, // only the statuary drop this now
     demonicSkull,
     handOfElder,
+
+    ceremonialDaggerUsed,
+    ceremonialDagger,
 
     //containers
     dewVial,
@@ -146,7 +149,7 @@ public class Dungeon {
     Actor.resetNextID();
 
     Scroll.initLabels();
-    Potion.initColors();
+    Potion.Companion.initColors();
     Ring.initGems();
 
     Statistics.INSTANCE.reset();
@@ -168,14 +171,14 @@ public class Dungeon {
     chapters = new HashSet<Integer>();
 
     // quest init
-    Ghost.Quest.reset();
+    Ghost.Quest.INSTANCE.reset();
     Wandmaker.Quest.reset();
     Blacksmith.Quest.reset();
     Imp.Quest.reset();
 
-    Alchemist.Quest.reset();
+    Alchemist.Quest.INSTANCE.reset();
     Statuary.Reset();
-    Jessica.Quest.reset();
+    Jessica.Quest.INSTANCE.reset();
     Yvette.Quest.INSTANCE.Reset();
 
     hero = new Hero();
@@ -384,7 +387,15 @@ public class Dungeon {
   }
 
   public static boolean wineNeeded() {
-    int wineLeftThisSet = 1 - (limitedDrops.wine.count - depth / 5);
+    int wineLeftThisSet = 1 - (limitedDrops.wine.count - depth / 10);
+    if (wineLeftThisSet <= 0) return false;
+
+    int floorThisSet = depth % 5;
+    return Random.Int(5 - floorThisSet) < wineLeftThisSet;
+  }
+
+  public static boolean daggerNeeded() {
+    int wineLeftThisSet = 1 - (limitedDrops.ceremonialDagger.count - depth / 5);
     if (wineLeftThisSet <= 0) return false;
 
     int floorThisSet = depth % 5;
@@ -530,13 +541,13 @@ public class Dungeon {
       bundle.put(CHAPTERS, ids);
 
       Bundle quests = new Bundle();
-      Ghost.Quest.storeInBundle(quests);
+      Ghost.Quest.INSTANCE.storeInBundle(quests);
       Wandmaker.Quest.storeInBundle(quests);
       Blacksmith.Quest.storeInBundle(quests);
       Imp.Quest.storeInBundle(quests);
       // dpd save
-      Alchemist.Quest.storeInBundle(quests);
-      Jessica.Quest.storeInBundle(quests);
+      Alchemist.Quest.INSTANCE.storeInBundle(quests);
+      Jessica.Quest.INSTANCE.storeInBundle(quests);
       Yvette.Quest.INSTANCE.StoreInBundle(quests);
       Statuary.save(quests);
 
@@ -547,7 +558,7 @@ public class Dungeon {
       Generator.INSTANCE.storeInBundle(bundle);
 
       Scroll.save(bundle);
-      Potion.save(bundle);
+      Potion.Companion.save(bundle);
       Ring.save(bundle);
 
       Actor.storeNextID(bundle);
@@ -620,7 +631,7 @@ public class Dungeon {
     Dungeon.depth = -1;
 
     Scroll.restore(bundle);
-    Potion.restore(bundle);
+    Potion.Companion.restore(bundle);
     Ring.restore(bundle);
 
     quickslot.restorePlaceholders(bundle);
@@ -643,25 +654,25 @@ public class Dungeon {
 
       Bundle quests = bundle.getBundle(QUESTS);
       if (!quests.isNull()) {
-        Ghost.Quest.restoreFromBundle(quests);
+        Ghost.Quest.INSTANCE.restoreFromBundle(quests);
         Wandmaker.Quest.restoreFromBundle(quests);
         Blacksmith.Quest.restoreFromBundle(quests);
         Imp.Quest.restoreFromBundle(quests);
 
         // dpd, restore quests
-        Alchemist.Quest.restoreFromBundle(quests);
-        Jessica.Quest.restoreFromBundle(quests);
+        Alchemist.Quest.INSTANCE.restoreFromBundle(quests);
+        Jessica.Quest.INSTANCE.restoreFromBundle(quests);
         Statuary.load(quests);
         Yvette.Quest.INSTANCE.RestoreFromBundle(quests);
       } else {
-        Ghost.Quest.reset();
+        Ghost.Quest.INSTANCE.reset();
         Wandmaker.Quest.reset();
         Blacksmith.Quest.reset();
         Imp.Quest.reset();
 
         // dpd
-        Alchemist.Quest.reset();
-        Jessica.Quest.reset();
+        Alchemist.Quest.INSTANCE.reset();
+        Jessica.Quest.INSTANCE.reset();
         Yvette.Quest.INSTANCE.Reset();
       }
     }

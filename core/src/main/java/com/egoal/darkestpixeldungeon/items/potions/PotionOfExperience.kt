@@ -21,6 +21,8 @@
 package com.egoal.darkestpixeldungeon.items.potions
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
+import com.egoal.darkestpixeldungeon.effects.Speck
 
 class PotionOfExperience : Potion() {
     init {
@@ -32,6 +34,7 @@ class PotionOfExperience : Potion() {
     override fun apply(hero: Hero) {
         setKnown()
         hero.earnExp(if (reinforced) hero.maxExp() else hero.maxExp() * 2 / 3)
+        CellEmitter.center(hero.pos).burst(Speck.factory(Speck.STAR), 6)
     }
 
     override fun price(): Int = if (isKnown) (50 * quantity * if (reinforced) 1.5f else 1f).toInt()

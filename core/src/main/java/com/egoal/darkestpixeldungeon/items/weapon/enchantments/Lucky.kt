@@ -29,33 +29,17 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite.Glowing
 import com.watabou.utils.Random
+import kotlin.math.max
 
 class Lucky : Weapon.Enchantment() {
     private val rpr = Random.PseudoRadix(RADIX)
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
-        val defender = damage.to as Char
-        val attacker = damage.from as Char
+        val level = max(0, weapon.level())
+        val ratio = (55f + level) / 100f
+        if (rpr.check(ratio)) damage.value *= 2
+        else damage.value = 0
 
-        val level = Math.max(0, weapon.level())
-        val ratio = (55 + level) / 100f
-        if (rpr.check(ratio)) {
-            var exStr = 0
-            if (attacker === Dungeon.hero)
-                exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq())
-            damage.value = weapon.imbue.damageFactor(weapon.max()) + exStr
-            defender.defendDamage(damage)
-        } else {
-            damage.value = weapon.imbue.damageFactor(weapon.min())
-            defender.defendDamage(damage)
-        }
-
-        // berserker perk
-        if (attacker === Dungeon.hero && Dungeon.hero.subClass === HeroSubClass.BERSERKER)
-            damage.value = Buff.affect(Dungeon.hero, Berserk::class.java).damageFactor(damage.value)
-
-        damage.value = Math.max(0, damage.value)
-        
         return damage
     }
 

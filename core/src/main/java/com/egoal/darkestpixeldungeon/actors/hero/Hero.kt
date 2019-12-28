@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.blobs.SacrificialFire
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
@@ -29,6 +30,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail
+import com.egoal.darkestpixeldungeon.items.weapon.melee.Lance
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -46,6 +48,7 @@ import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
 import com.egoal.darkestpixeldungeon.ui.StatusPane
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
 import com.egoal.darkestpixeldungeon.windows.WndResurrect
 import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.Camera
@@ -57,7 +60,6 @@ import com.watabou.utils.Random
 import java.util.*
 import kotlin.math.*
 
-// refactor may finish someday...
 class Hero : Char() {
     init {
         actPriority = 0
@@ -65,6 +67,8 @@ class Hero : Char() {
 
         HT = 20
         HP = HT
+
+        camp = Camp.HERO
     }
 
     // properties
@@ -104,6 +108,15 @@ class Hero : Char() {
         var str = this.STR + if (weakened) -2 else 0
         str += RingOfMight.getBonus(this, RingOfMight.Might::class.java)
         return str
+    }
+
+    override fun magicalResistance(): Float {
+        var mr = super.magicalResistance()
+        heroPerk.get(ExtraMagicalResistance::class.java)?.let {
+            mr = 1f - (1f - mr) * (1f - it.ratio())
+        }
+
+        return mr
     }
 
     override fun viewDistance(): Int {
@@ -167,8 +180,10 @@ class Hero : Char() {
 
     //todo: refactor helmet immersion
     fun arcaneFactor(): Float {
-        if (belongings.helmet is HoodApprentice) return 1.15f
-        return 1f
+        var factor = heroPerk.get(WandArcane::class.java)?.factor() ?: 1f
+        if (belongings.helmet is HoodApprentice) factor *= 1.15f
+
+        return factor
     }
 
     fun wandChargeFactor(): Float {
@@ -181,7 +196,7 @@ class Hero : Char() {
     }
 
     fun mentalFactor(): Float {
-        var factor = heroPerk.get(WandArcane::class.java)?.factor() ?: 1f
+        var factor = 1f
         belongings.helmet?.let {
             if (it is CircletEmerald)
                 factor = if (it.cursed) 0.95f else 1.1f
@@ -193,12 +208,12 @@ class Hero : Char() {
         if (buff(CriticalRune.Critical::class.java) != null) return 1f
 
         var c = criticalChance
-        if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.09f
+        if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
 
         val level = RingOfCritical.getBonus(this, RingOfCritical.Critical::class.java)
         if (level > 0) {
             c += 0.01f * level
-            c *= Math.pow(1.15, level.toDouble()).toFloat()
+            c *= 1.15f.pow(level)
         }
 
         return c
@@ -208,7 +223,7 @@ class Hero : Char() {
     fun holdFollowers(level: Level) {
         followers.clear()
 
-        level.mobs.filterTo(followers) { it.isFollower }
+        level.mobs.filterTo(followers) { it.camp == Camp.HERO }
         level.mobs.removeAll(followers)
 
         // todo: MAX FOLLOWERS CONTROL
@@ -232,8 +247,17 @@ class Hero : Char() {
 
     fun givenName(): String = if (name == Messages.get(this, "name")) className() else name
 
-    fun say(color: Int, text: String, vararg args: Any) {
-        sprite.showStatus(color, text, args)
+    fun sayShort(tag: String, vararg args: Any) {
+        say(HeroLines.Line(tag, args))
+    }
+
+    fun say(text: String) {
+        val color = if (pressure.getLevel() > Pressure.Level.NORMAL) CharSprite.NEGATIVE else CharSprite.DEFAULT
+        say(text, color)
+    }
+
+    fun say(text: String, color: Int) {
+        sprite.showSentence(color, text)
     }
 
     // called on enter or resurrect the level
@@ -268,20 +292,37 @@ class Hero : Char() {
         return atkSkill * accuracy
     }
 
+    fun evasionProbability(): Float {
+        var e = 1f
+
+        // GameMath.ProbabilityPlus()
+        heroPerk.get(ExtraEvasion::class.java)?.let {
+            e *= 1f - it.prob()
+        }
+        heroPerk.get(BaredSwiftness::class.java)?.let {
+            e *= 1f - it.evasionProb(this)
+        }
+        heroPerk.get(LowHealthDexterous::class.java)?.let {
+            e *= 1f - it.extraEvasion(this)
+        }
+        if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
+            e *= 1f - 0.2f
+
+        return 1 - e
+    }
+
     override fun defenseSkill(enemy: Char): Float {
+        // evasion check
+        if (Random.Float() < evasionProbability()) return 1000f
+
         var bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
-        var evasion = Math.pow(1.125, bonus.toDouble()).toFloat()
+        var evasion = 1.125f.pow(bonus)
 
         if (paralysed > 0) evasion *= 0.5f
 
         if (heroClass == HeroClass.SORCERESS) evasion *= 0.8f
 
         evasion *= pressure.evasionFactor()
-
-        if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
-            evasion *= 1.2f
-
-        evasion *= heroPerk.get(LowHealthDexterous::class.java)?.evasionFactor(this) ?: 1f
 
         val estr = (belongings.armor?.STRReq() ?: 10) - STR()
         if (estr > 0) {
@@ -301,7 +342,8 @@ class Hero : Char() {
         if (belongings.weapon == null || belongings.weapon !is Weapon) return true
         if (STR() < (belongings.weapon as Weapon).STRReq()) return false
 
-        if (belongings.weapon is Flail && rangedWeapon == null) return false
+        if (rangedWeapon == null &&
+                (belongings.weapon is Flail || belongings.weapon is Lance)) return false
 
         return true
     }
@@ -331,7 +373,7 @@ class Hero : Char() {
         // helmet
         belongings.helmet?.let { belongings.helmet.procGivenDamage(dmg) }
 
-        heroPerk.get(AngryBared::class.java)?.procGivenDamage(dmg, this)
+        heroPerk.get(BaredAngry::class.java)?.procGivenDamage(dmg, this)
 
         // critical
         if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < criticalChance()) {
@@ -346,6 +388,8 @@ class Hero : Char() {
 
         // pressure
         pressure.procGivenDamage(dmg)
+
+        buff(SeeThrough::class.java)?.processDamage(dmg)
 
         buff(Drunk::class.java)?.let { Drunk.procOutcomingDamage(dmg) }
 
@@ -362,6 +406,18 @@ class Hero : Char() {
         return dmg
     }
 
+    fun procWandDamage(dmg: Damage) {
+        dmg.value = round(dmg.value * arcaneFactor()).toInt()
+
+        val bonus = RingOfSharpshooting.getBonus(this, RingOfSharpshooting.Aim::class.java)
+        if (bonus != 0) {
+            val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
+            dmg.value = round(dmg.value * ratio).toInt()
+        }
+
+        heroPerk.get(ArcaneCrit::class.java)?.affectDamage(this, dmg)
+    }
+
     override fun defendDamage(dmg: Damage): Damage {
         if (dmg.type == Damage.Type.MENTAL) {
             //todo: mental defense
@@ -374,7 +430,7 @@ class Hero : Char() {
             belongings.armor?.let {
                 dr = Random.NormalIntRange(it.DRMin(), it.DRMax())
 
-                var estr = belongings.armor.STRReq() - STR()
+                val estr = belongings.armor.STRReq() - STR()
                 if (estr > 0) {
                     // heavy
                     dr = max(dr - 2 * estr, 0)
@@ -396,8 +452,7 @@ class Hero : Char() {
         var speed = super.speed()
 
         val hlvl = RingOfHaste.getBonus(this, RingOfHaste.Haste::class.java)
-        if (hlvl != 0)
-            speed *= Math.pow(1.2, hlvl.toDouble()).toFloat()
+        if (hlvl != 0) speed *= 1.2f.pow(hlvl)
 
         belongings.armor?.let {
             if (it.hasGlyph(Swiftness::class.java))
@@ -406,11 +461,16 @@ class Hero : Char() {
                 speed *= (1.5f + 0.05f * it.level())
         }
 
+        heroPerk.get(BaredSwiftness::class.java)?.let {
+            speed *= it.speedFactor(this)
+        }
+
         buff(HasteRune.Haste::class.java)?.let { speed *= 3f }
 
-        val estr = if (belongings.armor != null) belongings.armor.STRReq() - STR() else 0
+        var estr = if (belongings.armor != null) belongings.armor.STRReq() - STR() else 0
+        estr += if (belongings.weapon is Weapon) (belongings.weapon as Weapon).STRReq() - STR() else 0
         if (estr > 0)
-            return speed / Math.pow(1.2, estr.toDouble()).toFloat()
+            return speed / 1.2f.pow(estr)
         else {
             if ((sprite as HeroSprite).sprint(subClass == HeroSubClass.FREERUNNER && !isStarving()))
                 speed *= if (invisible > 0) 2f else 1.5f
@@ -450,21 +510,19 @@ class Hero : Char() {
             //Normally putting furor speed on unarmed attacks would be unnecessary
             //But there's going to be that one guy who gets a furor+force ring combo
             //This is for that one guy, you shall get your fists of fury!
-            speed *= 0.25f + 0.75f * Math.pow(0.8,
-                    RingOfFuror.getBonus(this, RingOfFuror.Furor::class.java).toDouble()).toFloat()
+            speed *= 0.25f + 0.75f * 0.8f.pow(RingOfFuror.getBonus(this, RingOfFuror.Furor::class.java))
         }
 
         speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
-        speed *= heroPerk.get(AngryBared::class.java)?.speedFactor(this) ?: 1f
+        speed *= heroPerk.get(BaredAngry::class.java)?.speedFactor(this) ?: 1f
 
         return speed
     }
 
     override fun attackProc(dmg: Damage): Damage {
-        (rangedWeapon ?: belongings.weapon)?.proc(dmg)
+        val wep = (rangedWeapon ?: belongings.weapon) as Weapon?
 
-        if (dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0 && Random.Int(10) == 0)
-            recoverSanity(min(Random.Int(dmg.value / 6) + 1, 10).toFloat())
+        wep?.proc(dmg)
 
         // snipper perk
         if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
@@ -472,7 +530,13 @@ class Hero : Char() {
             Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
         }
 
+        // critical damage
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+            // recover sanity
+            val str = wep?.STRReq() ?: 10
+            if (dmg.value > 0 && Random.Int(15 - str / 2) == 0)
+                recoverSanity(min(Random.Int(dmg.value / 6) + 1, 10).toFloat())
+
             heroPerk.get(VampiricCrit::class.java)?.procCrit(dmg)
         }
 
@@ -480,7 +544,7 @@ class Hero : Char() {
     }
 
     override fun defenseProc(dmg: Damage): Damage {
-        buff(Earthroot.Armor::class.java)?.let { dmg.value = it.absorb(dmg.value) }
+        buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
         buff(Sungrass.Health::class.java)?.absorb(dmg.value)
 
         belongings.armor?.let { belongings.armor.proc(dmg) }
@@ -523,21 +587,36 @@ class Hero : Char() {
             dmg.value = ceil(dmg.value.toDouble() *
                     Math.pow(0.85, tenacity * (HT - HP).toDouble() / HT.toDouble())).toInt()
 
+        buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
+
         val dmgToken = super.takeDamage(dmg)
         if (isAlive) {
+            //todo: refactor
+            var tag: String? = null
+            val maySay = { p: Float, str: String ->
+                if (tag == null && Random.Float() < p) tag = str
+            }
+
             // extra mental damage
-            val dmgMental = Damage(0, dmg.from, dmg.to).type(Damage.Type.MENTAL)
+            var value = 0f
+            if (dmg.from is Char && !Dungeon.visible[(dmg.from as Char).pos]) { // attack from nowhere
+                value += Random.Float(1f, 7f)
+                maySay(0.2f, HeroLines.WHAT)
+            }
+            if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+                value += Random.Float(2f, 8f)
+                maySay(0.2f, HeroLines.DAMN)
+            }
 
-            if (dmg.from is Char && !Dungeon.visible[(dmg.from as Char).pos]) // attack from nowhere
-                dmgMental.value += Random.Int(1, 5)
-            if (dmg.isFeatured(Damage.Feature.CRITICAL))
-                dmgMental.value += Random.Int(2, 6)
+            if (!heroPerk.has(Fearless::class.java) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0) {
+                value += Random.Float(1f, 5f)
+                maySay(0.4f, HeroLines.I_MAY_DIE)
+                maySay(0.3f, HeroLines.MY_WEAPON_IS_BAD)
+            }
 
-            if (!heroPerk.has(Fearless::class.java) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0)
-                dmgMental.value += Random.Int(1, 5)
+            if (tag != null) sayShort(tag!!)
 
-            dmg.value = min(dmg.value, 10)
-            takeMentalDamage(dmgMental)
+            takeMentalDamage(Damage(min(round(value).toInt(), 15), dmg.from, dmg.to).type(Damage.Type.MENTAL))
         }
 
         return dmgToken
@@ -580,8 +659,10 @@ class Hero : Char() {
     }
 
     public override fun spend(time: Float) {
-        if (buff(TimekeepersHourglass.TimeFreeze::class.java)?.processTime(time) != true)
-            super.spend(time)
+        if (buff(TimekeepersHourglass.TimeFreeze::class.java)?.processTime(time) != true) {
+            if (buff(TimeDilation::class.java) != null) super.spend(time / 3f)
+            else super.spend(time)
+        }
     }
 
     fun busy() {
@@ -624,7 +705,7 @@ class Hero : Char() {
         var newFound = false
 
         var target: Mob? = null
-        for (mob in Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] && it.hostile && it.isLiving }) {
+        for (mob in Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] && it.camp == Camp.ENEMY && it.isLiving }) {
             visible.add(mob)
             if (!visibleEnemies.contains(mob))
                 newFound = true
@@ -760,7 +841,11 @@ class Hero : Char() {
         // character there
         val ch = Actor.findChar(cell)
         if (Level.fieldOfView[cell] && ch is Mob) {
-            return if (ch is NPC && !ch.hostile) HeroAction.Interact(ch) else HeroAction.Attack(ch)
+            //todo: make it clean
+            if (ch.camp == Camp.ENEMY) return HeroAction.Attack(ch)
+            if (ch is NPC) return HeroAction.Interact(ch)
+            //
+            return HeroAction.InteractAlly(ch)
         }
 
         // heap there
@@ -768,12 +853,9 @@ class Hero : Char() {
         // moving to an item doesn't auto-pickup when enemies are near...
         // but only for standard heaps, chests and similar open as normal.
         if (heap != null && (visibleEnemies.size == 0 || cell == pos ||
-                        (heap.type != Heap.Type.HEAP && heap.type != Heap.Type.FOR_SALE))) {
+                        (heap.type != Heap.Type.HEAP))) {
             return when (heap.type) {
                 Heap.Type.HEAP -> HeroAction.PickUp(cell)
-                Heap.Type.FOR_SALE ->
-                    if (heap.size() == 1 && heap.peek().price() > 0) HeroAction.Buy(cell)
-                    else HeroAction.PickUp(cell)
                 else -> HeroAction.OpenChest(cell)
             }
         }
@@ -804,6 +886,18 @@ class Hero : Char() {
             if (lvl < MAX_LEVEL) {
                 upgraded = true
                 heroClass.upgradeHero(this)
+
+                if ((lvl - 2) % 4 == 0) {
+                    //2, 6, 10... gain a perk
+                    interrupt()
+                    val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
+                    GameScene.show(WndSelectPerk.CreateWithRandomPositives(
+                            M.L(WndSelectPerk::class.java, "select"), cnt))
+                }
+
+                if (lvl == 12 && Dungeon.hero.subClass == HeroSubClass.NONE) {
+                    WndMasterSubclass.Show(this)
+                }
             } else {
                 Buff.prolong(this, Bless::class.java, 30f)
                 exp = 0
@@ -818,15 +912,9 @@ class Hero : Char() {
             sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "level_up"))
             Sample.INSTANCE.play(Assets.SND_LEVELUP)
 
-            Badges.validateLevelReached()
+            if (pressure.getLevel() > Pressure.Level.NORMAL) sayShort(HeroLines.USELESS)
 
-            if ((lvl - 2) % 4 == 0) {
-                //2, 6, 10... gain a perk
-                val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
-                GameScene.show(WndSelectPerk.CreateWithRandomPositives(
-                        M.L(WndSelectPerk::class.java, "select"), cnt))
-                // todo: player may cancel the window
-            }
+            Badges.validateLevelReached()
         }
     }
 
@@ -877,6 +965,7 @@ class Hero : Char() {
             HP = HT / 4
             //ensures that you'll get to act first in almost any case, to prevent 
             // reviving and then instantly dieing again.
+            recoverSanity(min(20f, pressure.pressure * 0.25f))
             Buff.detach(this, Paralysis::class.java)
             spend(-cooldown())
 
@@ -890,6 +979,7 @@ class Hero : Char() {
             Statistics.AnkhsUsed += 1
 
             GhostHero.Instance()?.sayAnhk()
+            if (belongings.getItem(Ankh::class.java) == null) sayShort(HeroLines.WHAT_ABOUT_NEXT)
             return
         }
 
@@ -1005,9 +1095,14 @@ class Hero : Char() {
     }
 
     fun onMobDied(mob: Mob) {
+        if (mob.properties().contains(Property.PHANTOM)) return
         belongings.getItem(UrnOfShadow::class.java)?.collectSoul(mob)
 
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
+    }
+
+    fun onEvasion(dmg: Damage) {
+        heroPerk.get(CounterStrike::class.java)?.procEvasionDamage(dmg)
     }
 
     // called when killed a char by attack
@@ -1022,13 +1117,25 @@ class Hero : Char() {
             val y = 1f - HP.toFloat() / HT.toFloat()
             val py = if (y < 0.5f) 1f else (1f + 3f * (y - 0.5f) * (y - 0.5f))
 
-            if (Random.Float() < px * py) recoverSanity(Random.Float(1f, 6f))
+            if (Random.Float() < px * py) {
+                recoverSanity(Random.Float(1f, 6f))
+
+                if (pressure.getLevel() > Pressure.Level.NORMAL) {
+                    sayShort(HeroLines.WHAT_ABOUT_NEXT)
+                } else if (Random.Float() < 0.3f) sayShort(HeroLines.GRIN)
+                else sayShort(HeroLines.DIE)
+            }
         }
 
         if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)
 
         buff(BloodSuck::class.java)?.onEnemySlayed(ch)
         buff(ChaliceOfBlood.Store::class.java)?.onEnemySlayed(ch)
+        buff(SacrificialFire.Marked::class.java)?.onEnemySlayed(ch)
+        if (rangedWeapon != null) {
+            // killed by a ranged weapon
+            heroPerk.get(FinishingShot::class.java)?.onKilledChar(this, ch, rangedWeapon!!)
+        }
 
         GLog.i(Messages.capitalize(Messages.get(Char::class.java, "defeat", ch.name)))
     }

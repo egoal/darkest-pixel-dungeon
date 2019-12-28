@@ -6,16 +6,16 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
-import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
-import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
+import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
+import com.egoal.darkestpixeldungeon.items.wands.WandOfFrost
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
@@ -48,7 +48,7 @@ enum class HeroClass(private val title: String) {
             super.initHeroClass(hero)
             hero.belongings.weapon = WornShortsword().identify() as Weapon
 
-            val darts = Dart(3)
+            val darts = Dart(4)
             darts.identify().collect()
 
             Wine().collect()
@@ -103,8 +103,6 @@ enum class HeroClass(private val title: String) {
 
             hero.heroPerk.add(GoodAppetite())
             hero.heroPerk.add(WandPerception())
-
-//            UrnOfShadow().identify().collect()
 
             hero.addResistances(Damage.Element.FIRE, 0.1f)
             hero.addResistances(Damage.Element.POISON, -0.2f)
@@ -256,7 +254,19 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
+//        CrackedCoin().random().identify().collect()
+//        hero.heroPerk.add(FinishingShot())
+//        Sickle().identify().collect()
+//        CeremonialDagger().quantity(30).collect()
+//        CrackedCoin().identify().collect()
+//        Dungeon.gold += 200
+//        MasterThievesArmband().collect()
 //        hero.atkSkill += 10f
+//        Spear().identify().collect()
+//        RoundShield().identify().collect()
+//        AssassinsBlade().identify().collect()
+//        Claymore().identify().collect()
+//        Lance().identify().collect()
 //        hero.defSkill += 10f
 //        hero.STR += 4
 //        Sword().upgrade().collect()
@@ -264,6 +274,10 @@ enum class HeroClass(private val title: String) {
 //        EyeballOfTheElder.Left().collect()
 //        EyeballOfTheElder.Right().collect()
 //        EyeballOfTheElder().collect()
+//        WandOfAbel().identify().collect()
+//        hero.heroPerk.add(FinishingShot())
+//        hero.heroPerk.add(ExtraPerkChoice())
+//        TomeOfPerk().identify().collect()
     }
 
     // called when hero level up
@@ -274,7 +288,7 @@ enum class HeroClass(private val title: String) {
             HP += 5
 
             atkSkill++
-            defSkill++
+            defSkill += 0.75f
 
             criticalChance += 0.4f / 100f
             regeneration += 0.02f

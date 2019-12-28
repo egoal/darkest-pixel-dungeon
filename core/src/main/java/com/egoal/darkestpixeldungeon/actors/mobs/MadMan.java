@@ -49,7 +49,7 @@ public class MadMan extends Mob implements Callback {
       //fixme: bad design
       int lvl = (maxLvl - 3) / 5;
       int dis = Dungeon.level.distance(pos, enemy.pos);
-      int value = Math.max(1, Random.IntRange(2, 4) + lvl - dis);
+      int value = Math.max(1, Random.IntRange(2, 5) + lvl - dis);
       return new Damage(value, this, target).type(Damage.Type.MENTAL)
               .addFeature(Damage.Feature.ACCURATE);
     } else

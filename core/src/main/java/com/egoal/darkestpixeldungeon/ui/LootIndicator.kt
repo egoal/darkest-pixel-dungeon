@@ -46,7 +46,7 @@ class LootIndicator : Tag(0x1F75CC) {
                     Heap.Type.TOMB -> ItemSlot.TOMB
                     Heap.Type.SKELETON -> ItemSlot.SKELETON
                     Heap.Type.REMAINS -> ItemSlot.REMAINS
-                    else -> heap.peek()
+                    else -> heap.peek()!!
                 }
                 if (item !== lastItem || item.quantity() != lastQuantity) {
                     lastItem = item

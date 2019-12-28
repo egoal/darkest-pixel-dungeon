@@ -75,19 +75,22 @@ abstract public class Weapon extends KindOfWeapon {
   public float DLY = 1f;  // Speed modifier
   public int RCH = 1;    // Reach modifier (only applies to melee hits)
 
-  // 灌注
   public enum Imbue {
-    NONE(1.0f, 1.00f),
-    LIGHT(0.7f, 0.67f),
-    HEAVY(1.5f, 1.67f);
+    NONE(1.0f, 1.00f, 0),
+    LIGHT(0.7f, 0.67f, -1),
+    HEAVY(1.5f, 1.67f, 1);
 
     private float damageFactor;
     private float delayFactor;
+    private int strFix;
 
-    Imbue(float dmg, float dly) {
+    Imbue(float dmg, float dly, int str) {
       damageFactor = dmg;
       delayFactor = dly;
+      strFix = str;
     }
+
+    public int strFix(){ return strFix; }
 
     public int damageFactor(int dmg) {
       return Math.round(dmg * damageFactor);
@@ -152,9 +155,8 @@ abstract public class Weapon extends KindOfWeapon {
     float ACC = this.ACC;
 
     if (this instanceof MissileWeapon) {
-      int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim
-              .class);
-      ACC *= (float) (Math.pow(1.2, bonus));
+      int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
+      ACC *= (float) (Math.pow(1.1, bonus));
     }
 
     return encumbrance > 0 ? (float) (ACC / Math.pow(1.5, encumbrance)) : ACC;

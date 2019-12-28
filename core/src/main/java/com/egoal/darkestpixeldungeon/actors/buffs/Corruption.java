@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
@@ -34,6 +35,12 @@ public class Corruption extends Buff {
   private float buildToDamage = 0f;
 
   @Override
+  public boolean attachTo(Char target) {
+    target.camp = Char.Camp.HERO;
+    return super.attachTo(target);
+  }
+
+  @Override
   public boolean act() {
     buildToDamage += target.HT / 200f;
 
@@ -41,9 +48,7 @@ public class Corruption extends Buff {
     buildToDamage -= damage;
 
     if (damage > 0)
-      // target.damage(damage, this);
-      target.takeDamage(new Damage(damage, this, target).addElement(Damage
-              .Element.SHADOW));
+      target.takeDamage(new Damage(damage, this, target).addElement(Damage.Element.SHADOW));
 
     spend(TICK);
 

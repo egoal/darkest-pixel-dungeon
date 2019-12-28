@@ -88,7 +88,7 @@ public class Thief extends Mob {
     super.die(cause);
 
     if (item != null) {
-      Dungeon.level.drop(item, pos).sprite.drop();
+      Dungeon.level.drop(item, pos).getSprite().drop();
       //updates position
       if (item instanceof Honeypot.ShatteredPot)
         ((Honeypot.ShatteredPot) item).setHolder(this);
@@ -118,7 +118,7 @@ public class Thief extends Mob {
   @Override
   public Damage defenseProc(Damage damage) {
     if (state == FLEEING) {
-      Dungeon.level.drop(new Gold(), pos).sprite.drop();
+      Dungeon.level.drop(new Gold(), pos).getSprite().drop();
     }
 
     return super.defenseProc(damage);
