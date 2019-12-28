@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
+import com.egoal.darkestpixeldungeon.levels.traps.PrizeTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
@@ -51,8 +52,9 @@ class VillageLevel : RegularLevel() {
         paintWater()
         paintGrass()
 
-//        setTrap(FlockTrap().reveal(), xy2cell(16, 28))
-//        map[xy2cell(16, 28)] = Terrain.TRAP
+//        val cell = xy2cell(15, 26)
+//        setTrap(PrizeTrap().reveal(), cell)
+//         map[cell] = Terrain.TRAP
 
         return true
     }

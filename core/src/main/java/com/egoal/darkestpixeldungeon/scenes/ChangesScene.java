@@ -104,6 +104,8 @@ public class ChangesScene extends PixelScene {
     // add versions' button
     final String HSPLIT = "---";
     String[] oldVersions = new String[]{
+            "0.4.0", "", "",
+            HSPLIT,
             "0.3.2a", "0.3.2", "0.3.1a",
             "0.3.1", "0.3.0", "",
             HSPLIT,

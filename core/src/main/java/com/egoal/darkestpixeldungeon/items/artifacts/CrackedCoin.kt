@@ -48,6 +48,10 @@ class CrackedCoin : Artifact() {
 
     private var shieldActived = false
 
+    override fun random(): Item {
+        return super.random().apply { level(5) } // so, its level 5!
+    }
+
     override fun desc(): String {
         var desc = super.desc()
         if (isEquipped(Dungeon.hero)) {
@@ -167,7 +171,7 @@ class CrackedCoin : Artifact() {
         }
 
         // damage per gold
-        private fun dpg(): Float = 0.4f + 0.1f * level()
+        private fun dpg(): Float = max(0.35f, 0.2f * level() - 0.4f) // usually, it starts with level 5
 
         override fun toString(): String = M.L(this, "name")
         override fun desc(): String = M.L(this, "desc", dpg())

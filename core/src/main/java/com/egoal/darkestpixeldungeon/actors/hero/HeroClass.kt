@@ -254,10 +254,7 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-//        hero.heroPerk.add(GreedyMidas())
-//        GoldenClaw().collect()
-
-//        CrackedCoin().identify().collect()
+//        CrackedCoin().random().identify().collect()
 //        hero.heroPerk.add(FinishingShot())
 //        Sickle().identify().collect()
 //        CeremonialDagger().quantity(30).collect()

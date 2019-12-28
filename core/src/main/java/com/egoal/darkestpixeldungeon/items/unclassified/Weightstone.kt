@@ -82,21 +82,21 @@ class Weightstone : Item() {
 
     private fun apply(weapon: Weapon, forSpeed: Boolean) {
 
-        detach(Item.curUser.belongings.backpack)
+        detach(curUser.belongings.backpack)
 
         if (forSpeed) {
-            weapon.imbue = Weapon.Imbue.LIGHT
+            weapon.imbue = if (weapon.imbue == Weapon.Imbue.HEAVY) Weapon.Imbue.NONE else Weapon.Imbue.LIGHT
             GLog.p(Messages.get(this, "light"))
         } else {
-            weapon.imbue = Weapon.Imbue.HEAVY
+            weapon.imbue = if (weapon.imbue == Weapon.Imbue.LIGHT) Weapon.Imbue.NONE else Weapon.Imbue.HEAVY
             GLog.p(Messages.get(this, "heavy"))
         }
 
-        Item.curUser.sprite.operate(Item.curUser.pos)
+        curUser.sprite.operate(curUser.pos)
         Sample.INSTANCE.play(Assets.SND_MISS)
 
-        Item.curUser.spend(TIME_TO_APPLY)
-        Item.curUser.busy()
+        curUser.spend(TIME_TO_APPLY)
+        curUser.busy()
     }
 
     override fun price(): Int {

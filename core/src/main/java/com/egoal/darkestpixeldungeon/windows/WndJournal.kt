@@ -40,9 +40,9 @@ class WndJournal : Window() {
         PixelScene.align(btnCatalogues)
         add(btnCatalogues)
 
-        list = ScrollPane(Component())
-        // val content = Component()
-        val content = list.content()
+//        list = ScrollPane(Component())
+        val content = Component()
+//        val content = list.content()
 
         Journal.records.sortBy { -it.depth }
 
@@ -88,9 +88,11 @@ class WndJournal : Window() {
             pos += item.height()
         }
 
-        // list = ScrollPane(content)
+        content.setSize(width.toFloat(), pos);
+        list = ScrollPane(content)
         add(list)
         list.setRect(0f, btnTitle.height() + 1f, WIDTH, height - btnTitle.height() - 1)
+        // list.setSize(list.width(), list.height())
     }
 
 

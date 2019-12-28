@@ -57,8 +57,8 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
 
     override fun price(): Int = 50 * quantity
 
-    private fun prickValue(hero: Hero): Int = hero.HT / 5 + hero.HT / 10 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
-    private fun bleedValue(hero: Hero): Int = hero.HT / 10 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
+    private fun prickValue(hero: Hero): Int = hero.HT / 10 + hero.HT / 10 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
+    private fun bleedValue(hero: Hero): Int = hero.HT / 20 * Dungeon.limitedDrops.ceremonialDaggerUsed.count
 
     private fun prick(hero: Hero) {
         detach(hero.belongings.backpack)

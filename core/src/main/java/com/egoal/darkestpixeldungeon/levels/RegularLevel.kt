@@ -22,6 +22,7 @@ import com.egoal.darkestpixeldungeon.levels.diggers.normal.*
 import com.egoal.darkestpixeldungeon.levels.diggers.secret.*
 import com.egoal.darkestpixeldungeon.levels.diggers.specials.*
 import com.egoal.darkestpixeldungeon.levels.traps.FireTrap
+import com.egoal.darkestpixeldungeon.levels.traps.PrizeTrap
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
 import com.egoal.darkestpixeldungeon.levels.traps.WornTrap
 import com.egoal.darkestpixeldungeon.plants.Plant
@@ -382,17 +383,30 @@ abstract class RegularLevel : Level() {
         val trapClasses = trapClasses()
 
         val validCells = (1 until length).filter { map[it] == Terrain.EMPTY && findMobAt(it) == null }.shuffled()
-        var traps = Math.min(nTraps(), (validCells.size * 0.15).toInt())
+        var traps = min(nTraps(), (validCells.size * 0.15).toInt())
 
-        Log.d("dpd", "would add $traps traps.")
+        // todo:
+        // bonus from wealth
+        var nPrize = 1
+        val bonus = min(10, Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
+        while (Random.Float() < .25f + bonus * 0.05f)
+            ++nPrize
 
-        for (i in validCells) {
-            val trap = trapClasses[Random.chances(trapChances)].newInstance().hide()
-            setTrap(trap, i)
+        val trapsToSpawn = List(min(traps + nPrize, validCells.size)) {
+            if (it < traps)
+                trapClasses[Random.chances(trapChances)].newInstance().hide()
+            else
+                PrizeTrap().hide()
+        }
 
-            map[i] = if (trap.visible) Terrain.TRAP else Terrain.SECRET_TRAP
+        Log.d("dpd", "would add ${trapsToSpawn.size} traps, of which ${trapsToSpawn.size- traps} are prizes.")
 
-            if (--traps <= 0) break
+        for (pr in trapsToSpawn.withIndex()) {
+            val cell = validCells[pr.index]
+            val trap = pr.value
+
+            setTrap(trap, cell)
+            map[cell] = if (trap.visible) Terrain.TRAP else Terrain.SECRET_TRAP
         }
     }
 
