@@ -54,7 +54,7 @@ class VillageLevel : RegularLevel() {
 
 //        val cell = xy2cell(15, 26)
 //        setTrap(PrizeTrap().reveal(), cell)
-//         map[cell] = Terrain.TRAP
+//        map[cell] = Terrain.TRAP
 
         return true
     }

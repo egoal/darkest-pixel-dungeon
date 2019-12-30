@@ -91,6 +91,8 @@ class CatEgoal : NPC.Unbreakable() {
         praised = bundle.getBoolean(PRAISED)
     }
 
+    override fun speed(): Float = 5f
+
     companion object {
         class Gift : Item() {
             private val AC_OPEN = "open"

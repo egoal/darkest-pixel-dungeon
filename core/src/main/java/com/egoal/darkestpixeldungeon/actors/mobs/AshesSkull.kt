@@ -59,7 +59,7 @@ class AshesSkull : Mob() {
         jumpcd = COOLDOWN_JUMP
 
         val b = Ballistica(pos, target.pos, Ballistica.PROJECTILE)
-        if (b.collisionPos != target.pos || b.path.size < 3 || !Level.passable[b.path[b.dist - 1]])
+        if (b.collisionPos != target.pos || b.path.size < 3 || b.dist < 1 || !Level.passable[b.path[b.dist - 1]])
             return false
 
         val dst = b.path[b.dist - 1]
@@ -88,7 +88,7 @@ class AshesSkull : Mob() {
 
         val dis = Dungeon.level.distance(pos, Dungeon.hero.pos)
         if (Dungeon.hero.isAlive && dis <= 2) {
-            if(Random.Int(4)==0) Dungeon.hero.sayShort(HeroLines.BAD_NOISE)
+            if (Random.Int(4) == 0) Dungeon.hero.sayShort(HeroLines.BAD_NOISE)
 
             val dmg = Damage(Random.NormalIntRange(2, 8), this, Dungeon.hero).type(Damage.Type.MENTAL)
             Dungeon.hero.takeDamage(dmg)

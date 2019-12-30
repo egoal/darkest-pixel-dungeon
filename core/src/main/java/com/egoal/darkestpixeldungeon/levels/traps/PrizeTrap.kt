@@ -20,17 +20,22 @@ class PrizeTrap : Trap() {
 
     override fun activate() {
         // todo: may use a specified heap type.
-        val heap = Heap()
+
+
+        val heap = Dungeon.level.heaps.get(pos) ?: Heap().apply {
+            pos = this@PrizeTrap.pos
+            GameScene.add(this)
+        }
+
         heap.type = if (Random.Int(3) == 0) Heap.Type.SKELETON else Heap.Type.CHEST
 
         heap.drop(Generator.GOLD.generate()) // always give some gold
         heap.drop(Generator.generate())
 
-        heap.pos = pos
         Dungeon.level.heaps.put(heap.pos, heap)
-        GameScene.add(heap)
+        // GameScene.add(heap)
 
-        if(Dungeon.visible[pos]) {
+        if (Dungeon.visible[pos]) {
             heap.sprite.drop()
             GLog.p(M.L(this, "prize_showed"))
             CellEmitter.bottom(pos).start(EarthParticle.FACTORY, 0.05f, 8)
