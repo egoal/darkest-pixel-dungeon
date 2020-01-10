@@ -22,4 +22,7 @@ local.properties
 ~*
 
 dev/messages
+dev/posts
+dev/reddit.md
+
 .vscode
