@@ -18,7 +18,7 @@ class FreakingTrap : Trap() {
         if (ch === Dungeon.hero && ch.isAlive) {
             ch.takeDamage(Damage(Random.NormalIntRange(3, 9), this, ch).type(Damage.Type.MENTAL))
 
-            ch.say(HeroLines.Line(HeroLines.BAD_NOISE))
+            ch.sayShort(HeroLines.BAD_NOISE)
         }
     }
 }

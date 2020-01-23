@@ -258,9 +258,9 @@ class LowHealthRegeneration : Perk(5) {
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_REG
 
     fun extraRegeneration(hero: Hero): Float {
-        if (hero.HP > hero.HT * 0.25) return 0f
+        if (hero.HP > hero.HT * 0.3) return 0f
 
-        return 0.1f + 0.3f * level
+        return 0.05f + 0.35f * level
     }
 }
 

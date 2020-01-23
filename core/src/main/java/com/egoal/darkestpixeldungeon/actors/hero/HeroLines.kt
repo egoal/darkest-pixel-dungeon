@@ -20,4 +20,20 @@ object HeroLines {
 
     fun Line(tag: String, vararg args: Any): String = M.L(Hero::class.java, "line_$tag", args)
 
+    fun PushShort(tag: String, vararg args: Any) {
+        Push(Line(tag, args))
+    }
+
+    fun Push(line: String) {
+        lines.add(line)
+    }
+
+    // get and clear stack
+    fun Poll(): String {
+        val line = lines.random()
+        lines.clear()
+        return line
+    }
+
+    private val lines = ArrayList<String>()
 }

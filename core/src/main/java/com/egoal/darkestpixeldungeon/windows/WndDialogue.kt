@@ -67,8 +67,6 @@ abstract class WndDialogue(image: Image?, text: String, what: String, vararg opt
 
     abstract fun onSelect(idx: Int)
 
-    // override fun onBackPressed() {} // yes, this is a dialog
-
     companion object {
         private const val WIDTH_P = 120
         private const val WIDTH_L = 144

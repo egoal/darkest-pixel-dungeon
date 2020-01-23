@@ -180,6 +180,10 @@ public abstract class Char extends Actor {
     return 8;
   }
 
+  public void say(String text, int color){
+    sprite.showSentence(color, text);
+  }
+  
   public boolean attack(Char enemy) {
     if (enemy == null || !enemy.isAlive()) return false;
 

@@ -87,7 +87,7 @@ public class Warlock extends Mob implements Callback {
 
     if (enemy.checkHit(dmg)) {
       if (enemy == Dungeon.hero && Random.Int(2) == 0) {
-        Buff.prolong(enemy, Weakness.class, Weakness.duration(enemy));
+        Buff.prolong(enemy, Weakness.class, Weakness.Companion.duration(enemy));
       }
 
       enemy.takeDamage(dmg);

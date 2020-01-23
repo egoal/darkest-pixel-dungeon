@@ -182,7 +182,7 @@ enum class HeroClass(private val title: String) {
             super.upgradeHero(hero)
             hero.HT -= 1
             hero.HP -= 1
-            hero.regeneration += 0.005f
+            hero.regeneration += 0.0075f
         }
 
         override fun initHeroStatus(hero: Hero) {
@@ -291,7 +291,7 @@ enum class HeroClass(private val title: String) {
             defSkill += 0.75f
 
             criticalChance += 0.4f / 100f
-            regeneration += 0.02f
+            regeneration += 0.025f
 
             if (lvl < 10) updateAwareness()
 

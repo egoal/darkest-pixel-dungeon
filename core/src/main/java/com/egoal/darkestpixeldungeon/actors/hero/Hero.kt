@@ -256,10 +256,6 @@ class Hero : Char() {
         say(text, color)
     }
 
-    fun say(text: String, color: Int) {
-        sprite.showSentence(color, text)
-    }
-
     // called on enter or resurrect the level
     fun live() {
         Buff.affect(this, Regeneration::class.java)
@@ -479,7 +475,7 @@ class Hero : Char() {
         }
     }
 
-    fun isStarving(): Boolean = buff(Hunger::class.java)!!.isStarving
+    private fun isStarving(): Boolean = buff(Hunger::class.java)!!.isStarving
 
     fun canAttack(target: Char): Boolean {
         if (target.pos == pos) return false

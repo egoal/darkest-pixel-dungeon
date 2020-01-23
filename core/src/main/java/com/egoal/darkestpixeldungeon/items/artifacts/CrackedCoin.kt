@@ -171,13 +171,13 @@ class CrackedCoin : Artifact() {
         }
 
         // damage per gold
-        private fun dpg(): Float = max(0.35f, 0.2f * level() - 0.4f) // usually, it starts with level 5
+        private fun dpg(): Float = max(0.3f, 0.2f * level() - 0.6f) // usually, it starts with level 5
 
         override fun toString(): String = M.L(this, "name")
         override fun desc(): String = M.L(this, "desc", dpg())
     }
 
-    private fun shellCost(): Int = 10 + 5 * level()
+    private fun shellCost(): Int = 10 + 10 * level()
 
     val arcs = ArrayList<Lightning.Arc>()
 
