@@ -251,7 +251,7 @@ class Hero : Char() {
         say(HeroLines.Line(tag, args))
     }
 
-    fun say(text: String) {
+    override fun say(text: String) {
         val color = if (pressure.getLevel() > Pressure.Level.NORMAL) CharSprite.NEGATIVE else CharSprite.DEFAULT
         say(text, color)
     }

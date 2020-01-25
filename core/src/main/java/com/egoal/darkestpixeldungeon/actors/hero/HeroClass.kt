@@ -254,9 +254,11 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
-            quantity(99).identify().collect()
-        })
+        //
+//        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
+//            quantity(99).identify().collect()
+//        })
+        initDebug(hero)
     }
 
     // called when hero level up

@@ -604,7 +604,7 @@ public abstract class Mob extends Char {
   }
 
   public void yell(String str) {
-    say(str, CharSprite.DEFAULT);
+    GLog.n("%s: \"%s\"", name, str);
   }
 
   //returns true when a mob sees the hero, and is currently targeting them.

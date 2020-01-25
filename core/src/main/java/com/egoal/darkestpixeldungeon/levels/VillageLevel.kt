@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.actors.mobs.QuickFiringGun
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.items.Generator
@@ -112,7 +113,7 @@ class VillageLevel : RegularLevel() {
         putMobAt(CatRawberry::class.java, 12, 6)
 
         // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
-        // putMobAt(Merchant::class.java, 16, 29)
+         putMobAt(QuickFiringGun::class.java, 16, 29)
 //        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
 //            for (i in 1..10) addItemToSell(Generator.generate())
 //        }

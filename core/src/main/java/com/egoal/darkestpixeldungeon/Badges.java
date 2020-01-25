@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon;
 
 import com.egoal.darkestpixeldungeon.actors.mobs.Albino;
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob;
+import com.egoal.darkestpixeldungeon.actors.mobs.QuickFiringGun;
 import com.egoal.darkestpixeldungeon.actors.mobs.Shielded;
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
@@ -129,6 +130,7 @@ public class Badges {
     RARE_SHIELDED,
     RARE_SENIOR,
     RARE_ACIDIC,
+    RARE_QUICK_FIRING_GUN,
     RARE(37, true),
     TUTORIAL_WARRIOR,
     TUTORIAL_MAGE,
@@ -351,7 +353,7 @@ public class Badges {
     Badge badge = null;
 
     int str = Dungeon.hero.getSTR();
-    
+
     if (!local.contains(Badge.STRENGTH_ATTAINED_1) && str >= 13) {
       badge = Badge.STRENGTH_ATTAINED_1;
       local.add(badge);
@@ -364,7 +366,7 @@ public class Badges {
       badge = Badge.STRENGTH_ATTAINED_3;
       local.add(badge);
     }
-    if (!local.contains(Badge.STRENGTH_ATTAINED_4) && str>= 19) {
+    if (!local.contains(Badge.STRENGTH_ATTAINED_4) && str >= 19) {
       badge = Badge.STRENGTH_ATTAINED_4;
       local.add(badge);
     }
@@ -479,8 +481,9 @@ public class Badges {
 
   public static void validateAllPotionsIdentified() {
     if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-            !local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion.Companion.allKnown
-            ()) {
+            !local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion.Companion
+            .allKnown
+                    ()) {
 
       Badge badge = Badge.ALL_POTIONS_IDENTIFIED;
       local.add(badge);
@@ -819,7 +822,8 @@ public class Badges {
       badge = Badge.RARE_SENIOR;
     } else if (mob instanceof Acidic) {
       badge = Badge.RARE_ACIDIC;
-    }
+    } else if (mob instanceof QuickFiringGun)
+      badge = Badge.RARE_QUICK_FIRING_GUN;
     if (!global.contains(badge)) {
       global.add(badge);
       saveNeeded = true;
@@ -829,7 +833,8 @@ public class Badges {
             global.contains(Badge.RARE_BANDIT) &&
             global.contains(Badge.RARE_SHIELDED) &&
             global.contains(Badge.RARE_SENIOR) &&
-            global.contains(Badge.RARE_ACIDIC)) {
+            global.contains(Badge.RARE_ACIDIC) &&
+            global.contains(Badge.RARE_QUICK_FIRING_GUN)) {
 
       badge = Badge.RARE;
       displayBadge(badge);

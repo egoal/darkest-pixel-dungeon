@@ -103,9 +103,10 @@ public abstract class Char extends Actor {
 
   private HashSet<Buff> buffs = new HashSet<>();
 
-  public enum Camp{
+  public enum Camp {
     HERO, NEUTRAL, ENEMY,
   }
+
   public Camp camp;
 
   {
@@ -153,8 +154,8 @@ public abstract class Char extends Actor {
     }
   }
 
-  public float magicalResistance(){
-      return magicalResistance;
+  public float magicalResistance() {
+    return magicalResistance;
   }
 
   public int viewDistance() {
@@ -180,10 +181,14 @@ public abstract class Char extends Actor {
     return 8;
   }
 
-  public void say(String text, int color){
-    if(sprite!=null) sprite.showSentence(color, text);
+  public void say(String text) {
+    say(text, CharSprite.DEFAULT);
   }
-  
+
+  public void say(String text, int color) {
+    if (sprite != null) sprite.showSentence(color, text);
+  }
+
   public boolean attack(Char enemy) {
     if (enemy == null || !enemy.isAlive()) return false;
 
@@ -198,7 +203,8 @@ public abstract class Char extends Actor {
       if (this instanceof Hero && ((Hero) this).getRangedWeapon() != null && (
               (Hero) this).getSubClass() == HeroSubClass.SNIPER) {
         // sniper's perk: ignore defence
-      } else if (dmg.type!= Damage.Type.MAGICAL && !dmg.isFeatured(Damage.Feature.PURE))
+      } else if (dmg.type != Damage.Type.MAGICAL && !dmg.isFeatured(Damage
+              .Feature.PURE))
         dmg = enemy.defendDamage(dmg);
 
       dmg = attackProc(dmg);
@@ -274,7 +280,7 @@ public abstract class Char extends Actor {
 
       return true;
     } else {
-      if(enemy==Dungeon.hero) Dungeon.hero.onEvasion(dmg);
+      if (enemy == Dungeon.hero) Dungeon.hero.onEvasion(dmg);
 
       // missed
       if (visibleFight) {
@@ -434,9 +440,9 @@ public abstract class Char extends Actor {
   }
 
   public void addResistances(int element, float r) {
-      for(int i=0; i< Damage.Element.ELEMENT_COUNT; ++i)
-          if((element & (0x01<< i))!= 0)
-              elementalResistance[i] = r;
+    for (int i = 0; i < Damage.Element.ELEMENT_COUNT; ++i)
+      if ((element & (0x01 << i)) != 0)
+        elementalResistance[i] = r;
   }
 
   protected Damage resistDamage(Damage dmg) {
@@ -454,14 +460,14 @@ public abstract class Char extends Actor {
       }
 
     // elemental resistance
-    for(int of=0; of< Damage.Element.ELEMENT_COUNT; ++of)
-      if(dmg.isFeatured(0x01<< of))
-          dmg.value -= Math.round(dmg.value* elementalResistance[of]);
+    for (int of = 0; of < Damage.Element.ELEMENT_COUNT; ++of)
+      if (dmg.isFeatured(0x01 << of))
+        dmg.value -= Math.round(dmg.value * elementalResistance[of]);
 
-    if(dmg.type== Damage.Type.MAGICAL)
-      dmg.value -= Math.round(dmg.value* magicalResistance());
+    if (dmg.type == Damage.Type.MAGICAL)
+      dmg.value -= Math.round(dmg.value * magicalResistance());
 
-    if(dmg.value<0) dmg.value = 0;
+    if (dmg.value < 0) dmg.value = 0;
 
     return dmg;
   }
@@ -607,7 +613,8 @@ public abstract class Char extends Actor {
     if (Dungeon.level.adjacent(step, pos) && buff(Vertigo.class) != null) {
       sprite.interruptMotion();
       int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-      if (!(Level.Companion.getPassable()[newPos] || Level.Companion.getAvoid()[newPos]) || findChar
+      if (!(Level.Companion.getPassable()[newPos] || Level.Companion.getAvoid
+              ()[newPos]) || findChar
               (newPos) != null)
         return;
       else {

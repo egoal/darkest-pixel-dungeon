@@ -63,7 +63,7 @@ class Minstrel : NPC.Unbreakable() {
                 })
             }
             1 -> tell(Messages.get(Minstrel::class.java, "introduction"))
-            2 -> GLog.p(Messages.get(Minstrel::class.java, "farewell"))
+            2 -> say(Messages.get(Minstrel::class.java, "farewell"))
         }
     }
 
