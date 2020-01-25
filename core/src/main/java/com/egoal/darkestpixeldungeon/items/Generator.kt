@@ -156,7 +156,7 @@ object Generator {
     }
 
     object POTION : ClassMapGenerator<Potion>(hashMapOf(
-            PotionOfHealing::class.java to 25f,
+            PotionOfHealing::class.java to 22f,
             PotionOfExperience::class.java to 4f,
             PotionOfToxicGas::class.java to 15f,
             PotionOfParalyticGas::class.java to 10f,

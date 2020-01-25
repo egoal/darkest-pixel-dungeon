@@ -181,7 +181,7 @@ public abstract class Char extends Actor {
   }
 
   public void say(String text, int color){
-    sprite.showSentence(color, text);
+    if(sprite!=null) sprite.showSentence(color, text);
   }
   
   public boolean attack(Char enemy) {

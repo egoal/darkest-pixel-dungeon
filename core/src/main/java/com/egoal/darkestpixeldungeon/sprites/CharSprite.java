@@ -158,13 +158,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
     }
   }
 
-  public void showSentence(int color, String text, Object... args){
-    if(!visible) return;
+  public void showSentence(int color, String text, Object... args) {
+    //todo: auto-warp
+    if (!visible) return;
 
-    if(args.length> 0)
+    if (args.length > 0)
       text = Messages.format(text, args);
 
-    BubbleText.Companion.Show(this, width/2f, -height/4f, text, color);
+    BubbleText.Companion.Show(this, width / 2f, -height / 4f, text, color);
   }
 
   public void idle() {

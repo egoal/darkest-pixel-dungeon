@@ -254,30 +254,9 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-//        CrackedCoin().random().identify().collect()
-//        hero.heroPerk.add(FinishingShot())
-//        Sickle().identify().collect()
-//        CeremonialDagger().quantity(30).collect()
-//        CrackedCoin().identify().collect()
-//        Dungeon.gold += 200
-//        MasterThievesArmband().collect()
-//        hero.atkSkill += 10f
-//        Spear().identify().collect()
-//        RoundShield().identify().collect()
-//        AssassinsBlade().identify().collect()
-//        Claymore().identify().collect()
-//        Lance().identify().collect()
-//        hero.defSkill += 10f
-//        hero.STR += 4
-//        Sword().upgrade().collect()
-//        MailArmor().upgrade().collect()
-//        EyeballOfTheElder.Left().collect()
-//        EyeballOfTheElder.Right().collect()
-//        EyeballOfTheElder().collect()
-//        WandOfAbel().identify().collect()
-//        hero.heroPerk.add(FinishingShot())
-//        hero.heroPerk.add(ExtraPerkChoice())
-//        TomeOfPerk().identify().collect()
+        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
+            quantity(99).identify().collect()
+        })
     }
 
     // called when hero level up

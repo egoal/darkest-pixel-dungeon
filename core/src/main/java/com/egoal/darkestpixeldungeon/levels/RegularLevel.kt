@@ -229,7 +229,7 @@ abstract class RegularLevel : Level() {
             val mob = Bestiary.mob(Dungeon.depth).apply {
                 pos = pointToCell(space.rect.random())
             }
-            if (passable[mob.pos] && findMobAt(mob.pos) == null) {
+            if (passable[mob.pos] && distance(entrance, mob.pos) > 4 && findMobAt(mob.pos) == null) {
                 mobs.add(mob)
                 1
             } else 0
@@ -399,7 +399,7 @@ abstract class RegularLevel : Level() {
                 PrizeTrap().hide()
         }
 
-        Log.d("dpd", "would add ${trapsToSpawn.size} traps, of which ${trapsToSpawn.size- traps} are prizes.")
+        Log.d("dpd", "would add ${trapsToSpawn.size} traps, of which ${trapsToSpawn.size - traps} are prizes.")
 
         for (pr in trapsToSpawn.withIndex()) {
             val cell = validCells[pr.index]

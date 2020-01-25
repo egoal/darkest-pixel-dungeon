@@ -56,10 +56,13 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
                 }
             }
 
-            if (!dag) return false
+            if (!dag) {
+                Log.d("dpd", "failed after 100 trials.")
+                return false
+            }
         }
 
-        if(minLoops>0 && makeLoopClosure(6)<=minLoops)
+        if (minLoops > 0 && makeLoopClosure(6) <= minLoops)
             return false
 
         return true
@@ -72,6 +75,15 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
     }
 
     private fun digFirstRoom() {
+        val p = Random.Float()
+        when {
+            p < 0.15f -> digFirstRoomAnnular()
+            p < 0.3f -> digFirstRoomCross()
+            else -> digFirstRoomRect()
+        }
+    }
+
+    private fun digFirstRoomRect() {
         val w = Random.IntRange(4, 6)
         val h = Random.IntRange(4, 6)
         val x = Random.IntRange(level.width() / 4, level.width() / 4 * 3 - w)
@@ -87,6 +99,103 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
                 Wall.Down(rect.y2 + 1, rect.x1, rect.x2)))
 
         spaces.add(Space(rect, DigResult.Type.Normal))
+    }
+
+    private fun digFirstRoomAnnular() {
+        val inner = if (Random.Float() < 0.25f) 1 else Random.Int(5, level.width() / 2 - 5)
+        digFirstRoomAnnular(Rect(inner, level.width() - 1 - inner, inner, level.height() - 1 - inner), Random.Int(2, 4))
+    }
+
+    private fun digFirstRoomAnnular(outer: Rect, tunnelWidth: Int) {
+        val inner = outer.shrink(tunnelWidth)
+        Digger.Fill(level, outer, Terrain.EMPTY)
+        Digger.Fill(level, inner, Terrain.WALL)
+        if (Random.Float() < 0.3f) Digger.Set(level, outer.x1, outer.y1, Terrain.WALL)
+        if (Random.Float() < 0.3f) Digger.Set(level, outer.x1, outer.y2, Terrain.WALL)
+        if (Random.Float() < 0.3f) Digger.Set(level, outer.x2, outer.y2, Terrain.WALL)
+        if (Random.Float() < 0.3f) Digger.Set(level, outer.x2, outer.y1, Terrain.WALL)
+
+        val expandInner = inner.width > 5
+        val expandOuter = outer.x1 > 6
+
+        for (pr in makeSegments(inner.y1, inner.y2)) {
+            if (expandInner) walls.add(Wall.Right(inner.x1, pr.first, pr.second))
+            if (expandOuter) walls.add(Wall.Left(outer.x2 - 1, pr.first, pr.second))
+        }
+        for (pr in makeSegments(inner.y1, inner.y2)) {
+            if (expandInner) walls.add(Wall.Left(inner.x2, pr.first, pr.second))
+            if (expandOuter) walls.add(Wall.Right(outer.x2 + 1, pr.first, pr.second))
+        }
+        for (pr in makeSegments(inner.x1, inner.x2)) {
+            if (expandInner) walls.add(Wall.Down(inner.y1, pr.first, pr.second))
+            if (expandOuter) walls.add(Wall.Up(outer.y1 - 1, pr.first, pr.second))
+        }
+        for (pr in makeSegments(inner.x1, inner.x2)) {
+            if (expandInner) walls.add(Wall.Up(inner.y2, pr.first, pr.second))
+            if (expandOuter) walls.add(Wall.Down(outer.y2 + 1, pr.first, pr.second))
+        }
+
+        spaces.add(Space(Rect(outer.x1, inner.x1 - 1, inner.y1, inner.y2), DigResult.Type.Normal))
+        spaces.add(Space(Rect(inner.x2 + 1, outer.x2, inner.y1, inner.y2), DigResult.Type.Normal))
+        spaces.add(Space(Rect(inner.x1, inner.x2, outer.y1, inner.y1 - 1), DigResult.Type.Normal))
+        spaces.add(Space(Rect(inner.x1, inner.x2, inner.y2 + 1, outer.y2), DigResult.Type.Normal))
+
+        Log.d("dpd", "first room: ${walls.size} walls, ${spaces.size} spaces.")
+    }
+
+    private fun makeSegments(begin: Int, end: Int): ArrayList<Pair<Int, Int>> {
+        val segs = ArrayList<Pair<Int, Int>>()
+        var x1 = begin
+        var x2 = begin + Random.Int(4, 6)
+        while (x2 <= end) {
+            segs.add(Pair(x1, x2))
+            x1 = x2
+            x2 += Random.Int(4, 6)
+        }
+
+        return segs
+    }
+
+    private fun digFirstRoomCross() {
+        val w = Random.NormalIntRange(1, 4)
+        val h = Random.NormalIntRange(1, 4)
+        val x = Random.IntRange(2, level.width() - 2 - w)
+        val y = Random.IntRange(2, level.height() - 2 - h)
+        digFirstRoomCross(Rect.Create(x, y, w, h))
+    }
+
+    private fun digFirstRoomCross(center: Rect) {
+        assert(center.x1 >= 1 && center.x2 <= level.width() - 2 && center.y1 >= 1 && center.y2 <= level.height() - 2)
+
+        Digger.Fill(level, Rect(1, level.width() - 2, center.y1, center.y2), Terrain.EMPTY)
+        Digger.Fill(level, Rect(center.x1, center.x2, 1, level.height() - 2), Terrain.EMPTY)
+        if (Random.Float() < 0.3f) Digger.Set(level, center.x1 - 1, center.y1 - 1, Terrain.WALL_LIGHT_ON)
+        if (Random.Float() < 0.3f) Digger.Set(level, center.x1 - 1, center.y2 + 1, Terrain.WALL_LIGHT_ON)
+        if (Random.Float() < 0.3f) Digger.Set(level, center.x2 + 1, center.y1 - 1, Terrain.WALL_LIGHT_ON)
+        if (Random.Float() < 0.3f) Digger.Set(level, center.x2 + 1, center.y2 + 1, Terrain.WALL_LIGHT_ON)
+
+        for (pr in makeSegments(1, center.x1 - 1)) {
+            if (center.y1 > 5) walls.add(Wall.Up(center.y1 - 1, pr.first, pr.second))
+            if (center.y2 < level.height() - 6) walls.add(Wall.Down(center.y2 + 1, pr.first, pr.second))
+        }
+        for (pr in makeSegments(center.x2 + 1, level.width() - 2)) {
+            if (center.y1 > 5) walls.add(Wall.Up(center.y1 - 1, pr.first, pr.second))
+            if (center.y2 < level.height() - 6) walls.add(Wall.Down(center.y2 + 1, pr.first, pr.second))
+        }
+        for (pr in makeSegments(1, center.y1 - 1)) {
+            if (center.x1 > 5) walls.add(Wall.Left(center.x1 - 1, pr.first, pr.second))
+            if (center.x2 < level.width() - 6) walls.add(Wall.Right(center.x2 + 1, pr.first, pr.second))
+        }
+        for (pr in makeSegments(center.y2 + 1, level.height() - 2)) {
+            if (center.x1 > 5) walls.add(Wall.Left(center.x1 - 1, pr.first, pr.second))
+            if (center.x2 < level.width() - 6) walls.add(Wall.Right(center.x2 + 1, pr.first, pr.second))
+        }
+
+        spaces.add(Space(Rect(1, center.x1 - 1, center.y1, center.y2), DigResult.Type.Normal))
+        spaces.add(Space(Rect(center.x2 + 1, level.width() - 2, center.y1, center.y2), DigResult.Type.Normal))
+        spaces.add(Space(Rect(center.x1, center.x2, 1, center.y1 - 1), DigResult.Type.Normal))
+        spaces.add(Space(Rect(center.x1, center.x2, center.y2 + 1, level.height() - 2), DigResult.Type.Normal))
+        spaces.add(Space(center, DigResult.Type.Normal))
     }
 
     private fun canDigAt(rect: Rect): Boolean {
