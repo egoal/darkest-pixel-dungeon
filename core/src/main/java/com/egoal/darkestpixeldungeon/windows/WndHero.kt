@@ -33,10 +33,7 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
-import com.egoal.darkestpixeldungeon.ui.BuffIndicator
-import com.egoal.darkestpixeldungeon.ui.PerkSlot
-import com.egoal.darkestpixeldungeon.ui.RedButton
-import com.egoal.darkestpixeldungeon.ui.Window
+import com.egoal.darkestpixeldungeon.ui.*
 import com.watabou.gltextures.SmartTexture
 import com.watabou.gltextures.TextureCache
 import com.watabou.noosa.Group
@@ -263,9 +260,19 @@ class WndHero : WndTabbed() {
 
         init {
             // resistance
-            var top = 0f
-            top = layoutResistances(top)
+//            var top = 0f
+//            top = layoutResistances(top)
 
+            val resistanceIndicator = ResistanceIndicator(Dungeon.hero)
+            add(resistanceIndicator)
+            resistanceIndicator.setRect(3f, 3f, WIDTH.toFloat(), 0f)
+
+            // extra
+            var thetop = resistanceIndicator.bottom() + 3f
+            val hero = Dungeon.hero
+            thetop = addLine(thetop, M.L(this, "critical_chance", round(hero.criticalChance() * 100).toInt()))
+            thetop = addLine(thetop, M.L(this, "evasion_chance", round(hero.evasionProbability() * 100).toInt()))
+            if (hero.isAlive) addLine(thetop, M.L(this, "regeneration", hero.regenerateSpeed()))
         }
 
         private fun layoutResistances(top: Float): Float {
@@ -308,6 +315,7 @@ class WndHero : WndTabbed() {
 
         private fun addLine(top: Float, line: String): Float {
             val lbl = PixelScene.renderText(line, 6)
+            lbl.x = 3f
             lbl.y = top
             add(lbl)
 
