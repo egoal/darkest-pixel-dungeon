@@ -61,16 +61,17 @@ open class Merchant : NPC() {
     override fun interact(): Boolean {
         Journal.add(M.T(name))
         val actions = actions()
-        val options = actions.map { M.L(this, "ac_" + it) }.toTypedArray()
-        WndDialogue.Show(this, greeting(), *options) {
-            execute(actions[it])
+        WndDialogue.Show(this, greeting(), *actions.map { it.second }.toTypedArray()) {
+            execute(actions[it].first)
         }
 
         return false
     }
 
     /// merchant
-    protected open fun actions(): ArrayList<String> = arrayListOf(AC_BUY)
+    protected open fun actions(): ArrayList<Pair<String, String>> = arrayListOf(
+            AC_BUY to M.L(this, "ac_$AC_BUY")
+    )
 
     protected open fun execute(action: String) {
         if (action == AC_BUY) {

@@ -71,7 +71,7 @@ public class EmoIcon extends Image {
 
       super(owner);
 
-      copy(Icons.get(Icons.SLEEP));
+      copy(Icons.Companion.get(Icons.SLEEP));
 
       maxSize = 1.2f;
       timeScale = 0.5f;
@@ -90,7 +90,7 @@ public class EmoIcon extends Image {
 
       super(owner);
 
-      copy(Icons.get(Icons.ALERT));
+      copy(Icons.Companion.get(Icons.ALERT));
 
       maxSize = 1.3f;
       timeScale = 2;

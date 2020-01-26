@@ -42,10 +42,7 @@ import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
-import com.egoal.darkestpixeldungeon.ui.AttackIndicator
-import com.egoal.darkestpixeldungeon.ui.BuffIndicator
-import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
-import com.egoal.darkestpixeldungeon.ui.StatusPane
+import com.egoal.darkestpixeldungeon.ui.*
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
@@ -83,6 +80,8 @@ class Hero : Char() {
     var exp = 0
     var criticalChance = 0f
     var regeneration = 0.1f
+
+    var reservedPerks = 0
 
     // behaviour
     var ready = false
@@ -886,9 +885,10 @@ class Hero : Char() {
                 if ((lvl - 2) % 4 == 0) {
                     //2, 6, 10... gain a perk
                     interrupt()
-                    val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
-                    GameScene.show(WndSelectPerk.CreateWithRandomPositives(
-                            M.L(WndSelectPerk::class.java, "select"), cnt))
+//                    val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
+//                    GameScene.show(WndSelectPerk.CreateWithRandomPositives(
+//                            M.L(WndSelectPerk::class.java, "select"), cnt))
+                    reservedPerks += 1
                 }
 
                 if (lvl == 12 && Dungeon.hero.subClass == HeroSubClass.NONE) {
@@ -1253,6 +1253,7 @@ class Hero : Char() {
         private const val REGENERATION = "regeneration"
         private const val ELEMENTAL_RESISTANCE = "elemental_resistance"
         private const val MAGICAL_RESISTANCE = "magical_resistance"
+        private const val RESERVED_PERKS = "reserved_perks"
     }
 
     // store
@@ -1276,6 +1277,8 @@ class Hero : Char() {
 
         bundle.put(ELEMENTAL_RESISTANCE, elementalResistance)
         bundle.put(MAGICAL_RESISTANCE, magicalResistance)
+
+        bundle.put(RESERVED_PERKS, reservedPerks)
 
         belongings.storeInBundle(bundle)
     }
@@ -1301,6 +1304,8 @@ class Hero : Char() {
 
         elementalResistance = bundle.getFloatArray(ELEMENTAL_RESISTANCE)
         magicalResistance = bundle.getFloat(MAGICAL_RESISTANCE)
+
+        reservedPerks = bundle.getInt(RESERVED_PERKS)
 
         belongings.restoreFromBundle(bundle)
 

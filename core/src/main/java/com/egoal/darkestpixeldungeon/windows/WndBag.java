@@ -319,15 +319,15 @@ public class WndBag extends WndTabbed {
 
     private Image icon() {
       if (bag instanceof SeedPouch) {
-        return Icons.get(Icons.SEED_POUCH);
+        return Icons.Companion.get(Icons.SEED_POUCH);
       } else if (bag instanceof ScrollHolder) {
-        return Icons.get(Icons.SCROLL_HOLDER);
+        return Icons.Companion.get(Icons.SCROLL_HOLDER);
       } else if (bag instanceof WandHolster) {
-        return Icons.get(Icons.WAND_HOLSTER);
+        return Icons.Companion.get(Icons.WAND_HOLSTER);
       } else if (bag instanceof PotionBandolier) {
-        return Icons.get(Icons.POTION_BANDOLIER);
+        return Icons.Companion.get(Icons.POTION_BANDOLIER);
       } else {
-        return Icons.get(Icons.BACKPACK);
+        return Icons.Companion.get(Icons.BACKPACK);
       }
     }
   }

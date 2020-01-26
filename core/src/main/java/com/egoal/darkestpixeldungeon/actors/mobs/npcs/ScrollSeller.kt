@@ -43,9 +43,9 @@ class ScrollSeller : Merchant() {
         shuffleItems()
     }
 
-    override fun actions(): ArrayList<String> {
+    override fun actions(): ArrayList<Pair<String, String>> {
         val actions = super.actions()
-        if (avaliableCleanTimes > 0) actions.add(AC_CLEAN)
+        if (avaliableCleanTimes > 0) actions.add(AC_CLEAN to M.L(this, "ac_$AC_CLEAN", feeClean()))
         return actions
     }
 

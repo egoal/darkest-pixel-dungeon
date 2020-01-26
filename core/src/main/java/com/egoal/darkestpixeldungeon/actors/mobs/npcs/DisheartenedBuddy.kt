@@ -19,6 +19,8 @@ class DisheartenedBuddy : NPC.Unbreakable() {
 
     init {
         spriteClass = DisheartenedBuddySprite::class.java
+        
+        properties.add(Property.IMMOVABLE)
     }
 
     override fun storeInBundle(bundle: Bundle) {
@@ -49,13 +51,9 @@ class DisheartenedBuddy : NPC.Unbreakable() {
         return false
     }
 
-    // unbreakable
-    override fun reset(): Boolean {
-        return true
-    }
+    override fun reset(): Boolean = true
 
     companion object {
-
         private const val MEET_TIMES = "meettimes"
     }
 

@@ -69,7 +69,7 @@ class MageArmor : ClassArmor(), GreatBlueprint.Enchantable {
             Buff.prolong(it, Roots::class.java, 3f)
         }
 
-        Item.curUser.apply {
+        curUser.apply {
             HP -= HP / 3
 
             spend(Actor.TICK)

@@ -56,7 +56,7 @@ public class WndEnchanting extends Window {
             BTN_GAP, BTN_SIZE, BTN_SIZE);
     add(btnItemSrc_);
 
-    Image arrow = Icons.get(Icons.RESUME);
+    Image arrow = Icons.Companion.get(Icons.RESUME);
     add(arrow);
     arrow.x = WIDTH / 2 - arrow.width() / 2;
     arrow.y = btnItemSrc_.centerY() - arrow.height() / 2;

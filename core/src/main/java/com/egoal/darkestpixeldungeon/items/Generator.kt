@@ -427,19 +427,22 @@ object Generator {
     }
 
     // item sort order
-    private val itemCategoryOrder = listOf(
-            Weapon::class.java, Armor::class.java, Helmet::class.java,
-            Potion::class.java, Scroll::class.java,
-            Wand::class.java, Ring::class.java, Artifact::class.java,
-            Plant.Seed::class.java, Food::class.java, Book::class.java,
-            Gold::class.java
-    )
-
-    fun ItemOrder(item: Item): Int {
-        val index = itemCategoryOrder.indexOfFirst { it.isInstance(item) }
-        return if (index >= 0) index else {
-            if (item is Bag) Int.MAX_VALUE else Int.MAX_VALUE - 1
-        }
+    fun ItemOrder(item: Item): Int = when (item) {
+        is MeleeWeapon -> 0 + item.tier
+        is MissileWeapon -> 100 + item.tier
+        is Armor -> 200 + item.tier
+        is Helmet -> 300
+        is Potion -> 400
+        is Scroll -> 500
+        is Wand -> 600
+        is Ring -> 700
+        is Artifact -> 800
+        is Plant.Seed -> 900
+        is Food -> 1000
+        is Book -> 1100
+        is Gold -> 1200
+        is Bag -> Int.MAX_VALUE
+        else -> Int.MAX_VALUE - 1
     }
 }
 

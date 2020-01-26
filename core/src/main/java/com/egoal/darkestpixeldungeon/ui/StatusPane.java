@@ -76,6 +76,7 @@ public class StatusPane extends Component {
   private Compass compass;
 
   private ClockIndicator clock;
+  private PerkSelectIndicator perkSelector;
 
   private JournalButton btnJournal;
   private MenuButton btnMenu;
@@ -167,6 +168,9 @@ public class StatusPane extends Component {
     clock = new ClockIndicator();
     add(clock);
 
+    perkSelector = new PerkSelectIndicator();
+    add(perkSelector);
+
     buffs = new BuffIndicator(Dungeon.hero);
     add(buffs);
 
@@ -207,6 +211,8 @@ public class StatusPane extends Component {
     danger.setPos(width - danger.width(), 20);
 
     clock.setPos(width - clock.width(), danger.bottom() + 4);
+
+    perkSelector.setPos(0, version.y + version.height + 4);
 
     buffs.setPos(34, 12);
 

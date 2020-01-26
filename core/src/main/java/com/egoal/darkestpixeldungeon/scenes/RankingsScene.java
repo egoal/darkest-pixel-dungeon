@@ -230,7 +230,7 @@ public class RankingsScene extends PixelScene {
         add(level);
       }
 
-      classIcon.copy(Icons.get(rec.heroClass));
+      classIcon.copy(Icons.Companion.get(rec.heroClass));
     }
 
     @Override

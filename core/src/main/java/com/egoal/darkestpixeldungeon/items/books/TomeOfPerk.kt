@@ -19,8 +19,6 @@ class TomeOfPerk : Book() {
     override fun doRead(hero: Hero) {
         detach(hero.belongings.backpack)
 
-        val cnt = if (hero.heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
-        GameScene.show(WndSelectPerk.CreateWithRandomPositives(
-                M.L(WndSelectPerk::class.java, "select"), cnt))
+        hero.reservedPerks += 1
     }
 }
