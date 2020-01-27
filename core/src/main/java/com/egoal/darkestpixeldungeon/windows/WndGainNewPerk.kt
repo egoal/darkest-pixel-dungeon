@@ -25,7 +25,10 @@ class WndGainNewPerk(title: String, perks: List<Perk>) :
         val perks = perkButtons.map { it.perk().javaClass }
         for (i in 1..20) {
             val newPerk = Perk.RandomPositive(Dungeon.hero)
-            if (newPerk.javaClass !in perks) onPerkSelected(newPerk)
+            if (newPerk.javaClass !in perks){
+                onPerkSelected(newPerk)
+                break
+            }
         }
     }
 
