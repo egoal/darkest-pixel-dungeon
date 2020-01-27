@@ -65,7 +65,7 @@ class King : Mob() {
         if ((Dungeon.level as CityBossLevel).activateAllStatuaries()) {
             say(M.L(this, "arise"))
             Flare(3, 32f).color(0x000000, false).show(sprite, 2f)
-            spend(3f)
+            spend(2f)
             return
         }
 
@@ -83,6 +83,14 @@ class King : Mob() {
             Buff.prolong(this, LifeLink::class.java, 10f).linker = it.id()
         }
         spend(1f)
+    }
+
+    override fun getCloser(target: Int): Boolean {
+        // retreat
+        if (HP < HT / 2 && Dungeon.level.mobs.count { it is Undead } > 3)
+            return super.getFurther(target)
+        
+        return super.getCloser(target)
     }
 
     override fun die(cause: Any?) {
@@ -143,7 +151,7 @@ class King : Mob() {
         override fun die(cause: Any?) {
             super.die(cause)
 
-            val head = MobSpawner(Undead::class.java, Random.Int(20, 30))
+            val head = MobSpawner(Undead::class.java, Random.Int(15, 30))
             head.pos = pos
             GameScene.add(head)
 

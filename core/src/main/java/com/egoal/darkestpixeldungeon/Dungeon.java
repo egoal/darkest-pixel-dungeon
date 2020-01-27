@@ -79,6 +79,7 @@ public class Dungeon {
     wine,
 
     laboratories,
+    archDemons,
 
     //all unlimited health potion sources (except guards, which are at the 
     // bottom.
@@ -249,7 +250,7 @@ public class Dungeon {
         level = new CityBossLevel();
         break;
       case 21:
-        level = new LastShopLevel(); 
+        level = new LastShopLevel();
         break;
       case 22:
       case 23:
@@ -267,7 +268,7 @@ public class Dungeon {
         Statistics.INSTANCE.setDeepestFloor(Statistics.INSTANCE
                 .getDeepestFloor() - 1);
     }
-    
+
     visible = new boolean[level.length()];
     level.create();
 
@@ -413,6 +414,12 @@ public class Dungeon {
     // 1 per 10 floors
     int labLeft = (depth / 10 + 1) - limitedDrops.laboratories.count;
     return labLeft > 0 && Random.Int(10 - depth % 10) < labLeft;
+  }
+
+  public static boolean demonNeed() {
+    // from 10, 1 per 7 floors
+    int demonLeft = ((depth - 10) / 7 + 1) - limitedDrops.archDemons.count;
+    return demonLeft > 0 && Random.Int(7 - (depth - 10) % 7) < demonLeft;
   }
 
   // save
@@ -850,7 +857,8 @@ public class Dungeon {
                              boolean[] visible) {
 
     if (level.adjacent(from, to)) {
-      return Actor.findChar(to) == null && (pass[to] || Level.Companion.getAvoid()[to]) ? to
+      return Actor.findChar(to) == null && (pass[to] || Level.Companion
+              .getAvoid()[to]) ? to
               : -1;
     }
 

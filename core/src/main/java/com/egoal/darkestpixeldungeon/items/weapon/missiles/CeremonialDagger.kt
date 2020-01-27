@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
@@ -70,6 +71,8 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
         hero.sprite.operate(hero.pos)
         hero.spend(TIME_TO_USE)
         hero.busy()
+
+        Wound.hit(hero.pos)
 
         GLog.w(M.L(this, "on_prick"))
         if (dmg.value <= 0) dmg.value = 1

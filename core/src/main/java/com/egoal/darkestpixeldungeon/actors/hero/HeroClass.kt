@@ -255,17 +255,7 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-        //
-//        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
-//            quantity(99).identify().collect()
-//        })
-//        initDebug(hero)
-        for (i in 1..20) upgradeHero(hero)
-        hero.STR = 18
-        AssassinsBlade().upgrade(6).identify().collect()
-        MailArmor().upgrade(2).identify().collect()
-        PotionOfHealing().quantity(6).identify().collect()
-        Perk.RandomPositives(hero, 5).forEach { hero.heroPerk.add(it) }
+        // initDebug(hero)
     }
 
     // called when hero level up
@@ -292,12 +282,8 @@ enum class HeroClass(private val title: String) {
     }
 
     private fun initDebug(hero: Hero) {
-        hero.apply {
-            HT = 1000
-            HP = 1
-            STR = 16
-            // lvl = 20
-        }
+        for (i in 1..20) upgradeHero(hero)
+        hero.STR = 20
 
         hero.heroPerk.add(IntendedTransportation())
 
@@ -307,21 +293,18 @@ enum class HeroClass(private val title: String) {
         Dungeon.quickslot.setSlot(4, ScrollOfTeleportation().apply {
             quantity(99).identify().collect()
         })
-        Dungeon.quickslot.setSlot(3, PotionOfExperience().apply {
+        Dungeon.quickslot.setSlot(3, PotionOfMindVision().apply {
             quantity(99).identify().collect()
         })
 
         PotionOfHealing().quantity(99).identify().collect()
-        PotionOfMindVision().quantity(99).identify().collect()
         PotionOfLiquidFlame().quantity(99).identify().collect()
 
         Torch().quantity(99).identify().collect()
 
         PlateArmor().identify().upgrade(6).collect()
         Claymore().identify().upgrade(6).collect()
-
-        GreatBlueprint().collect()
-
+        
         Amulet().collect()
     }
 

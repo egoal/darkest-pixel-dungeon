@@ -5,10 +5,9 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraPerkChoice
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
-import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
+import com.egoal.darkestpixeldungeon.windows.WndGainNewPerk
 import com.watabou.noosa.BitmapText
 import com.watabou.noosa.Image
-import java.util.function.DoubleUnaryOperator
 
 class PerkSelectIndicator : Tag(0xff4c4c) {
     private lateinit var number: BitmapText
@@ -66,6 +65,6 @@ class PerkSelectIndicator : Tag(0xff4c4c) {
     override fun onClick() {
         Dungeon.hero.reservedPerks--
         val cnt = if (Dungeon.hero.heroPerk.has(ExtraPerkChoice::class.java)) 5 else 3
-        GameScene.show(WndSelectPerk.CreateWithRandomPositives(M.L(WndSelectPerk::class.java, "select"), cnt))
+        GameScene.show(WndGainNewPerk.CreateWithRandomPositives(cnt))
     }
 }

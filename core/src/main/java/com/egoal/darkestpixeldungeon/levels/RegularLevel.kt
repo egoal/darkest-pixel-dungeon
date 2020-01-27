@@ -121,7 +121,15 @@ abstract class RegularLevel : Level() {
             diggers.add(LaboratoryDigger())
             probs.remove(LaboratoryDigger::class.java)
 
-            Dungeon.limitedDrops.laboratories.drop()
+            Dungeon.limitedDrops.laboratories.count++
+            Log.d("dpd", "would create lab")
+        }
+        if (Dungeon.demonNeed()) {
+            diggers.add(DemonDigger())
+            probs.remove(DemonDigger::class.java)
+
+            Dungeon.limitedDrops.archDemons.count++
+            Log.d("dpd", "would add demon")
         }
 
         // never fall to boss
@@ -481,7 +489,7 @@ abstract class RegularLevel : Level() {
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
                 ArmoryDigger::class.java to 0.6f,
                 GardenDigger::class.java to 1f,
-                LaboratoryDigger::class.java to 1.5f,
+                LaboratoryDigger::class.java to 1f,
                 LibraryDigger::class.java to 1f,
                 MagicWellDigger::class.java to 1f,
                 PitDigger::class.java to 0f,
@@ -497,7 +505,8 @@ abstract class RegularLevel : Level() {
                 WeakFloorDigger::class.java to 0.75f,
                 AltarDigger::class.java to 0.75f,
                 WandDigger::class.java to 0.75f,
-                CryptDigger::class.java to 0.75f
+                CryptDigger::class.java to 0.75f,
+                DemonDigger::class.java to 0f // quota
         )
 
         val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(

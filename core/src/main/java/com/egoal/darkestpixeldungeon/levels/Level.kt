@@ -189,10 +189,11 @@ abstract class Level : Bundlable {
 
             Generator.ResetCategoryProbs()
             if (build(i)) {
-                Log.d("dpd", String.format("level build okay after %d trails.", i))
+                Log.d("dpd", "level build okay after $i trails.")
                 break
             }
 
+            // recover states
             Generator.recover()
             ++i
         }

@@ -165,7 +165,7 @@ class PureCrit : Perk() {
     }
 }
 
-class ExtraCritProbability : Perk(5) {
+class ExtraCritProbability : Perk.Additional(5) {
     override fun image(): Int = PerkImageSheet.CRIT_PROB
 
     private fun extraProb(): Float = 0.01f + 0.05f * level
@@ -176,12 +176,6 @@ class ExtraCritProbability : Perk(5) {
 
     override fun onLose() {
         Dungeon.hero.criticalChance -= extraProb()
-    }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
     }
 }
 
@@ -205,7 +199,7 @@ class LowHealthDexterous : Perk(3) {
     }
 }
 
-class ExtraDexterous : Perk(5) {
+class ExtraDexterous : Perk.Additional(5) {
     override fun image(): Int = PerkImageSheet.DEX_EXTRA
 
     override fun onGain() {
@@ -215,13 +209,7 @@ class ExtraDexterous : Perk(5) {
     override fun onLose() {
         Dungeon.hero.defSkill -= extraDef()
     }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
-    }
-
+    
     private fun extraDef(): Int = 3 * level
 }
 
@@ -308,7 +296,7 @@ class ExtraStrengthPower : Perk(3) {
     }
 }
 
-class FastRegeneration : Perk(5) {
+class FastRegeneration : Perk.Additional(5) {
     override fun image(): Int = PerkImageSheet.FASTER_REG
 
     override fun onGain() {
@@ -317,12 +305,6 @@ class FastRegeneration : Perk(5) {
 
     override fun onLose() {
         Dungeon.hero.regeneration -= extraReg()
-    }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
     }
 
     private fun extraReg(): Float = 0.15f * level
@@ -427,7 +409,7 @@ class FinishingShot : Perk() {
     }
 }
 
-class ExtraStrength : Perk(3) {
+class ExtraStrength : Perk.Additional(3) {
     override fun image(): Int = PerkImageSheet.STRENGTH_EXTRA
 
     override fun onLose() {
@@ -437,12 +419,6 @@ class ExtraStrength : Perk(3) {
 
     override fun onGain() {
         Dungeon.hero.STR += str()
-    }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
     }
 
     private fun str(): Int = level

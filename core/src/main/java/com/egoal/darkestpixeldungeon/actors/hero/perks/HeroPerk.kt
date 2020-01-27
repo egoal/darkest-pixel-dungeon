@@ -1,8 +1,5 @@
 package com.egoal.darkestpixeldungeon.actors.hero.perks
 
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 
@@ -13,7 +10,6 @@ class HeroPerk : Bundlable {
     fun <T> get(cls: Class<T>): T? where T : Perk = perks.find { cls.isInstance(it) } as T?
     fun has(cls: Class<out Perk>): Boolean = get(cls) != null
 
-    //todo: merge to upgrade
     fun add(perk: Perk): Boolean {
         val similar = perks.find { perk.javaClass == it.javaClass }
 
@@ -27,6 +23,13 @@ class HeroPerk : Bundlable {
             } else
                 false
         }
+    }
+
+    fun downgrade(perk: Perk) {
+        val it = perks.find { perk.javaClass == it.javaClass }!!
+        // 
+        if (it.level == 1) perks.remove(it)
+        else it.downgrade()
     }
 
     override fun storeInBundle(bundle: Bundle) {

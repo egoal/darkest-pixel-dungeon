@@ -35,7 +35,6 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
-import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Earthroot
 import com.egoal.darkestpixeldungeon.plants.Sungrass
@@ -47,7 +46,6 @@ import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
 import com.egoal.darkestpixeldungeon.windows.WndResurrect
-import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.Camera
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
@@ -886,8 +884,8 @@ class Hero : Char() {
                     //2, 6, 10... gain a perk
                     interrupt()
 //                    val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
-//                    GameScene.show(WndSelectPerk.CreateWithRandomPositives(
-//                            M.L(WndSelectPerk::class.java, "select"), cnt))
+//                    GameScene.show(WndGainNewPerk.CreateWithRandomPositives(
+//                            M.L(WndGainNewPerk::class.java, "select"), cnt))
                     reservedPerks += 1
                 }
 
