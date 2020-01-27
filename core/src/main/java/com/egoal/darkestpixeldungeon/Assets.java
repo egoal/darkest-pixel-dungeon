@@ -59,7 +59,8 @@ public class Assets {
   public static final String SPD_BATTLE_MAGE = ACTORS + "spd_battle_mage.png";
   public static final String ABYSS_HERO = ACTORS + "abyss_hero.png";
   public static final String YVETTE = ACTORS + "yvette.png";
-
+  public static final String ARCH_DEMON = ACTORS+ "arch_demon.png";
+  
   // shop keeper
   public static final String KEEPER = ACTORS + "shopkeeper.png";
   public static final String POTION_SELLER = ACTORS + "potion_seller.png";

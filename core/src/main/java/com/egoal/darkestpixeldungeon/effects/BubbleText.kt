@@ -62,7 +62,7 @@ class BubbleText : RenderedText() {
         private const val LIFESPAN = 4f
 
         fun Show(target: Visual, x: Float, y: Float, text: String, color: Int) {
-            GameScene.sentence()?.reset(target, x, y, text, color)
+            GameScene.sentenceFor(target)?.reset(target, x, y, text, color)
         }
     }
 }

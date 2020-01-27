@@ -91,6 +91,7 @@ import com.egoal.darkestpixeldungeon.windows.WndStory;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
@@ -158,8 +159,9 @@ public class GameScene extends PixelScene {
     DarkestPixelDungeon.lastClass(Dungeon.hero.getHeroClass().ordinal());
 
     super.create();
-    Camera.main.zoom(GameMath.INSTANCE.gate(minZoom, defaultZoom + DarkestPixelDungeon
-            .zoom(), maxZoom));
+    Camera.main.zoom(GameMath.INSTANCE.gate(minZoom, defaultZoom +
+            DarkestPixelDungeon
+                    .zoom(), maxZoom));
 
     scene = this;
 
@@ -321,7 +323,8 @@ public class GameScene extends PixelScene {
 
     switch (InterlevelScene.mode) {
       case RESURRECT:
-        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.level.getEntrance());
+        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.level
+                .getEntrance());
         new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
         break;
       case RETURN:
@@ -400,12 +403,13 @@ public class GameScene extends PixelScene {
         default:
       }
 
-      if(Dungeon.level instanceof RegularLevel &&
+      if (Dungeon.level instanceof RegularLevel &&
               Dungeon.hero.getHeroPerk().has(LevelPerception.class) &&
-              ((RegularLevel) Dungeon.level).secretDoors()>0)
+              ((RegularLevel) Dungeon.level).secretDoors() > 0)
         GLog.n(Messages.get(this, "secrets"));
 
-    //   GLog.n(Messages.format("left artifacts: %d", Generator.ARTIFACT.INSTANCE.left()));
+      //   GLog.n(Messages.format("left artifacts: %d", Generator.ARTIFACT
+      // .INSTANCE.left()));
 
       InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
@@ -550,8 +554,8 @@ public class GameScene extends PixelScene {
   }
 
   private void addHeapSprite(Heap heap) {
-    ItemSprite sprite =(ItemSprite)heaps.recycle(ItemSprite.class);
-    heap.sprite =  sprite;
+    ItemSprite sprite = (ItemSprite) heaps.recycle(ItemSprite.class);
+    heap.sprite = sprite;
     sprite.revive();
     sprite.link(heap);
     heaps.add(sprite);
@@ -699,7 +703,19 @@ public class GameScene extends PixelScene {
   }
 
   public static BubbleText sentence() {
-    return scene != null? (BubbleText)scene.sentences.recycle(BubbleText.class): null;
+    return scene != null ? (BubbleText) scene.sentences.recycle(BubbleText
+            .class) : null;
+  }
+
+  public static BubbleText sentenceFor(Visual target) {
+    // its members must be BubbleText
+    for (Gizmo m : scene.sentences.members) {
+      if (m != null && ((BubbleText) m).target == target)
+        return (BubbleText) m;
+    }
+    
+    // create new one
+    return sentence();
   }
 
   public static void pickUp(Item item) {
@@ -893,7 +909,8 @@ public class GameScene extends PixelScene {
       return;
     }
 
-    if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level.getVisited()[cell] && !Dungeon.level.getMapped()[cell])) {
+    if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level
+            .getVisited()[cell] && !Dungeon.level.getMapped()[cell])) {
       GameScene.show(new WndMessage(Messages.get(GameScene.class,
               "dont_know")));
       return;

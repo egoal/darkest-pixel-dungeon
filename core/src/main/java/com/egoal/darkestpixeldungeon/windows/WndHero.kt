@@ -265,7 +265,7 @@ class WndHero : WndTabbed() {
 
             val resistanceIndicator = ResistanceIndicator(Dungeon.hero)
             add(resistanceIndicator)
-            resistanceIndicator.setRect(3f, 3f, WIDTH.toFloat(), 0f)
+            resistanceIndicator.setRect(3f, 3f, WIDTH.toFloat() - 6f, 0f)
 
             // extra
             var thetop = resistanceIndicator.bottom() + 3f

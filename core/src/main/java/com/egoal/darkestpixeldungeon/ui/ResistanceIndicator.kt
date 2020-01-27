@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.watabou.gltextures.SmartTexture
 import com.watabou.gltextures.TextureCache
+import com.watabou.noosa.ColorBlock
 import com.watabou.noosa.Image
 import com.watabou.noosa.RenderedText
 import com.watabou.noosa.ui.Component
@@ -52,6 +53,12 @@ class ResistanceIndicator(val char: Char) : Component() {
         add(magicalTxt)
 
         height = elementalText.height() + ICON_HEIGHT * 2f + GAP + magicalLine.height()
+
+        val bg = ColorBlock(width + 2f, height + 2f, 0xd680876f.toInt())
+        bg.x = x - 1f
+        bg.y = y - 2f
+        add(bg)
+        sendToBack(bg)
     }
 
     private fun makePercentText(value: Float): RenderedText {

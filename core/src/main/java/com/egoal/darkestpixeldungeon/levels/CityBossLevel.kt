@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.noosa.Group
@@ -29,10 +30,9 @@ class CityBossLevel : Level() {
         color2 = 0xf2f2f2
     }
 
-    var arenaDoor = 0
+    private var arenaDoor = 0
     var enteredArena = false
     var keyDropped = false
-    var remainStatuaries = 6
 
     override fun tilesTex(): String = Assets.TILES_CITY
 
@@ -40,8 +40,6 @@ class CityBossLevel : Level() {
 
     override fun trackMusic(): String = if (enteredArena && !keyDropped)
         Assets.TRACK_BOSS_LOOP else Assets.TRACK_CHAPTER_4
-
-    fun pedestal(left: Boolean): Int = if (left) xy2cell(15, 11) else xy2cell(19, 11)
 
     override fun build(iteration: Int): Boolean {
         loadMapDataFromFile(MAP_FILE)
@@ -63,7 +61,7 @@ class CityBossLevel : Level() {
         Bones.get()?.let {
             var pos: Int
             do {
-                pos = xy2cell(Random.Int(14, 23), Random.Int(30, 34))
+                pos = xy2cell(Random.Int(14, 21), Random.Int(30, 34))
             } while (pos == entrance || map[pos] == Terrain.SIGN)
             drop(it, pos).type = Heap.Type.REMAINS
         }
@@ -76,8 +74,8 @@ class CityBossLevel : Level() {
         super.press(cell, ch)
 
         // active statuary
-        if (ch == Dungeon.hero && remainStatuaries > 0)
-            activeNearbyStatuaries(cell)
+//        if (ch == Dungeon.hero && remainStatuaries > 0)
+//            activeNearbyStatuaries(cell)
 
         // create the king
         if (!enteredArena && isNearToHallCenter(cell) && ch == Dungeon.hero) {
@@ -86,15 +84,14 @@ class CityBossLevel : Level() {
 
             val boss = Bestiary.mob(Dungeon.depth).apply {
                 state = WANDERING
-                pos = xy2cell(17, 6)
-                yell(Messages.get(this, "greeting"))
+                pos = xy2cell(17, 10)
             }
             GameScene.add(boss)
 
             if (Dungeon.visible[boss.pos]) {
                 boss.notice()
                 boss.sprite.alpha(0f)
-                boss.sprite.parent.add(AlphaTweener(boss.sprite, 1f, .1f))
+                boss.sprite.parent.add(AlphaTweener(boss.sprite, 1f, 1f))
             }
 
             set(arenaDoor, Terrain.LOCKED_DOOR)
@@ -127,7 +124,6 @@ class CityBossLevel : Level() {
         bundle.put(DOOR, arenaDoor)
         bundle.put(ENTERED, enteredArena)
         bundle.put(DROPPED, keyDropped)
-        bundle.put(STATUARIES, remainStatuaries)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -135,7 +131,6 @@ class CityBossLevel : Level() {
         arenaDoor = bundle.getInt(DOOR)
         enteredArena = bundle.getBoolean(ENTERED)
         keyDropped = bundle.getBoolean(DROPPED)
-        remainStatuaries = bundle.getInt(STATUARIES)
     }
 
     override fun tileName(tile: Int): String = when (tile) {
@@ -160,48 +155,36 @@ class CityBossLevel : Level() {
         return visuals
     }
 
-    private fun activeNearbyStatuaries(cell: Int) {
-        val DISTANCE = 3
-        val x = cell % width()
-        val y = cell / width()
+    fun activateAllStatuaries(): Boolean {
+        var activated = false
+        for (i in 0 until length()) {
+            if (map[i] == Terrain.STATUE_SP) {
+                activated = true
+                map[i] = Terrain.EMPTY_SP
+                GameScene.updateMap(i)
 
-        // L1 distance
-        var actived = 0
-        for (ix in x - DISTANCE..x + DISTANCE) {
-            for (iy in y - DISTANCE..y + DISTANCE) {
-                val i = xy2cell(ix, iy)
-                if (i <= 0 || i > length) continue
-
-                if (map[i] == Terrain.STATUE_SP) {
-                    // active
-                    map[i] = Terrain.EMPTY_SP
-                    GameScene.updateMap(i)
-
-                    val ku = King.Undead().apply {
-                        state = HUNTING
-                        pos = i
-                        yell(Messages.get(this, "awaken"))
-                    }
-
-                    GameScene.add(ku, 1f) // delay one turn
-                    if (Dungeon.visible[i]) {
-                        ku.sprite.emitter().start(ShadowParticle.CURSE, 0.05f, 10)
-                        Sample.INSTANCE.play(Assets.SND_BONES)
-                    }
-
-                    ++actived
+                val ku = King.Undead().apply {
+                    state = HUNTING
+                    pos = i
+                }
+                GameScene.add(ku, 1f)
+                if (Dungeon.visible[i]) {
+                    ku.sprite.emitter().start(ShadowParticle.CURSE, 0.05f, 10)
+                    Sample.INSTANCE.play(Assets.SND_BONES)
+                    ku.say(M.L(ku, "awaken"))
                 }
             }
         }
 
-        if (actived > 0) {
-            remainStatuaries -= actived
+        if (activated) {
             buildFlagMaps()
-            Dungeon.observe()
+            Dungeon.observe() // actually, no need
         }
+        
+        return activated
     }
 
-    private fun isNearToHallCenter(cell: Int): Boolean = cell / width() < 18
+    private fun isNearToHallCenter(cell: Int): Boolean = cell / width() < 14
 
     companion object {
         private const val MAP_FILE: String = "data/CityBossLevel.map"

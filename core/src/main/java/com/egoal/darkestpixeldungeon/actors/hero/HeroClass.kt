@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
+import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
@@ -258,7 +259,13 @@ enum class HeroClass(private val title: String) {
 //        Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
 //            quantity(99).identify().collect()
 //        })
-        initDebug(hero)
+//        initDebug(hero)
+        for (i in 1..20) upgradeHero(hero)
+        hero.STR = 18
+        AssassinsBlade().upgrade(6).identify().collect()
+        MailArmor().upgrade(2).identify().collect()
+        PotionOfHealing().quantity(6).identify().collect()
+        Perk.RandomPositives(hero, 5).forEach { hero.heroPerk.add(it) }
     }
 
     // called when hero level up
