@@ -397,8 +397,7 @@ abstract class RegularLevel : Level() {
         // bonus from wealth
         var nPrize = 1
         val bonus = min(10, Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
-        while (Random.Float() < .25f + bonus * 0.05f)
-            ++nPrize
+        while (Random.Float() < .2f + bonus * 0.05f) if (++nPrize >= 5) break;
 
         val trapsToSpawn = List(min(traps + nPrize, validCells.size)) {
             if (it < traps)

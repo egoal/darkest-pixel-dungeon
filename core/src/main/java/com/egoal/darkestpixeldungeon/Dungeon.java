@@ -40,6 +40,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
+import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndResurrect;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
@@ -61,7 +62,7 @@ import java.util.HashSet;
 public class Dungeon {
 
   public static int initialDepth_ = -1;
-  public static final String VERSION_STRING = "0.4.2-0";
+  public static final String VERSION_STRING = "0.4.2-0-1";
 
   public static int transmutation;  // depth number for a well of transmutation
 

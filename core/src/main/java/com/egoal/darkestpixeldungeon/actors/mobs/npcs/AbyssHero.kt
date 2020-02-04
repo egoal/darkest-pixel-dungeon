@@ -125,8 +125,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     // strengthen
     override fun attackProc(dmg: Damage): Damage {
-        if (camp == Camp.HERO) {
-            (dmg.to as Mob?)?.let {
+        if (camp == Camp.HERO && dmg.to is Mob) {
+            (dmg.to as Mob).let {
                 earnExp(it.EXP.toFloat() * (dmg.value.toFloat() / it.HT.toFloat()))
             }
         }

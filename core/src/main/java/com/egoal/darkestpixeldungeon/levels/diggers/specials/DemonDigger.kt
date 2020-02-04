@@ -8,9 +8,15 @@ import com.egoal.darkestpixeldungeon.levels.diggers.Rect
 import com.egoal.darkestpixeldungeon.levels.diggers.Wall
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.DiamondDigger
 import com.watabou.utils.PathFinder
+import com.watabou.utils.Random
 
 class DemonDigger : DiamondDigger() {
     private val demon = ArchDemon()
+
+    override fun chooseDigArea(wall: Wall): Rect {
+        val size = Random.IntRange(3, 4) * 2 + 1
+        return chooseCenteredRect(wall, size, size)
+    }
 
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         val dr = super.dig(level, wall, rect)

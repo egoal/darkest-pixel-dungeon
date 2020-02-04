@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
 import com.egoal.darkestpixeldungeon.effects.PerkGain
@@ -88,6 +89,14 @@ class ArchDemon : NPC.Unbreakable() {
                 if (hero.regeneration > 0.5f && Random.Float() < 0.5f) {
                     hero.regeneration = 0f
                     GLog.n(M.L(ArchDemon::class.java, "regeneration"))
+                } else if (Random.Float() < 0.3f) {
+                    val index = (0 until Damage.Element.ELEMENT_COUNT).maxBy { i -> hero.elementalResistance[i] }!!
+                    if (hero.elementalResistance[index] > 0f) {
+                        hero.elementalResistance[index] -= 0.3f
+                    } else {
+                        for (i in 0 until Damage.Element.ELEMENT_COUNT) hero.elementalResistance[i] -= 0.05f
+                    }
+                    GLog.n(M.L(this, "resistance"))
                 } else removeHT(hero, Random.Float(0.15f, 0.25f))
             } else {
                 var thePerk: Perk

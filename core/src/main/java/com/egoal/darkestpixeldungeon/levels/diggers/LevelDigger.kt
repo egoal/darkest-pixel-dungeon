@@ -7,6 +7,8 @@ import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import kotlin.math.max
+import kotlin.math.min
 
 data class Space(var rect: Rect = Rect(), var type: DigResult.Type = DigResult.Type.Normal) : Bundlable {
     override fun storeInBundle(bundle: Bundle) {
@@ -102,7 +104,7 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
     }
 
     private fun digFirstRoomAnnular() {
-        val inner = if (Random.Float() < 0.2f) 1 else Random.Int(5, level.width() / 2 - 5)
+        val inner = if (Random.Float() < 0.1f) 1 else Random.Int(5, level.width() / 2 - 5)
         digFirstRoomAnnular(Rect(inner, level.width() - 1 - inner, inner, level.height() - 1 - inner), Random.Int(2, 4))
     }
 
@@ -157,44 +159,51 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
     }
 
     private fun digFirstRoomCross() {
-        val w = Random.NormalIntRange(1, 4)
-        val h = Random.NormalIntRange(1, 4)
-        val x = Random.IntRange(2, level.width() - 2 - w)
-        val y = Random.IntRange(2, level.height() - 2 - h)
+        val w = Random.NormalIntRange(2, 4)
+        val h = Random.NormalIntRange(2, 4)
+        val x = Random.IntRange(4, level.width() - 4 - w)
+        val y = Random.IntRange(4, level.height() - 4 - h)
         digFirstRoomCross(Rect.Create(x, y, w, h))
     }
 
     private fun digFirstRoomCross(center: Rect) {
         assert(center.x1 >= 1 && center.x2 <= level.width() - 2 && center.y1 >= 1 && center.y2 <= level.height() - 2)
 
-        Digger.Fill(level, Rect(1, level.width() - 2, center.y1, center.y2), Terrain.EMPTY)
-        Digger.Fill(level, Rect(center.x1, center.x2, 1, level.height() - 2), Terrain.EMPTY)
+        // expand
+        val maxCrossLen = 5
+        val left = max(1, center.x1 - maxCrossLen)
+        val right = min(center.x2 + + maxCrossLen, level.width() - 2)
+        val top = max(1, center.y1 - maxCrossLen)
+        val bottom = min(center.y2 + maxCrossLen, level.height() - 2)
+
+        Digger.Fill(level, Rect(left, right, center.y1, center.y2), Terrain.EMPTY)
+        Digger.Fill(level, Rect(center.x1, center.x2, top, bottom), Terrain.EMPTY)
         if (Random.Float() < 0.3f) Digger.Set(level, center.x1 - 1, center.y1 - 1, Terrain.WALL_LIGHT_ON)
         if (Random.Float() < 0.3f) Digger.Set(level, center.x1 - 1, center.y2 + 1, Terrain.WALL_LIGHT_ON)
         if (Random.Float() < 0.3f) Digger.Set(level, center.x2 + 1, center.y1 - 1, Terrain.WALL_LIGHT_ON)
         if (Random.Float() < 0.3f) Digger.Set(level, center.x2 + 1, center.y2 + 1, Terrain.WALL_LIGHT_ON)
 
-        for (pr in makeSegments(1, center.x1 - 1)) {
+        for (pr in makeSegments(left, center.x1 - 1)) {
             if (center.y1 > 5) walls.add(Wall.Up(center.y1 - 1, pr.first, pr.second))
             if (center.y2 < level.height() - 6) walls.add(Wall.Down(center.y2 + 1, pr.first, pr.second))
         }
-        for (pr in makeSegments(center.x2 + 1, level.width() - 2)) {
+        for (pr in makeSegments(center.x2 + 1, right)) {
             if (center.y1 > 5) walls.add(Wall.Up(center.y1 - 1, pr.first, pr.second))
             if (center.y2 < level.height() - 6) walls.add(Wall.Down(center.y2 + 1, pr.first, pr.second))
         }
-        for (pr in makeSegments(1, center.y1 - 1)) {
+        for (pr in makeSegments(top, center.y1 - 1)) {
             if (center.x1 > 5) walls.add(Wall.Left(center.x1 - 1, pr.first, pr.second))
             if (center.x2 < level.width() - 6) walls.add(Wall.Right(center.x2 + 1, pr.first, pr.second))
         }
-        for (pr in makeSegments(center.y2 + 1, level.height() - 2)) {
+        for (pr in makeSegments(center.y2 + 1, bottom)) {
             if (center.x1 > 5) walls.add(Wall.Left(center.x1 - 1, pr.first, pr.second))
             if (center.x2 < level.width() - 6) walls.add(Wall.Right(center.x2 + 1, pr.first, pr.second))
         }
 
-        spaces.add(Space(Rect(1, center.x1 - 1, center.y1, center.y2), DigResult.Type.Normal))
-        spaces.add(Space(Rect(center.x2 + 1, level.width() - 2, center.y1, center.y2), DigResult.Type.Normal))
-        spaces.add(Space(Rect(center.x1, center.x2, 1, center.y1 - 1), DigResult.Type.Normal))
-        spaces.add(Space(Rect(center.x1, center.x2, center.y2 + 1, level.height() - 2), DigResult.Type.Normal))
+        spaces.add(Space(Rect(left, center.x1 - 1, center.y1, center.y2), DigResult.Type.Normal))
+        spaces.add(Space(Rect(center.x2 + 1, right, center.y1, center.y2), DigResult.Type.Normal))
+        spaces.add(Space(Rect(center.x1, center.x2, top, center.y1 - 1), DigResult.Type.Normal))
+        spaces.add(Space(Rect(center.x1, center.x2, center.y2 + 1, bottom), DigResult.Type.Normal))
         spaces.add(Space(center, DigResult.Type.Normal))
     }
 

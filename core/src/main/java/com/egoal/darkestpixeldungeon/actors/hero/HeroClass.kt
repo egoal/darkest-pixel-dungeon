@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.MaskOfLider
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
@@ -221,6 +222,9 @@ enum class HeroClass(private val title: String) {
 
         if (DarkestPixelDungeon.debug()) initDebug(hero)
 
+//        MaskOfLider().collect()
+//        initDebug(hero)
+        
         hero.updateAwareness()
     }
 

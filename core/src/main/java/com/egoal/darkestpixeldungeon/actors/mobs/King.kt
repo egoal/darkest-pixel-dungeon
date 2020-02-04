@@ -24,6 +24,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.util.*
+import kotlin.math.min
 
 class King : Mob() {
     init {
@@ -53,7 +54,6 @@ class King : Mob() {
 
     override fun act(): Boolean {
         if (anger > 100f) {
-            anger -= 100f
             doSpecial()
             return true
         }
@@ -66,6 +66,9 @@ class King : Mob() {
             say(M.L(this, "arise"))
             Flare(3, 32f).color(0x000000, false).show(sprite, 2f)
             spend(2f)
+
+            anger -= 100f
+            Dungeon.level.mobs.filter { it is Undead }.forEach { it.beckon(Dungeon.hero.pos) }
             return
         }
 
@@ -75,21 +78,26 @@ class King : Mob() {
             say(M.L(this, "arise"))
             Flare(3, 32f).color(0x000000, false).show(sprite, 2f)
             spend(heads.size.toFloat() / 2f)
+
+            anger -= min(100f, heads.size * 20f)
+            Dungeon.level.mobs.filter { it is Undead }.forEach { it.beckon(Dungeon.hero.pos) }
             return
         }
 
         // do life link
         Dungeon.level.mobs.find { it is Undead }!!.let {
-            Buff.prolong(this, LifeLink::class.java, 10f).linker = it.id()
+            Buff.prolong(this, LifeLink::class.java, 8f).linker = it.id()
         }
         spend(1f)
+
+        anger -= 40f
     }
 
     override fun getCloser(target: Int): Boolean {
         // retreat
         if (HP < HT / 2 && Dungeon.level.mobs.count { it is Undead } > 3)
             return super.getFurther(target)
-        
+
         return super.getCloser(target)
     }
 
