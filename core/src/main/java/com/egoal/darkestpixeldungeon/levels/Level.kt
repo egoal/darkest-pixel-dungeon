@@ -57,6 +57,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
+import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
@@ -957,7 +958,7 @@ abstract class Level : Bundlable {
         // quota
         items.add(Generator.FOOD.generate())
 
-        val bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java)
+        val bonus = Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java)
         val p = 0.925f.pow(bonus)
         if (Dungeon.posNeeded()) {
             items.add(if (Random.Float() > p) PotionOfMight() else PotionOfStrength())

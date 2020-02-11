@@ -15,6 +15,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.ExplodeBrokenShot
 import com.egoal.darkestpixeldungeon.actors.hero.perks.RangedShot
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting
@@ -96,7 +97,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
     }
 
     protected open fun miss(cell: Int) {
-        val bonus = RingOfSharpshooting.getBonus(Item.curUser, RingOfSharpshooting.Aim::class.java)
+        val bonus = Ring.getBonus(Item.curUser, RingOfSharpshooting.Aim::class.java)
 
         // degraded ring of sharpshooting will even make missed shots break.
         if (this is Boomerang || Random.Float() < Math.pow(0.7, -bonus.toDouble()))
@@ -140,7 +141,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         value = imbue.damageFactor(value)
         val dmg = Damage(value, hero, target).addFeature(Damage.Feature.RANGED)
 
-        val bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim::class.java)
+        val bonus = Ring.getBonus(hero, RingOfSharpshooting.Aim::class.java)
         if (bonus != 0) {
             val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
             dmg.value = round(dmg.value * ratio).toInt()

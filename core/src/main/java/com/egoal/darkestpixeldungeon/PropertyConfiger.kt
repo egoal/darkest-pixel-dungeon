@@ -37,9 +37,13 @@ object PropertyConfiger {
                         lootChance = float(at("lootChance")), loot = at("loot"), //todo: loot
                         minDamage = int(at("minDamage")), maxDamage = int(at("maxDamage")), typeDamage = damageType(at("typeDamage")),
                         minDefend = int(at("minDefend")), maxDefend = int(at("maxDefend")),
-                        magicalResistance = float(at("magicalResistance"))
-                ).apply {
-                    setElementalResistance(at("elementalResistance"))
+                        magicalResistance = float(at("magicalResistance"))).apply {
+                    elementalResistances[0] = float(at("FIRE"))
+                    elementalResistances[1] = float(at("POISON"))
+                    elementalResistances[2] = float(at("ICE"))
+                    elementalResistances[3] = float(at("LIGHT"))
+                    elementalResistances[4] = float(at("SHADOW"))
+                    elementalResistances[5] = float(at("HOLY"))
                     setProperties(at("Properties"))
                 }
 
@@ -69,8 +73,8 @@ object PropertyConfiger {
 
         mob.magicalResistance = mp.magicalResistance
 
-        for(pr in mp.elementalResistances) mob.addResistances(pr.key, pr.value)
-        for(p in mp.properties) mob.properties().add(p)
+        for (i in 0 until mp.elementalResistances.size) mob.elementalResistance[i] = mp.elementalResistances[i];
+        for (p in mp.properties) mob.properties().add(p)
 
         mob.HP = mob.HT
     }
@@ -83,20 +87,8 @@ object PropertyConfiger {
             val minDamage: Int = 0, val maxDamage: Int = 0, val typeDamage: Damage.Type = Damage.Type.NORMAL,
             val minDefend: Int = 0, val maxDefend: Int = 0,
             val magicalResistance: Float = 0f) {
-        val elementalResistances = hashMapOf<Int, Float>()
+        val elementalResistances = FloatArray(Damage.Element.ELEMENT_COUNT) { 0f }
         val properties = hashSetOf<Char.Property>()
-
-        fun setElementalResistance(string: String) {
-            if (string.isEmpty()) return
-
-            for (pr in string.split(' ')) {
-                val prs = pr.split(':')
-                val ele = Damage.Element.String2Element(prs[0])
-                val rt = prs[1].toFloat()
-
-                elementalResistances[ele] = rt
-            }
-        }
 
         fun setProperties(string: String) {
             if (string.isEmpty()) return

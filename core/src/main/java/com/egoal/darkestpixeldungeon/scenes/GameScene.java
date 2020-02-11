@@ -408,9 +408,8 @@ public class GameScene extends PixelScene {
               ((RegularLevel) Dungeon.level).secretDoors() > 0)
         GLog.n(Messages.get(this, "secrets"));
 
-      //   GLog.n(Messages.format("left artifacts: %d", Generator.ARTIFACT
-      // .INSTANCE.left()));
-
+      GLog.w("spawned demons: %d", Dungeon.limitedDrops.archDemons.count);
+      
       InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
       fadeIn();

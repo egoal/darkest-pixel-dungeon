@@ -18,15 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.rings;
+package com.egoal.darkestpixeldungeon.items.rings
 
-public class RingOfHaste extends Ring {
+class RingOfFuror : Ring() {
 
-  @Override
-  protected RingBuff buff() {
-    return new Haste();
-  }
+    override fun buff(): RingBuff = Furor()
 
-  public class Haste extends RingBuff {
-  }
+    inner class Furor : Ring.RingBuff()
 }

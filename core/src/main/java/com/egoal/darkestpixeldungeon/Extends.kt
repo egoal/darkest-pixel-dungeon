@@ -1,6 +1,5 @@
 package com.egoal.darkestpixeldungeon
 
-import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 
 // utils & extend functions

@@ -207,7 +207,7 @@ class Hero : Char() {
         var c = criticalChance
         if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
 
-        val level = RingOfCritical.getBonus(this, RingOfCritical.Critical::class.java)
+        val level = Ring.getBonus(this, RingOfCritical.Critical::class.java)
         if (level > 0) {
             c += 0.01f * level
             c *= 1.15f.pow(level)
@@ -286,7 +286,8 @@ class Hero : Char() {
     }
 
     fun evasionProbability(): Float {
-        var e = 1f
+        val level = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
+        var e = 1f- 0.01f* level;
 
         // GameMath.ProbabilityPlus()
         heroPerk.get(ExtraEvasion::class.java)?.let {
@@ -301,6 +302,8 @@ class Hero : Char() {
         if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
             e *= 1f - 0.2f
 
+        e *= 0.975f.pow(level)
+        
         return 1 - e
     }
 
@@ -308,8 +311,8 @@ class Hero : Char() {
         // evasion check
         if (Random.Float() < evasionProbability()) return 1000f
 
-        var bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
-        var evasion = 1.125f.pow(bonus)
+        var bonus = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
+        var evasion = 1.1f.pow(bonus)
 
         if (paralysed > 0) evasion *= 0.5f
 
@@ -345,7 +348,7 @@ class Hero : Char() {
         var dmg = Damage(0, this, enemy)
 
         // weapon
-        val bonus = RingOfForce.getBonus(this, RingOfForce.Force::class.java)
+        val bonus = Ring.getBonus(this, RingOfForce.Force::class.java)
 
         val wep = rangedWeapon ?: belongings.weapon
         if (wep != null) {
@@ -402,7 +405,7 @@ class Hero : Char() {
     fun procWandDamage(dmg: Damage) {
         dmg.value = round(dmg.value * arcaneFactor()).toInt()
 
-        val bonus = RingOfSharpshooting.getBonus(this, RingOfSharpshooting.Aim::class.java)
+        val bonus = Ring.getBonus(this, RingOfSharpshooting.Aim::class.java)
         if (bonus != 0) {
             val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
             dmg.value = round(dmg.value * ratio).toInt()
@@ -444,7 +447,7 @@ class Hero : Char() {
     override fun speed(): Float {
         var speed = super.speed()
 
-        val hlvl = RingOfHaste.getBonus(this, RingOfHaste.Haste::class.java)
+        val hlvl = Ring.getBonus(this, RingOfHaste.Haste::class.java)
         if (hlvl != 0) speed *= 1.2f.pow(hlvl)
 
         belongings.armor?.let {
@@ -503,7 +506,7 @@ class Hero : Char() {
             //Normally putting furor speed on unarmed attacks would be unnecessary
             //But there's going to be that one guy who gets a furor+force ring combo
             //This is for that one guy, you shall get your fists of fury!
-            speed *= 0.25f + 0.75f * 0.8f.pow(RingOfFuror.getBonus(this, RingOfFuror.Furor::class.java))
+            speed *= 0.25f + 0.75f * 0.8f.pow(Ring.getBonus(this, RingOfFuror.Furor::class.java))
         }
 
         speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
@@ -939,7 +942,7 @@ class Hero : Char() {
     override fun stealth(): Int {
         var stealth = super.stealth()
 
-        stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
+        // stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
 
         if (belongings.armor?.hasGlyph(Obfuscation::class.java) == true)
             stealth += belongings.armor.level()
