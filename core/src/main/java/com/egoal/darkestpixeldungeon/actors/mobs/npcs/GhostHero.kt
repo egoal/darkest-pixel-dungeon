@@ -58,18 +58,10 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
             return false
         } else {
             // swap 
-            val curpos = pos
-            moveSprite(pos, Dungeon.hero.pos)
-            move(Dungeon.hero.pos)
-
-            with(Dungeon.hero) {
-                sprite.move(pos, curpos)
-                move(curpos)
-
-                spend(1 / speed())
-                busy()
-            }
-
+            swapPosition(Dungeon.hero)
+            Dungeon.hero.spend(1f/Dungeon.hero.speed())
+            Dungeon.hero.busy()
+            
             return true
         }
     }

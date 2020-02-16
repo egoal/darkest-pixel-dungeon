@@ -65,7 +65,7 @@ enum class HeroClass(private val title: String) {
                 Dungeon.quickslot.setSlot(1, darts)
             }
 
-            PotionOfHealing().setKnown()
+            PotionOfStrength().setKnown()
 
             // perks
             hero.heroPerk.add(Drunkard())
@@ -139,6 +139,7 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(0, cloak)
             Dungeon.quickslot.setSlot(1, darts)
 
+            hero.heroPerk.add(Dieting())
             hero.heroPerk.add(ExtraCritProbability())
             hero.heroPerk.add(Keen())
 

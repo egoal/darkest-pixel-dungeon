@@ -54,6 +54,7 @@ object PerkImageSheet {
 
     const val COUNTER_STRIKE = 48
     const val GREEDY_MIDAS = 49
+    const val DIETING = 50
 
 
     private const val NEGATIVE = 64

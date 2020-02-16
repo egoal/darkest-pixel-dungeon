@@ -161,6 +161,11 @@ class Hero : Char() {
                 reg += HT.toFloat() * 0.004f * Math.pow(1.08, it.itemLevel().toDouble()).toFloat()
         }
 
+        // ring
+        val health = Ring.getBonus(this, RingOfHealth.Health::class.java)
+        if (health < 0) reg -= 0.05f * health
+        else reg += 0.0333f * health
+
         // helmet
         belongings.helmet?.let {
             if (it is HeaddressRegeneration)
@@ -287,7 +292,7 @@ class Hero : Char() {
 
     fun evasionProbability(): Float {
         val level = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
-        var e = 1f- 0.01f* level;
+        var e = 1f - 0.01f * level;
 
         // GameMath.ProbabilityPlus()
         heroPerk.get(ExtraEvasion::class.java)?.let {
@@ -303,7 +308,7 @@ class Hero : Char() {
             e *= 1f - 0.2f
 
         e *= 0.975f.pow(level)
-        
+
         return 1 - e
     }
 
@@ -552,7 +557,6 @@ class Hero : Char() {
         if (buff(RiemannianManifoldShield.Recharge::class.java)?.isCursed == true)
             return dmg
 
-        buff(RingOfElements.Resistance::class.java)?.resist(dmg)
         if (dmg.type == Damage.Type.MAGICAL && ((belongings.armor is MageArmor) &&
                         (belongings.armor as MageArmor).enhanced))
             dmg.value = round(dmg.value * 0.9f).toInt()
@@ -577,11 +581,6 @@ class Hero : Char() {
 
         if (dmg.type == Damage.Type.MENTAL)
             return takeMentalDamage(dmg)
-
-        val tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity::class.java)
-        if (tenacity != 0)
-            dmg.value = ceil(dmg.value.toDouble() *
-                    Math.pow(0.85, tenacity * (HT - HP).toDouble() / HT.toDouble())).toInt()
 
         buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
 

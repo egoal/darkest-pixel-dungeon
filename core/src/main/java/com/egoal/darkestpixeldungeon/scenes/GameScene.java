@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.scenes;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.DungeonTilemap;
@@ -407,8 +408,6 @@ public class GameScene extends PixelScene {
               Dungeon.hero.getHeroPerk().has(LevelPerception.class) &&
               ((RegularLevel) Dungeon.level).secretDoors() > 0)
         GLog.n(Messages.get(this, "secrets"));
-
-      GLog.w("spawned demons: %d", Dungeon.limitedDrops.archDemons.count);
       
       InterlevelScene.mode = InterlevelScene.Mode.NONE;
 

@@ -47,8 +47,8 @@ class ScrollOfRage : Scroll() {
         for (mob in Dungeon.level.mobs) {
             if (Dungeon.level.distance(mob.pos, hero.pos) <= 16)
                 mob.beckon(hero.pos)
-            if (Level.fieldOfView[mob.pos]) Buff.prolong(mob, Amok::class.java, 5f)
         }
+        Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] }.forEach { Buff.prolong(it, Amok::class.java, 5f) }
 
         for (heap in Dungeon.level.heaps.values()) {
             if (heap.type === Heap.Type.MIMIC) {
@@ -57,7 +57,7 @@ class ScrollOfRage : Scroll() {
                     heap.destroy()
                 }
             }
-        }
+        } 
 
         GLog.w(Messages.get(this, "roar"))
         setKnown()

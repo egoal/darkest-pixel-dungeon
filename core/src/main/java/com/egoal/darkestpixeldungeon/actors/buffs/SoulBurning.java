@@ -4,7 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfElements;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfResistance;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -89,7 +89,7 @@ public class SoulBurning extends Buff implements Hero.Doom {
   }
 
   public static float duration(Char ch) {
-    RingOfElements.Resistance r = ch.buff(RingOfElements.Resistance.class);
+    RingOfResistance.Resistance r = ch.buff(RingOfResistance.Resistance.class);
     return r != null ? r.durationFactor() * DURATION : DURATION;
   }
 

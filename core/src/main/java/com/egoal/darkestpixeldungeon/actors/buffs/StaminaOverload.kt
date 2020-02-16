@@ -6,23 +6,27 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.watabou.utils.Bundle
 import kotlin.math.min
 
-class StaminaOverload(private var supply: Int = 1) : Buff() {
+class StaminaOverload(private var supply: Int = 0) : Buff() {
     init {
         type = buffType.POSITIVE
     }
 
+    var fromBundle = false //fixme: 
+
     override fun attachTo(target: Char): Boolean = if (super.attachTo(target)) {
-        target.HT += supply
-        target.HP += supply
+        if (fromBundle) {
+            target.HT += supply
+            target.HP += supply
+        }
         true
     } else false
 
     override fun act(): Boolean {
+        if (supply <= 0) detach()
+
         supply--
         target.HT--
         target.HP = min(target.HT, target.HP)
-        if (supply <= 0)
-            detach()
 
         spend(1f)
 
@@ -43,6 +47,7 @@ class StaminaOverload(private var supply: Int = 1) : Buff() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         supply = bundle.getInt(SUPPLY)
+        fromBundle = supply > 0
     }
 
     companion object {

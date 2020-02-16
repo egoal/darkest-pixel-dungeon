@@ -152,7 +152,7 @@ public class Dungeon {
 
     Scroll.initLabels();
     Potion.Companion.initColors();
-    Ring.initGems();
+    Ring.Companion.initGems();
 
     Statistics.INSTANCE.reset();
     Journal.INSTANCE.reset();
@@ -419,6 +419,8 @@ public class Dungeon {
 
   public static boolean demonNeed() {
     // from 10, 1 per 7 floors
+    if (depth <= 10) return false;
+    
     int demonLeft = ((depth - 10) / 7 + 1) - limitedDrops.archDemons.count;
     return demonLeft > 0 && Random.Int(7 - (depth - 10) % 7) < demonLeft;
   }
@@ -567,7 +569,7 @@ public class Dungeon {
 
       Scroll.save(bundle);
       Potion.Companion.save(bundle);
-      Ring.save(bundle);
+      Ring.Companion.save(bundle);
 
       Actor.storeNextID(bundle);
 
@@ -640,7 +642,7 @@ public class Dungeon {
 
     Scroll.restore(bundle);
     Potion.Companion.restore(bundle);
-    Ring.restore(bundle);
+    Ring.Companion.restore(bundle);
 
     quickslot.restorePlaceholders(bundle);
 

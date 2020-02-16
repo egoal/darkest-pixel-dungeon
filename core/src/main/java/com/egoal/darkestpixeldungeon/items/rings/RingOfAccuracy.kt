@@ -18,14 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.rings;
+package com.egoal.darkestpixeldungeon.items.rings
 
-public class RingOfAccuracy extends Ring {
+class RingOfAccuracy : Ring() {
 
-  @Override
-  protected RingBuff buff() {
-    return new Accuracy();
-  }
+    override fun buff() = Accuracy()
 
-  public class Accuracy extends RingBuff { }
+    inner class Accuracy : Ring.RingBuff()
 }

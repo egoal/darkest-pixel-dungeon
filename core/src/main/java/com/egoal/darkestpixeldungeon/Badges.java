@@ -508,7 +508,7 @@ public class Badges {
 
   public static void validateAllRingsIdentified() {
     if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
-            !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Ring.allKnown()) {
+            !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Ring.Companion.allKnown()) {
 
       Badge badge = Badge.ALL_RINGS_IDENTIFIED;
       local.add(badge);

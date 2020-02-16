@@ -37,7 +37,7 @@ import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Brimstone;
 import com.egoal.darkestpixeldungeon.items.food.ChargrilledMeat;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfResistance.Resistance;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;

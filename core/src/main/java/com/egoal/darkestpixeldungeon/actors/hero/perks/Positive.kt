@@ -53,7 +53,12 @@ class GoodAppetite : Perk() {
         }
     }
 
-    override fun canBeGain(hero: Hero): Boolean = hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE)
+     override fun canBeGain(hero: Hero): Boolean = hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE)
+}
+
+// see Hunger
+class Dieting : Perk() {
+    override fun image(): Int = PerkImageSheet.DIETING
 }
 
 class StrongConstitution : Perk(5) {
@@ -209,7 +214,7 @@ class ExtraDexterous : Perk.Additional(5) {
     override fun onLose() {
         Dungeon.hero.defSkill -= extraDef()
     }
-    
+
     private fun extraDef(): Int = 3 * level
 }
 

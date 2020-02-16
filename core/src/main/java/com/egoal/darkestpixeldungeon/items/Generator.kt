@@ -156,7 +156,7 @@ object Generator {
     }
 
     object POTION : ClassMapGenerator<Potion>(hashMapOf(
-            PotionOfHealing::class.java to 22f,
+            PotionOfHealing::class.java to 20f,
             PotionOfExperience::class.java to 4f,
             PotionOfToxicGas::class.java to 15f,
             PotionOfParalyticGas::class.java to 10f,
@@ -206,14 +206,14 @@ object Generator {
     object RING : ClassMapGenerator<Ring>(hashMapOf(
             RingOfAccuracy::class.java to 1f,
             RingOfEvasion::class.java to 1f,
-            RingOfElements::class.java to 1f,
+            RingOfResistance::class.java to 1f,
             RingOfForce::class.java to 1f,
             RingOfFuror::class.java to 1f,
             RingOfHaste::class.java to 1f,
             RingOfCritical::class.java to 1f,
             RingOfMight::class.java to 1f,
             RingOfSharpshooting::class.java to 1f,
-            RingOfTenacity::class.java to 1f,
+            RingOfHealth::class.java to 1f,
             RingOfWealth::class.java to 1f
     ))
 

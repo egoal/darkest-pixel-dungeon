@@ -267,6 +267,15 @@ public abstract class Mob extends Char {
       return true;
     }
   }
+  
+  public void swapPosition(Hero hero){
+    int curpos = pos;
+    moveSprite(pos, hero.pos);
+    move(hero.pos);
+    
+    hero.sprite.move(pos, curpos);
+    hero.move(curpos);
+  }
 
   @Override
   public void add(Buff buff) {
@@ -441,7 +450,7 @@ public abstract class Mob extends Char {
             .canSurpriseAttack());
     if (seen && paralysed == 0) {
       int defenseSkill = (int)defSkill;
-      int penalty = RingOfAccuracy.getBonus(enemy, RingOfAccuracy.Accuracy.class);
+      int penalty = RingOfAccuracy.Companion.getBonus(enemy, RingOfAccuracy.Accuracy.class);
       if (penalty != 0 && enemy == Dungeon.hero)
         defenseSkill *= Math.pow(0.75, penalty);
       return defenseSkill;
@@ -551,7 +560,7 @@ public abstract class Mob extends Char {
     super.die(cause);
 
     float lootChance = this.lootChance;
-    int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
+    int bonus = RingOfWealth.Companion.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
     lootChance *= Math.pow(1.15, bonus);
 
     if (Random.Float() < lootChance && Dungeon.hero.getLvl() <= maxLvl + 2) {

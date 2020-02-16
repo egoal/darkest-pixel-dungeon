@@ -27,7 +27,7 @@ import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.effects.particles.PoisonParticle;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfResistance.Resistance;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.egoal.darkestpixeldungeon.utils.GLog;

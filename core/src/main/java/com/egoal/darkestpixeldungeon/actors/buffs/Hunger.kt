@@ -28,7 +28,9 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Challenges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Dieting
 import com.egoal.darkestpixeldungeon.actors.hero.perks.RavenousAppetite
+import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.items.artifacts.HornOfPlenty
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -40,6 +42,7 @@ class Hunger : Buff(), Hero.Doom {
 
     private var level: Float = 0f
     private var partialDamage: Float = 0f
+    private var dmgTokenInTotal = 0
 
     val isStarving: Boolean get() = level >= STARVING
 
@@ -47,12 +50,14 @@ class Hunger : Buff(), Hero.Doom {
         super.storeInBundle(bundle)
         bundle.put(LEVEL, level)
         bundle.put(PARTIALDAMAGE, partialDamage)
+        bundle.put(TOTAL_DAMAGE, dmgTokenInTotal)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         level = bundle.getFloat(LEVEL)
         partialDamage = bundle.getFloat(PARTIALDAMAGE)
+        dmgTokenInTotal = bundle.getInt(TOTAL_DAMAGE)
     }
 
     override fun act(): Boolean {
@@ -79,6 +84,18 @@ class Hunger : Buff(), Hero.Doom {
                                 .type(Damage.Type.MENTAL).addFeature(Damage.Feature.PURE))
                         if (Random.Float() < 0.2f)
                             (target as Hero).sayShort(HeroLines.WHY_NOT_EAT)
+
+                        // 
+                        if (dmgTokenInTotal < 100) {
+                            dmgTokenInTotal += partialDamage.toInt()
+                            if (dmgTokenInTotal >= 100 && !(target as Hero).heroPerk.has(Dieting::class.java)) {
+                                val hero = target as Hero
+                                val diet = Dieting()
+                                hero.heroPerk.add(diet)
+                                PerkGain.Show(hero, diet)
+                                GLog.w(M.L(this, "dieting"))
+                            }
+                        }
                     }
                     partialDamage -= partialDamage.toInt().toFloat()
                 }
@@ -112,7 +129,7 @@ class Hunger : Buff(), Hero.Doom {
 
             val step = when {
                 target.buff(Drunk::class.java) != null -> STEP / 5f
-                (target as Hero).heroClass == HeroClass.ROGUE -> STEP * 1.2f
+                (target as Hero).heroPerk.has(Dieting::class.java) -> STEP * 1.2f
                 else -> STEP
             }
 
@@ -188,5 +205,6 @@ class Hunger : Buff(), Hero.Doom {
 
         private const val LEVEL = "level"
         private const val PARTIALDAMAGE = "partialDamage"
+        private const val TOTAL_DAMAGE = "total-damage"
     }
 }

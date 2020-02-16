@@ -52,21 +52,21 @@ public class RingOfMight extends Ring {
 
   @Override
   public Item upgrade() {
-    if (buff != null && buff.target != null) {
-      buff.target.HT += 5;
+    if (getBuff() != null && getBuff().target != null) {
+      getBuff().target.HT += 5;
     }
     return super.upgrade();
   }
 
   @Override
   public void level(int value) {
-    if (buff != null && buff.target != null) {
-      buff.target.HT -= level() * 5;
+    if (getBuff() != null && getBuff().target != null) {
+      getBuff().target.HT -= level() * 5;
     }
     super.level(value);
-    if (buff != null && buff.target != null) {
-      buff.target.HT += level() * 5;
-      buff.target.HP = Math.min(buff.target.HP, buff.target.HT);
+    if (getBuff() != null && getBuff().target != null) {
+      getBuff().target.HT += level() * 5;
+      getBuff().target.HP = Math.min(getBuff().target.HP, getBuff().target.HT);
     }
   }
 

@@ -171,7 +171,7 @@ public enum Rankings {
       belongings.backpack.items.add(belongings.misc2);
     if (belongings.misc3 != null)
       belongings.backpack.items.add(belongings.misc3);
-    Ring.saveSelectively(handler, belongings.backpack.items);
+    Ring.Companion.saveSelectively(handler, belongings.backpack.items);
     rec.gameData.put(HANDLERS, handler);
 
     //restore items now that we're done saving
@@ -190,7 +190,7 @@ public enum Rankings {
     Bundle handler = data.getBundle(HANDLERS);
     Scroll.restore(handler);
     Potion.Companion.restore(handler);
-    Ring.restore(handler);
+    Ring.Companion.restore(handler);
 
     Badges.loadLocal(data.getBundle(BADGES));
 
