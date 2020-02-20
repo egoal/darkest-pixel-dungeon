@@ -60,6 +60,7 @@ public class Assets {
   public static final String ABYSS_HERO = ACTORS + "abyss_hero.png";
   public static final String YVETTE = ACTORS + "yvette.png";
   public static final String ARCH_DEMON = ACTORS+ "arch_demon.png";
+  public static final String PASSERBY = ACTORS+ "passerby.png";
   
   // shop keeper
   public static final String KEEPER = ACTORS + "shopkeeper.png";

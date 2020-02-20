@@ -87,7 +87,7 @@ class VillageLevel : RegularLevel() {
 
     override fun createMobs() {
         // egoal
-        putMobAt(CatEgoal::class.java, 15, 29)
+        putMobAt(CatEgoal::class.java, 8, 31)
 
         // old alchemist
         putMobAt(Alchemist::class.java, 18, 6)
@@ -109,9 +109,10 @@ class VillageLevel : RegularLevel() {
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
-        // rawberry
         putMobAt(CatRawberry::class.java, 12, 6)
 
+        putMobAt(Passerby::class.java, 24, 23)
+        
         // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
 //         putMobAt(ArchDemon::class.java, 16, 29)
 //        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {

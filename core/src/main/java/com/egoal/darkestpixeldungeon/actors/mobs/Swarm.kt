@@ -113,7 +113,7 @@ class Swarm : Mob() {
         return clone
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         //sets drop chance
         lootChance = 1f / ((6 + 2 * Dungeon.limitedDrops.swarmHP.count) * (generation + 1))
         super.die(cause)

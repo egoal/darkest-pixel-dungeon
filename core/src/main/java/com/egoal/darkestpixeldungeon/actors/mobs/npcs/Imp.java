@@ -54,9 +54,8 @@ public class Imp extends NPC.Unbreakable {
   protected boolean act() {
 
     if (!Quest.given && Dungeon.visible[pos]) {
-      if (!seenBefore) {
-        yell(Messages.get(this, "hey", Dungeon.hero.givenName()));
-      }
+      if (!seenBefore)
+        say(Messages.get(this, "hey", Dungeon.hero.givenName()));
       seenBefore = true;
     } else {
       seenBefore = false;
@@ -64,7 +63,7 @@ public class Imp extends NPC.Unbreakable {
 
     return super.act();
   }
-  
+
   @Override
   public boolean reset() {
     return true;

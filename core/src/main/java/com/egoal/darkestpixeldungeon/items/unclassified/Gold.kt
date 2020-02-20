@@ -53,7 +53,7 @@ class Gold(value: Int = 1) : Item() {
     override fun isUpgradable(): Boolean = false
     override fun isIdentified(): Boolean = true
 
-    override fun random(): Item = this.apply { quantity = Random.Int(40 + Dungeon.depth * 8, 60 + Dungeon.depth * 16) }
+    override fun random(): Item = this.apply { quantity = Random.Int(20 + Dungeon.depth * 8, 40 + Dungeon.depth * 16) }
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

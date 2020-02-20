@@ -30,7 +30,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog;
 public class MagicalSleep extends Buff {
 
   private static final float STEP = 1f;
-  private static final float MAX_SLEEP_TIME = 30f;
+  private static final float MAX_SLEEP_TIME = 40f;
 
   private float sleeped_ = 0f;
 
