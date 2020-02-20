@@ -204,7 +204,8 @@ object Generator {
     ))
 
     object RING : ClassMapGenerator<Ring>(hashMapOf(
-            RingOfAccuracy::class.java to 1f,
+            // RingOfAccuracy::class.java to 1f,
+            RingOfArcane::class.java to 1f, 
             RingOfEvasion::class.java to 1f,
             RingOfResistance::class.java to 1f,
             RingOfForce::class.java to 1f,

@@ -181,7 +181,10 @@ open abstract class Ring : KindofMisc() {
         private const val UNFAMILIRIARITY = "unfamiliarity"
 
         private val rings = arrayOf(
-                RingOfAccuracy::class.java, RingOfEvasion::class.java, RingOfResistance::class.java,
+                // RingOfAccuracy::class.java, 
+                RingOfArcane::class.java,
+                RingOfEvasion::class.java,
+                RingOfResistance::class.java,
                 RingOfForce::class.java, RingOfFuror::class.java, RingOfHaste::class.java,
                 RingOfCritical::class.java, RingOfMight::class.java, RingOfSharpshooting::class.java,
                 RingOfHealth::class.java, RingOfWealth::class.java)

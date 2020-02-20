@@ -68,7 +68,9 @@ class King : Mob() {
             spend(2f)
 
             anger -= 100f
-            Dungeon.level.mobs.filter { it is Undead }.forEach { it.beckon(Dungeon.hero.pos) }
+            val undeads = Dungeon.level.mobs.filter { it is Undead }
+            undeads.forEach { it.beckon(Dungeon.hero.pos) }
+            Buff.prolong(this, LifeLink::class.java, 8f).linker = undeads.random().id()
             return
         }
 

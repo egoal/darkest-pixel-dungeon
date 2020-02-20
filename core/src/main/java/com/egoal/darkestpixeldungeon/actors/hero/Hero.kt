@@ -103,7 +103,7 @@ class Hero : Char() {
 
     fun STR(): Int {
         var str = this.STR + if (weakened) -2 else 0
-        str += RingOfMight.getBonus(this, RingOfMight.Might::class.java)
+        str += Ring.getBonus(this, RingOfMight.Might::class.java)
         return str
     }
 
@@ -194,6 +194,8 @@ class Hero : Char() {
             if (it is WizardHat)
                 factor = if (it.cursed) 0.9f else 1.15f
         }
+        val bonus = Ring.getBonus(this, RingOfArcane.Arcane::class.java)
+        factor *= 1.06f.pow(bonus)
         return factor
     }
 
@@ -414,6 +416,12 @@ class Hero : Char() {
         if (bonus != 0) {
             val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
             dmg.value = round(dmg.value * ratio).toInt()
+        }
+
+        val arcane = Ring.getBonus(this, RingOfArcane.Arcane::class.java)
+        if (arcane > 0 && Random.Float() < 0.8f * (1f - 0.925f.pow(arcane))) {
+            dmg.value = round(dmg.value * 1.5f).toInt()
+            dmg.addFeature(Damage.Feature.CRITICAL)
         }
 
         heroPerk.get(ArcaneCrit::class.java)?.affectDamage(this, dmg)

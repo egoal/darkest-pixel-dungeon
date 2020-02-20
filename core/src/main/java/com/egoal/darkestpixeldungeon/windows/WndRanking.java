@@ -69,7 +69,7 @@ public class WndRanking extends WndTabbed {
       public void run() {
         try {
           Badges.loadGlobal();
-          Rankings.INSTANCE.loadGameData(rec);
+          Rankings.INSTANCE.LoadGameData(rec);
         } catch (Exception e) {
           error = Messages.get(WndRanking.class, "error");
         }

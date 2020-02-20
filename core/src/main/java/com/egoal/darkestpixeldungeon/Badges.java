@@ -938,16 +938,16 @@ public class Badges {
 
   public static void validateGamesPlayed() {
     Badge badge = null;
-    if (Rankings.INSTANCE.totalNumber >= 10) {
+    if (Rankings.INSTANCE.getTotalNumber() >= 10) {
       badge = Badge.GAMES_PLAYED_1;
     }
-    if (Rankings.INSTANCE.totalNumber >= 100) {
+    if (Rankings.INSTANCE.getTotalNumber() >= 100) {
       badge = Badge.GAMES_PLAYED_2;
     }
-    if (Rankings.INSTANCE.totalNumber >= 500) {
+    if (Rankings.INSTANCE.getTotalNumber() >= 500) {
       badge = Badge.GAMES_PLAYED_3;
     }
-    if (Rankings.INSTANCE.totalNumber >= 2000) {
+    if (Rankings.INSTANCE.getTotalNumber() >= 2000) {
       badge = Badge.GAMES_PLAYED_4;
     }
 

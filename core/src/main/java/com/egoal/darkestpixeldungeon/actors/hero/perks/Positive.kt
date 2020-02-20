@@ -53,7 +53,7 @@ class GoodAppetite : Perk() {
         }
     }
 
-     override fun canBeGain(hero: Hero): Boolean = hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE)
+    override fun canBeGain(hero: Hero): Boolean = hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE)
 }
 
 // see Hunger
@@ -370,7 +370,7 @@ class ArcaneCrit : Perk(5) {
     override fun image(): Int = PerkImageSheet.ARCANE_CRIT
 
     fun affectDamage(hero: Hero, dmg: Damage) {
-        if (Random.Float() < prob(hero)) {
+        if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < prob(hero)) {
             dmg.value = round(dmg.value * 1.75f).toInt()
             dmg.addFeature(Damage.Feature.CRITICAL)
         }

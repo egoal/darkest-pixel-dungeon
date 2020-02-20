@@ -418,11 +418,11 @@ public class Dungeon {
   }
 
   public static boolean demonNeed() {
-    // from 10, 1 per 7 floors
-    if (depth <= 10) return false;
+    // from 12, 1 per 7 floors
+    if (depth <= 12) return false;
     
-    int demonLeft = ((depth - 10) / 7 + 1) - limitedDrops.archDemons.count;
-    return demonLeft > 0 && Random.Int(7 - (depth - 10) % 7) < demonLeft;
+    int demonLeft = ((depth - 12) / 6 + 1) - limitedDrops.archDemons.count;
+    return demonLeft > 0 && Random.Int(6 - (depth - 12) % 6) < demonLeft;
   }
 
   // save
@@ -774,7 +774,7 @@ public class Dungeon {
 
   public static void fail(Class cause) {
     if (hero.getBelongings().getItem(Ankh.class) == null) {
-      Rankings.INSTANCE.submit(false, cause);
+      Rankings.INSTANCE.Submit(false, cause);
     }
   }
 
@@ -786,7 +786,7 @@ public class Dungeon {
       Badges.validateChampion();
     }
 
-    Rankings.INSTANCE.submit(true, cause);
+    Rankings.INSTANCE.Submit(true, cause);
   }
 
   public static void observe() {
