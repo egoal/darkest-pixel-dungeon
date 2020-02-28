@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon
 
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClassArmor
@@ -30,6 +31,20 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.OverpricedRation
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
+import com.egoal.darkestpixeldungeon.messages.M
+
+enum class Challenge {
+    LowPressure,
+    Gifted,
+    BruteCourage,
+    Immortality,
+    GreedIsGood,
+    ;
+
+    fun title(): String = M.L(this, "${name.toLowerCase()}.name")
+    fun desc(): String = M.L(this, "${name.toLowerCase()}.desc")
+    open fun affect(hero: Hero) {}
+}
 
 object Challenges {
 

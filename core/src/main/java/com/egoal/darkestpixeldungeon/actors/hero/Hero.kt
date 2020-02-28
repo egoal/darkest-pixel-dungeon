@@ -100,6 +100,7 @@ class Hero : Char() {
     val belongings = Belongings(this)
 
     lateinit var pressure: Pressure
+    var challenge: Challenge? = null
 
     fun STR(): Int {
         var str = this.STR + if (weakened) -2 else 0
@@ -873,6 +874,9 @@ class Hero : Char() {
 
     fun maxExp(): Int = 4 + lvl * 6
 
+    //2, 6, 10... gain a perk
+    private fun shouldGainPerk() = if (challenge == Challenge.Gifted) (lvl - 2) % 3 == 0 else (lvl - 2) % 4 == 0
+
     fun earnExp(gained: Int) {
         exp += gained
         exp += heroPerk.get(QuickLearner::class.java)?.extraExp(gained) ?: 0
@@ -890,12 +894,8 @@ class Hero : Char() {
                 upgraded = true
                 heroClass.upgradeHero(this)
 
-                if ((lvl - 2) % 4 == 0) {
-                    //2, 6, 10... gain a perk
+                if (shouldGainPerk()) {
                     interrupt()
-//                    val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
-//                    GameScene.show(WndGainNewPerk.CreateWithRandomPositives(
-//                            M.L(WndGainNewPerk::class.java, "select"), cnt))
                     reservedPerks += 1
                 }
 
@@ -1262,6 +1262,7 @@ class Hero : Char() {
         private const val ELEMENTAL_RESISTANCE = "elemental_resistance"
         private const val MAGICAL_RESISTANCE = "magical_resistance"
         private const val RESERVED_PERKS = "reserved_perks"
+        private const val CHALLENGE = "challenge"
     }
 
     // store
@@ -1287,6 +1288,8 @@ class Hero : Char() {
         bundle.put(MAGICAL_RESISTANCE, magicalResistance)
 
         bundle.put(RESERVED_PERKS, reservedPerks)
+
+        if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
 
         belongings.storeInBundle(bundle)
     }
@@ -1319,5 +1322,9 @@ class Hero : Char() {
 
         val pre = buff(Pressure::class.java)
         if (pre != null) pressure = pre
+
+        val chastr = bundle.getString(CHALLENGE)
+        if (chastr.isNotEmpty()) challenge = Challenge.valueOf(chastr)
+
     }
 }

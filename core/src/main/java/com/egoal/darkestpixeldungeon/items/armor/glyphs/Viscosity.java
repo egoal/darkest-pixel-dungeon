@@ -130,7 +130,7 @@ public class Viscosity extends Armor.Glyph {
           Dungeon.fail(getClass());
           GLog.n(Messages.get(this, "ondeath"));
 
-          Badges.validateDeathFromGlyph();
+          Badges.INSTANCE.validateDeathFromGlyph();
         }
         spend(Actor.TICK);
 

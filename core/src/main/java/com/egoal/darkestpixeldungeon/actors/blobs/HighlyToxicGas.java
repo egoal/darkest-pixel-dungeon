@@ -59,7 +59,7 @@ public class HighlyToxicGas extends Blob implements Hero.Doom {
 
   @Override
   public void onDeath() {
-    Badges.validateDeathFromGas();
+    Badges.INSTANCE.validateDeathFromGas();
 
     Dungeon.fail(getClass());
     GLog.n(Messages.get(this, "ondeath"));

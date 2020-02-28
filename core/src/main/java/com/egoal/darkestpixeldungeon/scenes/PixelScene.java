@@ -252,7 +252,7 @@ public class PixelScene extends Scene {
   }
 
   public static void showBadge(Badges.Badge badge) {
-    BadgeBanner banner = BadgeBanner.show(badge.image);
+    BadgeBanner banner = BadgeBanner.show(badge.getImage());
     banner.camera = uiCamera;
     banner.x = align(banner.camera, (banner.camera.width - banner.width) / 2);
     banner.y = align(banner.camera, (banner.camera.height - banner.height) / 3);

@@ -211,7 +211,7 @@ public class Burning extends Buff implements Hero.Doom {
   @Override
   public void onDeath() {
 
-    Badges.validateDeathFromFire();
+    Badges.INSTANCE.validateDeathFromFire();
 
     Dungeon.fail(getClass());
     GLog.n(Messages.get(this, "ondeath"));

@@ -47,7 +47,6 @@ import kotlin.math.round
 
 // window shown when press the status pane avatar
 class WndHero : WndTabbed() {
-
     private val stats: StatsTab
     private val buffs: BuffsTab
     private val details: DetailsTab
@@ -138,6 +137,14 @@ class WndHero : WndTabbed() {
                 }
                 btn.setRect(title.right() + GAP5, title.top(), 40f, title.height())
                 add(btn)
+            } else {
+                hero.challenge?.let { 
+                    val btn = object : RedButton(it.title()){
+                        override fun onClick() { GameScene.show(WndMessage(it.desc())) }
+                    }
+                    btn.setRect(title.right() + GAP5, title.top(), 40f, title.height())
+                    add(btn)
+                }
             }
 
             pos = title.bottom() + 2 * GAP5

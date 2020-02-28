@@ -182,14 +182,14 @@ public class SurfaceScene extends PixelScene {
     gameOver.setPos(frame.x + FRAME_MARGIN_X * 2, frame.y + frame.height + 4);
     add(gameOver);
 
-    Badges.validateHappyEnd();
+    Badges.INSTANCE.validateHappyEnd();
 
     fadeIn();
   }
 
   @Override
   public void destroy() {
-    Badges.saveGlobal();
+    Badges.INSTANCE.saveGlobal();
 
     Camera.remove(viewport);
     super.destroy();

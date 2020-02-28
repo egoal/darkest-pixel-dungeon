@@ -186,7 +186,7 @@ public class Dungeon {
     hero = new Hero();
     hero.live();
 
-    Badges.reset();
+    Badges.INSTANCE.reset();
 
 //    StartScene.curClass.initHero(hero);
     StartScene.Companion.getCurrentClass().initHero(hero);
@@ -194,6 +194,10 @@ public class Dungeon {
 
   public static boolean isChallenged(int mask) {
     return (challenges & mask) != 0;
+  }
+
+  public static boolean IsChallenged() {
+    return Dungeon.hero.getChallenge() != null;
   }
 
   public static Level newLevel() {
@@ -420,7 +424,7 @@ public class Dungeon {
   public static boolean demonNeed() {
     // from 12, 1 per 7 floors
     if (depth <= 12) return false;
-    
+
     int demonLeft = ((depth - 12) / 6 + 1) - limitedDrops.archDemons.count;
     return demonLeft > 0 && Random.Int(6 - (depth - 12) % 6) < demonLeft;
   }
@@ -574,7 +578,7 @@ public class Dungeon {
       Actor.storeNextID(bundle);
 
       Bundle badges = new Bundle();
-      Badges.saveLocal(badges);
+      Badges.INSTANCE.saveLocal(badges);
       bundle.put(BADGES, badges);
 
       OutputStream output = Game.instance.openFileOutput(fileName, Game
@@ -689,9 +693,9 @@ public class Dungeon {
 
     Bundle badges = bundle.getBundle(BADGES);
     if (!badges.isNull()) {
-      Badges.loadLocal(badges);
+      Badges.INSTANCE.loadLocal(badges);
     } else {
-      Badges.reset();
+      Badges.INSTANCE.reset();
     }
 
     hero = null;
@@ -783,7 +787,7 @@ public class Dungeon {
     hero.getBelongings().identify();
 
     if (challenges != 0) {
-      Badges.validateChampion();
+      Badges.INSTANCE.validateChampion();
     }
 
     Rankings.INSTANCE.Submit(true, cause);

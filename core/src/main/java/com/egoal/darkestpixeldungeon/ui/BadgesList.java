@@ -40,9 +40,9 @@ public class BadgesList extends ScrollPane {
   public BadgesList(boolean global) {
     super(new Component());
 
-    for (Badges.Badge badge : Badges.filtered(global)) {
+    for (Badges.Badge badge : Badges.INSTANCE.filtered(global)) {
 
-      if (badge.image == -1) {
+      if (badge.getImage() == -1) {
         continue;
       }
 
@@ -91,7 +91,7 @@ public class BadgesList extends ScrollPane {
       super();
 
       this.badge = badge;
-      icon.copy(BadgeBanner.image(badge.image));
+      icon.copy(BadgeBanner.image(badge.getImage()));
       label.text(badge.desc());
     }
 

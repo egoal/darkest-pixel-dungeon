@@ -193,7 +193,7 @@ public class Item implements Bundlable {
     if (items.size() < container.size) {
 
       if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
-        Badges.validateItemLevelAquired(this);
+        Badges.INSTANCE.validateItemLevelAquired(this);
       }
 
       items.add(this);

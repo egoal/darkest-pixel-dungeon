@@ -113,6 +113,8 @@ class VillageLevel : RegularLevel() {
 
         putMobAt(Passerby::class.java, 24, 23)
         
+        putMobAt(Monument::class.java, 21, 2)
+        
         // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
 //         putMobAt(ArchDemon::class.java, 16, 29)
 //        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {

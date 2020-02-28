@@ -37,9 +37,9 @@ public class Assets {
   public static final String HUNTRESS = ACTORS + "ranger.png";
   public static final String DPD_SORCERESS = ACTORS + "sorceress.png";
 
-  public static final String HERO_BODY = ACTORS+ "hero/body.png";
-  public static final String HERO_HEAD = ACTORS+ "hero/head.png";
-  public static final String HERO_ARMOR = ACTORS+ "hero/armor.png";
+  public static final String HERO_BODY = ACTORS + "hero/body.png";
+  public static final String HERO_HEAD = ACTORS + "hero/head.png";
+  public static final String HERO_ARMOR = ACTORS + "hero/armor.png";
 
   // npc
   public static final String PET = ACTORS + "pet.png";
@@ -59,9 +59,10 @@ public class Assets {
   public static final String SPD_BATTLE_MAGE = ACTORS + "spd_battle_mage.png";
   public static final String ABYSS_HERO = ACTORS + "abyss_hero.png";
   public static final String YVETTE = ACTORS + "yvette.png";
-  public static final String ARCH_DEMON = ACTORS+ "arch_demon.png";
-  public static final String PASSERBY = ACTORS+ "passerby.png";
-  
+  public static final String ARCH_DEMON = ACTORS + "arch_demon.png";
+  public static final String PASSERBY = ACTORS + "passerby.png";
+  public static final String MONUMENT = ACTORS + "monument.png";
+
   // shop keeper
   public static final String KEEPER = ACTORS + "shopkeeper.png";
   public static final String POTION_SELLER = ACTORS + "potion_seller.png";
@@ -111,9 +112,9 @@ public class Assets {
   public static final String WAND_GUARD = ACTORS + "wand_guard.png";
   public static final String ROBERRY = ACTORS + "roberry.png";
   public static final String REN = ACTORS + "ren.png";
-  public static final String KING_STATUARY = ACTORS+ "king_statuary.png";
-  public static final String GLOWWORM = ACTORS+ "glowworm.png";
-  public static final String SKULL = ACTORS+ "skull.png";
+  public static final String KING_STATUARY = ACTORS + "king_statuary.png";
+  public static final String GLOWWORM = ACTORS + "glowworm.png";
+  public static final String SKULL = ACTORS + "skull.png";
 
   // levels=====================================================================
   // tile
@@ -160,7 +161,7 @@ public class Assets {
   public static final String BUFFS_LARGE = MISCS + "large_buffs.png";
   public static final String SPELL_ICONS = MISCS + "spell_icons.png";
   public static final String PORTRAITS = MISCS + "portraits.png";
-  public static final String PERKS = MISCS+ "perks.png";
+  public static final String PERKS = MISCS + "perks.png";
 
   // effects
   public static final String SPECKS = MISCS + "specks.png";
@@ -244,8 +245,8 @@ public class Assets {
   public static final String SND_ASTROLABE = SOUNDS + "snd_astrolabe.ogg";
   public static final String SND_CRITICAL = SOUNDS + "snd_critical.ogg";
   public static final String SND_RELOAD = SOUNDS + "snd_reload.ogg";
-  public static final String SND_HOWL = SOUNDS+ "snd_howl.ogg";
-  public static final String SND_BLOCK = SOUNDS+ "snd_block.ogg";
+  public static final String SND_HOWL = SOUNDS + "snd_howl.ogg";
+  public static final String SND_BLOCK = SOUNDS + "snd_block.ogg";
 
   // spd legacy=================================================================
   public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";

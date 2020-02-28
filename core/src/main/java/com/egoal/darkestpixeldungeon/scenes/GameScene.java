@@ -353,7 +353,7 @@ public class GameScene extends PixelScene {
             break;
         }
         if (Dungeon.hero.isAlive() && Dungeon.depth != 22) {
-          Badges.validateNoKilling();
+          Badges.INSTANCE.validateNoKilling();
         }
         break;
       default:
@@ -420,7 +420,7 @@ public class GameScene extends PixelScene {
     freezeEmitters = false;
 
     scene = null;
-    Badges.saveGlobal();
+    Badges.INSTANCE.saveGlobal();
 
     super.destroy();
   }
@@ -429,7 +429,7 @@ public class GameScene extends PixelScene {
   public synchronized void pause() {
     try {
       Dungeon.saveAll();
-      Badges.saveGlobal();
+      Badges.INSTANCE.saveGlobal();
     } catch (IOException e) {
       DarkestPixelDungeon.reportException(e);
     }

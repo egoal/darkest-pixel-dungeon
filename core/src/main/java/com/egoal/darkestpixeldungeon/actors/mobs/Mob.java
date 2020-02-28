@@ -528,7 +528,7 @@ public abstract class Mob extends Char {
     if (Dungeon.hero.isAlive()) {
       if(camp== Camp.ENEMY){
         Statistics.INSTANCE.setEnemiesSlain(Statistics.INSTANCE.getEnemiesSlain() + 1);
-        Badges.validateMonstersSlain();
+        Badges.INSTANCE.validateMonstersSlain();
         Statistics.INSTANCE.setQualifiedForNoKilling(false);
 
         if (Dungeon.level.getFeeling() == Level.Feeling.DARK) {
@@ -536,7 +536,7 @@ public abstract class Mob extends Char {
         } else {
           Statistics.INSTANCE.setNightHunt(0);
         }
-        Badges.validateNightHunter();
+        Badges.INSTANCE.validateNightHunter();
       }
 
       Dungeon.hero.onMobDied(this);

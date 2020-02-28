@@ -95,7 +95,6 @@ class StartScene : PixelScene() {
         add(btnLoadGame)
 
         val challenge = ChallengeButton()
-        /// challenge.setPos((w - challenge.width()) / 2f, slider.btnClassName.top() - challenge.height() - 5f)
         challenge.setPos((w - challenge.width()) / 2f, buttonY - challenge.height() - 5f)
         add(challenge)
 
@@ -427,6 +426,7 @@ class StartScene : PixelScene() {
         }
 
         override fun onClick() {
+            return
             if (Badges.isUnlocked(Badges.Badge.VICTORY)) {
                 this@StartScene.add(object : WndChallenges(DarkestPixelDungeon.challenges(), true) {
                     override fun onBackPressed() {

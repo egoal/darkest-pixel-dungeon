@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.buffs
 
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -109,6 +110,8 @@ class Pressure : Buff(), Hero.Doom {
     }
 
     private fun procValue(): Float {
+        if (Dungeon.hero.challenge == Challenge.LowPressure) return 0f
+        
         var value = if (Dungeon.level.locked) 2f else 1f
         value += Random.Float(Dungeon.depth / 5f)
         if (Statistics.Clock.state == Statistics.ClockTime.State.MidNight &&
