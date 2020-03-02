@@ -123,8 +123,6 @@ public class Dungeon {
     }
   }
 
-  public static int challenges;
-
   public static Hero hero;
   public static Level level;
 
@@ -145,7 +143,6 @@ public class Dungeon {
   public static void init() {
 
     version = Game.versionCode;
-    challenges = DarkestPixelDungeon.challenges();
 
     Actor.clear();
     Actor.resetNextID();
@@ -192,12 +189,9 @@ public class Dungeon {
     StartScene.Companion.getCurrentClass().initHero(hero);
   }
 
-  public static boolean isChallenged(int mask) {
-    return (challenges & mask) != 0;
-  }
-
   public static boolean IsChallenged() {
-    return Dungeon.hero.getChallenge() != null;
+    // fixme: this does not compatible with something
+    return Dungeon.hero != null && Dungeon.hero.getChallenge() != null;
   }
 
   public static Level newLevel() {
@@ -369,7 +363,7 @@ public class Dungeon {
   }
 
   public static boolean souNeeded() {
-    final int SOU_PER_FLOORSET = isChallenged(Challenges.NO_SCROLLS) ? 1 : 2;
+    final int SOU_PER_FLOORSET = 2;
 
     //3 SOU each floor set
     int souLeftThisSet = SOU_PER_FLOORSET - (limitedDrops.upgradeScrolls
@@ -513,7 +507,7 @@ public class Dungeon {
       saveLevel(doBackup ? backupLevelFile(hero.getHeroClass()) : null);
 
       GamesInProgress.INSTANCE.set(hero.getHeroClass(), depth, hero.getLvl(),
-              challenges != 0);
+              IsChallenged());
 
     } else if (WndResurrect.instance != null) {
 
@@ -529,7 +523,6 @@ public class Dungeon {
 
       version = Game.versionCode;
       bundle.put(VERSION, version);
-      bundle.put(CHALLENGES, challenges);
       bundle.put(HERO, hero);
       bundle.put(GOLD, gold);
       bundle.put(DEPTH, depth);
@@ -638,8 +631,6 @@ public class Dungeon {
 
     quickslot.reset();
     QuickSlotButton.reset();
-
-    Dungeon.challenges = bundle.getInt(CHALLENGES);
 
     Dungeon.level = null;
     Dungeon.depth = -1;
@@ -786,9 +777,7 @@ public class Dungeon {
 
     hero.getBelongings().identify();
 
-    if (challenges != 0) {
-      Badges.INSTANCE.validateChampion();
-    }
+    if (IsChallenged()) Badges.INSTANCE.validateChampion();
 
     Rankings.INSTANCE.Submit(true, cause);
   }

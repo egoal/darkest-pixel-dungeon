@@ -36,7 +36,6 @@ import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.MassGraveDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.RitualSiteDigger;
 import com.egoal.darkestpixeldungeon.levels.diggers.unordinary.RotGardenDigger;
 import com.egoal.darkestpixeldungeon.windows.WndWandmaker;
-import com.egoal.darkestpixeldungeon.Challenges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.quest.CeremonialCandle;
@@ -264,9 +263,7 @@ public class Wandmaker extends NPC {
       if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int(10 -
               Dungeon.depth) == 0))) {
         // now spawn
-        if (type == 0)
-          type = Random.Int(
-                  Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3) + 1;
+        if (type == 0) type = Random.Int(3) + 1;
 
         // give digger
         switch (type) {

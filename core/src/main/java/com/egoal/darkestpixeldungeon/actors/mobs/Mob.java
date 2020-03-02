@@ -36,7 +36,6 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.Badges;
-import com.egoal.darkestpixeldungeon.Challenges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
@@ -642,13 +641,6 @@ public abstract class Mob extends Char {
         state = HUNTING;
         target = enemy.pos;
 
-        if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-          for (Mob mob : Dungeon.level.getMobs()) {
-            if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob.HUNTING)
-              mob.beckon(target);
-          }
-        }
-
         spend(TIME_TO_WAKE_UP);
 
       } else {
@@ -681,15 +673,6 @@ public abstract class Mob extends Char {
         notice();
         state = HUNTING;
         target = enemy.pos;
-
-        if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-          for (Mob mob : Dungeon.level.getMobs()) {
-            if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob
-                    .HUNTING)
-              mob.beckon(target);
-          }
-        }
-
       } else {
 
         enemySeen = false;

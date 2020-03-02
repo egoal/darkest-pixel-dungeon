@@ -675,20 +675,7 @@ abstract class Level : Bundlable {
 
     open fun drop(item: Item, cell: Int): Heap {
         var cell = cell
-
-        if (Challenges.isForbidden(item)) {
-
-            //create a dummy heap, give it a dummy sprite, don't add it to the
-            // game, and return it.
-            //effectively nullifies whatever the logic calling this wants to do,
-            // including dropping items.
-            val heap = Heap()
-            heap.sprite = ItemSprite()
-            val sprite = heap.sprite!!
-            sprite.link(heap)
-            return heap
-        }
-
+        
         // don't drop on them
         if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain.ENCHANTING_STATION) {
             var n: Int
@@ -731,8 +718,6 @@ abstract class Level : Bundlable {
     }
 
     fun plant(seed: Plant.Seed, pos: Int): Plant? {
-        if (Dungeon.isChallenged(Challenges.NO_HERBALISM)) return null
-
         var plant: Plant? = plants.get(pos)
         plant?.wither()
 

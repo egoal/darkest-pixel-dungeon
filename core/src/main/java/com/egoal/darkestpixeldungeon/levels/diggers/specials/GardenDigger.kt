@@ -1,6 +1,5 @@
 package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
-import com.egoal.darkestpixeldungeon.Challenges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.blobs.Foliage
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -32,28 +31,23 @@ class GardenDigger : RectDigger() {
         val door = overlappedWall(wall, rect).random(0)
         Set(level, door, Terrain.DOOR)
 
-        if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
-            if (Random.Int(2) == 0)
-                level.plant(Sungrass.Seed(), level.pointToCell(rect.random(0)))
-        } else {
-            when (Random.Int(3)) {
-                0 -> level.plant(Sungrass.Seed(), level.pointToCell(rect.random(0)))
-                1 -> level.plant(BlandfruitBush.Seed(), level.pointToCell(rect.random(0)))
-                else -> if (Random.Int(5) == 0) {
-                    // both 
-                    val p1 = level.pointToCell(rect.random(0))
-                    var p2 = level.pointToCell(rect.random(0))
-                    while (p1 == p2)
-                        p2 = level.pointToCell(rect.random(0))
+        when (Random.Int(3)) {
+            0 -> level.plant(Sungrass.Seed(), level.pointToCell(rect.random(0)))
+            1 -> level.plant(BlandfruitBush.Seed(), level.pointToCell(rect.random(0)))
+            else -> if (Random.Int(5) == 0) {
+                // both 
+                val p1 = level.pointToCell(rect.random(0))
+                var p2 = level.pointToCell(rect.random(0))
+                while (p1 == p2)
+                    p2 = level.pointToCell(rect.random(0))
 
-                    level.plant(Sungrass.Seed(), p1)
-                    level.plant(BlandfruitBush.Seed(), p2)
-                }
+                level.plant(Sungrass.Seed(), p1)
+                level.plant(BlandfruitBush.Seed(), p2)
             }
         }
-        
+
         val l = level.blobs[Foliage::class.java]
-        val light: Foliage = if(l==null) Foliage() else l as Foliage
+        val light: Foliage = if (l == null) Foliage() else l as Foliage
 
         for (p in rect.getAllPoints())
             light.seed(level, level.pointToCell(p), 1)

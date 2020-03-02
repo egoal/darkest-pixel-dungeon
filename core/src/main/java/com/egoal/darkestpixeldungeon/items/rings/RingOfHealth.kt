@@ -20,7 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.items.rings
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.Item
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.round
@@ -30,18 +32,36 @@ class RingOfHealth : Ring() {
 
     override fun doEquip(hero: Hero): Boolean {
         return if (super.doEquip(hero)) {
-            hero.HT = round(hero.HT * ratio()).toInt()
-            hero.HP = max(1, round(hero.HP * ratio()).toInt())
+            attach(hero)
             true
         } else false
     }
 
     override fun doUnequip(hero: Hero, collect: Boolean, single: Boolean): Boolean {
         return if (super.doUnequip(hero, collect, single)) {
-            hero.HT = round(hero.HT / ratio()).toInt()
-            hero.HP = max(1, round(hero.HP / ratio()).toInt())
+            detach(hero)
             true
         } else false
+    }
+
+    override fun upgrade(): Item {
+        if (Dungeon.hero != null && isEquipped(Dungeon.hero!!)) {
+            detach(Dungeon.hero!!)
+            super.upgrade()
+            attach(Dungeon.hero!!)
+        } else super.upgrade()
+
+        return this
+    }
+
+    private fun detach(hero: Hero) {
+        hero.HT = round(hero.HT / ratio()).toInt()
+        hero.HP = max(1, round(hero.HP / ratio()).toInt())
+    }
+
+    private fun attach(hero: Hero) {
+        hero.HT = round(hero.HT * ratio()).toInt()
+        hero.HP = max(1, round(hero.HP * ratio()).toInt())
     }
 
     override fun buff(): RingBuff = Health()

@@ -1,6 +1,5 @@
 package com.egoal.darkestpixeldungeon.levels.features
 
-import com.egoal.darkestpixeldungeon.Challenges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Barkskin
@@ -53,8 +52,6 @@ object HighGrass {
     }
 
     fun Harvest(level: Level, pos: Int, ch: Char?): Item? {
-        if (Dungeon.isChallenged(Challenges.NO_HERBALISM)) return null
-
         var naturalismLevel = 0
         ch?.buff(SandalsOfNature.Naturalism::class.java)?.let { naturalism ->
             naturalismLevel = if (naturalism.isCursed) -1 else {

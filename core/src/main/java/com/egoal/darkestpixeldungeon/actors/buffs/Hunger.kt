@@ -25,7 +25,6 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.Challenges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Dieting
@@ -88,8 +87,7 @@ class Hunger : Buff(), Hero.Doom {
                         // 
                         if (dmgTokenInTotal < 100) {
                             dmgTokenInTotal += partialDamage.toInt()
-                            if (dmgTokenInTotal >= 100 && !(target as Hero).heroPerk.has(Dieting::class.java)) {
-                                val hero = target as Hero
+                            if (dmgTokenInTotal >= 100 && !hero.heroPerk.has(Dieting::class.java)) {
                                 val diet = Dieting()
                                 hero.heroPerk.add(diet)
                                 PerkGain.Show(hero, diet)

@@ -269,7 +269,7 @@ object Badges {
 
     fun validateGoldCollected() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
 
         if (!local.contains(Badge.GOLD_COLLECTED_1) && Statistics.GoldCollected >= 500) {
@@ -294,7 +294,7 @@ object Badges {
 
     fun validateLevelReached() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
 
         val lvl = Dungeon.hero.lvl
@@ -321,7 +321,7 @@ object Badges {
 
     fun validateStrengthAttained() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
 
         val str = Dungeon.hero.STR
@@ -348,7 +348,7 @@ object Badges {
 
     fun validateFoodEaten() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
 
         if (!local.contains(Badge.FOOD_EATEN_1) && Statistics.FoodEaten >= 10) {
@@ -373,7 +373,7 @@ object Badges {
 
     fun validatePotionsCooked() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
 
         if (!local.contains(Badge.POTIONS_COOKED_1) && Statistics.PotionsCooked >= 3) {
@@ -398,7 +398,7 @@ object Badges {
 
     fun validatePiranhasKilled() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
 
         if (!local.contains(Badge.PIRANHAS) && Statistics.PiranhasKilled >= 6) {
@@ -411,7 +411,7 @@ object Badges {
 
     fun validateItemLevelAquired(item: Item) {
         if (Dungeon.IsChallenged()) return
-        
+
         // This method should be called:
         // 1) When an item is obtained (Item.collect)
         // 2) When an item is upgraded (ScrollOfUpgrade, ScrollOfWeaponUpgrade, 
@@ -447,7 +447,7 @@ object Badges {
 
     fun validateAllPotionsIdentified() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (Dungeon.hero != null && Dungeon.hero.isAlive &&
                 !local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion
                         .allKnown()) {
@@ -462,7 +462,7 @@ object Badges {
 
     fun validateAllScrollsIdentified() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (Dungeon.hero != null && Dungeon.hero.isAlive &&
                 !local.contains(Badge.ALL_SCROLLS_IDENTIFIED) && Scroll.allKnown()) {
 
@@ -476,7 +476,7 @@ object Badges {
 
     fun validateAllRingsIdentified() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (Dungeon.hero != null && Dungeon.hero.isAlive &&
                 !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Ring.allKnown()) {
 
@@ -509,7 +509,7 @@ object Badges {
 
     fun validateAllBagsBought(bag: Item) {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
         if (bag is SeedPouch) {
             badge = Badge.BAG_BOUGHT_SEED_POUCH
@@ -540,7 +540,7 @@ object Badges {
 
     fun validateAllItemsIdentified() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (!global!!.contains(Badge.ALL_ITEMS_IDENTIFIED) &&
                 global!!.contains(Badge.ALL_POTIONS_IDENTIFIED) &&
                 global!!.contains(Badge.ALL_SCROLLS_IDENTIFIED) &&
@@ -554,7 +554,7 @@ object Badges {
 
     fun validateDeathFromFire() {
         if (Dungeon.IsChallenged()) return
-        
+
         val badge = Badge.DEATH_FROM_FIRE
         local.add(badge)
         displayBadge(badge)
@@ -564,7 +564,7 @@ object Badges {
 
     fun validateDeathFromPoison() {
         if (Dungeon.IsChallenged()) return
-        
+
         val badge = Badge.DEATH_FROM_POISON
         local.add(badge)
         displayBadge(badge)
@@ -574,7 +574,7 @@ object Badges {
 
     fun validateDeathFromGas() {
         if (Dungeon.IsChallenged()) return
-        
+
         val badge = Badge.DEATH_FROM_GAS
         local.add(badge)
         displayBadge(badge)
@@ -584,7 +584,7 @@ object Badges {
 
     fun validateDeathFromHunger() {
         if (Dungeon.IsChallenged()) return
-        
+
         val badge = Badge.DEATH_FROM_HUNGER
         local.add(badge)
         displayBadge(badge)
@@ -594,7 +594,7 @@ object Badges {
 
     fun validateDeathFromGlyph() {
         if (Dungeon.IsChallenged()) return
-        
+
         val badge = Badge.DEATH_FROM_GLYPH
         local.add(badge)
         displayBadge(badge)
@@ -602,7 +602,7 @@ object Badges {
 
     fun validateDeathFromFalling() {
         if (Dungeon.IsChallenged()) return
-        
+
         val badge = Badge.DEATH_FROM_FALLING
         local.add(badge)
         displayBadge(badge)
@@ -610,7 +610,7 @@ object Badges {
 
     private fun validateYASD() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (global!!.contains(Badge.DEATH_FROM_FIRE) &&
                 global!!.contains(Badge.DEATH_FROM_POISON) &&
                 global!!.contains(Badge.DEATH_FROM_GAS) &&
@@ -624,7 +624,7 @@ object Badges {
 
     fun validateBossSlain() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
         when (Dungeon.depth) {
             5 -> badge = Badge.BOSS_SLAIN_1
@@ -726,7 +726,7 @@ object Badges {
 
     fun validateMasteryCombo(n: Int) {
         if (Dungeon.IsChallenged()) return
-        
+
         if (!local.contains(Badge.MASTERY_COMBO) && n == 10) {
             val badge = Badge.MASTERY_COMBO
             local.add(badge)
@@ -737,7 +737,7 @@ object Badges {
     //TODO: Replace this badge, delayed until an eventual badge rework
     fun validateRingOfHaggler() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (!local.contains(Badge.RING_OF_HAGGLER)/* && new RingOfThorns()
     .isKnown()*/) {
             val badge = Badge.RING_OF_HAGGLER
@@ -749,7 +749,7 @@ object Badges {
     //TODO: Replace this badge, delayed until an eventual badge rework
     fun validateRingOfThorns() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (!local.contains(Badge.RING_OF_THORNS)/* && new RingOfThorns().isKnown
     ()*/) {
             val badge = Badge.RING_OF_THORNS
@@ -825,7 +825,7 @@ object Badges {
 
     fun validateTutorial() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
         when (Dungeon.hero.heroClass) {
             HeroClass.WARRIOR -> badge = Badge.TUTORIAL_WARRIOR
@@ -845,7 +845,7 @@ object Badges {
 
     fun validateNoKilling() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (!local.contains(Badge.NO_MONSTERS_SLAIN) && Statistics
                         .CompletedWithNoKilling) {
             val badge = Badge.NO_MONSTERS_SLAIN
@@ -856,7 +856,7 @@ object Badges {
 
     fun validateGrimWeapon() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (!local.contains(Badge.GRIM_WEAPON)) {
             val badge = Badge.GRIM_WEAPON
             local.add(badge)
@@ -866,7 +866,7 @@ object Badges {
 
     fun validateNightHunter() {
         if (Dungeon.IsChallenged()) return
-        
+
         if (!local.contains(Badge.NIGHT_HUNTER) && Statistics
                         .NightHunt >= 15) {
             val badge = Badge.NIGHT_HUNTER
@@ -886,7 +886,7 @@ object Badges {
 
     fun validateGamesPlayed() {
         if (Dungeon.IsChallenged()) return
-        
+
         var badge: Badge? = null
         if (Rankings.totalNumber >= 10) {
             badge = Badge.GAMES_PLAYED_1
@@ -906,14 +906,14 @@ object Badges {
 
     fun validateHappyEnd() {
         if (Dungeon.IsChallenged()) return
-        
+
         displayBadge(Badge.HAPPY_END)
     }
 
     fun validateChampion() {
-        if (Dungeon.IsChallenged()) return
-        
-        displayBadge(Badge.CHAMPION)
+//        if (Dungeon.IsChallenged()) return
+        if (Dungeon.hero.challenge != Challenge.LowPressure)
+            displayBadge(Badge.CHAMPION)
     }
 
     private fun displayBadge(badge: Badge?) {

@@ -54,17 +54,6 @@ public class WndGame extends Window {
       }
     });
 
-    // Challenges window
-    if (Dungeon.challenges > 0) {
-      addButton(new RedButton(Messages.get(this, "challenges")) {
-        @Override
-        protected void onClick() {
-          hide();
-          GameScene.show(new WndChallenges(Dungeon.challenges, false));
-        }
-      });
-    }
-
     // Restart
     if (!Dungeon.hero.isAlive()) {
 
@@ -73,7 +62,6 @@ public class WndGame extends Window {
         @Override
         protected void onClick() {
           Dungeon.hero = null;
-          DarkestPixelDungeon.challenges(Dungeon.challenges);
           InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
           InterlevelScene.noStory = true;
           Game.switchScene(InterlevelScene.class);

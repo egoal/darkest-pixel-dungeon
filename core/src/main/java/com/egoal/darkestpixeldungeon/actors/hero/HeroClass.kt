@@ -251,8 +251,6 @@ enum class HeroClass(private val title: String) {
     protected open fun initHeroClass(hero: Hero) {
         hero.belongings.armor = ClothArmor().identify() as Armor
 
-        if (!Dungeon.isChallenged(Challenges.NO_FOOD)) Food().identify().collect()
-
         Torch().identify().collect()
 
         ScrollOfIdentify().setKnown()

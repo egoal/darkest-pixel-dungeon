@@ -157,7 +157,7 @@ class Hero : Char() {
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
             if (it.isCursed)
-                reg = if (reg > 0f) -0.025f else reg * 1.25f
+                reg = if (reg >= 0f) -0.025f else reg * 1.25f
             else
                 reg += HT.toFloat() * 0.004f * Math.pow(1.08, it.itemLevel().toDouble()).toFloat()
         }

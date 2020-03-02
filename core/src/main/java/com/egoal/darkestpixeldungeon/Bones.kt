@@ -26,7 +26,7 @@ object Bones {
         depth = Dungeon.depth
 
         // those who won, die far above their max depth, or who are challenged drop no bones.
-        if (Statistics.AmuletObtained || Statistics.DeepestFloor - 5 >= depth || Dungeon.challenges > 0) {
+        if (Statistics.AmuletObtained || Statistics.DeepestFloor - 5 >= depth || Dungeon.IsChallenged()) {
             depth = -1
             return
         }
@@ -49,7 +49,7 @@ object Bones {
     fun get(): Item? {
         if (depth == -1 && !loadBones()) return null
 
-        if (depth != Dungeon.depth || Dungeon.challenges != 0) return null
+        if (depth != Dungeon.depth || Dungeon.IsChallenged()) return null
 
         // drop
         Game.instance.deleteFile(BONES_FILE)

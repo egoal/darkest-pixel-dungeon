@@ -1,7 +1,6 @@
 package com.egoal.darkestpixeldungeon.plants
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Challenges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.Barkskin
@@ -96,8 +95,7 @@ abstract class Plant(val image: Int) : Bundlable {
         override fun onThrow(cell: Int) {
             if (Dungeon.level.map[cell] == Terrain.ALCHEMY ||
                     Level.pit[cell] ||
-                    Dungeon.level.traps.get(cell) != null ||
-                    Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+                    Dungeon.level.traps.get(cell) != null) {
                 super.onThrow(cell)
             } else {
                 Dungeon.level.plant(this, cell)
