@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon
 
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.VampiricBite
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.messages.M
 
@@ -27,11 +29,18 @@ enum class Challenge {
     LowPressure,
     Gifted,
     BruteCourage,
-    Immortality,
+    Immortality {
+        override fun affect(hero: Hero) {
+            Buff.affect(hero, VampiricBite::class.java)
+        }
+    },
     GreedIsGood,
+    Loner,
+    Faith,
     ;
 
     fun title(): String = M.L(this, "${name.toLowerCase()}.name")
     fun desc(): String = M.L(this, "${name.toLowerCase()}.desc")
+    
     open fun affect(hero: Hero) {}
 }

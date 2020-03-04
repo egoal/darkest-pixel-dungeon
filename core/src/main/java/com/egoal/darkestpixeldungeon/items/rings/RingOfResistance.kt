@@ -20,7 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.items.rings
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.Item
 import kotlin.math.pow
 
 class RingOfResistance : Ring() {
@@ -29,20 +31,38 @@ class RingOfResistance : Ring() {
 
     override fun doEquip(hero: Hero): Boolean {
         return if (super.doEquip(hero)) {
-            hero.magicalResistance += magicalResistance(level())
-            val eleResistance = elementalResistance(level())
-            for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] += eleResistance
+            attach(hero)
             true
         } else false
     }
 
     override fun doUnequip(hero: Hero, collect: Boolean, single: Boolean): Boolean {
         return if (super.doUnequip(hero, collect, single)) {
-            hero.magicalResistance -= magicalResistance(level())
-            val eleResistance = elementalResistance(level())
-            for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] -= eleResistance
+            detach(hero)
             true
         } else false
+    }
+
+    override fun upgrade(): Item {
+        if (Dungeon.hero != null && isEquipped(Dungeon.hero!!)) {
+            detach(Dungeon.hero!!)
+            super.upgrade()
+            attach(Dungeon.hero!!)
+        } else super.upgrade()
+        
+        return this
+    }
+
+    private fun detach(hero: Hero) {
+        hero.magicalResistance -= magicalResistance(level())
+        val eleResistance = elementalResistance(level())
+        for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] -= eleResistance
+    }
+
+    private fun attach(hero: Hero) {
+        hero.magicalResistance += magicalResistance(level())
+        val eleResistance = elementalResistance(level())
+        for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] += eleResistance
     }
 
     inner class Resistance : Ring.RingBuff() {

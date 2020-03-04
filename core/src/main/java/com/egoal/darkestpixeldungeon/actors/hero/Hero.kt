@@ -148,6 +148,8 @@ class Hero : Char() {
     }
 
     fun regenerateSpeed(): Float {
+        if (challenge == Challenge.Immortality) return 0f
+
         val hlvl = buff(Hunger::class.java)!!.hunger()
         if (hlvl >= Hunger.STARVING) return 0f
 
@@ -1100,8 +1102,11 @@ class Hero : Char() {
 
     fun onMobDied(mob: Mob) {
         if (mob.properties().contains(Property.PHANTOM)) return
+        
         belongings.getItem(UrnOfShadow::class.java)?.collectSoul(mob)
 
+        buff(VampiricBite::class.java)?.onEnemySlayed(mob)
+        
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
     }
 

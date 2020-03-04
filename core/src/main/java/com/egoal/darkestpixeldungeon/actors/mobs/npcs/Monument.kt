@@ -28,6 +28,7 @@ class Monument : NPC.Unbreakable() {
             GameScene.show(object : WndSelectChallenge() {
                 override fun onChallengeWouldActivate(challenge: Challenge) {
                     activated = true
+                    challenge.affect(Dungeon.hero)
                     Dungeon.hero.challenge = challenge
                     hide()
                     GLog.n(M.L(Monument::class.java, "activated", challenge.title()))

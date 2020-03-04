@@ -40,8 +40,7 @@ enum class HeroClass(private val title: String) {
             hero.HT += 5
         }
 
-        override fun upgradeHero(hero: Hero) {
-            super.upgradeHero(hero)
+        override fun onHeroUpgraded(hero: Hero) {
             hero.HP += 1 // extra +1
             hero.HT += 1
         }
@@ -118,8 +117,7 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.ROGUE
         override fun perks(): List<String> = (1..6).map { Messages.get(HeroClass::class.java, "rogue_perk$it") }
 
-        override fun upgradeHero(hero: Hero) {
-            super.upgradeHero(hero)
+        override fun onHeroUpgraded(hero: Hero) {
             hero.criticalChance += 0.1f / 100f
         }
 
@@ -181,8 +179,7 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.DPD_SORCERESS
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "sorceress_perk$it") }
 
-        override fun upgradeHero(hero: Hero) {
-            super.upgradeHero(hero)
+        override fun onHeroUpgraded(hero: Hero) {
             hero.HT -= 1
             hero.HP -= 1
             hero.regeneration += 0.0075f
@@ -225,7 +222,7 @@ enum class HeroClass(private val title: String) {
 
 //        MaskOfLider().collect()
 //        initDebug(hero)
-        
+
         hero.updateAwareness()
     }
 
@@ -262,7 +259,10 @@ enum class HeroClass(private val title: String) {
     }
 
     // called when hero level up
-    open fun upgradeHero(hero: Hero) {
+    fun upgradeHero(hero: Hero) {
+        val ht = hero.HT
+        val hp = hero.HP
+
         hero.apply {
             lvl++
             HT += 5
@@ -282,7 +282,17 @@ enum class HeroClass(private val title: String) {
 
         hero.heroPerk.get(StrongConstitution::class.java)?.upgradeHero(hero)
         hero.heroPerk.get(ExtraDexterousGrowth::class.java)?.upgradeHero(hero)
+
+        onHeroUpgraded(hero)
+
+        if (hero.challenge == Challenge.Faith || hero.challenge == Challenge.Immortality) {
+            Ankh().apply { isBlessed = true }.collect()
+            hero.HP = hp
+            hero.HT = ht
+        }
     }
+
+    protected open fun onHeroUpgraded(hero: Hero) {}
 
     private fun initDebug(hero: Hero) {
         for (i in 1..20) upgradeHero(hero)
@@ -307,7 +317,7 @@ enum class HeroClass(private val title: String) {
 
         PlateArmor().identify().upgrade(6).collect()
         Claymore().identify().upgrade(6).collect()
-        
+
         Amulet().collect()
     }
 

@@ -23,7 +23,8 @@ open class WndSelectChallenge : Window() {
 
     private fun addChallengeButton(challenge: Challenge, y: Float): Float {
         val unlocked = challenge == Challenge.LowPressure ||
-                (Badges.isUnlocked(Badges.Badge.VICTORY) && challenge == Challenge.Gifted) //todo:
+                (Badges.isUnlocked(Badges.Badge.VICTORY) &&
+                        (challenge == Challenge.Gifted || challenge == Challenge.Faith || challenge == Challenge.Immortality)) //todo:
 
         val btn = object : RedButton(challenge.title()) {
             override fun onClick() {

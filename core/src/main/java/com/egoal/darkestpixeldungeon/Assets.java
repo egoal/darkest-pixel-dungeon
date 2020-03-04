@@ -68,7 +68,8 @@ public class Assets {
   public static final String POTION_SELLER = ACTORS + "potion_seller.png";
   public static final String SCROLL_SELLER = ACTORS + "scroll_seller.png";
   public static final String PLAGUE_DOCTOR = ACTORS + "plague_doctor.png";
-
+  public static final String UNDEAD_SHOPKEEPER = ACTORS + "undead-shopkeeper.png";
+  
   // mobs
   public static final String RAT = ACTORS + "rat.png";
   public static final String GNOLL = ACTORS + "gnoll.png";

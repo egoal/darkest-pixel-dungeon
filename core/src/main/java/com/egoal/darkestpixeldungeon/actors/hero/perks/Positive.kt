@@ -442,6 +442,9 @@ abstract class TimingPerk(private val timing: Class<out Timing>,
         super.upgrade()
     }
 
+    override fun onLose() {
+        Buff.detach(Dungeon.hero, timing)
+    }
 
     abstract class Timing(protected var time: Float) : Buff() {
         fun upgrade() {}
