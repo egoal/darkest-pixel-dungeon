@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
@@ -25,7 +26,7 @@ open class SewerLevel : RegularLevel() {
     }
 
     override fun trackMusic(): String = Assets.TRACK_CHAPTER_1
-    
+
     override fun tilesTex(): String = Assets.TILES_SEWERS
 
     override fun waterTex(): String = Assets.WATER_SEWERS
@@ -62,7 +63,7 @@ open class SewerLevel : RegularLevel() {
     override fun chooseDiggers(): ArrayList<Digger> {
         // less diggers
         val diggers = selectDiggers(Random.NormalIntRange(1, 3), Random.IntRange(11, 13))
-        if (Dungeon.shopOnLevel())
+        if (Dungeon.shopOnLevel() && Dungeon.hero.challenge != Challenge.CastingMaster)
             diggers.add(MerchantDigger())
 
         return diggers

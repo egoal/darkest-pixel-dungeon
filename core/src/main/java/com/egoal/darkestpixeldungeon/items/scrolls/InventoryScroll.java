@@ -70,7 +70,7 @@ public abstract class InventoryScroll extends Scroll {
     });
   }
 
-  protected abstract void onItemSelected(Item item);
+  public abstract void onItemSelected(Item item);
 
   protected static boolean identifiedByUse = false;
   protected static WndBag.Listener itemSelector = new WndBag.Listener() {

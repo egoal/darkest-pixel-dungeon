@@ -175,7 +175,7 @@ class StartScene : PixelScene() {
             if (info != null) {
                 btnLoadGame.visible = true
                 val str = if (info.isBackup) M.L(this, "back_up") else M.L(this, "depth_level", info.depth, info.level)
-                btnLoadGame.secondary(str, info.challenges)
+                btnLoadGame.secondary(str, info.isChallenged)
 
                 btnNewGame.visible = true
                 btnNewGame.secondary(M.L(this, "erase"), false)

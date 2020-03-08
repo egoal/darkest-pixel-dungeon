@@ -42,6 +42,8 @@ class VillageLevel : RegularLevel() {
     override fun build(iteration: Int): Boolean {
         loadMapDataFromFile(MAP_FILE)
 
+//        map[xy2cell(7, 31)] = Terrain.ALCHEMY
+
         // map some terrains
         for (i in 0 until length) {
             when (map[i]) {
@@ -112,11 +114,10 @@ class VillageLevel : RegularLevel() {
         putMobAt(CatRawberry::class.java, 12, 6)
 
         putMobAt(Passerby::class.java, 24, 23)
-        
+
         putMobAt(Monument::class.java, 21, 2)
-        
+
         // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
-//         putMobAt(ArchDemon::class.java, 16, 29)
 //        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
 //            for (i in 1..10) addItemToSell(Generator.generate())
 //        }

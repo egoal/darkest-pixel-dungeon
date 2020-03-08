@@ -20,27 +20,56 @@
  */
 package com.egoal.darkestpixeldungeon
 
+import com.egoal.darkestpixeldungeon.actors.buffs.BloodSuck
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.VampiricBite
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
+import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
+import com.egoal.darkestpixeldungeon.items.bags.WandHolster
+import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw
 import com.egoal.darkestpixeldungeon.messages.M
 
 enum class Challenge {
     LowPressure,
     Gifted,
-    BruteCourage,
+    //    BruteCourage,
     Immortality {
-        override fun affect(hero: Hero) {
+        override fun live(hero: Hero) {
             Buff.affect(hero, VampiricBite::class.java)
         }
     },
-    GreedIsGood,
-    Loner,
+    GreedIsGood {
+        override fun affect(hero: Hero) {
+            val e = GoldenClaw.Evil()
+            if (!e.doPickUp(hero)) Dungeon.level.drop(e, hero.pos)
+        }
+    },
+    CastingMaster {
+        override fun affect(hero: Hero) {
+            ScrollHolder().identify().collect()
+            Dungeon.limitedDrops.scrollBag.drop()
+
+            PotionBandolier().identify().collect()
+            Dungeon.limitedDrops.potionBag.drop()
+
+            WandHolster().identify().collect()
+            Dungeon.limitedDrops.wandBag.drop()
+        }
+    },
     Faith,
+    // Loner,
     ;
 
     fun title(): String = M.L(this, "${name.toLowerCase()}.name")
     fun desc(): String = M.L(this, "${name.toLowerCase()}.desc")
-    
-    open fun affect(hero: Hero) {}
+
+    // the first time selected
+    open fun affect(hero: Hero) {
+        live(hero)
+    }
+
+    // each time the hero rise,
+    open fun live(hero: Hero) {}
 }

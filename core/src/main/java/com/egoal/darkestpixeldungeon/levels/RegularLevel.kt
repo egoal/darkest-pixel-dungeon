@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.levels
 
 import android.util.Log
 import com.egoal.darkestpixeldungeon.Bones
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
@@ -83,7 +84,7 @@ abstract class RegularLevel : Level() {
     protected var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
-        if (Dungeon.shopOnLevel()) diggers.add(MerchantDigger())
+        if (Dungeon.shopOnLevel() && Dungeon.hero.challenge != Challenge.CastingMaster) diggers.add(MerchantDigger())
 
         return diggers
     }
@@ -231,7 +232,8 @@ abstract class RegularLevel : Level() {
     }
 
     override fun createMobs() {
-        createSellers()
+        if (Dungeon.hero.challenge != Challenge.CastingMaster)
+            createSellers()
 
         val trySpawn = { space: Space ->
             val mob = Bestiary.mob(Dungeon.depth).apply {

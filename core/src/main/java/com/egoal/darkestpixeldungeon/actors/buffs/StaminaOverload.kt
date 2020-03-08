@@ -14,7 +14,7 @@ class StaminaOverload(private var supply: Int = 0) : Buff() {
     var fromBundle = false //fixme: 
 
     override fun attachTo(target: Char): Boolean = if (super.attachTo(target)) {
-        if (fromBundle) {
+        if (!fromBundle) {
             target.HT += supply
             target.HP += supply
         }

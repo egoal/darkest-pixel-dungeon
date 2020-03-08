@@ -79,7 +79,7 @@ open class Merchant : NPC() {
             else GameScene.show(WndShop())
         } else if (action == AC_SWAP) {
             swapPosition(Dungeon.hero)
-            Dungeon.hero.spendAndNext(1f/ Dungeon.hero.speed());
+            Dungeon.hero.spendAndNext(1f / Dungeon.hero.speed());
         }
     }
 

@@ -447,7 +447,8 @@ public class WndBag extends WndTabbed {
 
     @Override
     protected void onClick() {
-      if (!lastBag.contains(item) && !item.isEquipped(Dungeon.hero)) {
+      // todo: refactor this, the gold can just be a normal item actually
+      if (!(item instanceof Gold) && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)) {
 
         hide();
 

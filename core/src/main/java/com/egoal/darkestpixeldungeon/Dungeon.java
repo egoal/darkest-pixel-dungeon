@@ -507,7 +507,7 @@ public class Dungeon {
       saveLevel(doBackup ? backupLevelFile(hero.getHeroClass()) : null);
 
       GamesInProgress.INSTANCE.set(hero.getHeroClass(), depth, hero.getLvl(),
-              IsChallenged());
+              hero.getChallenge());
 
     } else if (WndResurrect.instance != null) {
 
@@ -760,7 +760,6 @@ public class Dungeon {
 
   public static void preview(GamesInProgress.Info info, Bundle bundle) {
     info.setDepth(bundle.getInt(DEPTH));
-    info.setChallenges((bundle.getInt(CHALLENGES) != 0));
     if (info.getDepth() == -1) {
       info.setDepth(bundle.getInt("maxDepth"));  // FIXME
     }

@@ -72,7 +72,7 @@ public class CriticalShock extends Image {
   }
 
   public static void show(Char ch, float dir, float power) {
-    if (!ch.sprite.visible) return;
+    if (!ch.sprite.visible || ch.sprite.parent == null) return; // already removed.
 
     CriticalShock cs = new CriticalShock(ch).set(dir, power);
 

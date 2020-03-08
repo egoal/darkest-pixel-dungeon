@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfLider
@@ -24,6 +25,9 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.plants.Blindweed
+import com.egoal.darkestpixeldungeon.plants.Icecap
+import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
@@ -286,10 +290,11 @@ enum class HeroClass(private val title: String) {
         onHeroUpgraded(hero)
 
         if (hero.challenge == Challenge.Faith || hero.challenge == Challenge.Immortality) {
-            Ankh().apply { isBlessed = true }.collect()
             hero.HP = hp
             hero.HT = ht
         }
+		if(hero.challenge== Challenge.Immortality)
+            Ankh().apply { isBlessed = true }.collect()
     }
 
     protected open fun onHeroUpgraded(hero: Hero) {}

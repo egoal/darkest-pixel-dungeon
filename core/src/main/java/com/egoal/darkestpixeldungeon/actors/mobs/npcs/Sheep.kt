@@ -33,6 +33,7 @@ class Sheep : NPC.Unbreakable() {
 
     init {
         spriteClass = SheepSprite::class.java
+        properties.add(Property.PHANTOM)
     }
 
     override fun act(): Boolean {

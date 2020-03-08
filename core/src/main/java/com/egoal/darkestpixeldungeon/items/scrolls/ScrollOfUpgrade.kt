@@ -55,7 +55,7 @@ class ScrollOfUpgrade : InventoryScroll() {
             identifiedByUse = false
         }
 
-        if (Item.curUser.challenge == Challenge.Gifted)
+        if (Item.curUser.challenge == Challenge.Gifted || Item.curUser.challenge == Challenge.CastingMaster)
             GLog.n(M.L(Challenge::class.java, "gone", name()))
         else
             GameScene.selectItem(itemSelector, mode, inventoryTitle)

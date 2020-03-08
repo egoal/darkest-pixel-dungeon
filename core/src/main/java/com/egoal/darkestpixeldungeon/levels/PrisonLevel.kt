@@ -1,20 +1,16 @@
 package com.egoal.darkestpixeldungeon.levels
 
-import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.DungeonTilemap
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Jessica
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Wandmaker
-import com.egoal.darkestpixeldungeon.effects.Halo
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.features.Luminary
 import com.egoal.darkestpixeldungeon.levels.traps.*
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.watabou.noosa.Group
 import com.watabou.utils.Random
 
 class PrisonLevel : RegularLevel() {

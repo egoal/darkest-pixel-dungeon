@@ -79,6 +79,7 @@ public class ItemSpriteSheet {
   public static final int DPD_CAT_GIFT = SINGLE_USE + 17;
   public static final int GREAT_BLUEPRINT = SINGLE_USE + 18;
   public static final int GOLDEN_CLAW = SINGLE_USE + 19;
+  public static final int EVIL_GOLDEN_CLAW = GOLDEN_CLAW + 1;
 
   private static final int WEP_TIER1 = xy(1, 5);   //16 slots
   public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;

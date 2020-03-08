@@ -268,6 +268,7 @@ class Hero : Char() {
         Buff.affect(this, Regeneration::class.java)
         Buff.affect(this, Hunger::class.java)
         pressure = Buff.affect(this, Pressure::class.java)
+        challenge?.live(this)
     }
 
     fun tier(): Int = belongings.armor?.tier ?: 0
@@ -1102,11 +1103,11 @@ class Hero : Char() {
 
     fun onMobDied(mob: Mob) {
         if (mob.properties().contains(Property.PHANTOM)) return
-        
+
         belongings.getItem(UrnOfShadow::class.java)?.collectSoul(mob)
 
         buff(VampiricBite::class.java)?.onEnemySlayed(mob)
-        
+
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
     }
 
@@ -1216,6 +1217,9 @@ class Hero : Char() {
 
         fun Preview(info: GamesInProgress.Info, bundle: Bundle) {
             info.level = bundle.getInt(LEVEL)
+
+            val chastr = bundle.getString(CHALLENGE)
+            if (chastr.isNotEmpty()) info.challenge = Challenge.valueOf(chastr)
         }
 
         fun ReallyDie(src: Any?) {
