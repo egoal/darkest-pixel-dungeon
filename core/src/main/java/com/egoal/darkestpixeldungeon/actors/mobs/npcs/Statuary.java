@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines;
 import com.egoal.darkestpixeldungeon.actors.mobs.DevilGhost;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
@@ -188,6 +189,9 @@ public class Statuary extends NPC {
       // pray
       if (Random.Int(10) == 0) {
         // unholy
+        if (hero.pressure.getLevel() == Pressure.Level.NERVOUS ||
+                hero.pressure.getLevel() == Pressure.Level.COLLAPSE)
+          hero.sayShort(HeroLines.MY_RETRIBUTION);
         hero.takeDamage(new Damage(Random.Int(5, 15),
                 this, hero).type(Damage.Type.MENTAL).addFeature(Damage
                 .Feature.ACCURATE));
@@ -252,8 +256,9 @@ public class Statuary extends NPC {
             if (a.glyph == null)
               a.glyph = Armor.Glyph.randomCurse();
           }
-        }else
-          hero.takeDamage(new Damage(Random.IntRange(3, 12), this, hero).type(Damage.Type.MENTAL));
+        } else
+          hero.takeDamage(new Damage(Random.IntRange(3, 12), this, hero).type
+                  (Damage.Type.MENTAL));
 
         if (Dungeon.visible[pos]) {
           CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
@@ -262,7 +267,8 @@ public class Statuary extends NPC {
       }
 
       //todo: reconsider the unholy blood
-      Dungeon.level.drop(new UnholyBlood().identify(), hero.pos).getSprite().drop();
+      Dungeon.level.drop(new UnholyBlood().identify(), hero.pos).getSprite()
+              .drop();
     }
 
     return true;
@@ -330,7 +336,8 @@ public class Statuary extends NPC {
                     (4) == 0) {
               Dungeon.limitedDrops.chaliceOfBlood.count = 1;
 
-              Dungeon.level.drop(new ChaliceOfBlood().random(), hero.pos).getSprite().drop();
+              Dungeon.level.drop(new ChaliceOfBlood().random(), hero.pos)
+                      .getSprite().drop();
               hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
               Sample.INSTANCE.play(Assets.SND_BURNING);
 
@@ -352,7 +359,8 @@ public class Statuary extends NPC {
       int count = Random.Int(4) == 0 ? 2 : 1;
       for (int n : PathFinder.NEIGHBOURS4) {
         int cell = pos + n;
-        if (Level.Companion.getPassable()[cell] && Actor.findChar(cell) == null) {
+        if (Level.Companion.getPassable()[cell] && Actor.findChar(cell) ==
+                null) {
           DevilGhost.Companion.SpawnAt(cell);
           if (--count == 0)
             break;
@@ -377,7 +385,8 @@ public class Statuary extends NPC {
         // give reward, random things
         float rawardRatio = (gold - 100) * .6f / 400f + .3f;
         if (Random.Float() < rawardRatio) {
-          Dungeon.level.drop((Random.Float() < 0.4f ? Generator.WEAPON.INSTANCE :
+          Dungeon.level.drop((Random.Float() < 0.4f ? Generator.WEAPON
+                  .INSTANCE :
                   Generator.ARMOR.INSTANCE).generate(), hero.pos);
         }
       }

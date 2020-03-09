@@ -18,7 +18,9 @@ object HeroLines {
     const val MY_WEAPON_IS_BAD = "my_weapon_is_bad"
     const val USELESS = "useless"
     const val NO_GOLD = "no_gold"
-
+    const val HEADACHE = "headache"
+    const val MY_RETRIBUTION = "my_retribution"
+    
     fun Line(tag: String, vararg args: Any): String = M.L(Hero::class.java, "line_$tag", args)
 
     fun PushShort(tag: String, vararg args: Any) {

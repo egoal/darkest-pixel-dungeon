@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PressureIsPower
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -100,6 +101,10 @@ class Pressure : Buff(), Hero.Doom {
                 if (target === Dungeon.hero && target.isAlive) {
                     Dungeon.hero.interrupt()
                     GLog.n(Messages.get(this, "onhurt"))
+
+                    val n = Random.Int(6)
+                    if (n < 2) (target as Hero).sayShort(HeroLines.MY_RETRIBUTION)
+                    else (target as Hero).sayShort(HeroLines.HEADACHE)
                 }
             }
         } else {
@@ -111,7 +116,7 @@ class Pressure : Buff(), Hero.Doom {
 
     private fun procValue(): Float {
         if (Dungeon.hero.challenge == Challenge.LowPressure) return 0f
-        
+
         var value = if (Dungeon.level.locked) 2f else 1f
         value += Random.Float(Dungeon.depth / 5f)
         if (Statistics.Clock.state == Statistics.ClockTime.State.MidNight &&

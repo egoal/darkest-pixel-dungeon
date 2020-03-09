@@ -15,7 +15,7 @@ class PerkSelectIndicator : Tag(0xff4c4c) {
     private var lastNumber = -100 //fixme
 
     init {
-        setSize(24f, 18f)
+        setSize(24f, 20f)
 
         visible = false
     }

@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Earthroot
 import com.egoal.darkestpixeldungeon.plants.Sungrass
@@ -900,6 +901,7 @@ class Hero : Char() {
                 if (shouldGainPerk()) {
                     interrupt()
                     reservedPerks += 1
+                    GLog.p(M.L(this, "perk_gain"))
                 }
 
                 if (lvl == 12 && Dungeon.hero.subClass == HeroSubClass.NONE) {

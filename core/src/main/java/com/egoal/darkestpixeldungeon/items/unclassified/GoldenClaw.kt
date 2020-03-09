@@ -63,6 +63,21 @@ open class GoldenClaw : Item() {
         return super.doPickUp(hero)
     }
 
+    protected open fun gainGold(hero: Hero, q: Int) {
+        val g = Gold(q)
+        hero.heroPerk.get(GreedyMidas::class.java)?.procGold(g)
+        if (g.quantity() > q) {
+            GameScene.effect(Flare(5, 32f).color(0xffdd00, true).show(
+                    hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f))
+        }
+
+        hero.sprite.operate(hero.pos)
+        hero.spend(1f)
+        hero.busy()
+
+        g.doPickUp(hero)
+    }
+
     private val sellableSelector = WndBag.Listener {
         if (it != null) {
             val options = if (it.quantity() == 1) {
@@ -88,7 +103,7 @@ open class GoldenClaw : Item() {
 
                     item.detachAll(hero.belongings.backpack)
 
-                    addGold(hero, item.price())
+                    this@GoldenClaw.gainGold(hero, item.price())
                 }
 
                 private fun sellOne(item: Item) {
@@ -96,22 +111,7 @@ open class GoldenClaw : Item() {
 
                     val hero = Dungeon.hero
                     val detached = item.detach(hero.belongings.backpack)
-                    addGold(hero, detached.price())
-                }
-
-                private fun addGold(hero: Hero, q: Int) {
-                    val g = Gold(q)
-                    hero.heroPerk.get(GreedyMidas::class.java)?.procGold(g)
-                    if (g.quantity() > q) {
-                        GameScene.effect(Flare(5, 32f).color(0xffdd00, true).show(
-                                hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f))
-                    }
-
-                    hero.sprite.operate(hero.pos)
-                    hero.spend(1f)
-                    hero.busy()
-
-                    g.doPickUp(hero)
+                    this@GoldenClaw.gainGold(hero, detached.price())
                 }
             }
 
@@ -157,7 +157,7 @@ open class GoldenClaw : Item() {
             return picked
         }
 
-        override fun desc(): String = super.desc() + M.L(this, "desc_hint")
+        override fun desc(): String = super.desc() +"\n"+ M.L(this, "desc_hint")
 
         override fun status(): String? {
             return if (cooldown > 0) "$cooldown" else super.status()
@@ -178,19 +178,41 @@ open class GoldenClaw : Item() {
             mob.sprite.killAndErase()
             // Dungeon.level.mobs.remove(mob)
             HealthIndicator.instance.target(null)
-            CellEmitter.get(mob.pos).burst(Speck.factory(Speck.COIN), 10)
+            CellEmitter.get(mob.pos).burst(Speck.factory(Speck.COIN), Random.IntRange(10, 15))
 
             val gold = 20 + Random.Int(mob.exp() * 12, mob.exp() * 20)
             Dungeon.gold += gold
             Statistics.GoldCollected += gold
 
-            cooldown += gold
+            cooldown += gold * 4 / 5
             updateQuickslot()
 
             Dungeon.hero.sprite.showStatus(CharSprite.NEUTRAL, "+$gold")
             Dungeon.hero.spendAndNext(1f)
 
             Sample.INSTANCE.play(Assets.SND_GOLD, 1f, 1f, Random.Float(0.9f, 1.1f)) // todo: change this
+        }
+
+        override fun gainGold(hero: Hero, q: Int) {
+            val g = Gold(q)
+            hero.heroPerk.get(GreedyMidas::class.java)?.procGold(g)
+            if (g.quantity() > q) {
+                GameScene.effect(Flare(5, 32f).color(0xffdd00, true).show(
+                        hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f))
+            }
+            
+            // g.doPickUp(hero)
+            Dungeon.gold += g.quantity()
+            Statistics.GoldCollected += g.quantity()
+
+            hero.sprite.operate(hero.pos)
+            hero.spend(1f)
+            hero.busy()
+
+            CellEmitter.get(hero.pos).burst(Speck.factory(Speck.COIN), Random.IntRange(6, 10))
+            hero.sprite.showStatus(CharSprite.NEUTRAL, "+${g.quantity()}")
+            
+            Sample.INSTANCE.play(Assets.SND_GOLD, 1f, 1f, Random.Float(0.9f, 1.1f))
         }
 
         private val caster = object : CellSelector.Listener {
