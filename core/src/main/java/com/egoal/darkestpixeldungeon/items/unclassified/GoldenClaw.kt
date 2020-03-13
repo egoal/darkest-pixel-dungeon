@@ -157,7 +157,7 @@ open class GoldenClaw : Item() {
             return picked
         }
 
-        override fun desc(): String = super.desc() +"\n"+ M.L(this, "desc_hint")
+        override fun desc(): String = super.desc() + "\n" + M.L(this, "desc_hint")
 
         override fun status(): String? {
             return if (cooldown > 0) "$cooldown" else super.status()
@@ -187,6 +187,9 @@ open class GoldenClaw : Item() {
             cooldown += gold * 4 / 5
             updateQuickslot()
 
+            val exp = max(1, mob.EXP / 2) // extra exp
+            Dungeon.hero.earnExp(exp)
+
             Dungeon.hero.sprite.showStatus(CharSprite.NEUTRAL, "+$gold")
             Dungeon.hero.spendAndNext(1f)
 
@@ -200,7 +203,7 @@ open class GoldenClaw : Item() {
                 GameScene.effect(Flare(5, 32f).color(0xffdd00, true).show(
                         hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f))
             }
-            
+
             // g.doPickUp(hero)
             Dungeon.gold += g.quantity()
             Statistics.GoldCollected += g.quantity()
@@ -211,7 +214,7 @@ open class GoldenClaw : Item() {
 
             CellEmitter.get(hero.pos).burst(Speck.factory(Speck.COIN), Random.IntRange(6, 10))
             hero.sprite.showStatus(CharSprite.NEUTRAL, "+${g.quantity()}")
-            
+
             Sample.INSTANCE.play(Assets.SND_GOLD, 1f, 1f, Random.Float(0.9f, 1.1f))
         }
 

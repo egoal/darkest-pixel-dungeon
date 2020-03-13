@@ -17,6 +17,7 @@ import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
+import kotlin.math.max
 import kotlin.math.min
 
 class ArchDemon : NPC.Unbreakable() {
@@ -87,7 +88,7 @@ class ArchDemon : NPC.Unbreakable() {
             dealt = true
             if (it == 0) {
                 if (hero.regeneration > 0.5f && Random.Float() < 0.5f) {
-                    hero.regeneration = 0f
+                    hero.regeneration -= max(hero.regeneration* 0.5f, 0.5f)
                     GLog.n(M.L(ArchDemon::class.java, "regeneration"))
                 } else if (Random.Float() < 0.3f) {
                     val index = (0 until Damage.Element.ELEMENT_COUNT).maxBy { i -> hero.elementalResistance[i] }!!

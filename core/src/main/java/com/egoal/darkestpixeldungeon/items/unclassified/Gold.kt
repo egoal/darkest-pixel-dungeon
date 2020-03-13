@@ -82,7 +82,8 @@ class Gold(value: Int = 1) : Item() {
     }
 
     private fun upgradeItem(hero: Hero, item: Item) {
-        val goldreq = 100 + item.level() * 110
+        val lvl = item.level()
+        val goldreq = 100 + lvl * 100 + lvl * lvl * 10
         if (goldreq > Dungeon.gold) {
             hero.sayShort(HeroLines.NO_GOLD)
             return

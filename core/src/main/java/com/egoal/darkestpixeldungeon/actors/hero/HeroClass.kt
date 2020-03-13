@@ -224,9 +224,6 @@ enum class HeroClass(private val title: String) {
 
         if (DarkestPixelDungeon.debug()) initDebug(hero)
 
-//        MaskOfLider().collect()
-//        initDebug(hero)
-
         hero.updateAwareness()
     }
 
@@ -259,7 +256,7 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-        // initDebug(hero)
+//        initDebug(hero)
     }
 
     // called when hero level up
@@ -293,7 +290,7 @@ enum class HeroClass(private val title: String) {
             hero.HP = hp
             hero.HT = ht
         }
-		if(hero.challenge== Challenge.Immortality)
+        if (hero.challenge == Challenge.Faith)
             Ankh().apply { isBlessed = true }.collect()
     }
 

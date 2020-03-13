@@ -200,7 +200,7 @@ class CrackedCoin : Artifact() {
             onZap(hero, shot)
 
             exp += 1
-            val requiredExp = level() * level() / 2 + 1
+            val requiredExp = level() * level() / 4 + level() + 1
             if (exp >= requiredExp) {
                 exp -= requiredExp
                 upgrade()
@@ -225,7 +225,7 @@ class CrackedCoin : Artifact() {
                 dmg.value = max(dmg.value, 8 + 5 * level()) // wand of lightning
                 it.takeDamage(dmg)
                 if (it.isAlive) {
-                    Buff.prolong(it, Paralysis::class.java, Random.Float(1f, 1.5f) + level() / 5f)
+                    Buff.prolong(it, Paralysis::class.java, Random.Float(1f, 1.5f) + level() / 3f)
                     it.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12)
                 }
             }

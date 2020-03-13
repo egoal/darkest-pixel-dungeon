@@ -20,7 +20,7 @@ class SpikeShield : Shield() {
         if (dmg.from is Char && Dungeon.level.adjacent((dmg.from as Char).pos, (dmg.to as Char).pos)) {
             val damage = proc(Damage(defValue, dmg.to, dmg.from))
             val defender = dmg.from as Char
-            defender.takeDamage(defender.defendDamage(damage))
+            defender.takeDamage(damage)
         }
         return super.defendValue(dmg, defValue)
     }

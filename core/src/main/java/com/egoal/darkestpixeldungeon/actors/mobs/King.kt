@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.effects.Flare
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
 import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
@@ -20,6 +21,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.KingSprite
 import com.egoal.darkestpixeldungeon.sprites.UndeadSprite
 import com.egoal.darkestpixeldungeon.ui.BossHealthBar
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -44,15 +46,16 @@ class King : Mob() {
         val p = HP / HT.toFloat()
         val ratio = when {
             p > 0.5f -> 1f
-            p > 0.25f -> 1.5f
+            p > 0.1f -> 1.5f
             else -> 2f
         }
-        anger += dmg.value.toFloat() * ratio
+        anger = min(120f, anger + value.toFloat() * ratio)
 
         return value
     }
 
     override fun act(): Boolean {
+        GLog.i(anger.toString())
         if (anger > 100f) {
             doSpecial()
             return true
@@ -86,11 +89,16 @@ class King : Mob() {
             return
         }
 
-        // do life link
-        Dungeon.level.mobs.find { it is Undead }!!.let {
-            Buff.prolong(this, LifeLink::class.java, 8f).linker = it.id()
+        if (buff(LifeLink::class.java) == null) {
+            // do life link
+            Dungeon.level.mobs.find { it is Undead }!!.let {
+                Buff.prolong(this, LifeLink::class.java, 8f).linker = it.id()
+            }
+            spend(1f)
+        } else {
+            SHLD = min(SHLD + 40, 60)
+            spend(1f)
         }
-        spend(1f)
 
         anger -= 40f
     }
