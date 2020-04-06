@@ -55,7 +55,7 @@ class King : Mob() {
     }
 
     override fun act(): Boolean {
-        GLog.i(anger.toString())
+        // GLog.i(anger.toString())
         if (anger > 100f) {
             doSpecial()
             return true

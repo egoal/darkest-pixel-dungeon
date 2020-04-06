@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.EarthParticle
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -34,8 +35,11 @@ class PrizeTrap : Trap() {
             else -> Heap.Type.CHEST
         }
 
-        heap.drop(Generator.GOLD.generate()) // always give some gold
-        heap.drop(Generator.generate())
+
+        val item = Generator.generate()
+        if (item !is Gold)
+            heap.drop(Generator.GOLD.generate()) // always give some gold
+        heap.drop(item)
 
         Dungeon.level.heaps.put(heap.pos, heap)
         // GameScene.add(heap)

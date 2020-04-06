@@ -2,6 +2,8 @@ package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Bones
+import com.egoal.darkestpixeldungeon.Challenge
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp
 import com.egoal.darkestpixeldungeon.items.Heap
@@ -38,7 +40,7 @@ class LastShopLevel : RegularLevel() {
         val diggers = ArrayList<Digger>()
 
         for (i in 1..4) diggers.add(Random.chances(normalDiggers).newInstance())
-        if (Imp.Quest.isCompleted())
+        if (Dungeon.hero.challenge != Challenge.CastingMaster && Imp.Quest.isCompleted())
             diggers.add(MerchantDigger())
 
         return diggers

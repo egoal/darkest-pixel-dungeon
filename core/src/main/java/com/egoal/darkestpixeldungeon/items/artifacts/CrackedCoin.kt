@@ -6,7 +6,9 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
+import com.egoal.darkestpixeldungeon.actors.buffs.TempPathLight
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Lightning
@@ -15,6 +17,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ElectronParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.levels.features.Luminary
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
@@ -25,6 +28,7 @@ import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.max
@@ -36,7 +40,7 @@ class CrackedCoin : Artifact() {
     init {
         image = ItemSpriteSheet.CRACKED_COIN
 
-        levelCap = 10
+        levelCap = 5
         exp = 0
 
         chargeCap = 100
@@ -47,10 +51,6 @@ class CrackedCoin : Artifact() {
     }
 
     private var shieldActived = false
-
-    override fun random(): Item {
-        return super.random().apply { level(5) } // so, its level 5!
-    }
 
     override fun desc(): String {
         var desc = super.desc()
@@ -150,6 +150,8 @@ class CrackedCoin : Artifact() {
         }
     }
 
+    override fun visiblyUpgraded(): Int = if (levelKnown) level() else 0
+
     inner class Shield : Artifact.ArtifactBuff() {
         override fun icon(): Int = BuffIndicator.GOLD_SHIELD
 
@@ -161,7 +163,7 @@ class CrackedCoin : Artifact() {
 
             dmg.value -= round(gold * dpg()).toInt()
             if (charge < chargeCap) {
-                charge += round(max(1, gold) * 4f * 0.85f.pow(level())).toInt()
+                charge += round(max(1, gold) * 5f * 0.75f.pow(level())).toInt()
                 if (charge >= chargeCap) {
                     charge = chargeCap
                     GLog.p(M.L(CrackedCoin::class.java, "charged"))
@@ -171,13 +173,15 @@ class CrackedCoin : Artifact() {
         }
 
         // damage per gold
-        private fun dpg(): Float = max(0.3f, 0.2f * level() - 0.6f) // usually, it starts with level 5
+        private fun dpg(): Float = 0.25f + 0.25f * level() // max(0.3f, 0.2f * level() - 0.6f) // usually, it starts with level 5
 
         override fun toString(): String = M.L(this, "name")
         override fun desc(): String = M.L(this, "desc", dpg())
     }
 
-    private fun shellCost(): Int = 10 + 10 * level()
+    private fun shellCost(): Int = 10 + 20 * level()
+
+    private fun levelupCost(): Int = level() * level() + level() + 1
 
     val arcs = ArrayList<Lightning.Arc>()
 
@@ -199,12 +203,13 @@ class CrackedCoin : Artifact() {
         hero.sprite.parent.add(Lightning(arcs) {
             onZap(hero, shot)
 
-            exp += 1
-            val requiredExp = level() * level() / 4 + level() + 1
-            if (exp >= requiredExp) {
-                exp -= requiredExp
-                upgrade()
-                GLog.p(M.L(CrackedCoin::class.java, "levelup"))
+            if (level() < levelCap) {
+                exp += 1
+                if (exp >= levelupCost()) {
+                    exp -= levelupCost()
+                    upgrade()
+                    GLog.p(M.L(CrackedCoin::class.java, "levelup"))
+                }
             }
 
             hero.spendAndNext(1f)
@@ -218,25 +223,23 @@ class CrackedCoin : Artifact() {
     }
 
     private fun onZap(hero: Hero, beam: Ballistica) {
-        var terrainAffected = false
         for (c in beam.subPath(1, beam.dist)) {
             Actor.findChar(c)?.let {
-                val dmg = hero.giveDamage(it).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT)
-                dmg.value = max(dmg.value, 8 + 5 * level()) // wand of lightning
+                val dmg = Damage(Random.IntRange(8 + 5 * level(), 8 + 10 * level()), hero, it).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT)
                 it.takeDamage(dmg)
                 if (it.isAlive) {
-                    Buff.prolong(it, Paralysis::class.java, Random.Float(1f, 1.5f) + level() / 3f)
+                    Buff.prolong(it, Paralysis::class.java, Random.Float(1f, 1.5f) + level() / 2f)
                     it.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12)
                 }
             }
             if (Level.flamable[c]) {
                 Dungeon.level.destroy(c)
                 GameScene.updateMap(c)
-                terrainAffected = true
             }
         }
 
-        if (terrainAffected) Dungeon.observe()
+        // light the path
+        TempPathLight.Light(beam.path, 5f)
     }
 
     private val dirSelector = object : CellSelector.Listener {

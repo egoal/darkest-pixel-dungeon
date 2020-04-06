@@ -20,6 +20,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFrost
 import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
+import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
@@ -256,6 +257,8 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
+//        CrackedCoin().identify().collect()
+//        WandOfPrismaticLight().identify().collect()
 //        initDebug(hero)
     }
 

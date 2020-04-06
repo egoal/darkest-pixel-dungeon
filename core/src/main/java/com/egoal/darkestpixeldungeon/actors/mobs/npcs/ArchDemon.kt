@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Journal
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
@@ -27,10 +28,12 @@ class ArchDemon : NPC.Unbreakable() {
         properties.add(Property.IMMOVABLE)
     }
 
-    private var dealt = false
+    private var hasDealt = false
 
     override fun interact(): Boolean {
-        if (dealt) return false
+        if (hasDealt) return false
+
+        Journal.add(name)
 
         WndDialogue.Show(this, M.L(this, "greetings"), M.L(this, "skillmodify"), M.L(this, "skillup")) { index ->
             if (index == 0) {
@@ -56,7 +59,7 @@ class ArchDemon : NPC.Unbreakable() {
     }
 
     private fun removePerk(hero: Hero, perk: Perk) {
-        dealt = true
+        dealt()
         hero.heroPerk.downgrade(perk)
 
         WndDialogue.Show(this, M.L(this, "other_deal"), M.L(this, "price_ht", 15), M.L(this, "price_ht", 25), M.L(this, "price_ht", 35), M.L(this, "price_none")) {
@@ -85,10 +88,10 @@ class ArchDemon : NPC.Unbreakable() {
 
     private fun upgradePerk(hero: Hero, perk: Perk) {
         WndDialogue.Show(this, M.L(this, "price"), M.L(this, "price_blood"), M.L(this, "price_perk")) {
-            dealt = true
+            dealt()
             if (it == 0) {
                 if (hero.regeneration > 0.5f && Random.Float() < 0.5f) {
-                    hero.regeneration -= max(hero.regeneration* 0.5f, 0.5f)
+                    hero.regeneration -= max(hero.regeneration * 0.5f, 0.5f)
                     GLog.n(M.L(ArchDemon::class.java, "regeneration"))
                 } else if (Random.Float() < 0.3f) {
                     val index = (0 until Damage.Element.ELEMENT_COUNT).maxBy { i -> hero.elementalResistance[i] }!!
@@ -113,6 +116,11 @@ class ArchDemon : NPC.Unbreakable() {
         }
     }
 
+    private fun dealt() {
+        hasDealt = true
+        Journal.remove(name)
+    }
+
     private fun removeHT(char: Char, percent: Float) {
         Wound.hit(char.pos)
         char.HT = (char.HT * (1 - percent)).toInt()
@@ -121,12 +129,12 @@ class ArchDemon : NPC.Unbreakable() {
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
-        bundle.put(DEALT, dealt)
+        bundle.put(DEALT, hasDealt)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        dealt = bundle.getBoolean(DEALT)
+        hasDealt = bundle.getBoolean(DEALT)
     }
 
     class Sprite : MobSprite() {
@@ -148,6 +156,6 @@ class ArchDemon : NPC.Unbreakable() {
     }
 
     companion object {
-        private const val DEALT = "dealt"
+        private const val DEALT = "hasDealt"
     }
 }

@@ -219,10 +219,9 @@ class Hero : Char() {
         if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
 
         val level = Ring.getBonus(this, RingOfCritical.Critical::class.java)
-        if (level > 0) {
+        if (level > 0) 
             c += 0.01f * level
-            c *= 1.15f.pow(level)
-        }
+		c *= 1.15f.pow(level)
 
         return c
     }

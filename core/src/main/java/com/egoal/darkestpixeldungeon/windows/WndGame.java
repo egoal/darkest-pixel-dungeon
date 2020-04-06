@@ -50,7 +50,7 @@ public class WndGame extends Window {
       @Override
       protected void onClick() {
         hide();
-        GameScene.show(new WndSettings());
+        GameScene.show(new WndSettings(false));
       }
     });
 

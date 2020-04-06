@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Blindness;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple;
 import com.egoal.darkestpixeldungeon.actors.buffs.Light;
+import com.egoal.darkestpixeldungeon.actors.buffs.TempPathLight;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.Beam;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -132,7 +133,7 @@ public class WandOfPrismaticLight extends DamageWand {
     if (noticed)
       Sample.INSTANCE.play(Assets.SND_SECRET);
 
-    GameScene.updateFog();
+    TempPathLight.Companion.Light(beam.path, 5f);
   }
 
   @Override
