@@ -52,7 +52,7 @@ public class WndSettings extends WndTabbed {
   private static int last_index = 0;
 
   public WndSettings() {
-    this(true);
+    this(false);
   }
 
   public WndSettings(boolean settableLanguage) {

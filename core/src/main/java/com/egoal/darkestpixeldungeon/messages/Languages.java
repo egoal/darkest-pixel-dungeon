@@ -25,10 +25,10 @@ import java.util.Locale;
 public enum Languages {
   ENGLISH("english", "", Status.REVIEWED,
           new String[]{"Egoal", "endlesssolitude", " 路人NPC"},
-          new String[]{" 1834515403a", "MrKukurykpl", "Omicronrg9",
-                  "Piedro0", " riwansia", "shenlingfeiniao"}),
+          new String[]{" 1834515403a", "Fevre", "Fishbone", "MrKukurykpl",
+                  "Omicronrg9", "Piedro0", "SeaMonser", "riwansia", "shenlingfeiniao"}),
 
-  //  RUSSIAN("русский", "ru", Status.REVIEWED, new 
+  //  RUSSIAN("русский", "ru", Status.REVIEWED, new
   // String[]{"ConsideredHamster",
 //          "Inevielle", "yarikonline"}, new String[]{"AttHawk46", 
 //          "HerrGotlieb", "Shamahan", "Un_logic"}),

@@ -196,7 +196,7 @@ public class Belongings implements Iterable<Item> {
   }
 
   public void uncurseEquipped() {
-    ScrollOfRemoveCurse.uncurse(owner, armor, weapon, helmet, misc1, misc2, misc3);
+    ScrollOfRemoveCurse.Companion.uncurse(owner, armor, weapon, helmet, misc1, misc2, misc3);
   }
 
   public Item randomUnequipped() {

@@ -167,7 +167,7 @@ class Hero : Char() {
 
         // ring
         val health = Ring.getBonus(this, RingOfHealth.Health::class.java)
-        if (health < 0) reg -= 0.05f * health
+        if (health < 0) reg += 0.05f * health
         else reg += 0.0333f * health
 
         // helmet

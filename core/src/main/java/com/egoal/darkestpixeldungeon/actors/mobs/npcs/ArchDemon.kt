@@ -62,28 +62,36 @@ class ArchDemon : NPC.Unbreakable() {
         dealt()
         hero.heroPerk.downgrade(perk)
 
-        WndDialogue.Show(this, M.L(this, "other_deal"), M.L(this, "price_ht", 15), M.L(this, "price_ht", 25), M.L(this, "price_ht", 35), M.L(this, "price_none")) {
+        WndDialogue.Show(this, M.L(this, "other_deal"), M.L(this, "price_ht", 10), M.L(this, "price_ht", 20), M.L(this, "price_ht", 30), M.L(this, "price_none")) {
             if (it == 3) return@Show
 
             //todo: if the hero is too weak, the demon shall refuse it
-            removeHT(hero, when (it) {
-                0 -> 0.15f
-                1 -> 0.25f
-                else -> 0.35f
-            })
-
-            val p = when (it) {
-                0 -> 0.5f
-                1 -> 0.75f
-                else -> 1f
+            when (it) {
+                0 -> {
+                    removeHT(hero, 0.1f)
+                    if (Random.Float() < 0.5f) {
+                        giveRandomPerk(hero)
+                        say(M.L(ArchDemon::class.java, "deal"))
+                    } else say(M.L(ArchDemon::class.java, "deal_failed"))
+                }
+                1 -> {
+                    removeHT(hero, 0.2f)
+                    giveRandomPerk(hero)
+                    say(M.L(ArchDemon::class.java, "deal"))
+                }
+                2 -> {
+                    removeHT(hero, 0.3f)
+                    hero.reservedPerks++
+                    say(M.L(ArchDemon::class.java, "deal"))
+                }
             }
-            if (Random.Float() < p) {
-                val newPerk = Perk.RandomPositive(hero)
-                PerkGain.Show(Dungeon.hero!!, newPerk)
-                hero.heroPerk.add(newPerk)
-                say(M.L(ArchDemon::class.java, "deal"))
-            } else say(M.L(ArchDemon::class.java, "deal_failed"))
         }
+    }
+
+    private fun giveRandomPerk(hero: Hero) {
+        val newPerk = Perk.RandomPositive(hero)
+        PerkGain.Show(Dungeon.hero!!, newPerk)
+        hero.heroPerk.add(newPerk)
     }
 
     private fun upgradePerk(hero: Hero, perk: Perk) {

@@ -135,7 +135,7 @@ public class TitleScene extends PixelScene {
             new DashboardItem(Messages.get(this, "settings"), 5) {
               @Override
               protected void onClick() {
-                parent.add(new WndSettings());
+                parent.add(new WndSettings(true));
               }
             },
     };

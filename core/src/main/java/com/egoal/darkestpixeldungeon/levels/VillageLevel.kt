@@ -12,8 +12,11 @@ import com.egoal.darkestpixeldungeon.actors.mobs.QuickFiringGun
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
 import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
+import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
@@ -142,7 +145,6 @@ class VillageLevel : RegularLevel() {
 //            identify()
 //            level(5)
 //        }, xy2cell(16, 30))
-//        drop(Gold(500), xy2cell(16, 30))
     }
 
     private fun putMobAt(cls: Class<out Mob>, x: Int, y: Int): Mob {

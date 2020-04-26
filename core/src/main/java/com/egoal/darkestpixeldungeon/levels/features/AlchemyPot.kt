@@ -91,7 +91,7 @@ object AlchemyPot {
     fun combinePotion(seeds: List<Plant.Seed>): Potion {
         val potioncls = seeds.map { it.alchemyClass }.distinct()
 
-        if (potioncls.size == 1) return potioncls[0].newInstance()
+        if (potioncls.size == 1) return potioncls[0].newInstance().apply { identify() }
 
         if ((potioncls.size == 2 && Random.Float() < 0.35f) || Random.Float() < 0.5f) return Generator.POTION.generate() as Potion
 

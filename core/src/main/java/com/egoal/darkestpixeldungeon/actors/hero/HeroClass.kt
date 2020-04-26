@@ -17,10 +17,7 @@ import com.egoal.darkestpixeldungeon.items.helmets.MaskOfLider
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
-import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
-import com.egoal.darkestpixeldungeon.items.wands.WandOfFrost
-import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
-import com.egoal.darkestpixeldungeon.items.wands.WandOfPrismaticLight
+import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*

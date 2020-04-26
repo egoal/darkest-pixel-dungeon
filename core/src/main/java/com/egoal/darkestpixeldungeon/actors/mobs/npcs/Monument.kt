@@ -24,7 +24,7 @@ class Monument : NPC.Unbreakable() {
     override fun description(): String = super.description() + "\n\n" + M.L(this, if (activated) "desc_activated" else "desc_inactivated")
 
     override fun interact(): Boolean {
-        if (!activated)
+        if (!activated && Dungeon.hero.lvl == 1) //todo: rework this
             GameScene.show(object : WndSelectChallenge() {
                 override fun onChallengeWouldActivate(challenge: Challenge) {
                     activated = true
@@ -34,8 +34,6 @@ class Monument : NPC.Unbreakable() {
                     GLog.n(M.L(Monument::class.java, "activated", challenge.title()))
                 }
             })
-        else {
-        }
 
         return false
     }
