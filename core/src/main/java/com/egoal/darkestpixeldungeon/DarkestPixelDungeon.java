@@ -481,15 +481,6 @@ public class DarkestPixelDungeon extends Game {
     return Preferences.INSTANCE.getInt(Preferences.KEY_LAST_CLASS, 0, 0, 4);
   }
 
-  public static void challenges(int value) {
-    Preferences.INSTANCE.put(Preferences.KEY_CHALLENGES, value);
-  }
-
-  public static int challenges() {
-    return Preferences.INSTANCE.getInt(Preferences.KEY_CHALLENGES, 0, 0,
-            Challenges.MAX_VALUE);
-  }
-
   public static void quickSlots(int value) {
     Preferences.INSTANCE.put(Preferences.KEY_QUICKSLOTS, value);
   }

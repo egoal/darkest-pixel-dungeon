@@ -22,7 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfResistance.Resistance;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 

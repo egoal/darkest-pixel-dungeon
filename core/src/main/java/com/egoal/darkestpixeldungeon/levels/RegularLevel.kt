@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.levels
 
 import android.util.Log
 import com.egoal.darkestpixeldungeon.Bones
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
@@ -83,7 +84,7 @@ abstract class RegularLevel : Level() {
     protected var chosenDiggers = ArrayList<Digger>()
     protected open fun chooseDiggers(): ArrayList<Digger> {
         val diggers = selectDiggers(Random.NormalIntRange(1, 4), Random.IntRange(12, 15))
-        if (Dungeon.shopOnLevel()) diggers.add(MerchantDigger())
+        if (Dungeon.shopOnLevel() && Dungeon.hero.challenge != Challenge.CastingMaster) diggers.add(MerchantDigger())
 
         return diggers
     }
@@ -121,7 +122,15 @@ abstract class RegularLevel : Level() {
             diggers.add(LaboratoryDigger())
             probs.remove(LaboratoryDigger::class.java)
 
-            Dungeon.limitedDrops.laboratories.drop()
+            Dungeon.limitedDrops.laboratories.count++
+            Log.d("dpd", "would create lab")
+        }
+        if (Dungeon.demonNeed()) {
+            diggers.add(DemonDigger())
+            probs.remove(DemonDigger::class.java)
+
+            Dungeon.limitedDrops.archDemons.count++
+            Log.d("dpd", "would add demon")
         }
 
         // never fall to boss
@@ -223,13 +232,14 @@ abstract class RegularLevel : Level() {
     }
 
     override fun createMobs() {
-        createSellers()
+        if (Dungeon.hero.challenge != Challenge.CastingMaster)
+            createSellers()
 
         val trySpawn = { space: Space ->
             val mob = Bestiary.mob(Dungeon.depth).apply {
                 pos = pointToCell(space.rect.random())
             }
-            if (passable[mob.pos] && findMobAt(mob.pos) == null) {
+            if (passable[mob.pos] && distance(entrance, mob.pos) > 4 && findMobAt(mob.pos) == null) {
                 mobs.add(mob)
                 1
             } else 0
@@ -389,8 +399,7 @@ abstract class RegularLevel : Level() {
         // bonus from wealth
         var nPrize = 1
         val bonus = min(10, Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java))
-        while (Random.Float() < .25f + bonus * 0.05f)
-            ++nPrize
+        while (Random.Float() < .2f + bonus * 0.05f) if (++nPrize >= 5) break;
 
         val trapsToSpawn = List(min(traps + nPrize, validCells.size)) {
             if (it < traps)
@@ -399,7 +408,7 @@ abstract class RegularLevel : Level() {
                 PrizeTrap().hide()
         }
 
-        Log.d("dpd", "would add ${trapsToSpawn.size} traps, of which ${trapsToSpawn.size- traps} are prizes.")
+        Log.d("dpd", "would add ${trapsToSpawn.size} traps, of which ${trapsToSpawn.size - traps} are prizes.")
 
         for (pr in trapsToSpawn.withIndex()) {
             val cell = validCells[pr.index]
@@ -481,7 +490,7 @@ abstract class RegularLevel : Level() {
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
                 ArmoryDigger::class.java to 0.6f,
                 GardenDigger::class.java to 1f,
-                LaboratoryDigger::class.java to 1.5f,
+                LaboratoryDigger::class.java to 1f,
                 LibraryDigger::class.java to 1f,
                 MagicWellDigger::class.java to 1f,
                 PitDigger::class.java to 0f,
@@ -497,7 +506,8 @@ abstract class RegularLevel : Level() {
                 WeakFloorDigger::class.java to 0.75f,
                 AltarDigger::class.java to 0.75f,
                 WandDigger::class.java to 0.75f,
-                CryptDigger::class.java to 0.75f
+                CryptDigger::class.java to 0.75f,
+                DemonDigger::class.java to 0f // quota
         )
 
         val SecretDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(

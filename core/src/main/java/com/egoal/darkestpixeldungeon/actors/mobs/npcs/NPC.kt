@@ -26,11 +26,15 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Charm
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
+import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.windows.WndQuest
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import java.util.HashSet
 
 abstract class NPC : Mob() {
     init {
@@ -71,5 +75,13 @@ abstract class NPC : Mob() {
         override fun defenseSkill(enemy: Char): Float = 1000f
         override fun takeDamage(dmg: Damage): Int = 0
         override fun add(buff: Buff) {}
+
+        override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
+
+        companion object {
+            private val IMMUNITIES = hashSetOf<Class<*>>(
+                    Corruption::class.java, Charm::class.java
+            )
+        }
     }
 }

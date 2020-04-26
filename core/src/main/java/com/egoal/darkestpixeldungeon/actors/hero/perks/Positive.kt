@@ -56,6 +56,11 @@ class GoodAppetite : Perk() {
     override fun canBeGain(hero: Hero): Boolean = hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE)
 }
 
+// see Hunger
+class Dieting : Perk() {
+    override fun image(): Int = PerkImageSheet.DIETING
+}
+
 class StrongConstitution : Perk(5) {
     override fun image(): Int = PerkImageSheet.STRONG_COSTITUION
 
@@ -165,7 +170,7 @@ class PureCrit : Perk() {
     }
 }
 
-class ExtraCritProbability : Perk(5) {
+class ExtraCritProbability : Perk.Additional(5) {
     override fun image(): Int = PerkImageSheet.CRIT_PROB
 
     private fun extraProb(): Float = 0.01f + 0.05f * level
@@ -176,12 +181,6 @@ class ExtraCritProbability : Perk(5) {
 
     override fun onLose() {
         Dungeon.hero.criticalChance -= extraProb()
-    }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
     }
 }
 
@@ -205,7 +204,7 @@ class LowHealthDexterous : Perk(3) {
     }
 }
 
-class ExtraDexterous : Perk(5) {
+class ExtraDexterous : Perk.Additional(5) {
     override fun image(): Int = PerkImageSheet.DEX_EXTRA
 
     override fun onGain() {
@@ -214,12 +213,6 @@ class ExtraDexterous : Perk(5) {
 
     override fun onLose() {
         Dungeon.hero.defSkill -= extraDef()
-    }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
     }
 
     private fun extraDef(): Int = 3 * level
@@ -258,9 +251,9 @@ class LowHealthRegeneration : Perk(5) {
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_REG
 
     fun extraRegeneration(hero: Hero): Float {
-        if (hero.HP > hero.HT * 0.25) return 0f
+        if (hero.HP > hero.HT * 0.3) return 0f
 
-        return 0.1f + 0.3f * level
+        return 0.05f + 0.35f * level
     }
 }
 
@@ -308,7 +301,7 @@ class ExtraStrengthPower : Perk(3) {
     }
 }
 
-class FastRegeneration : Perk(5) {
+class FastRegeneration : Perk.Additional(5) {
     override fun image(): Int = PerkImageSheet.FASTER_REG
 
     override fun onGain() {
@@ -317,12 +310,6 @@ class FastRegeneration : Perk(5) {
 
     override fun onLose() {
         Dungeon.hero.regeneration -= extraReg()
-    }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
     }
 
     private fun extraReg(): Float = 0.15f * level
@@ -383,7 +370,7 @@ class ArcaneCrit : Perk(5) {
     override fun image(): Int = PerkImageSheet.ARCANE_CRIT
 
     fun affectDamage(hero: Hero, dmg: Damage) {
-        if (Random.Float() < prob(hero)) {
+        if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < prob(hero)) {
             dmg.value = round(dmg.value * 1.75f).toInt()
             dmg.addFeature(Damage.Feature.CRITICAL)
         }
@@ -427,7 +414,7 @@ class FinishingShot : Perk() {
     }
 }
 
-class ExtraStrength : Perk(3) {
+class ExtraStrength : Perk.Additional(3) {
     override fun image(): Int = PerkImageSheet.STRENGTH_EXTRA
 
     override fun onLose() {
@@ -437,12 +424,6 @@ class ExtraStrength : Perk(3) {
 
     override fun onGain() {
         Dungeon.hero.STR += str()
-    }
-
-    override fun upgrade() {
-        onLose()
-        super.upgrade()
-        onGain()
     }
 
     private fun str(): Int = level
@@ -461,6 +442,9 @@ abstract class TimingPerk(private val timing: Class<out Timing>,
         super.upgrade()
     }
 
+    override fun onLose() {
+        Buff.detach(Dungeon.hero, timing)
+    }
 
     abstract class Timing(protected var time: Float) : Buff() {
         fun upgrade() {}

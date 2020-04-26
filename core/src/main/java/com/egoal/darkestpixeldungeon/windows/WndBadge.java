@@ -36,7 +36,7 @@ public class WndBadge extends Window {
 
     super();
 
-    Image icon = BadgeBanner.image(badge.image);
+    Image icon = BadgeBanner.image(badge.getImage());
     icon.scale.set(2);
     add(icon);
 
@@ -55,6 +55,6 @@ public class WndBadge extends Window {
     info.setPos((w - info.width()) / 2, icon.y + icon.height() + MARGIN);
     resize((int) w, (int) (info.bottom() + MARGIN));
 
-    BadgeBanner.highlight(icon, badge.image);
+    BadgeBanner.highlight(icon, badge.getImage());
   }
 }

@@ -47,7 +47,7 @@ class CatRawberry : NPC.Unbreakable() {
     private fun jump() {
         val pos = Dungeon.level.randomRespawnCell()
         ScrollOfTeleportation.appear(this, pos)
-        yell(Messages.get(this, "keke"))
+        // yell(Messages.get(this, "keke"))
         GLog.i(Messages.get(CatRawberry::class.java, "blinked"))
     }
 

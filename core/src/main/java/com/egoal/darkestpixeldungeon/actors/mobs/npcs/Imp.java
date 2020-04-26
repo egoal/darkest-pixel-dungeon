@@ -40,7 +40,7 @@ import com.egoal.darkestpixeldungeon.sprites.ImpSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Imp extends NPC {
+public class Imp extends NPC.Unbreakable {
 
   {
     spriteClass = ImpSprite.class;
@@ -54,31 +54,14 @@ public class Imp extends NPC {
   protected boolean act() {
 
     if (!Quest.given && Dungeon.visible[pos]) {
-      if (!seenBefore) {
-        yell(Messages.get(this, "hey", Dungeon.hero.givenName()));
-      }
+      if (!seenBefore)
+        say(Messages.get(this, "hey", Dungeon.hero.givenName()));
       seenBefore = true;
     } else {
       seenBefore = false;
     }
 
-    throwItem();
-
     return super.act();
-  }
-
-  @Override
-  public float defenseSkill(Char enemy) {
-    return 1000;
-  }
-
-  @Override
-  public int takeDamage(Damage dmg) {
-    return 0;
-  }
-
-  @Override
-  public void add(Buff buff) {
   }
 
   @Override

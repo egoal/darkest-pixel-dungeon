@@ -55,11 +55,11 @@ object GamesInProgress {
         }
     }
 
-    operator fun set(cl: HeroClass, depth: Int, level: Int, challenges: Boolean) {
+    operator fun set(cl: HeroClass, depth: Int, level: Int, challenge: Challenge?) {
         val info = Info()
         info.depth = depth
         info.level = level
-        info.challenges = challenges
+        info.challenge = challenge
         state[cl] = info
     }
 
@@ -74,6 +74,8 @@ object GamesInProgress {
     class Info(val isBackup: Boolean = false) {
         var depth: Int = 0
         var level: Int = 0
-        var challenges: Boolean = false
+        var challenge: Challenge? = null
+
+        val isChallenged: Boolean get() = challenge != null
     }
 }

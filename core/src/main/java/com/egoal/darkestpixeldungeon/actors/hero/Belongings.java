@@ -171,23 +171,23 @@ public class Belongings implements Iterable<Item> {
   public void observe() {
     if (weapon != null) {
       weapon.identify();
-      Badges.validateItemLevelAquired(weapon);
+      Badges.INSTANCE.validateItemLevelAquired(weapon);
     }
     if (armor != null) {
       armor.identify();
-      Badges.validateItemLevelAquired(armor);
+      Badges.INSTANCE.validateItemLevelAquired(armor);
     }
     if (misc1 != null) {
       misc1.identify();
-      Badges.validateItemLevelAquired(misc1);
+      Badges.INSTANCE.validateItemLevelAquired(misc1);
     }
     if (misc2 != null) {
       misc2.identify();
-      Badges.validateItemLevelAquired(misc2);
+      Badges.INSTANCE.validateItemLevelAquired(misc2);
     }
     if (misc3 != null) {
       misc3.identify();
-      Badges.validateItemLevelAquired(misc3);
+      Badges.INSTANCE.validateItemLevelAquired(misc3);
     }
 
     for (Item item : backpack) {
@@ -196,7 +196,7 @@ public class Belongings implements Iterable<Item> {
   }
 
   public void uncurseEquipped() {
-    ScrollOfRemoveCurse.uncurse(owner, armor, weapon, helmet, misc1, misc2, misc3);
+    ScrollOfRemoveCurse.Companion.uncurse(owner, armor, weapon, helmet, misc1, misc2, misc3);
   }
 
   public Item randomUnequipped() {

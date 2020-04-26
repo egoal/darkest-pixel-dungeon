@@ -52,12 +52,16 @@ public class WndSettings extends WndTabbed {
   private static int last_index = 0;
 
   public WndSettings() {
+    this(false);
+  }
+
+  public WndSettings(boolean settableLanguage) {
     super();
 
     screen = new ScreenTab();
     add(screen);
 
-    ui = new UITab();
+    ui = new UITab(settableLanguage);
     add(ui);
 
     audio = new AudioTab();
@@ -149,14 +153,16 @@ public class WndSettings extends WndTabbed {
       add(brightness);
 
       RedButton btnOrientation = new RedButton(DarkestPixelDungeon.landscape() ?
-              Messages.get(this, "portrait") : Messages.get(this, "landscape")) {
+              Messages.get(this, "portrait") : Messages.get(this,
+              "landscape")) {
         @Override
         protected void onClick() {
-          if(DarkestPixelDungeon.landscape()){
+          if (DarkestPixelDungeon.landscape()) {
             DarkestPixelDungeon.landscape(false);
-          }else {
+          } else {
             // warning
-            parent.add(new WndMessage(Messages.get(WndSettings.ScreenTab.class, "landscape_warning")) {
+            parent.add(new WndMessage(Messages.get(WndSettings.ScreenTab
+                    .class, "landscape_warning")) {
               @Override
               public void onBackPressed() {
                 super.onBackPressed();
@@ -166,7 +172,8 @@ public class WndSettings extends WndTabbed {
           }
         }
       };
-      btnOrientation.setRect(0, brightness.bottom()+ GAP_TINY, WIDTH, BTN_HEIGHT);
+      btnOrientation.setRect(0, brightness.bottom() + GAP_TINY, WIDTH,
+              BTN_HEIGHT);
       add(btnOrientation);
 
       CheckBox chkImmersive = new CheckBox(Messages.get(this, "soft_keys")) {
@@ -176,7 +183,8 @@ public class WndSettings extends WndTabbed {
           DarkestPixelDungeon.immerse(checked());
         }
       };
-      chkImmersive.setRect(0, btnOrientation.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
+      chkImmersive.setRect(0, btnOrientation.bottom() + GAP_TINY, WIDTH,
+              BTN_HEIGHT);
       chkImmersive.checked(DarkestPixelDungeon.immersed());
       chkImmersive.enable(android.os.Build.VERSION.SDK_INT >= 19);
       add(chkImmersive);
@@ -205,7 +213,7 @@ public class WndSettings extends WndTabbed {
 
   private class UITab extends Group {
 
-    public UITab() {
+    public UITab(boolean lang) {
       super();
 
       RenderedText barDesc = PixelScene.renderText(Messages.get(this, "mode")
@@ -278,17 +286,22 @@ public class WndSettings extends WndTabbed {
       add(chkFlipTags);
       chkFlipTags.enable(false);
 
-      RedButton btnLanguage = new RedButton(Messages.get(this, "language")) {
-        @Override
-        protected void onClick() {
-          ((WndSettings) parent.parent).parent.add(new WndLangs());
-          ((WndSettings) parent.parent).hide();
-          // parent.add(new WndLangs());
-        }
-      };
-      btnLanguage.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH,
-              BTN_HEIGHT);
-      add(btnLanguage);
+      float btm = chkFlipTags.bottom();
+      if (lang) {
+        RedButton btnLanguage = new RedButton(Messages.get(this, "language")) {
+          @Override
+          protected void onClick() {
+            ((WndSettings) parent.parent).parent.add(new WndLangs());
+            ((WndSettings) parent.parent).hide();
+            // parent.add(new WndLangs());
+          }
+        };
+        btnLanguage.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH,
+                BTN_HEIGHT);
+        add(btnLanguage);
+
+        btm = btnLanguage.bottom();
+      }
 
       OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"),
               "0", "8", 0, 8) {
@@ -299,7 +312,7 @@ public class WndSettings extends WndTabbed {
         }
       };
       slots.setSelectedValue(DarkestPixelDungeon.quickSlots());
-      slots.setRect(0, btnLanguage.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
+      slots.setRect(0, btm + GAP_TINY, WIDTH, SLIDER_HEIGHT);
       add(slots);
 
       CheckBox chkFont = new CheckBox(Messages.get(this, "smooth_font")) {
@@ -357,7 +370,7 @@ public class WndSettings extends WndTabbed {
       add(musicMute);
 
 
-      OptionSlider SFXVol = new OptionSlider(Messages.get(this, "sfx_vol"), 
+      OptionSlider SFXVol = new OptionSlider(Messages.get(this, "sfx_vol"),
               "0", "10", 0, 10) {
         @Override
         protected void onChange() {

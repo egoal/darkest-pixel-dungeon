@@ -292,16 +292,4 @@ class Yvette : NPC() {
             Sample.INSTANCE.play(Assets.SND_TELEPORT)
         }
     }
-
-    class Bow : Item() {
-        init {
-            image = ItemSpriteSheet.RANGER_BOW
-        }
-
-        override fun isIdentified(): Boolean = true
-
-        override fun isUpgradable(): Boolean = false
-
-        override fun price(): Int = 100
-    }
 }

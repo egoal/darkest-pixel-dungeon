@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.windows;
 
+import com.egoal.darkestpixeldungeon.Challenge;
 import com.egoal.darkestpixeldungeon.QuickSlot;
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk;
@@ -37,6 +38,7 @@ import com.egoal.darkestpixeldungeon.ui.Icons;
 import com.egoal.darkestpixeldungeon.ui.ItemSlot;
 import com.egoal.darkestpixeldungeon.ui.PerkSlot;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
+import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline;
 import com.egoal.darkestpixeldungeon.ui.ScrollPane;
 import com.egoal.darkestpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
@@ -68,8 +70,8 @@ public class WndRanking extends WndTabbed {
       @Override
       public void run() {
         try {
-          Badges.loadGlobal();
-          Rankings.INSTANCE.loadGameData(rec);
+          Badges.INSTANCE.loadGlobal();
+          Rankings.INSTANCE.LoadGameData(rec);
         } catch (Exception e) {
           error = Messages.get(WndRanking.class, "error");
         }
@@ -147,8 +149,6 @@ public class WndRanking extends WndTabbed {
     public StatsTab() {
       super();
 
-      if (Dungeon.challenges > 0) GAP--;
-
       String heroClass = Dungeon.hero.className();
 
       IconTitle title = new IconTitle();
@@ -162,21 +162,6 @@ public class WndRanking extends WndTabbed {
       add(title);
 
       float pos = title.bottom();
-
-      if (Dungeon.challenges > 0) {
-        RedButton btnCatalogus = new RedButton(Messages.get(this,
-                "challenges")) {
-          @Override
-          protected void onClick() {
-            Game.scene().add(new WndChallenges(Dungeon.challenges, false));
-          }
-        };
-        btnCatalogus.setRect(0, pos, btnCatalogus.reqWidth() + 2,
-                btnCatalogus.reqHeight() + 2);
-        add(btnCatalogus);
-
-        pos = btnCatalogus.bottom();
-      }
 
       pos += GAP + GAP;
 
@@ -228,16 +213,16 @@ public class WndRanking extends WndTabbed {
     }
   }
 
-  private class PerksTab extends Group{
-    public PerksTab(){
+  private class PerksTab extends Group {
+    public PerksTab() {
       super();
 
-      int i=0;
-      for(final Perk perk : Dungeon.hero.getHeroPerk().getPerks()){
-        float x = i% 4* 23f;
-        float y = i/ 4* 23f;
+      int i = 0;
+      for (final Perk perk : Dungeon.hero.getHeroPerk().getPerks()) {
+        float x = i % 4 * 23f;
+        float y = i / 4 * 23f;
 
-        PerkSlot ps = new PerkSlot(perk){
+        PerkSlot ps = new PerkSlot(perk) {
           @Override
           protected void onClick() {
             Game.scene().add(new WndMessage(perk.description()));
@@ -283,7 +268,8 @@ public class WndRanking extends WndTabbed {
         float posx = i % 4 * (22 + 1);
         float posy = i / 4 * (22 + 1) + 22 * 6 + 6;
         if (Dungeon.quickslot.getItem(i) != null) {
-          QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
+          QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot
+                  .getItem(i));
 
           slot.setRect(posx, posy, 22, 22);
 
@@ -315,10 +301,23 @@ public class WndRanking extends WndTabbed {
 
       camera = WndRanking.this.camera;
 
-      ScrollPane list = new BadgesList(false);
-      add(list);
+      if (Dungeon.hero.getChallenge() != null) {
+        //todo: redesign & use icon
+        Challenge challenge = Dungeon.hero.getChallenge();
+        RenderedText title = PixelScene.renderText(challenge.title(), 6);
+        title.x = 2f;
+        title.y = 2f;
+        add(title);
+        RenderedTextMultiline desc = PixelScene.renderMultiline(challenge.desc(), 6);
+        desc.maxWidth(WIDTH - 4);
+        desc.setPos(2f, title.y + title.height() + 2f);
+        add(desc);
+      } else {
+        ScrollPane list = new BadgesList(false);
+        add(list);
 
-      list.setSize(WIDTH, HEIGHT);
+        list.setSize(WIDTH, HEIGHT);
+      }
     }
   }
 

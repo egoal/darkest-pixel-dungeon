@@ -223,14 +223,14 @@ class HandOfTheElder : Artifact() {
         private val RingsToBuffs = mapOf<Class<out Ring>, Class<out FlavourBuff>>(
                 RingOfAccuracy::class.java to Unbalance::class.java,
                 RingOfCritical::class.java to Weakness::class.java,
-                RingOfElements::class.java to Chill::class.java,
+                RingOfResistance::class.java to Chill::class.java,
                 RingOfEvasion::class.java to Shock::class.java,
                 RingOfForce::class.java to Amok::class.java, 
                 RingOfFuror::class.java to Slow::class.java,
                 RingOfHaste::class.java to Slow::class.java,
                 RingOfMight::class.java to Weakness::class.java, 
                 RingOfSharpshooting::class.java to Blindness::class.java,
-                RingOfTenacity::class.java to Vertigo::class.java,
+                RingOfHealth::class.java to Vertigo::class.java,
                 RingOfWealth::class.java to Charm.Attacher::class.java
         )
     }

@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.ui.HealthBar;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
+import com.egoal.darkestpixeldungeon.ui.ResistanceIndicator;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
@@ -54,6 +55,7 @@ public class WndInfoMob extends WndTitledMessage {
     private RenderedText name;
     private HealthBar health;
     private BuffIndicator buffs;
+    private ResistanceIndicator resistances;
 
     public MobTitle(Mob mob) {
 
@@ -70,6 +72,9 @@ public class WndInfoMob extends WndTitledMessage {
 
       buffs = new BuffIndicator(mob);
       add(buffs);
+
+      resistances = new ResistanceIndicator(mob);
+      add(resistances);
     }
 
     @Override
@@ -84,14 +89,16 @@ public class WndInfoMob extends WndTitledMessage {
 
       float w = width - image.width - GAP;
 
-      health.setRect(image.width + GAP, image.height - health.height(), w, 
+      health.setRect(image.width + GAP, image.height - health.height(), w,
               health.height());
 
       buffs.setPos(
               name.x + name.width() + GAP - 1,
               name.y + name.baseLine() - BuffIndicator.SIZE - 2);
 
-      height = health.bottom();
+      resistances.setRect(3f, image.y + image.height() + 3f, width - 6f, 0f);
+
+      height = resistances.bottom();
     }
   }
 }

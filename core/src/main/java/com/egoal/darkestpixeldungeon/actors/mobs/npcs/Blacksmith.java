@@ -175,7 +175,7 @@ public class Blacksmith extends NPC.Unbreakable {
     }
 
     Sample.INSTANCE.play(Assets.SND_EVOKE);
-    ScrollOfUpgrade.upgrade(Dungeon.hero);
+    ScrollOfUpgrade.Companion.upgrade(Dungeon.hero);
     Item.evoke(Dungeon.hero);
 
     if (first.isEquipped(Dungeon.hero)) {
@@ -184,7 +184,7 @@ public class Blacksmith extends NPC.Unbreakable {
     first.level(first.level() + 1); //prevents on-upgrade effects like 
     // enchant/glyph removal
     Dungeon.hero.spendAndNext(2f);
-    Badges.validateItemLevelAquired(first);
+    Badges.INSTANCE.validateItemLevelAquired(first);
 
     if (second.isEquipped(Dungeon.hero)) {
       ((EquipableItem) second).doUnequip(Dungeon.hero, false);

@@ -8,11 +8,15 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.actors.mobs.QuickFiringGun
 import com.egoal.darkestpixeldungeon.actors.mobs.Rat
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
 import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
+import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
@@ -40,6 +44,8 @@ class VillageLevel : RegularLevel() {
 
     override fun build(iteration: Int): Boolean {
         loadMapDataFromFile(MAP_FILE)
+
+//        map[xy2cell(7, 31)] = Terrain.ALCHEMY
 
         // map some terrains
         for (i in 0 until length) {
@@ -86,7 +92,7 @@ class VillageLevel : RegularLevel() {
 
     override fun createMobs() {
         // egoal
-        putMobAt(CatEgoal::class.java, 15, 29)
+        putMobAt(CatEgoal::class.java, 8, 31)
 
         // old alchemist
         putMobAt(Alchemist::class.java, 18, 6)
@@ -108,11 +114,13 @@ class VillageLevel : RegularLevel() {
         // battle mage
         putMobAt(SPDBattleMage::class.java, 6, 13)
 
-        // rawberry
         putMobAt(CatRawberry::class.java, 12, 6)
 
+        putMobAt(Passerby::class.java, 24, 23)
+
+        putMobAt(Monument::class.java, 21, 2)
+
         // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
-        // putMobAt(Merchant::class.java, 16, 29)
 //        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
 //            for (i in 1..10) addItemToSell(Generator.generate())
 //        }
@@ -137,7 +145,6 @@ class VillageLevel : RegularLevel() {
 //            identify()
 //            level(5)
 //        }, xy2cell(16, 30))
-//        drop(Gold(500), xy2cell(16, 30))
     }
 
     private fun putMobAt(cls: Class<out Mob>, x: Int, y: Int): Mob {

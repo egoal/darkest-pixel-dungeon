@@ -71,7 +71,7 @@ class CatEgoal : NPC.Unbreakable() {
         else M.L(this, "ans_normal")
         yell(text)
 
-//         GameScene.show(WndSelectPerk.CreateWithRandomPositives(M.L(this, "from_egoal"), 3))
+//         GameScene.show(WndGainNewPerk.CreateWithRandomPositives(M.L(this, "from_egoal"), 3))
     }
 
     private val ANSWERED = "answered"

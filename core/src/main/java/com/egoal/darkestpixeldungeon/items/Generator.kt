@@ -156,7 +156,7 @@ object Generator {
     }
 
     object POTION : ClassMapGenerator<Potion>(hashMapOf(
-            PotionOfHealing::class.java to 25f,
+            PotionOfHealing::class.java to 20f,
             PotionOfExperience::class.java to 4f,
             PotionOfToxicGas::class.java to 15f,
             PotionOfParalyticGas::class.java to 10f,
@@ -204,16 +204,17 @@ object Generator {
     ))
 
     object RING : ClassMapGenerator<Ring>(hashMapOf(
-            RingOfAccuracy::class.java to 1f,
+            // RingOfAccuracy::class.java to 1f,
+            RingOfArcane::class.java to 1f, 
             RingOfEvasion::class.java to 1f,
-            RingOfElements::class.java to 1f,
+            RingOfResistance::class.java to 1f,
             RingOfForce::class.java to 1f,
             RingOfFuror::class.java to 1f,
             RingOfHaste::class.java to 1f,
             RingOfCritical::class.java to 1f,
             RingOfMight::class.java to 1f,
             RingOfSharpshooting::class.java to 1f,
-            RingOfTenacity::class.java to 1f,
+            RingOfHealth::class.java to 1f,
             RingOfWealth::class.java to 1f
     ))
 
@@ -351,9 +352,10 @@ object Generator {
             WizardHat::class.java to 1f,
             MaskOfHorror::class.java to 1f,
             MaskOfClown::class.java to 1f,
-            RangerHat::class.java to 0.1f, // very rare, so Yvette counts.
+            RangerHat::class.java to 0.2f, // very rare, so Yvette counts.
             MaskOfMadness::class.java to 0f, // compose
-            TurtleScarf::class.java to 1f
+            TurtleScarf::class.java to 1f, 
+            MaskOfLider::class.java to 0.2f
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
@@ -427,19 +429,22 @@ object Generator {
     }
 
     // item sort order
-    private val itemCategoryOrder = listOf(
-            Weapon::class.java, Armor::class.java, Helmet::class.java,
-            Potion::class.java, Scroll::class.java,
-            Wand::class.java, Ring::class.java, Artifact::class.java,
-            Plant.Seed::class.java, Food::class.java, Book::class.java,
-            Gold::class.java
-    )
-
-    fun ItemOrder(item: Item): Int {
-        val index = itemCategoryOrder.indexOfFirst { it.isInstance(item) }
-        return if (index >= 0) index else {
-            if (item is Bag) Int.MAX_VALUE else Int.MAX_VALUE - 1
-        }
+    fun ItemOrder(item: Item): Int = when (item) {
+        is MeleeWeapon -> 0 + item.tier
+        is MissileWeapon -> 100 + item.tier
+        is Armor -> 200 + item.tier
+        is Helmet -> 300
+        is Potion -> 400
+        is Scroll -> 500
+        is Wand -> 600
+        is Ring -> 700
+        is Artifact -> 800
+        is Plant.Seed -> 900
+        is Food -> 1000
+        is Book -> 1100
+        is Gold -> 1200
+        is Bag -> Int.MAX_VALUE
+        else -> Int.MAX_VALUE - 1
     }
 }
 

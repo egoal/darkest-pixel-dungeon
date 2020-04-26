@@ -116,7 +116,7 @@ abstract public class Weapon extends KindOfWeapon {
       if (--hitsToKnow <= 0) {
         levelKnown = true;
         GLog.i(Messages.get(Weapon.class, "identify"));
-        Badges.validateItemLevelAquired(this);
+        Badges.INSTANCE.validateItemLevelAquired(this);
       }
     }
 
@@ -155,7 +155,7 @@ abstract public class Weapon extends KindOfWeapon {
     float ACC = this.ACC;
 
     if (this instanceof MissileWeapon) {
-      int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
+      int bonus = RingOfSharpshooting.Companion.getBonus(hero, RingOfSharpshooting.Aim.class);
       ACC *= (float) (Math.pow(1.1, bonus));
     }
 
@@ -169,7 +169,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     float DLY = imbue.delayFactor(this.DLY);
 
-    int bonus = RingOfFuror.getBonus(hero, RingOfFuror.Furor.class);
+    int bonus = RingOfFuror.Companion.getBonus(hero, RingOfFuror.Furor.class);
 
     DLY = (float) (0.25 + (DLY - 0.25) * Math.pow(0.8, bonus));
 

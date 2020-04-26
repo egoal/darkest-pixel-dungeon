@@ -20,6 +20,11 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
         level += 1
     }
 
+    open fun downgrade() {
+        assert(level > 1)
+        level -= 1
+    }
+
     fun isAcquireAllowed(hero: Hero): Boolean {
         if (!canBeGain(hero)) return false
 
@@ -39,6 +44,21 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
 
     override fun restoreFromBundle(bundle: Bundle) {
         level = bundle.getInt(STR_LEVEL)
+    }
+
+    //todo: refactor 
+    abstract class Additional(maxLevel: Int = 1, level: Int = 1) : Perk(maxLevel, level) {
+        final override fun upgrade() {
+            onLose()
+            super.upgrade()
+            onGain()
+        }
+
+        final override fun downgrade() {
+            onLose()
+            super.downgrade()
+            onGain()
+        }
     }
 
     companion object {

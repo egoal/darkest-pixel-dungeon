@@ -6,22 +6,26 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
+import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.MaskOfLider
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
-import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
-import com.egoal.darkestpixeldungeon.items.wands.WandOfFrost
-import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
+import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.plants.Blindweed
+import com.egoal.darkestpixeldungeon.plants.Icecap
+import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
@@ -38,8 +42,7 @@ enum class HeroClass(private val title: String) {
             hero.HT += 5
         }
 
-        override fun upgradeHero(hero: Hero) {
-            super.upgradeHero(hero)
+        override fun onHeroUpgraded(hero: Hero) {
             hero.HP += 1 // extra +1
             hero.HT += 1
         }
@@ -63,7 +66,7 @@ enum class HeroClass(private val title: String) {
                 Dungeon.quickslot.setSlot(1, darts)
             }
 
-            PotionOfHealing().setKnown()
+            PotionOfStrength().setKnown()
 
             // perks
             hero.heroPerk.add(Drunkard())
@@ -116,8 +119,7 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.ROGUE
         override fun perks(): List<String> = (1..6).map { Messages.get(HeroClass::class.java, "rogue_perk$it") }
 
-        override fun upgradeHero(hero: Hero) {
-            super.upgradeHero(hero)
+        override fun onHeroUpgraded(hero: Hero) {
             hero.criticalChance += 0.1f / 100f
         }
 
@@ -137,6 +139,7 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(0, cloak)
             Dungeon.quickslot.setSlot(1, darts)
 
+            hero.heroPerk.add(Dieting())
             hero.heroPerk.add(ExtraCritProbability())
             hero.heroPerk.add(Keen())
 
@@ -178,11 +181,10 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.DPD_SORCERESS
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "sorceress_perk$it") }
 
-        override fun upgradeHero(hero: Hero) {
-            super.upgradeHero(hero)
+        override fun onHeroUpgraded(hero: Hero) {
             hero.HT -= 1
             hero.HP -= 1
-            hero.regeneration += 0.005f
+            hero.regeneration += 0.0075f
         }
 
         override fun initHeroStatus(hero: Hero) {
@@ -245,8 +247,6 @@ enum class HeroClass(private val title: String) {
     protected open fun initHeroClass(hero: Hero) {
         hero.belongings.armor = ClothArmor().identify() as Armor
 
-        if (!Dungeon.isChallenged(Challenges.NO_FOOD)) Food().identify().collect()
-
         Torch().identify().collect()
 
         ScrollOfIdentify().setKnown()
@@ -254,34 +254,16 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-//        CrackedCoin().random().identify().collect()
-//        hero.heroPerk.add(FinishingShot())
-//        Sickle().identify().collect()
-//        CeremonialDagger().quantity(30).collect()
 //        CrackedCoin().identify().collect()
-//        Dungeon.gold += 200
-//        MasterThievesArmband().collect()
-//        hero.atkSkill += 10f
-//        Spear().identify().collect()
-//        RoundShield().identify().collect()
-//        AssassinsBlade().identify().collect()
-//        Claymore().identify().collect()
-//        Lance().identify().collect()
-//        hero.defSkill += 10f
-//        hero.STR += 4
-//        Sword().upgrade().collect()
-//        MailArmor().upgrade().collect()
-//        EyeballOfTheElder.Left().collect()
-//        EyeballOfTheElder.Right().collect()
-//        EyeballOfTheElder().collect()
-//        WandOfAbel().identify().collect()
-//        hero.heroPerk.add(FinishingShot())
-//        hero.heroPerk.add(ExtraPerkChoice())
-//        TomeOfPerk().identify().collect()
+//        WandOfPrismaticLight().identify().collect()
+//        initDebug(hero)
     }
 
     // called when hero level up
-    open fun upgradeHero(hero: Hero) {
+    fun upgradeHero(hero: Hero) {
+        val ht = hero.HT
+        val hp = hero.HP
+
         hero.apply {
             lvl++
             HT += 5
@@ -291,7 +273,7 @@ enum class HeroClass(private val title: String) {
             defSkill += 0.75f
 
             criticalChance += 0.4f / 100f
-            regeneration += 0.02f
+            regeneration += 0.025f
 
             if (lvl < 10) updateAwareness()
 
@@ -301,15 +283,22 @@ enum class HeroClass(private val title: String) {
 
         hero.heroPerk.get(StrongConstitution::class.java)?.upgradeHero(hero)
         hero.heroPerk.get(ExtraDexterousGrowth::class.java)?.upgradeHero(hero)
+
+        onHeroUpgraded(hero)
+
+        if (hero.challenge == Challenge.Faith || hero.challenge == Challenge.Immortality) {
+            hero.HP = hp
+            hero.HT = ht
+        }
+        if (hero.challenge == Challenge.Faith)
+            Ankh().apply { isBlessed = true }.collect()
     }
 
+    protected open fun onHeroUpgraded(hero: Hero) {}
+
     private fun initDebug(hero: Hero) {
-        hero.apply {
-            HT = 1000
-            HP = 1
-            STR = 16
-            // lvl = 20
-        }
+        for (i in 1..20) upgradeHero(hero)
+        hero.STR = 20
 
         hero.heroPerk.add(IntendedTransportation())
 
@@ -319,20 +308,17 @@ enum class HeroClass(private val title: String) {
         Dungeon.quickslot.setSlot(4, ScrollOfTeleportation().apply {
             quantity(99).identify().collect()
         })
-        Dungeon.quickslot.setSlot(3, PotionOfExperience().apply {
+        Dungeon.quickslot.setSlot(3, PotionOfMindVision().apply {
             quantity(99).identify().collect()
         })
 
         PotionOfHealing().quantity(99).identify().collect()
-        PotionOfMindVision().quantity(99).identify().collect()
         PotionOfLiquidFlame().quantity(99).identify().collect()
 
         Torch().quantity(99).identify().collect()
 
         PlateArmor().identify().upgrade(6).collect()
         Claymore().identify().upgrade(6).collect()
-
-        GreatBlueprint().collect()
 
         Amulet().collect()
     }

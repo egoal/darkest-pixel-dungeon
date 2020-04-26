@@ -178,7 +178,7 @@ public class Armor extends EquipableItem {
     if (seal.level() > 0) {
       //doesn't trigger upgrading logic such as affecting curses/glyphs
       level(level() + 1);
-      Badges.validateItemLevelAquired(this);
+      Badges.INSTANCE.validateItemLevelAquired(this);
     }
     if (isEquipped(Dungeon.hero)) {
       Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
@@ -270,7 +270,7 @@ public class Armor extends EquipableItem {
       if (--hitsToKnow <= 0) {
         levelKnown = true;
         GLog.w(Messages.get(Armor.class, "identify"));
-        Badges.validateItemLevelAquired(this);
+        Badges.INSTANCE.validateItemLevelAquired(this);
       }
     }
 
@@ -493,7 +493,7 @@ public class Armor extends EquipableItem {
         Dungeon.fail(getClass());
         GLog.n(Messages.get(this, "killed", name()));
 
-        Badges.validateDeathFromGlyph();
+        Badges.INSTANCE.validateDeathFromGlyph();
         return true;
 
       } else {

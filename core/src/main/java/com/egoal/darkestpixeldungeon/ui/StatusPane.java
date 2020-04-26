@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.ui;
 
+import android.util.Log;
+
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -70,12 +72,14 @@ public class StatusPane extends Component {
   private BitmapText level;
   private BitmapText depth;
   private BitmapText version;
+  private BitmapText hpstr;
 
   private DangerIndicator danger;
   private BuffIndicator buffs;
   private Compass compass;
 
   private ClockIndicator clock;
+  private PerkSelectIndicator perkSelector;
 
   private JournalButton btnJournal;
   private MenuButton btnMenu;
@@ -161,11 +165,20 @@ public class StatusPane extends Component {
     version.measure();
     if (Dungeon.VERSION_STRING.length() > 0) add(version);
 
+    hpstr = new BitmapText("20/20", PixelScene.pixelFont);
+    hpstr.hardlight(0xcacfc2);
+    hpstr.alpha(0.5f);
+    hpstr.measure();
+    add(hpstr);
+
     danger = new DangerIndicator();
     add(danger);
 
     clock = new ClockIndicator();
     add(clock);
+
+    perkSelector = new PerkSelectIndicator();
+    add(perkSelector);
 
     buffs = new BuffIndicator(Dungeon.hero);
     add(buffs);
@@ -191,6 +204,9 @@ public class StatusPane extends Component {
     hp.x = shieldedHP.x = rawShielding.x = 30;
     hp.y = shieldedHP.y = rawShielding.y = 3;
 
+    hpstr.y = hp.y - 1f;
+    hpstr.x = hp.x + 24f - hpstr.width() / 2f;
+
     san.x = hp.x;
     san.y = 8;
 
@@ -207,6 +223,8 @@ public class StatusPane extends Component {
     danger.setPos(width - danger.width(), 20);
 
     clock.setPos(width - clock.width(), danger.bottom() + 4);
+
+    perkSelector.setPos(0, version.y + version.height + 4);
 
     buffs.setPos(34, 12);
 
@@ -230,8 +248,6 @@ public class StatusPane extends Component {
     float max = Dungeon.hero.HT;
 
     Pressure p = Dungeon.hero.pressure;
-
-    san.scale.x = Math.max(0, p.getPressure() / Pressure.MAX_PRESSURE);
 
     // the portrait effect
     if (!Dungeon.hero.isAlive()) {
@@ -257,8 +273,17 @@ public class StatusPane extends Component {
 
     // bars
     hp.scale.x = Math.max(0, (health - shield) / max);
+    if (Dungeon.hero.SHLD > 0)
+      hpstr.text(String.format("%d+%d/%d",
+              Dungeon.hero.HP, Dungeon.hero.SHLD, Dungeon.hero.HT));
+    else hpstr.text(String.format("%d/%d", Dungeon.hero.HP, Dungeon.hero.HT));
+    hpstr.measure();
+    hpstr.x = hp.x + 24f - hpstr.width() / 2f;
+
     shieldedHP.scale.x = health / max;
     rawShielding.scale.x = shield / max;
+
+    san.scale.x = Math.max(0, p.getPressure() / Pressure.MAX_PRESSURE);
 
     exp.scale.x = (width / exp.width) * Dungeon.hero.getExp() / Dungeon.hero
             .maxExp();

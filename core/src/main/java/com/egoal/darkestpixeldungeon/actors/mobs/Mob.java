@@ -36,7 +36,6 @@ import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;
 import com.egoal.darkestpixeldungeon.Badges;
-import com.egoal.darkestpixeldungeon.Challenges;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok;
@@ -267,6 +266,15 @@ public abstract class Mob extends Char {
       return true;
     }
   }
+  
+  public void swapPosition(Hero hero){
+    int curpos = pos;
+    moveSprite(pos, hero.pos);
+    move(hero.pos);
+    
+    hero.sprite.move(pos, curpos);
+    hero.move(curpos);
+  }
 
   @Override
   public void add(Buff buff) {
@@ -441,7 +449,7 @@ public abstract class Mob extends Char {
             .canSurpriseAttack());
     if (seen && paralysed == 0) {
       int defenseSkill = (int)defSkill;
-      int penalty = RingOfAccuracy.getBonus(enemy, RingOfAccuracy.Accuracy.class);
+      int penalty = RingOfAccuracy.Companion.getBonus(enemy, RingOfAccuracy.Accuracy.class);
       if (penalty != 0 && enemy == Dungeon.hero)
         defenseSkill *= Math.pow(0.75, penalty);
       return defenseSkill;
@@ -519,7 +527,7 @@ public abstract class Mob extends Char {
     if (Dungeon.hero.isAlive()) {
       if(camp== Camp.ENEMY){
         Statistics.INSTANCE.setEnemiesSlain(Statistics.INSTANCE.getEnemiesSlain() + 1);
-        Badges.validateMonstersSlain();
+        Badges.INSTANCE.validateMonstersSlain();
         Statistics.INSTANCE.setQualifiedForNoKilling(false);
 
         if (Dungeon.level.getFeeling() == Level.Feeling.DARK) {
@@ -527,7 +535,7 @@ public abstract class Mob extends Char {
         } else {
           Statistics.INSTANCE.setNightHunt(0);
         }
-        Badges.validateNightHunter();
+        Badges.INSTANCE.validateNightHunter();
       }
 
       Dungeon.hero.onMobDied(this);
@@ -551,7 +559,7 @@ public abstract class Mob extends Char {
     super.die(cause);
 
     float lootChance = this.lootChance;
-    int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
+    int bonus = RingOfWealth.Companion.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
     lootChance *= Math.pow(1.15, bonus);
 
     if (Random.Float() < lootChance && Dungeon.hero.getLvl() <= maxLvl + 2) {
@@ -604,7 +612,7 @@ public abstract class Mob extends Char {
   }
 
   public void yell(String str) {
-    GLog.n("%s: \"%s\" ", name, str);
+    GLog.n("%s: \"%s\"", name, str);
   }
 
   //returns true when a mob sees the hero, and is currently targeting them.
@@ -632,13 +640,6 @@ public abstract class Mob extends Char {
         notice();
         state = HUNTING;
         target = enemy.pos;
-
-        if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-          for (Mob mob : Dungeon.level.getMobs()) {
-            if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob.HUNTING)
-              mob.beckon(target);
-          }
-        }
 
         spend(TIME_TO_WAKE_UP);
 
@@ -672,15 +673,6 @@ public abstract class Mob extends Char {
         notice();
         state = HUNTING;
         target = enemy.pos;
-
-        if (Dungeon.isChallenged(Challenges.SWARM_INTELLIGENCE)) {
-          for (Mob mob : Dungeon.level.getMobs()) {
-            if (Dungeon.level.distance(pos, mob.pos) <= 8 && mob.state != mob
-                    .HUNTING)
-              mob.beckon(target);
-          }
-        }
-
       } else {
 
         enemySeen = false;

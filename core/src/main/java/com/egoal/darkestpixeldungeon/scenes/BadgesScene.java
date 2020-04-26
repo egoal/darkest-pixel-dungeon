@@ -80,9 +80,9 @@ public class BadgesScene extends PixelScene {
     align(title);
     add(title);
 
-    Badges.loadGlobal();
+    Badges.INSTANCE.loadGlobal();
 
-    List<Badges.Badge> badges = Badges.filtered(true);
+    List<Badges.Badge> badges = Badges.INSTANCE.filtered(true);
     for (int i = 0; i < nRows; i++) {
       for (int j = 0; j < nCols; j++) {
         int index = i * nCols + j;
@@ -102,21 +102,21 @@ public class BadgesScene extends PixelScene {
 
     fadeIn();
 
-    Badges.loadingListener = new Callback() {
+    Badges.INSTANCE.setLoadingListener(new Callback() {
       @Override
       public void call() {
         if (Game.scene() == BadgesScene.this) {
           DarkestPixelDungeon.switchNoFade(BadgesScene.class);
         }
       }
-    };
+    });
   }
 
   @Override
   public void destroy() {
 
-    Badges.saveGlobal();
-    Badges.loadingListener = null;
+    Badges.INSTANCE.saveGlobal();
+    Badges.INSTANCE.setLoadingListener(null);
 
     super.destroy();
   }
@@ -138,7 +138,7 @@ public class BadgesScene extends PixelScene {
       this.badge = badge;
       active = (badge != null);
 
-      icon = active ? BadgeBanner.image(badge.image) : new Image(Assets.LOCKED);
+      icon = active ? BadgeBanner.image(badge.getImage()) : new Image(Assets.LOCKED);
       add(icon);
 
       setSize(icon.width(), icon.height());
@@ -157,7 +157,7 @@ public class BadgesScene extends PixelScene {
       super.update();
 
       if (Random.Float() < Game.elapsed * 0.1) {
-        BadgeBanner.highlight(icon, badge.image);
+        BadgeBanner.highlight(icon, badge.getImage());
       }
     }
 

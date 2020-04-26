@@ -40,6 +40,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
+import com.egoal.darkestpixeldungeon.utils.GLog;
 import com.egoal.darkestpixeldungeon.windows.WndResurrect;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
@@ -79,6 +80,7 @@ public class Dungeon {
     wine,
 
     laboratories,
+    archDemons,
 
     //all unlimited health potion sources (except guards, which are at the 
     // bottom.
@@ -121,8 +123,6 @@ public class Dungeon {
     }
   }
 
-  public static int challenges;
-
   public static Hero hero;
   public static Level level;
 
@@ -143,14 +143,13 @@ public class Dungeon {
   public static void init() {
 
     version = Game.versionCode;
-    challenges = DarkestPixelDungeon.challenges();
 
     Actor.clear();
     Actor.resetNextID();
 
     Scroll.initLabels();
     Potion.Companion.initColors();
-    Ring.initGems();
+    Ring.Companion.initGems();
 
     Statistics.INSTANCE.reset();
     Journal.INSTANCE.reset();
@@ -184,14 +183,15 @@ public class Dungeon {
     hero = new Hero();
     hero.live();
 
-    Badges.reset();
+    Badges.INSTANCE.reset();
 
 //    StartScene.curClass.initHero(hero);
     StartScene.Companion.getCurrentClass().initHero(hero);
   }
 
-  public static boolean isChallenged(int mask) {
-    return (challenges & mask) != 0;
+  public static boolean IsChallenged() {
+    // fixme: this does not compatible with something
+    return Dungeon.hero != null && Dungeon.hero.getChallenge() != null;
   }
 
   public static Level newLevel() {
@@ -249,7 +249,7 @@ public class Dungeon {
         level = new CityBossLevel();
         break;
       case 21:
-        level = new LastShopLevel(); 
+        level = new LastShopLevel();
         break;
       case 22:
       case 23:
@@ -267,7 +267,7 @@ public class Dungeon {
         Statistics.INSTANCE.setDeepestFloor(Statistics.INSTANCE
                 .getDeepestFloor() - 1);
     }
-    
+
     visible = new boolean[level.length()];
     level.create();
 
@@ -363,7 +363,7 @@ public class Dungeon {
   }
 
   public static boolean souNeeded() {
-    final int SOU_PER_FLOORSET = isChallenged(Challenges.NO_SCROLLS) ? 1 : 2;
+    final int SOU_PER_FLOORSET = 2;
 
     //3 SOU each floor set
     int souLeftThisSet = SOU_PER_FLOORSET - (limitedDrops.upgradeScrolls
@@ -413,6 +413,14 @@ public class Dungeon {
     // 1 per 10 floors
     int labLeft = (depth / 10 + 1) - limitedDrops.laboratories.count;
     return labLeft > 0 && Random.Int(10 - depth % 10) < labLeft;
+  }
+
+  public static boolean demonNeed() {
+    // from 12, 1 per 7 floors
+    if (depth <= 12) return false;
+
+    int demonLeft = ((depth - 12) / 6 + 1) - limitedDrops.archDemons.count;
+    return demonLeft > 0 && Random.Int(6 - (depth - 12) % 6) < demonLeft;
   }
 
   // save
@@ -499,7 +507,7 @@ public class Dungeon {
       saveLevel(doBackup ? backupLevelFile(hero.getHeroClass()) : null);
 
       GamesInProgress.INSTANCE.set(hero.getHeroClass(), depth, hero.getLvl(),
-              challenges != 0);
+              hero.getChallenge());
 
     } else if (WndResurrect.instance != null) {
 
@@ -515,7 +523,6 @@ public class Dungeon {
 
       version = Game.versionCode;
       bundle.put(VERSION, version);
-      bundle.put(CHALLENGES, challenges);
       bundle.put(HERO, hero);
       bundle.put(GOLD, gold);
       bundle.put(DEPTH, depth);
@@ -559,12 +566,12 @@ public class Dungeon {
 
       Scroll.save(bundle);
       Potion.Companion.save(bundle);
-      Ring.save(bundle);
+      Ring.Companion.save(bundle);
 
       Actor.storeNextID(bundle);
 
       Bundle badges = new Bundle();
-      Badges.saveLocal(badges);
+      Badges.INSTANCE.saveLocal(badges);
       bundle.put(BADGES, badges);
 
       OutputStream output = Game.instance.openFileOutput(fileName, Game
@@ -625,14 +632,12 @@ public class Dungeon {
     quickslot.reset();
     QuickSlotButton.reset();
 
-    Dungeon.challenges = bundle.getInt(CHALLENGES);
-
     Dungeon.level = null;
     Dungeon.depth = -1;
 
     Scroll.restore(bundle);
     Potion.Companion.restore(bundle);
-    Ring.restore(bundle);
+    Ring.Companion.restore(bundle);
 
     quickslot.restorePlaceholders(bundle);
 
@@ -679,9 +684,9 @@ public class Dungeon {
 
     Bundle badges = bundle.getBundle(BADGES);
     if (!badges.isNull()) {
-      Badges.loadLocal(badges);
+      Badges.INSTANCE.loadLocal(badges);
     } else {
-      Badges.reset();
+      Badges.INSTANCE.reset();
     }
 
     hero = null;
@@ -755,7 +760,6 @@ public class Dungeon {
 
   public static void preview(GamesInProgress.Info info, Bundle bundle) {
     info.setDepth(bundle.getInt(DEPTH));
-    info.setChallenges((bundle.getInt(CHALLENGES) != 0));
     if (info.getDepth() == -1) {
       info.setDepth(bundle.getInt("maxDepth"));  // FIXME
     }
@@ -764,7 +768,7 @@ public class Dungeon {
 
   public static void fail(Class cause) {
     if (hero.getBelongings().getItem(Ankh.class) == null) {
-      Rankings.INSTANCE.submit(false, cause);
+      Rankings.INSTANCE.Submit(false, cause);
     }
   }
 
@@ -772,11 +776,9 @@ public class Dungeon {
 
     hero.getBelongings().identify();
 
-    if (challenges != 0) {
-      Badges.validateChampion();
-    }
+    if (IsChallenged()) Badges.INSTANCE.validateChampion();
 
-    Rankings.INSTANCE.submit(true, cause);
+    Rankings.INSTANCE.Submit(true, cause);
   }
 
   public static void observe() {
@@ -850,7 +852,8 @@ public class Dungeon {
                              boolean[] visible) {
 
     if (level.adjacent(from, to)) {
-      return Actor.findChar(to) == null && (pass[to] || Level.Companion.getAvoid()[to]) ? to
+      return Actor.findChar(to) == null && (pass[to] || Level.Companion
+              .getAvoid()[to]) ? to
               : -1;
     }
 

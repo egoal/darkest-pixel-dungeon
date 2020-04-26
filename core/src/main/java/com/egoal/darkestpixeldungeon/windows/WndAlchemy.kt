@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.windows
 
+import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
@@ -7,6 +8,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.AlchemyPot
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.ui.RedButton
@@ -22,7 +24,7 @@ class WndAlchemy : Window() {
     init {
         val titleBar = IconTitle().apply {
             icon(DungeonTilemap.tile(Terrain.ALCHEMY))
-            label(Messages.get(WndAlchemy::class.java, "title"))
+            label(M.L(WndAlchemy::class.java, "title"))
             setRect(0f, 0f, WIDTH, 0f)
         }
         add(titleBar)
@@ -39,7 +41,7 @@ class WndAlchemy : Window() {
                     if (item != null && !item!!.collect())
                         Dungeon.level.drop(item!!, Dungeon.hero.pos)
                     item(null)
-                    GameScene.selectItem(itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy::class.java, "select"))
+                    GameScene.selectItem(itemSelector, WndBag.Mode.ALCHEMY, M.L(WndAlchemy::class.java, "select"))
                 }
             }.also {
                 it.setRect(inputLeft + (BTN_SIZE + BTN_GAP) * (index % 3), h + (BTN_SIZE + BTN_GAP) * (index / 3), BTN_SIZE, BTN_SIZE)
@@ -70,8 +72,9 @@ class WndAlchemy : Window() {
                     btn.item(item.detach(Dungeon.hero.belongings.backpack))
                     break
                 }
-            updateState()
         }
+
+        updateState()
     }
 
     var result: Item? = null

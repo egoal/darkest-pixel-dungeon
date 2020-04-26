@@ -116,7 +116,7 @@ public class Piranha extends Mob {
     super.die(cause);
 
     Statistics.INSTANCE.setPiranhasKilled(Statistics.INSTANCE.getPiranhasKilled()+1);
-    Badges.validatePiranhasKilled();
+    Badges.INSTANCE.validatePiranhasKilled();
   }
 
   @Override

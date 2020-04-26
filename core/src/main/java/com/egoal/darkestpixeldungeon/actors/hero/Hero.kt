@@ -42,15 +42,11 @@ import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
-import com.egoal.darkestpixeldungeon.ui.AttackIndicator
-import com.egoal.darkestpixeldungeon.ui.BuffIndicator
-import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
-import com.egoal.darkestpixeldungeon.ui.StatusPane
+import com.egoal.darkestpixeldungeon.ui.*
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
 import com.egoal.darkestpixeldungeon.windows.WndResurrect
-import com.egoal.darkestpixeldungeon.windows.WndSelectPerk
 import com.watabou.noosa.Camera
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
@@ -84,6 +80,8 @@ class Hero : Char() {
     var criticalChance = 0f
     var regeneration = 0.1f
 
+    var reservedPerks = 0
+
     // behaviour
     var ready = false
     var resting = false
@@ -103,10 +101,11 @@ class Hero : Char() {
     val belongings = Belongings(this)
 
     lateinit var pressure: Pressure
+    var challenge: Challenge? = null
 
     fun STR(): Int {
         var str = this.STR + if (weakened) -2 else 0
-        str += RingOfMight.getBonus(this, RingOfMight.Might::class.java)
+        str += Ring.getBonus(this, RingOfMight.Might::class.java)
         return str
     }
 
@@ -150,6 +149,8 @@ class Hero : Char() {
     }
 
     fun regenerateSpeed(): Float {
+        if (challenge == Challenge.Immortality) return 0f
+
         val hlvl = buff(Hunger::class.java)!!.hunger()
         if (hlvl >= Hunger.STARVING) return 0f
 
@@ -159,10 +160,15 @@ class Hero : Char() {
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
             if (it.isCursed)
-                reg = if (reg > 0f) -0.025f else reg * 1.25f
+                reg = if (reg >= 0f) -0.025f else reg * 1.25f
             else
                 reg += HT.toFloat() * 0.004f * Math.pow(1.08, it.itemLevel().toDouble()).toFloat()
         }
+
+        // ring
+        val health = Ring.getBonus(this, RingOfHealth.Health::class.java)
+        if (health < 0) reg += 0.05f * health
+        else reg += 0.0333f * health
 
         // helmet
         belongings.helmet?.let {
@@ -192,6 +198,8 @@ class Hero : Char() {
             if (it is WizardHat)
                 factor = if (it.cursed) 0.9f else 1.15f
         }
+        val bonus = Ring.getBonus(this, RingOfArcane.Arcane::class.java)
+        factor *= 1.06f.pow(bonus)
         return factor
     }
 
@@ -210,11 +218,10 @@ class Hero : Char() {
         var c = criticalChance
         if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
 
-        val level = RingOfCritical.getBonus(this, RingOfCritical.Critical::class.java)
-        if (level > 0) {
+        val level = Ring.getBonus(this, RingOfCritical.Critical::class.java)
+        if (level > 0) 
             c += 0.01f * level
-            c *= 1.15f.pow(level)
-        }
+		c *= 1.15f.pow(level)
 
         return c
     }
@@ -251,13 +258,9 @@ class Hero : Char() {
         say(HeroLines.Line(tag, args))
     }
 
-    fun say(text: String) {
+    override fun say(text: String) {
         val color = if (pressure.getLevel() > Pressure.Level.NORMAL) CharSprite.NEGATIVE else CharSprite.DEFAULT
         say(text, color)
-    }
-
-    fun say(text: String, color: Int) {
-        sprite.showSentence(color, text)
     }
 
     // called on enter or resurrect the level
@@ -265,6 +268,7 @@ class Hero : Char() {
         Buff.affect(this, Regeneration::class.java)
         Buff.affect(this, Hunger::class.java)
         pressure = Buff.affect(this, Pressure::class.java)
+        challenge?.live(this)
     }
 
     fun tier(): Int = belongings.armor?.tier ?: 0
@@ -293,7 +297,8 @@ class Hero : Char() {
     }
 
     fun evasionProbability(): Float {
-        var e = 1f
+        val level = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
+        var e = 1f - 0.01f * level;
 
         // GameMath.ProbabilityPlus()
         heroPerk.get(ExtraEvasion::class.java)?.let {
@@ -308,6 +313,8 @@ class Hero : Char() {
         if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
             e *= 1f - 0.2f
 
+        e *= 0.975f.pow(level)
+
         return 1 - e
     }
 
@@ -315,8 +322,8 @@ class Hero : Char() {
         // evasion check
         if (Random.Float() < evasionProbability()) return 1000f
 
-        var bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
-        var evasion = 1.125f.pow(bonus)
+        var bonus = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
+        var evasion = 1.1f.pow(bonus)
 
         if (paralysed > 0) evasion *= 0.5f
 
@@ -352,7 +359,7 @@ class Hero : Char() {
         var dmg = Damage(0, this, enemy)
 
         // weapon
-        val bonus = RingOfForce.getBonus(this, RingOfForce.Force::class.java)
+        val bonus = Ring.getBonus(this, RingOfForce.Force::class.java)
 
         val wep = rangedWeapon ?: belongings.weapon
         if (wep != null) {
@@ -409,10 +416,16 @@ class Hero : Char() {
     fun procWandDamage(dmg: Damage) {
         dmg.value = round(dmg.value * arcaneFactor()).toInt()
 
-        val bonus = RingOfSharpshooting.getBonus(this, RingOfSharpshooting.Aim::class.java)
+        val bonus = Ring.getBonus(this, RingOfSharpshooting.Aim::class.java)
         if (bonus != 0) {
             val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
             dmg.value = round(dmg.value * ratio).toInt()
+        }
+
+        val arcane = Ring.getBonus(this, RingOfArcane.Arcane::class.java)
+        if (arcane > 0 && Random.Float() < 0.8f * (1f - 0.925f.pow(arcane))) {
+            dmg.value = round(dmg.value * 1.5f).toInt()
+            dmg.addFeature(Damage.Feature.CRITICAL)
         }
 
         heroPerk.get(ArcaneCrit::class.java)?.affectDamage(this, dmg)
@@ -451,7 +464,7 @@ class Hero : Char() {
     override fun speed(): Float {
         var speed = super.speed()
 
-        val hlvl = RingOfHaste.getBonus(this, RingOfHaste.Haste::class.java)
+        val hlvl = Ring.getBonus(this, RingOfHaste.Haste::class.java)
         if (hlvl != 0) speed *= 1.2f.pow(hlvl)
 
         belongings.armor?.let {
@@ -479,7 +492,7 @@ class Hero : Char() {
         }
     }
 
-    fun isStarving(): Boolean = buff(Hunger::class.java)!!.isStarving
+    private fun isStarving(): Boolean = buff(Hunger::class.java)!!.isStarving
 
     fun canAttack(target: Char): Boolean {
         if (target.pos == pos) return false
@@ -510,7 +523,7 @@ class Hero : Char() {
             //Normally putting furor speed on unarmed attacks would be unnecessary
             //But there's going to be that one guy who gets a furor+force ring combo
             //This is for that one guy, you shall get your fists of fury!
-            speed *= 0.25f + 0.75f * 0.8f.pow(RingOfFuror.getBonus(this, RingOfFuror.Furor::class.java))
+            speed *= 0.25f + 0.75f * 0.8f.pow(Ring.getBonus(this, RingOfFuror.Furor::class.java))
         }
 
         speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
@@ -556,7 +569,6 @@ class Hero : Char() {
         if (buff(RiemannianManifoldShield.Recharge::class.java)?.isCursed == true)
             return dmg
 
-        buff(RingOfElements.Resistance::class.java)?.resist(dmg)
         if (dmg.type == Damage.Type.MAGICAL && ((belongings.armor is MageArmor) &&
                         (belongings.armor as MageArmor).enhanced))
             dmg.value = round(dmg.value * 0.9f).toInt()
@@ -581,11 +593,6 @@ class Hero : Char() {
 
         if (dmg.type == Damage.Type.MENTAL)
             return takeMentalDamage(dmg)
-
-        val tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity::class.java)
-        if (tenacity != 0)
-            dmg.value = ceil(dmg.value.toDouble() *
-                    Math.pow(0.85, tenacity * (HT - HP).toDouble() / HT.toDouble())).toInt()
 
         buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
 
@@ -870,6 +877,9 @@ class Hero : Char() {
 
     fun maxExp(): Int = 4 + lvl * 6
 
+    //2, 6, 10... gain a perk
+    private fun shouldGainPerk() = if (challenge == Challenge.Gifted) (lvl - 2) % 3 == 0 else (lvl - 2) % 4 == 0
+
     fun earnExp(gained: Int) {
         exp += gained
         exp += heroPerk.get(QuickLearner::class.java)?.extraExp(gained) ?: 0
@@ -887,12 +897,10 @@ class Hero : Char() {
                 upgraded = true
                 heroClass.upgradeHero(this)
 
-                if ((lvl - 2) % 4 == 0) {
-                    //2, 6, 10... gain a perk
+                if (shouldGainPerk()) {
                     interrupt()
-                    val cnt = if (heroPerk.get(ExtraPerkChoice::class.java) == null) 3 else 5
-                    GameScene.show(WndSelectPerk.CreateWithRandomPositives(
-                            M.L(WndSelectPerk::class.java, "select"), cnt))
+                    reservedPerks += 1
+                    GLog.p(M.L(this, "perk_gain"))
                 }
 
                 if (lvl == 12 && Dungeon.hero.subClass == HeroSubClass.NONE) {
@@ -945,7 +953,7 @@ class Hero : Char() {
     override fun stealth(): Int {
         var stealth = super.stealth()
 
-        stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
+        // stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
 
         if (belongings.armor?.hasGlyph(Obfuscation::class.java) == true)
             stealth += belongings.armor.level()
@@ -1096,7 +1104,10 @@ class Hero : Char() {
 
     fun onMobDied(mob: Mob) {
         if (mob.properties().contains(Property.PHANTOM)) return
+
         belongings.getItem(UrnOfShadow::class.java)?.collectSoul(mob)
+
+        buff(VampiricBite::class.java)?.onEnemySlayed(mob)
 
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
     }
@@ -1207,6 +1218,9 @@ class Hero : Char() {
 
         fun Preview(info: GamesInProgress.Info, bundle: Bundle) {
             info.level = bundle.getInt(LEVEL)
+
+            val chastr = bundle.getString(CHALLENGE)
+            if (chastr.isNotEmpty()) info.challenge = Challenge.valueOf(chastr)
         }
 
         fun ReallyDie(src: Any?) {
@@ -1257,6 +1271,8 @@ class Hero : Char() {
         private const val REGENERATION = "regeneration"
         private const val ELEMENTAL_RESISTANCE = "elemental_resistance"
         private const val MAGICAL_RESISTANCE = "magical_resistance"
+        private const val RESERVED_PERKS = "reserved_perks"
+        private const val CHALLENGE = "challenge"
     }
 
     // store
@@ -1280,6 +1296,10 @@ class Hero : Char() {
 
         bundle.put(ELEMENTAL_RESISTANCE, elementalResistance)
         bundle.put(MAGICAL_RESISTANCE, magicalResistance)
+
+        bundle.put(RESERVED_PERKS, reservedPerks)
+
+        if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
 
         belongings.storeInBundle(bundle)
     }
@@ -1306,9 +1326,15 @@ class Hero : Char() {
         elementalResistance = bundle.getFloatArray(ELEMENTAL_RESISTANCE)
         magicalResistance = bundle.getFloat(MAGICAL_RESISTANCE)
 
+        reservedPerks = bundle.getInt(RESERVED_PERKS)
+
         belongings.restoreFromBundle(bundle)
 
         val pre = buff(Pressure::class.java)
         if (pre != null) pressure = pre
+
+        val chastr = bundle.getString(CHALLENGE)
+        if (chastr.isNotEmpty()) challenge = Challenge.valueOf(chastr)
+
     }
 }

@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Blacksmith

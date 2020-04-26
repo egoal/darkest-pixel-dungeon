@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
+import com.egoal.darkestpixeldungeon.actors.buffs.TempPathLight;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle;
@@ -145,16 +146,12 @@ public class Eye extends Mob {
     beamCharged = false;
     beamCooldown = Random.IntRange(3, 6);
 
-    boolean terrainAffected = false;
-
     for (int pos : beam.subPath(1, beam.dist)) {
 
       if (Level.Companion.getFlamable()[pos]) {
 
         Dungeon.level.destroy(pos);
         GameScene.updateMap(pos);
-        terrainAffected = true;
-
       }
 
       Char ch = Actor.findChar(pos);
@@ -182,9 +179,7 @@ public class Eye extends Mob {
       }
     }
 
-    if (terrainAffected) {
-      Dungeon.observe();
-    }
+    TempPathLight.Companion.Light(beam.path, 3f);
 
     beam = null;
     beamTarget = -1;

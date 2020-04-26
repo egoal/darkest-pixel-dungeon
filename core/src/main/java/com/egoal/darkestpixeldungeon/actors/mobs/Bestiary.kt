@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.watabou.utils.Random
 
@@ -29,7 +28,7 @@ object Bestiary {
 
     private fun FullMobClassName(simpleName: String) = "com.egoal.darkestpixeldungeon.actors.mobs.$simpleName"
 
-    fun<T> InstanceBySimpleName(simpleName: String): T = Class.forName(FullMobClassName(simpleName)).newInstance() as T
+    fun <T> InstanceBySimpleName(simpleName: String): T = Class.forName(FullMobClassName(simpleName)).newInstance() as T
 
     init {
 
@@ -51,6 +50,7 @@ object Bestiary {
                 Brute::class.java -> Shielded::class.java
                 Monk::class.java -> Senior::class.java
                 Scorpio::class.java -> Acidic::class.java
+                Ballista::class.java -> QuickFiringGun::class.java
 
                 else -> cl
             }

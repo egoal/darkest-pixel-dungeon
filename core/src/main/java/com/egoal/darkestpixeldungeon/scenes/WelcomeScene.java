@@ -144,31 +144,6 @@ public class WelcomeScene extends PixelScene {
   }
 
   private void updateVersion(int previousVersion) {
-    //rankings conversion
-    if (previousVersion <= 114) {
-      Rankings.INSTANCE.load();
-      for (Rankings.Record rec : Rankings.INSTANCE.records) {
-        if (rec.gameFile != null) {
-          try {
-            Dungeon.loadGame(rec.gameFile, false);
-            rec.gameID = rec.gameFile.replaceAll("\\D", "");
-
-            Rankings.INSTANCE.saveGameData(rec);
-          } catch (Exception e) {
-            rec.gameID = rec.gameFile.replaceAll("\\D", "");
-            rec.gameData = null;
-          }
-
-          String file = rec.gameFile;
-          rec.gameFile = "";
-          Game.instance.deleteFile(file);
-        } else if (rec.gameID == null) {
-          rec.gameID = UUID.randomUUID().toString();
-        }
-      }
-      Rankings.INSTANCE.save();
-    }
-
     DarkestPixelDungeon.version(DarkestPixelDungeon.versionCode);
   }
 

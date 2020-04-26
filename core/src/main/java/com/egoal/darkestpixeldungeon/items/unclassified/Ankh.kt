@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.noosa.audio.Sample
@@ -38,16 +39,17 @@ class Ankh : Item() {
     init {
         image = ItemSpriteSheet.ANKH
 
-        // You tell the ankh no, don't revive me, and then it comes back to revive  you again in another run.
-        // I'm not sure if that's enthusiasm or passive-aggression.
-        bones = true
+        stackable = true
     }
 
     var isBlessed = false
-        private set
 
     override fun isUpgradable(): Boolean = false
     override fun isIdentified(): Boolean = true
+
+    override fun isSimilar(item: Item): Boolean {
+        return super.isSimilar(item) && (item as Ankh).isBlessed == isBlessed
+    }
 
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
@@ -65,7 +67,11 @@ class Ankh : Item() {
 
         if (action == AC_BLESS) {
             hero.belongings.getItem(DewVial::class.java)?.let { vial ->
-                isBlessed = true
+                detach(hero.belongings.backpack)
+                val ankh = Ankh().apply { isBlessed=true };
+                if(!ankh.doPickUp(hero)) Dungeon.level.drop(ankh, hero.pos).sprite.drop()
+                // isBlessed = true
+                
                 vial.Volume = vial.Volume - BLESS_CONSUME
                 GLog.p(Messages.get(Ankh::class.java, "bless"))
                 hero.spend(1f)

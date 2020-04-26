@@ -181,7 +181,7 @@ public class DM300 extends Mob {
     GameScene.bossSlain();
     Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).getSprite().drop();
 
-    Badges.validateBossSlain();
+    Badges.INSTANCE.validateBossSlain();
 
     LloydsBeacon beacon = Dungeon.hero.getBelongings().getItem(LloydsBeacon.class);
     if (beacon != null) {

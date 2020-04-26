@@ -53,7 +53,7 @@ abstract class ClassArmor : Armor(6) {
 
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
-        actions.remove(AC_DETACH)
+        // actions.remove(AC_DETACH)
         if (hero.HP >= 3 && isEquipped(hero)) actions.add(AC_SPECIAL)
 
         return actions

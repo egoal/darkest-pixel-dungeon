@@ -57,6 +57,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
+import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
@@ -189,10 +190,11 @@ abstract class Level : Bundlable {
 
             Generator.ResetCategoryProbs()
             if (build(i)) {
-                Log.d("dpd", String.format("level build okay after %d trails.", i))
+                Log.d("dpd", "level build okay after $i trails.")
                 break
             }
 
+            // recover states
             Generator.recover()
             ++i
         }
@@ -673,20 +675,7 @@ abstract class Level : Bundlable {
 
     open fun drop(item: Item, cell: Int): Heap {
         var cell = cell
-
-        if (Challenges.isForbidden(item)) {
-
-            //create a dummy heap, give it a dummy sprite, don't add it to the
-            // game, and return it.
-            //effectively nullifies whatever the logic calling this wants to do,
-            // including dropping items.
-            val heap = Heap()
-            heap.sprite = ItemSprite()
-            val sprite = heap.sprite!!
-            sprite.link(heap)
-            return heap
-        }
-
+        
         // don't drop on them
         if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain.ENCHANTING_STATION) {
             var n: Int
@@ -729,8 +718,6 @@ abstract class Level : Bundlable {
     }
 
     fun plant(seed: Plant.Seed, pos: Int): Plant? {
-        if (Dungeon.isChallenged(Challenges.NO_HERBALISM)) return null
-
         var plant: Plant? = plants.get(pos)
         plant?.wither()
 
@@ -956,7 +943,7 @@ abstract class Level : Bundlable {
         // quota
         items.add(Generator.FOOD.generate())
 
-        val bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java)
+        val bonus = Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java)
         val p = 0.925f.pow(bonus)
         if (Dungeon.posNeeded()) {
             items.add(if (Random.Float() > p) PotionOfMight() else PotionOfStrength())

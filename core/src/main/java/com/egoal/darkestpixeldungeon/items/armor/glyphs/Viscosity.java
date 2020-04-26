@@ -44,7 +44,7 @@ public class Viscosity extends Armor.Glyph {
     Char attacker = (Char) damage.from;
     Char defender = (Char) damage.to;
 
-    if (damage.value <= 0) {
+    if (damage.type==Damage.Type.MENTAL || damage.value <= 0) {
       damage.value = 0;
       return damage;
     }
@@ -130,7 +130,7 @@ public class Viscosity extends Armor.Glyph {
           Dungeon.fail(getClass());
           GLog.n(Messages.get(this, "ondeath"));
 
-          Badges.validateDeathFromGlyph();
+          Badges.INSTANCE.validateDeathFromGlyph();
         }
         spend(Actor.TICK);
 

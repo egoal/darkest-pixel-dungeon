@@ -23,8 +23,9 @@ class HelmetCrusader : Helmet() {
     }
 
     override fun procTakenDamage(dmg: Damage) {
-        if (dmg.isFeatured(Damage.Feature.RANGED) && Random.Float() < 0.2f)
-            dmg.value = 0
+        if (dmg.isFeatured(Damage.Feature.RANGED)) 
+            dmg.value = if (Random.Float() < 0.1f) 0 else dmg.value * 4 / 5
+        
     }
 
     override fun viewAmend(): Int = -1

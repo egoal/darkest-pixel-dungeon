@@ -26,8 +26,8 @@ import com.watabou.utils.Callback
 import com.watabou.utils.Random
 import java.util.HashSet
 
-class Ballista : Mob() {
-    private var loaded = true
+open class Ballista : Mob() {
+    private var ammo: Int = ammoCapacity()
 
     init {
         PropertyConfiger.set(this, "Ballista")
@@ -41,16 +41,15 @@ class Ballista : Mob() {
 
     override fun canAttack(enemy: Char): Boolean {
         val trace = Ballistica(pos, enemy.pos, Ballistica.PROJECTILE)
-        return trace.collisionPos == enemy.pos && loaded
+        return trace.collisionPos == enemy.pos && ammo > 0
     }
 
     override fun attack(enemy: Char): Boolean {
-        loaded = false
+        ammo -= 1
         return super.attack(enemy)
     }
 
     override fun onAttackComplete() {
-        // loaded = false
         if (Dungeon.level.adjacent(enemy.pos, pos))
             super.onAttackComplete()
         else {
@@ -82,15 +81,17 @@ class Ballista : Mob() {
     }
 
     override fun getCloser(target: Int): Boolean {
-        return if (!loaded) {
+        return if (ammo <= 0) {
             reload()
             true
         } else
             super.getCloser(target)
     }
 
+    protected open fun ammoCapacity(): Int = 1
+
     private fun reload() {
-        loaded = true
+        ammo = ammoCapacity()
         if (Dungeon.visible[pos]) {
             sprite.showStatus(0xffffff, Messages.get(this, "loaded"))
             Sample.INSTANCE.play(Assets.SND_RELOAD)
@@ -105,17 +106,19 @@ class Ballista : Mob() {
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
-        bundle.put("loaded", loaded)
+        bundle.put(AMMO, ammo)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        loaded = bundle.getBoolean("loaded")
+        ammo = bundle.getInt(AMMO)
     }
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
 
     companion object {
+        private const val AMMO = "ammo"
+
         val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java, Sleep::class.java)
 
         class Sprite : MobSprite() {

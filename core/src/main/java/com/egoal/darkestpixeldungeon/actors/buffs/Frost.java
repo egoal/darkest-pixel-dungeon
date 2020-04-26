@@ -30,7 +30,7 @@ import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight;
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength;
-import com.egoal.darkestpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.egoal.darkestpixeldungeon.items.rings.RingOfResistance.Resistance;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.sprites.CharSprite;

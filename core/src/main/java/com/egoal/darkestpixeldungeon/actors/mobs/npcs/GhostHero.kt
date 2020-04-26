@@ -58,18 +58,10 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
             return false
         } else {
             // swap 
-            val curpos = pos
-            moveSprite(pos, Dungeon.hero.pos)
-            move(Dungeon.hero.pos)
-
-            with(Dungeon.hero) {
-                sprite.move(pos, curpos)
-                move(curpos)
-
-                spend(1 / speed())
-                busy()
-            }
-
+            swapPosition(Dungeon.hero)
+            Dungeon.hero.spend(1f/Dungeon.hero.speed())
+            Dungeon.hero.busy()
+            
             return true
         }
     }
@@ -237,8 +229,8 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
         say(Messages.get(this, "voice_cured_${Random.Int(3)}"))
     }
 
-    private fun say(str: String) {
-        yell(str)
+    override fun say(str: String) {
+        super.say(str)
         Sample.INSTANCE.play(Assets.SND_GHOST)
     }
 

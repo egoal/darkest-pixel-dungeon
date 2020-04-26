@@ -37,7 +37,7 @@ public class ScrollOfIdentify extends InventoryScroll {
   }
 
   @Override
-  protected void onItemSelected(Item item) {
+  public void onItemSelected(Item item) {
 
     curUser.sprite.parent.add(new Identification(curUser.sprite.center()
             .offset(0, -16)));
@@ -45,7 +45,7 @@ public class ScrollOfIdentify extends InventoryScroll {
     item.identify();
     GLog.i(Messages.get(this, "it_is", item));
 
-    Badges.validateItemLevelAquired(item);
+    Badges.INSTANCE.validateItemLevelAquired(item);
   }
 
   @Override

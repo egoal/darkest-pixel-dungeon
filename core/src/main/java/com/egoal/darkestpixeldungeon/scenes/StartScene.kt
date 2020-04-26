@@ -7,9 +7,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.ui.*
-import com.egoal.darkestpixeldungeon.windows.WndChallenges
 import com.egoal.darkestpixeldungeon.windows.WndClass
-import com.egoal.darkestpixeldungeon.windows.WndMessage
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.*
 import com.watabou.noosa.audio.Sample
@@ -94,15 +92,10 @@ class StartScene : PixelScene() {
         }
         add(btnLoadGame)
 
-        val challenge = ChallengeButton()
-        /// challenge.setPos((w - challenge.width()) / 2f, slider.btnClassName.top() - challenge.height() - 5f)
-        challenge.setPos((w - challenge.width()) / 2f, buttonY - challenge.height() - 5f)
-        add(challenge)
-
-        slider = ClassSlideBar().apply { centered(w / 2f, challenge.top() - 20f) }
+        slider = ClassSlideBar().apply { centered(w / 2f, buttonY - 20f) }
         add(slider)
 
-        val centralHeight = (challenge.top() - 20f) - 10f - title.y - title.height()
+        val centralHeight = (buttonY - 20f) - 10f - title.y - title.height()
         val shieldW = width / 4
         val shieldH = min(centralHeight, shieldW)
         val shieldTop = title.y + title.height + (centralHeight - shieldH) / 2f
@@ -182,7 +175,7 @@ class StartScene : PixelScene() {
             if (info != null) {
                 btnLoadGame.visible = true
                 val str = if (info.isBackup) M.L(this, "back_up") else M.L(this, "depth_level", info.depth, info.level)
-                btnLoadGame.secondary(str, info.challenges)
+                btnLoadGame.secondary(str, info.isChallenged)
 
                 btnNewGame.visible = true
                 btnNewGame.secondary(M.L(this, "erase"), false)
@@ -246,7 +239,7 @@ class StartScene : PixelScene() {
 
         private const val WIDTH = 24
         private const val HEIGHT = 32
-        private const val SCALE = 2f
+        private const val SCALE = 2.5f
     }
 
     private inner class ClassSlideBar : Group() {
@@ -399,43 +392,6 @@ class StartScene : PixelScene() {
             secondary.text(text)
 
             secondary.hardlight(if (highlighted) SECONDARY_COLOR_H else SECONDARY_COLOR_N)
-        }
-    }
-
-    private inner class ChallengeButton : Button() {
-        private lateinit var image: Image
-
-        init {
-            width = image.width
-            height = image.height
-
-            image.am = if (Badges.isUnlocked(Badges.Badge.VICTORY)) 1f else 0.5f
-        }
-
-        override fun createChildren() {
-            super.createChildren()
-
-            image = Icons.get(if (DarkestPixelDungeon.challenges() > 0) Icons.CHALLENGE_ON else Icons.CHALLENGE_OFF)
-            add(image)
-        }
-
-        override fun layout() {
-            super.layout()
-
-            image.x = x
-            image.y = y
-        }
-
-        override fun onClick() {
-            if (Badges.isUnlocked(Badges.Badge.VICTORY)) {
-                this@StartScene.add(object : WndChallenges(DarkestPixelDungeon.challenges(), true) {
-                    override fun onBackPressed() {
-                        super.onBackPressed()
-                        image.copy(Icons.get(if (DarkestPixelDungeon.challenges() > 0) Icons.CHALLENGE_ON else Icons.CHALLENGE_OFF))
-                    }
-                })
-            } else
-                this@StartScene.add(WndMessage(M.L(StartScene::class.java, "need_to_win")))
         }
     }
 }

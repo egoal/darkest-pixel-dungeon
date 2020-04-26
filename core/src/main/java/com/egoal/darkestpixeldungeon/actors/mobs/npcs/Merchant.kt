@@ -61,21 +61,25 @@ open class Merchant : NPC() {
     override fun interact(): Boolean {
         Journal.add(M.T(name))
         val actions = actions()
-        val options = actions.map { M.L(this, "ac_" + it) }.toTypedArray()
-        WndDialogue.Show(this, greeting(), *options) {
-            execute(actions[it])
+        WndDialogue.Show(this, greeting(), *actions.map { it.second }.toTypedArray()) {
+            execute(actions[it].first)
         }
 
         return false
     }
 
     /// merchant
-    protected open fun actions(): ArrayList<String> = arrayListOf(AC_BUY)
+    protected open fun actions(): ArrayList<Pair<String, String>> = arrayListOf(
+            AC_BUY to M.L(this, "ac_$AC_BUY"), AC_SWAP to M.L(this, "ac_$AC_SWAP")
+    )
 
     protected open fun execute(action: String) {
         if (action == AC_BUY) {
             if (items.isEmpty()) tell(M.L(this, "nothing_more"))
             else GameScene.show(WndShop())
+        } else if (action == AC_SWAP) {
+            swapPosition(Dungeon.hero)
+            Dungeon.hero.spendAndNext(1f / Dungeon.hero.speed());
         }
     }
 
@@ -142,6 +146,7 @@ open class Merchant : NPC() {
         private const val ITEM_STR = "item"
 
         private const val AC_BUY = "buy"
+        private const val AC_SWAP = "swap"
 
         //
         private const val SLOT_COLS = 5

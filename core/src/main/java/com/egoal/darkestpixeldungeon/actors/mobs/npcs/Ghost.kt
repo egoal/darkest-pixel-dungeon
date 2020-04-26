@@ -278,10 +278,10 @@ class Ghost : NPC.Unbreakable() {
             val itemTierRoll = Random.Float()
             val wepTier: Int
 
-            if (itemTierRoll < 0.5f) {
+            if (itemTierRoll < 0.4f) {
                 wepTier = 2
                 armor = LeatherArmor()
-            } else if (itemTierRoll < 0.8f) {
+            } else if (itemTierRoll < 0.75f) {
                 wepTier = 3
                 armor = MailArmor()
             } else if (itemTierRoll < 0.95f) {

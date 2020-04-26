@@ -45,7 +45,7 @@ class NewbornElemental : Elemental() {
         }
     }
 
-    override fun die(cause: Any) {
+    override fun die(cause: Any?) {
         super.die(cause)
         Dungeon.level.drop(Embers(), pos).sprite.drop()
     }

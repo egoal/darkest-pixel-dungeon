@@ -1,9 +1,6 @@
 package com.egoal.darkestpixeldungeon.windows
 
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
-import com.egoal.darkestpixeldungeon.actors.hero.perks.PerkImageSheet
-import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.ui.PerkSlot
@@ -12,54 +9,56 @@ import com.egoal.darkestpixeldungeon.ui.RenderedTextMultiline
 import com.egoal.darkestpixeldungeon.ui.Window
 import com.watabou.noosa.ColorBlock
 
-class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
+open class WndSelectPerk(title: String, perks: List<Perk>) : Window() {
     private var index = 0
-    private val perkButtons: MutableList<PerkButton>
+    protected val perkButtons: MutableList<PerkButton>
     private val description: RenderedTextMultiline
     private val confirm: RedButton
 
     init {
-        val perks = ArrayList<Perk>().apply {
-            addAll(perks)
-            add(RandomAnotherPerk())
+        val width = (COLS * BUTTON_SIZE + (COLS + 1) * MARGIN).toInt()
+
+        val titleLine = PixelScene.renderMultiline(title.capitalize(), 9).apply {
+            hardlight(TITLE_COLOR)
+            setPos(MARGIN, MARGIN)
+            maxWidth(width - (MARGIN * 2f).toInt())
         }
-
-        val width = (perks.size * BUTTON_SIZE + (perks.size + 1) * MARGIN).toInt()
-
-        val titleLine = PixelScene.renderMultiline(title.capitalize(), 9)
-        titleLine.hardlight(TITLE_COLOR)
-        titleLine.setPos(MARGIN, MARGIN)
-        titleLine.maxWidth(width - MARGIN.toInt() * 2)
         add(titleLine)
-
-        var pos = titleLine.bottom() + MARGIN
+        var bottom = titleLine.bottom()
 
         perkButtons = MutableList(perks.size) { PerkButton(it, perks[it]) }
         for (i in 0 until perkButtons.size) {
-            perkButtons[i].setRect(MARGIN + (BUTTON_SIZE + MARGIN) * i, pos, BUTTON_SIZE, BUTTON_SIZE)
+            val r = i / COLS
+            val c = i % COLS
+            perkButtons[i].setRect(MARGIN + (BUTTON_SIZE + MARGIN) * c, bottom + MARGIN + (BUTTON_SIZE + MARGIN) * r, BUTTON_SIZE, BUTTON_SIZE)
             add(perkButtons[i])
         }
-        pos += BUTTON_SIZE + MARGIN
+        bottom = perkButtons[perkButtons.size - 1].bottom()
 
-        description = PixelScene.renderMultiline(6)
-        description.maxWidth(width - MARGIN.toInt() * 2)
-        description.setPos(MARGIN, pos + 2f)
+        description = PixelScene.renderMultiline(6).apply {
+            maxWidth(width - (MARGIN * 2f).toInt())
+            setPos(MARGIN, bottom + MARGIN)
+        }
         add(description)
-        pos += DESCRIPTION_HEIGHT
+        bottom += MARGIN * 2f + DESCRIPTION_HEIGHT
 
-        confirm = object : RedButton(M.L(this, "confirm")) {
+        confirm = object : RedButton(M.L(WndSelectPerk::class.java, "confirm")) {
             override fun onClick() {
                 hide()
-                addPerkConfirmed()
+                onPerkSelected(perks[index])
             }
         }
-        confirm.setRect(MARGIN, pos, width.toFloat() - MARGIN * 2, BUTTON_SIZE)
+        confirm.setRect(MARGIN, bottom + MARGIN, width - MARGIN * 2f, BUTTON_SIZE)
         add(confirm)
-        pos += BUTTON_SIZE + MARGIN
+        bottom = confirm.bottom() + MARGIN
 
         updateStates()
 
-        resize(width, pos.toInt())
+        resize(width, bottom.toInt())
+    }
+
+    protected open fun onPerkSelected(perk: Perk) {
+
     }
 
     private fun updateStates() {
@@ -68,25 +67,6 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
             description.text(perkButtons[index].perk().description())
             confirm.enable(true)
         } else confirm.enable(false)
-    }
-
-    private fun addPerkConfirmed() {
-        var perk = perkButtons[index].perk()
-        if (perk is RandomAnotherPerk) {
-            val perks = perkButtons.map { it.perk().javaClass }
-            for (i in 1..10) {
-                perk = Perk.RandomPositive(Dungeon.hero)
-                if (perk.javaClass !in perks) break
-            }
-        }
-
-        Dungeon.hero.heroPerk.add(perk)
-
-        PerkGain.Show(Dungeon.hero!!, perk)
-    }
-
-    override fun onBackPressed() {
-        // super.onBackPressed()
     }
 
     inner class PerkButton(val index: Int, perk: Perk) : PerkSlot(perk) {
@@ -119,17 +99,12 @@ class WndSelectPerk(title: String, vararg perks: Perk) : Window() {
         }
     }
 
-    class RandomAnotherPerk : Perk() {
-        override fun image(): Int = PerkImageSheet.REROLL
-    }
-
     companion object {
         private const val MARGIN = 2f
         private const val BUTTON_SIZE = 20f
         private const val DESCRIPTION_HEIGHT = 40f
 
-        fun CreateWithRandomPositives(title: String, count: Int): WndSelectPerk {
-            return WndSelectPerk(title, *Perk.RandomPositives(Dungeon.hero, count).toTypedArray())
-        }
+        private const val COLS = 4
+
     }
 }

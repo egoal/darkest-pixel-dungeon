@@ -24,24 +24,7 @@ import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Amok
-import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Charm
-import com.egoal.darkestpixeldungeon.actors.buffs.Chill
-import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
-import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
-import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
-import com.egoal.darkestpixeldungeon.actors.buffs.Frost
-import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
-import com.egoal.darkestpixeldungeon.actors.buffs.PinCushion
-import com.egoal.darkestpixeldungeon.actors.buffs.Roots
-import com.egoal.darkestpixeldungeon.actors.buffs.Slow
-import com.egoal.darkestpixeldungeon.actors.buffs.SoulMark
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
-import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
-import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable
-import com.egoal.darkestpixeldungeon.actors.buffs.Weakness
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.mobs.Bee
 import com.egoal.darkestpixeldungeon.actors.mobs.King
 import com.egoal.darkestpixeldungeon.actors.mobs.Mimic
@@ -185,37 +168,33 @@ class WandOfCorruption : Wand() {
 
     companion object {
 
-        private val MINOR_DEBUFF_WEAKEN = .8f
-        private val MINOR_DEBUFFS = HashMap<Class<out FlavourBuff>, Float>()
+        private const val MINOR_DEBUFF_WEAKEN = .8f
+        private val MINOR_DEBUFFS = hashMapOf<Class<out FlavourBuff>, Float>(
+                Weakness::class.java to 0f,
+                Cripple::class.java to 1f,
+                Blindness::class.java to 1f,
+                Terror::class.java to 1f,
 
-        init {
-            MINOR_DEBUFFS[Weakness::class.java] = 0f  // in dpd, weakness can only attach hero
-            MINOR_DEBUFFS[Cripple::class.java] = 1f
-            MINOR_DEBUFFS[Blindness::class.java] = 1f
-            MINOR_DEBUFFS[Terror::class.java] = 1f
+                Chill::class.java to 0f,
+                Roots::class.java to 0f,
+                Vertigo::class.java to 0f
 
-            MINOR_DEBUFFS[Chill::class.java] = 0f
-            MINOR_DEBUFFS[Roots::class.java] = 0f
-            MINOR_DEBUFFS[Vertigo::class.java] = 0f
-            // MINOR_DEBUFFS[Bleeding::class.java] = 0f
-            // MINOR_DEBUFFS[Burning::class.java] = 0f
-            // MINOR_DEBUFFS[Poison::class.java] = 0f
-        }
+//                Bleeding::class.java to 0f, 
+//                Burning::class.java to 0f, 
+//                Poison::class.java to 0f
+        )
 
-        private val MAJOR_DEBUFF_WEAKEN = .667f
-        private val MAJOR_DEBUFFS = HashMap<Class<out FlavourBuff>, Float>()
+        private const val MAJOR_DEBUFF_WEAKEN = .667f
+        private val MAJOR_DEBUFFS = hashMapOf<Class<out FlavourBuff>, Float>(
+                Amok::class.java to 3f,
+                Slow::class.java to 2f,
+                Paralysis::class.java to 1f,
+                SoulMark::class.java to 1f,
 
-        init {
-            MAJOR_DEBUFFS[Amok::class.java] = 3f
-            MAJOR_DEBUFFS[Slow::class.java] = 2f
-            MAJOR_DEBUFFS[Paralysis::class.java] = 1f
-            MAJOR_DEBUFFS[SoulMark::class.java] = 1f
-
-            MAJOR_DEBUFFS[Charm::class.java] = 0f
-            // MAJOR_DEBUFFS[MagicalSleep::class.java] = 0f
-            MAJOR_DEBUFFS[SoulMark::class.java] = 0f
-            MAJOR_DEBUFFS[Frost::class.java] = 0f
-        }
+                Charm::class.java to 0f,
+                SoulMark::class.java to 0f,
+                Frost::class.java to 0f
+        )
     }
 
 }
