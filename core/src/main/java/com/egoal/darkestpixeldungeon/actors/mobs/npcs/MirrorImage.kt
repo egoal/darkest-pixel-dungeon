@@ -93,13 +93,7 @@ class MirrorImage : NPC() {
     }
 
     override fun interact(): Boolean {
-        val curPos = pos
-
-        moveSprite(pos, Dungeon.hero.pos)
-        move(Dungeon.hero.pos)
-
-        Dungeon.hero.sprite.move(Dungeon.hero.pos, curPos)
-        Dungeon.hero.move(curPos)
+        swapPosition(Dungeon.hero)
 
         Dungeon.hero.spend(1 / Dungeon.hero.speed())
         Dungeon.hero.busy()

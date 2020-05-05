@@ -202,10 +202,11 @@ enum class HeroClass(private val title: String) {
 
             val flask = ExtractionFlask()
             flask.identify().collect()
+            Dungeon.quickslot.setSlot(0, flask)
 
             val darts = Dart(6)
             darts.identify().collect()
-            Dungeon.quickslot.setSlot(0, darts)
+            Dungeon.quickslot.setSlot(1, darts)
 
             PotionOfToxicGas().identify().collect()
 

@@ -85,7 +85,8 @@ object Generator {
                     HandAxe::class.java to 5f,
                     Spear::class.java to 5f,
                     Quarterstaff::class.java to 4f,
-                    Sickle::class.java to 5f
+                    Sickle::class.java to 5f,
+                    DriedLeg::class.java to 5f
             ))
 
             object T3 : ClassMapGenerator<MeleeWeapon>(hashMapOf(

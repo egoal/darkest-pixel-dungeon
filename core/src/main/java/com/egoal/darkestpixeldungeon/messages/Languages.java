@@ -28,6 +28,8 @@ public enum Languages {
           new String[]{" 1834515403a", "Fevre", "Fishbone", "MrKukurykpl",
                   "Omicronrg9", "Piedro0", "SeaMonser", "riwansia", "shenlingfeiniao"}),
 
+  CHINESE_TR("繁体中文", "zh-hk", Status.REVIEWED, new String[]{"Egoal"}, new String[]{"那些回忆"}),
+
   //  RUSSIAN("русский", "ru", Status.REVIEWED, new
   // String[]{"ConsideredHamster",
 //          "Inevielle", "yarikonline"}, new String[]{"AttHawk46", 
@@ -37,6 +39,7 @@ public enum Languages {
   CHINESE("中文", "zh", Status.REVIEWED, new String[]{"Jinkeloid(zdx00793)"},
           new String[]{"931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401",
                   "ShatteredFlameBlast", "Hmdzl001", "Tempest102"}),
+
 //  FINNISH("suomi", "fi", Status.REVIEWED, new String[]{"TenguTheKnight"}, 
 // null),
 //

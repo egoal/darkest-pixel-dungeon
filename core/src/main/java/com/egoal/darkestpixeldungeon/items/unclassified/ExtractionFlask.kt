@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.IconTitle
 import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.windows.WndMessage
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.NinePatch
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.ui.Component
@@ -43,6 +44,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         image = ItemSpriteSheet.EXTRACTION_FLASK
 
 //        defaultAction = AC_REFINE
+        defaultAction = AC_OPERATE
         unique = true
     }
 
@@ -90,6 +92,18 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                 }
                 dv.collectDew(Dewdrop().apply { quantity(purifiedWater) })
                 purifiedWater = 0
+            }
+            AC_OPERATE -> {
+                val ops = mutableListOf(AC_REFINE)
+                if (reinforced) ops.add(AC_STRENGTHEN)
+                if (enhanced) ops.add(AC_PURIFY)
+                if (ops.size == 1) GameScene.show(WndCraft(this, MODE_REFINE))
+                else GameScene.show(object : WndOptions(ItemSprite(image, null), name, "",
+                        *ops.map { M.L(ExtractionFlask::class.java, "ac_" + it) }.toTypedArray()) {
+                    override fun onSelect(index: Int) {
+                        execute(hero, ops[index])
+                    }
+                })
             }
         }
     }
@@ -259,6 +273,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         private const val AC_STRENGTHEN = "strengthen"
         private const val AC_PURIFY = "purify"
         private const val AC_TAKE_WATER = "take_water"
+        private const val AC_OPERATE = "operate"
 
         private const val TIME_TO_REFINE = 2f
         private const val TIME_TO_EXTRACT = 2f

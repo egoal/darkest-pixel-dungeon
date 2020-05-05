@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
 import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
+import com.egoal.darkestpixeldungeon.items.weapon.melee.DriedLeg
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Lance
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
@@ -350,7 +351,8 @@ class Hero : Char() {
         if (STR() < (belongings.weapon as Weapon).STRReq()) return false
 
         if (rangedWeapon == null &&
-                (belongings.weapon is Flail || belongings.weapon is Lance)) return false
+                (belongings.weapon is Flail || belongings.weapon is Lance ||
+                        belongings.weapon is DriedLeg)) return false
 
         return true
     }

@@ -20,11 +20,11 @@
  */
 package com.egoal.darkestpixeldungeon
 
-import com.egoal.darkestpixeldungeon.actors.buffs.BloodSuck
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.VampiricBite
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraPerkChoice
+import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster
@@ -33,7 +33,13 @@ import com.egoal.darkestpixeldungeon.messages.M
 
 enum class Challenge {
     LowPressure,
-    Gifted,
+    Gifted {
+        override fun affect(hero: Hero) {
+            val perk = ExtraPerkChoice()
+            hero.heroPerk.add(perk)
+            PerkGain.Show(hero, perk)
+        }
+    },
     //    BruteCourage,
     Immortality {
         override fun live(hero: Hero) {
