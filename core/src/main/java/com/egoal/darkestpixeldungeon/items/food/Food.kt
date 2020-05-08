@@ -36,11 +36,9 @@ open class Food(val enery: Float = Hunger.HUNGRY,
 
         if (action == AC_EAT) {
             detach(hero.belongings.backpack)
-            hero.buff(Hunger::class.java)!!.satisfy(enery)
 
-            hero.heroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, this)
+            onEat(hero)
 
-            hero.recoverSanity(Random.Float(2f, 7f))
             hero.sprite.operate(hero.pos)
             hero.busy()
             SpellSprite.show(hero, SpellSprite.FOOD)
@@ -53,6 +51,12 @@ open class Food(val enery: Float = Hunger.HUNGRY,
 
             hero.say(message)
         }
+    }
+
+    protected open fun onEat(hero: Hero) {
+        hero.buff(Hunger::class.java)!!.satisfy(enery)
+        hero.heroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, this)
+        hero.recoverSanity(Random.Float(2f, 6f))
     }
 
     override fun isUpgradable(): Boolean = false

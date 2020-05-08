@@ -25,6 +25,7 @@ import android.graphics.RectF;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
+import com.egoal.darkestpixeldungeon.items.unclassified.FishBone;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
 import com.egoal.darkestpixeldungeon.items.bags.Bag;
@@ -33,6 +34,7 @@ import com.egoal.darkestpixeldungeon.items.food.Food;
 import com.egoal.darkestpixeldungeon.items.rings.Ring;
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
 import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw;
+import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.ui.ItemSlot;
@@ -520,7 +522,8 @@ public class WndBag extends WndTabbed {
           case RING:
               return item instanceof Ring;
           case ALCHEMY:
-              return item instanceof Plant.Seed || item instanceof MysteryMeat ||
+              return item instanceof Plant.Seed || item instanceof MysteryMeat || item instanceof FishBone ||
+                      // item instanceof Honeypot.ShatteredPot ||
                       (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib()==null);
           case ALL:
               return true;

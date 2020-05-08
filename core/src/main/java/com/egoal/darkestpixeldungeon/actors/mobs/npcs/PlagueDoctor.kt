@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
+import com.egoal.darkestpixeldungeon.items.potions.ReagentOfHealing
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
@@ -17,6 +18,7 @@ class PlagueDoctor : PotionSeller() {
         addItemToSell(CeremonialDagger())
         if (com.watabou.utils.Random.Float() < 0.3f)
             addItemToSell(CeremonialDagger())
+        if (Dungeon.depth < 5 || com.watabou.utils.Random.Float() < 0.3f) addItemToSell(ReagentOfHealing())
         Dungeon.limitedDrops.ceremonialDagger.count++
 
         super.initSellItems()
