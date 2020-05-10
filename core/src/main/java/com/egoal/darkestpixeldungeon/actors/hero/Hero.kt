@@ -82,6 +82,13 @@ class Hero : Char() {
     var regeneration = 0.1f
 
     var reservedPerks = 0
+    private var perkGained_ = 0
+    var perkGained: Int
+        get() = perkGained_
+        set(value) {
+            perkGained_ = value
+            Badges.validateGainPerk()
+        }
 
     // behaviour
     var ready = false
@@ -220,9 +227,9 @@ class Hero : Char() {
         if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
 
         val level = Ring.getBonus(this, RingOfCritical.Critical::class.java)
-        if (level > 0) 
+        if (level > 0)
             c += 0.01f * level
-		c *= 1.15f.pow(level)
+        c *= 1.15f.pow(level)
 
         return c
     }

@@ -18,7 +18,7 @@ class DriedLeg : MeleeWeapon() {
     }
 
     override fun proc(dmg: Damage): Damage {
-        if (Random.Float() < 0.1f) Buff.prolong(dmg.to as Char, Paralysis::class.java, DLY)
+        if (Random.Float() < 0.12f) Buff.prolong(dmg.to as Char, Paralysis::class.java, DLY + 0.1f * level())
 
         return super.proc(dmg)
     }

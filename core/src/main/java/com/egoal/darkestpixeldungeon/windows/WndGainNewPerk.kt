@@ -17,6 +17,7 @@ class WndGainNewPerk(title: String, perks: List<Perk>) :
     override fun onPerkSelected(perk: Perk) {
         if (perk !is RandomAnotherPerk) {
             Dungeon.hero.heroPerk.add(perk)
+            Dungeon.hero.perkGained += 1
             PerkGain.Show(Dungeon.hero!!, perk)
             return
         }
@@ -25,7 +26,7 @@ class WndGainNewPerk(title: String, perks: List<Perk>) :
         val perks = perkButtons.map { it.perk().javaClass }
         for (i in 1..20) {
             val newPerk = Perk.RandomPositive(Dungeon.hero)
-            if (newPerk.javaClass !in perks){
+            if (newPerk.javaClass !in perks) {
                 onPerkSelected(newPerk)
                 break
             }
