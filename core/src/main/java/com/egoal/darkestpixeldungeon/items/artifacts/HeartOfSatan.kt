@@ -50,7 +50,7 @@ class HeartOfSatan : Artifact() {
     private fun prickValue(): Int = 3 * level() * level()
 
     private fun prick(hero: Hero) {
-        val dmg = Damage(prickValue(), this, hero)
+        val dmg = Damage(prickValue(), hero, hero)
 
         hero.buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
 

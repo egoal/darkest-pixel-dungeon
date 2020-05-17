@@ -1265,6 +1265,8 @@ class Hero : Char() {
 
             GameScene.gameOver()
 
+            if(src is Hero) Badges.validateSuicide()
+
             if (src is Doom) src.onDeath()
 
             Dungeon.deleteGame(Dungeon.hero.heroClass, true, true)
@@ -1282,6 +1284,7 @@ class Hero : Char() {
         private const val MAGICAL_RESISTANCE = "magical_resistance"
         private const val RESERVED_PERKS = "reserved_perks"
         private const val CHALLENGE = "challenge"
+        private const val PERK_GAIN = "perk_gain"
     }
 
     // store
@@ -1307,6 +1310,7 @@ class Hero : Char() {
         bundle.put(MAGICAL_RESISTANCE, magicalResistance)
 
         bundle.put(RESERVED_PERKS, reservedPerks)
+        bundle.put(PERK_GAIN, perkGained_)
 
         if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
 
@@ -1336,6 +1340,7 @@ class Hero : Char() {
         magicalResistance = bundle.getFloat(MAGICAL_RESISTANCE)
 
         reservedPerks = bundle.getInt(RESERVED_PERKS)
+        perkGained_ = bundle.getInt(PERK_GAIN)
 
         belongings.restoreFromBundle(bundle)
 

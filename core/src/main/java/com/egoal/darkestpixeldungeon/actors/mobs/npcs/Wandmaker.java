@@ -288,6 +288,7 @@ public class Wandmaker extends NPC {
       do {
         w.pos = level.pointToCell(rect.random(0));
       } while (level.getMap()[w.pos] == Terrain.ENTRANCE ||
+              level.getMap()[w.pos]==Terrain.DOOR ||
               (Terrain.flags[level.getMap()[w.pos]] & Terrain.PASSABLE) == 0);
       level.getMobs().add(w);
 

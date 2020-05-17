@@ -35,7 +35,9 @@ class TempPathLight(val path: ArrayList<Int>) : FlavourBuff() {
     inner class Light : Luminary() {
         override fun light(level: Level) {
             for (i in path)
-                for (n in PathFinder.NEIGHBOURS9) Level.lighted[i + n] = true
+                if (i > level.width() && i < level.length() - level.width() - 1)
+                    for (n in PathFinder.NEIGHBOURS9)
+                        Level.lighted[i + n] = true
         }
 
         override fun createVisual(): LightVisual? = null

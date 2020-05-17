@@ -123,7 +123,7 @@ public class Piranha extends Mob {
   @Override
   public void die(Object cause) {
     Dungeon.level.drop(new MysteryMeat(), pos).getSprite().drop();
-    if(Random.Float()<0.3f)
+    if(Random.Float()<0.35f)
         Dungeon.level.drop(new FishBone(), pos).getSprite().drop();
     super.die(cause);
 

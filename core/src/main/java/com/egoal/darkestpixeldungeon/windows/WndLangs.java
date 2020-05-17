@@ -49,10 +49,9 @@ public class WndLangs extends Window {
   public WndLangs() {
     super();
 
-    final ArrayList<Languages> langs = new ArrayList<>(Arrays.asList
-            (Languages.values()));
+    final ArrayList<Languages> langs = new ArrayList<>(Arrays.asList(Languages.values()));
 
-    Languages nativeLang = Languages.matchLocale(Locale.getDefault());
+    Languages nativeLang = Languages.Companion.matchLocale(Locale.getDefault());
     langs.remove(nativeLang);
     //move the native language to the top.
     langs.add(0, nativeLang);
@@ -64,7 +63,7 @@ public class WndLangs extends Window {
     for (int i = 0; i < langs.size(); i++) {
       final int langIndex = i;
       RedButton btn = new RedButton(Messages.titleCase(langs.get(i)
-              .nativeName())) {
+              .getNativeName())) {
         @Override
         protected void onClick() {
           super.onClick();
@@ -87,7 +86,7 @@ public class WndLangs extends Window {
       if (currLang == langs.get(i)) {
         btn.textColor(TITLE_COLOR);
       } else {
-        switch (langs.get(i).status()) {
+        switch (langs.get(i).getStatus()) {
           case INCOMPLETE:
             btn.textColor(0x999999);
             break;
@@ -118,7 +117,7 @@ public class WndLangs extends Window {
 
     //language info layout.
     RenderedText title = PixelScene.renderText(Messages.titleCase(currLang
-            .nativeName()), 9);
+            .getNativeName()), 9);
     title.x = textLeft + (textWidth - title.width()) / 2f;
     title.y = 0;
     title.hardlight(TITLE_COLOR);
@@ -134,7 +133,7 @@ public class WndLangs extends Window {
 
     } else {
       RenderedTextMultiline info = PixelScene.renderMultiline(6);
-      switch (currLang.status()) {
+      switch (currLang.getStatus()) {
         case REVIEWED:
           info.text(Messages.get(this, "completed"), width - textLeft);
           break;
@@ -154,8 +153,8 @@ public class WndLangs extends Window {
         protected void onClick() {
           super.onClick();
           String creds = "";
-          String[] reviewers = currLang.reviewers();
-          String[] translators = currLang.translators();
+          String[] reviewers = currLang.getReviewers();
+          String[] translators = currLang.getTranslators();
           if (reviewers.length > 0) {
             creds += "_" + Messages.titleCase(Messages.get(WndLangs.class,
                     "reviewers")) + "_\n";

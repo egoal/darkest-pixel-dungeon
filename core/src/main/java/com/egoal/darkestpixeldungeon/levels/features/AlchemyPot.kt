@@ -63,10 +63,10 @@ object AlchemyPot {
                     return Pair(true, Blandfruit().cook(pr.first as Plant.Seed))
 
                 pr = SplitTwoItem({ it is MysteryMeat }, { it is FishBone }, items[0], items[1])
-                if (pr != null) return Pair(true, null)
+                if (pr != null) return Pair(true, SkewerMeat())
 
-                pr = SplitTwoItem({it is MysteryMeat}, {it is Honeypot.ShatteredPot}, items[0], items[1])
-                if(pr!=null) return Pair(true, SkewerMeat())
+//                pr = SplitTwoItem({it is MysteryMeat}, {it is Honeypot.ShatteredPot}, items[0], items[1])
+//                if(pr!=null) return Pair(true, SkewerMeat())
 
                 return Pair(false, null)
             }

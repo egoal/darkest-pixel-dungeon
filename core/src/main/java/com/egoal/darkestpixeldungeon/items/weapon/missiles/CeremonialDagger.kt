@@ -64,7 +64,7 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
     private fun prick(hero: Hero) {
         detach(hero.belongings.backpack)
 
-        val dmg = Damage(prickValue(hero), this, hero).addFeature(Damage.Feature.PURE)
+        val dmg = Damage(prickValue(hero), hero, hero).addFeature(Damage.Feature.PURE)
         // hero.buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
         // hero.defendDamage(dmg)
 

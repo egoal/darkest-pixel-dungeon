@@ -52,6 +52,7 @@ class ReagentOfHealing : Item() {
         }
     }
 
+    override fun isUpgradable(): Boolean = false
     override fun isIdentified(): Boolean = true
 
     override fun price(): Int = 15 * quantity

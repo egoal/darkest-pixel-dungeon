@@ -177,12 +177,16 @@ abstract class HeroAction(var dst: Int = 0) {
             if (mob.camp == Char.Camp.HERO) {
                 //todo: refactor
                 WndDialogue.Show(mob, mob.description() + "\n\n" + M.L(Mob::class.java, "ally", mob.name) + "\n" + mob.state.status(),
+                        M.L(Mob::class.java, "swap"),
                         M.L(Mob::class.java, "follow"),
                         M.L(Mob::class.java, "wander")) {
-                    if (it == 0) {
-                        if (mob.state != mob.FOLLOW_HERO) mob.state = mob.FOLLOW_HERO
-                    } else {
-                        if (mob.state == mob.FOLLOW_HERO) mob.state = mob.WANDERING
+                    when (it) {
+                        0 -> {
+                            mob.swapPosition(hero)
+                            hero.spendAndNext(1f / hero.speed())
+                        }
+                        1 -> if (mob.state != mob.FOLLOW_HERO) mob.state = mob.FOLLOW_HERO
+                        else -> if (mob.state == mob.FOLLOW_HERO) mob.state = mob.WANDERING
                     }
                 }
             }

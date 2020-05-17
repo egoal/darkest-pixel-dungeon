@@ -164,6 +164,7 @@ object Badges {
         PERK_GAIN_2(65),
         PERK_GAIN_3(66),
         PERK_NONE(67, true),
+        SUICIDE(68, true),
         GAMES_PLAYED_1(60, true),
         GAMES_PLAYED_2(61, true),
         GAMES_PLAYED_3(62, true),
@@ -875,14 +876,17 @@ object Badges {
         if (Dungeon.IsChallenged()) return
 
         var badge: Badge? = null
-        if (Dungeon.hero.perkGained >= 3) {
+        if (!local.contains(Badge.PERK_GAIN_1) && Dungeon.hero.perkGained >= 3) {
             badge = Badge.PERK_GAIN_1
+            local.add(Badge.PERK_GAIN_1)
         }
-        if (Dungeon.hero.perkGained >= 6) {
+        if (!local.contains(Badge.PERK_GAIN_2) && Dungeon.hero.perkGained >= 6) {
             badge = Badge.PERK_GAIN_2
+            local.add(Badge.PERK_GAIN_2)
         }
-        if (Dungeon.hero.perkGained >= 9) {
+        if (!local.contains(Badge.PERK_GAIN_3) && Dungeon.hero.perkGained >= 9) {
             badge = Badge.PERK_GAIN_3
+            local.add(Badge.PERK_GAIN_3)
         }
 
         displayBadge(badge)
@@ -892,6 +896,12 @@ object Badges {
         if (Dungeon.IsChallenged()) return
 
         if (Dungeon.hero.perkGained == 0) displayBadge(Badge.PERK_NONE)
+    }
+
+    fun validateSuicide() {
+        if (Dungeon.IsChallenged()) return
+
+        displayBadge(Badge.SUICIDE)
     }
 
     fun validateHappyEnd() {

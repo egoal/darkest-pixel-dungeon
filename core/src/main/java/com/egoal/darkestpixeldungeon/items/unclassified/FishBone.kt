@@ -18,6 +18,7 @@ class FishBone : Item() {
         stackable = true
     }
 
+    override fun isUpgradable(): Boolean = false
     override fun isIdentified(): Boolean = true
 
     override fun actions(hero: Hero): ArrayList<String> {

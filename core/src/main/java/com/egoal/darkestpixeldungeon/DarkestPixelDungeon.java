@@ -115,11 +115,6 @@ public class DarkestPixelDungeon extends Game {
             "Wandmaker$Rotberry$Seed");
 
     //0.4.0
-    //equipment
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.melee.WornShortsword
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.melee.ShortSword");
     //enchants/glyphs
     com.watabou.utils.Bundle.addAlias(
             com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim.class,
@@ -441,18 +436,18 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static void language(Languages lang) {
-    Preferences.INSTANCE.put(Preferences.KEY_LANG, lang.code());
+    Preferences.INSTANCE.put(Preferences.KEY_LANG, lang.getCode());
   }
 
   public static Languages language() {
     String code = Preferences.INSTANCE.getString(Preferences.KEY_LANG, null);
     if (code == null) {
-      Languages lang = Languages.matchLocale(Locale.getDefault());
-      if (lang.status() == Languages.Status.REVIEWED)
+      Languages lang = Languages.Companion.matchLocale(Locale.getDefault());
+      if (lang.getStatus() == Languages.Status.REVIEWED)
         return lang;
       else
         return Languages.ENGLISH;
-    } else return Languages.matchCode(code);
+    } else return Languages.Companion.matchCode(code);
   }
 
   public static void classicFont(boolean classic) {
