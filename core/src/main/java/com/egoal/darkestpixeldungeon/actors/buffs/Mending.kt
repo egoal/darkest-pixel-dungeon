@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
+import kotlin.math.ceil
 
 /**
  * Created by 93942 on 9/6/2018.
@@ -39,7 +40,7 @@ class Mending : Buff() {
     }
 
     override fun act(): Boolean {
-        val v = Math.ceil((recoveryValue / 4f).toDouble()).toInt()
+        val v = ceil(recoveryValue / 4f).toInt()
         recoveryValue -= v
         if (v <= 0.1) {
             detach()

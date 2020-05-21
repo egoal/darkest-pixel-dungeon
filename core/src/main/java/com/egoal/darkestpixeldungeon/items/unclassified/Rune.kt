@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.items.unclassified
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.DungeonTilemap
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Flare
@@ -12,6 +13,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
 
@@ -60,10 +62,38 @@ class MendingRune : Rune() {
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0x00ff00)
 
     override fun affect(hero: Hero) {
-        Buff.prolong(hero, Recovery::class.java, 200f)
+        Buff.affect(hero, Recovery::class.java).duration = 200f
     }
 
-    class Recovery : FlavourBuff()
+    class Recovery : Buff() {
+        var duration = 0f
+
+        init {
+            type = buffType.POSITIVE
+        }
+
+        override fun act(): Boolean {
+            if (target.HP < target.HT) target.HP++
+
+            duration -= Actor.TICK
+            if (duration <= 0f) detach()
+
+            spend(Actor.TICK)
+            return true
+        }
+
+        override fun storeInBundle(bundle: Bundle) {
+            super.storeInBundle(bundle)
+            bundle.put("duration", duration)
+        }
+
+        override fun restoreFromBundle(bundle: Bundle) {
+            super.restoreFromBundle(bundle)
+            duration = bundle.getFloat("duration")
+        }
+
+        override fun toString(): String = Messages.get(this, "name")
+    }
 }
 
 class CriticalRune : Rune() {

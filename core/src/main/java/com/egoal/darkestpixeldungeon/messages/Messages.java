@@ -82,11 +82,12 @@ public class Messages {
   public static void setup(Languages lang) {
     strings = new HashMap<>();
     Messages.lang = lang;
-    Locale locale =  lang.getLocale();
+    Locale locale = lang.getLocale();
+
+    Log.d("dpd", locale.toString());
 
     for (String file : prop_files) {
       ResourceBundle bundle = ResourceBundle.getBundle(file, locale);
-      Log.d("dpd", bundle.getLocale().toString());
       Enumeration<String> keys = bundle.getKeys();
       while (keys.hasMoreElements()) {
         String key = keys.nextElement();

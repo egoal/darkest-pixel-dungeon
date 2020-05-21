@@ -18,6 +18,7 @@ import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
+import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
 import com.egoal.darkestpixeldungeon.levels.traps.PrizeTrap
@@ -145,6 +146,8 @@ class VillageLevel : RegularLevel() {
 //            identify()
 //            level(5)
 //        }, xy2cell(16, 30))
+
+//        drop(MendingRune(), xy2cell(17, 5))
     }
 
     private fun putMobAt(cls: Class<out Mob>, x: Int, y: Int): Mob {

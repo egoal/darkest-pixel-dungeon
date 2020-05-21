@@ -168,9 +168,9 @@ class Hero : Char() {
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
             if (it.isCursed)
-                reg = if (reg >= 0f) -0.025f else reg * 1.25f
+                reg = if (reg >= 0f) -0.025f else reg * 1.5f
             else
-                reg += HT.toFloat() * 0.004f * Math.pow(1.08, it.itemLevel().toDouble()).toFloat()
+                reg += HT.toFloat() * 0.003f * 1.18f.pow(it.itemLevel())
         }
 
         // ring
@@ -183,9 +183,6 @@ class Hero : Char() {
             if (it is HeaddressRegeneration)
                 reg += if (it.cursed) -0.1f else (0.05f + reg * 0.2f)
         }
-
-        // rune
-        if (buff(MendingRune.Recovery::class.java) != null) reg += 1f
 
         if (hlvl >= Hunger.HUNGRY) reg *= 0.5f
 
