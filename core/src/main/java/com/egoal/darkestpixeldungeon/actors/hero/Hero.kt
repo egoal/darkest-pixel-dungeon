@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
 import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
+import com.egoal.darkestpixeldungeon.items.weapon.melee.DriedLeg
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Lance
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
@@ -81,6 +82,13 @@ class Hero : Char() {
     var regeneration = 0.1f
 
     var reservedPerks = 0
+    private var perkGained_ = 0
+    var perkGained: Int
+        get() = perkGained_
+        set(value) {
+            perkGained_ = value
+            Badges.validateGainPerk()
+        }
 
     // behaviour
     var ready = false
@@ -160,9 +168,9 @@ class Hero : Char() {
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
             if (it.isCursed)
-                reg = if (reg >= 0f) -0.025f else reg * 1.25f
+                reg = if (reg >= 0f) -0.025f else reg * 1.5f
             else
-                reg += HT.toFloat() * 0.004f * Math.pow(1.08, it.itemLevel().toDouble()).toFloat()
+                reg += HT.toFloat() * 0.003f * 1.18f.pow(it.itemLevel())
         }
 
         // ring
@@ -175,9 +183,6 @@ class Hero : Char() {
             if (it is HeaddressRegeneration)
                 reg += if (it.cursed) -0.1f else (0.05f + reg * 0.2f)
         }
-
-        // rune
-        if (buff(MendingRune.Recovery::class.java) != null) reg += 1f
 
         if (hlvl >= Hunger.HUNGRY) reg *= 0.5f
 
@@ -219,9 +224,9 @@ class Hero : Char() {
         if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
 
         val level = Ring.getBonus(this, RingOfCritical.Critical::class.java)
-        if (level > 0) 
+        if (level > 0)
             c += 0.01f * level
-		c *= 1.15f.pow(level)
+        c *= 1.15f.pow(level)
 
         return c
     }
@@ -350,7 +355,8 @@ class Hero : Char() {
         if (STR() < (belongings.weapon as Weapon).STRReq()) return false
 
         if (rangedWeapon == null &&
-                (belongings.weapon is Flail || belongings.weapon is Lance)) return false
+                (belongings.weapon is Flail || belongings.weapon is Lance ||
+                        belongings.weapon is DriedLeg)) return false
 
         return true
     }
@@ -1256,6 +1262,8 @@ class Hero : Char() {
 
             GameScene.gameOver()
 
+            if(src is Hero) Badges.validateSuicide()
+
             if (src is Doom) src.onDeath()
 
             Dungeon.deleteGame(Dungeon.hero.heroClass, true, true)
@@ -1273,6 +1281,7 @@ class Hero : Char() {
         private const val MAGICAL_RESISTANCE = "magical_resistance"
         private const val RESERVED_PERKS = "reserved_perks"
         private const val CHALLENGE = "challenge"
+        private const val PERK_GAIN = "perk_gain"
     }
 
     // store
@@ -1298,6 +1307,7 @@ class Hero : Char() {
         bundle.put(MAGICAL_RESISTANCE, magicalResistance)
 
         bundle.put(RESERVED_PERKS, reservedPerks)
+        bundle.put(PERK_GAIN, perkGained_)
 
         if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
 
@@ -1327,6 +1337,7 @@ class Hero : Char() {
         magicalResistance = bundle.getFloat(MAGICAL_RESISTANCE)
 
         reservedPerks = bundle.getInt(RESERVED_PERKS)
+        perkGained_ = bundle.getInt(PERK_GAIN)
 
         belongings.restoreFromBundle(bundle)
 

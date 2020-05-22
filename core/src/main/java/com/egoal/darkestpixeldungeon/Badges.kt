@@ -51,6 +51,8 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.HashSet
 
+// import kotlin.collections.HashSet
+
 object Badges {
 
     private lateinit var global: HashSet<Badge>
@@ -79,7 +81,7 @@ object Badges {
         ALL_POTIONS_IDENTIFIED(16),
         ALL_SCROLLS_IDENTIFIED(17),
         ALL_RINGS_IDENTIFIED(18),
-        ALL_WANDS_IDENTIFIED(19),
+        // ALL_WANDS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
         BAG_BOUGHT_SEED_POUCH,
         BAG_BOUGHT_SCROLL_HOLDER,
@@ -114,8 +116,8 @@ object Badges {
         BOSS_SLAIN_3_STARGAZER,
         BOSS_SLAIN_3_WITCH,
         BOSS_SLAIN_3_ALL_SUBCLASSES(33, true),
-        RING_OF_HAGGLER(20),
-        RING_OF_THORNS(21),
+        //        RING_OF_HAGGLER(20),
+//        RING_OF_THORNS(21),
         STRENGTH_ATTAINED_1(40),
         STRENGTH_ATTAINED_2(41),
         STRENGTH_ATTAINED_3(42),
@@ -158,11 +160,16 @@ object Badges {
         GRIM_WEAPON(29),
         PIRANHAS(30),
         NIGHT_HUNTER(58),
+        PERK_GAIN_1(64),
+        PERK_GAIN_2(65),
+        PERK_GAIN_3(66),
+        PERK_NONE(67, true),
+        SUICIDE(68, true),
         GAMES_PLAYED_1(60, true),
         GAMES_PLAYED_2(61, true),
         GAMES_PLAYED_3(62, true),
         GAMES_PLAYED_4(63, true),
-        HAPPY_END(38),
+        HAPPY_END(38, true),
         CHAMPION(39, true),
         SUPPORTER(31, true);
 
@@ -170,34 +177,19 @@ object Badges {
     }
 
     fun reset() {
+        allVisiableBadges()
         local.clear()
         loadGlobal()
     }
 
     private fun restore(bundle: Bundle): HashSet<Badge> {
         val badges = HashSet<Badge>()
-
-        val names = bundle.getStringArray(BADGES)
-        for (i in names.indices) {
-            try {
-                badges.add(Badge.valueOf(names[i]))
-            } catch (e: Exception) {
-                DarkestPixelDungeon.reportException(e)
-            }
-
-        }
-
+        badges.addAll(bundle.getStringArray(BADGES).map { Badge.valueOf(it) })
         return badges
     }
 
     private fun store(bundle: Bundle, badges: HashSet<Badge>) {
-        var count = 0
-        val names = arrayOfNulls<String>(badges.size)
-
-        for (badge in badges) {
-            names[count++] = badge.toString()
-        }
-        bundle.put(BADGES, names)
+        bundle.put(BADGES, badges.map { it.toString() }.toTypedArray())
     }
 
     fun loadLocal(bundle: Bundle) {
@@ -734,30 +726,6 @@ object Badges {
         }
     }
 
-    //TODO: Replace this badge, delayed until an eventual badge rework
-    fun validateRingOfHaggler() {
-        if (Dungeon.IsChallenged()) return
-
-        if (!local.contains(Badge.RING_OF_HAGGLER)/* && new RingOfThorns()
-    .isKnown()*/) {
-            val badge = Badge.RING_OF_HAGGLER
-            local.add(badge)
-            displayBadge(badge)
-        }
-    }
-
-    //TODO: Replace this badge, delayed until an eventual badge rework
-    fun validateRingOfThorns() {
-        if (Dungeon.IsChallenged()) return
-
-        if (!local.contains(Badge.RING_OF_THORNS)/* && new RingOfThorns().isKnown
-    ()*/) {
-            val badge = Badge.RING_OF_THORNS
-            local.add(badge)
-            displayBadge(badge)
-        }
-    }
-
     fun validateRare(mob: Mob) {
         if (Dungeon.IsChallenged()) return
 
@@ -904,6 +872,38 @@ object Badges {
         displayBadge(badge)
     }
 
+    fun validateGainPerk() {
+        if (Dungeon.IsChallenged()) return
+
+        var badge: Badge? = null
+        if (!local.contains(Badge.PERK_GAIN_1) && Dungeon.hero.perkGained >= 3) {
+            badge = Badge.PERK_GAIN_1
+            local.add(Badge.PERK_GAIN_1)
+        }
+        if (!local.contains(Badge.PERK_GAIN_2) && Dungeon.hero.perkGained >= 6) {
+            badge = Badge.PERK_GAIN_2
+            local.add(Badge.PERK_GAIN_2)
+        }
+        if (!local.contains(Badge.PERK_GAIN_3) && Dungeon.hero.perkGained >= 9) {
+            badge = Badge.PERK_GAIN_3
+            local.add(Badge.PERK_GAIN_3)
+        }
+
+        displayBadge(badge)
+    }
+
+    fun validateNoPerk() {
+        if (Dungeon.IsChallenged()) return
+
+        if (Dungeon.hero.perkGained == 0) displayBadge(Badge.PERK_NONE)
+    }
+
+    fun validateSuicide() {
+        if (Dungeon.IsChallenged()) return
+
+        displayBadge(Badge.SUICIDE)
+    }
+
     fun validateHappyEnd() {
         if (Dungeon.IsChallenged()) return
 
@@ -912,7 +912,7 @@ object Badges {
 
     fun validateChampion() {
 //        if (Dungeon.IsChallenged()) return
-        if (Dungeon.hero.challenge != Challenge.LowPressure)
+        if (Dungeon.hero.challenge != null && Dungeon.hero.challenge != Challenge.LowPressure)
             displayBadge(Badge.CHAMPION)
     }
 
@@ -921,15 +921,14 @@ object Badges {
             return
         }
 
-        if (global!!.contains(badge)) {
+        if (global.contains(badge)) {
 
             if (!badge.meta) {
                 GLog.h(Messages.get(Badges::class.java, "endorsed", badge.desc()))
             }
 
         } else {
-
-            global!!.add(badge)
+            global.add(badge)
             saveNeeded = true
 
             if (badge.meta) {
@@ -941,39 +940,78 @@ object Badges {
         }
     }
 
-    fun isUnlocked(badge: Badge): Boolean {
-        return global!!.contains(badge)
-    }
+    ///
+    fun isUnlocked(badge: Badge): Boolean = global.contains(badge)
 
     fun disown(badge: Badge) {
         loadGlobal()
-        global!!.remove(badge)
+        global.remove(badge)
         saveNeeded = true
     }
 
-    fun filtered(global: Boolean): List<Badge> {
+    //todo: you still need to refactor badge...
+    fun allVisiableBadges(): HashSet<Badge> {
+        val badges = Badge.values().filter { it.image != -1 }.toHashSet()
 
-        val filtered = HashSet(if (global)
-            Badges.global
-        else
-            Badges.local)
+        keep(badges, Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge.MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4)
+        keep(badges, Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge.GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4)
+        keep(badges, Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge.BOSS_SLAIN_3, Badge.BOSS_SLAIN_4)
+        keep(badges, Badge.LEVEL_REACHED_1, Badge.LEVEL_REACHED_2, Badge.LEVEL_REACHED_3, Badge.LEVEL_REACHED_4)
+        keep(badges, Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2,
+                Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4)
+        keep(badges, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge
+                .FOOD_EATEN_3, Badge.FOOD_EATEN_4)
+        keep(badges, Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge
+                .ITEM_LEVEL_3, Badge.ITEM_LEVEL_4)
+        keep(badges, Badge.POTIONS_COOKED_1, Badge.POTIONS_COOKED_2, Badge
+                .POTIONS_COOKED_3, Badge.POTIONS_COOKED_4)
+        keep(badges, Badge.BOSS_SLAIN_1_ALL_CLASSES, Badge
+                .BOSS_SLAIN_3_ALL_SUBCLASSES)
+        keep(badges, Badge.DEATH_FROM_FIRE, Badge.YASD)
+        keep(badges, Badge.DEATH_FROM_GAS, Badge.YASD)
+        keep(badges, Badge.DEATH_FROM_HUNGER, Badge.YASD)
+        keep(badges, Badge.DEATH_FROM_POISON, Badge.YASD)
+        keep(badges, Badge.ALL_POTIONS_IDENTIFIED, Badge
+                .ALL_ITEMS_IDENTIFIED)
+        keep(badges, Badge.ALL_SCROLLS_IDENTIFIED, Badge
+                .ALL_ITEMS_IDENTIFIED)
+        keep(badges, Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED)
+        // keep(badges, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED)
+        keep(badges, Badge.VICTORY, Badge.VICTORY_ALL_CLASSES)
+        keep(badges, Badge.VICTORY, Badge.HAPPY_END)
+        keep(badges, Badge.VICTORY, Badge.CHAMPION)
+        keep(badges, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge
+                .GAMES_PLAYED_3, Badge.GAMES_PLAYED_4)
+        keep(badges, Badge.PERK_GAIN_1, Badge.PERK_GAIN_2, Badge.PERK_GAIN_3)
+
+        return badges
+    }
+
+    private fun keep(list: HashSet<Badge>, vararg badges: Badge) {
+        for (i in badges.size - 1 downTo 1) {
+            if (global.contains(badges[i])) {
+                for (j in 0 until i) list.remove(badges[j])
+                return
+            }
+            list.remove(badges[i])
+        }
+    }
+
+    fun filtered(global: Boolean): List<Badge> {
+        val filtered = HashSet(if (global) Badges.global else Badges.local)
 
         val iterator = filtered.iterator()
         while (iterator.hasNext()) {
             val badge = iterator.next()
-            if (!global && badge.meta || badge.image == -1) {
+            if ((!global && badge.meta) || badge.image == -1) {
                 iterator.remove()
             }
         }
 
-        leaveBest(filtered, Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge
-                .MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4)
-        leaveBest(filtered, Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge
-                .GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4)
-        leaveBest(filtered, Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge
-                .BOSS_SLAIN_3, Badge.BOSS_SLAIN_4)
-        leaveBest(filtered, Badge.LEVEL_REACHED_1, Badge.LEVEL_REACHED_2, Badge
-                .LEVEL_REACHED_3, Badge.LEVEL_REACHED_4)
+        leaveBest(filtered, Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge.MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4)
+        leaveBest(filtered, Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge.GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4)
+        leaveBest(filtered, Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge.BOSS_SLAIN_3, Badge.BOSS_SLAIN_4)
+        leaveBest(filtered, Badge.LEVEL_REACHED_1, Badge.LEVEL_REACHED_2, Badge.LEVEL_REACHED_3, Badge.LEVEL_REACHED_4)
         leaveBest(filtered, Badge.STRENGTH_ATTAINED_1, Badge.STRENGTH_ATTAINED_2,
                 Badge.STRENGTH_ATTAINED_3, Badge.STRENGTH_ATTAINED_4)
         leaveBest(filtered, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge
@@ -993,12 +1031,13 @@ object Badges {
         leaveBest(filtered, Badge.ALL_SCROLLS_IDENTIFIED, Badge
                 .ALL_ITEMS_IDENTIFIED)
         leaveBest(filtered, Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED)
-        leaveBest(filtered, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED)
+        // leaveBest(filtered, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED)
         leaveBest(filtered, Badge.VICTORY, Badge.VICTORY_ALL_CLASSES)
         leaveBest(filtered, Badge.VICTORY, Badge.HAPPY_END)
         leaveBest(filtered, Badge.VICTORY, Badge.CHAMPION)
         leaveBest(filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge
                 .GAMES_PLAYED_3, Badge.GAMES_PLAYED_4)
+        leaveBest(filtered, Badge.PERK_GAIN_1, Badge.PERK_GAIN_2, Badge.PERK_GAIN_3)
 
         return filtered.sorted()
     }

@@ -183,6 +183,7 @@ public class SurfaceScene extends PixelScene {
     add(gameOver);
 
     Badges.INSTANCE.validateHappyEnd();
+    Badges.INSTANCE.validateNoPerk();
 
     fadeIn();
   }

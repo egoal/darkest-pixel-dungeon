@@ -67,9 +67,7 @@ open class Potion : Item() {
         cursed = false
     }
 
-    open fun canBeReinforced(): Boolean {
-        return false
-    }
+    open fun canBeReinforced(): Boolean = false
 
     fun reinforce(): Potion {
         if (canBeReinforced()) reinforced = true

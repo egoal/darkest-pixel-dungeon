@@ -120,18 +120,21 @@ class Alchemist : NPC.Unbreakable() {
         dv.empty()
 
         // give reward
-        Gold(Random.Int(5, 15) * vol + 20).doPickUp(Dungeon.hero)
+        val give_item = { item: Item ->
+            if (!item.doPickUp(Dungeon.hero)) Dungeon.level.drop(item, Dungeon.hero.pos).sprite.drop()
+        }
 
-        if (vol >= 5) {
-            // give test papers
-            val cnt = min(vol / 5, 2)
-            for (i in 1..cnt) {
-                val ptp = PotionTestPaper()
-                if (!ptp.doPickUp(Dungeon.hero))
-                    Dungeon.level.drop(ptp, Dungeon.hero.pos).sprite.drop()
+        give_item(Gold(Random.Int(5, 15) * vol + 20))
+        if (vol > 3) {
+            give_item(if (Random.Float() < 0.7f) PotionTestPaper().quantity(2) else ReagentOfHealing())
+            if (vol >= 10) {
+                give_item(ReagentOfHealing())
+                if (Random.Float() < 0.2f) give_item(PotionTestPaper())
             }
+
             GLog.i(Messages.get(this, "reward_given"))
         }
+
         Quest.hasCompleted_ = true
     }
 

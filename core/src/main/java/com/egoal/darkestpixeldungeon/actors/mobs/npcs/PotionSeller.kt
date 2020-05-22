@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
@@ -10,6 +11,7 @@ import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.unclassified.PotionTestPaper
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
+import com.egoal.darkestpixeldungeon.items.potions.ReagentOfHealing
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.PotionSellerSprite
 import com.watabou.noosa.audio.Sample
@@ -28,6 +30,8 @@ open class PotionSeller : Merchant() {
     override fun initSellItems() {
         // potions
         val cntItems = Random.NormalIntRange(3, 8)
+        if(Dungeon.depth<5) addItemToSell(ReagentOfHealing())
+
         repeat(cntItems) {
             val item = if (Random.Float() < 0.6f) Generator.POTION.generate()
             else Generator.SEED.generate()

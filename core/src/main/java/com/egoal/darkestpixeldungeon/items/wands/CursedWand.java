@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.wands;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.Badges;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
@@ -265,8 +266,8 @@ public class CursedWand {
                   Sample.INSTANCE.play(Assets.SND_CURSED);
                   if (!user.isAlive()) {
                     Dungeon.fail(wand.getClass());
-                    GLog.n(Messages.get(CursedWand.class, "ondeath", wand
-                            .name()));
+                    Badges.INSTANCE.validateSuicide();
+                    GLog.n(Messages.get(CursedWand.class, "ondeath", wand.name()));
                   }
                   break;
               }

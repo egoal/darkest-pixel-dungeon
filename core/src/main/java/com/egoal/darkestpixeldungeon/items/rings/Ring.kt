@@ -221,7 +221,7 @@ open abstract class Ring : KindofMisc() {
             handler = ItemStatusHandler(rings, gems, bundle)
         }
 
-        fun allKnown(): Boolean = handler.known().size == rings.size - 2
+        fun allKnown(): Boolean = handler.known().size == rings.size
 
         fun getBonus(target: Char, type: Class<out RingBuff>): Int = target.buffs(type).sumBy { it.level() }
     }

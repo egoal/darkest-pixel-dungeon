@@ -10,7 +10,7 @@ import kotlin.math.min
 
 class VampiricBite : Buff() {
     init {
-        type = buffType.POSITIVE
+        type = buffType.SILENT
     }
 
     private var killed = 0

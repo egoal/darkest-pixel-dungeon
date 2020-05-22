@@ -21,6 +21,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.max
+import kotlin.math.min
 
 class Gold(value: Int = 1) : Item() {
     init {
@@ -92,7 +93,7 @@ class Gold(value: Int = 1) : Item() {
         Dungeon.gold -= goldreq
         ScrollOfUpgrade().onItemSelected(item)
         with(hero) {
-            sprite.centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, 2 + item.level() * 2)
+            sprite.centerEmitter().start(Speck.factory(Speck.KIT), 0.05f, min(10, 2 + item.level() * 2))
             spend(3f)
             busy()
             sprite.operate(pos)

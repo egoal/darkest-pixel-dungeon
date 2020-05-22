@@ -31,9 +31,12 @@ import com.egoal.darkestpixeldungeon.windows.WndAlchemy
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
+import com.egoal.darkestpixeldungeon.items.food.SkewerMeat
 import com.egoal.darkestpixeldungeon.items.food.StewedMeat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
+import com.egoal.darkestpixeldungeon.items.unclassified.FishBone
+import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -49,14 +52,21 @@ object AlchemyPot {
 
     //todo: refactor all this, perhaps in version 0.4+
     // succeed? : result
+    //comment at 0.4.2: this really need rework, delay this again.
     fun VerifyRefinement(items: List<Item>): Pair<Boolean, Item?> {
         return when (items.size) {
             // seed to potion.
             3 -> if (items.all { it is Plant.Seed }) Pair(true, combinePotion(items.map { it as Plant.Seed })) else Pair(false, null)
             2 -> {
-                val pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
+                var pr = SplitTwoItem({ it is Plant.Seed }, { it is Blandfruit }, items[0], items[1])
                 if (pr != null)
                     return Pair(true, Blandfruit().cook(pr.first as Plant.Seed))
+
+                pr = SplitTwoItem({ it is MysteryMeat }, { it is FishBone }, items[0], items[1])
+                if (pr != null) return Pair(true, SkewerMeat())
+
+//                pr = SplitTwoItem({it is MysteryMeat}, {it is Honeypot.ShatteredPot}, items[0], items[1])
+//                if(pr!=null) return Pair(true, SkewerMeat())
 
                 return Pair(false, null)
             }

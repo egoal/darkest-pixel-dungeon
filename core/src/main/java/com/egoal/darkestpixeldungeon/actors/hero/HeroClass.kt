@@ -15,6 +15,7 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfLider
 import com.egoal.darkestpixeldungeon.items.potions.*
+import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.*
@@ -202,10 +203,11 @@ enum class HeroClass(private val title: String) {
 
             val flask = ExtractionFlask()
             flask.identify().collect()
+            Dungeon.quickslot.setSlot(0, flask)
 
             val darts = Dart(6)
             darts.identify().collect()
-            Dungeon.quickslot.setSlot(0, darts)
+            Dungeon.quickslot.setSlot(1, darts)
 
             PotionOfToxicGas().identify().collect()
 
@@ -253,10 +255,6 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
-
-//        CrackedCoin().identify().collect()
-//        WandOfPrismaticLight().identify().collect()
-//        initDebug(hero)
     }
 
     // called when hero level up

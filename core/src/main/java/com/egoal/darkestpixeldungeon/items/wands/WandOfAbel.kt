@@ -61,13 +61,32 @@ class WandOfAbel : DamageWand() {
             val heroPos = Item.curUser.pos
             moveChar(Item.curUser, bolt.collisionPos)
 
-            val newHeap = Heap().apply {
-                type = heap.type
-                drop(heap.pickUp())
-                pos = heroPos
+            if (heap.type == Heap.Type.HEAP)
+                Dungeon.level.drop(heap.pickUp(), heroPos) // simply switch with the top item...
+            else {
+                val newHeap = Heap().apply {
+                    type = heap.type
+                    for (item in heap.items) drop(item)
+                    pos = heroPos
+                }
+                heap.destroy()
+                // merge with the current heap
+                val theHeap = Dungeon.level.heaps.get(heroPos)
+                if (theHeap != null) {
+                    for(item in theHeap.items) newHeap.drop(item)
+                    theHeap.destroy()
+                }
+
+                Dungeon.level.heaps.put(newHeap.pos, newHeap)
+                GameScene.add(newHeap)
             }
-            Dungeon.level.heaps.put(newHeap.pos, newHeap)
-            GameScene.add(newHeap)
+//            val newHeap = Heap().apply {
+//                type = heap.type
+//                drop(heap.pickUp())
+//                pos = heroPos
+//            }
+//            Dungeon.level.heaps.put(newHeap.pos, newHeap)
+//            GameScene.add(newHeap)
 
             return
         }

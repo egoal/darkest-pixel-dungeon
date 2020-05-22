@@ -68,7 +68,7 @@ object Chasm {
     fun HeroLand() {
         Dungeon.hero.apply {
             sprite.burst(sprite.blood(), 10)
-            takeDamage(Damage(Random.NormalIntRange(HP / 4, HT / 4), {
+            takeDamage(Damage(Random.NormalIntRange(HP / 3, HT / 3), {
                 Badges.validateDeathFromFalling()
                 Dungeon.fail(javaClass)
                 GLog.n(Messages.get(Chasm::class.java, "ondeath"))

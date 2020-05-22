@@ -1,6 +1,9 @@
 import sys, os 
 import shutil
 
+LOC = ""
+LOC = "_zh_TW"
+
 MASSAGES = "core/src/main/resources/com/egoal/darkestpixeldungeon/messages/"
 LOCALIZATIONS = "dev/messages/"
 
@@ -23,8 +26,8 @@ def copy_source_in():
 	
 	for tag, file in files.items():
 		# MASSAGES
-		# print(file, "{}{}/{}.properties".format(MASSAGES, tag, tag))
-		shutil.copy(file, "{}{}/{}.properties".format(MASSAGES, tag, tag))
+		# print(file, " -> {}{}/{}{}.properties".format(MASSAGES, tag, tag, LOC))
+		shutil.copy(file, "{}{}/{}{}.properties".format(MASSAGES, tag, tag, LOC))
 
 	print("message in.")
 

@@ -27,11 +27,15 @@ import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas;
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding;
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning;
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
+import com.egoal.darkestpixeldungeon.items.unclassified.FishBone;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.PiranhaSprite;
 import com.watabou.utils.Random;
@@ -46,7 +50,7 @@ public class Piranha extends Mob {
     baseSpeed = 2f;
 
     EXP = 0;
-    
+
     addResistances(Damage.Element.LIGHT, -0.5f);
   }
 
@@ -92,12 +96,18 @@ public class Piranha extends Mob {
   }
 
   int damageRoll() {
-    return Random.NormalIntRange(Dungeon.depth, 4 + Dungeon.depth * 2);
+    return Random.NormalIntRange(Dungeon.depth, 2 + Dungeon.depth * 2);
   }
 
   @Override
   public float attackSkill(Char target) {
     return 20 + Dungeon.depth * 2;
+  }
+
+  @Override
+  public Damage attackProc(Damage damage){
+      if(Random.Int(2)==0) Buff.affect((Char)damage.to, Bleeding.class).set(damage.value/ 2);
+      return damage;
   }
 
   @Override
@@ -113,6 +123,8 @@ public class Piranha extends Mob {
   @Override
   public void die(Object cause) {
     Dungeon.level.drop(new MysteryMeat(), pos).getSprite().drop();
+    if(Random.Float()<0.35f)
+        Dungeon.level.drop(new FishBone(), pos).getSprite().drop();
     super.die(cause);
 
     Statistics.INSTANCE.setPiranhasKilled(Statistics.INSTANCE.getPiranhasKilled()+1);

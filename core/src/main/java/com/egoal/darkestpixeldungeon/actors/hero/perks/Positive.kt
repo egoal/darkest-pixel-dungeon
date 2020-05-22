@@ -251,9 +251,9 @@ class LowHealthRegeneration : Perk(5) {
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_REG
 
     fun extraRegeneration(hero: Hero): Float {
-        if (hero.HP > hero.HT * 0.3) return 0f
+        if (hero.HP > hero.HT * 0.3f) return 0f
 
-        return 0.05f + 0.35f * level
+        return 1f * level // todo:
     }
 }
 
@@ -261,12 +261,27 @@ class ExtraPerkChoice : Perk() {
     override fun image(): Int = PerkImageSheet.EXTRA_CHOICE
 }
 
-class BrewEnhancedPotion : Perk(3) {
+class BrewEnhancedPotion : Perk() {
     override fun image(): Int = PerkImageSheet.BREW_ENHANCED
+    private var nextProb = 0.3f
 
     fun affectPotion(p: Potion) {
-        if (p.canBeReinforced() && Random.Float() < (0.1f + 0.2f * level))
-            p.reinforce()
+        if (p.canBeReinforced()) {
+            if (Random.Float() < nextProb) {
+                p.reinforce()
+                nextProb = 0.3f
+            } else nextProb += 0.1f
+        }
+    }
+
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put("nextprob", nextProb)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        nextProb = bundle.getFloat("nextprob")
     }
 }
 

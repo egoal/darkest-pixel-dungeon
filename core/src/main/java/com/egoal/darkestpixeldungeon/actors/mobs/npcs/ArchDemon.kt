@@ -92,6 +92,7 @@ class ArchDemon : NPC.Unbreakable() {
         val newPerk = Perk.RandomPositive(hero)
         PerkGain.Show(Dungeon.hero!!, newPerk)
         hero.heroPerk.add(newPerk)
+        hero.perkGained += 1
     }
 
     private fun upgradePerk(hero: Hero, perk: Perk) {
@@ -120,6 +121,7 @@ class ArchDemon : NPC.Unbreakable() {
 
             PerkGain.Show(Dungeon.hero!!, perk)
             hero.heroPerk.add(perk)
+            hero.perkGained += 1
             say(M.L(ArchDemon::class.java, "deal"))
         }
     }

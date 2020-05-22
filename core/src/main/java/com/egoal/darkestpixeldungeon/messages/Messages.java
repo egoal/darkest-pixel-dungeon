@@ -44,10 +44,10 @@ import java.util.ResourceBundle;
 public class Messages {
 
   /*
-    use hashmap for two reasons. Firstly because android 2.2 doesn't support 
+    use hashmap for two reasons. Firstly because android 2.2 doesn't support
     resourcebundle.containskey(),
     secondly so I can read in and combine multiple properties files,
-    resulting in a more clean structure for organizing all the strings, 
+    resulting in a more clean structure for organizing all the strings,
     instead of one big file.
 
     ..Yes R.string would do this for me, but that's not multiplatform
@@ -82,7 +82,9 @@ public class Messages {
   public static void setup(Languages lang) {
     strings = new HashMap<>();
     Messages.lang = lang;
-    Locale locale = new Locale(lang.code());
+    Locale locale = lang.getLocale();
+
+    Log.d("dpd", locale.toString());
 
     for (String file : prop_files) {
       ResourceBundle bundle = ResourceBundle.getBundle(file, locale);
@@ -132,9 +134,9 @@ public class Messages {
       else return strings.get(key.toLowerCase(Locale.ENGLISH));
     } else {
       //this is so child classes can inherit properties from their parents.
-      //in cases where text is commonly grabbed as a utility from classes 
+      //in cases where text is commonly grabbed as a utility from classes
       // that aren't mean to be instantiated
-      //(e.g. flavourbuff.dispTurns()) using .class directly is probably 
+      //(e.g. flavourbuff.dispTurns()) using .class directly is probably
       // smarter to prevent unnecessary recursive calls.
       if (c != null && c.getSuperclass() != null) {
         return get(c.getSuperclass(), k, args);
@@ -159,7 +161,7 @@ public class Messages {
     else return Character.toTitleCase(str.charAt(0)) + str.substring(1);
   }
 
-  //Words which should not be capitalized in title case, mostly prepositions 
+  //Words which should not be capitalized in title case, mostly prepositions
   // which appear ingame
   //This list is not comprehensive!
   private static final HashSet<String> noCaps = new HashSet<>(

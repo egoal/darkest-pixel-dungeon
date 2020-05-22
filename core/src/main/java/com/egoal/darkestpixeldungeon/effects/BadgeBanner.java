@@ -259,6 +259,10 @@ public class BadgeBanner extends Image {
       case 63:
         p.offset(4, 4);
         break;
+      case 64:
+      case 65:
+        p.offset(2, 5);
+        break;
     }
 
     p.x *= image.scale.x;
