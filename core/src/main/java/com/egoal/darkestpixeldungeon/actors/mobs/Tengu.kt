@@ -288,6 +288,8 @@ class Tengu : Mob() {
         fun imitate(tengu: Tengu) {
             HP = tengu.HP
             HT = tengu.HT
+
+            tengu.magicalResistance = magicalResistance // reset tengu's magical resistance.
         }
 
         override fun attackSkill(target: Char): Float = 20f
