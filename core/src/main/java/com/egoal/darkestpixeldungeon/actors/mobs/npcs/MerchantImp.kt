@@ -24,15 +24,10 @@ class MerchantImp : Merchant() {
 
     override fun initSellItems() {
         // devil would be place by painter, here, add extra items
-        repeat(2) {
-            addItemToSell(Generator.POTION.generate())
-        }
-
         addItemToSell(ScrollOfRemoveCurse())
         addItemToSell(ScrollOfMagicMapping())
-        addItemToSell(Generator.SCROLL.generate())
 
-        repeat(2) {
+        repeat(4) {
             addItemToSell(if (Random.Int(2) == 0) Generator.POTION.generate()
             else Generator.SCROLL.generate())
         }
@@ -45,7 +40,7 @@ class MerchantImp : Merchant() {
 
         addItemToSell(PlateArmor().identify())
 
-        repeat(3) { addItemToSell(Torch()) }
+        addItemToSell(Torch().quantity(3))
     }
 
     override fun flee() {

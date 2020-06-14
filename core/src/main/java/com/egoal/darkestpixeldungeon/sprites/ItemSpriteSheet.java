@@ -183,7 +183,7 @@ public class ItemSpriteSheet {
     public static final int WAND_DISINTEGRATION = WANDS + 4;
     public static final int WAND_PRISMATIC_LIGHT = WANDS + 5;
     public static final int WAND_VENOM = WANDS + 6;
-    public static final int WAND_LIVING_EARTH = WANDS + 7;
+    public static final int WAND_HYPNOSIS = WANDS + 7;
     public static final int WAND_BLAST_WAVE = WANDS + 8;
     public static final int WAND_CORRUPTION = WANDS + 9;
     public static final int WAND_WARDING = WANDS + 10;

@@ -552,7 +552,7 @@ class Hero : Char() {
         // critical damage
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
             // recover sanity
-            val str = wep?.STRReq() ?: 10
+            val str = wep?.STRReq(0) ?: 10
             if (dmg.value > 0 && Random.Int(15 - str / 2) == 0)
                 recoverSanity(min(Random.Int(dmg.value / 6) + 1, 10).toFloat())
 
