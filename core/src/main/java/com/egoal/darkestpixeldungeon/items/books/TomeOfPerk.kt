@@ -10,7 +10,7 @@ class TomeOfPerk : Book() {
 
     override fun isIdentified(): Boolean = true
 
-    override fun price(): Int = 0
+    override fun price(): Int = 100
 
     override fun doRead(hero: Hero) {
         detach(hero.belongings.backpack)

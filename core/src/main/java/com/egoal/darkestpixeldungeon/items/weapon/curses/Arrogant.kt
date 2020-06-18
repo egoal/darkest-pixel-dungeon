@@ -17,8 +17,8 @@ class Arrogant : Weapon.Enchantment() {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         if (Random.Int(10) == 0)
-            (damage.from as Char).buff(Pressure::class.java)?.upPressure(Random.Int(1, 3).toFloat())
-        
+            (damage.from as Char).takeDamage(Damage(Random.Int(1, 3), damage.from, damage.from).type(Damage.Type.MENTAL))
+
         return damage
     }
 

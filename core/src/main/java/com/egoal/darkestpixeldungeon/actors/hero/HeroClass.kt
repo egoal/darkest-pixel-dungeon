@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.GuardHelmet
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfLider
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.rings.*
@@ -20,6 +21,8 @@ import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Bloodthirsty
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Provocation
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.M
@@ -255,6 +258,13 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
+
+        Dagger().enchant(Bloodthirsty()).identify().collect()
+        Dagger().enchant(Provocation()).identify().collect()
+        RedHandleDagger().identify().collect()
+        Dungeon.gold += 10000
+        ScrollOfUpgrade().collect()
+        GuardHelmet().identify().collect()
     }
 
     // called when hero level up

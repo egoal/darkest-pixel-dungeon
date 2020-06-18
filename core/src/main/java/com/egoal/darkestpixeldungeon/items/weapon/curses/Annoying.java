@@ -47,8 +47,7 @@ public class Annoying extends Weapon.Enchantment {
       for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0])) {
         mob.beckon(attacker.pos);
       }
-      attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 
-              0.3f, 3);
+      attacker.sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.3f, 3);
       Sample.INSTANCE.play(Assets.SND_MIMIC);
       Invisibility.dispel();
       GLog.w(Messages.get(this, "msg_" + (Random.Int(5) + 1)));

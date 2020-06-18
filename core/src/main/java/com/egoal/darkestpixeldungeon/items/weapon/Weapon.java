@@ -24,6 +24,8 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraStrengthPower;
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Arrogant;
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Bloodthirsty;
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Provocation;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting;
@@ -294,7 +296,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     private static final Class<?>[] curses = new Class<?>[]{
             Annoying.class, Displacing.class, Exhausting.class, Fragile
-            .class, Sacrificial.class, Wayward.class, Arrogant.class,
+            .class, Sacrificial.class, Wayward.class, Arrogant.class, Provocation.class, Bloodthirsty.class,
     };
 
     public abstract Damage proc(Weapon weapon, Damage damage);

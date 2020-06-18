@@ -515,7 +515,8 @@ abstract class RegularLevel : Level() {
                 SecretLibraryDigger::class.java to 1f,
                 SecretSummoningDigger::class.java to 1f,
                 SecretTreasuryDigger::class.java to 1f,
-                SecretGardenDigger::class.java to 1f
+                SecretGardenDigger::class.java to 1f,
+                SecretMerchantDigger::class.java to 0.5f
         )
 
         val NormalDiggers: HashMap<Class<out Digger>, Float> = hashMapOf(

@@ -88,7 +88,7 @@ public class ItemSpriteSheet {
     public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;
     public static final int DPD_BATTLE_GLOVES = WEP_TIER1 + 1;
     public static final int KNUCKLEDUSTER = WEP_TIER1 + 2;
-    public static final int RAPIER = WEP_TIER1 + 3;
+    public static final int RED_HANDLE_DAGGER = WEP_TIER1 + 3;
     public static final int DAGGER = WEP_TIER1 + 4;
     public static final int MAGES_STAFF = WEP_TIER1 + 5;
     public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
@@ -172,6 +172,7 @@ public class ItemSpriteSheet {
     // 3 scarf here.
     public static final int LITTLE_PAIL = HELMET + 14;
     public static final int RIDER_MASK = HELMET + 15;
+    public static final int HELMET_GUARD = HELMET + 16;
 
     //16 free slots
 

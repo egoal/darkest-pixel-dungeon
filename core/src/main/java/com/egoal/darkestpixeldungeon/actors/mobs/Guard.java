@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.effects.Pushing;
 ;
 import com.egoal.darkestpixeldungeon.items.Generator;
 import com.egoal.darkestpixeldungeon.items.armor.Armor;
+import com.egoal.darkestpixeldungeon.items.helmets.GuardHelmet;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.sprites.GuardSprite;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -125,7 +126,8 @@ public class Guard extends Mob {
   @Override
   protected Item createLoot() {
     //first see if we drop armor, overall chance is 1/8
-    if (Random.Int(2) == 0) {
+    float p = Random.Float();
+    if (p<0.4f) {
       Armor loot;
       do {
         loot = (Armor) Generator.ARMOR.INSTANCE.generate();
@@ -136,11 +138,13 @@ public class Guard extends Mob {
       //otherwise, we may drop a health potion. overall chance is 7/(8 * (7 +
       // potions dropped))
       //with 0 potions dropped that simplifies to 1/8
-    } else {
+    } else if(p<0.5f) {
       if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 6) {
         Dungeon.limitedDrops.guardHP.drop();
         return new PotionOfHealing();
       }
+    }else{
+      return new GuardHelmet().random();
     }
 
     return null;

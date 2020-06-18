@@ -76,7 +76,8 @@ object Generator {
                     Dagger::class.java to 1f,
                     MagesStaff::class.java to 0f,
                     SorceressWand::class.java to 0f,
-                    BattleGloves::class.java to 1f
+                    BattleGloves::class.java to 1f,
+                    RedHandleDagger::class.java to 0.1f
             ))
 
             object T2 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
@@ -201,7 +202,8 @@ object Generator {
             // WandOfTransfusion::class.java to 3f,
             WandOfAbel::class.java to 3f,
             WandOfCorruption::class.java to 3f,
-            WandOfRegrowth::class.java to 3f
+            WandOfRegrowth::class.java to 3f,
+            WandOfHypnosis::class.java to 3f
     ))
 
     object RING : ClassMapGenerator<Ring>(hashMapOf(
@@ -356,7 +358,8 @@ object Generator {
             RangerHat::class.java to 0.2f, // very rare, so Yvette counts.
             MaskOfMadness::class.java to 0f, // compose
             TurtleScarf::class.java to 1f, 
-            MaskOfLider::class.java to 0.2f
+            MaskOfLider::class.java to 0.1f,
+            GuardHelmet::class.java to 0.2f
     ))
 
     object BOOK : ClassMapGenerator<Book>(hashMapOf(
