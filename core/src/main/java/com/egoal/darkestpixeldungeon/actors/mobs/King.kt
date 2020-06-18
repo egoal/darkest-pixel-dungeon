@@ -187,7 +187,7 @@ class King : Mob() {
     companion object {
         private val IMMUNITIES = hashSetOf<Class<*>>(
                 Paralysis::class.java, Vertigo::class.java, Corruption::class.java,
-                Terror::class.java, Charm::class.java
+                Terror::class.java, Charm::class.java, MagicalSleep::class.java
         )
 
         private val UNDEAD_IMMUNITIES = hashSetOf<Class<*>>(

@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
+import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep;
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -227,6 +228,7 @@ public class DM300 extends Mob {
     IMMUNITIES.add(Terror.class);
     IMMUNITIES.add(Corruption.class);
     IMMUNITIES.add(Charm.class);
+    IMMUNITIES.add(MagicalSleep.class);
   }
 
   @Override

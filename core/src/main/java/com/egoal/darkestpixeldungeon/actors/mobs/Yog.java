@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep;
 import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark;
 import com.egoal.darkestpixeldungeon.effects.Pushing;
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle;
@@ -198,6 +199,7 @@ public class Yog extends Mob {
     IMMUNITIES.add(ToxicGas.class);
     IMMUNITIES.add(Vertigo.class);
     IMMUNITIES.add(Corruption.class);
+    IMMUNITIES.add(MagicalSleep.class);
   }
 
   @Override
@@ -286,6 +288,7 @@ public class Yog extends Mob {
       IMMUNITIES.add(Poison.class);
       IMMUNITIES.add(Vertigo.class);
       IMMUNITIES.add(Corruption.class);
+      IMMUNITIES.add(MagicalSleep.class);
     }
 
     @Override
@@ -387,6 +390,7 @@ public class Yog extends Mob {
       IMMUNITIES.add(Burning.class);
       IMMUNITIES.add(Vertigo.class);
       IMMUNITIES.add(Corruption.class);
+      IMMUNITIES.add(MagicalSleep.class);
     }
 
     @Override

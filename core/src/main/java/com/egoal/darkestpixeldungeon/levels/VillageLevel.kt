@@ -130,7 +130,7 @@ class VillageLevel : RegularLevel() {
 //            addItemToSell(BattleGloves())
 //            addItemToSell(TomeOfPerk())
 //        }
-        (putMobAt(UndeadShopkeeper::class.java, 15, 27) as UndeadShopkeeper).initSellItems()
+//        (putMobAt(UndeadShopkeeper::class.java, 15, 27) as UndeadShopkeeper).initSellItems()
     }
 
     override fun onSwitchedIn() {

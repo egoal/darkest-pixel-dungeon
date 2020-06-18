@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
+import kotlin.math.max
 import kotlin.math.min
 
 open class MagicalSleep : Buff() {
@@ -89,6 +90,7 @@ open class MagicalSleep : Buff() {
         }
 
         var damage: Damage? = null
+        var ratio: Float = 0.01f
 
         override fun icon(): Int = BuffIndicator.NONE
 
@@ -101,25 +103,25 @@ open class MagicalSleep : Buff() {
                     else -> 1f
                 }).toInt()
 
-                //todo: just use a anonymous actor
-                prolong(target, LaterProc::class.java, 1f).damage = damage!!
+                // delay it
+                Actor.addDelayed(object : Actor() {
+                    override fun act(): Boolean {
+                        val dmg = damage!!
+                        if (dmg.value > 0) {
+                            dmg.value = (1 + dmg.value * ratio).toInt()
+                            target.takeDamage(dmg.type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW))
+                        }
+
+                        if (dmg.from is Actor)
+                            affect(target, Terror::class.java, 3f).`object` = (dmg.from as Actor).id()
+
+                        Actor.remove(this)
+                        return true
+                    }
+                }, -1f)
             }
 
             super.detach()
-        }
-
-        private class LaterProc : FlavourBuff() {
-            lateinit var damage: Damage
-
-            override fun act(): Boolean {
-                if (damage.value > 0)
-                    target.takeDamage(damage.type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW))
-
-                if (damage.from is Actor)
-                    affect(target, Terror::class.java, Terror.DURATION / 2f).`object` = (damage.from as Actor).id()
-
-                return super.act()
-            }
         }
     }
 }

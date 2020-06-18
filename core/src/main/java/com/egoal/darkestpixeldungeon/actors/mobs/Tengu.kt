@@ -265,7 +265,7 @@ class Tengu : Mob() {
     }
 
     private val IMMUNITIES = hashSetOf<Class<*>>(Terror::class.java, Corruption::class.java,
-            Charm::class.java, Chill::class.java)
+            Charm::class.java, Chill::class.java, MagicalSleep::class.java)
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
 

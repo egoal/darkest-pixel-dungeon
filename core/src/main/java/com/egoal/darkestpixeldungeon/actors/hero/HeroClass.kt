@@ -259,12 +259,8 @@ enum class HeroClass(private val title: String) {
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
 
-        Dagger().enchant(Bloodthirsty()).identify().collect()
-        Dagger().enchant(Provocation()).identify().collect()
-        RedHandleDagger().identify().collect()
-        Dungeon.gold += 10000
-        ScrollOfUpgrade().collect()
-        GuardHelmet().identify().collect()
+//        WandOfHypnosis().identify().collect()
+//        ScrollOfUpgrade().quantity(10).identify().collect()
     }
 
     // called when hero level up
