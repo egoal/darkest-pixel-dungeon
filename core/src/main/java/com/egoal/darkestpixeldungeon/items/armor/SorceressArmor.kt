@@ -15,7 +15,7 @@ import com.watabou.noosa.audio.Sample
 
 class SorceressArmor : ClassArmor() {
     init {
-        image = ItemSpriteSheet.DPD_ARMOR_SORCERESS
+        image = ItemSpriteSheet.ARMOR_SORCERESS
     }
 
     override fun doSpecial() {

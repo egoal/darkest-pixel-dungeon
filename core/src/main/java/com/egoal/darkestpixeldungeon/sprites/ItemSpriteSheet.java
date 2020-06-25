@@ -154,8 +154,9 @@ public class ItemSpriteSheet {
     public static final int ARMOR_MAGE = ARMOR + 6;
     public static final int ARMOR_ROGUE = ARMOR + 7;
     public static final int ARMOR_HUNTRESS = ARMOR + 8;
-    public static final int DPD_ARMOR_SORCERESS = ARMOR + 9;
+    public static final int ARMOR_SORCERESS = ARMOR + 9;
     public static final int ARMOR_MAGE_ENHANCED = ARMOR + 10;
+    public static final int ARMOR_RAGGED = ARMOR+11;
 
     private static final int HELMET = xy(1, 12);
     public static final int HELMET_CRUSADER = HELMET + 0;
@@ -319,6 +320,7 @@ public class ItemSpriteSheet {
     public static final int MOON_STONE = FOOD + 11;
     public static final int STEWED = FOOD + 12;
     public static  final int SKEWER = FOOD+13;
+    public static final int GLAND = FOOD+14;
 
     private static final int QUEST = xy(1, 26);  //32 slots
     public static final int SKULL = QUEST + 0;

@@ -55,7 +55,7 @@ class UndeadShopkeeper : Merchant() {
 
     private fun spawnItems() {
         var arts = 0
-        for (i in 0 until 3) {
+        for (i in 0 until 2) {
             val item = if (Random.Float() < 0.4f) {
                 ++arts
                 Generator.ARTIFACT.generate()

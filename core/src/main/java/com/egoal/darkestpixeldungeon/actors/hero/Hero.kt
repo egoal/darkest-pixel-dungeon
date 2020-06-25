@@ -342,7 +342,7 @@ class Hero : Char() {
             return defSkill * evasion / Math.pow(1.5, estr.toDouble()).toFloat()
         } else {
             // ligh
-            bonus = if (heroClass == HeroClass.ROGUE) -estr else 0
+            bonus = if(heroPerk.has(LowWeightDexterous::class.java)) -estr else 0
 
             if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
                 bonus += 5 + belongings.armor.level() * 3 / 2

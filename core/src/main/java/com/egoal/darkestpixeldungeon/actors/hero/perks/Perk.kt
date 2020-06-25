@@ -113,6 +113,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 HardCrit() to 1f,
                 LowHealthRegeneration() to 1f,
                 LowHealthDexterous() to 1f,
+                LowWeightDexterous() to 1f,
                 // ExtraDexterous() to 1f,
                 ExtraEvasion() to 1f,
                 CounterStrike() to 1f,

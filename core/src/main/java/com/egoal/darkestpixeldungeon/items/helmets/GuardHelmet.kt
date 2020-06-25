@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.helmets
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
@@ -21,6 +22,17 @@ class GuardHelmet : Helmet() {
             detach(hero)
             true
         } else false
+    }
+
+    override fun uncurse() {
+        super.uncurse()
+        if (!cursed) return
+
+        // redo the modifications
+        //fixme:
+        detach(Dungeon.hero)
+        cursed = false
+        attach(Dungeon.hero)
     }
 
     private fun detach(hero: Hero) {

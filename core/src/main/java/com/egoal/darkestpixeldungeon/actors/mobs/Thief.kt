@@ -85,10 +85,11 @@ open class Thief : Mob() {
             if (!Dungeon.limitedDrops.armband.dropped() && Random.Float() < 0.1f) {
                 Dungeon.limitedDrops.armband.drop()
                 MasterThievesArmband().identify()
-            } else if (Random.Float() < 0.5f) RedHandleDagger().random()
+            } else if (Random.Float() < 0.3f) RedHandleDagger().random()
             else Gold(Random.NormalIntRange(80, 200))
 
     override fun attackProc(dmg: Damage): Damage {
+        if (!isAlive) return dmg
         val enemy = dmg.to as Char
         if (item == null && enemy is Hero && steal(enemy)) {
             enemy.takeDamage(Damage(Random.IntRange(1, 5), this, enemy).type(Damage.Type.MENTAL))

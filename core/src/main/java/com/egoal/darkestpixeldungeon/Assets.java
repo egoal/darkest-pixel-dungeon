@@ -116,6 +116,7 @@ public class Assets {
   public static final String KING_STATUARY = ACTORS + "king_statuary.png";
   public static final String GLOWWORM = ACTORS + "glowworm.png";
   public static final String SKULL = ACTORS + "skull.png";
+  public static final String SLUG = ACTORS+ "slug.png";
 
   // levels=====================================================================
   // tile

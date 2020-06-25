@@ -4,10 +4,7 @@ import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
-import com.egoal.darkestpixeldungeon.items.armor.Armor
-import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
-import com.egoal.darkestpixeldungeon.items.armor.MailArmor
-import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
+import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
@@ -143,6 +140,7 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(0, cloak)
             Dungeon.quickslot.setSlot(1, darts)
 
+            hero.heroPerk.add(LowWeightDexterous())
             hero.heroPerk.add(Dieting())
             hero.heroPerk.add(ExtraCritProbability())
             hero.heroPerk.add(Keen())
@@ -261,6 +259,9 @@ enum class HeroClass(private val title: String) {
 
 //        WandOfHypnosis().identify().collect()
 //        ScrollOfUpgrade().quantity(10).identify().collect()
+//        TomeOfMastery().identify().collect()
+//        RaggedArmor().identify().collect()
+//        SpiderGland().quantity(10).identify().collect()
     }
 
     // called when hero level up

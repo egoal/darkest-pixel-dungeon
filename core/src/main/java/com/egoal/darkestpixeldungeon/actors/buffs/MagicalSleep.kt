@@ -34,7 +34,7 @@ import kotlin.math.min
 
 open class MagicalSleep : Buff() {
 
-    protected var sleeped_ = 0f
+    private var sleeped_ = 0f
 
     override fun attachTo(target: Char): Boolean {
         if (super.attachTo(target) && !target.immunizedBuffs().contains(Sleep::class.java)) {
@@ -96,24 +96,19 @@ open class MagicalSleep : Buff() {
 
         override fun detach() {
             if (damage != null) {
-                val p = sleeped_ / MAX_SLEEP_TIME
-                damage!!.value = (damage!!.value * when {
-                    p < 0.3f -> 0.2f
-                    p < 0.7f -> 0.5f
-                    else -> 1f
-                }).toInt()
-
                 // delay it
                 Actor.addDelayed(object : Actor() {
                     override fun act(): Boolean {
-                        val dmg = damage!!
-                        if (dmg.value > 0) {
-                            dmg.value = (1 + dmg.value * ratio).toInt()
-                            target.takeDamage(dmg.type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW))
-                        }
+                        if (target.isAlive) {
+                            val dmg = damage!!
+                            if (dmg.value > 0) {
+                                dmg.value = (1 + dmg.value * ratio).toInt()
+                                target.takeDamage(dmg.type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW))
+                            }
 
-                        if (dmg.from is Actor)
-                            affect(target, Terror::class.java, 3f).`object` = (dmg.from as Actor).id()
+                            if (dmg.from is Char)
+                                affect(target, Terror::class.java, 3f).`object` = (dmg.from as Char).id()
+                        }
 
                         Actor.remove(this)
                         return true

@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
@@ -94,7 +95,7 @@ class Berserk : Buff() {
         val bonus: Float
 
         bonus = if (state == State.EXHAUSTED) (50 - exhaustion) / 50f else {
-            val percentMissing = 1f - target.HP / target.HT.toFloat()
+            val percentMissing = max(0f, 1f - target.HP / target.HT.toFloat())
             1f + percentMissing.pow(3.6f - 0.65f * level + 0.05f * level * level)
         }
 
@@ -158,7 +159,7 @@ class Berserk : Buff() {
     companion object {
         private const val EXHAUSTION_START = 40
 
-        private const val LEVEL_RECOVER_START = 3f
+        private const val LEVEL_RECOVER_START = 2.5f
 
         private const val STATE = "state"
         private const val EXHAUSTION = "exhaustion"
