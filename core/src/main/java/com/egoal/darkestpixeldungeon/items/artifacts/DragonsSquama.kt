@@ -99,7 +99,6 @@ class DragonsSquama : Artifact() {
                         if (i != hero.pos) GameScene.add(Blob.seed(i, 1, Fire::class.java))
 
                     affectedCells.mapNotNull { Actor.findChar(it) }.forEach { burnChar(it) }
-                    burnChar(hero)
                     hero.spendAndNext(1f)
                 }
         }
@@ -123,7 +122,7 @@ class DragonsSquama : Artifact() {
                 val block = round(damage.value * (0.12f + 0.01f * level())).toInt()
                 damage.value += if (cursed) block else -block
             }
-            if (charge < chargeCap) {
+            if (charge < chargeCap && damage.from is Char && damage.from !== Char.Nobody.INSTANCE) {
                 charge = min(chargeCap, charge + (4 - level() / 5) + if (isCrit) 1 else 0)
                 updateQuickslot()
             }
