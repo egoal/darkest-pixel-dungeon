@@ -54,7 +54,7 @@ class MagicBow : MeleeWeapon() {
         }
     }
 
-    //todo: this may make the bow too powerful.
+    //todo: handle the proc things.
     private fun giveShootDamage(hero: Hero, enemy: Char) =
             giveDamage(hero, enemy).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.RANGED)
 

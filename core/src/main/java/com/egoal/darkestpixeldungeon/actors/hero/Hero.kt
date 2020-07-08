@@ -601,6 +601,7 @@ class Hero : Char() {
             return takeMentalDamage(dmg)
 
         buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
+        buff(DragonsSquama.Recharge::class.java)?.procTakenDamage(dmg)
 
         val dmgToken = super.takeDamage(dmg)
         if (isAlive) {

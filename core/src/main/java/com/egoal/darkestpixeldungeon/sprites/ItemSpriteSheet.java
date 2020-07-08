@@ -255,6 +255,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_CLOAK_ENHANCED = ARTIFACTS + 40;
     public static final int CRACKED_COIN = ARTIFACTS + 41;
     public static final int ARTIFACT_SHIELD = ARTIFACTS + 42;
+    public static final int DARGONS_SQUAMA = ARTIFACTS + 43;
 
     //32 free slots
 

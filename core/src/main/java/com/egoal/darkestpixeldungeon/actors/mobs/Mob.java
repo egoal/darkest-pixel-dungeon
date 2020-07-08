@@ -97,6 +97,8 @@ public abstract class Mob extends Char {
     public int minDamage = 0, maxDamage = 0;
   public Damage.Type typeDamage = Damage.Type.NORMAL;
     public int minDefense = 0, maxDefense = 0;
+    public float criticalChance = 0f;
+    public float criticalRatio = 1.25f; // it's not the ratio matters, critical itself however
 
   private static final String STATE = "state";
   private static final String SEEN = "seen";
@@ -183,7 +185,12 @@ public abstract class Mob extends Char {
     @Override
     public Damage giveDamage(Char enemy) {
         // default normal damage
-        return new Damage(Random.NormalIntRange(minDamage, maxDamage), this, enemy).type(typeDamage);
+        Damage damage = new Damage(Random.NormalIntRange(minDamage, maxDamage), this, enemy).type(typeDamage);
+        if(Random.Float()< criticalChance){
+          damage.value = Math.round(damage.value* criticalRatio);
+          damage.addFeature(Damage.Feature.CRITICAL);
+        }
+        return damage;
     }
 
     @Override

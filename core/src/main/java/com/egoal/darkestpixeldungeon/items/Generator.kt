@@ -208,7 +208,7 @@ object Generator {
 
     object RING : ClassMapGenerator<Ring>(hashMapOf(
             // RingOfAccuracy::class.java to 1f,
-            RingOfArcane::class.java to 1f, 
+            RingOfArcane::class.java to 1f,
             RingOfEvasion::class.java to 1f,
             RingOfResistance::class.java to 1f,
             RingOfForce::class.java to 1f,
@@ -269,7 +269,9 @@ object Generator {
             HeartOfSatan::class.java to 1f,
             CloakOfSheep::class.java to 1f,
             EyeballOfTheElder.Right::class.java to 1f,
-            EyeballOfTheElder.Left::class.java to 1f
+            EyeballOfTheElder.Left::class.java to 1f,
+            HomurasShield::class.java to 0.5f,
+            DragonsSquama::class.java to 1f
     )
 
     object ARTIFACT : ClassMapGenerator<Artifact>(HashMap()), Bundlable {
@@ -357,7 +359,7 @@ object Generator {
             MaskOfClown::class.java to 1f,
             RangerHat::class.java to 0.2f, // very rare, so Yvette counts.
             MaskOfMadness::class.java to 0f, // compose
-            TurtleScarf::class.java to 1f, 
+            TurtleScarf::class.java to 1f,
             MaskOfLider::class.java to 0.1f,
             GuardHelmet::class.java to 0.2f
     ))

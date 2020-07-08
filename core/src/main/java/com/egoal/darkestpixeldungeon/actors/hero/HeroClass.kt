@@ -270,6 +270,8 @@ enum class HeroClass(private val title: String) {
 //        PotionOfHealing().identify().quantity(10).collect()
 //        ScrollOfTeleportation().identify().quantity(3).collect()
 //        ScrollOfCurse().identify().collect()
+        HomurasShield().identify().collect()
+        DragonsSquama().identify().collect()
     }
 
     // called when hero level up

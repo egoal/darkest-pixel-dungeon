@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Statistics;
 import com.egoal.darkestpixeldungeon.actors.Actor;
 ;
+import com.egoal.darkestpixeldungeon.items.artifacts.HomurasShield;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.GameLog;
@@ -283,6 +284,13 @@ public class InterlevelScene extends PixelScene {
 
     Dungeon.loadBackupGame(StartScene.Companion.getCurrentClass());
     Level level = Dungeon.loadBackupLevel(StartScene.Companion.getCurrentClass());
+    //todo: remove shield only if reflux with shield
+    HomurasShield shield = Dungeon.hero.getBelongings().getItem(HomurasShield.class);
+    if(shield!=null){
+        shield.cursed = false;
+        if(shield.isEquipped(Dungeon.hero)) shield.doUnequip(Dungeon.hero, false);
+        shield.detach(Dungeon.hero.getBelongings().backpack);
+    }
     Dungeon.switchLevel(level, Dungeon.hero.pos);
   }
 

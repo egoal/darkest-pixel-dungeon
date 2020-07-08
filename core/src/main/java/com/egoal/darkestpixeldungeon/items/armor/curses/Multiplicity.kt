@@ -62,11 +62,12 @@ class Multiplicity : Armor.Glyph() {
                     } else {
                         try {
                             m = attacker.javaClass.newInstance() as Mob
-                            val store = Bundle()
+                            // now we just make a new instance...
                             // copy
-                            attacker.storeInBundle(store)
-                            m.restoreFromBundle(store)
-                            m.HP = m.HT
+//                            val store = Bundle()
+//                            attacker.storeInBundle(store)
+//                            m.restoreFromBundle(store)
+//                            m.HP = m.HT
                             m.properties().add(Char.Property.PHANTOM)
                         } catch (e: Exception) {
                             DarkestPixelDungeon.reportException(e)
