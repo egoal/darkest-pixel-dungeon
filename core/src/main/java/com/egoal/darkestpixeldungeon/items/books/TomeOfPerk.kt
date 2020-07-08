@@ -6,6 +6,8 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 class TomeOfPerk : Book() {
     init {
         image = ItemSpriteSheet.MASTERY
+
+        unique = true // consider: stolen/resurrect
     }
 
     override fun isIdentified(): Boolean = true

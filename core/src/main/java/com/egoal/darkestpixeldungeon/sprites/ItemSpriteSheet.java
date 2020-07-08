@@ -82,7 +82,8 @@ public class ItemSpriteSheet {
     public static final int EVIL_GOLDEN_CLAW = GOLDEN_CLAW + 1;
     public static final int HEAL_REAGENT = SINGLE_USE + 21;
     public static final int FISH_BONE = SINGLE_USE + 22;
-
+    public static final int TOME_BLUE = SINGLE_USE + 23;
+    public static final int TOME_YELLOW = SINGLE_USE + 24;
 
     private static final int WEP_TIER1 = xy(1, 5);   //16 slots
     public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;
@@ -101,6 +102,8 @@ public class ItemSpriteSheet {
     public static final int DIRK = WEP_TIER2 + 4;
     public static final int DRIED_LEG = WEP_TIER2 + 5;
     public static final int SICKLE = WEP_TIER2 + 6;
+
+    public static final int RANGER_BOW = WEP_TIER2 + 8;
 
     private static final int WEP_TIER3 = xy(1, 7);   //16 slots
     public static final int SWORD = WEP_TIER3 + 0;
@@ -143,6 +146,7 @@ public class ItemSpriteSheet {
     public static final int ENHANCED_BOOMERANG = MISSILE_WEP + 10;
     public static final int DART_SEVENTH = MISSILE_WEP + 11;
     public static final int CEREMONIAL_DAGGER = MISSILE_WEP + 12;
+    public static final int MAGIC_DART = MISSILE_WEP + 13;
 
     private static final int ARMOR = xy(1, 11);  //16 slots
     public static final int ARMOR_CLOTH = ARMOR + 0;
@@ -156,7 +160,7 @@ public class ItemSpriteSheet {
     public static final int ARMOR_HUNTRESS = ARMOR + 8;
     public static final int ARMOR_SORCERESS = ARMOR + 9;
     public static final int ARMOR_MAGE_ENHANCED = ARMOR + 10;
-    public static final int ARMOR_RAGGED = ARMOR+11;
+    public static final int ARMOR_RAGGED = ARMOR + 11;
 
     private static final int HELMET = xy(1, 12);
     public static final int HELMET_CRUSADER = HELMET + 0;
@@ -319,8 +323,8 @@ public class ItemSpriteSheet {
     public static final int BROWN_ALE = FOOD + 10;
     public static final int MOON_STONE = FOOD + 11;
     public static final int STEWED = FOOD + 12;
-    public static  final int SKEWER = FOOD+13;
-    public static final int GLAND = FOOD+14;
+    public static final int SKEWER = FOOD + 13;
+    public static final int GLAND = FOOD + 14;
 
     private static final int QUEST = xy(1, 26);  //32 slots
     public static final int SKULL = QUEST + 0;
@@ -330,7 +334,6 @@ public class ItemSpriteSheet {
     public static final int PICKAXE = QUEST + 4;
     public static final int ORE = QUEST + 5;
     public static final int TOKEN = QUEST + 6;
-    public static final int RANGER_BOW = QUEST + 7;
 
     private static final int BAGS = xy(1, 28);  //16 slots
     public static final int POUCH = BAGS + 0;

@@ -143,9 +143,14 @@ class Tengu : Mob() {
         Buff.detach(Dungeon.hero, Ignorant::class.java)
         Buff.detach(Dungeon.hero, MoonNight::class.java)
 
-        Dungeon.level.drop(TomeOfPerk(), pos).sprite.drop()
-        Dungeon.level.drop(MoonStone(), pos).sprite.drop()
-        Dungeon.level.drop(SkeletonKey(Dungeon.depth), pos).sprite.drop()
+        val avals = PathFinder.NEIGHBOURS8.map { it + pos }.filter {
+            (Level.passable[it] || Level.avoid[it])
+        }
+
+        for (item in listOf(SkeletonKey(Dungeon.depth), MoonStone(), TomeOfPerk())) {
+            val cell = if (avals.isEmpty()) pos else avals.random()
+            Dungeon.level.drop(item, cell).sprite.drop(pos)
+        }
 
         GameScene.bossSlain()
         super.die(cause)

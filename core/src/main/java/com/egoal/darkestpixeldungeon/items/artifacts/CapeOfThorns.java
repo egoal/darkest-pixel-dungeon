@@ -84,6 +84,9 @@ public class CapeOfThorns extends Artifact {
     }
 
     public Damage proc(Damage dmg){
+      Hero hero = (Hero)dmg.to;
+      if(hero.STR()<16) return dmg;
+
       if(cooldown==0){
         // getting charged
         charge  +=  dmg.value*(.5+level()*.05);
@@ -98,9 +101,7 @@ public class CapeOfThorns extends Artifact {
         int deflected = Random.NormalIntRange(0, dmg.value);
         dmg.value -=  deflected;
         
-        if(dmg.from instanceof Mob && dmg.to instanceof Hero && 
-                Dungeon.level.adjacent(((Mob) dmg.from).pos, 
-                ((Hero) dmg.to).pos))
+        if(dmg.from instanceof Mob && Dungeon.level.adjacent(((Mob) dmg.from).pos, hero.pos))
           ((Mob) dmg.from).takeDamage(new Damage(deflected, dmg.to, dmg.from));
         
         exp += deflected;

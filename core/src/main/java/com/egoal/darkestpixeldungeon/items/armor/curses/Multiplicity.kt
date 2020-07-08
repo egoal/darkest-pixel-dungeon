@@ -67,6 +67,7 @@ class Multiplicity : Armor.Glyph() {
                             attacker.storeInBundle(store)
                             m.restoreFromBundle(store)
                             m.HP = m.HT
+                            m.properties().add(Char.Property.PHANTOM)
                         } catch (e: Exception) {
                             DarkestPixelDungeon.reportException(e)
                             m = null

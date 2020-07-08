@@ -23,9 +23,6 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
-import com.egoal.darkestpixeldungeon.actors.buffs.Roots
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
@@ -35,6 +32,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.weapon.melee.RedHandleDagger
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -94,6 +92,8 @@ open class Thief : Mob() {
         if (item == null && enemy is Hero && steal(enemy)) {
             enemy.takeDamage(Damage(Random.IntRange(1, 5), this, enemy).type(Damage.Type.MENTAL))
             state = FLEEING
+        } else if(Random.Int(4)==0){
+            Buff.prolong(enemy, Cripple::class.java, 1.5f)
         }
 
         return dmg

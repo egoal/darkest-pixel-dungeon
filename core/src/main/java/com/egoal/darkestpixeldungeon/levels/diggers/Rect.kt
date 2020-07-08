@@ -17,7 +17,8 @@ open class Rect(var x1: Int = 0, var x2: Int = 0, var y1: Int = 0, var y2: Int =
     fun shrink(inner: Int) =
             Rect(x1 + inner, x2 - inner, y1 + inner, y2 - inner)
 
-    fun inside(pt: Point) = pt.x in x1..x2 && pt.y in y1..y2
+    fun inside(pt: Point) = inside(pt.x, pt.y)
+    fun inside(x: Int, y: Int) = x in x1..x2 && y in y1..y2
 
     fun getAllPoints(): HashSet<Point> {
         val points = HashSet<Point>()

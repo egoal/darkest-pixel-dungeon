@@ -67,8 +67,8 @@ object Bestiary {
         when (depth) {
             // sewer
             1 -> {
-                chances = floatArrayOf(1f)
-                classes = arrayOf(Rat::class.java)
+                chances = floatArrayOf(0.8f, 0.2f)
+                classes = arrayOf(Rat::class.java, Slug::class.java)
             }
             2 -> {
                 chances = floatArrayOf(1f, 1f, 0.5f)

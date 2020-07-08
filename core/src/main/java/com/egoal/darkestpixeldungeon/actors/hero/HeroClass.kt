@@ -7,6 +7,8 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.books.TomeOfRetrain
+import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
@@ -262,6 +264,12 @@ enum class HeroClass(private val title: String) {
 //        TomeOfMastery().identify().collect()
 //        RaggedArmor().identify().collect()
 //        SpiderGland().quantity(10).identify().collect()
+//        initDebug(hero)
+        MagicBow().identify().collect()
+//        ScrollOfUpgrade().identify().quantity(10).collect()
+//        PotionOfHealing().identify().quantity(10).collect()
+//        ScrollOfTeleportation().identify().quantity(3).collect()
+//        ScrollOfCurse().identify().collect()
     }
 
     // called when hero level up

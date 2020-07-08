@@ -342,7 +342,7 @@ class Hero : Char() {
             return defSkill * evasion / Math.pow(1.5, estr.toDouble()).toFloat()
         } else {
             // ligh
-            bonus = if(heroPerk.has(LowWeightDexterous::class.java)) -estr else 0
+            bonus = if (heroPerk.has(LowWeightDexterous::class.java)) -estr else 0
 
             if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
                 bonus += 5 + belongings.armor.level() * 3 / 2
@@ -1262,7 +1262,7 @@ class Hero : Char() {
 
             GameScene.gameOver()
 
-            if(src is Hero) Badges.validateSuicide()
+            if (src is Hero) Badges.validateSuicide()
 
             if (src is Doom) src.onDeath()
 

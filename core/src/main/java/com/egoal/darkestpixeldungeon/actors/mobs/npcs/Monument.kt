@@ -27,9 +27,12 @@ class Monument : NPC.Unbreakable() {
         if (!activated && Dungeon.hero.lvl == 1) //todo: rework this
             GameScene.show(object : WndSelectChallenge() {
                 override fun onChallengeWouldActivate(challenge: Challenge) {
+                    val hero = Dungeon.hero
+                    if (hero.challenge != null) return
+
                     activated = true
-                    challenge.affect(Dungeon.hero)
-                    Dungeon.hero.challenge = challenge
+                    challenge.affect(hero)
+                    hero.challenge = challenge
                     hide()
                     GLog.n(M.L(Monument::class.java, "activated", challenge.title()))
                 }

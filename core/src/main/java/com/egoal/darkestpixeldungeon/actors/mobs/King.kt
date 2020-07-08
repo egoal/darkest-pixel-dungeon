@@ -11,11 +11,13 @@ import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
+import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
 import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.unclassified.ArmorKit
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim
 import com.egoal.darkestpixeldungeon.levels.CityBossLevel
+import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.KingSprite
@@ -24,6 +26,7 @@ import com.egoal.darkestpixeldungeon.ui.BossHealthBar
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.*
 import kotlin.math.min
@@ -113,9 +116,15 @@ class King : Mob() {
 
     override fun die(cause: Any?) {
         GameScene.bossSlain()
-        Dungeon.level.drop(SkeletonKey(Dungeon.depth), pos).sprite.drop()
-        Dungeon.level.drop(ArmorKit(), pos).sprite.drop()
-        Dungeon.level.drop(CrownOfDwarf(), pos).sprite.drop()
+
+        val avals = PathFinder.NEIGHBOURS8.map { it + pos }.filter {
+            (Level.passable[it] || Level.avoid[it])
+        }
+
+        for (item in listOf(SkeletonKey(Dungeon.depth), ArmorKit(), CrownOfDwarf(), TomeOfUpgrade())) {
+            val cell = if (avals.isEmpty()) pos else avals.random()
+            Dungeon.level.drop(item, cell).sprite.drop(pos)
+        }
 
         // remove undead
         Dungeon.level.mobs.filter { it is Undead }.forEach { (it as Undead).realDie() }

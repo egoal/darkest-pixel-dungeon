@@ -54,7 +54,7 @@ class MissileSprite : ItemSprite(), Tweener.Listener {
         private val FIXED_ROTATION_IMAGES = arrayOf(
                 ItemSpriteSheet.DART, ItemSpriteSheet.INCENDIARY_DART,
                 ItemSpriteSheet.CURARE_DART, ItemSpriteSheet.JAVELIN,
-                ItemSpriteSheet.SWALLOW_DART, ItemSpriteSheet.CEREMONIAL_DAGGER
+                ItemSpriteSheet.SWALLOW_DART, ItemSpriteSheet.CEREMONIAL_DAGGER, ItemSpriteSheet.MAGIC_DART
         )
     }
 }

@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.SimpleMobSprite
 import com.egoal.darkestpixeldungeon.windows.WndDialogue
+import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.round
 
@@ -69,7 +70,19 @@ class UndeadShopkeeper : Merchant() {
 
     class Sprite : SimpleMobSprite(Assets.UNDEAD_SHOPKEEPER)
 
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(ITEM_CHECKED, itemChecked)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        itemChecked = bundle.getBoolean(ITEM_CHECKED)
+    }
+
     companion object {
         private const val AC_WHY_HERE = "why_here"
+
+        private const val ITEM_CHECKED = "checked"
     }
 }

@@ -248,7 +248,7 @@ object Generator {
 
     // artifact is uniquely dropping
     val INITIAL_ARTIFACT_PROBS = hashMapOf(
-            CapeOfThorns::class.java to 0f, // by DM300
+            CapeOfThorns::class.java to 1f,
             ChaliceOfBlood::class.java to 0f,  // by statuary
             CloakOfShadows::class.java to 0f, // for rouge
             CrackedCoin::class.java to 1f,
