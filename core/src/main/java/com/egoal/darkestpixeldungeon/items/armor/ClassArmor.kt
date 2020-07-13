@@ -29,6 +29,8 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 
 import java.util.ArrayList
+import kotlin.math.max
+import kotlin.math.round
 
 abstract class ClassArmor : Armor(6) {
     private var armorTier: Int = 0
@@ -78,13 +80,15 @@ abstract class ClassArmor : Armor(6) {
     abstract fun doSpecial()
 
     override fun STRReq(lvl: Int): Int {
-        var lvl = Math.max(0, lvl)
-        var effectiveTier = armorTier.toFloat()
-        if (glyph != null) effectiveTier += glyph.tierSTRAdjust()
-        effectiveTier = Math.max(0f, effectiveTier)
+        val level = max(0, lvl)
 
+        var effectiveTier = if (armorTier == 0) -1.5f else armorTier.toFloat() //todo: this is just a hotfix to compatible with ragged armor.
+        if (glyph != null) effectiveTier += glyph.tierSTRAdjust()
+        effectiveTier = max(0f, effectiveTier)
+
+        return 8 + round(effectiveTier * 2f).toInt() - (level + 1) / 2 // +1, +3, +5, +7
         //strength req decreases at +1,+3,+6,+10,etc.
-        return 8 + Math.round(effectiveTier * 2) - (Math.sqrt((8 * lvl + 1).toDouble()) - 1).toInt() / 2
+//        return 8 + Math.round(effectiveTier * 2) - (Math.sqrt((8 * lvl + 1).toDouble()) - 1).toInt() / 2
     }
 
     override fun DRMax(lvl: Int): Int {

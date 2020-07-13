@@ -98,7 +98,8 @@ object Generator {
                     Sai::class.java to 4f,
                     Whip::class.java to 4f,
                     CrystalsSwords::class.java to 4f,
-                    DaggerAxe::class.java to 5f
+                    DaggerAxe::class.java to 5f,
+                    InvisibleBlade::class.java to 5f
             ))
 
             object T4 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
@@ -107,7 +108,8 @@ object Generator {
                     Flail::class.java to 5f,
                     RunicBlade::class.java to 4f,
                     AssassinsBlade::class.java to 4f,
-                    SpikeShield::class.java to 5f
+                    SpikeShield::class.java to 5f,
+                    Pitchfork::class.java to 5f
             ))
 
             object T5 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
