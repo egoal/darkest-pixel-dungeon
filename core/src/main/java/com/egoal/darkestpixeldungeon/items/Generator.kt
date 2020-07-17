@@ -25,16 +25,38 @@ import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
+import kotlin.reflect.KClass
 
 object Generator {
     fun CurrentFloorSet(): Int = Dungeon.depth / 5
 
     abstract class ItemGenerator {
         abstract fun generate(): Item
+
+        open fun reset() {} // reset the generator to initial state
     }
 
     open class ClassMapGenerator<T>(val probMap: HashMap<Class<out T>, Float>) : ItemGenerator() {
         override fun generate(): Item = (Random.chances(probMap).newInstance() as Item).random()
+    }
+
+    open class BalancedClassMapGenerator(private val initialProbs: HashMap<KClass<out Item>, Float>) : ItemGenerator() {
+        private val currentProbs = hashMapOf<KClass<out Item>, Float>()
+
+        init {
+            reset()
+        }
+
+        override fun generate(): Item {
+            val it = Random.chances(currentProbs)
+            currentProbs[it] = currentProbs[it]!! / 2f // lower its prob, this is the "balanced"
+            return it.java.newInstance()
+        }
+
+        override fun reset() {
+            initialProbs.clear()
+            for (pr in initialProbs) currentProbs[pr.key] = pr.value
+        }
     }
 
     object ARMOR : ItemGenerator() {

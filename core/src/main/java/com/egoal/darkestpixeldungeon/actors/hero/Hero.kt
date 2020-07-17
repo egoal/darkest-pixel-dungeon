@@ -534,8 +534,9 @@ class Hero : Char() {
 
         speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
         speed *= heroPerk.get(BaredAngry::class.java)?.speedFactor(this) ?: 1f
+        speed *= heroPerk.get(Maniac::class.java)?.speedFactor(this) ?: 1f
 
-        return speed
+        return max(0.25f, speed)
     }
 
     override fun attackProc(dmg: Damage): Damage {

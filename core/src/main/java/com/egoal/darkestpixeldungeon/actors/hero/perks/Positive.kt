@@ -560,3 +560,11 @@ class LevelPerception : Perk() {
     override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }
 
+class Maniac : Perk() {
+    override fun image(): Int = PerkImageSheet.MANIAC
+
+    fun speedFactor(hero: Hero): Float {
+        val n = min(hero.visibleEnemies(), 8)
+        return if (n <= 1) 1f else (0.5f + 0.5f * 0.8f.pow(n)) // no bonus when 1 v 1
+    }
+}

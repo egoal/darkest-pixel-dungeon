@@ -119,7 +119,7 @@ class DM300 : Mob() {
 
     private fun resetBumpCell() {
         bumpcell = -1
-        if(cross!=null) cross.visible = false
+        cross.visible = false
     }
 
     public override fun attackDelay(): Float = if (overloaded) .667f else 1f
@@ -221,7 +221,7 @@ class DM300 : Mob() {
     }
 
     private fun bump(cell: Int): Boolean {
-        bumpcd = 3
+        bumpcd = 5
         val bumpPath = Ballistica(pos, cell, Ballistica.STOP_TARGET or Ballistica.STOP_TERRAIN)
 
         if (bumpPath.path.size < 3 || bumpPath.dist < 2) return false
