@@ -1,6 +1,6 @@
 NAME,HT,atkSkill,defSkill,EXP,maxLvl,lootChance,loot,minDamage,maxDamage,typeDamage,critChance,critRatio,minDefend,maxDefend,magicalResistance,FIRE,POISON,ICE,LIGHT,SHADOW,HOLY,Properties
 Rat,8,8,2,1,5,,,1,4,,,,0,1,,-0.3,0.1,,,,,
-Slug,8,8,2,1,5,,,2,3,,,,0,1,-0.25,-0.5,0.75,,,,,
+Slug,8,8,2,1,5,,,2,3,,,,0,1,-0.35,-0.5,0.75,,,,,
 Gnoll,12,10,4,2,8,0.3,Gold,1,6,,,,0,2,,,,,,,,
 Crab,16,12,5,4,9,0.1667,MysteryMeat,2,8,,0.08,,0,3,-0.2,,,0.1,-0.2,,,
 FetidRat,20,12,5,4,5,,,1,4,,,,0,2,,,0.2,,,0.2,-0.25,MINIBOSS DEMONIC

@@ -92,7 +92,7 @@ class UnstableSpellbook : Artifact() {
 
         // "sort" by prob
         val scrollprobs = HashMap<Class<out Scroll>, Float>()
-        scrollprobs.putAll(Generator.SCROLL.probMap)
+        for (pr in Generator.SCROLL.initialProbs) scrollprobs[pr.key.java as Class<out Scroll>] = pr.value
 
         var cls = Random.chances(scrollprobs)
         while (cls != null) {

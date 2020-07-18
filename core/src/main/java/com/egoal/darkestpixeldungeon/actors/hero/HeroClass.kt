@@ -265,13 +265,13 @@ enum class HeroClass(private val title: String) {
 //        RaggedArmor().identify().collect()
 //        SpiderGland().quantity(10).identify().collect()
 //        initDebug(hero)
-        MagicBow().identify().collect()
+//        MagicBow().identify().collect()
 //        ScrollOfUpgrade().identify().quantity(10).collect()
 //        PotionOfHealing().identify().quantity(10).collect()
 //        ScrollOfTeleportation().identify().quantity(3).collect()
 //        ScrollOfCurse().identify().collect()
-        HomurasShield().identify().collect()
-        DragonsSquama().identify().collect()
+//        HomurasShield().identify().collect()
+//        DragonsSquama().identify().collect()
     }
 
     // called when hero level up

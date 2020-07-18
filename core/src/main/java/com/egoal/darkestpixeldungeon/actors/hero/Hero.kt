@@ -162,6 +162,8 @@ class Hero : Char() {
         val hlvl = buff(Hunger::class.java)!!.hunger()
         if (hlvl >= Hunger.STARVING) return 0f
 
+        if (buff(Berserk::class.java)?.berserking() == true) return 0f
+
         var reg = regeneration
         reg += heroPerk.get(LowHealthRegeneration::class.java)?.extraRegeneration(this) ?: 0f
 
