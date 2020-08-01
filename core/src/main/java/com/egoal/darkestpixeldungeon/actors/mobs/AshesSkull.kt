@@ -56,7 +56,7 @@ class AshesSkull : Mob() {
     }
 
     private fun jump(target: Char): Boolean {
-        jumpcd = COOLDOWN_JUMP
+        jumpcd = COOLDOWN_JUMP //todo: ...
 
         val b = Ballistica(pos, target.pos, Ballistica.PROJECTILE)
         if (b.collisionPos != target.pos || b.path.size < 3 || b.dist < 1 || !Level.passable[b.path[b.dist - 1]])

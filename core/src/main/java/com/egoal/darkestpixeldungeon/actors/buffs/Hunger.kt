@@ -71,8 +71,8 @@ class Hunger : Buff(), Hero.Doom {
             val hero = target as Hero
 
             if (isStarving) {
-                val dhp = if (hero.heroPerk.get(RavenousAppetite::class.java) != null) target.HT / 60f
-                else target.HT / 80f
+                val dhp = if (hero.heroPerk.get(RavenousAppetite::class.java) != null) target.HT / 50f
+                else target.HT / 75f
                 partialDamage += dhp
 
                 if (partialDamage > 1) {
@@ -198,8 +198,8 @@ class Hunger : Buff(), Hero.Doom {
         private const val STEP = 10f
         private const val HUNGER_PER_STEP = 11f
 
-        const val HUNGRY = 325f
-        const val STARVING = 450f
+        const val HUNGRY = 350f
+        const val STARVING = 500f
 
         private const val LEVEL = "level"
         private const val PARTIALDAMAGE = "partialDamage"

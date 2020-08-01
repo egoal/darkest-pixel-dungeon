@@ -226,6 +226,10 @@ class ExtraEvasion : Perk(4) {
     override fun description(): String = M.L(this, "desc", (prob() * 100).toInt())
 }
 
+class LowWeightDexterous : Perk(1) {
+    override fun image(): Int = PerkImageSheet.LOW_WEIGHT_DEX
+}
+
 // cs go!
 class CounterStrike : Perk() {
     override fun image(): Int = PerkImageSheet.COUNTER_STRIKE
@@ -556,3 +560,11 @@ class LevelPerception : Perk() {
     override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }
 
+class Maniac : Perk() {
+    override fun image(): Int = PerkImageSheet.MANIAC
+
+    fun speedFactor(hero: Hero): Float {
+        val n = min(hero.visibleEnemies(), 8)
+        return if (n <= 1) 1f else (0.5f + 0.5f * 0.8f.pow(n)) // no bonus when 1 v 1
+    }
+}

@@ -29,7 +29,9 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff;
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots;
+import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
+import com.egoal.darkestpixeldungeon.items.unclassified.SpiderGland;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.sprites.SpinnerSprite;
 import com.watabou.utils.Random;
@@ -38,70 +40,79 @@ import java.util.HashSet;
 
 public class Spinner extends Mob {
 
-  {
-    PropertyConfiger.INSTANCE.set(this, "Spinner");
+    {
+        PropertyConfiger.INSTANCE.set(this, "Spinner");
 
-    spriteClass = SpinnerSprite.class;
-    loot = new MysteryMeat();
+        spriteClass = SpinnerSprite.class;
+        loot = new MysteryMeat();
 
-    FLEEING = new Fleeing();
-  }
-
-  @Override
-  public Damage giveDamage(Char target) {
-    return super.giveDamage(target).addElement(Damage.Element.POISON);
-  }
-
-  @Override
-  protected boolean act() {
-    boolean result = super.act();
-
-    if (state == FLEEING && buff(Terror.class) == null &&
-            enemy != null && enemySeen && enemy.buff(Poison.class) == null) {
-      state = HUNTING;
-    }
-    return result;
-  }
-
-  @Override
-  public Damage attackProc(Damage damage) {
-    Char enemy = (Char) damage.to;
-    if (Random.Int(2) == 0) {
-      Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) * Poison
-              .durationFactor(enemy));
-      state = FLEEING;
+        FLEEING = new Fleeing();
     }
 
-    return damage;
-  }
-
-  @Override
-  public void move(int step) {
-    if (state == FLEEING) {
-      GameScene.add(Blob.seed(pos, Random.Int(5, 7), Web.class));
-    }
-    super.move(step);
-  }
-
-  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-
-  static {
-    IMMUNITIES.add(Roots.class);
-  }
-
-  @Override
-  public HashSet<Class<?>> immunizedBuffs() {
-    return IMMUNITIES;
-  }
-
-  private class Fleeing extends Mob.Fleeing {
     @Override
-    protected void nowhereToRun() {
-      if (buff(Terror.class) == null) {
-        state = HUNTING;
-      } else {
-        super.nowhereToRun();
-      }
+    public Damage giveDamage(Char target) {
+        return super.giveDamage(target).addElement(Damage.Element.POISON);
     }
-  }
+
+    @Override
+    protected boolean act() {
+        boolean result = super.act();
+
+        if (state == FLEEING && buff(Terror.class) == null &&
+                enemy != null && enemySeen && enemy.buff(Poison.class) == null) {
+            state = HUNTING;
+        }
+        return result;
+    }
+
+    @Override
+    public Damage attackProc(Damage damage) {
+        Char enemy = (Char) damage.to;
+        if (Random.Int(2) == 0) {
+            Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) * Poison
+                    .durationFactor(enemy));
+            state = FLEEING;
+        }
+
+        return damage;
+    }
+
+    @Override
+    public void move(int step) {
+        if (state == FLEEING) {
+            GameScene.add(Blob.seed(pos, Random.Int(5, 7), Web.class));
+        }
+        super.move(step);
+    }
+
+    @Override
+    protected Item createLoot() {
+        if (Random.Float() < 0.3f) {
+            int q = Random.Float() < 0.3f ? 2 : 1;
+            return new SpiderGland().quantity(q).identify();
+        }
+        return super.createLoot();
+    }
+
+    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+    static {
+        IMMUNITIES.add(Roots.class);
+    }
+
+    @Override
+    public HashSet<Class<?>> immunizedBuffs() {
+        return IMMUNITIES;
+    }
+
+    private class Fleeing extends Mob.Fleeing {
+        @Override
+        protected void nowhereToRun() {
+            if (buff(Terror.class) == null) {
+                state = HUNTING;
+            } else {
+                super.nowhereToRun();
+            }
+        }
+    }
 }

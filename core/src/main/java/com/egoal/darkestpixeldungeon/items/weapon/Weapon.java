@@ -24,6 +24,8 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraStrengthPower;
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Arrogant;
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Bloodthirsty;
+import com.egoal.darkestpixeldungeon.items.weapon.curses.Provocation;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting;
@@ -47,6 +49,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Eldritch;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Lucky;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking;
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Storming;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Stunning;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Suppress;
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable;
@@ -284,17 +287,16 @@ abstract public class Weapon extends KindOfWeapon {
 
     private static final Class<?>[] enchants = new Class<?>[]{
             Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
-            Chilling.class, Eldritch.class, Lucky.class, Projecting.class,
-            Unstable.class, Dazzling.class, Suppress.class,
+            Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Unstable.class, Dazzling.class, Suppress.class, Storming.class,
             Grim.class, Stunning.class, Vampiric.class,};
     private static final float[] chances = new float[]{
             10, 10, 10, 10,
-            5, 5, 5, 5, 5, 5, 5,
+            5, 5, 5, 5, 5, 5, 5, 5,
             2, 2, 2};
 
     private static final Class<?>[] curses = new Class<?>[]{
             Annoying.class, Displacing.class, Exhausting.class, Fragile
-            .class, Sacrificial.class, Wayward.class, Arrogant.class,
+            .class, Sacrificial.class, Wayward.class, Arrogant.class, Provocation.class, Bloodthirsty.class,
     };
 
     public abstract Damage proc(Weapon weapon, Damage damage);

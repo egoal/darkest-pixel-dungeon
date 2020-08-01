@@ -29,7 +29,7 @@ object HighGrass {
             val prize = Harvest(level, pos, ch)
             if (prize != null) level.drop(prize, pos).sprite.drop()
 
-            if (prize is Plant.Seed) Level.set(pos, Terrain.GRASS)
+            if (prize is Plant.Seed || Dungeon.depth == 0) Level.set(pos, Terrain.GRASS)
 
             GameScene.updateMap(pos)
         }

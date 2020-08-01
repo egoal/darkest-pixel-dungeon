@@ -88,7 +88,7 @@ class SkeletonKnight : Mob() {
     companion object {
 
         private const val COUNTER = .175f
-        private const val COMBO = .15f
+        private const val COMBO = .175f
 
         private const val COMBO_COOLDOWN = 2
 

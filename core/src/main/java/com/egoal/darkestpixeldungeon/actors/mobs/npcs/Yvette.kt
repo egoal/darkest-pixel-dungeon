@@ -20,6 +20,7 @@ import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
+import com.egoal.darkestpixeldungeon.items.weapon.melee.MagicBow
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -46,13 +47,28 @@ class Yvette : NPC() {
     private var questGiven = false
     private var seenBefore = false // no store
     private var foodGotten = false
+    private var potionGotten = false
 
     override fun interact(): Boolean {
         sprite.turnTo(pos, Dungeon.hero.pos)
 
         if (Quest.Completed) {
             // safe on the land
-            tell(Messages.get(this, "see-again"))
+            //todo:
+            val bow = Dungeon.hero.belongings.getItem(MagicBow::class.java)
+            if (bow == null) {
+                tell(Messages.get(this, "see-again"))
+            } else {
+                WndDialogue.Show(this, M.L(this, "see-again"), M.L(this, "return-bow"), M.L(this, "bye")) {
+                    if (it == 0) {
+                        bow.cursed = false
+                        if (bow.isEquipped(Dungeon.hero)) bow.doUnequip(Dungeon.hero, false)
+                        else bow.detach(Dungeon.hero.belongings.backpack)
+                        tell(M.L(this, "bow-got", Dungeon.hero.className()))
+                    }
+                }
+            }
+
             return false
         }
 
@@ -80,7 +96,7 @@ class Yvette : NPC() {
             }
 
             GameScene.selectItem(selectorGiveItem, Messages.get(this, "give-item"), WndBag.Filter {
-                it is Food || it is Scroll
+                it is Food || it is Scroll || it is Potion
             })
         } else {
             // kill her? you dirty adventurer!
@@ -101,12 +117,19 @@ class Yvette : NPC() {
 
     private val selectorGiveItem = WndBag.Listener {
         it.let { item ->
-            if (item is Food) {
-                item.detach(Dungeon.hero.belongings.backpack)
-                onFoodGotten(item)
-            } else if (item is Scroll) {
-                item.detach(Dungeon.hero.belongings.backpack)
-                onScrollGotten(item)
+            when (item) {
+                is Food -> {
+                    item.detach(Dungeon.hero.belongings.backpack)
+                    onFoodGotten(item)
+                }
+                is Scroll -> {
+                    item.detach(Dungeon.hero.belongings.backpack)
+                    onScrollGotten(item)
+                }
+                is Potion -> {
+                    item.detach(Dungeon.hero.belongings.backpack)
+                    onPotionGotten(item)
+                }
             }
         }
     }
@@ -123,8 +146,46 @@ class Yvette : NPC() {
     }
 
     private fun onScrollGotten(scroll: Scroll) {
-        if (scroll is ScrollOfTeleportation) {
-            val content = Messages.get(this, "thanks-for-scroll") +
+        if (scroll !is ScrollOfTeleportation) {
+            returnItem(scroll)
+            return
+        }
+
+        //todo: clean this
+        if (potionGotten) {
+            val content = M.L(this, "thanks-for-scroll") + "\n\n" + M.L(this, "give-bow")
+            WndDialogue.Show(this, content, M.L(this, "decline_bow"), M.L(this, "bye")) {
+                if (it == 0) {
+                    GameScene.show(object : WndQuest(this, M.L(this, "give_key")) {
+                        override fun onBackPressed() {
+                            super.onBackPressed()
+                            Quest.Completed = true
+                            Dungeon.hero.recoverSanity(Random.Float(10f, 25f)) // recover much more.
+                            Dungeon.level.drop(IronKey(20), pos).sprite.drop()
+
+                            if (foodGotten) {
+                                val perk = IntendedTransportation()
+                                Dungeon.hero.heroPerk.add(perk)
+
+                                PerkGain.Show(Dungeon.hero, perk)
+                                GLog.p(Messages.get(Yvette::class.java, "taught", name))
+                            }
+
+                            this@Yvette.destroy()
+                            (sprite as Sprite).leave()
+                        }
+                    })
+                } else {
+                    Quest.Completed = true
+                    Dungeon.hero.recoverSanity(Random.Float(4f, 10f))
+                    Dungeon.level.drop(MagicBow().identify(), pos).sprite.drop()
+
+                    this@Yvette.destroy()
+                    (sprite as Sprite).leave()
+                }
+            }
+        } else {
+            val content = M.L(this, "thanks-for-scroll") + M.L(this, "give-items") +
                     if (foodGotten) "\n\n" + Messages.get(this, "teach-teleportation") else ""
 
             GameScene.show(object : WndQuest(this, content) {
@@ -133,11 +194,20 @@ class Yvette : NPC() {
                     leave()
                 }
             })
-        } else {
-            tell(Messages.get(this, "not-teleportation"))
-            if (!scroll.collect())
-                Dungeon.level.drop(scroll, Dungeon.hero.pos)
         }
+    }
+
+    private fun onPotionGotten(potion: Potion) {
+        if (potion is PotionOfHealing) {
+            potionGotten = true
+            tell(M.L(this, "thanks-for-potion"))
+            sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 8)
+        } else returnItem(potion)
+    }
+
+    private fun returnItem(item: Item) {
+        tell(M.L(this, "not-this"))
+        if (!item.collect()) Dungeon.level.drop(item, Dungeon.hero.pos)
     }
 
     private fun leave() {
@@ -194,6 +264,7 @@ class Yvette : NPC() {
         Dungeon.level.drop(RangerHat().identify(), pos)
         Dungeon.level.drop(Generator.WEAPON.generate(), pos)
         Dungeon.level.drop(YvettesDiary(), pos)
+        Dungeon.level.drop(MagicBow.Broken(), pos)
 
         Wound.hit(pos)
         Sample.INSTANCE.play(Assets.SND_CRITICAL)
@@ -205,12 +276,14 @@ class Yvette : NPC() {
         super.storeInBundle(bundle)
         bundle.put(STR_QUEST_GIVEN, questGiven)
         bundle.put(STR_FOOD_GOTTEN, foodGotten)
+        bundle.put(STR_POTION_GOTTEN, potionGotten)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         questGiven = bundle.getBoolean(STR_QUEST_GIVEN)
         foodGotten = bundle.getBoolean(STR_FOOD_GOTTEN)
+        potionGotten = bundle.getBoolean(STR_POTION_GOTTEN)
     }
 
     // unbreakable
@@ -225,6 +298,7 @@ class Yvette : NPC() {
     companion object {
         private const val STR_QUEST_GIVEN = "quest-given"
         private const val STR_FOOD_GOTTEN = "food-gotten"
+        private const val STR_POTION_GOTTEN = "potion-gotten"
 
         private const val STR_QUEST_NODE = "yvette"
         private const val STR_QUEST_COMPLETED = "completed"

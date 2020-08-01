@@ -164,7 +164,8 @@ object Badges {
         PERK_GAIN_2(65),
         PERK_GAIN_3(66),
         PERK_NONE(67, true),
-        SUICIDE(68, true),
+        PERK_EMPTY(68, true), //err, this should be none, but it already used...
+        SUICIDE(69, true),
         GAMES_PLAYED_1(60, true),
         GAMES_PLAYED_2(61, true),
         GAMES_PLAYED_3(62, true),
@@ -893,6 +894,12 @@ object Badges {
     }
 
     fun validateNoPerk() {
+        if (Dungeon.IsChallenged()) return
+
+        if (Dungeon.hero.heroPerk.perks.isEmpty()) displayBadge(Badge.PERK_EMPTY)
+    }
+
+    fun validateNeverGainPerk() {
         if (Dungeon.IsChallenged()) return
 
         if (Dungeon.hero.perkGained == 0) displayBadge(Badge.PERK_NONE)

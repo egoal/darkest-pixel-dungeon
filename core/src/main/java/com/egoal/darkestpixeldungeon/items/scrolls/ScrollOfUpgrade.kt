@@ -66,63 +66,47 @@ class ScrollOfUpgrade : InventoryScroll() {
         Item.curUser.recoverSanity(Random.Float(0.5f, 3.5f))
 
         //logic for telling the user when item properties change from upgrades
-        //...yes this is rather messy
-        if (item is Weapon) {
-            val wasCursed = item.cursed
-            val hadCursedEnchant = item.hasCurseEnchant()
-            val hadGoodEnchant = item.hasGoodEnchant()
-
-            item.upgrade()
-
-            if (hadCursedEnchant && !item.hasCurseEnchant()) {
-                removeCurse(Dungeon.hero)
-            } else if (wasCursed && !item.cursed) {
-                weakenCurse(Dungeon.hero)
+        //...yes this is rather mess
+        when (item) {
+            is Weapon -> {
+                val enchanted = item.enchantment != null
+                item.upgrade()
+                if (enchanted && item.enchantment == null)
+                    GLog.w(M.L(Weapon::class.java, "incompatible"))
             }
-            if (hadGoodEnchant && !item.hasGoodEnchant()) {
-                GLog.w(Messages.get(Weapon::class.java, "incompatible"))
+            is Armor -> {
+                val wasCursed = item.cursed
+                val hadCursedGlyph = item.hasCurseGlyph()
+                val hadGoodGlyph = item.hasGoodGlyph()
+
+                item.upgrade()
+
+                if (hadCursedGlyph && !item.hasCurseGlyph()) removeCurse(Dungeon.hero)
+                else if (wasCursed && !item.cursed) weakenCurse(Dungeon.hero)
+                if (hadGoodGlyph && !item.hasGoodGlyph())
+                    GLog.w(Messages.get(Armor::class.java, "incompatible"))
             }
+            is Wand -> {
+                val wasCursed = item.cursed
 
-        } else if (item is Armor) {
-            val wasCursed = item.cursed
-            val hadCursedGlyph = item.hasCurseGlyph()
-            val hadGoodGlyph = item.hasGoodGlyph()
+                item.upgrade()
 
-            item.upgrade()
-
-            if (hadCursedGlyph && !item.hasCurseGlyph()) {
-                removeCurse(Dungeon.hero)
-            } else if (wasCursed && !item.cursed) {
-                weakenCurse(Dungeon.hero)
+                if (wasCursed && !item.cursed) removeCurse(Dungeon.hero)
             }
-            if (hadGoodGlyph && !item.hasGoodGlyph()) {
-                GLog.w(Messages.get(Armor::class.java, "incompatible"))
-            }
+            is Ring -> {
+                val wasCursed = item.cursed
 
-        } else if (item is Wand) {
-            val wasCursed = item.cursed
+                item.upgrade()
 
-            item.upgrade()
-
-            if (wasCursed && !item.cursed) {
-                removeCurse(Dungeon.hero)
-            }
-
-        } else if (item is Ring) {
-            val wasCursed = item.cursed
-
-            item.upgrade()
-
-            if (wasCursed && !item.cursed) {
-                if (item.level() < 1) {
-                    weakenCurse(Dungeon.hero)
-                } else {
-                    removeCurse(Dungeon.hero)
+                if (wasCursed && !item.cursed) {
+                    if (item.level() < 1) {
+                        weakenCurse(Dungeon.hero)
+                    } else {
+                        removeCurse(Dungeon.hero)
+                    }
                 }
             }
-
-        } else {
-            item.upgrade()
+            else -> item.upgrade()
         }
 
         Badges.validateItemLevelAquired(item)

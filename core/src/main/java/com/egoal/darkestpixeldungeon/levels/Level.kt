@@ -66,7 +66,6 @@ import com.egoal.darkestpixeldungeon.levels.traps.Trap
 import com.egoal.darkestpixeldungeon.mechanics.ShadowCaster
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Game
@@ -188,7 +187,7 @@ abstract class Level : Bundlable {
             customTiles.clear()
             luminaries.clear()
 
-            Generator.ResetCategoryProbs()
+            Generator.resetCategoryProbs()
             if (build(i)) {
                 Log.d("dpd", "level build okay after $i trails.")
                 break

@@ -68,7 +68,18 @@ class CavesBossLevel : Level() {
     override fun build(iterations: Int): Boolean {
         loadMapDataFromFile(MAP_FILE)
 
-        val patch = Patch.Generate(this, 0.45f, 6)
+        repeat(3) {
+            // 7, 14-> 24, 31
+            var x: Int
+            var y: Int
+            do {
+                x = Random.Int(7, 24)
+                y = Random.Int(14, 31)
+            } while (map[xy2cell(x, y)] != Terrain.EMPTY || ROOM_ENTRANCE.inside(x, y))
+            map[xy2cell(x, y)] = Terrain.WALL
+        }
+
+        val patch = Patch.Generate(this, 0.45f, 4)
         for (i in 0 until length()) {
             if (map[i] == Terrain.EMPTY && patch[i]) {
                 map[i] = Terrain.WATER

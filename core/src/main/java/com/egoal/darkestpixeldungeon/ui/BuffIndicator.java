@@ -39,7 +39,7 @@ public class BuffIndicator extends Component {
 
   public static final int NONE = -1;
 
-  //TODO consider creating an enum to store both index, and tint. Saves 
+  //TODO consider creating an enum to store both index, and tint. Saves
   // making separate images for color differences.
   public static final int MIND_VISION = 0;
   public static final int LEVITATION = 1;
@@ -199,7 +199,7 @@ public class BuffIndicator extends Component {
 
     @Override
     protected void onClick() {
-      GameScene.show(new WndInfoBuff(buff));
+      if(buff.icon()!= NONE) GameScene.show(new WndInfoBuff(buff));
     }
   }
 

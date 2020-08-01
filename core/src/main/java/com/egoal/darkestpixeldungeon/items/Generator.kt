@@ -25,16 +25,38 @@ import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
+import kotlin.reflect.KClass
 
 object Generator {
     fun CurrentFloorSet(): Int = Dungeon.depth / 5
 
     abstract class ItemGenerator {
         abstract fun generate(): Item
+        abstract fun reset()
     }
 
-    open class ClassMapGenerator<T>(val probMap: HashMap<Class<out T>, Float>) : ItemGenerator() {
-        override fun generate(): Item = (Random.chances(probMap).newInstance() as Item).random()
+    open class ClassMapGenerator(val probMap: HashMap<KClass<out Item>, Float>) : ItemGenerator() {
+        override fun generate(): Item = (Random.chances(probMap).java.newInstance() as Item).random()
+        override fun reset() {}
+    }
+
+    open class BalancedClassMapGenerator(val initialProbs: HashMap<KClass<out Item>, Float>) : ItemGenerator() {
+        private val currentProbs = hashMapOf<KClass<out Item>, Float>()
+
+        init {
+            reset()
+        }
+
+        override fun generate(): Item {
+            val it = Random.chances(currentProbs)
+            currentProbs[it] = currentProbs[it]!! / 2f // lower its prob, this is the "balanced"
+            return it.java.newInstance().random()
+        }
+
+        override fun reset() {
+            currentProbs.clear()
+            for (pr in initialProbs) currentProbs[pr.key] = pr.value
+        }
     }
 
     object ARMOR : ItemGenerator() {
@@ -52,6 +74,7 @@ object Generator {
         )
 
         override fun generate(): Item = random(CurrentFloorSet())
+        override fun reset() {}
 
         fun random(floorSet: Int): Armor {
             val fs = GameMath.clamp(floorSet, 0, floorSetProbs.size - 1)
@@ -70,52 +93,55 @@ object Generator {
         )
 
         object MELEE : ItemGenerator() {
-            object T1 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    WornShortsword::class.java to 1f,
-                    Knuckles::class.java to 1f,
-                    Dagger::class.java to 1f,
-                    MagesStaff::class.java to 0f,
-                    SorceressWand::class.java to 0f,
-                    BattleGloves::class.java to 1f
+            object T1 : BalancedClassMapGenerator(hashMapOf(
+                    WornShortsword::class to 1f,
+                    Knuckles::class to 1f,
+                    Dagger::class to 1f,
+                    MagesStaff::class to 0f,
+                    SorceressWand::class to 0f,
+                    BattleGloves::class to 1f,
+                    RedHandleDagger::class to 0.1f
             ))
 
-            object T2 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    Dirk::class.java to 5f,
-                    ShortSword::class.java to 6f,
-                    HandAxe::class.java to 5f,
-                    Spear::class.java to 5f,
-                    Quarterstaff::class.java to 4f,
-                    Sickle::class.java to 5f,
-                    DriedLeg::class.java to 5f
+            object T2 : BalancedClassMapGenerator(hashMapOf(
+                    Dirk::class to 5f,
+                    ShortSword::class to 6f,
+                    HandAxe::class to 5f,
+                    Spear::class to 5f,
+                    Quarterstaff::class to 4f,
+                    Sickle::class to 5f,
+                    DriedLeg::class to 5f
             ))
 
-            object T3 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    Sword::class.java to 6f,
-                    Mace::class.java to 5f,
-                    Scimitar::class.java to 5f,
-                    RoundShield::class.java to 4f,
-                    Sai::class.java to 4f,
-                    Whip::class.java to 4f,
-                    CrystalsSwords::class.java to 4f,
-                    DaggerAxe::class.java to 5f
+            object T3 : BalancedClassMapGenerator(hashMapOf(
+                    Sword::class to 6f,
+                    Mace::class to 5f,
+                    Scimitar::class to 5f,
+                    RoundShield::class to 4f,
+                    Sai::class to 4f,
+                    Whip::class to 4f,
+                    CrystalsSwords::class to 4f,
+                    DaggerAxe::class to 5f,
+                    InvisibleBlade::class to 5f
             ))
 
-            object T4 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    Longsword::class.java to 6f,
-                    BattleAxe::class.java to 5f,
-                    Flail::class.java to 5f,
-                    RunicBlade::class.java to 4f,
-                    AssassinsBlade::class.java to 4f,
-                    SpikeShield::class.java to 5f
+            object T4 : BalancedClassMapGenerator(hashMapOf(
+                    Longsword::class to 6f,
+                    BattleAxe::class to 5f,
+                    Flail::class to 5f,
+                    RunicBlade::class to 4f,
+                    AssassinsBlade::class to 4f,
+                    SpikeShield::class to 5f,
+                    Pitchfork::class to 5f
             ))
 
-            object T5 : ClassMapGenerator<MeleeWeapon>(hashMapOf(
-                    Claymore::class.java to 6f,
-                    WarHammer::class.java to 5f,
-                    Glaive::class.java to 5f,
-                    Greataxe::class.java to 4f,
-                    Greatshield::class.java to 4f,
-                    Lance::class.java to 5f
+            object T5 : BalancedClassMapGenerator(hashMapOf(
+                    Claymore::class to 6f,
+                    WarHammer::class to 5f,
+                    Glaive::class to 5f,
+                    Greataxe::class to 4f,
+                    Greatshield::class to 4f,
+                    Lance::class to 5f
             ))
 
             private val Ts = arrayOf(T1, T2, T3, T4, T5)
@@ -127,150 +153,162 @@ object Generator {
                 return Ts[Random.chances(floorSetTierProbs[fs])].generate() as Weapon
             }
 
-            fun tier(t: Int): ClassMapGenerator<MeleeWeapon> = Ts[t - 1]
+            fun tier(t: Int): ItemGenerator = Ts[t - 1]
+
+            override fun reset() {
+                for (t in Ts) t.reset()
+            }
         }
 
-        object MISSSILE : ClassMapGenerator<MissileWeapon>(hashMapOf(
+        object MISSSILE : BalancedClassMapGenerator(hashMapOf(
                 // 1
-                Boomerang::class.java to 0f,
-                Dart::class.java to 12f,
-                SmokeSparks::class.java to 6f,
+                Boomerang::class to 0f,
+                Dart::class to 12f,
+                SmokeSparks::class to 6f,
                 // 2
-                Shuriken::class.java to 10f,
-                SwallowDart::class.java to 10f,
-                IncendiaryDart::class.java to 1f,
-                CurareDart::class.java to 1f,
-                CeremonialDagger::class.java to 1f,
+                Shuriken::class to 10f,
+                SwallowDart::class to 10f,
+                IncendiaryDart::class to 1f,
+                CurareDart::class to 1f,
+                CeremonialDagger::class to 1f,
                 // 3
-                FlyCutter::class.java to 8f,
-                SeventhDart::class.java to 8f,
+                FlyCutter::class to 8f,
+                SeventhDart::class to 8f,
                 // 4
-                Javelin::class.java to 6f,
+                Javelin::class to 6f,
                 // 5
-                Tamahawk::class.java to 4f
+                Tamahawk::class to 4f
         ))
 
         override fun generate(): Item = random(CurrentFloorSet())
+
+        override fun reset() {
+            MELEE.reset()
+            MISSSILE.reset()
+        }
 
         fun random(floorSet: Int): Weapon = (if (Random.Float() < 0.24f) MISSSILE.generate()
         else MELEE.random(floorSet)) as Weapon
     }
 
-    object POTION : ClassMapGenerator<Potion>(hashMapOf(
-            PotionOfHealing::class.java to 20f,
-            PotionOfExperience::class.java to 4f,
-            PotionOfToxicGas::class.java to 15f,
-            PotionOfParalyticGas::class.java to 10f,
-            PotionOfLiquidFlame::class.java to 15f,
-            PotionOfLevitation::class.java to 10f,
-            PotionOfStrength::class.java to 0f,
-            PotionOfMindVision::class.java to 18f,
-            PotionOfPhysique::class.java to 4f,
-            PotionOfPurity::class.java to 12f,
-            PotionOfInvisibility::class.java to 10f,
-            PotionOfMight::class.java to 0f,
-            PotionOfFrost::class.java to 10f
+    object POTION : BalancedClassMapGenerator(hashMapOf(
+            PotionOfHealing::class to 20f,
+            PotionOfExperience::class to 4f,
+            PotionOfToxicGas::class to 15f,
+            PotionOfParalyticGas::class to 10f,
+            PotionOfLiquidFlame::class to 15f,
+            PotionOfLevitation::class to 10f,
+            PotionOfStrength::class to 0f,
+            PotionOfMindVision::class to 18f,
+            PotionOfPhysique::class to 4f,
+            PotionOfPurity::class to 12f,
+            PotionOfInvisibility::class to 10f,
+            PotionOfMight::class to 0f,
+            PotionOfFrost::class to 10f
     ))
 
-    object SCROLL : ClassMapGenerator<Scroll>(hashMapOf(
-            ScrollOfIdentify::class.java to 30f,
-            ScrollOfTeleportation::class.java to 10f,
-            ScrollOfRemoveCurse::class.java to 20f,
-            ScrollOfUpgrade::class.java to 0f,
-            ScrollOfRecharging::class.java to 15f,
-            ScrollOfMagicMapping::class.java to 15f,
-            ScrollOfRage::class.java to 12f,
-            ScrollOfTerror::class.java to 8f,
-            ScrollOfLullaby::class.java to 8f,
-            ScrollOfEnchanting::class.java to 6f,
-            ScrollOfPsionicBlast::class.java to 4f,
-            ScrollOfMirrorImage::class.java to 10f,
-            ScrollOfCurse::class.java to 4f,
-            ScrollOfLight::class.java to 6f
+    object SCROLL : BalancedClassMapGenerator(hashMapOf(
+            ScrollOfIdentify::class to 30f,
+            ScrollOfTeleportation::class to 10f,
+            ScrollOfRemoveCurse::class to 20f,
+            ScrollOfUpgrade::class to 0f,
+            ScrollOfRecharging::class to 15f,
+            ScrollOfMagicMapping::class to 15f,
+            ScrollOfRage::class to 12f,
+            ScrollOfTerror::class to 8f,
+            ScrollOfLullaby::class to 8f,
+            ScrollOfEnchanting::class to 6f,
+            ScrollOfPsionicBlast::class to 4f,
+            ScrollOfMirrorImage::class to 10f,
+            ScrollOfCurse::class to 4f,
+            ScrollOfLight::class to 6f
     ))
 
-    object WAND : ClassMapGenerator<Wand>(hashMapOf(
-            WandOfMagicMissile::class.java to 5f,
-            WandOfLightning::class.java to 4f,
-            WandOfDisintegration::class.java to 4f,
-            WandOfFireblast::class.java to 4f,
-            WandOfVenom::class.java to 4f,
-            WandOfBlastWave::class.java to 3f,
-            WandOfFrost::class.java to 3f,
-            WandOfPrismaticLight::class.java to 3f,
-            // WandOfTransfusion::class.java to 3f,
-            WandOfAbel::class.java to 3f,
-            WandOfCorruption::class.java to 3f,
-            WandOfRegrowth::class.java to 3f
+    object WAND : BalancedClassMapGenerator(hashMapOf(
+            WandOfMagicMissile::class to 5f,
+            WandOfLightning::class to 4f,
+            WandOfDisintegration::class to 4f,
+            WandOfFireblast::class to 4f,
+            WandOfVenom::class to 4f,
+            WandOfBlastWave::class to 3f,
+            WandOfFrost::class to 3f,
+            WandOfPrismaticLight::class to 3f,
+            // WandOfTransfusion::class to 3f,
+            WandOfAbel::class to 3f,
+            WandOfCorruption::class to 3f,
+            WandOfRegrowth::class to 3f,
+            WandOfHypnosis::class to 3f
     ))
 
-    object RING : ClassMapGenerator<Ring>(hashMapOf(
-            // RingOfAccuracy::class.java to 1f,
-            RingOfArcane::class.java to 1f, 
-            RingOfEvasion::class.java to 1f,
-            RingOfResistance::class.java to 1f,
-            RingOfForce::class.java to 1f,
-            RingOfFuror::class.java to 1f,
-            RingOfHaste::class.java to 1f,
-            RingOfCritical::class.java to 1f,
-            RingOfMight::class.java to 1f,
-            RingOfSharpshooting::class.java to 1f,
-            RingOfHealth::class.java to 1f,
-            RingOfWealth::class.java to 1f
+    object RING : BalancedClassMapGenerator(hashMapOf(
+            // RingOfAccuracy::class to 1f,
+            RingOfArcane::class to 1f,
+            RingOfEvasion::class to 1f,
+            RingOfResistance::class to 1f,
+            RingOfForce::class to 1f,
+            RingOfFuror::class to 1f,
+            RingOfHaste::class to 1f,
+            RingOfCritical::class to 1f,
+            RingOfMight::class to 1f,
+            RingOfSharpshooting::class to 1f,
+            RingOfHealth::class to 1f,
+            RingOfWealth::class to 1f
     ))
 
-    object SEED : ClassMapGenerator<Plant.Seed>(hashMapOf(
-            Firebloom.Seed::class.java to 12f,
-            Icecap.Seed::class.java to 12f,
-            Sorrowmoss.Seed::class.java to 12f,
-            Blindweed.Seed::class.java to 12f,
-            Sungrass.Seed::class.java to 12f,
-            Earthroot.Seed::class.java to 12f,
-            Fadeleaf.Seed::class.java to 12f,
-            Rotberry.Seed::class.java to 0f,
-            BlandfruitBush.Seed::class.java to 2f,
-            Dreamfoil.Seed::class.java to 12f,
-            Stormvine.Seed::class.java to 12f,
-            Starflower.Seed::class.java to 1f
+    object SEED : BalancedClassMapGenerator(hashMapOf(
+            Firebloom.Seed::class to 12f,
+            Icecap.Seed::class to 12f,
+            Sorrowmoss.Seed::class to 12f,
+            Blindweed.Seed::class to 12f,
+            Sungrass.Seed::class to 12f,
+            Earthroot.Seed::class to 12f,
+            Fadeleaf.Seed::class to 12f,
+            Rotberry.Seed::class to 0f,
+            BlandfruitBush.Seed::class to 2f,
+            Dreamfoil.Seed::class to 12f,
+            Stormvine.Seed::class to 12f,
+            Starflower.Seed::class to 1f
     ))
 
-    object FOOD : ClassMapGenerator<Food>(hashMapOf(
-            Food::class.java to 4f,
-            Pasty::class.java to 1.25f,
-            MysteryMeat::class.java to 0f
+    object FOOD : BalancedClassMapGenerator(hashMapOf(
+            Food::class to 4f,
+            Pasty::class to 1f,
+            MysteryMeat::class to 0f
     ))
 
-    object GOLD : ClassMapGenerator<Gold>(hashMapOf(
-            Gold::class.java to 1f
+    object GOLD : ClassMapGenerator(hashMapOf(
+            Gold::class to 1f
     ))
 
     // artifact is uniquely dropping
     val INITIAL_ARTIFACT_PROBS = hashMapOf(
-            CapeOfThorns::class.java to 0f, // by DM300
-            ChaliceOfBlood::class.java to 0f,  // by statuary
-            CloakOfShadows::class.java to 0f, // for rouge
-            CrackedCoin::class.java to 1f,
-            HornOfPlenty::class.java to 1f,
-            MasterThievesArmband::class.java to 0f, // by thief
-            SandalsOfNature::class.java to 1f,
-            TalismanOfForesight::class.java to 1f,
-            TimekeepersHourglass::class.java to 1f,
-            UnstableSpellbook::class.java to 1f,
-            AlchemistsToolkit::class.java to 0f, // currently removed from drop tables,
-            DriedRose::class.java to 0f, // starts with no chance of spawning, chance is set directly after beating ghost quest.
-            LloydsBeacon::class.java to 0f, // by goo
-            EtherealChains::class.java to 1f,
-            RiemannianManifoldShield::class.java to 1f,
-            GoldPlatedStatue::class.java to 1f,
-            HandOfTheElder::class.java to 0f, // by undead
-            HandleOfAbyss::class.java to 1f,
-            HeartOfSatan::class.java to 1f,
-            CloakOfSheep::class.java to 1f,
-            EyeballOfTheElder.Right::class.java to 1f,
-            EyeballOfTheElder.Left::class.java to 1f
+            CapeOfThorns::class to 1f,
+            ChaliceOfBlood::class to 0f,  // by statuary
+            CloakOfShadows::class to 0f, // for rouge
+            CrackedCoin::class to 1f,
+            HornOfPlenty::class to 1f,
+            MasterThievesArmband::class to 0f, // by thief
+            SandalsOfNature::class to 1f,
+            TalismanOfForesight::class to 1f,
+            TimekeepersHourglass::class to 1f,
+            UnstableSpellbook::class to 1f,
+            AlchemistsToolkit::class to 0f, // currently removed from drop tables,
+            DriedRose::class to 0f, // starts with no chance of spawning, chance is set directly after beating ghost quest.
+            LloydsBeacon::class to 0f, // by goo
+            EtherealChains::class to 1f,
+            RiemannianManifoldShield::class to 1f,
+            GoldPlatedStatue::class to 1f,
+            HandOfTheElder::class to 0f, // by undead
+            HandleOfAbyss::class to 1f,
+            HeartOfSatan::class to 1f,
+            CloakOfSheep::class to 1f,
+            EyeballOfTheElder.Right::class to 1f,
+            EyeballOfTheElder.Left::class to 1f,
+            // HomurasShield::class to 0.5f,
+            DragonsSquama::class to 1f
     )
 
-    object ARTIFACT : ClassMapGenerator<Artifact>(HashMap()), Bundlable {
+    object ARTIFACT : ClassMapGenerator(HashMap()), Bundlable {
         private val spawned = ArrayList<String>()
 
         init {
@@ -283,11 +321,11 @@ object Generator {
 
             // be unique
             probMap[cls] = 0f
-            spawned.add(cls.simpleName)
-            return cls.newInstance().random()
+            spawned.add(cls.java.simpleName)
+            return cls.java.newInstance().random()
         }
 
-        private val lastProbMap = HashMap<Class<out Artifact>, Float>()
+        private val lastProbMap = HashMap<KClass<out Item>, Float>()
         private val lastSpawned = ArrayList<String>()
         fun push() {
             probMap.toMap(lastProbMap)
@@ -301,7 +339,7 @@ object Generator {
             spawned.addAll(lastSpawned)
         }
 
-        fun reset() {
+        override fun reset() {
             spawned.clear()
             updateProbabilities()
         }
@@ -320,15 +358,18 @@ object Generator {
         private fun updateProbabilities() {
             probMap.clear()
             for (pr in INITIAL_ARTIFACT_PROBS)
-                probMap[pr.key] = if (spawned.contains(pr.key.simpleName)) 0f else pr.value
+                probMap[pr.key] = if (spawned.contains(pr.key.java.simpleName)) 0f else pr.value
         }
 
         // save the probs
         private const val SPAWNED_ARTIFACTS = "spawned-artifacts"
 
+        override fun storeInBundle(bundle: Bundle) {
+            bundle.put(SPAWNED_ARTIFACTS, spawned.toTypedArray())
+        }
+
         override fun restoreFromBundle(bundle: Bundle) {
-            if (Ghost.Quest.completed())
-                probMap[DriedRose::class.java] = 1f
+            if (Ghost.Quest.completed()) probMap[DriedRose::class] = 1f
 
             if (bundle.contains(SPAWNED_ARTIFACTS)) {
                 spawned.addAll(bundle.getStringArray(SPAWNED_ARTIFACTS))
@@ -336,42 +377,39 @@ object Generator {
                 updateProbabilities()
             }
         }
-
-        override fun storeInBundle(bundle: Bundle) {
-            bundle.put(SPAWNED_ARTIFACTS, spawned.toTypedArray())
-        }
     }
 
-    object HELMET : ClassMapGenerator<Helmet>(hashMapOf(
-            HelmetBarbarian::class.java to 1f,
-            HelmetCrusader::class.java to 1f,
-            HoodApprentice::class.java to 1f,
-            LittlePail::class.java to 1f,
-            CircletEmerald::class.java to 1f,
-            CrownOfDwarf::class.java to 0f, // by king 
-            HeaddressRegeneration::class.java to 1f,
-            WizardHat::class.java to 1f,
-            MaskOfHorror::class.java to 1f,
-            MaskOfClown::class.java to 1f,
-            RangerHat::class.java to 0.2f, // very rare, so Yvette counts.
-            MaskOfMadness::class.java to 0f, // compose
-            TurtleScarf::class.java to 1f, 
-            MaskOfLider::class.java to 0.2f
+    object HELMET : BalancedClassMapGenerator(hashMapOf(
+            HelmetBarbarian::class to 1f,
+            HelmetCrusader::class to 1f,
+            HoodApprentice::class to 1f,
+            LittlePail::class to 1f,
+            CircletEmerald::class to 1f,
+            CrownOfDwarf::class to 0f, // by king 
+            HeaddressRegeneration::class to 1f,
+            WizardHat::class to 1f,
+            MaskOfHorror::class to 1f,
+            MaskOfClown::class to 1f,
+            RangerHat::class to 0.2f, // very rare, so Yvette counts.
+            MaskOfMadness::class to 0f, // compose
+            TurtleScarf::class to 1f,
+            MaskOfLider::class to 0.1f,
+            GuardHelmet::class to 0.2f
     ))
 
-    object BOOK : ClassMapGenerator<Book>(hashMapOf(
-            CallysDiary::class.java to 0f,
-            WardenSmithNotes::class.java to 0f
+    object BOOK : BalancedClassMapGenerator(hashMapOf(
+            CallysDiary::class to 0f,
+            WardenSmithNotes::class to 0f
     ))
 
-    object RUNE : ClassMapGenerator<Rune>(hashMapOf(
-            RegenerationRune::class.java to 1f,
-            MendingRune::class.java to 1f,
-            CriticalRune::class.java to 0.5f,
-            BrightRune::class.java to 1f,
-            HasteRune::class.java to 1f,
-            TreasureRune::class.java to 1f,
-            BloodRune::class.java to 0f // from unholy blood
+    object RUNE : BalancedClassMapGenerator(hashMapOf(
+            RegenerationRune::class to 1f,
+            MendingRune::class to 1f,
+            CriticalRune::class to 0.5f,
+            BrightRune::class to 1f,
+            HasteRune::class to 1f,
+            TreasureRune::class to 1f,
+            BloodRune::class to 0f // from unholy blood
     ))
 
     // 
@@ -382,7 +420,7 @@ object Generator {
             SCROLL to 400f,
             WAND to 40f,
             RING to 15f,
-            ARTIFACT to 15f,
+            ARTIFACT to 10f,
             SEED to 50f,
             FOOD to 0f,
             GOLD to 500f,
@@ -394,31 +432,61 @@ object Generator {
     private val categoryMap = HashMap<ItemGenerator, Float>()
 
     init {
-        ResetCategoryProbs()
+        resetCategoryProbs()
     }
 
-    fun ResetCategoryProbs() {
+    fun resetCategoryProbs() {
         categoryMap.clear()
         for (pr in InitCategoryMap) categoryMap[pr.key] = pr.value
     }
 
     fun generate(): Item {
         val cat = Random.chances(categoryMap)
-        categoryMap[cat] = categoryMap[cat]!! / 2f
+        categoryMap[cat] = categoryMap[cat]!! / 2f // simply lower its probs
 
         return cat.generate()
     }
 
+    // reset all prob: for start a new game
     fun reset() {
+        ARMOR.reset()
+        WEAPON.reset()
+        POTION.reset()
+        SCROLL.reset()
+        WAND.reset()
+        RING.reset()
+        SEED.reset()
+        FOOD.reset()
+        GOLD.reset()
         ARTIFACT.reset()
+        HELMET.reset()
+        BOOK.reset()
+        RUNE.reset()
     }
 
     fun stash() {
         ARTIFACT.push()
+        //todo: i may stash the balanced map, this keep the probmap consistent, until the player restart the game instead.
     }
 
     fun recover() {
         ARTIFACT.pop()
+        // currently, each time a new level is generated, the balanced prob map would be reset.
+        //fixme: see 'todo' in stash(),
+
+        ARMOR.reset()
+        WEAPON.reset()
+        POTION.reset()
+        SCROLL.reset()
+        WAND.reset()
+        RING.reset()
+        SEED.reset()
+        FOOD.reset()
+        GOLD.reset()
+        // ARTIFACT.reset()
+        HELMET.reset()
+        BOOK.reset()
+        RUNE.reset()
     }
 
     fun restoreFromBundle(bundle: Bundle) {

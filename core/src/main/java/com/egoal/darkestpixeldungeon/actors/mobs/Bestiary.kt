@@ -67,20 +67,20 @@ object Bestiary {
         when (depth) {
             // sewer
             1 -> {
-                chances = floatArrayOf(1f)
-                classes = arrayOf(Rat::class.java)
+                chances = floatArrayOf(0.8f, 0.2f)
+                classes = arrayOf(Rat::class.java, Slug::class.java)
             }
             2 -> {
-                chances = floatArrayOf(1f, 1f)
-                classes = arrayOf(Rat::class.java, Gnoll::class.java)
+                chances = floatArrayOf(1f, 0.5f, 0.5f)
+                classes = arrayOf(Rat::class.java, Slug::class.java, Gnoll::class.java)
             }
             3 -> {
-                chances = floatArrayOf(2f, 4f, 0.5f, 1f)
-                classes = arrayOf(Rat::class.java, Gnoll::class.java, Crab::class.java, Swarm::class.java)
+                chances = floatArrayOf(1f, 1f, 4f, 0.5f, 1f)
+                classes = arrayOf(Rat::class.java, Slug::class.java, Gnoll::class.java, Crab::class.java, Swarm::class.java)
             }
             4 -> {
-                chances = floatArrayOf(1f, 2f, 3f, 1f, 0.02f)
-                classes = arrayOf(Rat::class.java, Gnoll::class.java, Crab::class.java, Swarm::class.java, MadMan::class.java)
+                chances = floatArrayOf(0.5f, 0.5f, 2f, 3f, 1f, 0.02f)
+                classes = arrayOf(Rat::class.java, Slug::class.java, Gnoll::class.java, Crab::class.java, Swarm::class.java, MadMan::class.java)
             }
             5 -> {
                 chances = floatArrayOf(1f)

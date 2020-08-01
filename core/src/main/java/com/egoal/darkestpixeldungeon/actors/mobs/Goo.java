@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.PropertyConfiger;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Charm;
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption;
+import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep;
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror;
 import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -293,6 +294,7 @@ public class Goo extends Mob {
     IMMUNITIES.add(Terror.class);
     IMMUNITIES.add(Corruption.class);
     IMMUNITIES.add(Charm.class);
+    IMMUNITIES.add(MagicalSleep.class);
   }
 
   @Override

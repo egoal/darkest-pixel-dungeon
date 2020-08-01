@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
@@ -54,12 +55,16 @@ class WandGuard : Mob() {
     override fun doAttack(enemy: Char): Boolean {
         val shot = Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT)
 
-        wand.execute(Dungeon.hero, "") //patch: assign curUser 
+        wand.execute(Dungeon.hero, "") //patch: assign curUser
+
+        if(enemy is Hero) enemy.busy()
         wand.fx(shot) {
             // hit hero 
             val dmg = giveDamage(enemy)
             enemy.defendDamage(dmg)
             enemy.takeDamage(dmg)
+
+            if(enemy is Hero) enemy.ready()
 
             if (!enemy.isAlive) {
                 Dungeon.fail(dmg.from.javaClass)
@@ -70,7 +75,7 @@ class WandGuard : Mob() {
             //todo: fire wand performs not well
         }
 
-        spend(TIME_TO_ZAP)
+        spend(TIME_TO_ZAP) //fixme: this wont wait the above animation
 
         return true
     }
@@ -137,23 +142,23 @@ class WandGuard : Mob() {
 
                 val frames = TextureFilm(texture, 16, 16)
 
-                idle = MovieClip.Animation(10, true)
+                idle = Animation(10, true)
                 idle.frames(frames, 0)
 
-                run = MovieClip.Animation(10, true)
+                run = Animation(10, true)
                 run.frames(frames, 0)
 
-                attack = MovieClip.Animation(15, false)
+                attack = Animation(15, false)
                 attack.frames(frames, 0, 0, 0)
 
-                die = MovieClip.Animation(10, false)
+                die = Animation(10, false)
                 die.frames(frames, 0)
 
                 play(idle)
             }
 
 
-            override fun onComplete(anim: MovieClip.Animation) {
+            override fun onComplete(anim: Animation) {
                 if (anim === die) {
                     emitter().burst(ElmoParticle.FACTORY, 4)
                 }
@@ -165,7 +170,7 @@ class WandGuard : Mob() {
             override fun link(ch: Char) {
                 super.link(ch)
 
-                add(CharSprite.State.MARKED)
+                add(State.MARKED)
             }
 
             override fun die() {
@@ -173,7 +178,7 @@ class WandGuard : Mob() {
 
                 CellEmitter.get(ch.pos).burst(ShadowParticle.UP, 5)
 
-                remove(CharSprite.State.MARKED)
+                remove(State.MARKED)
             }
         }
     }

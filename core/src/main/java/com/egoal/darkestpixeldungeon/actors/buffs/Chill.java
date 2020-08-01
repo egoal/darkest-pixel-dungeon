@@ -77,12 +77,12 @@ public class Chill extends FlavourBuff {
         }
       } else if (target instanceof Thief) {
 
-        Item item = ((Thief) target).item;
+        Item item = ((Thief) target).getItem();
 
         if (item instanceof Potion && !(item instanceof PotionOfStrength || 
                 item instanceof PotionOfMight)) {
-          ((Potion) ((Thief) target).item).shatter(target.pos);
-          ((Thief) target).item = null;
+          ((Potion) ((Thief) target).getItem()).shatter(target.pos);
+          ((Thief) target).setItem(null);
         }
 
       }

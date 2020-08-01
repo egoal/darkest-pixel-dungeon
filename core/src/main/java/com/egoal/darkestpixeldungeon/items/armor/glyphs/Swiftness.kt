@@ -18,36 +18,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.armor.glyphs;
+package com.egoal.darkestpixeldungeon.items.armor.glyphs
 
-import com.egoal.darkestpixeldungeon.actors.Char;
-import com.egoal.darkestpixeldungeon.actors.Damage;
-import com.egoal.darkestpixeldungeon.items.armor.Armor;
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite;
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.armor.Armor
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
-public class Swiftness extends Armor.Glyph {
+class Swiftness : Armor.Glyph() {
 
-  private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing(0xFFFF00);
-
-  @Override
-  public Damage proc(Armor armor, Damage damage) {
     //no proc effect, see hero.defenseskill and hero.speed for effect.
-    return damage;
-  }
+    override fun proc(armor: Armor, damage: Damage): Damage = damage
 
-  @Override
-  public int tierDRAdjust() {
-    return -2;
-  }
+    override fun tierDRAdjust(): Int = -2
 
-  @Override
-  public float tierSTRAdjust() {
-    return -1;
-  }
+    override fun tierSTRAdjust(): Float = -1f
 
-  @Override
-  public ItemSprite.Glowing glowing() {
-    return YELLOW;
-  }
+    override fun glowing(): ItemSprite.Glowing = YELLOW
+
+    companion object {
+        private val YELLOW = ItemSprite.Glowing(0xFFFF00)
+    }
 
 }

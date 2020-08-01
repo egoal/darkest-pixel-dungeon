@@ -37,56 +37,56 @@ import java.util.HashSet;
 
 public class Brute extends Mob {
 
-  {
-    PropertyConfiger.INSTANCE.set(this, "Brute");
-    spriteClass = BruteSprite.class;
+    {
+        PropertyConfiger.INSTANCE.set(this, "Brute");
+        spriteClass = BruteSprite.class;
 
-    loot = Gold.class;
-  }
-
-  private boolean enraged = false;
-  private static final float TIME_TO_ENRAGE = 1f;
-
-  @Override
-  public void restoreFromBundle(Bundle bundle) {
-    super.restoreFromBundle(bundle);
-    enraged = HP < HT / 4;
-  }
-
-  @Override
-  public Damage giveDamage(Char target) {
-    Damage damage = super.giveDamage(target);
-    if (enraged) {
-      damage.value *= Random.Float(1.25f, 1.75f);
-      damage.addFeature(Damage.Feature.CRITICAL);
-    }
-    return damage;
-  }
-
-  @Override
-  public int takeDamage(Damage dmg) {
-    int val = super.takeDamage(dmg);
-
-    if (isAlive() && !enraged && HP < HT / 3) {
-      enraged = true;
-      if (Dungeon.visible[pos]) {
-        GLog.w(Messages.get(this, "enraged_text"));
-        sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
-      }
-      spend(TIME_TO_ENRAGE);
+        loot = Gold.class;
     }
 
-    return val;
-  }
+    private boolean enraged = false;
+    private static final float TIME_TO_ENRAGE = 1f;
 
-  private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        enraged = HP < HT / 4;
+    }
 
-  static {
-    IMMUNITIES.add(Terror.class);
-  }
+    @Override
+    public Damage giveDamage(Char target) {
+        Damage damage = super.giveDamage(target);
+        if (!damage.isFeatured(Damage.Feature.CRITICAL) && enraged) {
+            damage.value *= Random.Float(1.25f, 1.75f);
+            damage.addFeature(Damage.Feature.CRITICAL);
+        }
+        return damage;
+    }
 
-  @Override
-  public HashSet<Class<?>> immunizedBuffs() {
-    return IMMUNITIES;
-  }
+    @Override
+    public int takeDamage(Damage dmg) {
+        int val = super.takeDamage(dmg);
+
+        if (isAlive() && !enraged && HP < HT / 3) {
+            enraged = true;
+            if (Dungeon.visible[pos]) {
+                GLog.w(Messages.get(this, "enraged_text"));
+                sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
+            }
+            spend(TIME_TO_ENRAGE);
+        }
+
+        return val;
+    }
+
+    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+
+    static {
+        IMMUNITIES.add(Terror.class);
+    }
+
+    @Override
+    public HashSet<Class<?>> immunizedBuffs() {
+        return IMMUNITIES;
+    }
 }

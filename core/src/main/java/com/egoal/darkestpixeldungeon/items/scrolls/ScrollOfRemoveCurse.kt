@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.helmets.Helmet
 import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.messages.Messages
 
@@ -62,9 +63,6 @@ class ScrollOfRemoveCurse : InventoryScroll() {
         private fun uncurseOne(hero: Hero, item: Item): Boolean {
             var procced = item.cursed
 
-            item.cursed = false
-            item.cursedKnown = true
-
             when (item) {
                 is Weapon -> if (item.hasCurseEnchant()) {
                     item.enchant(null)
@@ -81,7 +79,11 @@ class ScrollOfRemoveCurse : InventoryScroll() {
                     bagitem.cursed = false
                     procced = true
                 }
+                is Helmet -> item.uncurse() //todo:
             }
+
+            item.cursed = false
+            item.cursedKnown = true
 
             return procced
         }

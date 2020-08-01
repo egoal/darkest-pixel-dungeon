@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.MagicMissile;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.armor.RaggedArmor;
 import com.egoal.darkestpixeldungeon.items.food.Humanity;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica;
@@ -128,9 +129,10 @@ public class MadMan extends Mob implements Callback {
 
   @Override
   protected Item createLoot() {
+    if(Random.Float()<0.15f) return new RaggedArmor().identify();
+
     Dungeon.limitedDrops.madManHumanity.drop();
     lootChance = 2f / (8 + Dungeon.limitedDrops.madManHumanity.count);
-
     return super.createLoot();
   }
 

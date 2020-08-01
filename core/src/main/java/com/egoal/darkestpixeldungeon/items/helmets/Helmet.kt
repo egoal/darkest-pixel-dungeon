@@ -20,6 +20,9 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
 
     private var inscription: Inscription? = null
 
+    //todo:
+    open fun uncurse() {}
+
     override fun doEquip(hero: Hero): Boolean {
         detach(hero.belongings.backpack)
 
@@ -64,7 +67,7 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
     }
 
 //    override fun isIdentified(): Boolean = false
-    
+
     override fun isUpgradable(): Boolean = false
 
     override fun price(): Int = if (cursedKnown && cursed) 20 else 40

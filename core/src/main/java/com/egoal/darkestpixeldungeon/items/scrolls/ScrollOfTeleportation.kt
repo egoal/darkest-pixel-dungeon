@@ -130,8 +130,11 @@ class ScrollOfTeleportation : Scroll() {
             ch.sprite.place(pos)
 
             if (ch.invisible == 0) {
-                ch.sprite.alpha(0f)
-                ch.sprite.parent.add(AlphaTweener(ch.sprite, 1f, 0.4f))
+                if (ch.sprite.parent != null) {
+                    // ^^^ null check: the char may be removed by a WarpingTrap or sth, in the ch.move call
+                    ch.sprite.alpha(0f)
+                    ch.sprite.parent.add(AlphaTweener(ch.sprite, 1f, 0.4f))
+                }
             }
 
             ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3)

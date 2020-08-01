@@ -169,9 +169,9 @@ public class LloydsBeacon extends Artifact {
         for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0]))
           if (mob instanceof GhostHero) mob.destroy();
 
-        InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-        InterlevelScene.returnDepth = returnDepth;
-        InterlevelScene.returnPos = returnPos;
+        InterlevelScene.Companion.setMode(InterlevelScene.Mode.RETURN);
+        InterlevelScene.Companion.setReturnDepth(returnDepth);
+        InterlevelScene.Companion.setReturnPos(returnPos);
         Game.switchScene(InterlevelScene.class);
       }
 

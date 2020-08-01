@@ -36,6 +36,7 @@ object PropertyConfiger {
                         EXP = int(at("EXP"), 1), maxLvl = int(at("maxLvl"), Hero.MAX_LEVEL),
                         lootChance = float(at("lootChance")), loot = at("loot"), //todo: loot
                         minDamage = int(at("minDamage")), maxDamage = int(at("maxDamage")), typeDamage = damageType(at("typeDamage")),
+                        criticalChance = float(at("critChance")), criticalRatio = float(at("critRatio"), 1f),
                         minDefend = int(at("minDefend")), maxDefend = int(at("maxDefend")),
                         magicalResistance = float(at("magicalResistance"))).apply {
                     elementalResistances[0] = float(at("FIRE"))
@@ -68,6 +69,8 @@ object PropertyConfiger {
         mob.minDamage = mp.minDamage
         mob.maxDamage = mp.maxDamage
         mob.typeDamage = mp.typeDamage
+        mob.criticalChance = mp.criticalChance
+        mob.criticalRatio = mp.criticalRatio
         mob.minDefense = mp.minDefend
         mob.maxDefense = mp.maxDefend
 
@@ -85,6 +88,7 @@ object PropertyConfiger {
             val EXP: Int = 0, val maxLvl: Int = 0,
             val lootChance: Float = 0f, val loot: String = "",
             val minDamage: Int = 0, val maxDamage: Int = 0, val typeDamage: Damage.Type = Damage.Type.NORMAL,
+            val criticalChance: Float = 0f, val criticalRatio: Float = 1.25f,
             val minDefend: Int = 0, val maxDefend: Int = 0,
             val magicalResistance: Float = 0f) {
         val elementalResistances = FloatArray(Damage.Element.ELEMENT_COUNT) { 0f }

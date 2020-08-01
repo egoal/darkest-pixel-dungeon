@@ -121,6 +121,9 @@ class VillageLevel : RegularLevel() {
 
         putMobAt(Monument::class.java, 21, 2)
 
+        // seeker
+        putMobAt(Seeker::class.java, 12, 18)
+
         // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
 //        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
 //            for (i in 1..10) addItemToSell(Generator.generate())
@@ -130,6 +133,8 @@ class VillageLevel : RegularLevel() {
 //            addItemToSell(BattleGloves())
 //            addItemToSell(TomeOfPerk())
 //        }
+//        (putMobAt(UndeadShopkeeper::class.java, 15, 27) as UndeadShopkeeper).initSellItems()
+//        putMobAt(Yvette::class.java, 15, 27)
     }
 
     override fun onSwitchedIn() {

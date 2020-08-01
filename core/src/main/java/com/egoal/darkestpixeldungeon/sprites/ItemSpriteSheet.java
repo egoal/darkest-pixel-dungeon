@@ -82,13 +82,14 @@ public class ItemSpriteSheet {
     public static final int EVIL_GOLDEN_CLAW = GOLDEN_CLAW + 1;
     public static final int HEAL_REAGENT = SINGLE_USE + 21;
     public static final int FISH_BONE = SINGLE_USE + 22;
-
+    public static final int TOME_BLUE = SINGLE_USE + 23;
+    public static final int TOME_YELLOW = SINGLE_USE + 24;
 
     private static final int WEP_TIER1 = xy(1, 5);   //16 slots
     public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;
     public static final int DPD_BATTLE_GLOVES = WEP_TIER1 + 1;
     public static final int KNUCKLEDUSTER = WEP_TIER1 + 2;
-    public static final int RAPIER = WEP_TIER1 + 3;
+    public static final int RED_HANDLE_DAGGER = WEP_TIER1 + 3;
     public static final int DAGGER = WEP_TIER1 + 4;
     public static final int MAGES_STAFF = WEP_TIER1 + 5;
     public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
@@ -102,6 +103,8 @@ public class ItemSpriteSheet {
     public static final int DRIED_LEG = WEP_TIER2 + 5;
     public static final int SICKLE = WEP_TIER2 + 6;
 
+    public static final int RANGER_BOW = WEP_TIER2 + 8;
+
     private static final int WEP_TIER3 = xy(1, 7);   //16 slots
     public static final int SWORD = WEP_TIER3 + 0;
     public static final int MACE = WEP_TIER3 + 1;
@@ -111,6 +114,8 @@ public class ItemSpriteSheet {
     public static final int WHIP = WEP_TIER3 + 5;
     public static final int DPD_CRYSTALS_SWORDS = WEP_TIER3 + 6;
     public static final int DAGGER_AXE = WEP_TIER3 + 7;
+    public static final int CANDLESTICK = WEP_TIER3 + 8;
+    public static final int INVISIBLE_BLADE = WEP_TIER3 + 9;
 
     private static final int WEP_TIER4 = xy(1, 8);   //16 slots
     public static final int LONGSWORD = WEP_TIER4 + 0;
@@ -119,6 +124,7 @@ public class ItemSpriteSheet {
     public static final int RUNIC_BLADE = WEP_TIER4 + 3;
     public static final int ASSASSINS_BLADE = WEP_TIER4 + 4;
     public static final int SPIKE_SHIELD = WEP_TIER4 + 5;
+    public static final int PITCHFORK = WEP_TIER4 + 6;
 
     private static final int WEP_TIER5 = xy(1, 9);   //16 slots
     public static final int Claymore = WEP_TIER5 + 0;
@@ -143,6 +149,7 @@ public class ItemSpriteSheet {
     public static final int ENHANCED_BOOMERANG = MISSILE_WEP + 10;
     public static final int DART_SEVENTH = MISSILE_WEP + 11;
     public static final int CEREMONIAL_DAGGER = MISSILE_WEP + 12;
+    public static final int MAGIC_DART = MISSILE_WEP + 13;
 
     private static final int ARMOR = xy(1, 11);  //16 slots
     public static final int ARMOR_CLOTH = ARMOR + 0;
@@ -154,8 +161,9 @@ public class ItemSpriteSheet {
     public static final int ARMOR_MAGE = ARMOR + 6;
     public static final int ARMOR_ROGUE = ARMOR + 7;
     public static final int ARMOR_HUNTRESS = ARMOR + 8;
-    public static final int DPD_ARMOR_SORCERESS = ARMOR + 9;
+    public static final int ARMOR_SORCERESS = ARMOR + 9;
     public static final int ARMOR_MAGE_ENHANCED = ARMOR + 10;
+    public static final int ARMOR_RAGGED = ARMOR + 11;
 
     private static final int HELMET = xy(1, 12);
     public static final int HELMET_CRUSADER = HELMET + 0;
@@ -172,6 +180,7 @@ public class ItemSpriteSheet {
     // 3 scarf here.
     public static final int LITTLE_PAIL = HELMET + 14;
     public static final int RIDER_MASK = HELMET + 15;
+    public static final int HELMET_GUARD = HELMET + 16;
 
     //16 free slots
 
@@ -183,7 +192,7 @@ public class ItemSpriteSheet {
     public static final int WAND_DISINTEGRATION = WANDS + 4;
     public static final int WAND_PRISMATIC_LIGHT = WANDS + 5;
     public static final int WAND_VENOM = WANDS + 6;
-    public static final int WAND_LIVING_EARTH = WANDS + 7;
+    public static final int WAND_HYPNOSIS = WANDS + 7;
     public static final int WAND_BLAST_WAVE = WANDS + 8;
     public static final int WAND_CORRUPTION = WANDS + 9;
     public static final int WAND_WARDING = WANDS + 10;
@@ -249,6 +258,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_CLOAK_ENHANCED = ARTIFACTS + 40;
     public static final int CRACKED_COIN = ARTIFACTS + 41;
     public static final int ARTIFACT_SHIELD = ARTIFACTS + 42;
+    public static final int DARGONS_SQUAMA = ARTIFACTS + 43;
 
     //32 free slots
 
@@ -317,7 +327,8 @@ public class ItemSpriteSheet {
     public static final int BROWN_ALE = FOOD + 10;
     public static final int MOON_STONE = FOOD + 11;
     public static final int STEWED = FOOD + 12;
-    public static  final int SKEWER = FOOD+13;
+    public static final int SKEWER = FOOD + 13;
+    public static final int GLAND = FOOD + 14;
 
     private static final int QUEST = xy(1, 26);  //32 slots
     public static final int SKULL = QUEST + 0;
@@ -327,7 +338,6 @@ public class ItemSpriteSheet {
     public static final int PICKAXE = QUEST + 4;
     public static final int ORE = QUEST + 5;
     public static final int TOKEN = QUEST + 6;
-    public static final int RANGER_BOW = QUEST + 7;
 
     private static final int BAGS = xy(1, 28);  //16 slots
     public static final int POUCH = BAGS + 0;

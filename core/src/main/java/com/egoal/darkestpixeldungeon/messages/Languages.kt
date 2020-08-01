@@ -46,9 +46,9 @@ enum class Languages(val nativeName: String,
     val code: String get() = locale.toString()
 
     companion object {
-        fun matchLocale(locale: Locale): Languages = values().find { it.locale == locale } ?: ENGLISH
+        fun matchLocale(locale: Locale): Languages = values().find { it.locale == locale } ?: CHINESE
 
-        fun matchCode(code: String): Languages = values().find { it.code == code } ?: ENGLISH
+        fun matchCode(code: String): Languages = values().find { it.code == code } ?: CHINESE
     }
 
 }

@@ -382,8 +382,11 @@ public abstract class Char extends Actor {
     // buffs shall remove when take damage
     if (this.buff(Frost.class) != null)
       Buff.detach(this, Frost.class);
-    if (this.buff(MagicalSleep.class) != null)
-      Buff.detach(this, MagicalSleep.class);
+    MagicalSleep ms = buff(MagicalSleep.class);
+    if(ms!=null){
+      if(ms instanceof MagicalSleep.Deep) ((MagicalSleep.Deep) ms).setDamage(dmg);
+      Buff.detach(ms);
+    }
     if (dmg.from instanceof Char && isCharmedBy((Char) dmg.from))
       Buff.detach(this, Charm.class);
 
@@ -424,10 +427,11 @@ public abstract class Char extends Actor {
     if (buff(Ignorant.class) == null) {
       if (dmg.value > 0 || dmg.from instanceof Char) {
         String number = Integer.toString(dmg.value);
-        int color = HP > HT / 4 ? CharSprite.WARNING : CharSprite.NEGATIVE;
+        if (dmg.isFeatured(Damage.Feature.CRITICAL)) number += "!";
 
-        if (dmg.isFeatured(Damage.Feature.CRITICAL))
-          number += "!";
+        int color = 0x8c8c8c; // gray
+        if(dmg.type== Damage.Type.MAGICAL) color = 0x3b94ff; // blue for magical damage.
+        if(HP< HT/4) color = CharSprite.NEGATIVE;
 
         sprite.showStatus(color, number);
       }
@@ -461,7 +465,7 @@ public abstract class Char extends Actor {
 
     // elemental resistance
     for (int of = 0; of < Damage.Element.ELEMENT_COUNT; ++of)
-      if (dmg.isFeatured(0x01 << of))
+      if (dmg.hasElement(0x01 << of))
         dmg.value -= Math.round(dmg.value * elementalResistance[of]);
 
     if (dmg.type == Damage.Type.MAGICAL)

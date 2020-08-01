@@ -15,6 +15,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.levels.RegularLevel
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.scenes.InterlevelScene
@@ -68,14 +69,18 @@ object Chasm {
     fun HeroLand() {
         Dungeon.hero.apply {
             sprite.burst(sprite.blood(), 10)
-            takeDamage(Damage(Random.NormalIntRange(HP / 3, HT / 3), {
-                Badges.validateDeathFromFalling()
-                Dungeon.fail(javaClass)
-                GLog.n(Messages.get(Chasm::class.java, "ondeath"))
+            takeDamage(Damage(Random.NormalIntRange(HP / 3, HT / 3), object : Hero.Doom {
+                override fun onDeath() {
+                    Badges.validateDeathFromFalling()
+                    Dungeon.fail(Chasm::class.java)
+                    GLog.n(M.L(Chasm::class.java, "ondeath"))
+                }
             }, this))
 
-            Buff.prolong(this, Cripple::class.java, Cripple.DURATION)
-            Buff.affect(this, Bleeding::class.java).set(HT / 8)
+            if (isAlive) {
+                Buff.prolong(this, Cripple::class.java, Cripple.DURATION)
+                Buff.affect(this, Bleeding::class.java).set(HT / 8)
+            }
         }
 
         Camera.main.shake(4f, 0.2f)

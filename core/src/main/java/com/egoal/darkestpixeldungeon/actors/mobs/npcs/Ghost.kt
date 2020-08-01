@@ -260,7 +260,7 @@ class Ghost : NPC.Unbreakable() {
                 Sample.INSTANCE.play(Assets.SND_GHOST)
                 processed = true
                 // now the rose can spawn.
-                Generator.ARTIFACT.probMap[DriedRose::class.java] = 1f
+                Generator.ARTIFACT.probMap[DriedRose::class] = 1f
             }
         }
 

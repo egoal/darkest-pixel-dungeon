@@ -44,10 +44,11 @@ abstract class WndDialogue(image: Image?, text: String, what: String, vararg opt
             setPos(MARGIN, top)
         }
         add(rtm)
+        top = rtm.bottom() + MARGIN
 
         // options
         if (options.isNotEmpty()) {
-            top = rtm.bottom() + MARGIN + 10f
+            top += 10f
             for (pr in options.withIndex()) {
                 val btn = object : OptionButton(pr.value) {
                     override fun onClick() {

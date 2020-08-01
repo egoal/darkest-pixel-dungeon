@@ -162,6 +162,8 @@ class Hero : Char() {
         val hlvl = buff(Hunger::class.java)!!.hunger()
         if (hlvl >= Hunger.STARVING) return 0f
 
+        if (buff(Berserk::class.java)?.berserking() == true) return 0f
+
         var reg = regeneration
         reg += heroPerk.get(LowHealthRegeneration::class.java)?.extraRegeneration(this) ?: 0f
 
@@ -342,7 +344,7 @@ class Hero : Char() {
             return defSkill * evasion / Math.pow(1.5, estr.toDouble()).toFloat()
         } else {
             // ligh
-            bonus = if (heroClass == HeroClass.ROGUE) -estr else 0
+            bonus = if (heroPerk.has(LowWeightDexterous::class.java)) -estr else 0
 
             if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
                 bonus += 5 + belongings.armor.level() * 3 / 2
@@ -534,8 +536,9 @@ class Hero : Char() {
 
         speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
         speed *= heroPerk.get(BaredAngry::class.java)?.speedFactor(this) ?: 1f
+        speed *= heroPerk.get(Maniac::class.java)?.speedFactor(this) ?: 1f
 
-        return speed
+        return max(0.25f, speed)
     }
 
     override fun attackProc(dmg: Damage): Damage {
@@ -552,7 +555,7 @@ class Hero : Char() {
         // critical damage
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
             // recover sanity
-            val str = wep?.STRReq() ?: 10
+            val str = wep?.STRReq(0) ?: 10
             if (dmg.value > 0 && Random.Int(15 - str / 2) == 0)
                 recoverSanity(min(Random.Int(dmg.value / 6) + 1, 10).toFloat())
 
@@ -597,10 +600,10 @@ class Hero : Char() {
 
         belongings.helmet?.procTakenDamage(dmg)
 
-        if (dmg.type == Damage.Type.MENTAL)
-            return takeMentalDamage(dmg)
-
         buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
+        buff(DragonsSquama.Recharge::class.java)?.procTakenDamage(dmg)
+
+        if (dmg.type == Damage.Type.MENTAL) return takeMentalDamage(dmg)
 
         val dmgToken = super.takeDamage(dmg)
         if (isAlive) {
@@ -1262,7 +1265,7 @@ class Hero : Char() {
 
             GameScene.gameOver()
 
-            if(src is Hero) Badges.validateSuicide()
+            if (src is Hero) Badges.validateSuicide()
 
             if (src is Doom) src.onDeath()
 
