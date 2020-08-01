@@ -427,10 +427,11 @@ public abstract class Char extends Actor {
     if (buff(Ignorant.class) == null) {
       if (dmg.value > 0 || dmg.from instanceof Char) {
         String number = Integer.toString(dmg.value);
-        int color = HP > HT / 4 ? CharSprite.WARNING : CharSprite.NEGATIVE;
+        if (dmg.isFeatured(Damage.Feature.CRITICAL)) number += "!";
 
-        if (dmg.isFeatured(Damage.Feature.CRITICAL))
-          number += "!";
+        int color = 0x8c8c8c; // gray
+        if(dmg.type== Damage.Type.MAGICAL) color = 0x3b94ff; // blue for magical damage.
+        if(HP< HT/4) color = CharSprite.NEGATIVE;
 
         sprite.showStatus(color, number);
       }

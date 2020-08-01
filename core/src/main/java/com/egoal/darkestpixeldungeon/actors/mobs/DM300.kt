@@ -248,7 +248,7 @@ class DM300 : Mob() {
                 val dmg = giveDamage(ch)
                 ch.defendDamage(dmg)
                 ch.takeDamage(dmg)
-                Buff.prolong(ch, Paralysis::class.java, 2f)
+                Buff.prolong(ch, Paralysis::class.java, 1.1f)
             }
             // splash
             for (i in PathFinder.NEIGHBOURS8) {

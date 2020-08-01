@@ -34,7 +34,7 @@ class MagicBow : MeleeWeapon() {
         tier = 2
         defaultAction = AC_SHOOT
         usesTargeting = true
-        DLY = 1.25f
+        DLY = 1.2f
     }
 
     override fun min(lvl: Int): Int = lvl + 1
@@ -56,7 +56,7 @@ class MagicBow : MeleeWeapon() {
 
     //todo: handle the proc things.
     private fun giveShootDamage(hero: Hero, enemy: Char) =
-            giveDamage(hero, enemy).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.RANGED)
+            hero.giveDamage(enemy).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.RANGED)
 
     private fun onShot(enemy: Char) {
         val hero = Item.curUser
@@ -67,11 +67,13 @@ class MagicBow : MeleeWeapon() {
 
         val dmg = giveShootDamage(hero, enemy)
         // still need a hit check
-        dmg.type(Damage.Type.NORMAL) // remove magical, add later: affect checkHit
         if (enemy.checkHit(dmg)) {
-            dmg.type(Damage.Type.MAGICAL)
             //todo: may proc enchantment here.
+//            hero.attackProc(dmg)
+//            if (!enemy.isAlive) return
+
             enemy.defendDamage(dmg)
+            enemy.defenseProc(dmg)
             enemy.takeDamage(dmg)
             enemy.sprite.burst(0x57e14e, level() / 2 + 2)
 
@@ -103,7 +105,7 @@ class MagicBow : MeleeWeapon() {
 
             Sample.INSTANCE.play(Assets.SND_MISS, 0.6f, 0.6f, 1.5f)
             val enemy = Actor.findChar(shotpos)
-            val delay = Item.TIME_TO_THROW
+            val delay = hero.attackDelay()
 
             (hero.sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(
                     hero.pos, shotpos, ItemSpriteSheet.MAGIC_DART, null, Callback {

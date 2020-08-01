@@ -353,9 +353,9 @@ public class CursedWand {
           for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0]))
             if (mob instanceof GhostHero) mob.destroy();
 
-          InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-          InterlevelScene.returnDepth = depth;
-          InterlevelScene.returnPos = -1;
+          InterlevelScene.Companion.setMode(InterlevelScene.Mode.RETURN);
+          InterlevelScene.Companion.setReturnDepth(depth);
+          InterlevelScene.Companion.setReturnPos(-1);
           Game.switchScene(InterlevelScene.class);
 
         } else {

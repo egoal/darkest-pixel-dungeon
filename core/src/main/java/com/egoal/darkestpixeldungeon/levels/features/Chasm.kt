@@ -77,8 +77,10 @@ object Chasm {
                 }
             }, this))
 
-            Buff.prolong(this, Cripple::class.java, Cripple.DURATION)
-            Buff.affect(this, Bleeding::class.java).set(HT / 8)
+            if (isAlive) {
+                Buff.prolong(this, Cripple::class.java, Cripple.DURATION)
+                Buff.affect(this, Bleeding::class.java).set(HT / 8)
+            }
         }
 
         Camera.main.shake(4f, 0.2f)

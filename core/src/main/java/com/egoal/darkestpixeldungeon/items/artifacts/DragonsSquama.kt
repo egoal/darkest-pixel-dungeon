@@ -49,13 +49,13 @@ class DragonsSquama : Artifact() {
 
     override fun doEquip(hero: Hero): Boolean {
         val re = super.doEquip(hero)
-        if (re) hero.elementalResistance[0] += 0.5f //todo: 0-> fire, this is fragile
+        if (re) hero.elementalResistance[0] += 0.6f //todo: 0-> fire, this is fragile
         return re
     }
 
     override fun doUnequip(hero: Hero, collect: Boolean, single: Boolean): Boolean {
         val re = super.doUnequip(hero, collect, single)
-        if (re) hero.elementalResistance[0] -= 0.5f
+        if (re) hero.elementalResistance[0] -= 0.6f
         return re
     }
 
@@ -117,6 +117,8 @@ class DragonsSquama : Artifact() {
 
     inner class Recharge : ArtifactBuff() {
         fun procTakenDamage(damage: Damage) {
+            if (damage.type == Damage.Type.MENTAL) return
+
             val isCrit = damage.isFeatured(Damage.Feature.CRITICAL)
             if (isCrit) {
                 val block = round(damage.value * (0.12f + 0.01f * level())).toInt()

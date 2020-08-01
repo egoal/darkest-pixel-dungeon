@@ -600,11 +600,10 @@ class Hero : Char() {
 
         belongings.helmet?.procTakenDamage(dmg)
 
-        if (dmg.type == Damage.Type.MENTAL)
-            return takeMentalDamage(dmg)
-
         buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
         buff(DragonsSquama.Recharge::class.java)?.procTakenDamage(dmg)
+
+        if (dmg.type == Damage.Type.MENTAL) return takeMentalDamage(dmg)
 
         val dmgToken = super.takeDamage(dmg)
         if (isAlive) {

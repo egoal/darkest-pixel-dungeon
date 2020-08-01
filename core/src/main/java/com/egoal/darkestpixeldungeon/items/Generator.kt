@@ -272,7 +272,7 @@ object Generator {
 
     object FOOD : BalancedClassMapGenerator(hashMapOf(
             Food::class to 4f,
-            Pasty::class to 1.25f,
+            Pasty::class to 1f,
             MysteryMeat::class to 0f
     ))
 
@@ -420,7 +420,7 @@ object Generator {
             SCROLL to 400f,
             WAND to 40f,
             RING to 15f,
-            ARTIFACT to 15f,
+            ARTIFACT to 10f,
             SEED to 50f,
             FOOD to 0f,
             GOLD to 500f,

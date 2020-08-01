@@ -18,6 +18,8 @@ class HomurasShield : Artifact() {
         image = ItemSpriteSheet.ARTIFACT_SHIELD
 
         levelCap = 1
+        chargeCap = 100
+        charge = 0
     }
 
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_REFLUX) }
@@ -28,6 +30,7 @@ class HomurasShield : Artifact() {
         if (action == AC_REFLUX) {
             if (!isEquipped(hero)) GLog.w(M.L(Artifact::class.java, "need_to_equip"))
             else if (cursed) GLog.w(M.L(this, "cursed"))
+            else if (charge < chargeCap) GLog.w(M.L(this, "no_charge"))
             else {
                 GameScene.show(object : WndOptions(ItemSprite(this), M.L(this, "name"),
                         M.L(this, "return_warn"), M.L(this, "yes"), M.L(this, "no")) {
@@ -40,11 +43,15 @@ class HomurasShield : Artifact() {
     }
 
     private fun reflux() {
+        // remove it...
+        if (isEquipped(Dungeon.hero)) doUnequip(Dungeon.hero, false)
+        detachAll(Dungeon.hero.belongings.backpack)
+
         Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze::class.java)?.detach()
 
-        Dungeon.level.mobs.filter { it is GhostHero }.forEach { it.destroy() }
+        Dungeon.level.mobs.filterIsInstance<GhostHero>().forEach { it.destroy() }
 
-        InterlevelScene.mode = InterlevelScene.Mode.REFLUX
+        InterlevelScene.mode = InterlevelScene.Mode.BACK_TO_PAST
         Game.switchScene(InterlevelScene::class.java)
     }
 

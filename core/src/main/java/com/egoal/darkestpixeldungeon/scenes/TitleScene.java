@@ -118,7 +118,7 @@ public class TitleScene extends PixelScene {
             new DashboardItem(Messages.get(this, "badges"), 3) {
               @Override
               protected void onClick() {
-                DarkestPixelDungeon.switchNoFade(KBadgesScene.class);
+                DarkestPixelDungeon.switchNoFade(BadgesScene.class);
               }
             },
             new DashboardItem(Messages.get(this, "about"), 1) {

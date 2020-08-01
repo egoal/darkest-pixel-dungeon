@@ -62,8 +62,8 @@ public class WndGame extends Window {
         @Override
         protected void onClick() {
           Dungeon.hero = null;
-          InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-          InterlevelScene.noStory = true;
+          InterlevelScene.Companion.setMode(InterlevelScene.Mode.DESCEND);
+          InterlevelScene.Companion.setNoStory(true);
           Game.switchScene(InterlevelScene.class);
         }
       });
@@ -72,7 +72,7 @@ public class WndGame extends Window {
       addButton(new RedButton(Messages.get(this, "rankings")) {
         @Override
         protected void onClick() {
-          InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+          InterlevelScene.Companion.setMode(InterlevelScene.Mode.DESCEND);
           Game.switchScene(RankingsScene.class);
         }
       });

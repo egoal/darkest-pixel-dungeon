@@ -1,10 +1,10 @@
 NAME,HT,atkSkill,defSkill,EXP,maxLvl,lootChance,loot,minDamage,maxDamage,typeDamage,critChance,critRatio,minDefend,maxDefend,magicalResistance,FIRE,POISON,ICE,LIGHT,SHADOW,HOLY,Properties
 Rat,8,8,2,1,5,,,1,4,,,,0,1,,-0.3,0.1,,,,,
-Slug,8,8,2,1,5,,,2,3,,,,0,1,-0.35,-0.5,0.75,,,,,
-Gnoll,12,10,4,2,8,0.3,Gold,1,6,,,,0,2,,,,,,,,
-Crab,16,12,5,4,9,0.1667,MysteryMeat,2,8,,0.08,,0,3,-0.2,,,0.1,-0.2,,,
-FetidRat,20,12,5,4,5,,,1,4,,,,0,2,,,0.2,,,0.2,-0.25,MINIBOSS DEMONIC
-GnollTrickster,20,16,5,5,8,1,,1,5,,,,0,2,,,,-0.2,,,,MINIBOSS
+Slug,6,8,2,1,5,,,2,4,,,,0,1,-0.35,-0.5,0.75,,,,,
+Gnoll,12,10,4,2,8,0.3,Gold,1,6,,0.09,,0,2,,,,,,,,
+Crab,16,12,5,4,9,0.1667,MysteryMeat,2,8,,,,0,3,-0.2,,,0.1,-0.2,,,
+FetidRat,20,12,6,4,5,,,1,4,,,,0,2,,,0.2,,,0.2,-0.25,MINIBOSS DEMONIC
+GnollTrickster,20,16,6,5,8,1,,1,5,,,,0,2,,,,-0.2,,,,MINIBOSS
 GreatCrab,25,12,0,6,9,0.1667,,1,8,,,,0,4,,,,0.1,-0.2,,,MINIBOSS
 Goo,100,,8,10,,0.333,LloydsBeacon,,,,,,0,2,0.25,-0.25,0.2,,,,-0.3,BOSS DEMONIC
 Swarm,50,10,5,3,9,0.1667,PotionOfHealing,,,,,,,,,,,,,,,
@@ -17,14 +17,14 @@ NewbornElemental,65,25,12,7,20,,,16,26,,,,0,5,0.2,0.5,,-1,,,-0.25,DEMONIC MINIBO
 Tengu,150,20,15,20,,,,6,16,,,,0,5,0.25,,0.2,-0.25,,,,BOSS
 SkeletonKnight,50,18,0,8,16,0.1,Wine,6,18,,0.1,,1,6,-0.2,-0.25,,,,0.25,-0.3,UNDEAD
 AshesSkull,20,1000,10,6,15,,,4,12,NORMAL,,,0,3,0.3,0.3,,-0.2,,0.2,-0.3,UNDEAD
-Bat,30,16,15,7,15,0.15,PotionOfHealing,5,15,,,,0,5,,-0.15,,0.3,,0.2,-0.2,
+Bat,30,16,16,7,15,0.15,PotionOfHealing,5,15,,,,0,5,,-0.15,,0.3,,0.2,-0.2,
 Brute,40,20,15,8,15,0.2,Gold,8,24,,,,0,8,,,-0.15,,,0.2,,
 Spinner,50,20,14,9,16,0.125,MysteryMeat,10,25,,0.1,,0,6,,-0.2,0.25,,,,,
 DM300,200,28,18,30,,,,20,25,,,,0,10,0.35,,0.3,-0.2,-0.1,,,BOSS MACHINE
 Elemental,60,25,20,9,20,0.1,PotionOfLiquidFlame,16,22,,,,2,6,0.2,0.5,,-1,,,-0.2,DEMONIC
 Ballista,65,30,18,12,21,0.3,,16,30,,0.075,,0,10,,,,0.1,-0.2,,,MACHINE
 QuickFiringGun,65,30,18,15,22,0.3,,6,12,,0.075,,0,10,,,,0.1,-0.2,,,MACHINE
-Warlock,70,25,18,10,21,0.75,,12,18,MAGICAL,,,1,8,0.15,,-0.2,,,0.2,-0.1,
+Warlock,70,25,20,10,21,0.75,,12,18,MAGICAL,,,1,8,0.15,,-0.2,,,0.2,-0.1,
 Monk,70,30,30,11,21,0.064,Food,12,25,,0.05,1.2,0,2,-0.2,,,-0.15,,0.2,-0.1,
 Golem,85,28,18,12,22,,,25,40,,,,2,12,,,,0.2,-0.2,,,MACHINE
 King,300,32,25,40,,,,25,40,,,,0,14,0.2,0.15,0.15,-0.15,,0.2,-0.2,BOSS UNDEAD
@@ -34,5 +34,5 @@ Eye,100,30,20,13,26,0.5,Dewdrop,15,25,MAGICAL,,,0,10,0.15,,,,,,-0.25,DEMONIC
 Scorpio,95,36,24,14,26,0.2,PotionOfHealing,26,36,,,,0,16,-0.25,,0.2,-0.25,,0.2,-0.2,DEMONIC
 Yog,300,,,50,,,,,,,,,,,0.25,,0.2,,,0.2,-0.25,BOSS DEMONIC IMMOVABLE
 Yog.RottingFist,300,36,25,0,,,,20,50,,,,0,15,0.2,,0.2,,,,-0.25,BOSS DEMONIC
-Yog.BurningFist,200,36,25,0,,,,22,30,MAGICAL,,,0,15,0.2,,0.2,-0.5,,0.2,-0.25,BOSS DEMONIC
+Yog.BurningFist,200,36,26,0,,,,22,30,MAGICAL,,,0,15,0.2,,0.2,-0.5,,0.2,-0.25,BOSS DEMONIC
 Yog.Larva,25,30,20,0,,,,22,30,,,,0,8,-0.15,,0.2,,,,-0.25,DEMONIC

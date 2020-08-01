@@ -22,12 +22,14 @@ import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Bloodthirsty
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Provocation
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Storming
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Blindweed
 import com.egoal.darkestpixeldungeon.plants.Icecap
+import com.egoal.darkestpixeldungeon.plants.Stormvine
 import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -265,13 +267,13 @@ enum class HeroClass(private val title: String) {
 //        RaggedArmor().identify().collect()
 //        SpiderGland().quantity(10).identify().collect()
 //        initDebug(hero)
-//        MagicBow().identify().collect()
 //        ScrollOfUpgrade().identify().quantity(10).collect()
 //        PotionOfHealing().identify().quantity(10).collect()
 //        ScrollOfTeleportation().identify().quantity(3).collect()
 //        ScrollOfCurse().identify().collect()
 //        HomurasShield().identify().collect()
 //        DragonsSquama().identify().collect()
+//        Knuckles().enchant(Storming()).identify().collect()
     }
 
     // called when hero level up

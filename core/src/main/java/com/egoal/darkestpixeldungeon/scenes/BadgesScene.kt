@@ -10,12 +10,11 @@ import com.watabou.noosa.Camera
 import com.watabou.noosa.Game
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Music
-import com.watabou.noosa.ui.Button
 import com.watabou.noosa.ui.Component
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
 
-class KBadgesScene : PixelScene() {
+class BadgesScene : PixelScene() {
     private val archs: Archs by lazy { Archs() }
     override fun create() {
         super.create()
@@ -69,7 +68,7 @@ class KBadgesScene : PixelScene() {
         fadeIn()
 
         Badges.loadingListener = Callback {
-            if (Game.scene() === this) DarkestPixelDungeon.switchNoFade(KBadgesScene::class.java)
+            if (Game.scene() === this) DarkestPixelDungeon.switchNoFade(BadgesScene::class.java)
         }
     }
 

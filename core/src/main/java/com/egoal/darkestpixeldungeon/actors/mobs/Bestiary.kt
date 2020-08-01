@@ -71,7 +71,7 @@ object Bestiary {
                 classes = arrayOf(Rat::class.java, Slug::class.java)
             }
             2 -> {
-                chances = floatArrayOf(1f, 1f, 0.5f)
+                chances = floatArrayOf(1f, 0.5f, 0.5f)
                 classes = arrayOf(Rat::class.java, Slug::class.java, Gnoll::class.java)
             }
             3 -> {

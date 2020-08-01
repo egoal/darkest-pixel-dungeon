@@ -322,7 +322,7 @@ public class GameScene extends PixelScene {
     busy.y = pane.bottom() + 1;
     add(busy);
 
-    switch (InterlevelScene.mode) {
+    switch (InterlevelScene.Companion.getMode()) {
       case RESURRECT:
         ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.level
                 .getEntrance());
@@ -380,7 +380,7 @@ public class GameScene extends PixelScene {
 
     Camera.main.target = hero;
 
-    if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
+    if (InterlevelScene.Companion.getMode() != InterlevelScene.Mode.NONE) {
       if (Dungeon.depth < Statistics.INSTANCE.getDeepestFloor()) {
         GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth);
       } else {
@@ -409,7 +409,7 @@ public class GameScene extends PixelScene {
               ((RegularLevel) Dungeon.level).secretDoors() > 0)
         GLog.n(Messages.get(this, "secrets"));
       
-      InterlevelScene.mode = InterlevelScene.Mode.NONE;
+      InterlevelScene.Companion.setMode(InterlevelScene.Mode.NONE);
 
       fadeIn();
     }

@@ -160,7 +160,7 @@ class Yvette : NPC() {
                         override fun onBackPressed() {
                             super.onBackPressed()
                             Quest.Completed = true
-                            Dungeon.hero.recoverSanity(Random.Float(4f, 10f))
+                            Dungeon.hero.recoverSanity(Random.Float(10f, 25f)) // recover much more.
                             Dungeon.level.drop(IronKey(20), pos).sprite.drop()
 
                             if (foodGotten) {
@@ -168,7 +168,7 @@ class Yvette : NPC() {
                                 Dungeon.hero.heroPerk.add(perk)
 
                                 PerkGain.Show(Dungeon.hero, perk)
-                                GLog.p(Messages.get(this, "taught", name))
+                                GLog.p(Messages.get(Yvette::class.java, "taught", name))
                             }
 
                             this@Yvette.destroy()
