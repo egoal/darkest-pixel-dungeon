@@ -61,7 +61,7 @@ class WandGuard : Mob() {
         wand.fx(shot) {
             // hit hero 
             val dmg = giveDamage(enemy)
-            enemy.defendDamage(dmg)
+            // enemy.defendDamage(dmg)
             enemy.takeDamage(dmg)
 
             if(enemy is Hero) enemy.ready()

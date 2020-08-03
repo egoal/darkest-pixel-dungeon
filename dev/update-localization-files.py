@@ -2,7 +2,7 @@ import sys, os
 import shutil
 
 LOC = ""
-LOC = "_zh_TW"
+LOC = "_en" # "_zh_TW"
 
 MASSAGES = "core/src/main/resources/com/egoal/darkestpixeldungeon/messages/"
 LOCALIZATIONS = "dev/messages/"
