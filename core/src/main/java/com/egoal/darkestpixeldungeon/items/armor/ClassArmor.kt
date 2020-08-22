@@ -65,7 +65,7 @@ abstract class ClassArmor : Armor(6) {
         super.execute(hero, action)
 
         if (action == AC_SPECIAL) {
-            if (hero.HP < 3) {
+            if (hero.HP < 10) {
                 GLog.w(Messages.get(this, "low_hp"))
             } else if (!isEquipped(hero)) {
                 GLog.w(Messages.get(this, "not_equipped"))
@@ -117,6 +117,7 @@ abstract class ClassArmor : Armor(6) {
                 HeroClass.MAGE -> MageArmor()
                 HeroClass.HUNTRESS -> HuntressArmor()
                 HeroClass.SORCERESS -> SorceressArmor()
+                HeroClass.EXILE -> ExileArmor()
             }
 
             classArmor.level(armor.level())

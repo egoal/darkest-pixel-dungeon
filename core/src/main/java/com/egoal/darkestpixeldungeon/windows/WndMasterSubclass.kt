@@ -64,6 +64,7 @@ class WndMasterSubclass(way1: HeroSubClass, way2: HeroSubClass) : Window() {
                 HeroClass.ROGUE -> Pair(HeroSubClass.FREERUNNER, HeroSubClass.ASSASSIN)
                 HeroClass.HUNTRESS -> Pair(HeroSubClass.SNIPER, HeroSubClass.WARDEN)
                 HeroClass.SORCERESS -> Pair(HeroSubClass.STARGAZER, HeroSubClass.WITCH)
+                HeroClass.EXILE-> Pair(HeroSubClass.LANCER, HeroSubClass.WINEBIBBER)
             }
 
             GameScene.show(WndMasterSubclass(pr.first, pr.second))

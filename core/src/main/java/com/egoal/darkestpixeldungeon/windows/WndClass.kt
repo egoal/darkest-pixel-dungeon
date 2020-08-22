@@ -124,6 +124,7 @@ class WndClass(private val cl: HeroClass) : WndTabbed() {
                 HeroClass.ROGUE -> HeroSubClass.FREERUNNER.desc() + "\n\n" + HeroSubClass.ASSASSIN.desc()
                 HeroClass.HUNTRESS -> HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc()
                 HeroClass.SORCERESS -> HeroSubClass.STARGAZER.desc() + "\n\n" + HeroSubClass.WITCH.desc()
+                HeroClass.EXILE -> HeroSubClass.LANCER.desc() + "\n\n" + HeroSubClass.WINEBIBBER.desc()
             }
 
             val text = PixelScene.renderMultiline(6)

@@ -100,7 +100,8 @@ object Generator {
                     MagesStaff::class to 0f,
                     SorceressWand::class to 0f,
                     BattleGloves::class to 1f,
-                    RedHandleDagger::class to 0.1f
+                    RedHandleDagger::class to 0.1f,
+                    ShortSpear::class to 1f
             ))
 
             object T2 : BalancedClassMapGenerator(hashMapOf(
@@ -110,7 +111,8 @@ object Generator {
                     Spear::class to 5f,
                     Quarterstaff::class to 4f,
                     Sickle::class to 5f,
-                    DriedLeg::class to 5f
+                    DriedLeg::class to 5f,
+                    Tulwar::class to 4f
             ))
 
             object T3 : BalancedClassMapGenerator(hashMapOf(
@@ -394,7 +396,8 @@ object Generator {
             MaskOfMadness::class to 0f, // compose
             TurtleScarf::class to 1f,
             MaskOfLider::class to 0.1f,
-            GuardHelmet::class to 0.2f
+            GuardHelmet::class to 0.1f,
+            StrawHat::class to 0.1f
     ))
 
     object BOOK : BalancedClassMapGenerator(hashMapOf(

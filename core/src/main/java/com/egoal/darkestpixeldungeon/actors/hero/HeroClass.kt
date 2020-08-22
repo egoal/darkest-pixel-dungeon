@@ -14,6 +14,7 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.GuardHelmet
 import com.egoal.darkestpixeldungeon.items.helmets.MaskOfLider
+import com.egoal.darkestpixeldungeon.items.helmets.StrawHat
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
@@ -219,7 +220,46 @@ enum class HeroClass(private val title: String) {
             hero.heroPerk.add(Discount())
             hero.heroPerk.add(Optimistic())
         }
-    };
+    },
+
+    EXILE("exile"){
+        override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_EXILE
+        override fun spritesheet(): String = Assets.EXILE
+        override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "exile_perk$it") }
+
+        override fun onHeroUpgraded(hero: Hero) {
+            super.onHeroUpgraded(hero)
+        }
+
+        override fun initHeroStatus(hero: Hero) {
+            super.initHeroStatus(hero)
+
+            hero.magicalResistance = 0.1f
+            hero.addResistances(Damage.Element.ICE, 0.25f)
+            hero.addResistances(Damage.Element.FIRE, -0.2f)
+            hero.addResistances(Damage.Element.SHADOW, 0.2f)
+            hero.addResistances(Damage.Element.LIGHT, -0.1f)
+        }
+
+        override fun initHeroClass(hero: Hero) {
+            super.initHeroClass(hero)
+
+            hero.belongings.weapon = ShortSpear().identify() as Weapon
+
+            val gourd = Gourd()
+            gourd.identify().collect()
+            Dungeon.quickslot.setSlot(0, gourd)
+
+            val fc = FlyCutter(3)
+            fc.identify().collect()
+            Dungeon.quickslot.setSlot(1, fc)
+
+            ScrollOfRage().identify()
+
+            hero.heroPerk.add(LowHealthRegeneration())
+        }
+    }
+    ;
 
     fun initHero(hero: Hero) {
         hero.heroClass = this
@@ -274,6 +314,9 @@ enum class HeroClass(private val title: String) {
 //        HomurasShield().identify().collect()
 //        DragonsSquama().identify().collect()
 //        Knuckles().enchant(Storming()).identify().collect()
+
+        Tulwar().identify().collect()
+        StrawHat().identify().collect()
     }
 
     // called when hero level up

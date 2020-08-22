@@ -392,7 +392,9 @@ class Hero : Char() {
 
         // critical
         if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < criticalChance()) {
-            dmg.value = (dmg.value * 1.5).toInt()
+            val ratio = if(heroClass==HeroClass.EXILE) 1.75f else 1.5f
+
+            dmg.value = (dmg.value * ratio).toInt()
             dmg.addFeature(Damage.Feature.CRITICAL)
         }
 

@@ -194,6 +194,9 @@ public class HeroSprite extends CharSprite {
       case SORCERESS:
         row = 4;
         break;
+      case EXILE:
+        row =  5;
+        break;
     }
 
     return new Image(Assets.PORTRAITS, 0, 26* row, 26, 26);

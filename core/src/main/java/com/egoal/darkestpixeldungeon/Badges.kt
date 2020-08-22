@@ -131,6 +131,7 @@ object Badges {
         MASTERY_ROGUE,
         MASTERY_HUNTRESS,
         MASTERY_SORCERESS,
+        MASTERY_EXILE,
         ITEM_LEVEL_1(48),
         ITEM_LEVEL_2(49),
         ITEM_LEVEL_3(50),
@@ -702,17 +703,10 @@ object Badges {
     fun validateMastery() {
         if (Dungeon.IsChallenged()) return
 
-        var badge: Badge? = null
-        when (Dungeon.hero.heroClass) {
-            HeroClass.WARRIOR -> badge = Badge.MASTERY_WARRIOR
-            HeroClass.MAGE -> badge = Badge.MASTERY_MAGE
-            HeroClass.ROGUE -> badge = Badge.MASTERY_ROGUE
-            HeroClass.HUNTRESS -> badge = Badge.MASTERY_HUNTRESS
-            HeroClass.SORCERESS -> badge = Badge.MASTERY_SORCERESS
-        }
+        val badge = Dungeon.hero.heroClass.masteryBadge()
 
-        if (!global!!.contains(badge)) {
-            global!!.add(badge)
+        if (!global.contains(badge)) {
+            global.add(badge)
             saveNeeded = true
         }
     }

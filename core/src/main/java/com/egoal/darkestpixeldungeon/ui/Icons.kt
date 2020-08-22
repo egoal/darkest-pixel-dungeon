@@ -42,6 +42,7 @@ enum class Icons {
     ROGUE,
     HUNTRESS,
     SORCERESS,
+    EXILE,
 
     CLOSE,
     DEPTH,
@@ -96,6 +97,7 @@ enum class Icons {
                 ROGUE -> icon.frame(icon.texture.uvRect(32, 29, 48, 45))
                 HUNTRESS -> icon.frame(icon.texture.uvRect(48, 29, 64, 45))
                 SORCERESS -> icon.frame(icon.texture.uvRect(64, 29, 80, 45))
+                EXILE-> icon.frame(icon.texture.uvRect(0, 66, 16, 82))
 
                 CLOSE -> icon.frame(icon.texture.uvRect(0, 45, 13, 58))
                 DEPTH -> icon.frame(icon.texture.uvRect(46, 12, 54, 20))
@@ -130,6 +132,7 @@ enum class Icons {
             HeroClass.ROGUE -> get(ROGUE)
             HeroClass.HUNTRESS -> get(HUNTRESS)
             HeroClass.SORCERESS -> get(SORCERESS)
+            HeroClass.EXILE-> get(EXILE)
         }
     }
 }

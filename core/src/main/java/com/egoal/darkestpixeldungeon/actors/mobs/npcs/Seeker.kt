@@ -11,6 +11,8 @@ import com.watabou.noosa.Game
 class Seeker : NPC.Unbreakable() {
     init {
         spriteClass = Sprite::class.java
+
+        properties.add(Property.IMMOVABLE)
     }
 
     override fun interact(): Boolean {

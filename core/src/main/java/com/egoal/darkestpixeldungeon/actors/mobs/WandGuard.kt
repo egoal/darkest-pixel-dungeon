@@ -40,6 +40,7 @@ class WandGuard : Mob() {
         magicalResistance = 1f
 
         properties.add(Property.IMMOVABLE)
+        properties.add(Property.MACHINE)
     }
 
     private var wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {

@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.SparkParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
@@ -239,7 +240,7 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
         private const val COOLDOWN_CURE = 15f
         private const val COOLDOWN_CURE_STR = "cool-down"
 
-        private val IMMUNITIES = hashSetOf<Class<*>>(ToxicGas::class.java, VenomGas::class.java, Burning::class.java, ScrollOfPsionicBlast::class.java)
+        private val IMMUNITIES = hashSetOf<Class<*>>(ToxicGas::class.java, VenomGas::class.java, Burning::class.java, ScrollOfPsionicBlast::class.java, Corruption::class.java)
 
         fun Instance(): GhostHero? = Dungeon.level.mobs.find { it is GhostHero } as GhostHero?
     }

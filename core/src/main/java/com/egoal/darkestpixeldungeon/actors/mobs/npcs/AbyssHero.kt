@@ -5,11 +5,16 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
+import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Burning
+import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
@@ -17,6 +22,7 @@ import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
+import java.util.HashSet
 
 class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     init {
@@ -170,9 +176,13 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         HandleOfAbyss.SetDefeated()
     }
 
+    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
+
     companion object {
         private const val TIME_LEFT = "time-left"
         private const val CAMP = "camp"
+
+        private val IMMUNITIES = hashSetOf<Class<*>>(ToxicGas::class.java, VenomGas::class.java, Burning::class.java, ScrollOfPsionicBlast::class.java, Corruption::class.java)
 
         fun Instance(): AbyssHero? = Dungeon.level.mobs.find { it is AbyssHero } as AbyssHero?
 

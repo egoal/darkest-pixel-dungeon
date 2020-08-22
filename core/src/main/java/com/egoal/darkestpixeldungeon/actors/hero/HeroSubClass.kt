@@ -56,7 +56,10 @@ enum class HeroSubClass(private val title: String) {
     WARDEN("warden"),
 
     STARGAZER("stargazer"),
-    WITCH("witch");
+    WITCH("witch"),
+
+    LANCER("lancer"),
+    WINEBIBBER("winebibber");
 
     fun title(): String = Messages.get(this, title)
 
