@@ -57,8 +57,9 @@ object PerkImageSheet {
     const val DIETING = 50
     const val LOW_WEIGHT_DEX = 51
     const val MANIAC = 52
-
+    const val POLEARM = 53
 
     private const val NEGATIVE = 64
     const val APPETITE_RAVENOUS = NEGATIVE + 0
+    const val DISCOUNT_NEG = NEGATIVE + 1
 }

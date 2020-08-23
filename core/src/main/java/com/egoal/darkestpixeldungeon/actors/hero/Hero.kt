@@ -28,10 +28,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
 import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
-import com.egoal.darkestpixeldungeon.items.weapon.melee.DriedLeg
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Flail
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Lance
+import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -211,10 +208,11 @@ class Hero : Char() {
     }
 
     fun mentalFactor(): Float {
-        var factor = 1f
+        var factor = if (heroClass == HeroClass.EXILE) 0.9f else 1f
         belongings.helmet?.let {
             if (it is CircletEmerald)
-                factor = if (it.cursed) 0.95f else 1.1f
+                factor *= if (it.cursed) 0.95f else 1.1f
+            else if (it is StrawHat) factor *= 1.15f
         }
         return factor
     }
@@ -232,6 +230,8 @@ class Hero : Char() {
 
         return c
     }
+
+    fun wealthBonus(): Int = Ring.getBonus(this, RingOfWealth.Wealth::class.java) + if (subClass == HeroSubClass.LANCER) -1 else 0
 
     // followers
     fun holdFollowers(level: Level) {
@@ -298,7 +298,14 @@ class Hero : Char() {
         // weapon
         accuracy *= (rangedWeapon ?: belongings.weapon)?.accuracyFactor(Dungeon.hero, target) ?: 1f
 
+        //todo: refactor
+        if (rangedWeapon == null && belongings.weapon != null) {
+            if ((belongings.weapon as Weapon).RCH > 1 && heroPerk.has(PolearmMaster::class.java))
+                accuracy *= 1.1f
+        }
+
         if (belongings.helmet is MaskOfHorror && belongings.helmet.cursed) accuracy *= 0.75f
+
 
         return atkSkill * accuracy
     }
@@ -392,7 +399,7 @@ class Hero : Char() {
 
         // critical
         if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < criticalChance()) {
-            val ratio = if(heroClass==HeroClass.EXILE) 1.75f else 1.5f
+            val ratio = if (heroClass == HeroClass.EXILE) 1.75f else 1.5f
 
             dmg.value = (dmg.value * ratio).toInt()
             dmg.addFeature(Damage.Feature.CRITICAL)
@@ -548,10 +555,15 @@ class Hero : Char() {
 
         wep?.proc(dmg)
 
-        // snipper perk
-        if (subClass == HeroSubClass.SNIPER && rangedWeapon != null) {
-            // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
-            Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
+        if (rangedWeapon != null) {
+            // snipper perk
+            if (subClass == HeroSubClass.SNIPER) {
+                // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
+                Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
+            }
+        } else if (belongings.weapon is MeleeWeapon) {
+            // exile perk
+            heroPerk.get(PolearmMaster::class.java)?.proc(dmg, belongings.weapon as MeleeWeapon)
         }
 
         // critical damage
@@ -643,7 +655,7 @@ class Hero : Char() {
     private fun takeMentalDamage(dmg: Damage): Int {
         if (dmg.value <= 0) return 0
 
-        if (heroClass == HeroClass.WARRIOR) dmg.value += Random.Int(0, 1)
+        if (heroClass == HeroClass.EXILE) dmg.value += Random.Int(0, 1)
         if (!dmg.isFeatured(Damage.Feature.ACCURATE)) {
             val chance = heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f
             if (Random.Float() < chance) {

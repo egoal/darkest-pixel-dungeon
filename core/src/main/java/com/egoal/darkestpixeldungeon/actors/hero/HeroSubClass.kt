@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
+import com.egoal.darkestpixeldungeon.actors.hero.perks.PolearmMaster
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
@@ -106,6 +107,9 @@ enum class HeroSubClass(private val title: String) {
                     val a = Astrolabe().identify()
                     if (a.doPickUp(hero)) GLog.w(Messages.get(hero, "you_now_have", a.name()))
                     else Dungeon.level.drop(a, hero.pos).sprite.drop()
+                }
+                LANCER -> {
+                    hero.heroPerk.add(PolearmMaster())
                 }
             }
         }

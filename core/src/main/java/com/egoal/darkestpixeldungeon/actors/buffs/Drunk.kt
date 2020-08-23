@@ -7,6 +7,10 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 
 class Drunk : Vertigo() {
+    init {
+        type = buffType.NEUTRAL
+    }
+
     override fun icon(): Int = BuffIndicator.DRUNK
 
     override fun toString(): String = Messages.get(this, "name")
@@ -15,7 +19,7 @@ class Drunk : Vertigo() {
 
     companion object {
         private const val BASE_DURATION = 30f
-        
+
         fun duration(ch: Char): Float {
             val r = ch.buff(RingOfResistance.Resistance::class.java)
             return if (r == null) BASE_DURATION else r.durationFactor() * BASE_DURATION

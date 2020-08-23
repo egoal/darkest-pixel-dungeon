@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.books.TomeOfRetrain
 import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
+import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.GuardHelmet
@@ -222,7 +223,7 @@ enum class HeroClass(private val title: String) {
         }
     },
 
-    EXILE("exile"){
+    EXILE("exile") {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_EXILE
         override fun spritesheet(): String = Assets.EXILE
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "exile_perk$it") }
@@ -257,6 +258,8 @@ enum class HeroClass(private val title: String) {
             ScrollOfRage().identify()
 
             hero.heroPerk.add(LowHealthRegeneration())
+            hero.heroPerk.add(Discount().apply { level = -1 })
+            hero.heroPerk.add(PolearmMaster())
         }
     }
     ;
@@ -314,9 +317,11 @@ enum class HeroClass(private val title: String) {
 //        HomurasShield().identify().collect()
 //        DragonsSquama().identify().collect()
 //        Knuckles().enchant(Storming()).identify().collect()
-
-        Tulwar().identify().collect()
-        StrawHat().identify().collect()
+//        Tulwar().identify().collect()
+//        StrawHat().identify().collect()
+        GreatBlueprint().identify().collect()
+        Wine().collect()
+        BrownAle().collect()
     }
 
     // called when hero level up

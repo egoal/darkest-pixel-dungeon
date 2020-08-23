@@ -20,6 +20,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.unclassified.Rune
 import com.egoal.darkestpixeldungeon.items.wands.Wand
+import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -33,6 +34,8 @@ import kotlin.math.round
 
 class Drunkard : Perk() {
     override fun image(): Int = PerkImageSheet.WINE_DRUNKARD
+
+    override fun canBeGain(hero: Hero): Boolean = hero.heroClass != HeroClass.EXILE
 }
 
 class GoodAppetite : Perk() {
@@ -122,8 +125,9 @@ class Optimistic : Perk(2) {
     override fun canBeGain(hero: Hero): Boolean = hero.heroClass != HeroClass.SORCERESS
 }
 
+// note: this perk can be negative level, i havnt abstract this, but it works for now.
 class Discount : Perk(2) {
-    override fun image(): Int = PerkImageSheet.DISCOUNT
+    override fun image(): Int = if (level > 0) PerkImageSheet.DISCOUNT else PerkImageSheet.DISCOUNT_NEG
 
     fun buyPrice(item: Item): Int = (item.sellPrice() * ratio()).toInt()
 
@@ -567,4 +571,23 @@ class Maniac : Perk() {
         val n = min(hero.visibleEnemies(), 8)
         return if (n <= 1) 1f else (0.5f + 0.5f * 0.8f.pow(n)) // no bonus when 1 v 1
     }
+}
+
+class PolearmMaster : Perk(2) {
+    override fun image(): Int = PerkImageSheet.POLEARM
+
+    fun proc(damage: Damage, weapon: MeleeWeapon) {
+        val defender = damage.to as Char
+        val ratio = 0.1f + weapon.tier * 0.05f * level // 0.15 ~ 0.35 => 0.2 ~ 0.6
+
+        if (Random.Float() < ratio) {
+            val duration = 1f + weapon.tier + weapon.DLY
+            Buff.prolong(defender, Cripple::class.java, duration)
+        }
+    }
+
+    // exile wont get this, while other class can never reach level 2
+    // note: i havnt fix the perk upgrade bug, so level 2 is possible
+    override fun canBeGain(hero: Hero): Boolean = hero.heroClass != HeroClass.EXILE
+            && hero.heroPerk.get(PolearmMaster::class.java) == null
 }

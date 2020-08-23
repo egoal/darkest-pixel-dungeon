@@ -566,8 +566,7 @@ public abstract class Mob extends Char {
     super.die(cause);
 
     float lootChance = this.lootChance;
-    int bonus = RingOfWealth.Companion.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
-    lootChance *= Math.pow(1.15, bonus);
+    lootChance *= Math.pow(1.15, Dungeon.hero.wealthBonus());
 
     if (Random.Float() < lootChance && Dungeon.hero.getLvl() <= maxLvl + 2) {
       Item loot = createLoot();

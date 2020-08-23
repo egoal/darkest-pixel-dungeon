@@ -473,7 +473,7 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static int lastClass() {
-    return Preferences.INSTANCE.getInt(Preferences.KEY_LAST_CLASS, 0, 0, 4);
+    return Preferences.INSTANCE.getInt(Preferences.KEY_LAST_CLASS, 0, 0, 5);
   }
 
   public static void quickSlots(int value) {

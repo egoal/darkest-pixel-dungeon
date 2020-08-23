@@ -6,6 +6,10 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 
 class TimeDilation : FlavourBuff() {
+    init {
+        type = buffType.POSITIVE
+    }
+
     override fun icon(): Int = BuffIndicator.TIME_DILATION
 
     override fun attachTo(target: Char?): Boolean {

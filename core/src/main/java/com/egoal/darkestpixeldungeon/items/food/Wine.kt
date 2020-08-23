@@ -26,7 +26,7 @@ import kotlin.math.min
 private const val AC_DRINK = "drink"
 private const val TIME_TO_DRINK = 2f
 
-open class Wine : Item() {
+open class Wine(val gourdValue: Int = 5) : Item() {
     init {
         image = ItemSpriteSheet.DPD_WINE
         defaultAction = AC_DRINK
@@ -52,7 +52,7 @@ open class Wine : Item() {
                 value += value / 4
                 hero.recoverSanity(value)
 
-                if(this is BrownAle)
+                if (this is BrownAle)
                     hero.sayShort(HeroLines.AWFUL)
             } else {
                 hero.recoverSanity(value)
@@ -74,12 +74,12 @@ open class Wine : Item() {
     override fun isUpgradable(): Boolean = false
 }
 
-class BrownAle : Wine() {
+class BrownAle : Wine(3) {
     init {
         image = ItemSpriteSheet.BROWN_ALE
     }
 
-    override fun recoverValue(hero: Hero): Float = min(Random.Float(10f, hero.pressure.pressure* 0.3f), 22.5f)
+    override fun recoverValue(hero: Hero): Float = min(Random.Float(10f, hero.pressure.pressure * 0.3f), 22.5f)
 
     override fun price(): Int = 15 * quantity()
 }

@@ -942,8 +942,7 @@ abstract class Level : Bundlable {
         // quota
         items.add(Generator.FOOD.generate())
 
-        val bonus = Ring.getBonus(Dungeon.hero, RingOfWealth.Wealth::class.java)
-        val p = 0.925f.pow(bonus)
+        val p = 0.925f.pow(Dungeon.hero.wealthBonus())
         if (Dungeon.posNeeded()) {
             items.add(if (Random.Float() > p) PotionOfMight() else PotionOfStrength())
             Dungeon.limitedDrops.strengthPotions.count++

@@ -100,6 +100,7 @@ object Badges {
         BOSS_SLAIN_1_ROGUE,
         BOSS_SLAIN_1_HUNTRESS,
         BOSS_SLAIN_1_SORCERESS,
+        BOSS_SLAIN_1_EXILE,
         BOSS_SLAIN_1(12),
         BOSS_SLAIN_2(13),
         BOSS_SLAIN_3(14),
@@ -115,6 +116,8 @@ object Badges {
         BOSS_SLAIN_3_WARDEN,
         BOSS_SLAIN_3_STARGAZER,
         BOSS_SLAIN_3_WITCH,
+        BOSS_SLAIN_3_LANCE,
+        BOSS_SLAIN_3_WINEBIBBER,
         BOSS_SLAIN_3_ALL_SUBCLASSES(33, true),
         //        RING_OF_HAGGLER(20),
 //        RING_OF_THORNS(21),
@@ -638,6 +641,7 @@ object Badges {
                     HeroClass.ROGUE -> badge = Badge.BOSS_SLAIN_1_ROGUE
                     HeroClass.HUNTRESS -> badge = Badge.BOSS_SLAIN_1_HUNTRESS
                     HeroClass.SORCERESS -> badge = Badge.BOSS_SLAIN_1_SORCERESS
+                    HeroClass.EXILE-> badge= Badge.BOSS_SLAIN_1_EXILE
                 }
                 local.add(badge)
                 if (!global!!.contains(badge)) {
@@ -649,7 +653,8 @@ object Badges {
                         global!!.contains(Badge.BOSS_SLAIN_1_MAGE) &&
                         global!!.contains(Badge.BOSS_SLAIN_1_ROGUE) &&
                         global!!.contains(Badge.BOSS_SLAIN_1_HUNTRESS) &&
-                        global!!.contains(Badge.BOSS_SLAIN_1_SORCERESS)) {
+                        global!!.contains(Badge.BOSS_SLAIN_1_SORCERESS) &&
+                        global!!.contains(Badge.BOSS_SLAIN_1_EXILE)) {
 
                     badge = Badge.BOSS_SLAIN_1_ALL_CLASSES
                     if (!global!!.contains(badge)) {
@@ -670,6 +675,8 @@ object Badges {
                     HeroSubClass.WARDEN -> badge = Badge.BOSS_SLAIN_3_WARDEN
                     HeroSubClass.STARGAZER -> badge = Badge.BOSS_SLAIN_3_STARGAZER
                     HeroSubClass.WITCH -> badge = Badge.BOSS_SLAIN_3_WITCH
+                    HeroSubClass.LANCER-> badge= Badge.BOSS_SLAIN_3_LANCE
+                    HeroSubClass.WINEBIBBER-> Badge.BOSS_SLAIN_3_WINEBIBBER
                     else -> return
                 }
                 local.add(badge)
@@ -687,7 +694,9 @@ object Badges {
                         global!!.contains(Badge.BOSS_SLAIN_3_SNIPER) &&
                         global!!.contains(Badge.BOSS_SLAIN_3_WARDEN) &&
                         global!!.contains(Badge.BOSS_SLAIN_3_STARGAZER) &&
-                        global!!.contains(Badge.BOSS_SLAIN_3_WITCH)) {
+                        global!!.contains(Badge.BOSS_SLAIN_3_WITCH) &&
+                        global!!.contains(Badge.BOSS_SLAIN_3_LANCE) &&
+                        global!!.contains(Badge.BOSS_SLAIN_3_WINEBIBBER)) {
 
                     badge = Badge.BOSS_SLAIN_3_ALL_SUBCLASSES
                     if (!global!!.contains(badge)) {

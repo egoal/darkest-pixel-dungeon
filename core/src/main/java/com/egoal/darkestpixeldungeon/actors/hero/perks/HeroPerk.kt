@@ -14,7 +14,10 @@ class HeroPerk : Bundlable {
         val similar = perks.find { perk.javaClass == it.javaClass }
 
         return if (similar != null) {
-            similar.upgrade()
+            if (similar.level == -1) {
+                perks.remove(similar)
+                similar.onLose()
+            } else similar.upgrade()
             true
         } else {
             if (perks.add(perk)) {

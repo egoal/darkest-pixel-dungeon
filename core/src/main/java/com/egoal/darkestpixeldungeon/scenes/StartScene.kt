@@ -194,6 +194,7 @@ class StartScene : PixelScene() {
             val text = when (CurrentClass) {
                 HeroClass.HUNTRESS -> M.L(this, "unlock_huntress")
                 HeroClass.SORCERESS -> M.L(this, "unlock_sorceress")
+                HeroClass.EXILE-> M.L(this, "unlock_exile")
                 else -> ""
             }
             // unlock
@@ -224,8 +225,11 @@ class StartScene : PixelScene() {
 
         private fun IsSorceressUnlocked(): Boolean = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)
 
+        private fun IsExileUnlocked(): Boolean = Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_4)
+
         private fun IsLocked(cls: HeroClass): Boolean = (cls == HeroClass.HUNTRESS && !isHuntressUnlocked()) ||
-                (cls == HeroClass.SORCERESS && !IsSorceressUnlocked())
+                (cls == HeroClass.SORCERESS && !IsSorceressUnlocked()) ||
+                (cls == HeroClass.EXILE && !IsExileUnlocked())
 
         // GameButton
         private const val SECONDARY_COLOR_N = 0xCACFC2
