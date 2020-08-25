@@ -175,14 +175,14 @@ class WandOfBlastWave : DamageWand() {
     }
 
     companion object {
-        fun throwChar(ch: Char, trajectory: Ballistica,
-                      power: Int) {
+        // return moved distance, 0 for not moved
+        fun throwChar(ch: Char, trajectory: Ballistica, power: Int): Int {
             var dist = Math.min(trajectory.dist, power)
 
             if (ch.properties().contains(Char.Property.BOSS))
                 dist /= 2
 
-            if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return
+            if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return 0
 
             if (Actor.findChar(trajectory.path[dist]) != null) {
                 dist--
@@ -190,7 +190,7 @@ class WandOfBlastWave : DamageWand() {
 
             val newPos = trajectory.path[dist]
 
-            if (newPos == ch.pos) return
+            if (newPos == ch.pos) return 0
 
             val finalDist = dist
             val initialpos = ch.pos
@@ -213,6 +213,8 @@ class WandOfBlastWave : DamageWand() {
                 // when hero is moved, update vision.
                 if (ch is Hero) Dungeon.observe()
             }), -1f)
+
+            return  dist
         }
     }
 }

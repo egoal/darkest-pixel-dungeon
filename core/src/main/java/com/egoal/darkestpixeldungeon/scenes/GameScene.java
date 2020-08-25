@@ -784,8 +784,10 @@ public class GameScene extends PixelScene {
 
   public static void setColorLayer(int color) {
     if (colorLayer != null) resetColorLayer();
-    colorLayer = new ColorLayer(color);
-    scene.add(colorLayer);
+    if(scene!=null) {
+      colorLayer = new ColorLayer(color);
+      scene.add(colorLayer);
+    }
   }
 
   public static void resetColorLayer() {

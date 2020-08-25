@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Penetration
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
@@ -110,6 +111,7 @@ enum class HeroSubClass(private val title: String) {
                 }
                 LANCER -> {
                     hero.heroPerk.add(PolearmMaster())
+                    Buff.affect(hero, Penetration::class.java)
                 }
             }
         }

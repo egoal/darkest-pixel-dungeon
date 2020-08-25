@@ -15,6 +15,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.windows.WndConfirm
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.min
@@ -27,7 +28,7 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
         unique = true
     }
 
-    private var volume = 0
+    private var volume = 4
     private var enchanted = false
 
     override fun isIdentified(): Boolean = true
@@ -111,9 +112,24 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
         return desc
     }
 
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put(VOLUME, volume)
+        bundle.put(ENCHANTED, enchanted)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        volume = bundle.getInt(VOLUME)
+        enchanted = bundle.getBoolean(ENCHANTED)
+    }
+
     companion object {
         private const val AC_DRINK = "drink"
         private const val AC_IRRIGATE = "irrigate"
+
+        private const val VOLUME = "volume"
+        private const val ENCHANTED = "enchanted"
 
         private const val CAPACITY = 20
     }

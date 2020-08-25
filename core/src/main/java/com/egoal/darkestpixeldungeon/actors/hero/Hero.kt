@@ -561,7 +561,7 @@ class Hero : Char() {
                 // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
                 Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
             }
-        } else if (belongings.weapon is MeleeWeapon) {
+        } else if (belongings.weapon is MeleeWeapon && (belongings.weapon as MeleeWeapon).RCH > 1) {
             // exile perk
             heroPerk.get(PolearmMaster::class.java)?.proc(dmg, belongings.weapon as MeleeWeapon)
         }

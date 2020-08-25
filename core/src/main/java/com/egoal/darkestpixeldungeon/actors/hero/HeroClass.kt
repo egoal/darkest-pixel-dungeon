@@ -2,6 +2,8 @@ package com.egoal.darkestpixeldungeon.actors.hero
 
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Penetration
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.*
@@ -228,10 +230,6 @@ enum class HeroClass(private val title: String) {
         override fun spritesheet(): String = Assets.EXILE
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "exile_perk$it") }
 
-        override fun onHeroUpgraded(hero: Hero) {
-            super.onHeroUpgraded(hero)
-        }
-
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
 
@@ -260,6 +258,8 @@ enum class HeroClass(private val title: String) {
             hero.heroPerk.add(LowHealthRegeneration())
             hero.heroPerk.add(Discount().apply { level = -1 })
             hero.heroPerk.add(PolearmMaster())
+
+            // Buff.affect(hero, Penetration::class.java)
         }
     }
     ;
@@ -319,9 +319,6 @@ enum class HeroClass(private val title: String) {
 //        Knuckles().enchant(Storming()).identify().collect()
 //        Tulwar().identify().collect()
 //        StrawHat().identify().collect()
-        GreatBlueprint().identify().collect()
-        Wine().collect()
-        BrownAle().collect()
     }
 
     // called when hero level up

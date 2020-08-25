@@ -56,8 +56,7 @@ class WarriorArmor : ClassArmor() {
             override fun onSelect(target: Int?) {
                 if (target != null && target != curUser.pos) {
 
-                    val route = Ballistica(curUser.pos, target, Ballistica
-                            .PROJECTILE)
+                    val route = Ballistica(curUser.pos, target, Ballistica.PROJECTILE)
                     var cell = route.collisionPos
 
                     //can't occupy the same cell as another char, so move back one.
