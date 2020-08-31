@@ -43,6 +43,7 @@ import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import com.watabou.utils.PointF
 import com.watabou.utils.Random
+import kotlin.math.min
 import kotlin.math.round
 
 class WandOfBlastWave : DamageWand() {
@@ -175,25 +176,27 @@ class WandOfBlastWave : DamageWand() {
     }
 
     companion object {
-        // return moved distance, 0 for not moved
-        fun throwChar(ch: Char, trajectory: Ballistica, power: Int): Int {
-            var dist = Math.min(trajectory.dist, power)
+        // return moved distance, 0 if wont moved
+        fun calcThrowDistance(ch: Char, trajectory: Ballistica, power: Int): Int {
+            var dist = min(trajectory.dist, power)
 
-            if (ch.properties().contains(Char.Property.BOSS))
-                dist /= 2
+            if (ch.properties().contains(Char.Property.BOSS)) dist /= 2
 
             if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return 0
 
-            if (Actor.findChar(trajectory.path[dist]) != null) {
-                dist--
-            }
+            if (Actor.findChar(trajectory.path[dist]) != null) --dist
 
-            val newPos = trajectory.path[dist]
+            if (trajectory.path[dist] == ch.pos) return 0
 
-            if (newPos == ch.pos) return 0
+            return dist
+        }
 
-            val finalDist = dist
+        fun throwChar(ch: Char, trajectory: Ballistica, power: Int) {
+            val dist = calcThrowDistance(ch, trajectory, power)
+            if (dist == 0) return
+
             val initialpos = ch.pos
+            val newPos = trajectory.path[dist]
 
             Actor.addDelayed(Pushing(ch, ch.pos, newPos, Callback {
                 if (initialpos != ch.pos) {
@@ -203,18 +206,16 @@ class WandOfBlastWave : DamageWand() {
                 }
                 ch.pos = newPos
                 if (ch.pos == trajectory.collisionPos) {
-                    ch.takeDamage(Damage(Random.NormalIntRange((finalDist + 1) / 2,
-                            finalDist), Char.Nobody.INSTANCE, ch).type(Damage.Type.MAGICAL))
+                    ch.takeDamage(Damage(Random.NormalIntRange((dist + 1) / 2,
+                            dist), Char.Nobody.INSTANCE, ch).type(Damage.Type.MAGICAL))
 
                     Paralysis.prolong(ch, Paralysis::class.java, (Random.NormalIntRange(
-                            (finalDist + 1) / 2, finalDist) + 1).toFloat())
+                            (dist + 1) / 2, dist) + 1).toFloat())
                 }
                 Dungeon.level.press(ch.pos, ch)
                 // when hero is moved, update vision.
                 if (ch is Hero) Dungeon.observe()
             }), -1f)
-
-            return  dist
         }
     }
 }

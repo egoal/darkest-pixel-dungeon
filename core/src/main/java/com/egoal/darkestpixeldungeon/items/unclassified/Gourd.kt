@@ -77,7 +77,7 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
         val dv = min(2, volume)
         volume -= dv
 
-        var value = min(Random.Float(3f * dv, hero.pressure.pressure * 0.2f * dv), 15f)
+        var value = min(Random.Float(2f * dv, hero.pressure.pressure * 0.2f * dv), 12f)
 
         // exile cannot get Drunkard perk.
         val tipsy = hero.buff(Tipsy::class.java)

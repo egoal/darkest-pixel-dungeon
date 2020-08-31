@@ -153,6 +153,10 @@ class Hero : Char() {
         return Pair(true, "")
     }
 
+    //todo: refactor someday
+    fun isUsingPolearm() = rangedWeapon == null && ((belongings.weapon as Weapon?)?.RCH
+            ?: 1) > 1 && belongings.weapon !is Whip
+
     fun regenerateSpeed(): Float {
         if (challenge == Challenge.Immortality) return 0f
 
@@ -299,10 +303,7 @@ class Hero : Char() {
         accuracy *= (rangedWeapon ?: belongings.weapon)?.accuracyFactor(Dungeon.hero, target) ?: 1f
 
         //todo: refactor
-        if (rangedWeapon == null && belongings.weapon != null) {
-            if ((belongings.weapon as Weapon).RCH > 1 && heroPerk.has(PolearmMaster::class.java))
-                accuracy *= 1.1f
-        }
+        if (isUsingPolearm() && heroPerk.has(PolearmMaster::class.java)) accuracy *= 1.1f
 
         if (belongings.helmet is MaskOfHorror && belongings.helmet.cursed) accuracy *= 0.75f
 
@@ -554,17 +555,13 @@ class Hero : Char() {
         val wep = (rangedWeapon ?: belongings.weapon) as Weapon?
 
         wep?.proc(dmg)
-
-        if (rangedWeapon != null) {
-            // snipper perk
-            if (subClass == HeroSubClass.SNIPER) {
-                // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
-                Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
-            }
-        } else if (belongings.weapon is MeleeWeapon && (belongings.weapon as MeleeWeapon).RCH > 1) {
-            // exile perk
+        if (rangedWeapon != null && subClass == HeroSubClass.SNIPER)
+        // sniper perk
+        // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
+            Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
+        else if (isUsingPolearm())
+        // exile perk
             heroPerk.get(PolearmMaster::class.java)?.proc(dmg, belongings.weapon as MeleeWeapon)
-        }
 
         // critical damage
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
@@ -994,7 +991,7 @@ class Hero : Char() {
 
         if (ankh?.isBlessed == true) {
             HP = HT / 4
-            //ensures that you'll get to act first in almost any case, to prevent 
+            //ensures that you'll get to act first in almost any case, to prevent
             // reviving and then instantly dieing again.
             recoverSanity(min(20f, pressure.pressure * 0.25f))
             Buff.detach(this, Paralysis::class.java)
@@ -1042,7 +1039,7 @@ class Hero : Char() {
     override fun move(step: Int) {
         super.move(step)
 
-        // step sfx 
+        // step sfx
         if (!flying) {
             if (Level.water[pos]) Sample.INSTANCE.play(Assets.SND_WATER, 1f, 1f, Random.Float(0.8f, 1.25f))
             else Sample.INSTANCE.play(Assets.SND_STEP)
@@ -1057,10 +1054,6 @@ class Hero : Char() {
         var level = if (intentional) 2 * awareness - awareness * awareness else awareness
 
         val distance = if (heroPerk.has(EfficientSearch::class.java)) 2 else 1
-//        if (distance <= 0) {
-//            level /= (2 - distance).toFloat()
-//            distance = 1
-//        }
 
         val pt = Dungeon.level.cellToPoint(pos)
         val ax = max(pt.x - distance, 0)
@@ -1189,6 +1182,8 @@ class Hero : Char() {
         if (subClass == HeroSubClass.GLADIATOR) {
             if (hit) Buff.affect(this, Combo::class.java).hit(enemy!!)
             else buff(Combo::class.java)?.miss()
+        }else if(subClass==HeroSubClass.LANCER){
+            if(hit) Buff.affect(this, Penetration::class.java).hit()
         }
 
         curAction = null

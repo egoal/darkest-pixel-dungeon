@@ -115,7 +115,7 @@ class StartScene : PixelScene() {
 
         unlock = Group()
         add(unlock)
-        if (!isHuntressUnlocked() || !IsSorceressUnlocked()) {
+        if (!isHuntressUnlocked() || !IsSorceressUnlocked() || !IsExileUnlocked()) {
             unlockText = renderMultiline(9).apply {
                 maxWidth(width.toInt())
                 hardlight(0xffff00)

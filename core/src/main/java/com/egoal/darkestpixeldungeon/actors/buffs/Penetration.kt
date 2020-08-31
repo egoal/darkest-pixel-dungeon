@@ -23,20 +23,13 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 
 class Penetration : Buff(), ActionIndicator.Action {
-    private var cooldown = 0f
+    private var hits = HIT_TIMES - 1
 
-    override fun act(): Boolean {
-        if (cooldown > 0f) cooldown -= Actor.TICK
-        else {
-            val hero = target as Hero
-            if (hero.rangedWeapon == null &&
-                    ((target as Hero).belongings.weapon as Weapon?)?.RCH ?: 1 > 1)
-                ActionIndicator.setAction(this)
-            else ActionIndicator.clearAction(this)
-        }
-        spend(Actor.TICK)
+    fun hit() {
+        if (!(target as Hero).isUsingPolearm()) return
 
-        return true
+        if (hits < HIT_TIMES) ++hits
+        if (hits >= HIT_TIMES) ActionIndicator.setAction(this)
     }
 
     override fun getIcon(): Image {
@@ -56,7 +49,7 @@ class Penetration : Buff(), ActionIndicator.Action {
 
     private fun doStab(enemy: Char) {
         ActionIndicator.clearAction(this)
-        cooldown = ACTION_COOLDOWN
+        hits = 0
 
         val hero = target as Hero
 
@@ -70,7 +63,7 @@ class Penetration : Buff(), ActionIndicator.Action {
 
     private val selector = object : CellSelector.Listener {
         override fun onSelect(cell: Int?) {
-            if (cell == null) return
+            if (cell == null || !Dungeon.visible[cell]) return
             val enemy = Actor.findChar(cell)
             if (enemy == null || target.isCharmedBy(enemy))
                 GLog.w(M.L(Penetration::class.java, "bad_target"))
@@ -86,12 +79,12 @@ class Penetration : Buff(), ActionIndicator.Action {
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
-        bundle.put(COOLDOWN, cooldown)
+        bundle.put(HIT_STR, hits)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
-        cooldown = bundle.getFloat(COOLDOWN)
+        hits = bundle.getInt(HIT_STR)
     }
 
     private class stab : FlavourBuff() {
@@ -104,29 +97,28 @@ class Penetration : Buff(), ActionIndicator.Action {
                 hero.sprite.showStatus(CharSprite.NEUTRAL, M.L(Penetration::class.java, "name"))
 
                 val route = Ballistica(hero.pos, enemy.pos, Ballistica.PROJECTILE)
-                val dst = enemy.pos
 
                 hero.busy()
-                hero.sprite.jump(hero.pos, dst) {
-                    val op = enemy.pos + (enemy.pos - hero.pos)
 
+                val op = enemy.pos + (enemy.pos - hero.pos)
+                val knock_shot = Ballistica(enemy.pos, op, Ballistica.MAGIC_BOLT)
+
+                val throwdis = WandOfBlastWave.calcThrowDistance(enemy, knock_shot, 1)
+
+                val dst = if (throwdis == 0) route.path[route.dist - 1] else enemy.pos
+
+                Actor.addDelayed(Pushing(hero, hero.pos, dst, Callback {
                     // knock back
-                    val shot = Ballistica(enemy.pos, op, Ballistica.MAGIC_BOLT)
-                    if (WandOfBlastWave.throwChar(enemy, shot, 1) == 0) {
-                        // knock back failed, push back to avoid overlap
-                        // fixme: this may let the hero fall to chasm...
-                        val newpos = route.path[route.dist - 1]
-                        Actor.addDelayed(Pushing(hero, hero.pos, newpos, Callback {
-                            landHero(hero, newpos)
-                        }), -1f)
-                    } else landHero(hero, dst)
+                    if(throwdis>0) WandOfBlastWave.throwChar(enemy, knock_shot, 1)
 
-                    // normal attack process, may do something special later.
+                    landHero(hero, dst)
+
+                    // simple attack, may miss.
                     hero.attack(enemy)
                     hero.spendAndNext(TIME_STAB)
 
                     Camera.main.shake(2f, 0.5f)
-                }
+                }), -1f)
             }
 
             super.detach()
@@ -141,8 +133,8 @@ class Penetration : Buff(), ActionIndicator.Action {
     }
 
     companion object {
-        private const val COOLDOWN = "cooldown"
-        private const val ACTION_COOLDOWN = 10f
+        private const val HIT_TIMES = 4
+        private const val HIT_STR = "hit"
 
         private const val TIME_PREPARE = 1f
         private const val TIME_STAB = 1f

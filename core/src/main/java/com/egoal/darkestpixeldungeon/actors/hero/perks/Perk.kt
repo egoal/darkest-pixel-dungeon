@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.hero.perks
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.KRandom
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.messages.M
@@ -13,7 +14,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
 
     open fun image(): Int = PerkImageSheet.NONE
 
-    open fun upgradable(): Boolean = level < maxLevel
+    open fun upgradable(): Boolean = level < maxLevel && canBeGain(Dungeon.hero)
 
     open fun upgrade() {
         assert(upgradable())
