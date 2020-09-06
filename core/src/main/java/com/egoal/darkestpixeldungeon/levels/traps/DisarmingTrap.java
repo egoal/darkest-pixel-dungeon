@@ -62,15 +62,15 @@ public class DisarmingTrap extends Trap {
       }
     }
 
-    if (Dungeon.hero.pos == pos) {
+    if (Dungeon.hero.getPos() == pos) {
       Hero hero = Dungeon.hero;
-      KindOfWeapon weapon = hero.getBelongings().weapon;
+      KindOfWeapon weapon = hero.getBelongings().getWeapon();
 
       if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
 
         int cell = Dungeon.level.randomRespawnCell();
         if (cell != -1) {
-          hero.getBelongings().weapon = null;
+          hero.getBelongings().setWeapon(null);
           Dungeon.quickslot.clearItem(weapon);
           weapon.updateQuickslot();
 

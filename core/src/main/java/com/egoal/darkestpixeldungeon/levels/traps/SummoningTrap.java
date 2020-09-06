@@ -61,7 +61,7 @@ public class SummoningTrap extends Trap {
 
     for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
       int p = pos + PathFinder.NEIGHBOURS8[i];
-      if (Actor.findChar(p) == null && (Level.Companion.getPassable()[p] || Level.Companion.getAvoid()[p])) {
+      if (Actor.Companion.findChar(p) == null && (Level.Companion.getPassable()[p] || Level.Companion.getAvoid()[p])) {
         candidates.add(p);
       }
     }
@@ -80,7 +80,7 @@ public class SummoningTrap extends Trap {
     for (Integer point : respawnPoints) {
       Mob mob = Bestiary.INSTANCE.mob(Dungeon.depth);
       mob.state = mob.WANDERING;
-      mob.pos = point;
+      mob.setPos(point);
       GameScene.add(mob, DELAY);
       mobs.add(mob);
     }
@@ -88,7 +88,7 @@ public class SummoningTrap extends Trap {
     //important to process the visuals and pressing of cells last, so spawned
     // mobs have a chance to occupy cells first
     for (Mob mob : mobs) {
-      ScrollOfTeleportation.Companion.appear(mob, mob.pos);
+      ScrollOfTeleportation.Companion.appear(mob, mob.getPos());
     }
 
   }

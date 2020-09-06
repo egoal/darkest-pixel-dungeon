@@ -39,7 +39,7 @@ public class Invisibility extends FlavourBuff {
   @Override
   public boolean attachTo(Char target) {
     if (super.attachTo(target)) {
-      target.invisible++;
+      target.setInvisible(target.getInvisible() + 1);
       return true;
     } else {
       return false;
@@ -48,8 +48,8 @@ public class Invisibility extends FlavourBuff {
 
   @Override
   public void detach() {
-    if (target.invisible > 0)
-      target.invisible--;
+    if (target.getInvisible() > 0)
+      target.setInvisible(target.getInvisible() - 1);
     super.detach();
   }
 
@@ -60,9 +60,9 @@ public class Invisibility extends FlavourBuff {
 
   @Override
   public void fx(boolean on) {
-    if (on) target.sprite.add(CharSprite.State.INVISIBLE);
-    else if (target.invisible == 0)
-      target.sprite.remove(CharSprite.State.INVISIBLE);
+    if (on) target.getSprite().add(CharSprite.State.INVISIBLE);
+    else if (target.getInvisible() == 0)
+      target.getSprite().remove(CharSprite.State.INVISIBLE);
   }
 
   @Override

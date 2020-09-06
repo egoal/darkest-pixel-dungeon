@@ -46,7 +46,7 @@ public class Affection extends Armor.Glyph {
 
       Buff.affect(attacker, Charm.class, Charm.durationFactor(attacker) * 
               duration).object = defender.id();
-      attacker.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f,
+      attacker.getSprite().centerEmitter().start(Speck.factory(Speck.HEART), 0.2f,
               5);
 
     }

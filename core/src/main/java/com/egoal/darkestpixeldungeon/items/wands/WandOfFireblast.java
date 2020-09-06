@@ -84,7 +84,7 @@ public class WandOfFireblast extends DamageWand {
 
       if (Level.Companion.getFlamable()[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
         GameScene.add(Blob.seed(cell, 1 + chargesPerCast(), Fire.class));
-      Char ch = Actor.findChar(cell);
+      Char ch = Actor.Companion.findChar(cell);
       if (ch != null) {
 
         ch.takeDamage(giveDamage(ch));
@@ -171,9 +171,9 @@ public class WandOfFireblast extends DamageWand {
 
     for (int cell : visualCells) {
       //this way we only get the cells at the tip, much better performance.
-      MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, cell, null);
+      MagicMissile.fire(curUser.getSprite().parent, bolt.sourcePos, cell, null);
     }
-    MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, bolt.path.get
+    MagicMissile.fire(curUser.getSprite().parent, bolt.sourcePos, bolt.path.get
             (dist), callback);
     Sample.INSTANCE.play(Assets.SND_ZAP);
   }

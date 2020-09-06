@@ -39,7 +39,7 @@ public class PoisonTrap extends Trap {
   @Override
   public void activate() {
 
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
 
     if (ch != null) {
       Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + 

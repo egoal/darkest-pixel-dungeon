@@ -120,10 +120,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
 
   public void link(Char ch) {
     this.ch = ch;
-    ch.sprite = this;
+    ch.setSprite(this);
 
-    place(ch.pos);
-    turnTo(ch.pos, Random.Int(Dungeon.level.length()));
+    place(ch.getPos());
+    turnTo(ch.getPos(), Random.Int(Dungeon.level.length()));
 
     ch.updateSpriteState();
   }
@@ -150,8 +150,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
         text = Messages.format(text, args);
       }
       if (ch != null) {
-        PointF tile = DungeonTilemap.tileCenterToWorld(ch.pos);
-        FloatingText.show(tile.x, tile.y - (width * 0.5f), ch.pos, text, color);
+        PointF tile = DungeonTilemap.tileCenterToWorld(ch.getPos());
+        FloatingText.show(tile.x, tile.y - (width * 0.5f), ch.getPos(), text, color);
       } else {
         FloatingText.show(x + width * 0.5f, y, text, color);
       }
@@ -183,7 +183,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
 
     isMoving = true;
 
-    if (visible && Level.Companion.getWater()[from] && !ch.flying) {
+    if (visible && Level.Companion.getWater()[from] && !ch.getFlying()) {
       GameScene.ripple(from);
     }
 
@@ -196,23 +196,23 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
   }
 
   public void attack(int cell) {
-    turnTo(ch.pos, cell);
+    turnTo(ch.getPos(), cell);
     play(attack);
   }
 
   public void attack(int cell, Callback callback) {
     animCallback = callback;
-    turnTo(ch.pos, cell);
+    turnTo(ch.getPos(), cell);
     play(attack);
   }
 
   public void operate(int cell) {
-    turnTo(ch.pos, cell);
+    turnTo(ch.getPos(), cell);
     play(operate);
   }
 
   public void zap(int cell) {
-    turnTo(ch.pos, cell);
+    turnTo(ch.getPos(), cell);
     play(zap);
   }
 
@@ -274,7 +274,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
   public void bloodBurstA(PointF from, int damage) {
     if (visible) {
       PointF c = center();
-      int n = (int) Math.min(9 * Math.sqrt((double) damage / ch.HT), 9);
+      int n = (int) Math.min(9 * Math.sqrt((double) damage / ch.getHT()), 9);
       Splash.at(c, PointF.angle(from, c), 3.1415926f / 2, blood(), n);
     }
   }
@@ -290,7 +290,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
   public void spriteBurst(PointF from, int damage) {
     if (visible) {
       float str = GameMath.INSTANCE.clampf(
-              (float) Math.sqrt((double) damage / ch.HT) * 1.5f, 1f, 1.5f);
+              (float) Math.sqrt((double) damage / ch.getHT()) * 1.5f, 1f, 1.5f);
       CriticalShock.show(ch, PointF.angle(from, center()), str);
     }
   }
@@ -507,8 +507,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener,
   public void onComplete(Tweener tweener) {
     if (tweener == jumpTweener) {
 
-      if (visible && Level.Companion.getWater()[ch.pos] && !ch.flying) {
-        GameScene.ripple(ch.pos);
+      if (visible && Level.Companion.getWater()[ch.getPos()] && !ch.getFlying()) {
+        GameScene.ripple(ch.getPos());
       }
       if (jumpCallback != null) {
         jumpCallback.call();

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.Damage;
@@ -79,7 +80,7 @@ public class CapeOfThorns extends Artifact {
         }
         updateQuickslot();
       }
-      spend(TICK);
+      spend(Actor.TICK);
       return true;
     }
 
@@ -101,7 +102,7 @@ public class CapeOfThorns extends Artifact {
         int deflected = Random.NormalIntRange(0, dmg.value);
         dmg.value -=  deflected;
         
-        if(dmg.from instanceof Mob && Dungeon.level.adjacent(((Mob) dmg.from).pos, hero.pos))
+        if(dmg.from instanceof Mob && Dungeon.level.adjacent(((Mob) dmg.from).getPos(), hero.getPos()))
           ((Mob) dmg.from).takeDamage(new Damage(deflected, dmg.to, dmg.from));
         
         exp += deflected;

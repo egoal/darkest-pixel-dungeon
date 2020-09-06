@@ -117,7 +117,7 @@ public class Toolbar extends Component {
 
       @Override
       protected void onClick() {
-        GameScene.show(new WndBag(Dungeon.hero.getBelongings().backpack, null,
+        GameScene.show(new WndBag(Dungeon.hero.getBelongings().getBackpack(), null,
                 WndBag.Mode.ALL, null));
       }
 

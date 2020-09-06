@@ -45,7 +45,7 @@ public class Imp extends NPC.Unbreakable {
   {
     spriteClass = ImpSprite.class;
 
-    properties.add(Property.IMMOVABLE);
+    getProperties().add(Property.IMMOVABLE);
   }
 
   private boolean seenBefore = false;
@@ -53,7 +53,7 @@ public class Imp extends NPC.Unbreakable {
   @Override
   protected boolean act() {
 
-    if (!Quest.given && Dungeon.visible[pos]) {
+    if (!Quest.given && Dungeon.visible[getPos()]) {
       if (!seenBefore)
         say(Messages.get(this, "hey", Dungeon.hero.givenName()));
       seenBefore = true;
@@ -72,7 +72,7 @@ public class Imp extends NPC.Unbreakable {
   @Override
   public boolean interact() {
 
-    sprite.turnTo(pos, Dungeon.hero.pos);
+    getSprite().turnTo(getPos(), Dungeon.hero.getPos());
     if (Quest.given) {
 
       DwarfToken tokens = Dungeon.hero.getBelongings().getItem(DwarfToken
@@ -92,7 +92,7 @@ public class Imp extends NPC.Unbreakable {
       Quest.given = true;
       Quest.completed = false;
 
-      Journal.INSTANCE.add(name);
+      Journal.INSTANCE.add(getName());
     }
 
     return false;
@@ -103,7 +103,7 @@ public class Imp extends NPC.Unbreakable {
     yell(Messages.get(this, "cya", Dungeon.hero.givenName()));
 
     destroy();
-    sprite.die();
+    getSprite().die();
   }
 
   public static class Quest {
@@ -167,8 +167,8 @@ public class Imp extends NPC.Unbreakable {
 
         Imp npc = new Imp();
         do {
-          npc.pos = level.randomRespawnCell();
-        } while (npc.pos == -1 || level.getHeaps().get(npc.pos) != null);
+          npc.setPos(level.randomRespawnCell());
+        } while (npc.getPos() == -1 || level.getHeaps().get(npc.getPos()) != null);
         level.getMobs().add(npc);
 
         spawned = true;
@@ -189,7 +189,7 @@ public class Imp extends NPC.Unbreakable {
         if ((alternative && mob instanceof Monk) ||
                 (!alternative && mob instanceof Golem)) {
 
-          Dungeon.level.drop(new DwarfToken(), mob.pos).getSprite().drop();
+          Dungeon.level.drop(new DwarfToken(), mob.getPos()).getSprite().drop();
         }
       }
     }

@@ -39,7 +39,7 @@ public class ScrollOfIdentify extends InventoryScroll {
   @Override
   public void onItemSelected(Item item) {
 
-    curUser.sprite.parent.add(new Identification(curUser.sprite.center()
+    curUser.getSprite().parent.add(new Identification(curUser.getSprite().center()
             .offset(0, -16)));
 
     item.identify();

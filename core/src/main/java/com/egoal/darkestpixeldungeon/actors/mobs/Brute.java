@@ -50,7 +50,7 @@ public class Brute extends Mob {
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        enraged = HP < HT / 4;
+        enraged = getHP() < getHT() / 4;
     }
 
     @Override
@@ -67,11 +67,11 @@ public class Brute extends Mob {
     public int takeDamage(Damage dmg) {
         int val = super.takeDamage(dmg);
 
-        if (isAlive() && !enraged && HP < HT / 3) {
+        if (isAlive() && !enraged && getHP() < getHT() / 3) {
             enraged = true;
-            if (Dungeon.visible[pos]) {
+            if (Dungeon.visible[getPos()]) {
                 GLog.w(Messages.get(this, "enraged_text"));
-                sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
+                getSprite().showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
             }
             spend(TIME_TO_ENRAGE);
         }

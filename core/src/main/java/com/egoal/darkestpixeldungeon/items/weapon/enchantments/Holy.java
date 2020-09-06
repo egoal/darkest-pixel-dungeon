@@ -25,7 +25,7 @@ public class Holy extends Weapon.Enchantment {
       if (m.properties().contains(Char.Property.UNDEAD) ||
               m.properties().contains(Char.Property.DEMONIC)) {
         // the extra damage is added by their resistance				
-        m.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+        m.getSprite().emitter().start(ShadowParticle.UP, 0.05f, 10);
       }
     }
 

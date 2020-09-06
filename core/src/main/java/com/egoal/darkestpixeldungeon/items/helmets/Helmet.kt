@@ -26,7 +26,7 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
     override fun doEquip(hero: Hero): Boolean {
         detach(hero.belongings.backpack)
 
-        if (hero.belongings.helmet == null || hero.belongings.helmet.doUnequip(hero, true, false)) {
+        if (hero.belongings.helmet?.doUnequip(hero, true, false) != false) {
             hero.belongings.helmet = this
 
             identify()

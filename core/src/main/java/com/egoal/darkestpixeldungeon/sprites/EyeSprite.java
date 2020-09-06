@@ -82,7 +82,7 @@ public class EyeSprite extends MobSprite {
   }
 
   public void charge(int pos) {
-    turnTo(ch.pos, pos);
+    turnTo(ch.getPos(), pos);
     play(charging);
   }
 
@@ -103,7 +103,7 @@ public class EyeSprite extends MobSprite {
     super.onComplete(anim);
 
     if (anim == zap) {
-      if (Dungeon.visible[ch.pos] || Dungeon.visible[zapPos]) {
+      if (Dungeon.visible[ch.getPos()] || Dungeon.visible[zapPos]) {
         parent.add(new Beam.DeathRay(center(), DungeonTilemap
                 .tileCenterToWorld(zapPos)));
       }

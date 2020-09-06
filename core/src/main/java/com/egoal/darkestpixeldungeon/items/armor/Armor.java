@@ -129,9 +129,9 @@ public class Armor extends EquipableItem {
         degrade();
       }
       GLog.i(Messages.get(Armor.class, "detach_seal"));
-      hero.sprite.operate(hero.pos);
+      hero.getSprite().operate(hero.getPos());
       if (!seal.collect()) {
-        Dungeon.level.drop(seal, hero.pos);
+        Dungeon.level.drop(seal, hero.getPos());
       }
       seal = null;
     }
@@ -140,12 +140,12 @@ public class Armor extends EquipableItem {
   @Override
   public boolean doEquip(Hero hero) {
 
-    detach(hero.getBelongings().backpack);
+    detach(hero.getBelongings().getBackpack());
 
-    if (hero.getBelongings().armor == null || hero.getBelongings().armor.doUnequip
+    if (hero.getBelongings().getArmor() == null || hero.getBelongings().getArmor().doUnequip
             (hero, true, false)) {
 
-      hero.getBelongings().armor = this;
+      hero.getBelongings().setArmor(this);
 
       cursedKnown = true;
       if (cursed) {
@@ -153,7 +153,7 @@ public class Armor extends EquipableItem {
         GLog.n(Messages.get(Armor.class, "equip_cursed"));
       }
 
-      ((HeroSprite) hero.sprite).updateArmor();
+      ((HeroSprite) hero.getSprite()).updateArmor();
       activate(hero);
 
       hero.spendAndNext(time2equip(hero));
@@ -161,7 +161,7 @@ public class Armor extends EquipableItem {
 
     } else {
 
-      collect(hero.getBelongings().backpack);
+      collect(hero.getBelongings().getBackpack());
       return false;
 
     }
@@ -198,8 +198,8 @@ public class Armor extends EquipableItem {
   public boolean doUnequip(Hero hero, boolean collect, boolean single) {
     if (super.doUnequip(hero, collect, single)) {
 
-      hero.getBelongings().armor = null;
-      ((HeroSprite) hero.sprite).updateArmor();
+      hero.getBelongings().setArmor(null);
+      ((HeroSprite) hero.getSprite()).updateArmor();
 
       BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield
               .class);
@@ -216,7 +216,7 @@ public class Armor extends EquipableItem {
 
   @Override
   public boolean isEquipped(Hero hero) {
-    return hero.getBelongings().armor == this;
+    return hero.getBelongings().getArmor() == this;
   }
 
   public final int DRMax() {

@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -55,8 +56,8 @@ public class SoulBurning extends Buff implements Hero.Doom {
       detach();
     }
 
-    spend(TICK);
-    left_ -= TICK;
+    spend(Actor.TICK);
+    left_ -= Actor.TICK;
     if (left_ <= 0)
       detach();
 
@@ -74,8 +75,8 @@ public class SoulBurning extends Buff implements Hero.Doom {
 
   @Override
   public void fx(boolean on) {
-    if (on) target.sprite.add(CharSprite.State.SOUL_BURNING);
-    else target.sprite.remove(CharSprite.State.SOUL_BURNING);
+    if (on) target.getSprite().add(CharSprite.State.SOUL_BURNING);
+    else target.getSprite().remove(CharSprite.State.SOUL_BURNING);
   }
 
   @Override

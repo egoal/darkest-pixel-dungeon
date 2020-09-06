@@ -93,7 +93,7 @@ public class ItemSpriteSheet {
     public static final int DAGGER = WEP_TIER1 + 4;
     public static final int MAGES_STAFF = WEP_TIER1 + 5;
     public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
-    public static final int SHORTSPEAR = WEP_TIER1+7;
+    public static final int SHORTSPEAR = WEP_TIER1 + 7;
 
     private static final int WEP_TIER2 = xy(1, 6);   //16 slots
     public static final int SHORTSWORD = WEP_TIER2 + 0;
@@ -105,7 +105,7 @@ public class ItemSpriteSheet {
     public static final int SICKLE = WEP_TIER2 + 6;
 
     public static final int RANGER_BOW = WEP_TIER2 + 8;
-    public static final int TULWAR = WEP_TIER2+9;
+    public static final int TULWAR = WEP_TIER2 + 9;
 
     private static final int WEP_TIER3 = xy(1, 7);   //16 slots
     public static final int SWORD = WEP_TIER3 + 0;
@@ -263,9 +263,9 @@ public class ItemSpriteSheet {
     public static final int CRACKED_COIN = ARTIFACTS + 41;
     public static final int ARTIFACT_SHIELD = ARTIFACTS + 42;
     public static final int DARGONS_SQUAMA = ARTIFACTS + 43;
+    public static final int GODESS_RADIANCE = ARTIFACTS + 44;
 
     //32 free slots
-
     private static final int SCROLLS = xy(1, 20);  //16 slots
     public static final int SCROLL_KAUNAN = SCROLLS + 0;
     public static final int SCROLL_SOWILO = SCROLLS + 1;
@@ -349,7 +349,7 @@ public class ItemSpriteSheet {
     public static final int BANDOLIER = BAGS + 2;
     public static final int HOLSTER = BAGS + 3;
     public static final int VIAL = BAGS + 4;
-    public static final int GOURD = BAGS+5;
+    public static final int GOURD = BAGS + 5;
 
     //64 free slots
 

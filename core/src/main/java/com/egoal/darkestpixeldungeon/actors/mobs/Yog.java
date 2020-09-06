@@ -82,11 +82,11 @@ public class Yog extends Mob {
     BurningFist fist2 = new BurningFist();
 
     do {
-      fist1.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-      fist2.pos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+      fist1.setPos(getPos() + PathFinder.NEIGHBOURS8[Random.Int(8)]);
+      fist2.setPos(getPos() + PathFinder.NEIGHBOURS8[Random.Int(8)]);
     }
-    while (!Level.Companion.getPassable()[fist1.pos] || !Level.Companion.getPassable()[fist2.pos] ||
-            fist1.pos == fist2.pos);
+    while (!Level.Companion.getPassable()[fist1.getPos()] || !Level.Companion.getPassable()[fist2.getPos()] ||
+            fist1.getPos() == fist2.getPos());
 
     GameScene.add(fist1);
     GameScene.add(fist2);
@@ -97,7 +97,7 @@ public class Yog extends Mob {
   @Override
   protected boolean act() {
     //heals 1 health per turn
-    HP = Math.min(HT, HP + 1);
+    setHP(Math.min(getHT(), getHP() + 1));
 
     return super.act();
   }
@@ -111,7 +111,7 @@ public class Yog extends Mob {
         fists.add(mob);
 
     for (Mob fist : fists)
-      fist.beckon(pos);
+      fist.beckon(getPos());
 
     dmg.value >>= fists.size();
 
@@ -131,18 +131,18 @@ public class Yog extends Mob {
     ArrayList<Integer> spawnPoints = new ArrayList<>();
 
     for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-      int p = pos + PathFinder.NEIGHBOURS8[i];
-      if (Actor.findChar(p) == null && (Level.Companion.getPassable()[p] || Level.Companion.getAvoid()[p])) {
+      int p = getPos() + PathFinder.NEIGHBOURS8[i];
+      if (Actor.Companion.findChar(p) == null && (Level.Companion.getPassable()[p] || Level.Companion.getAvoid()[p])) {
         spawnPoints.add(p);
       }
     }
 
     if (spawnPoints.size() > 0) {
       Larva larva = new Larva();
-      larva.pos = Random.element(spawnPoints);
+      larva.setPos(Random.element(spawnPoints));
 
       GameScene.add(larva);
-      Actor.addDelayed(new Pushing(larva, pos, larva.pos), -1);
+      Actor.Companion.addDelayed(new Pushing(larva, getPos(), larva.getPos()), -1);
     }
 
     for (Mob mob : Dungeon.level.getMobs()) {
@@ -173,7 +173,7 @@ public class Yog extends Mob {
     }
 
     GameScene.bossSlain();
-    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).getSprite().drop();
+    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), getPos()).getSprite().drop();
     super.die(cause);
 
     yell(Messages.get(this, "defeated"));
@@ -224,8 +224,8 @@ public class Yog extends Mob {
 
       state = WANDERING;
 
-      properties.add(Property.BOSS);
-      properties.add(Property.DEMONIC);
+      getProperties().add(Property.BOSS);
+      getProperties().add(Property.DEMONIC);
 
       addResistances(Damage.Element.POISON, 0.2f);
       addResistances(Damage.Element.HOLY, -0.25f);
@@ -236,7 +236,7 @@ public class Yog extends Mob {
       Char enemy = (Char) damage.to;
       if (Random.Int(3) == 0) {
         Buff.affect(enemy, Ooze.class);
-        enemy.sprite.burst(0xFF000000, 5);
+        enemy.getSprite().burst(0xFF000000, 5);
       }
 
       return damage;
@@ -245,9 +245,9 @@ public class Yog extends Mob {
     @Override
     public boolean act() {
 
-      if (Level.Companion.getWater()[pos] && HP < HT) {
-        sprite.emitter().burst(ShadowParticle.UP, 2);
-        HP += REGENERATION;
+      if (Level.Companion.getWater()[getPos()] && getHP() < getHT()) {
+        getSprite().emitter().burst(ShadowParticle.UP, 2);
+        setHP(getHP() + REGENERATION);
       }
 
       // eyed, share vision with yog
@@ -255,17 +255,17 @@ public class Yog extends Mob {
       boolean justAlerted = alerted;
       alerted = false;
 
-      sprite.hideAlert();
+      getSprite().hideAlert();
 
-      if (paralysed > 0) {
+      if (getParalysed() > 0) {
         enemySeen = false;
-        spend(TICK);
+        spend(Actor.TICK);
         return true;
       }
 
       enemy = chooseEnemy();
       boolean enemyInFOV = enemy != null && enemy.isAlive() &&
-              enemy.invisible <= 0;
+              enemy.getInvisible() <= 0;
 
       return state.act(enemyInFOV, justAlerted);
     }
@@ -309,14 +309,14 @@ public class Yog extends Mob {
 
     @Override
     protected boolean canAttack(Char enemy) {
-      return new Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT)
-              .collisionPos == enemy.pos;
+      return new Ballistica(getPos(), enemy.getPos(), Ballistica.MAGIC_BOLT)
+              .collisionPos == enemy.getPos();
     }
 
     @Override
     public boolean attack(Char enemy) {
 
-      if (!Dungeon.level.adjacent(pos, enemy.pos)) {
+      if (!Dungeon.level.adjacent(getPos(), enemy.getPos())) {
         spend(attackDelay());
 
         Damage dmg = giveDamage(enemy).type(Damage.Type.MAGICAL).addElement
@@ -325,18 +325,18 @@ public class Yog extends Mob {
 
           enemy.takeDamage(dmg);
 
-          enemy.sprite.bloodBurstA(sprite.center(), dmg.value);
-          enemy.sprite.flash();
+          enemy.getSprite().bloodBurstA(getSprite().center(), dmg.value);
+          enemy.getSprite().flash();
 
           if (!enemy.isAlive() && enemy == Dungeon.hero) {
             Dungeon.fail(getClass());
-            GLog.n(Messages.get(Char.class, "kill", name));
+            GLog.n(Messages.get(Char.class, "kill", getName()));
           }
           return true;
 
         } else {
 
-          enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+          enemy.getSprite().showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
           return false;
         }
       } else {
@@ -348,7 +348,7 @@ public class Yog extends Mob {
     public boolean act() {
 
       for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
-        GameScene.add(Blob.seed(pos + PathFinder.NEIGHBOURS9[i], 2, Fire
+        GameScene.add(Blob.seed(getPos() + PathFinder.NEIGHBOURS9[i], 2, Fire
                 .class));
       }
 
@@ -356,17 +356,17 @@ public class Yog extends Mob {
       boolean justAlerted = alerted;
       alerted = false;
 
-      sprite.hideAlert();
+      getSprite().hideAlert();
 
-      if (paralysed > 0) {
+      if (getParalysed() > 0) {
         enemySeen = false;
-        spend(TICK);
+        spend(Actor.TICK);
         return true;
       }
 
       enemy = chooseEnemy();
       boolean enemyInFOV = enemy != null && enemy.isAlive() &&
-              enemy.invisible <= 0;
+              enemy.getInvisible() <= 0;
 
       return state.act(enemyInFOV, justAlerted);
     }

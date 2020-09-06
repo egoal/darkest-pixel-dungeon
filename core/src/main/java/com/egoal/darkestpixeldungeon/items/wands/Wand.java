@@ -110,7 +110,7 @@ public abstract class Wand extends Item {
     if (super.collect(container)) {
       if (container.owner != null) {
         if (container instanceof WandHolster)
-          charge(container.owner, ((WandHolster) container).HOLSTER_SCALE_FACTOR);
+          charge(container.owner, WandHolster.HOLSTER_SCALE_FACTOR);
         else
           charge(container.owner);
       }
@@ -229,7 +229,7 @@ public abstract class Wand extends Item {
   }
 
   public void fx(Ballistica bolt, Callback callback) {
-    MagicMissile.whiteLight(curUser.sprite.parent, bolt.sourcePos, bolt
+    MagicMissile.whiteLight(curUser.getSprite().parent, bolt.sourcePos, bolt
             .collisionPos, callback);
     Sample.INSTANCE.play(Assets.SND_ZAP);
   }
@@ -333,23 +333,23 @@ public abstract class Wand extends Item {
 
         final Wand curWand = (Wand) Wand.curItem;
 
-        final Ballistica shot = new Ballistica(curUser.pos, target, curWand
+        final Ballistica shot = new Ballistica(curUser.getPos(), target, curWand
                 .collisionProperties);
         int cell = shot.collisionPos;
 
-        if (target == curUser.pos || cell == curUser.pos) {
+        if (target == curUser.getPos() || cell == curUser.getPos()) {
           GLog.i(Messages.get(Wand.class, "self_target"));
           return;
         }
 
-        curUser.sprite.zap(cell);
+        curUser.getSprite().zap(cell);
 
         //attempts to target the cell aimed at if something is there,
         // otherwise targets the collision pos.
-        if (Actor.findChar(target) != null)
-          QuickSlotButton.target(Actor.findChar(target));
+        if (Actor.Companion.findChar(target) != null)
+          QuickSlotButton.target(Actor.Companion.findChar(target));
         else
-          QuickSlotButton.target(Actor.findChar(cell));
+          QuickSlotButton.target(Actor.Companion.findChar(cell));
 
         if (curWand.curCharges >= (curWand.cursed ? 1 : curWand
                 .chargesPerCast())) {
@@ -357,8 +357,7 @@ public abstract class Wand extends Item {
           curUser.busy();
 
           if (curWand.cursed) {
-            CursedWand.cursedZap(curWand, curUser, new Ballistica(curUser
-                    .pos, target, Ballistica.MAGIC_BOLT));
+            CursedWand.cursedZap(curWand, curUser, new Ballistica(curUser.getPos(), target, Ballistica.MAGIC_BOLT));
             if (!curWand.cursedKnown) {
               curWand.cursedKnown = true;
               GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));

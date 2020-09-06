@@ -18,29 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.bags;
+package com.egoal.darkestpixeldungeon.items.bags
 
-import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
-import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.actors.hero.Belongings
+import com.egoal.darkestpixeldungeon.plants.Plant
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-public class ScrollHolder extends Bag {
+class SeedPouch : Bag() {
 
-  {
-    image = ItemSpriteSheet.HOLDER;
+    init {
+        image = ItemSpriteSheet.POUCH
 
-    size = Belongings.BACKPACK_SIZE;
-  }
+        size = Belongings.BACKPACK_SIZE
+    }
 
-  @Override
-  public boolean grab(Item item) {
-    return item instanceof Scroll;
-  }
+    override fun grab(item: Item): Boolean = item is Plant.Seed
 
-  @Override
-  public int price() {
-    return 40;
-  }
-
+    override fun price(): Int = 30
 }

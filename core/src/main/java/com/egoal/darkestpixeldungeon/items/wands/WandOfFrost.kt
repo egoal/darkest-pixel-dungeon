@@ -45,7 +45,7 @@ class WandOfFrost : DamageWand() {
             if (ch.buff(Frost::class.java) != null) return
 
             if (ch.buff(Chill::class.java) != null) {
-                val chill = ch.buff(Chill::class.java).cooldown()
+                val chill = ch.buff(Chill::class.java)!!.cooldown()
                 dmg.value = round(dmg.value * 0.95f.pow(chill)).toInt()
             } else
                 ch.sprite.burst(0xff99ccff.toInt(), level() / 2 + 2)

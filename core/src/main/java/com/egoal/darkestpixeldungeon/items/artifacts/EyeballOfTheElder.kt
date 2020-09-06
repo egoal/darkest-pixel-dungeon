@@ -428,8 +428,8 @@ class EyeballOfTheElder : Artifact() {
                 it.detachAll(hero.belongings.backpack)
             }
 
-            val left = hero.belongings.getItem(Left::class.java)
-            val right = hero.belongings.getItem(Right::class.java)
+            val left = hero.belongings.getItem(Left::class.java)!!
+            val right = hero.belongings.getItem(Right::class.java)!!
 
             detach(left)
             detach(right)

@@ -76,7 +76,7 @@ public class WandOfPrismaticLight extends DamageWand {
 
   @Override
   protected void onZap(Ballistica beam) {
-    Char ch = Actor.findChar(beam.collisionPos);
+    Char ch = Actor.Companion.findChar(beam.collisionPos);
     if (ch != null) {
       affectTarget(ch);
     }
@@ -92,16 +92,16 @@ public class WandOfPrismaticLight extends DamageWand {
     //three in (5+lvl) chance of failing
     if (Random.Int(5 + level()) >= 3) {
       Buff.prolong(ch, Blindness.class, 2f + (level() * 0.333f));
-      ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6);
+      ch.getSprite().emitter().burst(Speck.factory(Speck.LIGHT), 6);
     }
 
     if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties()
             .contains(Char.Property.UNDEAD)) {
-      ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
+      ch.getSprite().emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
       Sample.INSTANCE.play(Assets.SND_BURNING);
 
     } else {
-      ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level());
+      ch.getSprite().centerEmitter().burst(RainbowParticle.BURST, 10 + level());
     }
 
     ch.takeDamage(giveDamage(ch));
@@ -138,7 +138,7 @@ public class WandOfPrismaticLight extends DamageWand {
 
   @Override
   public void fx(Ballistica beam, Callback callback) {
-    curUser.sprite.parent.add(new Beam.LightRay(
+    curUser.getSprite().parent.add(new Beam.LightRay(
             DungeonTilemap.tileCenterToWorld(beam.sourcePos),
             DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
     callback.call();

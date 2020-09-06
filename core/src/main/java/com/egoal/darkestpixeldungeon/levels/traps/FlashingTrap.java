@@ -44,7 +44,7 @@ public class FlashingTrap extends Trap {
 
   @Override
   public void activate() {
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
 
     if (ch != null) {
       int len = Random.Int(5, 10) + Dungeon.depth;

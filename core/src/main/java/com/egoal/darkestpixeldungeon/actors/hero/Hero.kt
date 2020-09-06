@@ -131,6 +131,8 @@ class Hero : Char() {
                         Statistics.Clock.state == Statistics.ClockTime.State.MidNight))
             vd += 1
         vd += belongings.helmet?.viewAmend() ?: 0
+        vd += buff(GoddessRadiance.Recharge::class.java)?.viewAmend() ?: 0
+
 
         return GameMath.clamp(vd, 1, 9)
     }
@@ -143,7 +145,7 @@ class Hero : Char() {
 
     // can, why
     fun canRead(): Pair<Boolean, String> {
-        val plevel = pressure.getLevel()
+        val plevel = pressure.level
         if (plevel == Pressure.Level.COLLAPSE || plevel == Pressure.Level.NERVOUS)
             return Pair(false, Messages.get(this, "nervous_to_read"))
 
@@ -218,6 +220,8 @@ class Hero : Char() {
                 factor *= if (it.cursed) 0.95f else 1.1f
             else if (it is StrawHat) factor *= 1.15f
         }
+        if (buff(GoddessRadiance.Recharge::class.java)?.isCursed == true) factor *= 0.5f
+
         return factor
     }
 
@@ -225,7 +229,7 @@ class Hero : Char() {
         if (buff(CriticalRune.Critical::class.java) != null) return 1f
 
         var c = criticalChance
-        if (pressure.getLevel() == Pressure.Level.CONFIDENT) c += 0.07f
+        if (pressure.level == Pressure.Level.CONFIDENT) c += 0.07f
 
         val level = Ring.getBonus(this, RingOfCritical.Critical::class.java)
         if (level > 0)
@@ -270,7 +274,7 @@ class Hero : Char() {
     }
 
     override fun say(text: String) {
-        val color = if (pressure.getLevel() > Pressure.Level.NORMAL) CharSprite.NEGATIVE else CharSprite.DEFAULT
+        val color = if (pressure.level > Pressure.Level.NORMAL) CharSprite.NEGATIVE else CharSprite.DEFAULT
         say(text, color)
     }
 
@@ -305,7 +309,7 @@ class Hero : Char() {
         //todo: refactor
         if (isUsingPolearm() && heroPerk.has(PolearmMaster::class.java)) accuracy *= 1.1f
 
-        if (belongings.helmet is MaskOfHorror && belongings.helmet.cursed) accuracy *= 0.75f
+        if (belongings.helmet is MaskOfHorror && belongings.helmet!!.cursed) accuracy *= 0.75f
 
 
         return atkSkill * accuracy
@@ -355,7 +359,7 @@ class Hero : Char() {
             bonus = if (heroPerk.has(LowWeightDexterous::class.java)) -estr else 0
 
             if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
-                bonus += 5 + belongings.armor.level() * 3 / 2
+                bonus += 5 + belongings.armor!!.level() * 3 / 2
             return (defSkill + bonus) * evasion
         }
     }
@@ -394,7 +398,7 @@ class Hero : Char() {
         }
 
         // helmet
-        belongings.helmet?.let { belongings.helmet.procGivenDamage(dmg) }
+        belongings.helmet?.procGivenDamage(dmg)
 
         heroPerk.get(BaredAngry::class.java)?.procGivenDamage(dmg, this)
 
@@ -461,7 +465,7 @@ class Hero : Char() {
             belongings.armor?.let {
                 dr = Random.NormalIntRange(it.DRMin(), it.DRMax())
 
-                val estr = belongings.armor.STRReq() - STR()
+                val estr = belongings.armor!!.STRReq() - STR()
                 if (estr > 0) {
                     // heavy
                     dr = max(dr - 2 * estr, 0)
@@ -498,7 +502,7 @@ class Hero : Char() {
 
         buff(HasteRune.Haste::class.java)?.let { speed *= 3f }
 
-        var estr = if (belongings.armor != null) belongings.armor.STRReq() - STR() else 0
+        var estr = if (belongings.armor != null) belongings.armor!!.STRReq() - STR() else 0
         estr += if (belongings.weapon is Weapon) (belongings.weapon as Weapon).STRReq() - STR() else 0
         if (estr > 0)
             return speed / 1.2f.pow(estr)
@@ -580,7 +584,7 @@ class Hero : Char() {
         buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
         buff(Sungrass.Health::class.java)?.absorb(dmg.value)
 
-        belongings.armor?.let { belongings.armor.proc(dmg) }
+        belongings.armor?.proc(dmg)
 
         return dmg
     }
@@ -654,7 +658,10 @@ class Hero : Char() {
 
         if (heroClass == HeroClass.EXILE) dmg.value += Random.Int(0, 1)
         if (!dmg.isFeatured(Damage.Feature.ACCURATE)) {
-            val chance = heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f
+            val chance = GameMath.ProbabilityPlus(
+                    heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
+                    buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f)
+
             if (Random.Float() < chance) {
                 dmg.value = 0
                 sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
@@ -815,14 +822,14 @@ class Hero : Char() {
                     step = target
             }
         } else {
-            val newPath = if (path == null || path.isEmpty() || !Dungeon.level.adjacent(pos, path.first)) true
-            else if (path.last != target) true
+            val newPath = if (path == null || path!!.isEmpty() || !Dungeon.level.adjacent(pos, path!!.first)) true
+            else if (path!!.last != target) true
             else {
                 //checks 2 cells ahead for validity.
                 //Note that this is shorter than for mobs, so that mobs usually yield
                 // to the hero
-                val lookAhead = GameMath.clamp(path.size - 1, 0, 2)
-                (0 until lookAhead).map { path.get(it) }.any {
+                val lookAhead = GameMath.clamp(path!!.size - 1, 0, 2)
+                (0 until lookAhead).map { path!!.get(it) }.any {
                     !Level.passable[it] || (Dungeon.visible[it] && Actor.findChar(it) != null)
                 }
             }
@@ -836,7 +843,7 @@ class Hero : Char() {
 
             if (path == null) return false
 
-            step = path.removeFirst()
+            step = path!!.removeFirst()
         }
 
         if (step == -1) return false
@@ -940,7 +947,7 @@ class Hero : Char() {
             sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "level_up"))
             Sample.INSTANCE.play(Assets.SND_LEVELUP)
 
-            if (pressure.getLevel() > Pressure.Level.NORMAL) sayShort(HeroLines.USELESS)
+            if (pressure.level > Pressure.Level.NORMAL) sayShort(HeroLines.USELESS)
 
             Badges.validateLevelReached()
         }
@@ -956,7 +963,7 @@ class Hero : Char() {
 
         super.add(buff)
 
-        sprite?.let {
+        if (hasSprite) {
             buff.heroMessage()?.let { GLog.w(it) }
 
             if (buff is Paralysis || buff is Vertigo) interrupt()
@@ -976,7 +983,7 @@ class Hero : Char() {
         // stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion::class.java)
 
         if (belongings.armor?.hasGlyph(Obfuscation::class.java) == true)
-            stealth += belongings.armor.level()
+            stealth += belongings.armor!!.level()
 
         return stealth
     }
@@ -1021,12 +1028,12 @@ class Hero : Char() {
         }
     }
 
-    override fun isAlive(): Boolean {
-        if (subClass == HeroSubClass.BERSERKER)
-            if (buff(Berserk::class.java)?.berserking() == true) return true
-
-        return super.isAlive()
-    }
+    override val isAlive: Boolean
+        get() {
+            if (subClass == HeroSubClass.BERSERKER)
+                if (buff(Berserk::class.java)?.berserking() == true) return true
+            return super.isAlive
+        }
 
     fun rest(full: Boolean) {
         spendAndNext(TIME_TO_REST)
@@ -1147,7 +1154,7 @@ class Hero : Char() {
             if (Random.Float() < px * py) {
                 recoverSanity(Random.Float(1f, 6f))
 
-                if (pressure.getLevel() > Pressure.Level.NORMAL) {
+                if (pressure.level > Pressure.Level.NORMAL) {
                     sayShort(HeroLines.WHAT_ABOUT_NEXT)
                 } else if (Random.Float() < 0.3f) sayShort(HeroLines.GRIN)
                 else sayShort(HeroLines.DIE)
@@ -1177,13 +1184,13 @@ class Hero : Char() {
     override fun onAttackComplete() {
         AttackIndicator.target(enemy)
 
-        val hit = attack(enemy)
+        val hit = attack(enemy!!)
 
         if (subClass == HeroSubClass.GLADIATOR) {
             if (hit) Buff.affect(this, Combo::class.java).hit(enemy!!)
             else buff(Combo::class.java)?.miss()
-        }else if(subClass==HeroSubClass.LANCER){
-            if(hit) Buff.affect(this, Penetration::class.java).hit()
+        } else if (subClass == HeroSubClass.LANCER) {
+            if (hit) Buff.affect(this, Penetration::class.java).hit()
         }
 
         curAction = null

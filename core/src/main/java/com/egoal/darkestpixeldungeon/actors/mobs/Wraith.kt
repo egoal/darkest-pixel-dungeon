@@ -73,11 +73,11 @@ open class Wraith : Mob() {
     override fun giveDamage(target: Char): Damage =
             Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, target)
 
-    override fun attackSkill(target: Char?): Float = (10 + level).toFloat()
+    override fun attackSkill(target: Char): Float = (10 + level).toFloat()
 
     open fun adjustStats(level: Int) {
         this.level = level
-        defSkill = attackSkill(null) * 5
+        defSkill = attackSkill(Nobody) * 5
         enemySeen = true
     }
 

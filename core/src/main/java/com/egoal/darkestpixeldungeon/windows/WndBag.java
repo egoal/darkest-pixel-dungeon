@@ -154,7 +154,7 @@ public class WndBag extends WndTabbed {
 
     Belongings stuff = Dungeon.hero.getBelongings();
     Bag[] bags = {
-            stuff.backpack,
+            stuff.getBackpack(),
             stuff.getItem(SeedPouch.class),
             stuff.getItem(ScrollHolder.class),
             stuff.getItem(PotionBandolier.class),
@@ -174,10 +174,10 @@ public class WndBag extends WndTabbed {
   public static WndBag lastBag(Listener listener, Mode mode, String title) {
 
     if (mode == lastMode && lastBag != null &&
-            Dungeon.hero.getBelongings().backpack.contains(lastBag)) {
+            Dungeon.hero.getBelongings().getBackpack().contains(lastBag)) {
       return new WndBag(lastBag, listener, mode, title);
     } else {
-      return new WndBag(Dungeon.hero.getBelongings().backpack, listener, mode, title);
+      return new WndBag(Dungeon.hero.getBelongings().getBackpack(), listener, mode, title);
     }
   }
 
@@ -193,20 +193,20 @@ public class WndBag extends WndTabbed {
 
     // Equipped items
     Belongings stuff = Dungeon.hero.getBelongings();
-    placeItem(stuff.weapon != null ? stuff.weapon : new Placeholder
+    placeItem(stuff.getWeapon() != null ? stuff.getWeapon() : new Placeholder
             (ItemSpriteSheet.WEAPON_HOLDER));
-    placeItem(stuff.armor != null ? stuff.armor : new Placeholder
+    placeItem(stuff.getArmor() != null ? stuff.getArmor() : new Placeholder
             (ItemSpriteSheet.ARMOR_HOLDER));
-    placeItem(stuff.helmet != null ? stuff.helmet : new Placeholder
+    placeItem(stuff.getHelmet() != null ? stuff.getHelmet() : new Placeholder
             (ItemSpriteSheet.HELMET_HOLDER));
-    placeItem(stuff.misc1 != null ? stuff.misc1 : new Placeholder
+    placeItem(stuff.getMisc1() != null ? stuff.getMisc1() : new Placeholder
             (ItemSpriteSheet.RING_HOLDER));
-    placeItem(stuff.misc2 != null ? stuff.misc2 : new Placeholder
+    placeItem(stuff.getMisc2() != null ? stuff.getMisc2() : new Placeholder
             (ItemSpriteSheet.RING_HOLDER));
-    placeItem(stuff.misc3 != null ? stuff.misc3 : new Placeholder
+    placeItem(stuff.getMisc3() != null ? stuff.getMisc3() : new Placeholder
             (ItemSpriteSheet.RING_HOLDER));
 
-    boolean backpack = (container == Dungeon.hero.getBelongings().backpack);
+    boolean backpack = (container == Dungeon.hero.getBelongings().getBackpack());
     if (!backpack && DarkestPixelDungeon.landscape()) {
       count = nCols;
       col = 0;

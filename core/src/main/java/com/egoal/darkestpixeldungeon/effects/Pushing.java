@@ -39,12 +39,12 @@ public class Pushing extends Actor {
   private Callback callback;
 
   {
-    actPriority = Integer.MIN_VALUE; //it's a visual effect, gets priority no
+    setActPriority(Integer.MIN_VALUE); //it's a visual effect, gets priority no
     // matter what
   }
 
   public Pushing(Char ch, int from, int to) {
-    sprite = ch.sprite;
+    sprite = ch.getSprite();
     this.from = from;
     this.to = to;
     this.callback = null;
@@ -64,10 +64,10 @@ public class Pushing extends Actor {
       }
     }
 
-    Actor.remove(Pushing.this);
+    Actor.Companion.remove(Pushing.this);
 
     //so that all pushing effects at the same time go simultaneously
-    for (Actor actor : Actor.all()) {
+    for (Actor actor : Actor.Companion.all()) {
       if (actor instanceof Pushing && ((Pushing) actor).cooldown() == 0)
         return true;
     }
@@ -112,7 +112,7 @@ public class Pushing extends Actor {
         sprite.point(end);
 
         killAndErase();
-        Actor.remove(Pushing.this);
+        Actor.Companion.remove(Pushing.this);
         if (callback != null) callback.call();
 
         next();

@@ -29,12 +29,12 @@ public class CriticalShock extends Image {
     target = c;
 
     // copy image.
-    flipHorizontal = c.sprite.flipHorizontal;
-    flipVertical = c.sprite.flipVertical;
-    copy(c.sprite);
-    origin.set(c.sprite.width / 2f, c.sprite.height / 2);
+    flipHorizontal = c.getSprite().flipHorizontal;
+    flipVertical = c.getSprite().flipVertical;
+    copy(c.getSprite());
+    origin.set(c.getSprite().width / 2f, c.getSprite().height / 2);
 
-    color = c.sprite.blood();
+    color = c.getSprite().blood();
     passed = 0;
 
     tint(color, .5f);
@@ -58,8 +58,8 @@ public class CriticalShock extends Image {
     if (passed < MOVE_OUT_DONE) {
       float pct = passed / MOVE_OUT_DONE;
       float ds = (MOVE_OFFSET * strength) * pct;
-      x = target.sprite.x + ds * dx;
-      y = target.sprite.y + ds * dy;
+      x = target.getSprite().x + ds * dx;
+      y = target.getSprite().y + ds * dy;
       scale.set(1f + (SCALE_OFFSET * strength) * pct);
       alpha(INIT_ALPHA * pct);
     } else if (passed < STATIC_DONE) {
@@ -72,10 +72,10 @@ public class CriticalShock extends Image {
   }
 
   public static void show(Char ch, float dir, float power) {
-    if (!ch.sprite.visible || ch.sprite.parent == null) return; // already removed.
+    if (!ch.getSprite().visible || ch.getSprite().parent == null) return; // already removed.
 
     CriticalShock cs = new CriticalShock(ch).set(dir, power);
 
-    ch.sprite.parent.addToBack(cs);
+    ch.getSprite().parent.addToBack(cs);
   }
 }

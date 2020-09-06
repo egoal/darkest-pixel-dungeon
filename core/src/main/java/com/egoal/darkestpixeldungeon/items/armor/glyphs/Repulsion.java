@@ -40,8 +40,8 @@ public class Repulsion extends Armor.Glyph {
     int level = Math.max(0, armor.level());
 
     if (Random.Int(level + 5) >= 4) {
-      int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
-      Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, 
+      int oppositeHero = attacker.getPos() + (attacker.getPos() - defender.getPos());
+      Ballistica trajectory = new Ballistica(attacker.getPos(), oppositeHero,
               Ballistica.MAGIC_BOLT);
       WandOfBlastWave.Companion.throwChar(attacker, trajectory, 2);
     }

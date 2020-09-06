@@ -32,7 +32,7 @@ public class EarthImbue extends FlavourBuff {
 
   public void proc(Char enemy) {
     affect(enemy, Roots.class, 2);
-    CellEmitter.bottom(enemy.pos).start(EarthParticle.FACTORY, 0.05f, 8);
+    CellEmitter.bottom(enemy.getPos()).start(EarthParticle.FACTORY, 0.05f, 8);
   }
 
   @Override

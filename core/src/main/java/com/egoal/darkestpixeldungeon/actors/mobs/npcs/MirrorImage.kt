@@ -62,7 +62,7 @@ class MirrorImage : NPC() {
 
     fun duplicate(hero: Hero) {
         tier = hero.tier()
-        damage = hero.giveDamage(Nobody.INSTANCE).value
+        damage = hero.giveDamage(Nobody).value
     }
 
     // accurate

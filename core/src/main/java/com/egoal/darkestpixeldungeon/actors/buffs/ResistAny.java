@@ -33,7 +33,7 @@ public class ResistAny extends Buff {
           if(item instanceof RiemannianManifoldShield)
             ((RiemannianManifoldShield) item).recharge();
       }
-      target.sprite.showStatus(CharSprite.WARNING, Messages.get(this, "resist"));
+      target.getSprite().showStatus(CharSprite.WARNING, Messages.get(this, "resist"));
       detach();
     }
   }

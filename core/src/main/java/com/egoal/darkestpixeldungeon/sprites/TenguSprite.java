@@ -76,12 +76,12 @@ public class TenguSprite extends MobSprite {
 
   @Override
   public void attack(int cell) {
-    if (!Dungeon.level.adjacent(cell, ch.pos)) {
+    if (!Dungeon.level.adjacent(cell, ch.getPos())) {
 
-      final Char enemy = Actor.findChar(cell);
+      final Char enemy = Actor.Companion.findChar(cell);
 
       ((MissileSprite) parent.recycle(MissileSprite.class)).
-              reset(ch.pos, cell, new Shuriken(), new Callback() {
+              reset(ch.getPos(), cell, new Shuriken(), new Callback() {
                 @Override
                 public void call() {
                   ch.next();
@@ -90,7 +90,7 @@ public class TenguSprite extends MobSprite {
               });
 
       play(cast);
-      turnTo(ch.pos, cell);
+      turnTo(ch.getPos(), cell);
 
     } else {
 

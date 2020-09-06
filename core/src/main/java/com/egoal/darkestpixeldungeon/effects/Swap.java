@@ -47,10 +47,10 @@ public class Swap extends Actor {
     this.ch1 = ch1;
     this.ch2 = ch2;
 
-    delay = Dungeon.level.distance(ch1.pos, ch2.pos) * 0.1f;
+    delay = Dungeon.level.distance(ch1.getPos(), ch2.getPos()) * 0.1f;
 
-    eff1 = new Effect(ch1.sprite, ch1.pos, ch2.pos);
-    eff2 = new Effect(ch2.sprite, ch2.pos, ch1.pos);
+    eff1 = new Effect(ch1.getSprite(), ch1.getPos(), ch2.getPos());
+    eff2 = new Effect(ch2.getSprite(), ch2.getPos(), ch1.getPos());
     Sample.INSTANCE.play(Assets.SND_TELEPORT);
   }
 
@@ -68,25 +68,25 @@ public class Swap extends Actor {
     }
 
     if (eff1 == null && eff2 == null) {
-      Actor.remove(this);
+      Actor.Companion.remove(this);
       next();
 
-      int pos = ch1.pos;
-      ch1.pos = ch2.pos;
-      ch2.pos = pos;
+      int pos = ch1.getPos();
+      ch1.setPos(ch2.getPos());
+      ch2.setPos(pos);
 
-      if (!ch1.flying) {
+      if (!ch1.getFlying()) {
         if (ch1 instanceof Mob) {
           Dungeon.level.mobPress((Mob) ch1);
         } else {
-          Dungeon.level.press(ch1.pos, ch1);
+          Dungeon.level.press(ch1.getPos(), ch1);
         }
       }
-      if (!ch2.flying) {
+      if (!ch2.getFlying()) {
         if (ch2 instanceof Mob) {
           Dungeon.level.mobPress((Mob) ch2);
         } else {
-          Dungeon.level.press(ch2.pos, ch2);
+          Dungeon.level.press(ch2.getPos(), ch2);
         }
       }
 

@@ -49,7 +49,7 @@ public class Eye extends Mob {
 
     spriteClass = EyeSprite.class;
 
-    flying = true;
+    setFlying(true);
 
     HUNTING = new Hunting();
 
@@ -75,10 +75,10 @@ public class Eye extends Mob {
   protected boolean canAttack(Char enemy) {
 
     if (beamCooldown == 0) {
-      Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
+      Ballistica aim = new Ballistica(getPos(), enemy.getPos(), Ballistica.STOP_TERRAIN);
 
-      if (enemy.invisible == 0 && Level.Companion.getFieldOfView()[enemy.pos] && aim.subPath
-              (1, aim.dist).contains(enemy.pos)) {
+      if (enemy.getInvisible() == 0 && Level.Companion.getFieldOfView()[enemy.getPos()] && aim.subPath
+              (1, aim.dist).contains(enemy.getPos())) {
         beam = aim;
         beamTarget = aim.collisionPos;
         return true;
@@ -93,8 +93,8 @@ public class Eye extends Mob {
   @Override
   protected boolean act() {
     if (beam == null && beamTarget != -1) {
-      beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
-      sprite.turnTo(pos, beamTarget);
+      beam = new Ballistica(getPos(), beamTarget, Ballistica.STOP_TERRAIN);
+      getSprite().turnTo(getPos(), beamTarget);
     }
     if (beamCooldown > 0)
       beamCooldown--;
@@ -113,7 +113,7 @@ public class Eye extends Mob {
     if (beamCooldown > 0) {
       return super.doAttack(enemy);
     } else if (!beamCharged) {
-      ((EyeSprite) sprite).charge(enemy.pos);
+      ((EyeSprite) getSprite()).charge(enemy.getPos());
       spend(attackDelay() * 2f);
       beamCharged = true;
       return true;
@@ -121,8 +121,8 @@ public class Eye extends Mob {
 
       spend(attackDelay());
 
-      if (Dungeon.visible[pos]) {
-        sprite.zap(beam.collisionPos);
+      if (Dungeon.visible[getPos()]) {
+        getSprite().zap(beam.collisionPos);
         return false;
       } else {
         deathGaze();
@@ -154,7 +154,7 @@ public class Eye extends Mob {
         GameScene.updateMap(pos);
       }
 
-      Char ch = Actor.findChar(pos);
+      Char ch = Actor.Companion.findChar(pos);
       if (ch == null) {
         continue;
       }
@@ -165,7 +165,7 @@ public class Eye extends Mob {
         ch.takeDamage(dmg);
 
         if (Dungeon.visible[pos]) {
-          ch.sprite.flash();
+          ch.getSprite().flash();
           CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange
                   (1, 2));
         }
@@ -175,7 +175,7 @@ public class Eye extends Mob {
           GLog.n(Messages.get(this, "deathgaze_kill"));
         }
       } else {
-        ch.sprite.showStatus(CharSprite.NEUTRAL, ch.defenseVerb());
+        ch.getSprite().showStatus(CharSprite.NEUTRAL, ch.defenseVerb());
       }
     }
 
@@ -183,7 +183,7 @@ public class Eye extends Mob {
 
     beam = null;
     beamTarget = -1;
-    sprite.idle();
+    getSprite().idle();
   }
 
   private static final String BEAM_TARGET = "beamTarget";

@@ -127,7 +127,7 @@ public class Astrolabe extends Artifact {
     if (!invokePositive && blockNextNegative) {
       blockNextNegative = false;
 
-      curUser.sprite.showStatus(0x420000, Messages.get(Invoker.class,
+      curUser.getSprite().showStatus(0x420000, Messages.get(Invoker.class,
               "extremely_lucky_block"));
       return;
     }
@@ -139,8 +139,8 @@ public class Astrolabe extends Artifact {
       ivk = invokePositive ? randomPositiveInvoke() : randomNegativeInvoke();
     }
 
-    curUser.sprite.showStatus(ivk.color(), ivk.status());
-    CellEmitter.get(curUser.pos).start(ShaftParticle.FACTORY, 0.2f, 3);
+    curUser.getSprite().showStatus(ivk.color(), ivk.status());
+    CellEmitter.get(curUser.getPos()).start(ShaftParticle.FACTORY, 0.2f, 3);
 
     if (ivk.positive) {
       // positive invoker will cached
@@ -266,7 +266,7 @@ public class Astrolabe extends Artifact {
         --cooldown;
 
       updateQuickslot();
-      spend(TICK);
+      spend(Actor.TICK);
       return true;
     }
 
@@ -389,7 +389,7 @@ public class Astrolabe extends Artifact {
 
         user_.spend(TIME_TO_INVOKE);
         user_.busy();
-        user_.sprite.operate(user_.pos);
+        user_.getSprite().operate(user_.getPos());
       }
     }
 
@@ -412,15 +412,15 @@ public class Astrolabe extends Artifact {
       @Override
       public void onSelect(Integer cell) {
         if (cell != null) {
-          final Ballistica shot = new Ballistica(curUser.pos, cell,
+          final Ballistica shot = new Ballistica(curUser.getPos(), cell,
                   Ballistica.MAGIC_BOLT);
-          Char c = Actor.findChar(shot.collisionPos);
+          Char c = Actor.Companion.findChar(shot.collisionPos);
 
           invoke_on_target(user_, a_, c);
 
           user_.spend(TIME_TO_INVOKE);
           user_.busy();
-          user_.sprite.operate(user_.pos);
+          user_.getSprite().operate(user_.getPos());
         }
       }
 
@@ -452,7 +452,7 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_on_target(Hero user, Astrolabe a, Char c) {
       if (check_is_other(c)) {
-        int dmg = (int) ((c.HT - c.HP) * .6f) + 1;
+        int dmg = (int) ((c.getHT() - c.getHP()) * .6f) + 1;
         //todo: add effect
         c.takeDamage(new Damage(dmg, user, c).addFeature(Damage.Feature.PURE
                 | Damage.Feature.ACCURATE));
@@ -482,9 +482,9 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
       // recover hp
-      int heal = (user.HT - user.HP) / 10 + 1;
-      user.HP = heal > (user.HT - user.HP) ? user.HT : (user.HP + heal);
-      user.sprite.showStatus(CharSprite.POSITIVE, Integer.toString(heal));
+      int heal = (user.getHT() - user.getHP()) / 10 + 1;
+      user.setHP(heal > (user.getHT() - user.getHP()) ? user.getHT() : (user.getHP() + heal));
+      user.getSprite().showStatus(CharSprite.POSITIVE, Integer.toString(heal));
 
       a.blockNextNegative = true;
     }
@@ -499,11 +499,11 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_on_target(Hero user, Astrolabe a, Char c) {
       if (check_is_other(c)) {
-        int dhp = c.HP / 4 + 1;
-        c.HP += dhp;
-        if (c.HP > c.HT)
-          c.HT = c.HP;
-        c.sprite.showStatus(CharSprite.POSITIVE, Integer.toString(dhp));
+        int dhp = c.getHP() / 4 + 1;
+        c.setHP(c.getHP() + dhp);
+        if (c.getHP() > c.getHT())
+          c.setHT(c.getHP());
+        c.getSprite().showStatus(CharSprite.POSITIVE, Integer.toString(dhp));
         Buff.prolong(c, Vulnerable.class, Vulnerable.DURATION).setRatio(2f);
       }
     }
@@ -530,8 +530,8 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_on_target(Hero user, Astrolabe a, Char c) {
       if (check_is_other(c)) {
-        int cost = user.HT / 10;
-        if (cost >= user.HP) cost = user.HP - 1;
+        int cost = user.getHT() / 10;
+        if (cost >= user.getHP()) cost = user.getHP() - 1;
         int dmg = cost * 2;
 
         c.takeDamage(new Damage(dmg, user, c).type(Damage.Type.MAGICAL));
@@ -550,11 +550,11 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_on_target(Hero user, Astrolabe a, Char c) {
       if (check_is_other(c)) {
-        Ballistica shot = new Ballistica(curUser.pos, c.pos, Ballistica
+        Ballistica shot = new Ballistica(curUser.getPos(), c.getPos(), Ballistica
                 .MAGIC_BOLT);
         if (shot.path.size() > shot.dist + 1)
           WandOfBlastWave.Companion.throwChar(c,
-                  new Ballistica(c.pos, shot.path.get(shot.dist + 1),
+                  new Ballistica(c.getPos(), shot.path.get(shot.dist + 1),
                           Ballistica.MAGIC_BOLT), 3);
       }
     }
@@ -568,10 +568,10 @@ public class Astrolabe extends Artifact {
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
       for (int i : PathFinder.NEIGHBOURS8) {
-        Char ch = Actor.findChar(user.pos + i);
+        Char ch = Actor.Companion.findChar(user.getPos() + i);
         if (ch != null) {
           Buff.prolong(ch, Paralysis.class, 3f);
-          ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12);
+          ch.getSprite().emitter().burst(Speck.factory(Speck.LIGHT), 12);
         }
       }
     }
@@ -600,7 +600,7 @@ public class Astrolabe extends Artifact {
 
           user_.spend(TIME_TO_CHANT);
           user_.busy();
-          user_.sprite.operate(user_.pos);
+          user_.getSprite().operate(user_.getPos());
         } else
           GLog.w(Messages.get(Astrolabe.Invoker.class, "not_select_target"));
       }
@@ -643,7 +643,7 @@ public class Astrolabe extends Artifact {
             Heap heap = Dungeon.level.getHeaps().get(c);
             if (heap != null) heap.explode();
 
-            Char ch = Actor.findChar(c);
+            Char ch = Actor.Companion.findChar(c);
             if (ch != null && ch != Dungeon.hero) {
               enemies.add(ch);
             }
@@ -652,7 +652,7 @@ public class Astrolabe extends Artifact {
 
         if (!enemies.isEmpty()) {
           int totalDamage = 0;
-          for (Char ch : enemies) if (ch.HT > totalDamage) totalDamage = ch.HT;
+          for (Char ch : enemies) if (ch.getHT() > totalDamage) totalDamage = ch.getHT();
           totalDamage = Math.max(50, totalDamage);
 
           int dmg = totalDamage / enemies.size();
@@ -660,7 +660,7 @@ public class Astrolabe extends Artifact {
             Damage d = new Damage(Random.IntRange(dmg * 7 / 10, dmg * 12 / 10),
                     curUser, ch).addFeature(Damage.Feature.DEATH);
             //^ cannot be pure, which will kill boss directly.
-            if (ch.pos == target) d.value *= 1.25f;
+            if (ch.getPos() == target) d.value *= 1.25f;
             ch.defendDamage(d);
             ch.takeDamage(d);
           }
@@ -697,7 +697,7 @@ public class Astrolabe extends Artifact {
 
     @Override
     protected void invoke_directly(Hero user, Astrolabe a) {
-      user.takeDamage(new Damage((int) (user.HP * .25f), this, user
+      user.takeDamage(new Damage((int) (user.getHP() * .25f), this, user
       ).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.ACCURATE));
     }
   }

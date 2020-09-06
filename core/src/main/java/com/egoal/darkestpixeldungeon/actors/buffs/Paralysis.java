@@ -37,7 +37,7 @@ public class Paralysis extends FlavourBuff {
   @Override
   public boolean attachTo(Char target) {
     if (super.attachTo(target)) {
-      target.paralysed++;
+      target.setParalysed(target.getParalysed() + 1);
       return true;
     } else {
       return false;
@@ -47,8 +47,8 @@ public class Paralysis extends FlavourBuff {
   @Override
   public void detach() {
     super.detach();
-    if (target.paralysed > 0)
-      target.paralysed--;
+    if (target.getParalysed() > 0)
+      target.setParalysed(target.getParalysed() - 1);
   }
 
   @Override
@@ -58,8 +58,8 @@ public class Paralysis extends FlavourBuff {
 
   @Override
   public void fx(boolean on) {
-    if (on) target.sprite.add(CharSprite.State.PARALYSED);
-    else target.sprite.remove(CharSprite.State.PARALYSED);
+    if (on) target.getSprite().add(CharSprite.State.PARALYSED);
+    else target.getSprite().remove(CharSprite.State.PARALYSED);
   }
 
   @Override

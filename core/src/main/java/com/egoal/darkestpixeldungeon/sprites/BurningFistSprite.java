@@ -63,7 +63,7 @@ public class BurningFistSprite extends MobSprite {
     if (anim == attack) {
 
       Sample.INSTANCE.play(Assets.SND_ZAP);
-      MagicMissile.shadow(parent, ch.pos, posToShoot,
+      MagicMissile.shadow(parent, ch.getPos(), posToShoot,
               new Callback() {
                 @Override
                 public void call() {

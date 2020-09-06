@@ -66,7 +66,7 @@ public class CursingTrap extends Trap {
       }
     }
 
-    if (Dungeon.hero.pos == pos) {
+    if (Dungeon.hero.getPos() == pos) {
       curse(Dungeon.hero);
     }
   }
@@ -78,7 +78,7 @@ public class CursingTrap extends Trap {
     //items the trap can curse if nothing else is available.
     ArrayList<Item> canCurse = new ArrayList<>();
 
-    KindOfWeapon weapon = hero.getBelongings().weapon;
+    KindOfWeapon weapon = hero.getBelongings().getWeapon();
     if (weapon instanceof Weapon && !weapon.cursed && !(weapon instanceof 
             Boomerang)) {
       if (((Weapon) weapon).enchantment == null)
@@ -87,7 +87,7 @@ public class CursingTrap extends Trap {
         canCurse.add(weapon);
     }
 
-    Armor armor = hero.getBelongings().armor;
+    Armor armor = hero.getBelongings().getArmor();
     if (armor != null && !armor.cursed) {
       if (armor.glyph == null)
         priorityCurse.add(armor);
@@ -95,21 +95,21 @@ public class CursingTrap extends Trap {
         canCurse.add(armor);
     }
 
-    KindofMisc misc1 = hero.getBelongings().misc1;
+    KindofMisc misc1 = hero.getBelongings().getMisc1();
     if (misc1 instanceof Artifact) {
       priorityCurse.add(misc1);
     } else if (misc1 instanceof Ring) {
       canCurse.add(misc1);
     }
 
-    KindofMisc misc2 = hero.getBelongings().misc2;
+    KindofMisc misc2 = hero.getBelongings().getMisc2();
     if (misc2 instanceof Artifact) {
       priorityCurse.add(misc2);
     } else if (misc2 instanceof Ring) {
       canCurse.add(misc2);
     }
 
-    KindofMisc misc3 = hero.getBelongings().misc3;
+    KindofMisc misc3 = hero.getBelongings().getMisc3();
     if (misc3 instanceof Artifact) {
       priorityCurse.add(misc3);
     } else if (misc3 instanceof Ring) {

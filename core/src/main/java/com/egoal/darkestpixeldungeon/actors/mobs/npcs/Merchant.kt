@@ -232,7 +232,7 @@ open class Merchant : NPC() {
                     } else {
                         //steal
                         val hero = Dungeon.hero
-                        if (thief.steal(price)) {
+                        if (thief!!.steal(price)) {
                             removeItemFromSell(item)
                             if (!item.doPickUp(hero)) Dungeon.level.drop(item, hero.pos).sprite.drop()
                             goodsButtons[itemIndex].enable(false)

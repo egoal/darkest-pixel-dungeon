@@ -53,7 +53,7 @@ public class Wandmaker extends NPC {
   {
     spriteClass = WandmakerSprite.class;
 
-    properties.add(Property.IMMOVABLE);
+    getProperties().add(Property.IMMOVABLE);
   }
 
   @Override
@@ -84,7 +84,7 @@ public class Wandmaker extends NPC {
   @Override
   public boolean interact() {
 
-    sprite.turnTo(pos, Dungeon.hero.pos);
+    getSprite().turnTo(getPos(), Dungeon.hero.getPos());
     if (Quest.given) {
 
       Item item;
@@ -168,7 +168,7 @@ public class Wandmaker extends NPC {
         }
       });
 
-      Journal.INSTANCE.add(name);
+      Journal.INSTANCE.add(getName());
       Quest.given = true;
     }
 
@@ -286,10 +286,10 @@ public class Wandmaker extends NPC {
     public static void Spawn(Level level, Rect rect) {
       Wandmaker w = new Wandmaker();
       do {
-        w.pos = level.pointToCell(rect.random(0));
-      } while (level.getMap()[w.pos] == Terrain.ENTRANCE ||
-              level.getMap()[w.pos]==Terrain.DOOR ||
-              (Terrain.flags[level.getMap()[w.pos]] & Terrain.PASSABLE) == 0);
+        w.setPos(level.pointToCell(rect.random(0)));
+      } while (level.getMap()[w.getPos()] == Terrain.ENTRANCE ||
+              level.getMap()[w.getPos()]==Terrain.DOOR ||
+              (Terrain.flags[level.getMap()[w.getPos()]] & Terrain.PASSABLE) == 0);
       level.getMobs().add(w);
 
       spawned = true;

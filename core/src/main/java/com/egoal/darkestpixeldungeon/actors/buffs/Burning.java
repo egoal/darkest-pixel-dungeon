@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle;
@@ -82,7 +83,7 @@ public class Burning extends Buff implements Hero.Doom {
     if (target.isAlive()) {
 
       //maximum damage scales from 6 to 2 depending on remaining hp.
-      int maxDmg = 3 + Math.round(4 * target.HP / (float) target.HT);
+      int maxDmg = 3 + Math.round(4 * target.getHP() / (float) target.getHT());
       int damage = Random.Int(1, maxDmg);
       detach(target, Chill.class);
 
@@ -90,16 +91,16 @@ public class Burning extends Buff implements Hero.Doom {
 
         Hero hero = (Hero) target;
 
-        if (hero.getBelongings().armor != null && hero.getBelongings().armor.hasGlyph
+        if (hero.getBelongings().getArmor() != null && hero.getBelongings().getArmor().hasGlyph
                 (Brimstone.class)) {
           // wear armor with brimstone
           
-          float heal = hero.getBelongings().armor.level() / 5f;
+          float heal = hero.getBelongings().getArmor().level() / 5f;
           if (Random.Float() < heal % 1) heal++;
-          if (heal >= 1 && hero.HP < hero.HT) {
-            hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), (int) 
+          if (heal >= 1 && hero.getHP() < hero.getHT()) {
+            hero.getSprite().emitter().burst(Speck.factory(Speck.HEALING), (int)
                     heal);
-            hero.HP = Math.min(hero.HT, hero.HP + (int) heal);
+            hero.setHP(Math.min(hero.getHT(), hero.getHP() + (int) heal));
           }
 
         } else {
@@ -112,23 +113,23 @@ public class Burning extends Buff implements Hero.Doom {
             if (item instanceof Scroll
                     && !(item instanceof ScrollOfUpgrade)) {
 
-              item = item.detach(hero.getBelongings().backpack);
+              item = item.detach(hero.getBelongings().getBackpack());
               GLog.w(Messages.get(this, "burnsup", Messages.capitalize(item
                       .toString())));
 
-              Heap.Companion.burnFX(hero.pos);
+              Heap.Companion.burnFX(hero.getPos());
 
               burnedSomething = true;
             } else if (item instanceof MysteryMeat) {
 
-              item = item.detach(hero.getBelongings().backpack);
+              item = item.detach(hero.getBelongings().getBackpack());
               ChargrilledMeat steak = new ChargrilledMeat();
-              if (!steak.collect(hero.getBelongings().backpack)) {
-                Dungeon.level.drop(steak, hero.pos).getSprite().drop();
+              if (!steak.collect(hero.getBelongings().getBackpack())) {
+                Dungeon.level.drop(steak, hero.getPos()).getSprite().drop();
               }
               GLog.w(Messages.get(this, "burnsup", item.toString()));
 
-              Heap.Companion.burnFX(hero.pos);
+              Heap.Companion.burnFX(hero.getPos());
 
               burnedSomething = true;
             }
@@ -147,7 +148,7 @@ public class Burning extends Buff implements Hero.Doom {
 
         if (item instanceof Scroll &&
                 !(item instanceof ScrollOfUpgrade)) {
-          target.sprite.emitter().burst(ElmoParticle.FACTORY, 6);
+          target.getSprite().emitter().burst(ElmoParticle.FACTORY, 6);
           ((Thief) target).setItem(null);
         }
 
@@ -157,15 +158,15 @@ public class Burning extends Buff implements Hero.Doom {
       detach();
     }
 
-    if (Level.Companion.getFlamable()[target.pos]) {
-      GameScene.add(Blob.seed(target.pos, 4, Fire.class));
+    if (Level.Companion.getFlamable()[target.getPos()]) {
+      GameScene.add(Blob.seed(target.getPos(), 4, Fire.class));
     }
 
-    spend(TICK);
-    left -= TICK;
+    spend(Actor.TICK);
+    left -= Actor.TICK;
 
     if (left <= 0 ||
-            (Level.Companion.getWater()[target.pos] && !target.flying)) {
+            (Level.Companion.getWater()[target.getPos()] && !target.getFlying())) {
 
       detach();
     }
@@ -184,8 +185,8 @@ public class Burning extends Buff implements Hero.Doom {
 
   @Override
   public void fx(boolean on) {
-    if (on) target.sprite.add(CharSprite.State.BURNING);
-    else target.sprite.remove(CharSprite.State.BURNING);
+    if (on) target.getSprite().add(CharSprite.State.BURNING);
+    else target.getSprite().remove(CharSprite.State.BURNING);
   }
 
   @Override

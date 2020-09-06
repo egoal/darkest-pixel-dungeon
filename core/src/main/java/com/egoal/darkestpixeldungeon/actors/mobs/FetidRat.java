@@ -55,7 +55,7 @@ public class FetidRat extends Rat {
   @Override
   public Damage defenseProc(Damage damage) {
 
-    GameScene.add(Blob.seed(pos, 20, StenchGas.class));
+    GameScene.add(Blob.seed(getPos(), 20, StenchGas.class));
 
     return super.defenseProc(damage);
   }

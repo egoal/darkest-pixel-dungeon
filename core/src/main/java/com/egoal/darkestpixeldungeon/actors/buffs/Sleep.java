@@ -24,7 +24,7 @@ public class Sleep extends FlavourBuff {
 
   @Override
   public void fx(boolean on) {
-    if (on) target.sprite.idle();
+    if (on) target.getSprite().idle();
   }
 
   public static final float SWS = 1.5f;

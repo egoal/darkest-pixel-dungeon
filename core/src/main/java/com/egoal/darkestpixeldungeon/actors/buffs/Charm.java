@@ -77,7 +77,7 @@ public class Charm extends FlavourBuff {
   // charm attach should be delayed to avoid detach in Char::takeDamage 
   public static class Attacher extends FlavourBuff {
     {
-      actPriority = Integer.MIN_VALUE;
+      setActPriority(Integer.MIN_VALUE);
       type = buffType.NEGATIVE;
     }
 

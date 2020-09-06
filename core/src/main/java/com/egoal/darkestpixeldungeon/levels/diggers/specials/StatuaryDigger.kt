@@ -12,7 +12,7 @@ import com.watabou.utils.PathFinder
  */
 
 class StatuaryDigger : DiamondDigger() {
-    private val s = Statuary().random()
+    private val s = Statuary().apply { random() }
 
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         val dr = super.dig(level, wall, rect)

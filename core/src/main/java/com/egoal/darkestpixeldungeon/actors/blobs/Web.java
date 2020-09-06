@@ -45,9 +45,9 @@ public class Web extends Blob {
 
           volume += off[cell];
 
-          Char ch = Actor.findChar(cell);
+          Char ch = Actor.Companion.findChar(cell);
           if (ch != null) {
-            Buff.prolong(ch, Roots.class, TICK);
+            Buff.prolong(ch, Roots.class, Actor.TICK);
           }
         }
       }

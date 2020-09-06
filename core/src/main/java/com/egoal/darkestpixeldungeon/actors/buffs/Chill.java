@@ -61,16 +61,16 @@ public class Chill extends FlavourBuff {
                 && !(item instanceof PotionOfStrength || item instanceof 
                 PotionOfMight)) {
 
-          item = item.detach(hero.getBelongings().backpack);
+          item = item.detach(hero.getBelongings().getBackpack());
           GLog.w(Messages.get(this, "freezes", item.toString()));
-          ((Potion) item).shatter(hero.pos);
+          ((Potion) item).shatter(hero.getPos());
 
         } else if (item instanceof MysteryMeat) {
 
-          item = item.detach(hero.getBelongings().backpack);
+          item = item.detach(hero.getBelongings().getBackpack());
           FrozenCarpaccio carpaccio = new FrozenCarpaccio();
-          if (!carpaccio.collect(hero.getBelongings().backpack)) {
-            Dungeon.level.drop(carpaccio, target.pos).getSprite().drop();
+          if (!carpaccio.collect(hero.getBelongings().getBackpack())) {
+            Dungeon.level.drop(carpaccio, target.getPos()).getSprite().drop();
           }
           GLog.w(Messages.get(this, "freezes", item.toString()));
 
@@ -81,7 +81,7 @@ public class Chill extends FlavourBuff {
 
         if (item instanceof Potion && !(item instanceof PotionOfStrength || 
                 item instanceof PotionOfMight)) {
-          ((Potion) ((Thief) target).getItem()).shatter(target.pos);
+          ((Potion) ((Thief) target).getItem()).shatter(target.getPos());
           ((Thief) target).setItem(null);
         }
 
@@ -104,8 +104,8 @@ public class Chill extends FlavourBuff {
 
   @Override
   public void fx(boolean on) {
-    if (on) target.sprite.add(CharSprite.State.CHILLED);
-    else target.sprite.remove(CharSprite.State.CHILLED);
+    if (on) target.getSprite().add(CharSprite.State.CHILLED);
+    else target.getSprite().remove(CharSprite.State.CHILLED);
   }
 
   @Override

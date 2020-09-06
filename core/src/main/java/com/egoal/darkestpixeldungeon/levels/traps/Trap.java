@@ -77,7 +77,7 @@ public abstract class Trap implements Bundlable {
 
       // when trigger a hidden trap, up pressure 
       if (!visible) {
-        Char ch = Actor.findChar(pos);
+        Char ch = Actor.Companion.findChar(pos);
         if (ch instanceof Hero && ch.isAlive()) {
           ch.takeDamage(new Damage(Random.NormalIntRange(1, 9), this, ch).type(Damage.Type.MENTAL));
         }

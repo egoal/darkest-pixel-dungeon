@@ -106,15 +106,15 @@ public class EtherealChains extends Artifact {
 //                Ballistica.STOP_CHARS | Ballistica.STOP_TARGET;
         int missileProperties = Ballistica.STOP_CHARS| Ballistica.STOP_TARGET;
 
-        final Ballistica chain = new Ballistica(curUser.pos, target, 
+        final Ballistica chain = new Ballistica(curUser.getPos(), target,
                 missileProperties);
 
         //determine if we're grabbing an enemy, pulling to a location, or 
         // doing nothing.
-        if (Actor.findChar(chain.collisionPos) != null) {
+        if (Actor.Companion.findChar(chain.collisionPos) != null) {
           int newPos = -1;
           for (int i : chain.subPath(1, chain.dist)) {
-            if (!Level.Companion.getSolid()[i] && Actor.findChar(i) == null) {
+            if (!Level.Companion.getSolid()[i] && Actor.Companion.findChar(i) == null) {
               newPos = i;
               break;
             }
@@ -123,8 +123,8 @@ public class EtherealChains extends Artifact {
             GLog.w(Messages.get(EtherealChains.class, "does_nothing"));
           } else {
             final int newMobPos = newPos;
-            final Char affected = Actor.findChar(chain.collisionPos);
-            int chargeUse = Dungeon.level.distance(affected.pos, newMobPos);
+            final Char affected = Actor.Companion.findChar(chain.collisionPos);
+            int chargeUse = Dungeon.level.distance(affected.getPos(), newMobPos);
             if (chargeUse > charge) {
               GLog.w(Messages.get(EtherealChains.class, "no_charge"));
               return;
@@ -137,16 +137,16 @@ public class EtherealChains extends Artifact {
               updateQuickslot();
             }
             curUser.busy();
-            curUser.sprite.parent.add(new Chains(curUser.pos, affected.pos, 
+            curUser.getSprite().parent.add(new Chains(curUser.getPos(), affected.getPos(),
                     new Callback() {
               public void call() {
-                Actor.add(new Pushing(affected, affected.pos, newMobPos, new 
+                Actor.Companion.add(new Pushing(affected, affected.getPos(), newMobPos, new
                         Callback() {
                   public void call() {
                     Dungeon.level.press(newMobPos, affected);
                   }
                 }));
-                affected.pos = newMobPos;
+                affected.setPos(newMobPos);
                 Dungeon.observe();
                 GameScene.updateFog();
                 curUser.spendAndNext(1f);
@@ -164,13 +164,13 @@ public class EtherealChains extends Artifact {
                 || (chain.path.size() == chain.dist + 1)) {
           int newPos = -1;
           for (int i : chain.subPath(1, chain.dist)) {
-            if (!Level.Companion.getSolid()[i] && Actor.findChar(i) == null) newPos = i;
+            if (!Level.Companion.getSolid()[i] && Actor.Companion.findChar(i) == null) newPos = i;
           }
           if (newPos == -1) {
             GLog.w(Messages.get(EtherealChains.class, "does_nothing"));
           } else {
             final int newHeroPos = newPos;
-            int chargeUse = Dungeon.level.distance(curUser.pos, newHeroPos);
+            int chargeUse = Dungeon.level.distance(curUser.getPos(), newHeroPos);
             if (chargeUse > charge) {
               GLog.w(Messages.get(EtherealChains.class, "no_charge"));
               return;
@@ -179,17 +179,17 @@ public class EtherealChains extends Artifact {
               updateQuickslot();
             }
             curUser.busy();
-            curUser.sprite.parent.add(new Chains(curUser.pos, target, new 
+            curUser.getSprite().parent.add(new Chains(curUser.getPos(), target, new
                     Callback() {
               public void call() {
-                Actor.add(new Pushing(curUser, curUser.pos, newHeroPos, new 
+                Actor.Companion.add(new Pushing(curUser, curUser.getPos(), newHeroPos, new
                         Callback() {
                   public void call() {
                     Dungeon.level.press(newHeroPos, curUser);
                   }
                 }));
                 curUser.spendAndNext(1f);
-                curUser.pos = newHeroPos;
+                curUser.setPos(newHeroPos);
                 Dungeon.observe();
                 GameScene.updateFog();
               }
@@ -249,7 +249,7 @@ public class EtherealChains extends Artifact {
 
       updateQuickslot();
 
-      spend(TICK);
+      spend(Actor.TICK);
 
       return true;
     }

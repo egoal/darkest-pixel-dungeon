@@ -33,7 +33,7 @@ public class Buff extends Actor {
   public Char target;
 
   {
-    actPriority = 3; //low priority, at the end of a turn
+    setActPriority(3); //low priority, at the end of a turn
   }
 
   //determines how the buff is announced when it is shown.
@@ -57,7 +57,7 @@ public class Buff extends Actor {
     target.add(this);
 
     if (target.buffs().contains(this)) {
-      if (target.sprite != null) fx(true);
+      if (target.getHasSprite()) fx(true);
       return true;
     } else
       return false;

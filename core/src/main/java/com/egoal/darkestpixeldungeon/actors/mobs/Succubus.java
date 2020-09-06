@@ -72,7 +72,7 @@ public class Succubus extends Mob {
     if (Random.Int(3) == 0) {
       new Charm.Attacher(id(), Random.IntRange(3, 7)).attachTo(enemy);
       
-      enemy.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
+      enemy.getSprite().centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
       Sample.INSTANCE.play(Assets.SND_CHARMS);
     }
 
@@ -81,7 +81,7 @@ public class Succubus extends Mob {
 
   @Override
   protected boolean getCloser(int target) {
-    if (Level.Companion.getFieldOfView()[target] && Dungeon.level.distance(pos, target) > 2
+    if (Level.Companion.getFieldOfView()[target] && Dungeon.level.distance(getPos(), target) > 2
             && delay <= 0) {
 
       blink(target);
@@ -98,18 +98,18 @@ public class Succubus extends Mob {
 
   private void blink(int target) {
 
-    Ballistica route = new Ballistica(pos, target, Ballistica.PROJECTILE);
+    Ballistica route = new Ballistica(getPos(), target, Ballistica.PROJECTILE);
     int cell = route.collisionPos;
 
     //can't occupy the same cell as another char, so move back one.
-    if (Actor.findChar(cell) != null && cell != this.pos)
+    if (Actor.Companion.findChar(cell) != null && cell != this.getPos())
       cell = route.path.get(route.dist - 1);
 
     if (Level.Companion.getAvoid()[cell]) {
       ArrayList<Integer> candidates = new ArrayList<>();
       for (int n : PathFinder.NEIGHBOURS8) {
         cell = route.collisionPos + n;
-        if (Level.Companion.getPassable()[cell] && Actor.findChar(cell) == null) {
+        if (Level.Companion.getPassable()[cell] && Actor.Companion.findChar(cell) == null) {
           candidates.add(cell);
         }
       }

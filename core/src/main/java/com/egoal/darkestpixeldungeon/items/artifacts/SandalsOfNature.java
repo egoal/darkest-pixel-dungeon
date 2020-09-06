@@ -87,7 +87,7 @@ public class SandalsOfNature extends Artifact {
       else {
         Buff.prolong(hero, Roots.class, 5);
         Buff.affect(hero, Earthroot.Armor.class).level(charge);
-        CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
+        CellEmitter.bottom(hero.getPos()).start(EarthParticle.FACTORY, 0.05f, 8);
         Camera.main.shake(1, 0.4f);
         charge = 0;
         updateQuickslot();
@@ -155,9 +155,9 @@ public class SandalsOfNature extends Artifact {
 
   public class Naturalism extends ArtifactBuff {
     public void charge() {
-      if (level() > 0 && charge < target.HT) {
+      if (level() > 0 && charge < target.getHT()) {
         //gain 1+(1*level)% of the difference between current charge and max HP.
-        charge += (Math.round((target.HT - charge) * (.01 + level() * 0.01)));
+        charge += (Math.round((target.getHT() - charge) * (.01 + level() * 0.01)));
         updateQuickslot();
       }
     }
@@ -173,7 +173,7 @@ public class SandalsOfNature extends Artifact {
           seeds.add(item.getClass());
 
           Hero hero = Dungeon.hero;
-          hero.sprite.operate(hero.pos);
+          hero.getSprite().operate(hero.getPos());
           Sample.INSTANCE.play(Assets.SND_PLANT);
           hero.busy();
           hero.spend(2f);
@@ -187,7 +187,7 @@ public class SandalsOfNature extends Artifact {
           } else {
             GLog.i(Messages.get(SandalsOfNature.class, "absorb_seed"));
           }
-          item.detach(hero.getBelongings().backpack);
+          item.detach(hero.getBelongings().getBackpack());
         }
       }
     }

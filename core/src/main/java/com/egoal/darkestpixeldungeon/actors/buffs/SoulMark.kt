@@ -38,7 +38,7 @@ class SoulMark : FlavourBuff() {
     var level = 1
 
     fun affectHero(hero: Hero, value: Int) {
-        hero.buff(Hunger::class.java).satisfy(value * (0.4f + 0.1f * level))
+        hero.buff(Hunger::class.java)!!.satisfy(value * (0.4f + 0.1f * level))
         val dhp = min(hero.HT - hero.HP, (value * (0.25f + 0.05 * level)).toInt())
         if (dhp > 0) {
             hero.HP += dhp

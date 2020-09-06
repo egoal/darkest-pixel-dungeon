@@ -66,7 +66,7 @@ enum class HeroClass(private val title: String) {
             Wine().collect()
 
             if (Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR)) {
-                hero.belongings.armor.affixSeal(BrokenSeal())
+                hero.belongings.armor!!.affixSeal(BrokenSeal())
                 Dungeon.quickslot.setSlot(0, darts)
             } else {
                 val seal = BrokenSeal()
@@ -258,6 +258,8 @@ enum class HeroClass(private val title: String) {
             hero.heroPerk.add(LowHealthRegeneration())
             hero.heroPerk.add(Discount().apply { level = -1 })
             hero.heroPerk.add(PolearmMaster())
+
+            // hero.subClass = HeroSubClass.LANCER
         }
     }
     ;
@@ -317,6 +319,7 @@ enum class HeroClass(private val title: String) {
 //        Knuckles().enchant(Storming()).identify().collect()
 //        Tulwar().identify().collect()
 //        StrawHat().identify().collect()
+        GoddessRadiance().identify().collect()
     }
 
     // called when hero level up

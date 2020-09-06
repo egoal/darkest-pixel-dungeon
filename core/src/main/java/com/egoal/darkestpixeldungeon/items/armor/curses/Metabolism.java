@@ -42,8 +42,8 @@ public class Metabolism extends Armor.Glyph {
     if (Random.Int(6) == 0) {
 
       //assumes using up 10% of starving, and healing of 1 hp per 10 turns;
-      int healing = Math.min((int) Hunger.STARVING / 100, defender.HT - 
-              defender.HP);
+      int healing = Math.min((int) Hunger.STARVING / 100, defender.getHT() -
+              defender.getHP());
 
       if (healing > 0) {
 
@@ -54,9 +54,9 @@ public class Metabolism extends Armor.Glyph {
           hunger.reduceHunger(healing * -10);
           BuffIndicator.refreshHero();
 
-          defender.HP += healing;
-          defender.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-          defender.sprite.showStatus(CharSprite.POSITIVE, Integer.toString
+          defender.setHP(defender.getHP() + healing);
+          defender.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
+          defender.getSprite().showStatus(CharSprite.POSITIVE, Integer.toString
                   (healing));
         }
       }

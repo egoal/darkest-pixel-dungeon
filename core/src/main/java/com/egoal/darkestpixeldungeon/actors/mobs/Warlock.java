@@ -57,21 +57,21 @@ public class Warlock extends Mob implements Callback {
 
   @Override
   protected boolean canAttack(Char enemy) {
-    return new Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos
-            == enemy.pos;
+    return new Ballistica(getPos(), enemy.getPos(), Ballistica.MAGIC_BOLT).collisionPos
+            == enemy.getPos();
   }
 
   protected boolean doAttack(Char enemy) {
 
-    if (Dungeon.level.adjacent(pos, enemy.pos)) {
+    if (Dungeon.level.adjacent(getPos(), enemy.getPos())) {
 
       return super.doAttack(enemy);
 
     } else {
 
-      boolean visible = Level.Companion.getFieldOfView()[pos] || Level.Companion.getFieldOfView()[enemy.pos];
+      boolean visible = Level.Companion.getFieldOfView()[getPos()] || Level.Companion.getFieldOfView()[enemy.getPos()];
       if (visible) {
-        sprite.zap(enemy.pos);
+        getSprite().zap(enemy.getPos());
       } else {
         zap();
       }
@@ -97,7 +97,7 @@ public class Warlock extends Mob implements Callback {
         GLog.n(Messages.get(this, "bolt_kill"));
       }
     } else {
-      enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
+      enemy.getSprite().showStatus(CharSprite.NEUTRAL, enemy.defenseVerb());
     }
   }
 

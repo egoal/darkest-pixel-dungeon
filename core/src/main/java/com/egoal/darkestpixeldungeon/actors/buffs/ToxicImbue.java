@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob;
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -57,10 +58,10 @@ public class ToxicImbue extends Buff {
 
   @Override
   public boolean act() {
-    GameScene.add(Blob.seed(target.pos, 50, ToxicGas.class));
+    GameScene.add(Blob.seed(target.getPos(), 50, ToxicGas.class));
 
-    spend(TICK);
-    left -= TICK;
+    spend(Actor.TICK);
+    left -= Actor.TICK;
     if (left <= 0)
       detach();
 

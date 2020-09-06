@@ -158,7 +158,7 @@ public abstract class Scroll extends Item {
         if (!pr.getFirst()) GLog.n(pr.getSecond());
         else {
           curUser = hero;
-          curItem = detach(hero.getBelongings().backpack);
+          curItem = detach(hero.getBelongings().getBackpack());
           doRead();
         }
       }
@@ -171,7 +171,7 @@ public abstract class Scroll extends Item {
   protected void readAnimation() {
     curUser.spend(TIME_TO_READ);
     curUser.busy();
-    ((HeroSprite) curUser.sprite).read();
+    ((HeroSprite) curUser.getSprite()).read();
   }
 
   public boolean isKnown() {

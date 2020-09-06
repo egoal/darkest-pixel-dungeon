@@ -15,7 +15,7 @@ public class RoaringFire extends Fire {
 
   @Override
   protected void burn(int pos) {
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
     if (ch != null)
       Buff.prolong(ch, Cripple.class, Cripple.DURATION / 2);
 

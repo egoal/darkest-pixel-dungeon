@@ -53,7 +53,7 @@ public class FrostTrap extends Trap {
     Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) heap.freeze();
 
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
     if (ch != null) {
       ch.takeDamage(new Damage(Random.NormalIntRange(1, Dungeon.depth), this,
               ch).addElement(Damage.Element.ICE));

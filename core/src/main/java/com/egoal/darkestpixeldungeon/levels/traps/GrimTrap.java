@@ -50,15 +50,15 @@ public class GrimTrap extends Trap {
 
   @Override
   public void activate() {
-    Char target = Actor.findChar(pos);
+    Char target = Actor.Companion.findChar(pos);
 
     //find the closest char that can be aimed at
     if (target == null) {
-      for (Char ch : Actor.chars()) {
-        Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-        if (bolt.collisionPos == ch.pos &&
-                (target == null || Dungeon.level.distance(pos, ch.pos) < 
-                        Dungeon.level.distance(pos, target.pos))) {
+      for (Char ch : Actor.Companion.chars()) {
+        Ballistica bolt = new Ballistica(pos, ch.getPos(), Ballistica.PROJECTILE);
+        if (bolt.collisionPos == ch.getPos() &&
+                (target == null || Dungeon.level.distance(pos, ch.getPos()) <
+                        Dungeon.level.distance(pos, target.getPos()))) {
           target = ch;
         }
       }
@@ -67,19 +67,19 @@ public class GrimTrap extends Trap {
     if (target != null) {
       final Char finalTarget = target;
       final GrimTrap trap = this;
-      MagicMissile.shadow(target.sprite.parent, pos, target.pos, new Callback
+      MagicMissile.shadow(target.getSprite().parent, pos, target.getPos(), new Callback
               () {
         @Override
         public void call() {
           if (!finalTarget.isAlive()) return;
           if (finalTarget == Dungeon.hero) {
             //almost kill the player
-            if (((float) finalTarget.HP / finalTarget.HT) >= 0.9f) {
-              finalTarget.takeDamage(new Damage((finalTarget.HP - 1),
+            if (((float) finalTarget.getHP() / finalTarget.getHT()) >= 0.9f) {
+              finalTarget.takeDamage(new Damage((finalTarget.getHP() - 1),
                       trap, finalTarget).addFeature(Damage.Feature.PURE));
               //kill 'em
             } else {
-              finalTarget.takeDamage(new Damage((finalTarget.HP),
+              finalTarget.takeDamage(new Damage((finalTarget.getHP()),
                       trap, finalTarget).addFeature(Damage.Feature.PURE));
             }
             Sample.INSTANCE.play(Assets.SND_CURSED);
@@ -88,11 +88,11 @@ public class GrimTrap extends Trap {
               GLog.n(Messages.get(GrimTrap.class, "ondeath"));
             }
           } else {
-            finalTarget.takeDamage(new Damage((finalTarget.HP),
+            finalTarget.takeDamage(new Damage((finalTarget.getHP()),
                     trap, finalTarget).addFeature(Damage.Feature.PURE));
             Sample.INSTANCE.play(Assets.SND_BURNING);
           }
-          finalTarget.sprite.emitter().burst(ShadowParticle.UP, 10);
+          finalTarget.getSprite().emitter().burst(ShadowParticle.UP, 10);
           if (!finalTarget.isAlive()) finalTarget.next();
         }
       });

@@ -116,7 +116,7 @@ public class Ballistica {
       path.add(cell);
 
       if ((stopTerrain && cell != sourcePos && Level.Companion.getLosBlocking()[cell])
-              || (cell != sourcePos && stopChars && Actor.findChar(cell) != 
+              || (cell != sourcePos && stopChars && Actor.Companion.findChar(cell) !=
               null)
               || (cell == to && stopTarget)) {
         collide(cell);

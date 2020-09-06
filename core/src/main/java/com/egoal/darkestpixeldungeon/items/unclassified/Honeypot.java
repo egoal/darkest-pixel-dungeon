@@ -67,11 +67,11 @@ public class Honeypot extends Item {
 
     if (action.equals(AC_SHATTER)) {
 
-      hero.sprite.zap(hero.pos);
+      hero.getSprite().zap(hero.getPos());
 
-      detach(hero.getBelongings().backpack);
+      detach(hero.getBelongings().getBackpack());
 
-      shatter(hero, hero.pos).collect();
+      shatter(hero, hero.getPos()).collect();
 
       hero.next();
 
@@ -95,13 +95,13 @@ public class Honeypot extends Item {
     }
 
     int newPos = pos;
-    if (Actor.findChar(pos) != null) {
+    if (Actor.Companion.findChar(pos) != null) {
       ArrayList<Integer> candidates = new ArrayList<Integer>();
       boolean[] passable = Level.Companion.getPassable();
 
       for (int n : PathFinder.NEIGHBOURS4) {
         int c = pos + n;
-        if (passable[c] && Actor.findChar(c) == null) {
+        if (passable[c] && Actor.Companion.findChar(c) == null) {
           candidates.add(c);
         }
       }
@@ -113,14 +113,14 @@ public class Honeypot extends Item {
       Bee bee = new Bee();
       bee.spawn(Dungeon.depth);
       bee.setPotInfo(pos, owner);
-      bee.HP = bee.HT;
-      bee.pos = newPos;
+      bee.setHP(bee.getHT());
+      bee.setPos(newPos);
 
       GameScene.add(bee);
-      Actor.addDelayed(new Pushing(bee, pos, newPos), -1f);
+      Actor.Companion.addDelayed(new Pushing(bee, pos, newPos), -1f);
 
-      bee.sprite.alpha(0);
-      bee.sprite.parent.add(new AlphaTweener(bee.sprite, 1, 0.15f));
+      bee.getSprite().alpha(0);
+      bee.getSprite().parent.add(new AlphaTweener(bee.getSprite(), 1, 0.15f));
 
       Sample.INSTANCE.play(Assets.SND_BEE);
       return new ShatteredPot().setBee(bee);
@@ -174,7 +174,7 @@ public class Honeypot extends Item {
     @Override
     public void doDrop(Hero hero) {
       super.doDrop(hero);
-      updateBee(hero.pos, null);
+      updateBee(hero.getPos(), null);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class Honeypot extends Item {
     }
 
     public void setHolder(Char holder) {
-      updateBee(holder.pos, holder);
+      updateBee(holder.getPos(), holder);
     }
 
     public void goAway() {
@@ -196,7 +196,7 @@ public class Honeypot extends Item {
       if (Dungeon.depth != beeDepth)
         return;
 
-      Bee bee = (Bee) Actor.findById(myBee);
+      Bee bee = (Bee) Actor.Companion.findById(myBee);
       if (bee != null)
         bee.setPotInfo(cell, holder);
     }

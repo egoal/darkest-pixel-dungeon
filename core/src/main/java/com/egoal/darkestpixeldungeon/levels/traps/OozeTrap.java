@@ -36,7 +36,7 @@ public class OozeTrap extends Trap {
 
   @Override
   public void activate() {
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
 
     if (ch != null) {
       Buff.affect(ch, Ooze.class);

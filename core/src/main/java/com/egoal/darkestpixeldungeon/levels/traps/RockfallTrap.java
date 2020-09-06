@@ -71,7 +71,7 @@ public class RockfallTrap extends Trap {
         }
       }
 
-      Char ch = Actor.findChar(pos + i);
+      Char ch = Actor.Companion.findChar(pos + i);
 
       if (ch != null) {
         int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth * 2);
@@ -88,7 +88,7 @@ public class RockfallTrap extends Trap {
     }
     
     for(Mob mob: Dungeon.level.getMobs().toArray(new Mob[0])){
-      if(Dungeon.level.distance(mob.pos, pos)< 12)
+      if(Dungeon.level.distance(mob.getPos(), pos)< 12)
         mob.beckon(pos);
     }
     GLog.n(Messages.get(RockfallTrap.class, "roar"));

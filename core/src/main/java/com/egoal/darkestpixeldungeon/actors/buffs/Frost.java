@@ -49,7 +49,7 @@ public class Frost extends FlavourBuff {
   public boolean attachTo(Char target) {
     if (super.attachTo(target)) {
 
-      target.paralysed++;
+      target.setParalysed(target.getParalysed() + 1);
       detach(target, Burning.class);
       detach(target, Chill.class);
 
@@ -61,16 +61,16 @@ public class Frost extends FlavourBuff {
                 && !(item instanceof PotionOfStrength || item instanceof 
                 PotionOfMight)) {
 
-          item = item.detach(hero.getBelongings().backpack);
+          item = item.detach(hero.getBelongings().getBackpack());
           GLog.w(Messages.get(this, "freezes", item.toString()));
-          ((Potion) item).shatter(hero.pos);
+          ((Potion) item).shatter(hero.getPos());
 
         } else if (item instanceof MysteryMeat) {
 
-          item = item.detach(hero.getBelongings().backpack);
+          item = item.detach(hero.getBelongings().getBackpack());
           FrozenCarpaccio carpaccio = new FrozenCarpaccio();
-          if (!carpaccio.collect(hero.getBelongings().backpack)) {
-            Dungeon.level.drop(carpaccio, target.pos).getSprite().drop();
+          if (!carpaccio.collect(hero.getBelongings().getBackpack())) {
+            Dungeon.level.drop(carpaccio, target.getPos()).getSprite().drop();
           }
           GLog.w(Messages.get(this, "freezes", item.toString()));
 
@@ -81,7 +81,7 @@ public class Frost extends FlavourBuff {
 
         if (item instanceof Potion && !(item instanceof PotionOfStrength || 
                 item instanceof PotionOfMight)) {
-          ((Potion) ((Thief) target).getItem()).shatter(target.pos);
+          ((Potion) ((Thief) target).getItem()).shatter(target.getPos());
           ((Thief) target).setItem(null);
         }
 
@@ -96,9 +96,9 @@ public class Frost extends FlavourBuff {
   @Override
   public void detach() {
     super.detach();
-    if (target.paralysed > 0)
-      target.paralysed--;
-    if (Level.Companion.getWater()[target.pos])
+    if (target.getParalysed() > 0)
+      target.setParalysed(target.getParalysed() - 1);
+    if (Level.Companion.getWater()[target.getPos()])
       prolong(target, Chill.class, 4f);
   }
 
@@ -109,8 +109,8 @@ public class Frost extends FlavourBuff {
 
   @Override
   public void fx(boolean on) {
-    if (on) target.sprite.add(CharSprite.State.FROZEN);
-    else target.sprite.remove(CharSprite.State.FROZEN);
+    if (on) target.getSprite().add(CharSprite.State.FROZEN);
+    else target.getSprite().remove(CharSprite.State.FROZEN);
   }
 
   @Override

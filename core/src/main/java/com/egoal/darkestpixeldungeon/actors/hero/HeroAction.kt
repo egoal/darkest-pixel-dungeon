@@ -257,10 +257,10 @@ abstract class HeroAction(var dst: Int = 0) {
                 } else {
                     hero.curAction = null
 
-                    hero.buff(Hunger::class.java).let {
+                    hero.buff(Hunger::class.java)!!.let {
                         if (it.isStarving) it.reduceHunger(-Hunger.STARVING / 10)
                     }
-                    hero.buff(TimekeepersHourglass.TimeFreeze::class.java)?.let { it.detach() }
+                    hero.buff(TimekeepersHourglass.TimeFreeze::class.java)?.detach()
 
                     InterlevelScene.mode = InterlevelScene.Mode.ASCEND
                     Game.switchScene(InterlevelScene::class.java)

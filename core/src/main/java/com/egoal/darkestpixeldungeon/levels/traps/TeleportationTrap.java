@@ -49,7 +49,7 @@ public class TeleportationTrap extends Trap {
     CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
     Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
     if (ch instanceof Hero) {
       ScrollOfTeleportation.Companion.teleportHero((Hero) ch);
     } else if (ch != null) {
@@ -67,12 +67,12 @@ public class TeleportationTrap extends Trap {
         GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
 
       } else {
-        ch.pos = pos;
+        ch.setPos(pos);
         if(ch instanceof Mob && ((Mob) ch).state== ((Mob) ch).HUNTING)
           ((Mob) ch).state = ((Mob) ch).WANDERING;
         
-        ch.sprite.place(ch.pos);
-        ch.sprite.visible = Dungeon.visible[pos];
+        ch.getSprite().place(ch.getPos());
+        ch.getSprite().visible = Dungeon.visible[pos];
 
       }
     }

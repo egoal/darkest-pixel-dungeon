@@ -239,7 +239,7 @@ public class GameScene extends PixelScene {
     for (Mob mob : Dungeon.level.getMobs()) {
       addMobSprite(mob);
       if (Statistics.INSTANCE.getAmuletObtained()) {
-        mob.beckon(Dungeon.hero.pos);
+        mob.beckon(Dungeon.hero.getPos());
       }
     }
 
@@ -275,7 +275,7 @@ public class GameScene extends PixelScene {
 //    heroDoll.addComponencts();
 
     hero = new HeroSprite();
-    hero.place(Dungeon.hero.pos);
+    hero.place(Dungeon.hero.getPos());
     hero.updateArmor();
     mobs.add(hero);
 
@@ -329,7 +329,7 @@ public class GameScene extends PixelScene {
         new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
         break;
       case RETURN:
-        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.hero.pos);
+        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.hero.getPos());
         break;
       case FALL:
         Chasm.INSTANCE.HeroLand();
@@ -447,12 +447,12 @@ public class GameScene extends PixelScene {
 
     if (!freezeEmitters) water.offset(0, -5 * Game.elapsed);
 
-    if (!Actor.processing() && (t == null || !t.isAlive()) && Dungeon.hero
+    if (!Actor.Companion.processing() && (t == null || !t.isAlive()) && Dungeon.hero
             .isAlive()) {
       t = new Thread() {
         @Override
         public void run() {
-          Actor.process();
+          Actor.Companion.process();
         }
       };
       //if cpu time is limited, game should prefer drawing the current frame
@@ -460,7 +460,7 @@ public class GameScene extends PixelScene {
       t.start();
     }
 
-    if (Dungeon.hero.getReady() && Dungeon.hero.paralysed == 0) {
+    if (Dungeon.hero.getReady() && Dungeon.hero.getParalysed() == 0) {
       log.newLine();
     }
 
@@ -585,7 +585,7 @@ public class GameScene extends PixelScene {
 
   private void addMobSprite(Mob mob) {
     CharSprite sprite = mob.sprite();
-    sprite.visible = Dungeon.visible[mob.pos];
+    sprite.visible = Dungeon.visible[mob.getPos()];
     mobs.add(sprite);
     sprite.link(mob);
   }
@@ -633,7 +633,7 @@ public class GameScene extends PixelScene {
   }
 
   public static void add(Blob gas) {
-    Actor.add(gas);
+    Actor.Companion.add(gas);
     if (scene != null) {
       scene.addBlobSprite(gas);
     }
@@ -653,13 +653,13 @@ public class GameScene extends PixelScene {
 
   public static void add(Mob mob) {
     Dungeon.level.getMobs().add(mob);
-    Actor.add(mob);
+    Actor.Companion.add(mob);
     scene.addMobSprite(mob);
   }
 
   public static void add(Mob mob, float delay) {
     Dungeon.level.getMobs().add(mob);
-    Actor.addDelayed(mob, delay);
+    Actor.Companion.addDelayed(mob, delay);
     scene.addMobSprite(mob);
   }
 
@@ -769,8 +769,8 @@ public class GameScene extends PixelScene {
   public static void afterObserve() {
     if (scene != null) {
       for (Mob mob : Dungeon.level.getMobs()) {
-        if (mob.sprite != null)
-          mob.sprite.visible = Dungeon.visible[mob.pos];
+        if (mob.getSprite() != null)
+          mob.getSprite().visible = Dungeon.visible[mob.getPos()];
       }
     }
   }
@@ -878,7 +878,7 @@ public class GameScene extends PixelScene {
   public static WndBag selectItem(WndBag.Listener listener, String title,
                                   WndBag.Filter filter) {
     cancelCellSelector();
-    WndBag wnd = new WndBag(Dungeon.hero.getBelongings().backpack, listener,
+    WndBag wnd = new WndBag(Dungeon.hero.getBelongings().getBackpack(), listener,
             title, filter);
     scene.addToFront(wnd);
 
@@ -919,15 +919,15 @@ public class GameScene extends PixelScene {
     ArrayList<String> names = new ArrayList<>();
     final ArrayList<Object> objects = new ArrayList<>();
 
-    if (cell == Dungeon.hero.pos) {
+    if (cell == Dungeon.hero.getPos()) {
       objects.add(Dungeon.hero);
       names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
     } else {
       if (Dungeon.visible[cell]) {
-        Mob mob = (Mob) Actor.findChar(cell);
+        Mob mob = (Mob) Actor.Companion.findChar(cell);
         if (mob != null) {
           objects.add(mob);
-          names.add(Messages.titleCase(mob.name));
+          names.add(Messages.titleCase(mob.getName()));
         }
       }
     }

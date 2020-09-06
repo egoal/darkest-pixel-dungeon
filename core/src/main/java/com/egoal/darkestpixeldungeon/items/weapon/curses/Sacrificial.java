@@ -38,7 +38,7 @@ public class Sacrificial extends Weapon.Enchantment {
     Char attacker = (Char) damage.from;
 
     if (Random.Int(10) == 0) {
-      Buff.affect(attacker, Bleeding.class).set(Math.max(1, attacker.HP / 4));
+      Buff.affect(attacker, Bleeding.class).set(Math.max(1, attacker.getHP() / 4));
     }
 
     return damage;

@@ -114,7 +114,7 @@ public class CursedWand {
       case 0:
         cursedFX(user, bolt, new Callback() {
           public void call() {
-            Char target = Actor.findChar(bolt.collisionPos);
+            Char target = Actor.Companion.findChar(bolt.collisionPos);
             switch (Random.Int(2)) {
               case 0:
                 if (target != null)
@@ -161,7 +161,7 @@ public class CursedWand {
           case 1:
             cursedFX(user, bolt, new Callback() {
               public void call() {
-                Char ch = Actor.findChar(bolt.collisionPos);
+                Char ch = Actor.Companion.findChar(bolt.collisionPos);
                 if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
                   int count = 10;
                   int pos;
@@ -174,12 +174,12 @@ public class CursedWand {
                   if (pos == -1 || Dungeon.bossLevel()) {
                     GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
                   } else {
-                    ch.pos = pos;
+                    ch.setPos(pos);
                     if(ch instanceof Mob && ((Mob) ch).state== ((Mob) ch).HUNTING)
                       ((Mob) ch).state = ((Mob) ch).WANDERING;
                     
-                    ch.sprite.place(ch.pos);
-                    ch.sprite.visible = Dungeon.visible[pos];
+                    ch.getSprite().place(ch.getPos());
+                    ch.getSprite().visible = Dungeon.visible[pos];
                   }
                 }
                 wand.wandUsed();
@@ -225,7 +225,7 @@ public class CursedWand {
           public void call() {
             int pos = bolt.collisionPos;
             //place the plant infront of an enemy so they walk into it.
-            if (Actor.findChar(pos) != null && bolt.dist > 1) {
+            if (Actor.Companion.findChar(pos) != null && bolt.dist > 1) {
               pos = bolt.path.get(bolt.dist - 1);
             }
 
@@ -243,7 +243,7 @@ public class CursedWand {
 
       //Health transfer
       case 1:
-        final Char target = Actor.findChar(bolt.collisionPos);
+        final Char target = Actor.Companion.findChar(bolt.collisionPos);
         if (target != null) {
           cursedFX(user, bolt, new Callback() {
             public void call() {
@@ -252,16 +252,16 @@ public class CursedWand {
                       (Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW);
               switch (Random.Int(2)) {
                 case 0:
-                  user.HP = Math.min(user.HT, user.HP + damage.value);
-                  user.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
+                  user.setHP(Math.min(user.getHT(), user.getHP() + damage.value));
+                  user.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 3);
                   target.takeDamage(damage);
-                  target.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+                  target.getSprite().emitter().start(ShadowParticle.UP, 0.05f, 10);
                   break;
                 case 1:
                   user.takeDamage(damage);
-                  user.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
-                  target.HP = Math.min(target.HT, target.HP + damage.value);
-                  target.sprite.emitter().burst(Speck.factory(Speck.HEALING),
+                  user.getSprite().emitter().start(ShadowParticle.UP, 0.05f, 10);
+                  target.setHP(Math.min(target.getHT(), target.getHP() + damage.value));
+                  target.getSprite().emitter().burst(Speck.factory(Speck.HEALING),
                           3);
                   Sample.INSTANCE.play(Assets.SND_CURSED);
                   if (!user.isAlive()) {
@@ -292,7 +292,7 @@ public class CursedWand {
 
       //shock and recharge
       case 3:
-        new LightningTrap().set(user.pos).activate();
+        new LightningTrap().set(user.getPos()).activate();
         Buff.prolong(user, Recharging.class, 20f);
         ScrollOfRecharging.charge(user);
         SpellSprite.show(user, SpellSprite.CHARGE);
@@ -310,20 +310,20 @@ public class CursedWand {
       case 0:
         cursedFX(user, bolt, new Callback() {
           public void call() {
-            Char ch = Actor.findChar(bolt.collisionPos);
+            Char ch = Actor.Companion.findChar(bolt.collisionPos);
 
             if (ch != null && ch != user
                     && !ch.properties().contains(Char.Property.BOSS)
                     && !ch.properties().contains(Char.Property.MINIBOSS)) {
               Sheep sheep = new Sheep();
               sheep.setLifespan(10);
-              sheep.pos = ch.pos;
+              sheep.setPos(ch.getPos());
               ch.destroy();
-              ch.sprite.killAndErase();
+              ch.getSprite().killAndErase();
               Dungeon.level.getMobs().remove(ch);
               HealthIndicator.instance.target(null);
               GameScene.add(sheep);
-              CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
+              CellEmitter.get(sheep.getPos()).burst(Speck.factory(Speck.WOOL), 4);
             } else {
               GLog.i(Messages.get(CursedWand.class, "nothing"));
             }
@@ -366,7 +366,7 @@ public class CursedWand {
 
       //summon monsters
       case 3:
-        new SummoningTrap().set(user.pos).activate();
+        new SummoningTrap().set(user.getPos()).activate();
         wand.wandUsed();
         break;
     }
@@ -392,7 +392,7 @@ public class CursedWand {
           GameScene.add(Blob.seed(Dungeon.level.randomDestination(), 10, Fire
                   .class));
         } while (Random.Int(5) != 0);
-        new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
+        new Flare(8, 32).color(0xFFFF66, true).show(user.getSprite(), 2f);
         Sample.INSTANCE.play(Assets.SND_TELEPORT);
         GLog.p(Messages.get(CursedWand.class, "grass"));
         GLog.w(Messages.get(CursedWand.class, "fire"));
@@ -406,7 +406,7 @@ public class CursedWand {
             Mimic mimic = Mimic.Companion.SpawnAt(bolt.collisionPos, new 
                     ArrayList<Item>());
             mimic.adjustStatus(Dungeon.depth + 10);
-            mimic.HP = mimic.HT;
+            mimic.setHP(mimic.getHT());
             Item reward;
             do {
               reward = Random.oneOf(Generator.WEAPON.INSTANCE,
@@ -451,7 +451,7 @@ public class CursedWand {
       //random transmogrification
       case 3:
         wand.wandUsed();
-        wand.detach(user.getBelongings().backpack);
+        wand.detach(user.getBelongings().getBackpack());
         Item result;
         do {
           result = Random.oneOf(Generator.WEAPON.INSTANCE,
@@ -461,14 +461,14 @@ public class CursedWand {
         if (result.isUpgradable()) result.upgrade();
         result.cursed = result.cursedKnown = true;
         GLog.w(Messages.get(CursedWand.class, "transmogrify"));
-        Dungeon.level.drop(result, user.pos).getSprite().drop();
+        Dungeon.level.drop(result, user.getPos()).getSprite().drop();
         wand.wandUsed();
         break;
     }
   }
 
   private static void cursedFX(final Hero user, final Ballistica bolt, final Callback callback) {
-    MagicMissile.rainbow(user.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+    MagicMissile.rainbow(user.getSprite().parent, bolt.sourcePos, bolt.collisionPos, callback);
     Sample.INSTANCE.play(Assets.SND_ZAP);
   }
 

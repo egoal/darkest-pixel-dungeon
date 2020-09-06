@@ -43,7 +43,7 @@ public class WeakeningTrap extends Trap {
       CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
     }
 
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
     if (ch == Dungeon.hero) {
       Buff.prolong(ch, Weakness.class, Weakness.Companion.duration(ch) * 2f);
     } else if (ch != null) {

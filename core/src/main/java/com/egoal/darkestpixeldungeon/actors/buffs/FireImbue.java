@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -59,13 +60,13 @@ public class FireImbue extends Buff {
 
   @Override
   public boolean act() {
-    if (Dungeon.level.getMap()[target.pos] == Terrain.GRASS) {
-      Dungeon.level.Companion.set(target.pos, Terrain.EMBERS);
-      GameScene.updateMap(target.pos);
+    if (Dungeon.level.getMap()[target.getPos()] == Terrain.GRASS) {
+      Dungeon.level.Companion.set(target.getPos(), Terrain.EMBERS);
+      GameScene.updateMap(target.getPos());
     }
 
-    spend(TICK);
-    left -= TICK;
+    spend(Actor.TICK);
+    left -= Actor.TICK;
     if (left <= 0)
       detach();
 
@@ -76,7 +77,7 @@ public class FireImbue extends Buff {
     if (Random.Int(2) == 0)
       affect(enemy, Burning.class).reignite(enemy);
 
-    enemy.sprite.emitter().burst(FlameParticle.FACTORY, 2);
+    enemy.getSprite().emitter().burst(FlameParticle.FACTORY, 2);
   }
 
   @Override

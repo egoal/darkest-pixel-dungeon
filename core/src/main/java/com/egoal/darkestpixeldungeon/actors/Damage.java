@@ -8,9 +8,6 @@ import java.util.HashMap;
  * Created by 93942 on 4/30/2018.
  */
 
-// data structure of Damage
-// my works truely start from here
-
 public class Damage {
 
   public enum Type {

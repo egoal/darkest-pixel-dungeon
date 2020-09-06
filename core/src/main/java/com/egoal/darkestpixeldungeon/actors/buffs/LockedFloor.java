@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
@@ -32,7 +33,7 @@ public class LockedFloor extends Buff {
 
   @Override
   public boolean act() {
-    spend(TICK);
+    spend(Actor.TICK);
 
     if (!Dungeon.level.getLocked())
       detach();

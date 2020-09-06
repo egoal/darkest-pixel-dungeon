@@ -57,9 +57,9 @@ public class Regrowth extends Blob {
               GameScene.updateMap(cell);
             }
 
-            Char ch = Actor.findChar(cell);
+            Char ch = Actor.Companion.findChar(cell);
             if (ch != null && off[cell] > 1) {
-              Buff.prolong(ch, Roots.class, TICK);
+              Buff.prolong(ch, Roots.class, Actor.TICK);
             }
           }
         }

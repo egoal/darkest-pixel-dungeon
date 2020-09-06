@@ -72,7 +72,7 @@ public class GooSprite extends MobSprite {
   @Override
   public void link(Char ch) {
     super.link(ch);
-    if (ch.HP * 2 <= ch.HT)
+    if (ch.getHP() * 2 <= ch.getHT())
       spray(true);
   }
 

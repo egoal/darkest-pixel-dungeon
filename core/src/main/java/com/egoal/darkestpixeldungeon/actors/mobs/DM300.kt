@@ -192,8 +192,8 @@ class DM300 : Mob() {
         return super.attackProc(dmg)
     }
 
-    override fun die(cause: Any) {
-        super.die(cause)
+    override fun die(src: Any?) {
+        super.die(src)
 
         GameScene.bossSlain()
 

@@ -19,6 +19,8 @@ class UnholyBlood : Item() {
 
     override fun isUpgradable() = false
 
+    override fun isIdentified() = true
+
     override fun actions(hero: Hero): ArrayList<String>{
         val actions = super.actions(hero)
         hero.belongings.getItem(DewVial::class.java)?.run{

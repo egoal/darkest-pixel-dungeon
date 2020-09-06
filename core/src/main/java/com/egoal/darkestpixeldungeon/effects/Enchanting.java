@@ -61,8 +61,8 @@ public class Enchanting extends ItemSprite {
   public void update() {
     super.update();
 
-    x = target.sprite.center().x - SIZE / 2;
-    y = target.sprite.y - SIZE;
+    x = target.getSprite().center().x - SIZE / 2;
+    y = target.getSprite().y - SIZE;
 
     switch (phase) {
       case FADE_IN:
@@ -99,12 +99,12 @@ public class Enchanting extends ItemSprite {
 
   public static void show(Char ch, Item item) {
 
-    if (!ch.sprite.visible) {
+    if (!ch.getSprite().visible) {
       return;
     }
 
     Enchanting sprite = new Enchanting(item);
     sprite.target = ch;
-    ch.sprite.parent.add(sprite);
+    ch.getSprite().parent.add(sprite);
   }
 }

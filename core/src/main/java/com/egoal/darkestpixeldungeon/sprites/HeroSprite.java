@@ -100,7 +100,7 @@ public class HeroSprite extends CharSprite {
   @Override
   public void move(int from, int to) {
     super.move(from, to);
-    if (ch.flying) {
+    if (ch.getFlying()) {
       play(fly);
     }
     Camera.main.target = this;

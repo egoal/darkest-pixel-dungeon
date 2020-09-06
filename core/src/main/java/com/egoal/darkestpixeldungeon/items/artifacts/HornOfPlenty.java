@@ -97,9 +97,9 @@ public class HornOfPlenty extends Artifact {
         //if you get at least 80 food recoverValue from the horn
         switch (hero.getHeroClass()) {
           case WARRIOR:
-            if (hero.HP < hero.HT) {
-              hero.HP = Math.min(hero.HP + 5, hero.HT);
-              hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+            if (hero.getHP() < hero.getHT()) {
+              hero.setHP(Math.min(hero.getHP() + 5, hero.getHT()));
+              hero.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
             }
             break;
           case MAGE:
@@ -120,7 +120,7 @@ public class HornOfPlenty extends Artifact {
 
         charge -= chargesToUse;
 
-        hero.sprite.operate(hero.pos);
+        hero.getSprite().operate(hero.getPos());
         hero.busy();
         SpellSprite.show(hero, SpellSprite.FOOD);
         Sample.INSTANCE.play(Assets.SND_EAT);
@@ -225,7 +225,7 @@ public class HornOfPlenty extends Artifact {
           GLog.w(Messages.get(HornOfPlenty.class, "reject"));
         } else {
           Hero hero = Dungeon.hero;
-          hero.sprite.operate(hero.pos);
+          hero.getSprite().operate(hero.getPos());
           hero.busy();
           hero.spend(TIME_TO_EAT);
 
@@ -235,7 +235,7 @@ public class HornOfPlenty extends Artifact {
             GLog.p(Messages.get(HornOfPlenty.class, "maxlevel"));
           } else
             GLog.p(Messages.get(HornOfPlenty.class, "levelup"));
-          item.detach(hero.getBelongings().backpack);
+          item.detach(hero.getBelongings().getBackpack());
         }
 
       }

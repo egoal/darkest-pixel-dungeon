@@ -90,11 +90,10 @@ public abstract class EquipableItem extends Item {
 
   // called when equip cursed things, 
   public static void equipCursed(Hero hero) {
-    hero.sprite.emitter().burst(ShadowParticle.CURSE, 6);
+    hero.getSprite().emitter().burst(ShadowParticle.CURSE, 6);
     Sample.INSTANCE.play(Assets.SND_CURSED);
 
-    hero.takeDamage(new Damage(Random.Int(4, 10), Char.Nobody.INSTANCE, hero).type(Damage
-            .Type.MENTAL));
+    hero.takeDamage(new Damage(Random.Int(4, 10), Char.Nobody.Companion, hero).type(Damage.Type.MENTAL));
   }
 
   protected float time2equip(Hero hero) {
@@ -116,11 +115,11 @@ public abstract class EquipableItem extends Item {
       hero.spend(time2equip(hero));
     }
 
-    if (!collect || !collect(hero.getBelongings().backpack)) {
+    if (!collect || !collect(hero.getBelongings().getBackpack())) {
       onDetach();
       Dungeon.quickslot.clearItem(this);
       updateQuickslot();
-      if (collect) Dungeon.level.drop(this, hero.pos);
+      if (collect) Dungeon.level.drop(this, hero.getPos());
     }
 
     return true;

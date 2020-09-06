@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -80,8 +81,8 @@ public class Venom extends Poison implements Hero.Doom {
         damage++;
 
       //want it to act after the cloud of venom it came from.
-      spend(TICK + 0.1f);
-      if ((left -= TICK) <= 0) {
+      spend(Actor.TICK + 0.1f);
+      if ((left -= Actor.TICK) <= 0) {
         detach();
       }
     } else {

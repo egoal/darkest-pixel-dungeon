@@ -46,14 +46,14 @@ public class Vampiric extends Weapon.Enchantment {
     // lvl 2 - 23% -> .286
     int maxValue = Math.round(damage.value * ((level + 10) / (float) (level +
             40)));
-    int effValue = Math.min(Random.IntRange(0, maxValue), attacker.HT - 
-            attacker.HP);
+    int effValue = Math.min(Random.IntRange(0, maxValue), attacker.getHT() -
+            attacker.getHP());
 
     if (effValue > 0) {
 
-      attacker.HP += effValue;
-      attacker.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1);
-      attacker.sprite.showStatus(CharSprite.POSITIVE, Integer.toString
+      attacker.setHP(attacker.getHP() + effValue);
+      attacker.getSprite().emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1);
+      attacker.getSprite().showStatus(CharSprite.POSITIVE, Integer.toString
               (effValue));
 
     }

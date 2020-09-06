@@ -73,7 +73,7 @@ public class WandOfTransfusion extends Wand {
 
     int cell = beam.collisionPos;
 
-    Char ch = Actor.findChar(cell);
+    Char ch = Actor.Companion.findChar(cell);
     Heap heap = Dungeon.level.getHeaps().get(cell);
 
     //this wand does a bunch of different things depending on what it targets.
@@ -81,27 +81,27 @@ public class WandOfTransfusion extends Wand {
     //if we find a character..
     if (ch != null && ch instanceof Mob) {
       //heals an ally, or charmed/corrupted enemy
-      if (ch.camp== Char.Camp.HERO || ch.buff(Charm.class) != null || ch.buff
+      if (ch.getCamp() == Char.Camp.HERO || ch.buff(Charm.class) != null || ch.buff
               (Corruption.class) != null) {
 
-        int missingHP = ch.HT - ch.HP;
+        int missingHP = ch.getHT() - ch.getHP();
         //heals 30%+3%*lvl missing HP.
         int healing = (int) Math.ceil((missingHP * (0.30f + (0.03f * level())
         )));
-        ch.HP += healing;
-        ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1 + level() /
+        ch.setHP(ch.getHP() + healing);
+        ch.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1 + level() /
                 2);
-        ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+        ch.getSprite().showStatus(CharSprite.POSITIVE, "+%dHP", healing);
 
         //harms the undead
       } else if (ch.properties().contains(Char.Property.UNDEAD)) {
 
         //deals 30%+5%*lvl total HP.
-        int damage = (int) Math.ceil(ch.HT * (0.3f + (0.05f * level())));
+        int damage = (int) Math.ceil(ch.getHT() * (0.3f + (0.05f * level())));
         // ch.damage(damage, this);
         ch.takeDamage(new Damage(damage, curUser, ch).type(Damage.Type
                 .MAGICAL));
-        ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
+        ch.getSprite().emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
         Sample.INSTANCE.play(Assets.SND_BURNING);
 
         //charms an enemy
@@ -113,8 +113,8 @@ public class WandOfTransfusion extends Wand {
         duration *= Random.Float(0.75f, 1f);
         new Charm.Attacher(ch.id(), (int)duration).attachTo(curUser);
 
-        ch.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
-        curUser.sprite.centerEmitter().start(Speck.factory(Speck.HEART),
+        ch.getSprite().centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5);
+        curUser.getSprite().centerEmitter().start(Speck.factory(Speck.HEART),
                 0.2f, 5);
 
       }
@@ -176,7 +176,7 @@ public class WandOfTransfusion extends Wand {
   //this wand costs health too
   private void damageHero() {
     // 15% of max hp
-    int damage = (int) Math.ceil(curUser.HT * 0.15f);
+    int damage = (int) Math.ceil(curUser.getHT() * 0.15f);
     curUser.takeDamage(new Damage(damage, curUser, curUser).
             type(Damage.Type.MAGICAL));
 
@@ -201,14 +201,14 @@ public class WandOfTransfusion extends Wand {
       freeCharge = true;
       GLog.p(Messages.get(this, "charged"));
       if(damage.from instanceof Char)
-        ((Char) damage.from).sprite.emitter().burst(BloodParticle.BURST, 20);
+        ((Char) damage.from).getSprite().emitter().burst(BloodParticle.BURST, 20);
     }
   }
 
   @Override
   public void fx(Ballistica beam, Callback callback) {
-    curUser.sprite.parent.add(
-            new Beam.HealthRay(curUser.sprite.center(), DungeonTilemap
+    curUser.getSprite().parent.add(
+            new Beam.HealthRay(curUser.getSprite().center(), DungeonTilemap
                     .tileCenterToWorld(beam.collisionPos)));
     callback.call();
   }

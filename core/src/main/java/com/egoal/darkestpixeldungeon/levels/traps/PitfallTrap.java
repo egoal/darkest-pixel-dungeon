@@ -53,7 +53,7 @@ public class PitfallTrap extends Trap {
       Dungeon.level.getHeaps().remove(pos);
     }
 
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
 
     if (ch == Dungeon.hero) {
       Chasm.INSTANCE.HeroFall(pos);

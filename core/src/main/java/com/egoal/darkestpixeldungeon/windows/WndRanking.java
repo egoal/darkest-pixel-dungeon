@@ -168,7 +168,7 @@ public class WndRanking extends WndTabbed {
       pos = statSlot(this, Messages.get(this, "str"), Integer.toString
               (Dungeon.hero.getSTR()), pos);
       pos = statSlot(this, Messages.get(this, "health"), Integer.toString
-              (Dungeon.hero.HT), pos);
+              (Dungeon.hero.getHT()), pos);
 
       pos += GAP;
 
@@ -244,22 +244,22 @@ public class WndRanking extends WndTabbed {
       super();
 
       Belongings stuff = Dungeon.hero.getBelongings();
-      if (stuff.weapon != null) {
-        addItem(stuff.weapon);
+      if (stuff.getWeapon() != null) {
+        addItem(stuff.getWeapon());
       }
-      if (stuff.armor != null) {
-        addItem(stuff.armor);
+      if (stuff.getArmor() != null) {
+        addItem(stuff.getArmor());
       }
-      if (stuff.helmet != null)
-        addItem(stuff.helmet);
-      if (stuff.misc1 != null) {
-        addItem(stuff.misc1);
+      if (stuff.getHelmet() != null)
+        addItem(stuff.getHelmet());
+      if (stuff.getMisc1() != null) {
+        addItem(stuff.getMisc1());
       }
-      if (stuff.misc2 != null) {
-        addItem(stuff.misc2);
+      if (stuff.getMisc2() != null) {
+        addItem(stuff.getMisc2());
       }
-      if (stuff.misc3 != null) {
-        addItem(stuff.misc3);
+      if (stuff.getMisc3() != null) {
+        addItem(stuff.getMisc3());
       }
 
       // quickslots

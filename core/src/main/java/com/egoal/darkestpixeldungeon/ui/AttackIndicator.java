@@ -168,7 +168,7 @@ public class AttackIndicator extends Tag {
   @Override
   protected void onClick() {
     if (enabled) {
-      if (Dungeon.hero.handle(lastTarget.pos)) {
+      if (Dungeon.hero.handle(lastTarget.getPos())) {
         Dungeon.hero.next();
       }
     }

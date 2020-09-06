@@ -48,7 +48,7 @@ public class Venomous extends Weapon.Enchantment {
 
       Buff.affect(defender, Poison.class).extend(Poison.durationFactor
               (defender) * ((level / 2) + 1));
-      CellEmitter.center(defender.pos).burst(PoisonParticle.SPLASH, 5);
+      CellEmitter.center(defender.getPos()).burst(PoisonParticle.SPLASH, 5);
 
     }
 

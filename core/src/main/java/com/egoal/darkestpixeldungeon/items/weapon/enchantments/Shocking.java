@@ -55,10 +55,10 @@ public class Shocking extends Weapon.Enchantment {
       affected.add(attacker);
 
       arcs.clear();
-      arcs.add(new Lightning.Arc(attacker.pos, defender.pos));
+      arcs.add(new Lightning.Arc(attacker.getPos(), defender.getPos()));
       hit(defender, Random.Int(1, damage.value / 3));
 
-      attacker.sprite.parent.add(new Lightning(arcs, null));
+      attacker.getSprite().parent.add(new Lightning(arcs, null));
 
     }
 
@@ -83,18 +83,18 @@ public class Shocking extends Weapon.Enchantment {
 
     affected.add(ch);
 
-    ch.takeDamage(new Damage(Level.Companion.getWater()[ch.pos] && !ch.flying ? (int)
+    ch.takeDamage(new Damage(Level.Companion.getWater()[ch.getPos()] && !ch.getFlying() ? (int)
             (damage * 2) : damage,
             this, ch).addElement(Damage.Element.LIGHT));
 
-    ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
-    ch.sprite.flash();
+    ch.getSprite().centerEmitter().burst(SparkParticle.FACTORY, 3);
+    ch.getSprite().flash();
 
     HashSet<Char> ns = new HashSet<Char>();
     for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-      Char n = Actor.findChar(ch.pos + PathFinder.NEIGHBOURS8[i]);
+      Char n = Actor.Companion.findChar(ch.getPos() + PathFinder.NEIGHBOURS8[i]);
       if (n != null && !affected.contains(n)) {
-        arcs.add(new Lightning.Arc(ch.pos, n.pos));
+        arcs.add(new Lightning.Arc(ch.getPos(), n.getPos()));
         hit(n, Random.Int(damage / 2, damage));
       }
     }

@@ -62,7 +62,7 @@ import java.util.HashSet;
 public class Dungeon {
 
   public static int initialDepth_ = -1;
-  public static final String VERSION_STRING = "0.5.0-0.1";
+  public static final String VERSION_STRING = "0.5.0-0.2";
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -97,6 +97,7 @@ public class Dungeon {
     //doesn't use Generator, so we have to enforce one armband drop here
     armband,
     chaliceOfBlood, // only the statuary drop this now
+    goddessRadiance,
     demonicSkull,
     handOfElder,
 
@@ -144,8 +145,8 @@ public class Dungeon {
 
     version = Game.versionCode;
 
-    Actor.clear();
-    Actor.resetNextID();
+    Actor.Companion.clear();
+    Actor.Companion.resetNextID();
 
     Scroll.initLabels();
     Potion.Companion.initColors();
@@ -176,7 +177,7 @@ public class Dungeon {
     Imp.Quest.reset();
 
     Alchemist.Quest.INSTANCE.reset();
-    Statuary.Reset();
+    Statuary.Companion.Reset();
     Jessica.Quest.INSTANCE.reset();
     Yvette.Quest.INSTANCE.Reset();
 
@@ -197,7 +198,7 @@ public class Dungeon {
   public static Level newLevel() {
 
     Dungeon.level = null;
-    Actor.clear();
+    Actor.Companion.clear();
 
     depth++;
     if (depth > Statistics.INSTANCE.getDeepestFloor()) {
@@ -278,7 +279,7 @@ public class Dungeon {
 
   public static void resetLevel() {
 
-    Actor.clear();
+    Actor.Companion.clear();
 
     level.reset();
     switchLevel(level, level.getEntrance());
@@ -308,18 +309,18 @@ public class Dungeon {
 
     // add into level.mobs, then into actor.
     hero.restoreFollowers(level, pos);
-    Actor.init();
+    Actor.Companion.init();
 
     PathFinder.setMapSize(level.width(), level.height());
     visible = new boolean[level.length()];
 
     Actor respawner = level.respawner();
     if (respawner != null) {
-      Actor.add(level.respawner());
+      Actor.Companion.add(level.respawner());
     }
-    Actor.add(new Resident());
+    Actor.Companion.add(new Resident());
 
-    hero.pos = pos;
+    hero.setPos(pos);
 
     observe();
     try {
@@ -508,7 +509,7 @@ public class Dungeon {
 
     if (hero.isAlive()) {
 
-      Actor.fixTime();
+      Actor.Companion.fixTime();
       saveGame(gameFile(hero.getHeroClass()), doBackup ? backupGameFile(hero
               .getHeroClass()) : null);
       saveLevel(doBackup ? backupLevelFile(hero.getHeroClass()) : null);
@@ -563,7 +564,7 @@ public class Dungeon {
       Alchemist.Quest.INSTANCE.storeInBundle(quests);
       Jessica.Quest.INSTANCE.storeInBundle(quests);
       Yvette.Quest.INSTANCE.StoreInBundle(quests);
-      Statuary.save(quests);
+      Statuary.Companion.Save(quests);
 
       bundle.put(QUESTS, quests);
 
@@ -575,7 +576,7 @@ public class Dungeon {
       Potion.Companion.save(bundle);
       Ring.Companion.save(bundle);
 
-      Actor.storeNextID(bundle);
+      Actor.Companion.storeNextID(bundle);
 
       Bundle badges = new Bundle();
       Badges.INSTANCE.saveLocal(badges);
@@ -634,7 +635,7 @@ public class Dungeon {
 
     Generator.INSTANCE.reset();
 
-    Actor.restoreNextID(bundle);
+    Actor.Companion.restoreNextID(bundle);
 
     quickslot.reset();
     QuickSlotButton.reset();
@@ -674,7 +675,7 @@ public class Dungeon {
         // dpd, restore quests
         Alchemist.Quest.INSTANCE.restoreFromBundle(quests);
         Jessica.Quest.INSTANCE.restoreFromBundle(quests);
-        Statuary.load(quests);
+        Statuary.Companion.Load(quests);
         Yvette.Quest.INSTANCE.RestoreFromBundle(quests);
       } else {
         Ghost.Quest.INSTANCE.reset();
@@ -728,7 +729,7 @@ public class Dungeon {
 
   private static Level loadLevelFromFile(String filename) throws IOException {
     Dungeon.level = null;
-    Actor.clear();
+    Actor.Companion.clear();
 
     InputStream is = Game.instance.openFileInput(filename);
     Bundle bundle = Bundle.read(is);
@@ -802,8 +803,8 @@ public class Dungeon {
 
     level.updateFieldOfView(hero, visible);
 
-    int cx = hero.pos % level.width();
-    int cy = hero.pos / level.width();
+    int cx = hero.getPos() % level.width();
+    int cy = hero.getPos() / level.width();
 
     int ax = Math.max(0, cx - dist);
     int bx = Math.min(cx + dist, level.width() - 1);
@@ -839,15 +840,15 @@ public class Dungeon {
           pass[], boolean[] visible) {
 
     setupPassable();
-    if (ch.flying || ch.buff(Amok.class) != null) {
+    if (ch.getFlying() || ch.buff(Amok.class) != null) {
       BArray.or(pass, Level.Companion.getAvoid(), passable);
     } else {
       System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());
     }
 
-    for (Char c : Actor.chars()) {
-      if (visible[c.pos]) {
-        passable[c.pos] = false;
+    for (Char c : Actor.Companion.chars()) {
+      if (visible[c.getPos()]) {
+        passable[c.getPos()] = false;
       }
     }
 
@@ -859,21 +860,21 @@ public class Dungeon {
                              boolean[] visible) {
 
     if (level.adjacent(from, to)) {
-      return Actor.findChar(to) == null && (pass[to] || Level.Companion
+      return Actor.Companion.findChar(to) == null && (pass[to] || Level.Companion
               .getAvoid()[to]) ? to
               : -1;
     }
 
     setupPassable();
-    if (ch.flying || ch.buff(Amok.class) != null) {
+    if (ch.getFlying() || ch.buff(Amok.class) != null) {
       BArray.or(pass, Level.Companion.getAvoid(), passable);
     } else {
       System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());
     }
 
-    for (Char c : Actor.chars()) {
-      if (visible[c.pos]) {
-        passable[c.pos] = false;
+    for (Char c : Actor.Companion.chars()) {
+      if (visible[c.getPos()]) {
+        passable[c.getPos()] = false;
       }
     }
 
@@ -885,15 +886,15 @@ public class Dungeon {
                          boolean[] visible) {
 
     setupPassable();
-    if (ch.flying) {
+    if (ch.getFlying()) {
       BArray.or(pass, Level.Companion.getAvoid(), passable);
     } else {
       System.arraycopy(pass, 0, passable, 0, Dungeon.level.length());
     }
 
-    for (Char c : Actor.chars()) {
-      if (visible[c.pos]) {
-        passable[c.pos] = false;
+    for (Char c : Actor.Companion.chars()) {
+      if (visible[c.getPos()]) {
+        passable[c.getPos()] = false;
       }
     }
     passable[cur] = true;

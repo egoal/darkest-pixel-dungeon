@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
@@ -72,7 +73,7 @@ public class TalismanOfForesight extends Artifact {
         GLog.i(Messages.get(Artifact.class, "need_to_equip"));
       else if (charge != chargeCap) GLog.i(Messages.get(this, "no_charge"));
       else {
-        hero.sprite.operate(hero.pos);
+        hero.getSprite().operate(hero.getPos());
         hero.busy();
         Sample.INSTANCE.play(Assets.SND_BEACON);
         charge = 0;
@@ -125,14 +126,14 @@ public class TalismanOfForesight extends Artifact {
 
     @Override
     public boolean act() {
-      spend(TICK);
+      spend(Actor.TICK);
 
       boolean smthFound = false;
 
       int distance = 3;
 
-      int cx = target.pos % Dungeon.level.width();
-      int cy = target.pos / Dungeon.level.width();
+      int cx = target.getPos() % Dungeon.level.width();
+      int cy = target.getPos() / Dungeon.level.width();
       int ax = cx - distance;
       if (ax < 0) {
         ax = 0;

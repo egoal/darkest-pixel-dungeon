@@ -21,21 +21,16 @@
 package com.egoal.darkestpixeldungeon.items.armor
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Shuriken
 import com.egoal.darkestpixeldungeon.levels.Level
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.MissileSprite
 import com.watabou.utils.Callback
 
-import java.util.HashMap
-
 class HuntressArmor : ClassArmor() {
-    private val targets = HashMap<Callback, Mob>()
-
     init {
         image = ItemSpriteSheet.ARMOR_HUNTRESS
     }
@@ -43,34 +38,27 @@ class HuntressArmor : ClassArmor() {
     override fun doSpecial() {
         val proto = Shuriken()
 
-        for (mob in Dungeon.level.mobs) {
-            if (Level.fieldOfView[mob.pos] && Dungeon.level.distance(mob.pos, Item.curUser.pos) <= 8) {
-
-                val callback = object : Callback {
-                    override fun call() {
-                        Item.curUser.attack(targets[this])
-                        targets.remove(this)
-                        if (targets.isEmpty()) {
-                            Item.curUser.spendAndNext(Item.curUser.attackDelay())
-                        }
-                    }
-                }
-
-                (Item.curUser.sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(Item.curUser.pos, mob.pos, proto, callback)
-
-                targets[callback] = mob
-            }
+        val targets = Dungeon.level.mobs.filter { Level.fieldOfView[it.pos] && Dungeon.level.distance(it.pos, curUser.pos) <= 8 }
+        var finished = 0
+        for (mob in targets) {
+            (curUser.sprite.parent.recycle(MissileSprite::class.java) as MissileSprite)
+                    .reset(curUser.pos, mob.pos, proto, Callback {
+                        curUser.attack(mob)
+                        finished++
+                        if (finished >= targets.size)  // all targets done, animation finished.
+                            curUser.spendAndNext(curUser.attackDelay())
+                    })
         }
 
-        if (targets.size == 0) {
-            GLog.w(Messages.get(this, "no_enemies"))
+        if (targets.isEmpty()) {
+            GLog.w(M.L(this, "no_enemies"))
             return
         }
 
-        Item.curUser.HP -= Item.curUser.HP / 3
+        curUser.HP -= curUser.HP / 3
 
-        Item.curUser.sprite.zap(Item.curUser.pos)
-        Item.curUser.busy()
+        curUser.sprite.zap(curUser.pos)
+        curUser.busy()
     }
 
 }

@@ -79,10 +79,10 @@ public class GhostSprite extends MobSprite {
 
   @Override
   public void zap(int cell) {
-    turnTo(ch.pos, cell);
+    turnTo(ch.getPos(), cell);
     play(zap);
 
-    MagicMissile.whiteLight(parent, ch.pos, cell, (GhostHero)ch);
+    MagicMissile.whiteLight(parent, ch.getPos(), cell, (GhostHero)ch);
     Sample.INSTANCE.play(Assets.SND_ZAP);
   }
 

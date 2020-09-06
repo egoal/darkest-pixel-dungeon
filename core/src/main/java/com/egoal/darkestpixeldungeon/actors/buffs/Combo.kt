@@ -113,11 +113,7 @@ class Combo : Buff(), ActionIndicator.Action {
 
     // ActionIndicator.Action
     override fun getIcon(): Image {
-        val icon = if ((target as Hero).belongings.weapon != null)
-            ItemSprite((target as Hero).belongings.weapon.image, null)
-        else ItemSprite(Item().apply {
-            image = ItemSpriteSheet.WEAPON_HOLDER
-        })
+        val icon = ItemSprite((target as Hero).belongings.weapon?.image ?: ItemSpriteSheet.WEAPON_HOLDER, null)
 
         val tint = when {
             count >= 10 -> 0xffff0000

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
@@ -33,11 +34,11 @@ public class Fury extends Buff {
 
   @Override
   public boolean act() {
-    if (target.HP > target.HT * LEVEL) {
+    if (target.getHP() > target.getHT() * LEVEL) {
       detach();
     }
 
-    spend(TICK);
+    spend(Actor.TICK);
 
     return true;
   }

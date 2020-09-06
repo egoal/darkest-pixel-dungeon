@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.items.armor.glyphs;
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility;
@@ -52,17 +53,17 @@ public class Camouflage extends Armor.Glyph {
     @Override
     public boolean act() {
       left--;
-      if (left == 0 || target.pos != pos) {
+      if (left == 0 || target.getPos() != pos) {
         detach();
       } else {
-        spend(TICK);
+        spend(Actor.TICK);
       }
       return true;
     }
 
     public void set(int time) {
       left = time;
-      pos = target.pos;
+      pos = target.getPos();
       Sample.INSTANCE.play(Assets.SND_MELD);
     }
 

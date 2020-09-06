@@ -91,7 +91,7 @@ public class BossHealthBar extends Component {
         boss = null;
         visible = active = false;
       } else {
-        hp.scale.x = (float) boss.HP / boss.HT;
+        hp.scale.x = (float) boss.getHP() / boss.getHT();
         if (hp.scale.x < 0.25f) bleed(true);
 
         if (bleeding != blood.on) {

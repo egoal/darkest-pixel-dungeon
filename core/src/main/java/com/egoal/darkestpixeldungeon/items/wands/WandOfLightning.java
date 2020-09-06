@@ -86,8 +86,8 @@ public class WandOfLightning extends DamageWand {
       ch.takeDamage(dmg);
 
       if (ch == Dungeon.hero) Camera.main.shake(2, 0.3f);
-      ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
-      ch.sprite.flash();
+      ch.getSprite().centerEmitter().burst(SparkParticle.FACTORY, 3);
+      ch.getSprite().flash();
     }
 
     if (!curUser.isAlive()) {
@@ -107,20 +107,20 @@ public class WandOfLightning extends DamageWand {
     affected.add(ch);
 
     int dist;
-    if (Level.Companion.getWater()[ch.pos] && !ch.flying)
+    if (Level.Companion.getWater()[ch.getPos()] && !ch.getFlying())
       dist = 2;
     else
       dist = 1;
 
-    PathFinder.buildDistanceMap(ch.pos, BArray.not(Level.Companion.getSolid(), null), dist);
+    PathFinder.buildDistanceMap(ch.getPos(), BArray.not(Level.Companion.getSolid(), null), dist);
     for (int i = 0; i < PathFinder.distance.length; i++) {
       if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-        Char n = Actor.findChar(i);
+        Char n = Actor.Companion.findChar(i);
         if (n == Dungeon.hero && PathFinder.distance[i] > 1)
           //the hero is only zapped if they are adjacent
           continue;
         else if (n != null && !affected.contains(n)) {
-          arcs.add(new Lightning.Arc(ch.pos, n.pos));
+          arcs.add(new Lightning.Arc(ch.getPos(), n.getPos()));
           arc(n);
         }
       }
@@ -136,7 +136,7 @@ public class WandOfLightning extends DamageWand {
 
     int cell = bolt.collisionPos;
 
-    Char ch = Actor.findChar(cell);
+    Char ch = Actor.Companion.findChar(cell);
     if (ch != null) {
       arc(ch);
     } else {
@@ -144,7 +144,7 @@ public class WandOfLightning extends DamageWand {
     }
 
     //don't want to wait for the effect before processing damage.
-    curUser.sprite.parent.add(new Lightning(arcs, null));
+    curUser.getSprite().parent.add(new Lightning(arcs, null));
     callback.call();
   }
 

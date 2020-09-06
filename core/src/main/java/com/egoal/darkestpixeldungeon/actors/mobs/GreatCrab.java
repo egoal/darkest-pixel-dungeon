@@ -39,7 +39,7 @@ public class GreatCrab extends Crab {
 
     spriteClass = GreatCrabSprite.class;
 
-    baseSpeed = 1f;
+    setBaseSpeed(1f);
     state = WANDERING;
   }
 
@@ -65,10 +65,10 @@ public class GreatCrab extends Crab {
     // or traps if it is alerted.
     //All direct damage from these sources is negated, no exceptions. 
     // blob/debuff effects go through as normal.
-    if ((enemySeen && state != SLEEPING && paralysed == 0)
+    if ((enemySeen && state != SLEEPING && getParalysed() == 0)
             && (dmg.from instanceof Wand || dmg.from instanceof Char)) {
       GLog.n(Messages.get(this, "noticed"));
-      sprite.showStatus(CharSprite.NEUTRAL, Messages.get(this, "blocked"));
+      getSprite().showStatus(CharSprite.NEUTRAL, Messages.get(this, "blocked"));
 
       return 0;
     } else {
@@ -82,7 +82,7 @@ public class GreatCrab extends Crab {
 
     Ghost.Quest.INSTANCE.process();
 
-    Dungeon.level.drop(new MysteryMeat(), pos);
-    Dungeon.level.drop(new MysteryMeat(), pos).getSprite().drop();
+    Dungeon.level.drop(new MysteryMeat(), getPos());
+    Dungeon.level.drop(new MysteryMeat(), getPos()).getSprite().drop();
   }
 }

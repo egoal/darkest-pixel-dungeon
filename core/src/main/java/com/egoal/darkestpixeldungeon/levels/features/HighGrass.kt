@@ -42,7 +42,7 @@ object HighGrass {
             }
 
             if (ch.belongings.armor?.hasGlyph(Camouflage::class.java) == true) {
-                Buff.affect(ch, Camouflage.Camo::class.java).set(2 + ch.belongings.armor.level())
+                Buff.affect(ch, Camouflage.Camo::class.java).set(2 + ch.belongings.armor!!.level())
                 leaves += 4
             }
         }

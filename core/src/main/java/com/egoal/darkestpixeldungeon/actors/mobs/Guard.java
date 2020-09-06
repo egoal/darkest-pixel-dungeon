@@ -60,15 +60,15 @@ public class Guard extends Mob {
     Dungeon.level.updateFieldOfView(this, Level.Companion.getFieldOfView());
 
     if (state == HUNTING &&
-            paralysed <= 0 &&
+            getParalysed() <= 0 &&
             enemy != null &&
-            enemy.invisible == 0 &&
-            Level.Companion.getFieldOfView()[enemy.pos] &&
-            Dungeon.level.distance(pos, enemy.pos) < 5 &&
-            !Dungeon.level.adjacent(pos, enemy.pos) &&
+            enemy.getInvisible() == 0 &&
+            Level.Companion.getFieldOfView()[enemy.getPos()] &&
+            Dungeon.level.distance(getPos(), enemy.getPos()) < 5 &&
+            !Dungeon.level.adjacent(getPos(), enemy.getPos()) &&
             Random.Int(3) == 0 &&
 
-            chain(enemy.pos)) {
+            chain(enemy.getPos())) {
 
       return false;
 
@@ -81,14 +81,14 @@ public class Guard extends Mob {
     if (chainsUsed || enemy.properties().contains(Property.IMMOVABLE))
       return false;
 
-    Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
+    Ballistica chain = new Ballistica(getPos(), target, Ballistica.PROJECTILE);
 
-    if (chain.collisionPos != enemy.pos || chain.path.size() < 2 || Level.Companion.getPit()[chain.path.get(1)])
+    if (chain.collisionPos != enemy.getPos() || chain.path.size() < 2 || Level.Companion.getPit()[chain.path.get(1)])
       return false;
     else {
       int newPos = -1;
       for (int i : chain.subPath(1, chain.dist)) {
-        if (!Level.Companion.getSolid()[i] && Actor.findChar(i) == null) {
+        if (!Level.Companion.getSolid()[i] && Actor.Companion.findChar(i) == null) {
           newPos = i;
           break;
         }
@@ -99,12 +99,12 @@ public class Guard extends Mob {
       } else {
         final int newPosFinal = newPos;
         yell(Messages.get(this, "scorpion"));
-        sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
+        getSprite().parent.add(new Chains(getPos(), enemy.getPos(), new Callback() {
           public void call() {
-            Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new
+            Actor.Companion.addDelayed(new Pushing(enemy, enemy.getPos(), newPosFinal, new
                     Callback() {
                       public void call() {
-                        enemy.pos = newPosFinal;
+                        enemy.setPos(newPosFinal);
                         Dungeon.level.press(newPosFinal, enemy);
                         Cripple.prolong(enemy, Cripple.class, 4f);
                         if (enemy == Dungeon.hero) {

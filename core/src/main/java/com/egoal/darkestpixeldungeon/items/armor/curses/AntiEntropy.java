@@ -44,14 +44,14 @@ public class AntiEntropy extends Armor.Glyph {
 
     if (Random.Int(8) == 0) {
 
-      if (Dungeon.level.adjacent(attacker.pos, defender.pos)) {
+      if (Dungeon.level.adjacent(attacker.getPos(), defender.getPos())) {
         Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random
                 .Float(0.5f, 1f));
-        CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
+        CellEmitter.get(attacker.getPos()).start(SnowParticle.FACTORY, 0.2f, 6);
       }
 
       Buff.affect(defender, Burning.class).reignite(defender);
-      defender.sprite.emitter().burst(FlameParticle.FACTORY, 5);
+      defender.getSprite().emitter().burst(FlameParticle.FACTORY, 5);
 
     }
 

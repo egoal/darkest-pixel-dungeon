@@ -41,7 +41,7 @@ public class GrippingTrap extends Trap {
   @Override
   public void activate() {
 
-    Char c = Actor.findChar(pos);
+    Char c = Actor.Companion.findChar(pos);
 
     if (c != null) {
       int damage = c.defendDamage(new Damage(Dungeon.depth, this, c)).value;

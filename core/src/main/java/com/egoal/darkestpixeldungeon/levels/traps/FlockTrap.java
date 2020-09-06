@@ -50,27 +50,27 @@ public class FlockTrap extends Trap {
   public static void ActivateAt(final int pos) {
     //use an actor as we want to put this on a slight delay so all chars get 
     // a chance to act this turn first.
-    Actor.add(new Actor() {
+    Actor.Companion.add(new Actor() {
 
       {
-        actPriority = 3;
+        setActPriority(3);
       }
 
       protected boolean act() {
         PathFinder.buildDistanceMap(pos, BArray.not(Level.Companion.getSolid(), null), 2);
         for (int i = 0; i < PathFinder.distance.length; i++) {
           if (PathFinder.distance[i] < Integer.MAX_VALUE)
-            if (Dungeon.level.insideMap(i) && Actor.findChar(i) == null && !
+            if (Dungeon.level.insideMap(i) && Actor.Companion.findChar(i) == null && !
                     (Level.Companion.getPit()[i])) {
               Sheep sheep = new Sheep();
               sheep.setLifespan(2 + Random.Int(Dungeon.depth + 10));
-              sheep.pos = i;
+              sheep.setPos(i);
               GameScene.add(sheep);
               CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
             }
         }
         Sample.INSTANCE.play(Assets.SND_PUFF);
-        Actor.remove(this);
+        Actor.Companion.remove(this);
         return true;
       }
     });

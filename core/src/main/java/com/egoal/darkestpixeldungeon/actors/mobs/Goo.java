@@ -74,11 +74,11 @@ public class Goo extends Mob {
     Damage dmg = new Damage(0, this, target);
 
     int min = 1;
-    int max = (HP * 2 <= HT) ? 15 : 10;
+    int max = (getHP() * 2 <= getHT()) ? 15 : 10;
     if (pumpedUp > 0) {
       // pumped attack
       pumpedUp = 0;
-      PathFinder.buildDistanceMap(pos, BArray.not(Level.Companion.getSolid(), null), 2);
+      PathFinder.buildDistanceMap(getPos(), BArray.not(Level.Companion.getSolid(), null), 2);
       for (int i = 0; i < PathFinder.distance.length; i++) {
         if (PathFinder.distance[i] < Integer.MAX_VALUE)
           CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
@@ -96,26 +96,26 @@ public class Goo extends Mob {
   @Override
   public float attackSkill(Char target) {
     float attack = 10f;
-    if (HP * 2 <= HT) attack = 15f;
+    if (getHP() * 2 <= getHT()) attack = 15f;
     if (pumpedUp > 0) attack *= 2f;
     return attack;
   }
 
   @Override
   public float defenseSkill(Char enemy) {
-    return super.defenseSkill(enemy) * ((HP * 2 <= HT) ? 1.5f : 1f);
+    return super.defenseSkill(enemy) * ((getHP() * 2 <= getHT()) ? 1.5f : 1f);
   }
 
   @Override
   public boolean act() {
     // healing in the water, and update health bar animation
-    if (Level.Companion.getWater()[pos] && HP < HT) {
-      sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-      if (HP * 2 == HT) {
+    if (Level.Companion.getWater()[getPos()] && getHP() < getHT()) {
+      getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
+      if (getHP() * 2 == getHT()) {
         BossHealthBar.bleed(false);
-        ((GooSprite) sprite).spray(false);
+        ((GooSprite) getSprite()).spray(false);
       }
-      HP++;
+      setHP(getHP() + 1);
     }
 
     return super.act();
@@ -131,7 +131,7 @@ public class Goo extends Mob {
     Char enemy = (Char) damage.to;
     if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Int(3) == 0) {
       Buff.prolong(enemy, Vulnerable.class, 3).setRatio(1.25f);
-      enemy.sprite.burst(0xFF0000, 5);
+      enemy.getSprite().burst(0xFF0000, 5);
     }
 
     if (pumpedUp > 0) {
@@ -146,7 +146,7 @@ public class Goo extends Mob {
     if (pumpedUp == 0 && dmg.from instanceof Char &&
             !dmg.isFeatured(Damage.Feature.RANGED) && Random.Int(4) == 0) {
       Buff.affect((Char) dmg.from, Ooze.class);
-      ((Char) dmg.from).sprite.burst(0x000000, 5);
+      ((Char) dmg.from).getSprite().burst(0x000000, 5);
     }
 
     return super.defenseProc(dmg);
@@ -156,8 +156,8 @@ public class Goo extends Mob {
   protected boolean doAttack(Char enemy) {
     if (pumpedUp == 1) {
       // pumped an extra turn
-      ((GooSprite) sprite).pumpUp();
-      PathFinder.buildDistanceMap(pos, BArray.not(Level.Companion.getSolid(), null), 2);
+      ((GooSprite) getSprite()).pumpUp();
+      PathFinder.buildDistanceMap(getPos(), BArray.not(Level.Companion.getSolid(), null), 2);
       for (int i = 0; i < PathFinder.distance.length; i++) {
         if (PathFinder.distance[i] < Integer.MAX_VALUE)
           GameScene.add(Blob.seed(i, 2, GooWarn.class));
@@ -167,15 +167,15 @@ public class Goo extends Mob {
       spend(attackDelay());
 
       return true;
-    } else if (pumpedUp >= 2 || Random.Int((HP * 2 <= HT) ? 2 : 6) > 0) {
+    } else if (pumpedUp >= 2 || Random.Int((getHP() * 2 <= getHT()) ? 2 : 6) > 0) {
       // pumped or life below half
-      boolean visible = Dungeon.visible[pos];
+      boolean visible = Dungeon.visible[getPos()];
 
       if (visible) {
         if (pumpedUp >= 2) {
-          ((GooSprite) sprite).pumpAttack();
+          ((GooSprite) getSprite()).pumpAttack();
         } else // normal attack
-          sprite.attack(enemy.pos);
+          getSprite().attack(enemy.getPos());
       } else {
         attack(enemy);
       }
@@ -188,17 +188,17 @@ public class Goo extends Mob {
       // increase pump
       pumpedUp++;
 
-      ((GooSprite) sprite).pumpUp();
+      ((GooSprite) getSprite()).pumpUp();
 
       for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
-        int j = pos + PathFinder.NEIGHBOURS9[i];
+        int j = getPos() + PathFinder.NEIGHBOURS9[i];
         if (!Level.Companion.getSolid()[j]) {
           GameScene.add(Blob.seed(j, 2, GooWarn.class));
         }
       }
 
-      if (Dungeon.visible[pos]) {
-        sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "!!!"));
+      if (Dungeon.visible[getPos()]) {
+        getSprite().showStatus(CharSprite.NEGATIVE, Messages.get(this, "!!!"));
         GLog.n(Messages.get(this, "pumpup"));
       }
 
@@ -229,14 +229,14 @@ public class Goo extends Mob {
 
   @Override
   public int takeDamage(Damage dmg) {
-    boolean bleeding = (HP * 2 <= HT);
+    boolean bleeding = (getHP() * 2 <= getHT());
 
     int val = super.takeDamage(dmg);
-    if ((HP * 2 <= HT) && !bleeding) {
+    if ((getHP() * 2 <= getHT()) && !bleeding) {
       BossHealthBar.bleed(true);
       GLog.w(Messages.get(this, "enraged_text"));
-      sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
-      ((GooSprite) sprite).spray(true);
+      getSprite().showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
+      ((GooSprite) getSprite()).spray(true);
       yell(Messages.get(this, "gluuurp"));
     }
     LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
@@ -253,7 +253,7 @@ public class Goo extends Mob {
     Dungeon.level.unseal();
 
     GameScene.bossSlain();
-    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), pos).getSprite().drop();
+    Dungeon.level.drop(new SkeletonKey(Dungeon.depth), getPos()).getSprite().drop();
 
     Badges.INSTANCE.validateBossSlain();
 
@@ -284,7 +284,7 @@ public class Goo extends Mob {
 
     pumpedUp = bundle.getInt(PUMPEDUP);
     if (state != SLEEPING) BossHealthBar.assignBoss(this);
-    if ((HP * 2 <= HT)) BossHealthBar.bleed(true);
+    if ((getHP() * 2 <= getHT())) BossHealthBar.bleed(true);
 
   }
 

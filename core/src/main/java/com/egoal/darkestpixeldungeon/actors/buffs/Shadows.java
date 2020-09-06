@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
@@ -73,7 +74,7 @@ public class Shadows extends Invisibility {
   public boolean act() {
     if (target.isAlive()) {
 
-      spend(TICK * 2);
+      spend(Actor.TICK * 2);
 
       if (--left <= 0 || Dungeon.hero.visibleEnemies() > 0) {
         detach();

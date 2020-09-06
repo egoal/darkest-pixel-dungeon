@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator;
 
@@ -31,7 +32,7 @@ public class Barkskin extends Buff {
   public boolean act() {
     if (target.isAlive()) {
 
-      spend(TICK);
+      spend(Actor.TICK);
       if (--level <= 0) {
         detach();
       }

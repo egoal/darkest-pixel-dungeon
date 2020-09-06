@@ -60,10 +60,10 @@ public class DisintegrationTrap extends Trap {
     Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) heap.explode();
 
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
     if (ch != null) {
-      ch.takeDamage(new Damage(Math.max(ch.HT / 5, Random.Int(ch.HP / 2, 2 * 
-              ch.HP / 3)),
+      ch.takeDamage(new Damage(Math.max(ch.getHT() / 5, Random.Int(ch.getHP() / 2, 2 *
+              ch.getHP() / 3)),
               this, ch).addElement(Damage.Element.SHADOW));
       if (ch == Dungeon.hero) {
         Hero hero = (Hero) ch;
@@ -72,7 +72,7 @@ public class DisintegrationTrap extends Trap {
           GLog.n(Messages.get(this, "ondeath"));
         } else {
           Item item = hero.getBelongings().randomUnequipped();
-          Bag bag = hero.getBelongings().backpack;
+          Bag bag = hero.getBelongings().getBackpack();
           //bags do not protect against this trap
           if (item instanceof Bag) {
             bag = (Bag) item;

@@ -96,7 +96,7 @@ public class StatusPane extends Component {
     add(new TouchArea(0, 1, 31, 31) {
       @Override
       protected void onClick(Touch touch) {
-        Image sprite = Dungeon.hero.sprite;
+        Image sprite = Dungeon.hero.getSprite();
         if (!sprite.isVisible()) {
           Camera.main.focusOn(sprite);
         }
@@ -243,9 +243,9 @@ public class StatusPane extends Component {
       compass.update();
     }
 
-    float health = Dungeon.hero.HP;
-    float shield = Dungeon.hero.SHLD;
-    float max = Dungeon.hero.HT;
+    float health = Dungeon.hero.getHP();
+    float shield = Dungeon.hero.getSHLD();
+    float max = Dungeon.hero.getHT();
 
     Pressure p = Dungeon.hero.pressure;
 
@@ -273,10 +273,10 @@ public class StatusPane extends Component {
 
     // bars
     hp.scale.x = Math.max(0, (health - shield) / max);
-    if (Dungeon.hero.SHLD > 0)
+    if (Dungeon.hero.getSHLD() > 0)
       hpstr.text(String.format("%d+%d/%d",
-              Dungeon.hero.HP, Dungeon.hero.SHLD, Dungeon.hero.HT));
-    else hpstr.text(String.format("%d/%d", Dungeon.hero.HP, Dungeon.hero.HT));
+              Dungeon.hero.getHP(), Dungeon.hero.getSHLD(), Dungeon.hero.getHT()));
+    else hpstr.text(String.format("%d/%d", Dungeon.hero.getHP(), Dungeon.hero.getHT()));
     hpstr.measure();
     hpstr.x = hp.x + 24f - hpstr.width() / 2f;
 
@@ -375,18 +375,18 @@ public class StatusPane extends Component {
       boolean specialKey = false;
       int ironKeys = 0;
       for (int i = 0; i <= Math.min(Dungeon.depth, 25); i++) {
-        if (Dungeon.hero.getBelongings().ironKeys[i] > 0 || Dungeon.hero
-                .getBelongings().specialKeys[i] > 0) {
+        if (Dungeon.hero.getBelongings().getIronKeys()[i] > 0 || Dungeon.hero
+                .getBelongings().getSpecialKeys()[i] > 0) {
           foundKeys = true;
 
           if (i < Dungeon.depth) {
             blackKey = true;
 
           } else {
-            if (Dungeon.hero.getBelongings().specialKeys[i] > 0) {
+            if (Dungeon.hero.getBelongings().getSpecialKeys()[i] > 0) {
               specialKey = true;
             }
-            ironKeys = Dungeon.hero.getBelongings().ironKeys[i];
+            ironKeys = Dungeon.hero.getBelongings().getIronKeys()[i];
           }
         }
       }

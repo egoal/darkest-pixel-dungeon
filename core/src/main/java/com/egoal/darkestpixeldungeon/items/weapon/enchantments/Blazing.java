@@ -50,7 +50,7 @@ public class Blazing extends Weapon.Enchantment {
               this, defender).type(Damage.Type.MAGICAL).addElement(Damage
               .Element.FIRE));
 
-      defender.sprite.emitter().burst(FlameParticle.FACTORY, level + 1);
+      defender.getSprite().emitter().burst(FlameParticle.FACTORY, level + 1);
     }
 
     return damage.addElement(Damage.Element.FIRE);

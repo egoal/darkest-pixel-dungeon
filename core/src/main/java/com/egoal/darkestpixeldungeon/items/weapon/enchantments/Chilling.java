@@ -43,7 +43,7 @@ public class Chilling extends Weapon.Enchantment {
 
     if (Random.Int(level + 5) >= 4) {
       Buff.prolong(defender, Chill.class, Random.Float(2f, 3f));
-      Splash.at(defender.sprite.center(), 0xFFB2D6FF, 5);
+      Splash.at(defender.getSprite().center(), 0xFFB2D6FF, 5);
 
     }
 

@@ -33,7 +33,7 @@ public class GooWarn extends Blob {
 
   {
     //this one needs to act after the Goo
-    actPriority = 3;
+    setActPriority(3);
   }
 
   protected int pos;

@@ -117,7 +117,7 @@ public class LloydsBeacon extends Artifact {
       }
 
       for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-        if (Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i]) != null) {
+        if (Actor.Companion.findChar(hero.getPos() + PathFinder.NEIGHBOURS8[i]) != null) {
           GLog.w(Messages.get(this, "creatures"));
           return;
         }
@@ -144,12 +144,12 @@ public class LloydsBeacon extends Artifact {
     } else if (action == AC_SET) {
 
       returnDepth = Dungeon.depth;
-      returnPos = hero.pos;
+      returnPos = hero.getPos();
 
       hero.spend(LloydsBeacon.TIME_TO_USE);
       hero.busy();
 
-      hero.sprite.operate(hero.pos);
+      hero.getSprite().operate(hero.getPos());
       Sample.INSTANCE.play(Assets.SND_BEACON);
 
       GLog.i(Messages.get(this, "return"));
@@ -190,23 +190,23 @@ public class LloydsBeacon extends Artifact {
       charge -= Dungeon.depth > 20 ? 2 : 1;
       updateQuickslot();
 
-      if (Actor.findChar(target) == curUser) {
+      if (Actor.Companion.findChar(target) == curUser) {
         ScrollOfTeleportation.Companion.teleportHero(curUser);
         curUser.spendAndNext(1f);
       } else {
-        final Ballistica bolt = new Ballistica(curUser.pos, target, 
+        final Ballistica bolt = new Ballistica(curUser.getPos(), target,
                 Ballistica.MAGIC_BOLT);
-        final Char ch = Actor.findChar(bolt.collisionPos);
+        final Char ch = Actor.Companion.findChar(bolt.collisionPos);
 
         if (ch == curUser) {
           ScrollOfTeleportation.Companion.teleportHero(curUser);
           curUser.spendAndNext(1f);
         } else {
           Sample.INSTANCE.play(Assets.SND_ZAP);
-          curUser.sprite.zap(bolt.collisionPos);
+          curUser.getSprite().zap(bolt.collisionPos);
           curUser.busy();
 
-          MagicMissile.force(curUser.sprite.parent, bolt.sourcePos, bolt
+          MagicMissile.force(curUser.getSprite().parent, bolt.sourcePos, bolt
                   .collisionPos, new Callback() {
             @Override
             public void call() {
@@ -232,12 +232,12 @@ public class LloydsBeacon extends Artifact {
 
                 } else {
 
-                  ch.pos = pos;
+                  ch.setPos(pos);
                   if(ch instanceof Mob && ((Mob) ch).state== ((Mob) ch).HUNTING)
                     ((Mob) ch).state = ((Mob) ch).WANDERING;
                   
-                  ch.sprite.place(ch.pos);
-                  ch.sprite.visible = Dungeon.visible[pos];
+                  ch.getSprite().place(ch.getPos());
+                  ch.getSprite().visible = Dungeon.visible[pos];
 
                 }
               }
@@ -306,7 +306,7 @@ public class LloydsBeacon extends Artifact {
       }
 
       updateQuickslot();
-      spend(TICK);
+      spend(Actor.TICK);
       return true;
     }
   }

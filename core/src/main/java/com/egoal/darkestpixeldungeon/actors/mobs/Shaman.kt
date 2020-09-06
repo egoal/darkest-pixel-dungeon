@@ -88,7 +88,7 @@ class Shaman : Mob(), Callback {
 
                     Camera.main.shake(2f, 0.3f)
 
-                    if (!enemy.isAlive()) {
+                    if (!enemy.isAlive) {
                         Dungeon.fail(javaClass)
                         GLog.n(Messages.get(this, "zap_kill"))
                     }

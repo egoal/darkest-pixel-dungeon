@@ -41,14 +41,14 @@ public class ScrollOfTerror extends Scroll {
   @Override
   protected void doRead() {
 
-    new Flare(5, 32).color(0xFF0000, true).show(curUser.sprite, 2f);
+    new Flare(5, 32).color(0xFF0000, true).show(curUser.getSprite(), 2f);
     Sample.INSTANCE.play(Assets.SND_READ);
     Invisibility.dispel();
 
     int count = 0;
     Mob affected = null;
     for (Mob mob : Dungeon.level.getMobs().toArray(new Mob[0])) {
-      if (Level.Companion.getFieldOfView()[mob.pos]) {
+      if (Level.Companion.getFieldOfView()[mob.getPos()]) {
         Buff.affect(mob, Terror.class, Terror.DURATION).object = curUser.id();
 
         if (mob.buff(Terror.class) != null) {
@@ -63,7 +63,7 @@ public class ScrollOfTerror extends Scroll {
         GLog.i(Messages.get(this, "none"));
         break;
       case 1:
-        GLog.i(Messages.get(this, "one", affected.name));
+        GLog.i(Messages.get(this, "one", affected.getName()));
         break;
       default:
         GLog.i(Messages.get(this, "many"));

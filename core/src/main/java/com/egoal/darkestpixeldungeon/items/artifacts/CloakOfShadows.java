@@ -22,6 +22,7 @@ package com.egoal.darkestpixeldungeon.items.artifacts;
 
 
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Char;
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
@@ -91,19 +92,19 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
           Sample.INSTANCE.play(Assets.SND_MELD);
           activeBuff = activeBuff();
           activeBuff.attachTo(hero);
-          if (hero.sprite.parent != null) {
-            hero.sprite.parent.add(new AlphaTweener(hero.sprite, 0.4f, 0.4f));
+          if (hero.getSprite().parent != null) {
+            hero.getSprite().parent.add(new AlphaTweener(hero.getSprite(), 0.4f, 0.4f));
           } else {
-            hero.sprite.alpha(0.4f);
+            hero.getSprite().alpha(0.4f);
           }
-          hero.sprite.operate(hero.pos);
+          hero.getSprite().operate(hero.getPos());
         }
       } else {
         stealthed = false;
         activeBuff.detach();
         activeBuff = null;
         hero.spend(1f);
-        hero.sprite.operate(hero.pos);
+        hero.getSprite().operate(hero.getPos());
       }
 
     }
@@ -209,7 +210,7 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
 
       updateQuickslot();
 
-      spend(TICK);
+      spend(Actor.TICK);
 
       return true;
     }
@@ -238,7 +239,7 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
     @Override
     public boolean attachTo(Char target) {
       if (super.attachTo(target)) {
-        target.invisible++;
+        target.setInvisible(target.getInvisible() + 1);
         return true;
       } else {
         return false;
@@ -266,7 +267,7 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
       else turnsToCost--;
       updateQuickslot();
 
-      spend(TICK);
+      spend(Actor.TICK);
 
       return true;
     }
@@ -288,9 +289,9 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
 
     @Override
     public void fx(boolean on) {
-      if (on) target.sprite.add(CharSprite.State.INVISIBLE);
-      else if (target.invisible == 0)
-        target.sprite.remove(CharSprite.State.INVISIBLE);
+      if (on) target.getSprite().add(CharSprite.State.INVISIBLE);
+      else if (target.getInvisible() == 0)
+        target.getSprite().remove(CharSprite.State.INVISIBLE);
     }
 
     @Override
@@ -305,8 +306,8 @@ public class CloakOfShadows extends Artifact implements GreatBlueprint
 
     @Override
     public void detach() {
-      if (target.invisible > 0)
-        target.invisible--;
+      if (target.getInvisible() > 0)
+        target.setInvisible(target.getInvisible() - 1);
       stealthed = false;
       cooldown = 6 - (level() / 4);
 

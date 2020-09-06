@@ -91,9 +91,9 @@ public class Bomb extends Item {
   @Override
   protected void onThrow(int cell) {
     if (!Level.Companion.getPit()[cell] && lightingFuse) {
-      Actor.addDelayed(fuse = new Fuse().ignite(this), 2);
+      Actor.Companion.addDelayed(fuse = new Fuse().ignite(this), 2);
     }
-    if (Actor.findChar(cell) != null && !(Actor.findChar(cell) instanceof 
+    if (Actor.Companion.findChar(cell) != null && !(Actor.Companion.findChar(cell) instanceof
             Hero)) {
       ArrayList<Integer> candidates = new ArrayList<>();
       for (int i : PathFinder.NEIGHBOURS8)
@@ -143,7 +143,7 @@ public class Bomb extends Item {
         if (heap != null)
           heap.explode();
 
-        Char ch = Actor.findChar(c);
+        Char ch = Actor.Companion.findChar(c);
         if (ch != null) {
           //those not at the center of the blast take damage less consistently.
           int minDamage = c == cell ? Dungeon.depth + 5 : 1;
@@ -216,14 +216,14 @@ public class Bomb extends Item {
   public void restoreFromBundle(Bundle bundle) {
     super.restoreFromBundle(bundle);
     if (bundle.contains(FUSE))
-      Actor.add(fuse = ((Fuse) bundle.get(FUSE)).ignite(this));
+      Actor.Companion.add(fuse = ((Fuse) bundle.get(FUSE)).ignite(this));
   }
 
 
   public static class Fuse extends Actor {
 
     {
-      actPriority = 3; //as if it were a buff
+      setActPriority(3); //as if it were a buff
     }
 
     private Bomb bomb;
@@ -238,7 +238,7 @@ public class Bomb extends Item {
 
       //something caused our bomb to explode early, or be defused. Do nothing.
       if (bomb.fuse != this) {
-        Actor.remove(this);
+        Actor.Companion.remove(this);
         return true;
       }
 
@@ -249,14 +249,14 @@ public class Bomb extends Item {
 
           bomb.explode(heap.getPos());
 
-          Actor.remove(this);
+          Actor.Companion.remove(this);
           return true;
         }
       }
 
       //can't find our bomb, something must have removed it, do nothing.
       bomb.fuse = null;
-      Actor.remove(this);
+      Actor.Companion.remove(this);
       return true;
     }
   }
@@ -276,7 +276,7 @@ public class Bomb extends Item {
       if (bomb.doPickUp(hero)) {
         //isaaaaac.... (don't bother doing this when not in english)
         if (Messages.get(this, "name").equals("two bombs"))
-          hero.sprite.showStatus(CharSprite.NEUTRAL, "1+1 free!");
+          hero.getSprite().showStatus(CharSprite.NEUTRAL, "1+1 free!");
         return true;
       }
       return false;

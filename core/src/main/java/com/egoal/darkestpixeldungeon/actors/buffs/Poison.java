@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.effects.CellEmitter;
@@ -93,8 +94,8 @@ public class Poison extends Buff implements Hero.Doom {
 
   @Override
   public boolean attachTo(Char target) {
-    if (super.attachTo(target) && target.sprite != null) {
-      CellEmitter.center(target.pos).burst(PoisonParticle.SPLASH, 5);
+    if (super.attachTo(target) && target.getSprite() != null) {
+      CellEmitter.center(target.getPos()).burst(PoisonParticle.SPLASH, 5);
       return true;
     } else
       return false;
@@ -106,9 +107,9 @@ public class Poison extends Buff implements Hero.Doom {
       Damage dmg = new Damage((int) (left / 3 + extraDamage) + 1, this, 
               target).type(Damage.Type.MAGICAL).addElement(Damage.Element.POISON);
       target.takeDamage(dmg);
-      spend(TICK);
+      spend(Actor.TICK);
 
-      if ((left -= TICK) <= 0) {
+      if ((left -= Actor.TICK) <= 0) {
         detach();
       }
 

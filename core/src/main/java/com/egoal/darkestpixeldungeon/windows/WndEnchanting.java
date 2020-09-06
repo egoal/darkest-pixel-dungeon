@@ -96,12 +96,12 @@ public class WndEnchanting extends Window {
     // when close, take back the items not used
     if (btnItemSrc_ != null && btnItemSrc_.item != null) {
       if (!btnItemSrc_.item.collect())
-        Dungeon.level.drop(btnItemSrc_.item, Dungeon.hero.pos);
+        Dungeon.level.drop(btnItemSrc_.item, Dungeon.hero.getPos());
     }
 
     if (btnItemTgt_ != null && btnItemTgt_.item != null) {
       if (!btnItemTgt_.item.collect())
-        Dungeon.level.drop(btnItemTgt_.item, Dungeon.hero.pos);
+        Dungeon.level.drop(btnItemTgt_.item, Dungeon.hero.getPos());
     }
 
     super.destroy();
@@ -114,7 +114,7 @@ public class WndEnchanting extends Window {
         if (btnPressed_.item != null) {
           // give back
           if (!btnPressed_.item.collect()) {
-            Dungeon.level.drop(btnPressed_.item, Dungeon.hero.pos);
+            Dungeon.level.drop(btnPressed_.item, Dungeon.hero.getPos());
           }
         }
 
@@ -126,7 +126,7 @@ public class WndEnchanting extends Window {
           return;
         }
 
-        btnPressed_.item(item.detach(Dungeon.hero.getBelongings().backpack));
+        btnPressed_.item(item.detach(Dungeon.hero.getBelongings().getBackpack()));
 
         if (btnItemSrc_.item != null && btnItemTgt_.item != null) {
           String result = EnchantingStation.INSTANCE.CanTransform(

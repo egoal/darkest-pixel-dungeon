@@ -151,7 +151,7 @@ open class Potion : Item() {
                 }
             } else {
                 // not known
-                val plvl = hero.buff(Pressure::class.java)!!.getLevel()
+                val plvl = hero.pressure.level
                 if (plvl === Pressure.Level.NERVOUS || plvl === Pressure.Level.COLLAPSE)
                     GLog.n(Messages.get(this, "nervous"))
                 else

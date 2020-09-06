@@ -47,7 +47,7 @@ public class VenomGas extends Blob {
       for (int i = area.left; i < area.right; i++) {
         for (int j = area.top; j < area.bottom; j++) {
           cell = i + j * Dungeon.level.width();
-          if (cur[cell] > 0 && (ch = Actor.findChar(cell)) != null) {
+          if (cur[cell] > 0 && (ch = Actor.Companion.findChar(cell)) != null) {
             if (!ch.immunizedBuffs().contains(this.getClass()))
               Buff.affect(ch, Venom.class).set(2f, strength);
           }

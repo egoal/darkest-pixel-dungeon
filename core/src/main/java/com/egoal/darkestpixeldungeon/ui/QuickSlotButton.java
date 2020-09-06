@@ -83,7 +83,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
             GameScene.handleCell(cell);
           } else {
             //couldn't auto-aim, just target the position and hope for the best.
-            GameScene.handleCell(lastTarget.pos);
+            GameScene.handleCell(lastTarget.getPos());
           }
         } else {
           Item item = select(slotNum);
@@ -176,13 +176,13 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
   private void useTargeting() {
 
     if (lastTarget != null &&
-            Actor.chars().contains(lastTarget) &&
+            Actor.Companion.chars().contains(lastTarget) &&
             lastTarget.isAlive() &&
-            Dungeon.visible[lastTarget.pos]) {
+            Dungeon.visible[lastTarget.getPos()]) {
 
       targeting = true;
-      lastTarget.sprite.parent.add(crossM);
-      crossM.point(DungeonTilemap.tileToWorld(lastTarget.pos));
+      lastTarget.getSprite().parent.add(crossM);
+      crossM.point(DungeonTilemap.tileToWorld(lastTarget.getPos()));
       crossB.x = x + (width - crossB.width) / 2;
       crossB.y = y + (height - crossB.height) / 2;
       crossB.visible = true;
@@ -206,17 +206,17 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
   public static int autoAim(Char target, Item item) {
 
     //first try to directly target
-    if (item.throwPos(Dungeon.hero, target.pos) == target.pos) {
-      return target.pos;
+    if (item.throwPos(Dungeon.hero, target.getPos()) == target.getPos()) {
+      return target.getPos();
     }
 
     //Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim 
     // basically.
-    PathFinder.buildDistanceMap(target.pos, BArray.not(new boolean[Dungeon
+    PathFinder.buildDistanceMap(target.getPos(), BArray.not(new boolean[Dungeon
             .level.length()], null), 2);
     for (int i = 0; i < PathFinder.distance.length; i++) {
       if (PathFinder.distance[i] < Integer.MAX_VALUE
-              && item.throwPos(Dungeon.hero, i) == target.pos)
+              && item.throwPos(Dungeon.hero, i) == target.getPos())
         return i;
     }
 

@@ -25,9 +25,8 @@ class Pressure : Buff(), Hero.Doom {
 
     private var collapseDuration = 0
     var pressure = 0f
-    private var level = Level.CONFIDENT
-
-    fun getLevel(): Level = level
+    var level = Level.CONFIDENT
+        private set
 
     private fun updateLevel() {
         val newLevel = when {

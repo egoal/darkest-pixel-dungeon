@@ -102,7 +102,7 @@ public class Item implements Bundlable {
   }
 
   public boolean doPickUp(Hero hero) {
-    if (collect(hero.getBelongings().backpack)) {
+    if (collect(hero.getBelongings().getBackpack())) {
       if(!everPicked) onFirstPick(hero);
       everPicked = true;
 
@@ -122,8 +122,8 @@ public class Item implements Bundlable {
 
   public void doDrop(Hero hero) {
     hero.spendAndNext(TIME_TO_DROP);
-    Dungeon.level.drop(detachAll(hero.getBelongings().backpack), hero.pos).getSprite()
-            .drop(hero.pos);
+    Dungeon.level.drop(detachAll(hero.getBelongings().getBackpack()), hero.getPos()).getSprite()
+            .drop(hero.getPos());
   }
 
   //resets an item's properties, to ensure consistency between runs
@@ -212,7 +212,7 @@ public class Item implements Bundlable {
   }
 
   public boolean collect() {
-    return collect(Dungeon.hero.getBelongings().backpack);
+    return collect(Dungeon.hero.getBelongings().getBackpack());
   }
 
   public final Item detach(Bag container) {
@@ -351,7 +351,7 @@ public class Item implements Bundlable {
   }
 
   public static void evoke(Hero hero) {
-    hero.sprite.emitter().burst(Speck.factory(Speck.EVOKE), 5);
+    hero.getSprite().emitter().burst(Speck.factory(Speck.EVOKE), 5);
   }
 
   @Override
@@ -490,18 +490,18 @@ public class Item implements Bundlable {
   }
 
   public int throwPos(Hero user, int dst) {
-    return new Ballistica(user.pos, dst, Ballistica.PROJECTILE).collisionPos;
+    return new Ballistica(user.getPos(), dst, Ballistica.PROJECTILE).collisionPos;
   }
 
   public void cast(final Hero user, int dst) {
 
     final int cell = throwPos(user, dst);
-    user.sprite.zap(cell);
+    user.getSprite().zap(cell);
     user.busy();
 
     Sample.INSTANCE.play(Assets.SND_MISS, 0.6f, 0.6f, 1.5f);
 
-    Char enemy = Actor.findChar(cell);
+    Char enemy = Actor.Companion.findChar(cell);
     QuickSlotButton.target(enemy);
 
     float delay = TIME_TO_THROW;
@@ -510,11 +510,11 @@ public class Item implements Bundlable {
 
     final float finalDelay = delay;
 
-    ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
-            reset(user.pos, cell, this, new Callback() {
+    ((MissileSprite) user.getSprite().parent.recycle(MissileSprite.class)).
+            reset(user.getPos(), cell, this, new Callback() {
               @Override
               public void call() {
-                Item.this.detach(user.getBelongings().backpack).onThrow(cell);
+                Item.this.detach(user.getBelongings().getBackpack()).onThrow(cell);
                 user.spendAndNext(finalDelay);
               }
             });

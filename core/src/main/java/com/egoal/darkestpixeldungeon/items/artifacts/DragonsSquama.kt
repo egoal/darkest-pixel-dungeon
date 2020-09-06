@@ -125,7 +125,7 @@ class DragonsSquama : Artifact() {
                 damage.value += if (cursed) block else -block
             }
 
-            if (charge < chargeCap && damage.from is Char && damage.from !== Char.Nobody.INSTANCE) {
+            if (charge < chargeCap && damage.from is Char && damage.from !== Char.Nobody) {
                 charge = min(chargeCap, charge + (4 - level() / 5) + if (isCrit) 1 else 0)
                 updateQuickslot()
             }

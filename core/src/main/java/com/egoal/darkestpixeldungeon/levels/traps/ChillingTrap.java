@@ -51,7 +51,7 @@ public class ChillingTrap extends Trap {
     Heap heap = Dungeon.level.getHeaps().get(pos);
     if (heap != null) heap.freeze();
 
-    Char ch = Actor.findChar(pos);
+    Char ch = Actor.Companion.findChar(pos);
     if (ch != null) {
       Chill.prolong(ch, Chill.class, 5f + Random.Int(Dungeon.depth));
       ch.takeDamage(new Damage(Random.NormalIntRange(1, Dungeon.depth), this,

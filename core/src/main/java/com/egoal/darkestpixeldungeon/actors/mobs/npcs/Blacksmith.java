@@ -49,13 +49,13 @@ public class Blacksmith extends NPC.Unbreakable {
   {
     spriteClass = BlacksmithSprite.class;
 
-    properties.add(Property.IMMOVABLE);
+    getProperties().add(Property.IMMOVABLE);
   }
 
   @Override
   public boolean interact() {
 
-    sprite.turnTo(pos, Dungeon.hero.pos);
+    getSprite().turnTo(getPos(), Dungeon.hero.getPos());
 
     if (!Quest.given) {
 
@@ -74,7 +74,7 @@ public class Blacksmith extends NPC.Unbreakable {
           if (pick.doPickUp(Dungeon.hero)) {
             GLog.i(Messages.get(Dungeon.hero, "you_now_have", pick.name()));
           } else {
-            Dungeon.level.drop(pick, Dungeon.hero.pos).getSprite().drop();
+            Dungeon.level.drop(pick, Dungeon.hero.getPos()).getSprite().drop();
           }
         }
       });
@@ -93,7 +93,7 @@ public class Blacksmith extends NPC.Unbreakable {
           if (pick.isEquipped(Dungeon.hero)) {
             pick.doUnequip(Dungeon.hero, false);
           }
-          pick.detach(Dungeon.hero.getBelongings().backpack);
+          pick.detach(Dungeon.hero.getBelongings().getBackpack());
           tell(Messages.get(this, "completed"));
 
           Quest.completed = true;
@@ -112,8 +112,8 @@ public class Blacksmith extends NPC.Unbreakable {
           if (pick.isEquipped(Dungeon.hero)) {
             pick.doUnequip(Dungeon.hero, false);
           }
-          pick.detach(Dungeon.hero.getBelongings().backpack);
-          gold.detachAll(Dungeon.hero.getBelongings().backpack);
+          pick.detach(Dungeon.hero.getBelongings().getBackpack());
+          gold.detachAll(Dungeon.hero.getBelongings().getBackpack());
           tell(Messages.get(this, "completed"));
 
           Quest.completed = true;
@@ -189,7 +189,7 @@ public class Blacksmith extends NPC.Unbreakable {
     if (second.isEquipped(Dungeon.hero)) {
       ((EquipableItem) second).doUnequip(Dungeon.hero, false);
     }
-    second.detachAll(Dungeon.hero.getBelongings().backpack);
+    second.detachAll(Dungeon.hero.getBelongings().getBackpack());
 
     Quest.reforged = true;
 

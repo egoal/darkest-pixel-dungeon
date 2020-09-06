@@ -45,7 +45,7 @@ public class Elemental extends Mob {
 
     loot = new PotionOfLiquidFlame();
 
-    flying = true;
+    setFlying(true);
   }
 
   @Override
@@ -66,16 +66,16 @@ public class Elemental extends Mob {
   @Override
   public void add(Buff buff) {
     if (buff instanceof Burning) {
-      if (HP < HT) {
-        HP++;
-        sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+      if (getHP() < getHT()) {
+        setHP(getHP() + 1);
+        getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
       }
     } else if (buff instanceof Frost || buff instanceof Chill) {
-      if (Level.Companion.getWater()[this.pos])
-        takeDamage(new Damage(Random.NormalIntRange(HT / 2, HT), buff, this)
+      if (Level.Companion.getWater()[this.getPos()])
+        takeDamage(new Damage(Random.NormalIntRange(getHT() / 2, getHT()), buff, this)
                 .addElement(Damage.Element.ICE));
       else
-        takeDamage(new Damage(Random.NormalIntRange(1, HT * 2 / 3), buff, 
+        takeDamage(new Damage(Random.NormalIntRange(1, getHT() * 2 / 3), buff,
                 this).addElement(Damage.Element.ICE));
     } else {
       super.add(buff);

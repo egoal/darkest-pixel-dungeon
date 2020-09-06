@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs;
 
 import com.egoal.darkestpixeldungeon.Dungeon;
+import com.egoal.darkestpixeldungeon.actors.Actor;
 import com.egoal.darkestpixeldungeon.actors.Damage;
 import com.egoal.darkestpixeldungeon.levels.Level;
 import com.egoal.darkestpixeldungeon.messages.Messages;
@@ -69,9 +70,9 @@ public class Ooze extends Buff {
         GLog.n(Messages.get(this, "ondeath"));
       }
       
-      spend(TICK);
+      spend(Actor.TICK);
     }
-    if (Level.Companion.getWater()[target.pos]) {
+    if (Level.Companion.getWater()[target.getPos()]) {
       detach();
     }
     return true;

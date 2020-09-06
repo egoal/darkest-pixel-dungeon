@@ -280,12 +280,12 @@ public class AlchemistsToolkit extends Artifact {
         if (!curGuess.contains(convertName(item.getClass().getSimpleName()))) {
 
           Hero hero = Dungeon.hero;
-          hero.sprite.operate(hero.pos);
+          hero.getSprite().operate(hero.getPos());
           hero.busy();
           hero.spend(2f);
           Sample.INSTANCE.play(Assets.SND_DRINK);
 
-          item.detach(hero.getBelongings().backpack);
+          item.detach(hero.getBelongings().getBackpack());
 
           curGuess.add(convertName(item.getClass().getSimpleName()));
           if (curGuess.size() == 3) {

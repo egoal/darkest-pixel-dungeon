@@ -49,9 +49,9 @@ public class RotHeart extends Mob {
 
     if (dmg.hasElement(Damage.Element.FIRE)) {
       destroy();
-      sprite.die();
+      getSprite().die();
 
-      return HP;
+      return getHP();
     } else {
       return super.takeDamage(dmg);
     }
@@ -60,7 +60,7 @@ public class RotHeart extends Mob {
 
   @Override
   public Damage defenseProc(Damage damage) {
-    GameScene.add(Blob.seed(pos, 20, ToxicGas.class));
+    GameScene.add(Blob.seed(getPos(), 20, ToxicGas.class));
 
     return super.defenseProc(damage);
   }
@@ -89,7 +89,7 @@ public class RotHeart extends Mob {
   @Override
   public void die(Object cause) {
     super.die(cause);
-    Dungeon.level.drop(new Rotberry.Seed(), pos).getSprite().drop();
+    Dungeon.level.drop(new Rotberry.Seed(), getPos()).getSprite().drop();
   }
 
   private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

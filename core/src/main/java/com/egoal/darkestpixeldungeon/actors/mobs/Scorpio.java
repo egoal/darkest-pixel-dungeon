@@ -55,9 +55,9 @@ public class Scorpio extends Mob {
 
   @Override
   protected boolean canAttack(Char enemy) {
-    Ballistica attack = new Ballistica(pos, enemy.pos, Ballistica.PROJECTILE);
-    return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos ==
-            enemy.pos;
+    Ballistica attack = new Ballistica(getPos(), enemy.getPos(), Ballistica.PROJECTILE);
+    return !Dungeon.level.adjacent(getPos(), enemy.getPos()) && attack.collisionPos ==
+            enemy.getPos();
   }
 
   @Override
