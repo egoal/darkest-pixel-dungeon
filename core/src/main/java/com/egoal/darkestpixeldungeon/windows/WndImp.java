@@ -57,7 +57,7 @@ public class WndImp extends Window {
     RedButton btnReward = new RedButton(Messages.get(this, "reward")) {
       @Override
       protected void onClick() {
-        takeReward(imp, tokens, Imp.Quest.reward);
+        takeReward(imp, tokens, Imp.Quest.INSTANCE.getReward());
       }
     };
     btnReward.setRect(0, message.top() + message.height() + GAP, WIDTH, 
@@ -82,6 +82,6 @@ public class WndImp extends Window {
 
     imp.flee();
 
-    Imp.Quest.complete();
+    Imp.Quest.INSTANCE.complete();
   }
 }

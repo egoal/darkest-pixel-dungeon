@@ -42,7 +42,7 @@ public class WndInfoMob extends WndTitledMessage {
 
     StringBuilder builder = new StringBuilder(mob.description());
 
-    builder.append("\n\n" + mob.state.status());
+    builder.append("\n\n" + mob.getState().status());
 
     return builder.toString();
   }

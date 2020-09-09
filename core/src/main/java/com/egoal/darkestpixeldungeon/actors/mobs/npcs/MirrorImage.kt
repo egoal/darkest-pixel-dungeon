@@ -78,7 +78,7 @@ class MirrorImage : NPC() {
     }
 
     override fun chooseEnemy(): Char? {
-        if (enemy == null || !enemy.isAlive) {
+        if (enemy == null || enemy!!.isAlive) {
             val enemies = Dungeon.level.mobs.filter { it.camp == Camp.ENEMY && Level.fieldOfView[it.pos] }
             enemy = if (enemies.isNotEmpty()) enemies.random() else null
         }

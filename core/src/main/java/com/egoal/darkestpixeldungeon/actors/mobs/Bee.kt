@@ -97,6 +97,7 @@ class Bee : Mob() {
         else {
             //if already targeting something, and that thing is still alive and
             // near the pot, keeping targeting it.
+            val enemy = enemy
             if (enemy != null && enemy.isAlive && Dungeon.level.mobs.contains(enemy)
                     && Level.fieldOfView[enemy.pos] && enemy.invisible == 0 && nearPot(enemy))
                 return enemy
@@ -115,6 +116,7 @@ class Bee : Mob() {
 
     override fun getCloser(target: Int): Boolean {
         var target = target
+        val enemy = enemy
         if (enemy != null && Actor.findById(potHolder) === enemy) {
             target = enemy.pos
         } else if (potPos != -1 && (state === WANDERING || Dungeon.level.distance(target, potPos) > 3)) {

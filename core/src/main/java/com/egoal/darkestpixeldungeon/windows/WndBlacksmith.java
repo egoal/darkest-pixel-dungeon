@@ -91,7 +91,7 @@ public class WndBlacksmith extends Window {
     btnReforge = new RedButton(Messages.get(this, "reforge")) {
       @Override
       protected void onClick() {
-        Blacksmith.upgrade(btnItem1.item, btnItem2.item);
+        Blacksmith.Companion.upgrade(btnItem1.item, btnItem2.item);
         hide();
       }
     };
@@ -110,7 +110,7 @@ public class WndBlacksmith extends Window {
         btnPressed.item(item);
 
         if (btnItem1.item != null && btnItem2.item != null) {
-          String result = Blacksmith.verify(btnItem1.item, btnItem2.item);
+          String result = Blacksmith.Companion.verify(btnItem1.item, btnItem2.item);
           if (result != null) {
             GameScene.show(new WndMessage(result));
             btnReforge.enable(false);

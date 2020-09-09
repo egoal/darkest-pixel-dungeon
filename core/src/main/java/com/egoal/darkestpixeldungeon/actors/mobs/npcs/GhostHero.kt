@@ -133,6 +133,7 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
     override fun call() {
         spend(1f)
 
+        val enemy = enemy!!
         val dmg = giveDamage(enemy)
         if (enemy.checkHit(dmg)) {
             enemy.defendDamage(dmg)

@@ -62,7 +62,7 @@ import java.util.HashSet;
 public class Dungeon {
 
   public static int initialDepth_ = -1;
-  public static final String VERSION_STRING = "0.5.0-0.2";
+  public static final String VERSION_STRING = "0.5.0-0.4";
 
   public static int transmutation;  // depth number for a well of transmutation
 
@@ -172,9 +172,9 @@ public class Dungeon {
 
     // quest init
     Ghost.Quest.INSTANCE.reset();
-    Wandmaker.Quest.reset();
-    Blacksmith.Quest.reset();
-    Imp.Quest.reset();
+    Wandmaker.Quest.INSTANCE.reset();
+    Blacksmith.Quest.INSTANCE.reset();
+    Imp.Quest.INSTANCE.reset();
 
     Alchemist.Quest.INSTANCE.reset();
     Statuary.Companion.Reset();
@@ -557,9 +557,9 @@ public class Dungeon {
 
       Bundle quests = new Bundle();
       Ghost.Quest.INSTANCE.storeInBundle(quests);
-      Wandmaker.Quest.storeInBundle(quests);
-      Blacksmith.Quest.storeInBundle(quests);
-      Imp.Quest.storeInBundle(quests);
+      Wandmaker.Quest.INSTANCE.storeInBundle(quests);
+      Blacksmith.Quest.INSTANCE.storeInBundle(quests);
+      Imp.Quest.INSTANCE.storeInBundle(quests);
       // dpd save
       Alchemist.Quest.INSTANCE.storeInBundle(quests);
       Jessica.Quest.INSTANCE.storeInBundle(quests);
@@ -668,9 +668,9 @@ public class Dungeon {
       Bundle quests = bundle.getBundle(QUESTS);
       if (!quests.isNull()) {
         Ghost.Quest.INSTANCE.restoreFromBundle(quests);
-        Wandmaker.Quest.restoreFromBundle(quests);
-        Blacksmith.Quest.restoreFromBundle(quests);
-        Imp.Quest.restoreFromBundle(quests);
+        Wandmaker.Quest.INSTANCE.restoreFromBundle(quests);
+        Blacksmith.Quest.INSTANCE.restoreFromBundle(quests);
+        Imp.Quest.INSTANCE.restoreFromBundle(quests);
 
         // dpd, restore quests
         Alchemist.Quest.INSTANCE.restoreFromBundle(quests);
@@ -679,9 +679,9 @@ public class Dungeon {
         Yvette.Quest.INSTANCE.RestoreFromBundle(quests);
       } else {
         Ghost.Quest.INSTANCE.reset();
-        Wandmaker.Quest.reset();
-        Blacksmith.Quest.reset();
-        Imp.Quest.reset();
+        Wandmaker.Quest.INSTANCE.reset();
+        Blacksmith.Quest.INSTANCE.reset();
+        Imp.Quest.INSTANCE.reset();
 
         // dpd
         Alchemist.Quest.INSTANCE.reset();

@@ -48,6 +48,7 @@ class AshesSkull : Mob() {
         Dungeon.level.updateFieldOfView(this, Level.fieldOfView)
 
         // copy from guard
+        val enemy = enemy
         return if (jumpcd <= 0 && state == HUNTING && paralysed <= 0 && enemy != null && enemy.invisible == 0 &&
                 Level.fieldOfView[enemy.pos] && Dungeon.level.distance(pos, enemy.pos) <= 6 &&
                 !Dungeon.level.adjacent(pos, enemy.pos) && jump(enemy))

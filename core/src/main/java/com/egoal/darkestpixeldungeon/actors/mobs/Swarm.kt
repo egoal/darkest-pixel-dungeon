@@ -121,7 +121,7 @@ class Swarm : Mob() {
 
     override fun createLoot(): Item? {
         Dungeon.limitedDrops.swarmHP.count++
-        return super.createLoot().identify() // identify poh
+        return super.createLoot()!!.identify() // identify poh
     }
 
     companion object {

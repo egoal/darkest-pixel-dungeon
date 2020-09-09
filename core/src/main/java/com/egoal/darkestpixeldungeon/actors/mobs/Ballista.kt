@@ -50,13 +50,13 @@ open class Ballista : Mob() {
     }
 
     override fun onAttackComplete() {
-        if (Dungeon.level.adjacent(enemy.pos, pos))
+        if (Dungeon.level.adjacent(enemy!!.pos, pos))
             super.onAttackComplete()
         else {
             // show animation
-            (sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, enemy.pos, Dart(), Callback {
+            (sprite.parent.recycle(MissileSprite::class.java) as MissileSprite).reset(pos, enemy!!.pos, Dart(), Callback {
                 next()
-                if (enemy != null) attack(enemy)
+                if (enemy != null) attack(enemy!!)
             })
         }
     }

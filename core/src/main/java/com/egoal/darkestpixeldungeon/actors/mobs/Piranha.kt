@@ -67,6 +67,7 @@ class Piranha : Mob() {
             //this causes pirahna to move away when a door is closed on them.
             Dungeon.level.updateFieldOfView(this, Level.fieldOfView)
             enemy = chooseEnemy()
+            val enemy = enemy
             if (state === this.HUNTING && !(enemy != null && enemy.isAlive && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0)) {
                 state = this.WANDERING
                 val oldPos = pos

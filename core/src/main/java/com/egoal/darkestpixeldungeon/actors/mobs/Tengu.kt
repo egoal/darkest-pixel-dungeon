@@ -255,6 +255,7 @@ class Tengu : Mob() {
     private inner class Hunting : Mob.Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
             enemySeen = enemyInFOV
+            val enemy = enemy!!
             if (enemyInFOV && !isCharmedBy(enemy) && canAttack(enemy)) return doAttack(enemy)
             else {
                 if (enemyInFOV) target = enemy.pos

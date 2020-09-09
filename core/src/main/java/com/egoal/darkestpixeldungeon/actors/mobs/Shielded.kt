@@ -18,26 +18,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.scenes;
+package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.windows.WndStory;
-import com.watabou.noosa.Game;
+import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.sprites.ShieldedSprite
+import com.watabou.utils.Random
 
-public class IntroScene extends PixelScene {
+class Shielded : Brute() {
+    init {
+        spriteClass = ShieldedSprite::class.java
 
-  @Override
-  public void create() {
-    super.create();
+        defSkill = 20f
+    }
 
-    add(new WndStory(Messages.get(this, "text")) {
-      @Override
-      public void hide() {
-        super.hide();
-        Game.switchScene(InterlevelScene.class);
-      }
-    });
+    override fun defendDamage(dmg: Damage): Damage {
+        dmg.value -= Random.NormalIntRange(0, 12)
+        return dmg
+    }
 
-    fadeIn();
-  }
+    override fun die(cause: Any?) {
+        super.die(cause)
+        Badges.validateRare(this)
+    }
 }

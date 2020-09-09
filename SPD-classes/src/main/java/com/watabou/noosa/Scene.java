@@ -31,7 +31,7 @@ public class Scene extends Group {
 	public void create() {
 		Keys.event.add( keyListener = new Signal.Listener<Keys.Key>() {
 			@Override
-			public void onSignal( Keys.Key key ) {
+			public boolean onSignal( Keys.Key key ) {
 				if (Game.instance != null && key.pressed) {
 					switch (key.code) {
 					case Keys.BACK:
@@ -42,6 +42,8 @@ public class Scene extends Group {
 						break;
 					}
 				}
+
+				return false;
 			}
 		} );
 	}

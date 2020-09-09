@@ -86,6 +86,7 @@ class DM300 : Mob() {
 
         Dungeon.level.updateFieldOfView(this, Level.fieldOfView) //todo: optimize this.
 
+        val enemy = enemy
         if (bumpcell < 0 && bumpcd <= 0)
             if (state == HUNTING && paralysed <= 0 && enemy != null && enemy.invisible == 0 &&
                     Level.fieldOfView[enemy.pos] && Dungeon.level.distance(pos, enemy.pos) <= 8 &&

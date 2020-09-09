@@ -71,7 +71,7 @@ public class EyeSprite extends MobSprite {
   @Override
   public void link(Char ch) {
     super.link(ch);
-    if (((Eye) ch).beamCharged) play(charging);
+    if (((Eye) ch).getBeamCharged()) play(charging);
   }
 
   @Override

@@ -65,20 +65,20 @@ public class WndWandmaker extends Window {
     message.setPos(0, titlebar.bottom() + GAP);
     add(message);
 
-    RedButton btnWand1 = new RedButton(Wandmaker.Quest.wand1.name()) {
+    RedButton btnWand1 = new RedButton(Wandmaker.Quest.INSTANCE.getWand1().name()) {
       @Override
       protected void onClick() {
-        selectReward(wandmaker, item, Wandmaker.Quest.wand1);
+        selectReward(wandmaker, item, Wandmaker.Quest.INSTANCE.getWand1());
       }
     };
     btnWand1.setRect(0, message.top() + message.height() + GAP, WIDTH, 
             BTN_HEIGHT);
     add(btnWand1);
 
-    RedButton btnWand2 = new RedButton(Wandmaker.Quest.wand2.name()) {
+    RedButton btnWand2 = new RedButton(Wandmaker.Quest.INSTANCE.getWand2().name()) {
       @Override
       protected void onClick() {
-        selectReward(wandmaker, item, Wandmaker.Quest.wand2);
+        selectReward(wandmaker, item, Wandmaker.Quest.INSTANCE.getWand2());
       }
     };
     btnWand2.setRect(0, btnWand1.bottom() + GAP, WIDTH, BTN_HEIGHT);
@@ -105,6 +105,6 @@ public class WndWandmaker extends Window {
 
     wandmaker.getSprite().die();
 
-    Wandmaker.Quest.complete();
+    Wandmaker.Quest.INSTANCE.complete();
   }
 }

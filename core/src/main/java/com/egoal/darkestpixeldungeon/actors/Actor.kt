@@ -263,7 +263,7 @@ abstract class Actor : Bundlable {
 
         fun findChar(pos: Int): Char? = chars.find { it.pos == pos }
 
-        fun findById(id: Int): Actor = ids.get(id)
+        fun findById(id: Int): Actor? = ids.get(id)
 
         fun all(): HashSet<Actor> = all
 

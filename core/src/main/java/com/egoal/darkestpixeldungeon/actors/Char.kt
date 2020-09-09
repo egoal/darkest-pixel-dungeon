@@ -323,7 +323,7 @@ abstract class Char : Actor() {
             val ch = Actor.findById(it.linker)
             if (ch is Char) {
                 ch.takeDamage(dmg)
-                ch.sprite!!.showStatus(0x000000, M.L(LifeLink::class.java, "transform"))
+                ch.sprite.showStatus(0x000000, M.L(LifeLink::class.java, "transform"))
                 return 0
             }
         }
@@ -383,7 +383,7 @@ abstract class Char : Actor() {
                 if (dmg.type == Damage.Type.MAGICAL) color = 0x3b94ff // blue for magical damage.
                 if (HP < HT / 4) color = CharSprite.NEGATIVE
 
-                sprite!!.showStatus(color, number)
+                sprite.showStatus(color, number)
             }
         }
 
@@ -435,7 +435,7 @@ abstract class Char : Actor() {
 
     open fun die(src: Any?) {
         destroy()
-        sprite!!.die()
+        sprite.die()
     }
 
     override fun spend(time: Float) {
@@ -469,7 +469,7 @@ abstract class Char : Actor() {
         buffs.add(buff)
         Actor.add(buff)
 
-        if (::sprite.isInitialized)
+        if (hasSprite)
             when (buff.type) {
                 Buff.buffType.POSITIVE -> sprite.showStatus(CharSprite.POSITIVE, buff.toString())
                 Buff.buffType.NEGATIVE -> sprite.showStatus(CharSprite.NEGATIVE, buff.toString())
@@ -503,12 +503,12 @@ abstract class Char : Actor() {
     open fun move(step: Int) {
         var dst = step
         if (Dungeon.level.adjacent(dst, pos) && buff(Vertigo::class.java) != null) {
-            sprite!!.interruptMotion()
+            sprite.interruptMotion()
 
-            val newpos = PathFinder.NEIGHBOURS8[Random.Int(8)]
+            val newpos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
             if (!(Level.passable[newpos] || Level.avoid[newpos]) || findChar(newpos) != null) return
 
-            sprite!!.move(pos, newpos)
+            sprite.move(pos, newpos)
             dst = newpos
         }
 
@@ -520,7 +520,7 @@ abstract class Char : Actor() {
 
         if (flying && Dungeon.level.map[pos] == Terrain.DOOR) Door.Enter(pos, this)
 
-        if (this !== Dungeon.hero) sprite!!.visible = Dungeon.visible[pos]
+        if (this !== Dungeon.hero) sprite.visible = Dungeon.visible[pos]
     }
 
     fun distance(other: Char): Int = Dungeon.level.distance(pos, other.pos)

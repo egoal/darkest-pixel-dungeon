@@ -42,7 +42,7 @@ public class PoisonTrap extends Trap {
     Char ch = Actor.Companion.findChar(pos);
 
     if (ch != null) {
-      Buff.affect(ch, Poison.class).set(Poison.durationFactor(ch) * (4 + 
+      Buff.affect(ch, Poison.class).set(Poison.Companion.durationFactor(ch) * (4 +
               Dungeon.depth / 2));
     }
 

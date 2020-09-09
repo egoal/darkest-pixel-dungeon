@@ -50,7 +50,7 @@ class MadMan : Mob(), Callback {
         if (enemy is Hero) {
             //fixme: bad design
             val lvl = (maxLvl - 3) / 5
-            val dis = Dungeon.level.distance(pos, this.enemy.pos)
+            val dis = Dungeon.level.distance(pos, enemy.pos)
             val value = max(1, Random.IntRange(2, 5) + lvl - dis)
             return Damage(value, this, enemy).type(Damage.Type.MENTAL)
                     .addFeature(Damage.Feature.ACCURATE)
@@ -95,6 +95,7 @@ class MadMan : Mob(), Callback {
         // shout!
         spend(TIME_TO_SHOUT)
 
+        val enemy = enemy!!
         val dmg = giveDamage(enemy)
         if (enemy.checkHit(dmg)) {
             enemy.takeDamage(dmg)

@@ -56,7 +56,7 @@ public class GuardianTrap extends Trap {
 
     for (int i = 0; i < (Dungeon.depth - 5) / 5; i++) {
       Guardian guardian = new Guardian();
-      guardian.state = guardian.WANDERING;
+      guardian.setState(guardian.getWANDERING());
       guardian.setPos(Dungeon.level.randomRespawnCell());
       GameScene.add(guardian);
       guardian.beckon(Dungeon.hero.getPos());
@@ -67,10 +67,10 @@ public class GuardianTrap extends Trap {
   public static class Guardian extends Statue {
 
     {
-      spriteClass = GuardianSprite.class;
+      setSpriteClass(GuardianSprite.class);
 
-      EXP = 0;
-      state = WANDERING;
+      setEXP(0);
+      setState(getWANDERING());
     }
 
     public Guardian() {
@@ -85,10 +85,10 @@ public class GuardianTrap extends Trap {
       //Beckon works on these ones, unlike their superclass.
       notice();
 
-      if (state != HUNTING) {
-        state = WANDERING;
+      if (getState() != getHUNTING()) {
+        setState(getWANDERING());
       }
-      target = cell;
+      setTarget(cell);
     }
 
   }

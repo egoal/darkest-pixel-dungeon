@@ -51,8 +51,8 @@ public class FlashingTrap extends Trap {
       Buff.prolong(ch, Blindness.class, len);
       Buff.prolong(ch, Cripple.class, len);
       if (ch instanceof Mob) {
-        if (((Mob) ch).state == ((Mob) ch).HUNTING)
-          ((Mob) ch).state = ((Mob) ch).WANDERING;
+        if (((Mob) ch).getState() == ((Mob) ch).getHUNTING())
+          ((Mob) ch).setState(((Mob) ch).getWANDERING());
         ((Mob) ch).beckon(Dungeon.level.randomDestination());
       }
       if (ch == Dungeon.hero) {

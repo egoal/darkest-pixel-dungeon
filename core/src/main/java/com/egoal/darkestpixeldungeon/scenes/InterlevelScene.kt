@@ -74,27 +74,27 @@ class InterlevelScene : PixelScene() {
 
         thread = object : Thread() {
             override fun run() {
-                try {
-                    when (mode) {
-                        Mode.DESCEND -> descend()
-                        Mode.ASCEND -> ascend()
-                        Mode.CONTINUE -> restore()
-                        Mode.REFLUX -> reflux()
-                        Mode.RESURRECT -> resurrect()
-                        Mode.RETURN -> returnTo()
-                        Mode.FALL -> fall()
-                        Mode.RESET -> reset()
-                        Mode.BACK_TO_PAST -> backToPast()
-                        Mode.NONE -> {
-                        }
+//                try {
+                when (mode) {
+                    Mode.DESCEND -> descend()
+                    Mode.ASCEND -> ascend()
+                    Mode.CONTINUE -> restore()
+                    Mode.REFLUX -> reflux()
+                    Mode.RESURRECT -> resurrect()
+                    Mode.RETURN -> returnTo()
+                    Mode.FALL -> fall()
+                    Mode.RESET -> reset()
+                    Mode.BACK_TO_PAST -> backToPast()
+                    Mode.NONE -> {
                     }
-
-                    if (Dungeon.bossLevel())
-                        Sample.INSTANCE.load(Assets.SND_BOSS)
-
-                } catch (e: Exception) {
-                    error = e
                 }
+
+                if (Dungeon.bossLevel())
+                    Sample.INSTANCE.load(Assets.SND_BOSS)
+//
+//                } catch (e: Exception) {
+//                    error = e
+//                }
 
                 if (phase == Phase.STATIC && error == null) {
                     phase = Phase.FADE_OUT

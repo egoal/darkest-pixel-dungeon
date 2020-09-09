@@ -112,6 +112,7 @@ class Shaman : Mob(), Callback {
 
     inner class HuntingAI : Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
+            val enemy = enemy!!
             if (buffcd <= 0f && enemyInFOV && !isCharmedBy(enemy) && (!canAttack(enemy) || distance(enemy) <= 1)) {
                 // ^ cannot attack or is face to face, find nearby friends to give Rage
                 // others are preferred
@@ -133,7 +134,7 @@ class Shaman : Mob(), Callback {
         }
 
         private fun buffRage(mob: Mob) {
-            if (mob !== this@Shaman && enemy != null) mob.beckon(enemy.pos)
+            if (mob !== this@Shaman && enemy != null) mob.beckon(enemy!!.pos)
 
             Buff.prolong(mob, Rage::class.java, 10f)
             buffcd = COOLDOWN_BUFF

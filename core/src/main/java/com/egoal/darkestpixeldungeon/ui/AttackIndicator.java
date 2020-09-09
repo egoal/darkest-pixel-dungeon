@@ -134,7 +134,7 @@ public class AttackIndicator extends Tag {
     }
 
     try {
-      sprite = lastTarget.spriteClass.newInstance();
+      sprite = lastTarget.getSpriteClass().newInstance();
       active = true;
       sprite.idle();
       sprite.paused = true;

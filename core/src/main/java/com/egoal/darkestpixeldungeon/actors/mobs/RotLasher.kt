@@ -51,7 +51,7 @@ class RotLasher : Mob() {
     }
 
     override fun act(): Boolean {
-        if (enemy == null || !Dungeon.level.adjacent(pos, enemy.pos))
+        if (enemy == null || !Dungeon.level.adjacent(pos, enemy!!.pos))
             HP = min(HT, HP + 3)
 
         return super.act()

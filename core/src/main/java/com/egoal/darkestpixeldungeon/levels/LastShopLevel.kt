@@ -40,7 +40,7 @@ class LastShopLevel : RegularLevel() {
         val diggers = ArrayList<Digger>()
 
         for (i in 1..4) diggers.add(Random.chances(normalDiggers).newInstance())
-        if (Dungeon.hero.challenge != Challenge.CastingMaster && Imp.Quest.isCompleted())
+        if (Dungeon.hero.challenge != Challenge.CastingMaster && Imp.Quest.isCompleted)
             diggers.add(MerchantDigger())
 
         return diggers
@@ -63,7 +63,7 @@ class LastShopLevel : RegularLevel() {
             }
         }
 
-        if (Imp.Quest.isCompleted()) {
+        if (Imp.Quest.isCompleted) {
             val space = spaces.find { it.type == DigResult.Type.Entrance }!!
             var pos: Int
             do {

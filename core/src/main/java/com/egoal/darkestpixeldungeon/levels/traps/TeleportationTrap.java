@@ -68,8 +68,8 @@ public class TeleportationTrap extends Trap {
 
       } else {
         ch.setPos(pos);
-        if(ch instanceof Mob && ((Mob) ch).state== ((Mob) ch).HUNTING)
-          ((Mob) ch).state = ((Mob) ch).WANDERING;
+        if(ch instanceof Mob && ((Mob) ch).getState() == ((Mob) ch).getHUNTING())
+          ((Mob) ch).setState(((Mob) ch).getWANDERING());
         
         ch.getSprite().place(ch.getPos());
         ch.getSprite().visible = Dungeon.visible[pos];

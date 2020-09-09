@@ -60,7 +60,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
   }
 
   @Override
-  public void onSignal(String text) {
+  public boolean onSignal(String text) {
 
     if (length != entries.size()) {
       clear();
@@ -122,6 +122,8 @@ public class GameLog extends Component implements Signal.Listener<String> {
     }
 
     layout();
+
+    return false;
   }
 
   @Override

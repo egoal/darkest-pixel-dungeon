@@ -21,33 +21,27 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.sprites.BanditSprite
-import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
+import com.egoal.darkestpixeldungeon.sprites.SeniorSprite
 import com.watabou.utils.Random
 
-class Bandit : Thief() {
-    init {
-        spriteClass = BanditSprite::class.java
+class Senior : Monk() {
 
-        //1 in 30 chance to be a crazy bandit, equates to overall 1/90 chance.
-        lootChance = 0.5f
+    init {
+        spriteClass = SeniorSprite::class.java
     }
 
-    override fun steal(hero: Hero): Boolean {
-        return if (super.steal(hero)) {
-            Buff.prolong(hero, Blindness::class.java, Random.Int(2, 5).toFloat())
-            Buff.affect(hero, Poison::class.java).set(Random.Int(5, 7) * Poison.durationFactor(hero))
-            Buff.prolong(hero, Cripple::class.java, Random.Int(3, 8).toFloat())
-            Dungeon.observe()
+    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(16, 24), this, target)
 
-            true
-        } else false
-
+    override fun attackProc(damage: Damage): Damage {
+        val enemy = damage.to as Char
+        if (Random.Int(10) == 0) {
+            Buff.prolong(enemy, Paralysis::class.java, 1.1f)
+        }
+        return super.attackProc(damage)
     }
 
     override fun die(cause: Any?) {
