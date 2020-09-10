@@ -47,7 +47,8 @@ class UrnOfShadow : Artifact() {
 
     private val isFull: Boolean get() = volume == MAX_VOLUME
 
-    override fun isUpgradable(): Boolean = false // no by SoU
+    override val isUpgradable: Boolean
+        get() = false
 
     override fun upgrade(): Item {
         GLog.p(M.L(this, "Levelup"))

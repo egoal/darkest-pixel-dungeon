@@ -16,7 +16,8 @@ class TomeOfUpgrade : Book() {
         unique = true
     }
 
-    override fun isIdentified(): Boolean = true
+    override val isIdentified: Boolean
+        get() = true
 
     override fun price(): Int = 100
 

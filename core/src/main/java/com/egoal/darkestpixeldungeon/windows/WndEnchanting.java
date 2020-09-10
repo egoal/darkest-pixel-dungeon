@@ -77,7 +77,7 @@ public class WndEnchanting extends Window {
       @Override
       protected void onClick() {
         if (EnchantingStation.INSTANCE.Transform(btnItemSrc_.item, btnItemTgt_.item)) {
-          // destroy source, collect target
+          // destroy source, collect targetpos
           btnItemSrc_.item(null);
           // btnItemTgt_.item(null);
           hide();

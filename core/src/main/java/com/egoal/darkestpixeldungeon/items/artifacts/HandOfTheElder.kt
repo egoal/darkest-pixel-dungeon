@@ -94,9 +94,7 @@ class HandOfTheElder : Artifact() {
     }
 
     // buff
-    override fun passiveBuff(): Artifact.ArtifactBuff? {
-        return Recharge()
-    }
+    override fun passiveBuff()= Recharge()
 
     inner class Recharge : Artifact.ArtifactBuff() {
 

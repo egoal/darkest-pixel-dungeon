@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.sprites.GuardSprite
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
@@ -93,7 +94,7 @@ class Guard : Mob() {
                     Actor.addDelayed(Pushing(enemy, enemy!!.pos, newPosFinal, Callback {
                         enemy!!.pos = newPosFinal
                         Dungeon.level.press(newPosFinal, enemy)
-                        Cripple.prolong(enemy, Cripple::class.java, 4f)
+                        Buff.prolong(enemy!!, Cripple::class.java, 4f)
                         if (enemy === Dungeon.hero) {
                             Dungeon.hero.interrupt()
                             Dungeon.observe()

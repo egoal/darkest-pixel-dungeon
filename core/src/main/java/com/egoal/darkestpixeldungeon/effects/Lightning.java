@@ -94,7 +94,7 @@ public class Lightning extends Group {
     GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
   }
 
-  //A lightning object is meant to be loaded up with arcs.
+  //A lightning objectid is meant to be loaded up with arcs.
   //these act as a means of easily expressing lighting between two points.
   public static class Arc extends Group {
 

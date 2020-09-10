@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -165,12 +164,12 @@ abstract class Mob : Char() {
         return damage
     }
 
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(minDamage, maxDefense) }
+    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(minDefense, maxDefense) }
 
     protected open fun chooseEnemy(): Char? {
         val terror = buff(Terror::class.java)
         if (terror != null) {
-            val source = Actor.findById(terror.`object`) as Char?
+            val source = findById(terror.objectid) as Char?
             if (source != null) {
                 return source
             }
@@ -218,7 +217,7 @@ abstract class Mob : Char() {
                 }
                 if (Dungeon.hero.camp !== camp) enemies.add(Dungeon.hero)
 
-                //target one at random.
+                //targetpos one at random.
                 return if (enemies.size > 0) Random.element(enemies) else null
             }
 
@@ -291,7 +290,7 @@ abstract class Mob : Char() {
                     path!!.size > 2 * Dungeon.level.distance(pos, target))
                 newPath = true
             else if (path!!.last != target) {
-                //if the new target is adjacent to the end of the path, adjust for that
+                //if the new targetpos is adjacent to the end of the path, adjust for that
                 //rather than scrapping the whole path. Unless the path is very long,
                 //in which case re-checking will likely result in a much better path
                 if (Dungeon.level.adjacent(target, path!!.last)) {
@@ -445,7 +444,7 @@ abstract class Mob : Char() {
         return !enemySeen && enemy === Dungeon.hero
     }
 
-    fun aggro(ch: Char) {
+    fun aggro(ch: Char?) {
         enemy = ch
         if (state !== PASSIVE) {
             state = HUNTING
@@ -678,7 +677,7 @@ abstract class Mob : Char() {
 
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
             enemySeen = enemyInFOV
-            //loses target when 0-dist rolls a 6 or greater.
+            //loses targetpos when 0-dist rolls a 6 or greater.
             if (enemy == null || !enemyInFOV && 1 + Random.Int(Dungeon.level
                             .distance(pos, target)) >= 6) {
                 target = -1
@@ -755,7 +754,7 @@ abstract class Mob : Char() {
 
         private const val STATE = "state"
         private const val SEEN = "seen"
-        private const val TARGET = "target"
+        private const val TARGET = "targetpos"
 
         private const val AI_SLEEPING = "SLEEPING"
         private const val AI_WANDERING = "WANDERING"

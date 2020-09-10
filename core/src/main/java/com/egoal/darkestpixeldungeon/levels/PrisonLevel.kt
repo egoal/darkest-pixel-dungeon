@@ -131,7 +131,7 @@ class PrisonLevel : RegularLevel() {
 //        Log.d("dpd", "luminaries: ${luminaries.size}, lighted: ${Level.lighted.count { it }}")
 //    }
 
-//    companion object {
+//    companion objectid {
 //        fun AddPrisonVisuals(level: Level, group: Group) {
 //            for (i in 0 until level.length())
 //                if (level.map[i] == Terrain.WALL_DECO)

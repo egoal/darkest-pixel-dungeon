@@ -95,7 +95,7 @@ public class QuickSlot {
   }
 
   public void convertToPlaceholder(Item item) {
-    Item placeholder = Item.virtual(item.getClass());
+    Item placeholder = Item.Companion.virtual(item.getClass());
 
     if (placeholder != null && contains(item))
       for (int i = 0; i < SIZE; i++)

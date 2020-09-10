@@ -39,7 +39,7 @@ public class Exhausting extends Weapon.Enchantment {
     Char attacker = (Char) damage.from;
 
     if (attacker == Dungeon.hero && Random.Int(20) == 0) {
-      Buff.affect(attacker, Weakness.class, Random.Float(5f, 25f));
+      Buff.Companion.affect(attacker, Weakness.class, Random.Float(5f, 25f));
     }
 
     return damage;

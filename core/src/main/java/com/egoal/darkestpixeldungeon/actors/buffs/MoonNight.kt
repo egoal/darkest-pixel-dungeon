@@ -17,7 +17,7 @@ class MoonNight : FlavourBuff() {
 
     override fun desc(): String = Messages.get(this, "desc")
 
-    override fun attachTo(target: Char?): Boolean {
+    override fun attachTo(target: Char): Boolean {
         val attached = super.attachTo(target)
         if (attached) {
             Dungeon.observe()

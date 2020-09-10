@@ -37,7 +37,7 @@ import com.watabou.utils.Random
 import kotlin.math.PI
 import kotlin.math.round
 
-// for wands that directly damage a target
+// for wands that directly damage a targetpos
 // wands with AOE effects count here (e.g. fireblast), but wands with indrect
 // damage do not (e.g. venom, transfusion)
 abstract class DamageWand : Wand() {

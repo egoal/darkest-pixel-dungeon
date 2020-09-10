@@ -20,6 +20,9 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
 
     private var inscription: Inscription? = null
 
+    override val isUpgradable: Boolean
+        get() = false
+
     //todo:
     open fun uncurse() {}
 
@@ -65,10 +68,6 @@ open class Helmet(private var ticksToKnow: Int = TICKS_TO_KNOW) : EquipableItem(
 
         return this
     }
-
-//    override fun isIdentified(): Boolean = false
-
-    override fun isUpgradable(): Boolean = false
 
     override fun price(): Int = if (cursedKnown && cursed) 20 else 40
 

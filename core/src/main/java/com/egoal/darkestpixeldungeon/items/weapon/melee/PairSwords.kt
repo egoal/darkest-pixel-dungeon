@@ -68,7 +68,10 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
     override fun proc(dmg: Damage): Damage = left.proc(right.proc(dmg))
 
     // split-> upgrade -> merge
-    override fun isUpgradable(): Boolean = false
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun desc(): String {
         var desc = super.desc()

@@ -25,7 +25,7 @@ class SorceressArmor : ClassArmor() {
                     set(5f, Item.curUser.giveDamage(mob).value / 5 + 2)
                 }.attachTo(mob)
 
-                Buff.affect(mob, Terror::class.java, 3f).`object` = Item.curUser.id()
+                Buff.affect(mob, Terror::class.java, 3f).objectid = Item.curUser.id()
             }
         }
 

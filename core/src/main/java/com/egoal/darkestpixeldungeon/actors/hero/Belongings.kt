@@ -136,6 +136,12 @@ class Belongings(private val owner: Hero) : MutableIterable<Item> {
 
     fun equippedItems(): Array<Item?> = arrayOf(weapon, armor, misc1, misc2, misc3)
 
+    fun miscs() = sequence {
+        yield(misc1)
+        yield(misc2)
+        yield(misc3)
+    }
+
     fun resurrect(depth: Int) {
         for (item in backpack.items.toTypedArray()) {
             if (item is Key) {

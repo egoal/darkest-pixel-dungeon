@@ -72,13 +72,10 @@ class Weightstone : Item() {
         }
     }
 
-    override fun isUpgradable(): Boolean {
-        return false
-    }
-
-    override fun isIdentified(): Boolean {
-        return true
-    }
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     private fun apply(weapon: Weapon, forSpeed: Boolean) {
 

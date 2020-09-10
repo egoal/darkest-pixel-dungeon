@@ -12,7 +12,8 @@ class CrownOfDwarf : Helmet() {
         image = ItemSpriteSheet.DWARF_CROWN
     }
 
-    override fun isIdentified(): Boolean = true
+    override val isIdentified: Boolean
+        get() = true
 
     override fun price() = 500
 }

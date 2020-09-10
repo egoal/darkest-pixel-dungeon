@@ -70,7 +70,8 @@ open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
 
     // scroll of upgrade can be used directly once, 
     // same as upgrading armor the seal is affixed to then removing it.
-    override fun isUpgradable(): Boolean = level() == 0
+    override val isUpgradable: Boolean
+        get() = level() == 0
 
     override fun enchantByBlueprint() {
         enchanted = true

@@ -35,7 +35,7 @@ class MasterThievesArmband : Artifact() {
         charge = 0
     }
 
-    override fun passiveBuff(): ArtifactBuff? = Thievery()
+    override fun passiveBuff() = Thievery()
 
     override fun desc(): String {
         var desc = super.desc()

@@ -115,9 +115,9 @@ abstract public class Weapon extends KindOfWeapon {
     if (enchantment != null)
       dmg = enchantment.proc(this, dmg);
 
-    if (!levelKnown) {
+    if (!getLevelKnown()) {
       if (--hitsToKnow <= 0) {
-        levelKnown = true;
+        setLevelKnown(true);
         GLog.i(Messages.get(Weapon.class, "identify"));
         Badges.INSTANCE.validateItemLevelAquired(this);
       }
@@ -219,7 +219,7 @@ abstract public class Weapon extends KindOfWeapon {
 
   @Override
   public String name() {
-    return enchantment != null && (cursedKnown || !enchantment.curse()) ?
+    return enchantment != null && (getCursedKnown() || !enchantment.curse()) ?
             enchantment.name(super.name()) : super.name();
   }
 
@@ -229,7 +229,7 @@ abstract public class Weapon extends KindOfWeapon {
     if (roll < 0.3f) {
       //30% chance to be level 0 and cursed
       enchant(Enchantment.randomCurse());
-      cursed = true;
+      setCursed(true);
       return this;
     } else if (roll < 0.75f) {
       //45% chance to be level 0
@@ -279,7 +279,7 @@ abstract public class Weapon extends KindOfWeapon {
 
   @Override
   public ItemSprite.Glowing glowing() {
-    return enchantment != null && (cursedKnown || !enchantment.curse()) ?
+    return enchantment != null && (getCursedKnown() || !enchantment.curse()) ?
             enchantment.glowing() : null;
   }
 

@@ -43,7 +43,7 @@ class Albino : Rat() {
 
     override fun attackProc(dmg: Damage): Damage {
         if (Random.Int(2) == 0) {
-            Buff.affect(enemy, Bleeding::class.java).set(dmg.value)
+            Buff.affect(dmg.to as Char, Bleeding::class.java).set(dmg.value)
         }
 
         return dmg

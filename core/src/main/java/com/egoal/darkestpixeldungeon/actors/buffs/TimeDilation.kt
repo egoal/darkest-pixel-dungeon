@@ -12,7 +12,7 @@ class TimeDilation : FlavourBuff() {
 
     override fun icon(): Int = BuffIndicator.TIME_DILATION
 
-    override fun attachTo(target: Char?): Boolean {
+    override fun attachTo(target: Char): Boolean {
         if(super.attachTo(target)){
             GameScene.setColorLayer(0x4c006699)
             return true

@@ -41,19 +41,19 @@ public class BlobEmitter extends Emitter {
   @Override
   protected void emit(int index) {
 
-    if (blob.volume <= 0) {
+    if (blob.getVolume() <= 0) {
       return;
     }
 
-    if (blob.area.isEmpty())
+    if (blob.getArea().isEmpty())
       blob.setupArea();
 
-    int[] map = blob.cur;
+    int[] map = blob.getCur();
     float size = DungeonTilemap.SIZE;
 
     int cell;
-    for (int i = blob.area.left; i < blob.area.right; i++) {
-      for (int j = blob.area.top; j < blob.area.bottom; j++) {
+    for (int i = blob.getArea().left; i < blob.getArea().right; i++) {
+      for (int j = blob.getArea().top; j < blob.getArea().bottom; j++) {
         cell = i + j * Dungeon.level.width();
         if (map[cell] > 0 && Dungeon.visible[cell]) {
           float x = (i + Random.Float()) * size;

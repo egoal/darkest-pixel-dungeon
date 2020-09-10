@@ -194,7 +194,7 @@ class TimekeepersHourglass : Artifact() {
             damages.clear()
         }
 
-        override fun attachTo(target: Char?): Boolean {
+        override fun attachTo(target: Char): Boolean {
             Dungeon.level?.let {
                 it.mobs.forEach { m -> m.sprite.add(CharSprite.State.PARALYSED) }
             }

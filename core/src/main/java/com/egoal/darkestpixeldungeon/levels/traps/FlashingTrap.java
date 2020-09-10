@@ -48,8 +48,8 @@ public class FlashingTrap extends Trap {
 
     if (ch != null) {
       int len = Random.Int(5, 10) + Dungeon.depth;
-      Buff.prolong(ch, Blindness.class, len);
-      Buff.prolong(ch, Cripple.class, len);
+      Buff.Companion.prolong(ch, Blindness.class, len);
+      Buff.Companion.prolong(ch, Cripple.class, len);
       if (ch instanceof Mob) {
         if (((Mob) ch).getState() == ((Mob) ch).getHUNTING())
           ((Mob) ch).setState(((Mob) ch).getWANDERING());

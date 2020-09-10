@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.watabou.noosa.Game
 import com.watabou.noosa.Image
@@ -209,7 +210,7 @@ class WandOfBlastWave : DamageWand() {
                     ch.takeDamage(Damage(Random.NormalIntRange((dist + 1) / 2,
                             dist), Char.Nobody, ch).type(Damage.Type.MAGICAL))
 
-                    Paralysis.prolong(ch, Paralysis::class.java, (Random.NormalIntRange(
+                    Buff.prolong(ch, Paralysis::class.java, (Random.NormalIntRange(
                             (dist + 1) / 2, dist) + 1).toFloat())
                 }
                 Dungeon.level.press(ch.pos, ch)

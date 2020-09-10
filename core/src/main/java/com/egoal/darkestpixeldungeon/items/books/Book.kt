@@ -28,6 +28,9 @@ abstract class Book : Item() {
         image = ItemSpriteSheet.DPD_BOOKS
     }
 
+    override val isUpgradable: Boolean
+        get() = false
+
     fun bookName(): String = Messages.get(this, "bookname")
 
     override fun name(): String = if (isIdentified) bookName() else super.name()
@@ -54,8 +57,6 @@ abstract class Book : Item() {
     }
 
     protected abstract fun doRead(hero: Hero)
-
-    override fun isUpgradable(): Boolean = false
 
     override fun price(): Int = 30 * quantity
 

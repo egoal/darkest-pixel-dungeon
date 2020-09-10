@@ -404,8 +404,7 @@ public class Bundle {
       else
         reader = new BufferedReader(new InputStreamReader(pb));
 
-      JSONObject json = (JSONObject) new JSONTokener(reader.readLine())
-              .nextValue();
+      JSONObject json = (JSONObject) new JSONTokener(reader.readLine()).nextValue();
       reader.close();
 
       return new Bundle(json);

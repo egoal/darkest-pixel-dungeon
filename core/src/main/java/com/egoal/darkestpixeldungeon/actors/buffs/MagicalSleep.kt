@@ -29,7 +29,6 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
-import kotlin.math.max
 import kotlin.math.min
 
 open class MagicalSleep : Buff() {
@@ -107,7 +106,7 @@ open class MagicalSleep : Buff() {
                             }
 
                             if (dmg.from is Char)
-                                affect(target, Terror::class.java, 3f).`object` = (dmg.from as Char).id()
+                                affect(target, Terror::class.java, 3f).objectid = (dmg.from as Char).id()
                         }
 
                         Actor.remove(this)

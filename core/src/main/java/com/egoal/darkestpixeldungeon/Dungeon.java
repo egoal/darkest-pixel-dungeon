@@ -148,7 +148,7 @@ public class Dungeon {
     Actor.Companion.clear();
     Actor.Companion.resetNextID();
 
-    Scroll.initLabels();
+    Scroll.Companion.initLabels();
     Potion.Companion.initColors();
     Ring.Companion.initGems();
 
@@ -572,7 +572,7 @@ public class Dungeon {
       Journal.INSTANCE.storeInBundle(bundle);
       Generator.INSTANCE.storeInBundle(bundle);
 
-      Scroll.save(bundle);
+      Scroll.Companion.save(bundle);
       Potion.Companion.save(bundle);
       Ring.Companion.save(bundle);
 
@@ -643,7 +643,7 @@ public class Dungeon {
     Dungeon.level = null;
     Dungeon.depth = -1;
 
-    Scroll.restore(bundle);
+    Scroll.Companion.restore(bundle);
     Potion.Companion.restore(bundle);
     Ring.Companion.restore(bundle);
 

@@ -23,9 +23,10 @@ class GreatBlueprint : Item() {
         unique = true
     }
 
-    override fun isUpgradable(): Boolean = false
-
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_USE) }
 

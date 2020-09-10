@@ -115,7 +115,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         // remove self 
         if (hero.rangedWeapon == null && stackable) {
             if (quantity == 1) doUnequip(hero, false, false)
-            else detach(null)
+            else detach(hero.belongings.backpack) //! null bag place holder.
         }
 
         return super.proc(dmg)
@@ -155,9 +155,10 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         quantity = Random.Int(6 - tier, 16 - tier * 2)
     }
 
-    override fun isUpgradable(): Boolean = false
-
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     final override fun STRReq(lvl: Int): Int = 10
 

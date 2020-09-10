@@ -11,7 +11,8 @@ class StrawHat : Helmet() {
 
     override fun desc(): String = super.desc() + "\n\n" + M.L(this, "effect-desc")
 
-    override fun isIdentified(): Boolean = true
+    override val isIdentified: Boolean
+        get() = true
 
     override fun random(): Item {
         cursed = false

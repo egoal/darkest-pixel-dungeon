@@ -77,7 +77,7 @@ class Combo : Buff(), ActionIndicator.Action {
         }
 
         if (target.id() != lastTargetId) {
-            // switch target, reset
+            // switch targetpos, reset
             lastTargetId = target.id()
             focusCount = 0
         } else ++focusCount
@@ -257,7 +257,7 @@ class Combo : Buff(), ActionIndicator.Action {
         private const val COUNT = "count"
         private const val TIME = "combotime"
         private const val MISSES = "misses"
-        private const val TARGET = "target"
+        private const val TARGET = "targetpos"
         private const val FOCUS_COUNT = "focus-count"
     }
 }

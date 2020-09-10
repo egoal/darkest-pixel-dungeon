@@ -31,9 +31,10 @@ class Embers : Item() {
         unique = true
     }
 
-    override fun isUpgradable(): Boolean = false
-
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun glowing(): ItemSprite.Glowing = ItemSprite.Glowing(0x660000, 3f)
 }

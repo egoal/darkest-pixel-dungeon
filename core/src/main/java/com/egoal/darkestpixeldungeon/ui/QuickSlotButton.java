@@ -82,12 +82,12 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
           if (cell != -1) {
             GameScene.handleCell(cell);
           } else {
-            //couldn't auto-aim, just target the position and hope for the best.
+            //couldn't auto-aim, just targetpos the position and hope for the best.
             GameScene.handleCell(lastTarget.getPos());
           }
         } else {
           Item item = select(slotNum);
-          if (item.usesTargeting)
+          if (item.getUsesTargeting())
             useTargeting();
           item.execute(Dungeon.hero);
         }
@@ -205,7 +205,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
   // ballistica or this, or both
   public static int autoAim(Char target, Item item) {
 
-    //first try to directly target
+    //first try to directly targetpos
     if (item.throwPos(Dungeon.hero, target.getPos()) == target.getPos()) {
       return target.getPos();
     }

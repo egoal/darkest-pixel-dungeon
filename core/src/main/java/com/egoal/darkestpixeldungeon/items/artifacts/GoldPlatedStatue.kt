@@ -65,7 +65,7 @@ class GoldPlatedStatue : Artifact() {
         return desc
     }
 
-    override fun passiveBuff(): Artifact.ArtifactBuff? = Greedy()
+    override fun passiveBuff() = Greedy()
 
     inner class Greedy : Artifact.ArtifactBuff() {
         fun extraCollect(gold: Int): Int {

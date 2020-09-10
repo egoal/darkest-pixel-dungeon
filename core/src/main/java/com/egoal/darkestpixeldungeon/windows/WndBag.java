@@ -336,11 +336,11 @@ public class WndBag extends WndTabbed {
 
   private static class Placeholder extends Item {
     {
-      name = null;
+      setName(null);
     }
 
     public Placeholder(int image) {
-      this.image = image;
+      this.setImage(image);
     }
 
     @Override
@@ -398,13 +398,12 @@ public class WndBag extends WndTabbed {
 
         bg.texture(TextureCache.createSolid(item.isEquipped(Dungeon.hero) ?
                 EQUIPPED : NORMAL));
-        if (item.cursed && item.cursedKnown) {
+        if (item.getCursed() && item.getCursedKnown()) {
           bg.ra = +0.3f;
           bg.ga = -0.15f;
         } else if (!item.isIdentified()) {
           //^ not identified, but mark if cursedKnown
-          if ((item instanceof EquipableItem || item instanceof Wand) && item
-                  .cursedKnown)
+          if ((item instanceof EquipableItem || item instanceof Wand) && item.getCursedKnown())
             bg.ba = 0.3f;
           else {
             bg.ra = 0.3f;
@@ -468,7 +467,7 @@ public class WndBag extends WndTabbed {
 
     @Override
     protected boolean onLongClick() {
-      if (listener == null && item.defaultAction != null) {
+      if (listener == null && item.getDefaultAction() != null) {
         hide();
         Dungeon.quickslot.setSlot(0, item);
         QuickSlotButton.refresh();
@@ -491,16 +490,16 @@ public class WndBag extends WndTabbed {
   public static boolean FilterByMode(Item item, Mode mode){
       switch (mode){
           case FOR_SALE:
-              return item.price()>0 && !(item.isEquipped(Dungeon.hero) && item.cursed);
+              return item.price()>0 && !(item.isEquipped(Dungeon.hero) && item.getCursed());
           case UPGRADEABLE:
               return item.isUpgradable();
           case UNIDENTIFED:
               return !item.isIdentified();
           case UNIDED_OR_CURSED:
               return (item instanceof EquipableItem || item instanceof Wand) &&
-                      (!item.isIdentified() || item.cursed);
+                      (!item.isIdentified() || item.getCursed());
           case QUICKSLOT:
-              return item.defaultAction!=null;
+              return item.getDefaultAction() !=null;
           case WEAPON:
               return item instanceof MeleeWeapon || item instanceof Boomerang;
           case ARMOR:

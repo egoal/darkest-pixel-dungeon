@@ -102,12 +102,12 @@ object Rankings {
 
         // handler
         val handler = Bundle()
-        Scroll.saveSelectively(handler, belongings.backpack.items)
-        Potion.saveSelectively(handler, belongings.backpack.items)
+        Scroll.saveSelectively(handler, ArrayList(belongings.backpack.items.filterIsInstance<Scroll>()))
+        Potion.saveSelectively(handler, ArrayList(belongings.backpack.items.filterIsInstance<Potion>()))
         if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1)
         if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2)
         if (belongings.misc3 != null) belongings.backpack.items.add(belongings.misc3)
-        Ring.saveSelectively(handler, belongings.backpack.items)
+        Ring.saveSelectively(handler, ArrayList(belongings.backpack.items.filterIsInstance<Ring>()))
         rec.gameData.put(HANDLERS, handler)
 
         belongings.backpack.items = allItems

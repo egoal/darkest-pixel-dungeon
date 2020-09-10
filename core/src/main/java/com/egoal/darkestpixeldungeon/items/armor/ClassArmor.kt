@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.armor
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -42,6 +43,9 @@ abstract class ClassArmor : Armor(6) {
 
         bones = false
     }
+
+    override val isIdentified: Boolean
+        get() = true
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
@@ -83,7 +87,7 @@ abstract class ClassArmor : Armor(6) {
         val level = max(0, lvl)
 
         var effectiveTier = if (armorTier == 0) -1.5f else armorTier.toFloat() //todo: this is just a hotfix to compatible with ragged armor.
-        if (glyph != null) effectiveTier += glyph.tierSTRAdjust()
+        effectiveTier += glyph?.tierSTRAdjust() ?: 0f
         effectiveTier = max(0f, effectiveTier)
 
         return 8 + round(effectiveTier * 2f).toInt() - (level + 1) / 2 // +1, +3, +5, +7
@@ -93,13 +97,11 @@ abstract class ClassArmor : Armor(6) {
 
     override fun DRMax(lvl: Int): Int {
         var effectiveTier = armorTier
-        if (glyph != null) effectiveTier += glyph.tierDRAdjust()
+        effectiveTier += glyph?.tierDRAdjust() ?: 0
         effectiveTier = Math.max(0, effectiveTier)
 
         return effectiveTier * (2 + lvl)
     }
-
-    override fun isIdentified(): Boolean = true
 
     override fun price(): Int = 0
 

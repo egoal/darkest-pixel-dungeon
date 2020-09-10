@@ -10,7 +10,8 @@ class TomeOfPerk : Book() {
         unique = true // consider: stolen/resurrect
     }
 
-    override fun isIdentified(): Boolean = true
+    override val isIdentified: Boolean
+        get() = true
 
     override fun price(): Int = 100
 

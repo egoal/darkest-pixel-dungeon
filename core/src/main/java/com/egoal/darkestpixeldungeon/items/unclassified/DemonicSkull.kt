@@ -24,7 +24,10 @@ class DemonicSkull : Item() {
         unique = true
     }
 
-    override fun isUpgradable(): Boolean = false
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)

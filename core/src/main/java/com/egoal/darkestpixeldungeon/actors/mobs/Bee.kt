@@ -89,7 +89,7 @@ class Bee : Mob() {
     }
 
     override fun chooseEnemy(): Char? {
-        //if the pot is no longer present, target the hero
+        //if the pot is no longer present, targetpos the hero
         if (potHolder == -1 && potPos == -1)
             return Dungeon.hero
         else if (Actor.findById(potHolder) != null)
@@ -111,7 +111,7 @@ class Bee : Mob() {
                 else -> null
             }
         }//if the pot is on the ground
-        //if something is holding the pot, target that
+        //if something is holding the pot, targetpos that
     }
 
     override fun getCloser(target: Int): Boolean {

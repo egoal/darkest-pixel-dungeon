@@ -17,7 +17,7 @@ class TopExceptionHandler(private val app: Activity) : Thread.UncaughtExceptionH
     companion object {
         //todo: may rework this 
         fun WriteErrorFile(tr: Throwable) {
-            var strError = mutableListOf<String>()
+            val strError = mutableListOf<String>()
 
             tr.message?.let {
                 strError.add("MESSAGE: ")

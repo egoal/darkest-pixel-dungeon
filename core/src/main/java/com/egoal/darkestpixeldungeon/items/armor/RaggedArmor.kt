@@ -14,7 +14,7 @@ class RaggedArmor : Armor(0) {
     //todo: seal this
     override fun DRMax(lvl: Int): Int {
         var effectiveTier = 1
-        if (glyph != null) effectiveTier += glyph.tierDRAdjust()
+        effectiveTier += glyph?.tierDRAdjust() ?: 0
         effectiveTier = max(0, effectiveTier)
 
         return max(DRMin(lvl), effectiveTier * (1 + lvl))

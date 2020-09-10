@@ -250,7 +250,7 @@ public class GameScene extends PixelScene {
     add(gases);
 
     for (Blob blob : Dungeon.level.getBlobs().values()) {
-      blob.emitter = null;
+      blob.setEmitter(null);
       addBlobSprite(blob);
     }
 
@@ -578,7 +578,7 @@ public class GameScene extends PixelScene {
   }
 
   private void addBlobSprite(final Blob gas) {
-    if (gas.emitter == null) {
+    if (gas.getEmitter() == null) {
       gases.add(new BlobEmitter(gas));
     }
   }

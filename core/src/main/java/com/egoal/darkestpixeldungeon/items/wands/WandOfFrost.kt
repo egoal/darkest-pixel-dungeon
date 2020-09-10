@@ -41,7 +41,7 @@ class WandOfFrost : DamageWand() {
         Actor.findChar(attack.collisionPos)?.let { ch ->
             val dmg = giveDamage(ch)
 
-            // nothing to do wit a frozen target
+            // nothing to do wit a frozen targetpos
             if (ch.buff(Frost::class.java) != null) return
 
             if (ch.buff(Chill::class.java) != null) {

@@ -265,13 +265,10 @@ open class Potion : Item() {
         return if (isKnown) initials else null
     }
 
-    override fun isIdentified(): Boolean {
-        return isKnown
-    }
-
-    override fun isUpgradable(): Boolean {
-        return false
-    }
+    override val isIdentified: Boolean
+        get() = isKnown
+    override val isUpgradable: Boolean
+        get() = false
 
     protected fun splash(cell: Int) {
         val color = ItemSprite.pick(image, 8, 10)
@@ -292,7 +289,11 @@ open class Potion : Item() {
 
         private const val TIME_TO_DRINK = 1f
 
-        private val potions = arrayOf<Class<*>>(PotionOfHealing::class.java, PotionOfExperience::class.java, PotionOfToxicGas::class.java, PotionOfLiquidFlame::class.java, PotionOfStrength::class.java, PotionOfParalyticGas::class.java, PotionOfLevitation::class.java, PotionOfMindVision::class.java, PotionOfPurity::class.java, PotionOfInvisibility::class.java, PotionOfMight::class.java, PotionOfFrost::class.java, PotionOfPhysique::class.java)
+        private val potions = arrayOf(PotionOfHealing::class.java, PotionOfExperience::class.java, PotionOfToxicGas::class.java,
+                PotionOfLiquidFlame::class.java, PotionOfStrength::class.java, PotionOfParalyticGas::class.java,
+                PotionOfLevitation::class.java, PotionOfMindVision::class.java, PotionOfPurity::class.java,
+                PotionOfInvisibility::class.java, PotionOfMight::class.java, PotionOfFrost::class.java,
+                PotionOfPhysique::class.java)
 
         private val colors = object : HashMap<String, Int>() {
             init {
@@ -312,35 +313,32 @@ open class Potion : Item() {
             }
         }
 
-        private var handler: ItemStatusHandler<Potion>? = null
+        private lateinit var handler: ItemStatusHandler<Potion>
 
         private const val REINFORCED = "reinforced"
 
         fun initColors() {
-            handler = ItemStatusHandler(potions as Array<Class<out Potion>>, colors)
+            handler = ItemStatusHandler(potions, colors)
         }
 
         fun save(bundle: Bundle) {
-            handler!!.save(bundle)
+            handler.save(bundle)
         }
 
-        fun saveSelectively(bundle: Bundle, items: ArrayList<Item>) {
-            handler!!.saveSelectively(bundle, items)
+        fun saveSelectively(bundle: Bundle, items: ArrayList<Potion>) {
+            handler.saveSelectively(bundle, items)
         }
 
         fun restore(bundle: Bundle) {
-            handler = ItemStatusHandler(potions as Array<Class<out Potion>>,
-                    colors, bundle)
+            handler = ItemStatusHandler(potions, colors, bundle)
         }
 
         val known: HashSet<Class<out Potion>>
-            get() = handler!!.known()
+            get() = handler.known()
 
         val unknown: HashSet<Class<out Potion>>
-            get() = handler!!.unknown()
+            get() = handler.unknown()
 
-        fun allKnown(): Boolean {
-            return handler!!.known().size == potions.size
-        }
+        fun allKnown(): Boolean = handler.known().size == potions.size
     }
 }

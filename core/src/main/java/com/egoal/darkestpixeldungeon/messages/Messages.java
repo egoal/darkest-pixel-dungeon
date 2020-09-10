@@ -36,9 +36,9 @@ import java.util.ResourceBundle;
 
 	The core idea here is that each string resource's key is a combination of 
 	the class definition and a local value.
-	An object or static method would usually call this with an object/class 
+	An objectid or static method would usually call this with an objectid/class
 	reference (usually its own) and a local key.
-	This means that an object can just ask for "name" rather than, say, "items
+	This means that an objectid can just ask for "name" rather than, say, "items
 	.weapon.enchantments.death.name"
  */
 public class Messages {

@@ -44,8 +44,10 @@ class Ankh : Item() {
 
     var isBlessed = false
 
-    override fun isUpgradable(): Boolean = false
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun isSimilar(item: Item): Boolean {
         return super.isSimilar(item) && (item as Ankh).isBlessed == isBlessed

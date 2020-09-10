@@ -31,8 +31,10 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
     private var volume = 4
     private var enchanted = false
 
-    override fun isIdentified(): Boolean = true
-    override fun isUpgradable(): Boolean = false
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun status(): String = "$volume/$CAPACITY"
 

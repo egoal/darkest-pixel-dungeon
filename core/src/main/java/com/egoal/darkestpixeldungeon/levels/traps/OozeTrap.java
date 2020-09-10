@@ -39,7 +39,7 @@ public class OozeTrap extends Trap {
     Char ch = Actor.Companion.findChar(pos);
 
     if (ch != null) {
-      Buff.affect(ch, Ooze.class);
+      Buff.Companion.affect(ch, Ooze.class);
       Splash.at(sprite.center(), 0x000000, 5);
     }
   }

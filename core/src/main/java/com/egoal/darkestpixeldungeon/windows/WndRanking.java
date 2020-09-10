@@ -338,7 +338,7 @@ public class WndRanking extends WndTabbed {
       this.item = item;
 
       slot.item(item);
-      if (item.cursed && item.cursedKnown) {
+      if (item.getCursed() && item.getCursedKnown()) {
         bg.ra = +0.2f;
         bg.ga = -0.1f;
       } else if (!item.isIdentified()) {

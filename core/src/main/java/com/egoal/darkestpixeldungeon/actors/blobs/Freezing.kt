@@ -32,7 +32,6 @@ import com.egoal.darkestpixeldungeon.levels.Level
 import com.watabou.utils.Random
 
 object Freezing {
-
     // Returns true, if this cell is visible
     fun affect(cell: Int, fire: Fire?): Boolean {
 

@@ -51,9 +51,10 @@ class CeremonialCandle : Item() {
         stackable = true
     }
 
-    override fun isUpgradable(): Boolean = false
-
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun doDrop(hero: Hero) {
         super.doDrop(hero)

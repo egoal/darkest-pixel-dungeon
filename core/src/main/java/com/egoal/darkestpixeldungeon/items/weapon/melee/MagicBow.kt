@@ -40,7 +40,7 @@ class MagicBow : MeleeWeapon() {
     override fun min(lvl: Int): Int = lvl + 1
     override fun max(lvl: Int): Int = 4 * (tier + 1) + lvl * (tier + 1)
 
-    override fun actions(hero: Hero?): ArrayList<String> = super.actions(hero).apply { add(AC_SHOOT) }
+    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_SHOOT) }
 
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)
@@ -129,7 +129,9 @@ class MagicBow : MeleeWeapon() {
 
         override fun price(): Int = 10
 
-        override fun isIdentified(): Boolean = true
-        override fun isUpgradable(): Boolean = false
+        override val isUpgradable: Boolean
+            get() = false
+        override val isIdentified: Boolean
+            get() = true
     }
 }

@@ -47,7 +47,10 @@ open class GoldenClaw : Item() {
         defaultAction = AC_USE
     }
 
-    override fun isUpgradable(): Boolean = false
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun actions(hero: Hero): ArrayList<String> = arrayListOf(AC_USE)
 
@@ -110,7 +113,7 @@ open class GoldenClaw : Item() {
                     assert(item.quantity() > 1)
 
                     val hero = Dungeon.hero
-                    val detached = item.detach(hero.belongings.backpack)
+                    val detached = item.detach(hero.belongings.backpack)!!
                     this@GoldenClaw.gainGold(hero, detached.price())
                 }
             }

@@ -24,6 +24,11 @@ class Humanity : Item() {
         identify()
     }
 
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
+    
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply {
         add(AC_CONSUME)
     }
@@ -50,8 +55,6 @@ class Humanity : Item() {
             GLog.p(Messages.get(this, "used"))
         }
     }
-
-    override fun isUpgradable(): Boolean = false
 
     companion object {
         private const val AC_CONSUME = "CONSUME"

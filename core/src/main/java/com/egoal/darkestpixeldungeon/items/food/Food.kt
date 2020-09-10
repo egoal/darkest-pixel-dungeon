@@ -29,7 +29,13 @@ open class Food(val enery: Float = Hunger.HUNGRY,
 
     val message: String = Messages.get(this, "eat_msg")
 
-    override fun actions(hero: Hero?): ArrayList<String> = super.actions(hero).apply { add(AC_EAT) }
+    override val isUpgradable: Boolean
+        get() = false
+
+    override val isIdentified: Boolean
+        get() = true
+
+    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_EAT) }
 
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)
@@ -58,10 +64,6 @@ open class Food(val enery: Float = Hunger.HUNGRY,
         hero.heroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, this)
         hero.recoverSanity(Random.Float(2f, 6f))
     }
-
-    override fun isUpgradable(): Boolean = false
-
-    override fun isIdentified(): Boolean = true
 
     override fun price(): Int = 10 * quantity
 

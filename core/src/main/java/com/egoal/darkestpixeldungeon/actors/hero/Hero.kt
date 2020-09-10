@@ -26,7 +26,6 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
-import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
@@ -125,7 +124,6 @@ class Hero : Char() {
 
     override fun viewDistance(): Int {
         var vd = super.viewDistance()
-        if (Statistics.Clock.state == Statistics.ClockTime.State.MidNight) vd -= 1
         if (heroPerk.has(NightVision::class.java) &&
                 (Statistics.Clock.state == Statistics.ClockTime.State.Night ||
                         Statistics.Clock.state == Statistics.ClockTime.State.MidNight))
@@ -561,7 +559,7 @@ class Hero : Char() {
         wep?.proc(dmg)
         if (rangedWeapon != null && subClass == HeroSubClass.SNIPER)
         // sniper perk
-        // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`object` = (dmg.to as Char).id()
+        // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`objectid` = (dmg.to as Char).id()
             Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
         else if (isUsingPolearm())
         // exile perk
@@ -986,6 +984,12 @@ class Hero : Char() {
             stealth += belongings.armor!!.level()
 
         return stealth
+    }
+
+    override fun recoverHP(dhp: Int, src: Any?) {
+        super.recoverHP(dhp, src)
+
+        if (!isAlive) Dungeon.fail(src?.javaClass)
     }
 
     override fun die(src: Any?) {

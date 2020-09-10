@@ -79,7 +79,7 @@ public class CursingTrap extends Trap {
     ArrayList<Item> canCurse = new ArrayList<>();
 
     KindOfWeapon weapon = hero.getBelongings().getWeapon();
-    if (weapon instanceof Weapon && !weapon.cursed && !(weapon instanceof 
+    if (weapon instanceof Weapon && !weapon.getCursed() && !(weapon instanceof
             Boomerang)) {
       if (((Weapon) weapon).enchantment == null)
         priorityCurse.add(weapon);
@@ -88,8 +88,8 @@ public class CursingTrap extends Trap {
     }
 
     Armor armor = hero.getBelongings().getArmor();
-    if (armor != null && !armor.cursed) {
-      if (armor.glyph == null)
+    if (armor != null && !armor.getCursed()) {
+      if (armor.getGlyph() == null)
         priorityCurse.add(armor);
       else
         canCurse.add(armor);
@@ -129,12 +129,12 @@ public class CursingTrap extends Trap {
       }
     }
 
-    EquipableItem.equipCursed(hero);
+    EquipableItem.Companion.equipCursed(hero);
     GLog.n(Messages.get(CursingTrap.class, "curse"));
   }
 
   private static void curse(Item item) {
-    item.cursed = item.cursedKnown = true;
+    item.setCursed(item.setCursedKnown(true));
 
     if (item instanceof Weapon) {
       Weapon w = (Weapon) item;
@@ -144,8 +144,8 @@ public class CursingTrap extends Trap {
     }
     if (item instanceof Armor) {
       Armor a = (Armor) item;
-      if (a.glyph == null) {
-        a.glyph = Armor.Glyph.randomCurse();
+      if (a.getGlyph() == null) {
+        a.setGlyph(Armor.Glyph.Companion.randomCurse());
       }
     }
   }

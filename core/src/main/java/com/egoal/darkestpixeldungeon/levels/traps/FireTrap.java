@@ -37,7 +37,7 @@ public class FireTrap extends Trap {
   @Override
   public void activate() {
 
-    GameScene.add(Blob.seed(pos, 2, Fire.class));
+    GameScene.add(Blob.Companion.seed(pos, 2, Fire.class));
     CellEmitter.get(pos).burst(FlameParticle.FACTORY, 5);
 
   }

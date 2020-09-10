@@ -52,9 +52,10 @@ class CorpseDust : Item() {
     //yup, no dropping this one
     override fun actions(hero: Hero): ArrayList<String> = ArrayList()
 
-    override fun isUpgradable(): Boolean = false
-
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun doPickUp(hero: Hero): Boolean {
         if (super.doPickUp(hero)) {

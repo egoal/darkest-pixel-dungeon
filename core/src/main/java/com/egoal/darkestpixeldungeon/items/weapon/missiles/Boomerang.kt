@@ -46,7 +46,8 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
 
     override fun breakChance(): Float = 0f // never break 
 
-    override fun isUpgradable(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = true
 
     override fun price(): Int = 0
 

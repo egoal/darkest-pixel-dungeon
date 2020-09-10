@@ -32,8 +32,10 @@ class PotionTestPaper : Item() {
         }
     }
 
-    override fun isUpgradable(): Boolean = false
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
     override fun price(): Int = 12 * quantity
 
     private fun test(item: Item) {

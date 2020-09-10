@@ -78,7 +78,7 @@ public class RockfallTrap extends Trap {
         ch.takeDamage(ch.defendDamage(new Damage(damage, new RockfallTrap(), 
                 ch)));
 
-        Buff.prolong(ch, Paralysis.class, Paralysis.duration(ch) / 2);
+        Buff.Companion.prolong(ch, Paralysis.class, Paralysis.duration(ch) / 2);
 
         if (!ch.isAlive() && ch == Dungeon.hero) {
           Dungeon.fail(RockfallTrap.class);

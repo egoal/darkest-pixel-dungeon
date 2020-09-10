@@ -210,7 +210,7 @@ public class ItemSlot extends Button {
     boolean isWeapon = item instanceof MeleeWeapon;
     if (isArmor || isWeapon) {
 
-      if (item.levelKnown || (isWeapon && !(item instanceof MeleeWeapon))) {
+      if (item.getLevelKnown() || (isWeapon && !(item instanceof MeleeWeapon))) {
 
         int str = isArmor ? ((Armor) item).STRReq() : ((Weapon) item).STRReq();
         topRight.text(Messages.format(TXT_STRENGTH, str));
@@ -242,7 +242,7 @@ public class ItemSlot extends Button {
     int level = item.visiblyUpgraded();
 
     if (level != 0) {
-      bottomRight.text(item.levelKnown ? Messages.format(TXT_LEVEL, level) : 
+      bottomRight.text(item.getLevelKnown() ? Messages.format(TXT_LEVEL, level) :
               TXT_CURSED);
       bottomRight.measure();
       bottomRight.hardlight(level > 0 ? UPGRADED : DEGRADED);

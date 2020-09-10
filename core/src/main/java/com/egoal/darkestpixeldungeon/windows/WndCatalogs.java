@@ -132,7 +132,7 @@ public class WndCatalogs extends WndTabbed {
 
     float pos = 0;
     for (Class<? extends Item> itemClass : showPotions ? Potion.Companion.getKnown() :
-            Scroll.getKnown()) {
+            Scroll.Companion.getKnown()) {
       ListItem item = new ListItem(itemClass);
       item.setRect(0, pos, width, ITEM_HEIGHT);
       content.add(item);
@@ -142,7 +142,7 @@ public class WndCatalogs extends WndTabbed {
     }
 
     for (Class<? extends Item> itemClass : showPotions ? Potion.Companion.getUnknown()
-            : Scroll.getUnknown()) {
+            : Scroll.Companion.getUnknown()) {
       ListItem item = new ListItem(itemClass);
       item.setRect(0, pos, width, ITEM_HEIGHT);
       content.add(item);

@@ -20,6 +20,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
+import com.watabou.utils.Callback
 import com.watabou.utils.Random
 
 class WandGuard : Mob() {
@@ -59,7 +60,7 @@ class WandGuard : Mob() {
         wand.execute(Dungeon.hero, "") //patch: assign curUser
 
         if(enemy is Hero) enemy.busy()
-        wand.fx(shot) {
+        wand.fx(shot, Callback {
             // hit hero 
             val dmg = giveDamage(enemy)
             // enemy.defendDamage(dmg)
@@ -74,7 +75,7 @@ class WandGuard : Mob() {
 
             //todo: i cannot use Wand::onZap(): coupling with Hero, may find way out
             //todo: fire wand performs not well
-        }
+        })
 
         spend(TIME_TO_ZAP) //fixme: this wont wait the above animation
 

@@ -67,6 +67,7 @@ import com.watabou.utils.Random
 import java.util.Arrays
 import java.util.HashSet
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.round
 
 abstract class Char : Actor() {
@@ -433,6 +434,19 @@ abstract class Char : Actor() {
         Actor.remove(this)
     }
 
+    open fun recoverHP(dhp: Int, src: Any? = null) {
+        if (dhp == 0) return
+
+        HP = min(HT, HP + dhp)
+        if (dhp > 0) sprite.showStatus(CharSprite.POSITIVE, "+$dhp")
+        else sprite.showStatus(CharSprite.NEGATIVE, "$dhp")
+
+        // heal to death...
+        if (HP < 0) HP = 0
+
+        if (!isAlive) die(src)
+    }
+
     open fun die(src: Any?) {
         destroy()
         sprite.die()
@@ -463,7 +477,7 @@ abstract class Char : Actor() {
     fun <T : Buff> buff(c: Class<T>): T? = buffs.find { c.isInstance(it) } as T?
 
     @Synchronized
-    fun isCharmedBy(ch: Char): Boolean = buffs.filterIsInstance<Charm>().any { it.`object` == ch.id() }
+    fun isCharmedBy(ch: Char): Boolean = buffs.filterIsInstance<Charm>().any { it.objectid == ch.id() }
 
     open fun add(buff: Buff) {
         buffs.add(buff)

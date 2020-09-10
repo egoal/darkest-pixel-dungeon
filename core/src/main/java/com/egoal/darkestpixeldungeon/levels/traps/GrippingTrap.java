@@ -46,9 +46,9 @@ public class GrippingTrap extends Trap {
     if (c != null) {
       int damage = c.defendDamage(new Damage(Dungeon.depth, this, c)).value;
       if (damage < 0) damage = 0;
-      Buff.affect(c, Bleeding.class).set(damage);
-      Buff.prolong(c, Cripple.class, 15f);
-      Buff.prolong(c, Roots.class, 5f);
+      Buff.Companion.affect(c, Bleeding.class).set(damage);
+      Buff.Companion.prolong(c, Cripple.class, 15f);
+      Buff.Companion.prolong(c, Roots.class, 5f);
       Wound.hit(c);
     } else {
       Wound.hit(pos);

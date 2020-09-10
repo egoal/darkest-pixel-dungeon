@@ -31,9 +31,12 @@ open class Wine(val gourdValue: Int = 5) : Item() {
         image = ItemSpriteSheet.DPD_WINE
         defaultAction = AC_DRINK
         stackable = true
-
-        identify()
     }
+
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply {
         add(AC_DRINK)
@@ -70,8 +73,6 @@ open class Wine(val gourdValue: Int = 5) : Item() {
     protected open fun recoverValue(hero: Hero): Float = min(Random.Float(15f, hero.pressure.pressure * 0.4f), 30f)
 
     override fun price(): Int = 20 * quantity()
-
-    override fun isUpgradable(): Boolean = false
 }
 
 class BrownAle : Wine(3) {

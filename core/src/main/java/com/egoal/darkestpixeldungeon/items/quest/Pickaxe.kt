@@ -81,8 +81,10 @@ class Pickaxe : Weapon() {
         }
     }
 
-    override fun isUpgradable(): Boolean = false
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun proc(dmg: Damage): Damage {
         if (!bloodStained && dmg.to is Bat && (dmg.to as Char).HP <= dmg.value) {

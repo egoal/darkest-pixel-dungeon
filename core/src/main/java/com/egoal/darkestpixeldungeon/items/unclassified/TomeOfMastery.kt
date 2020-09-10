@@ -80,8 +80,10 @@ class TomeOfMastery : Item() {
         return super.doPickUp(hero)
     }
 
-    override fun isUpgradable(): Boolean = false
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     fun choose(way: HeroSubClass) {
         detach(curUser.belongings.backpack)

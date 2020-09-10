@@ -93,7 +93,8 @@ open abstract class Ring : KindofMisc() {
         return desc
     }
 
-    override fun isIdentified(): Boolean = super.isIdentified() && isKnown
+    override val isIdentified: Boolean
+        get() = super.isIdentified && isKnown
 
     override fun identify(): Item {
         setKnown()
@@ -182,9 +183,7 @@ open abstract class Ring : KindofMisc() {
 
         private val rings = arrayOf(
                 // RingOfAccuracy::class.java, 
-                RingOfArcane::class.java,
-                RingOfEvasion::class.java,
-                RingOfResistance::class.java,
+                RingOfArcane::class.java, RingOfEvasion::class.java, RingOfResistance::class.java,
                 RingOfForce::class.java, RingOfFuror::class.java, RingOfHaste::class.java,
                 RingOfCritical::class.java, RingOfMight::class.java, RingOfSharpshooting::class.java,
                 RingOfHealth::class.java, RingOfWealth::class.java)
@@ -213,7 +212,7 @@ open abstract class Ring : KindofMisc() {
             handler.save(bundle)
         }
 
-        fun saveSelectively(bundle: Bundle, items: ArrayList<Item>) {
+        fun saveSelectively(bundle: Bundle, items: ArrayList<Ring>) {
             handler.saveSelectively(bundle, items)
         }
 

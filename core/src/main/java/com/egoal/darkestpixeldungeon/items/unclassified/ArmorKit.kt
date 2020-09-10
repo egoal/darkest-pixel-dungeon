@@ -31,9 +31,10 @@ class ArmorKit : Item() {
         }
     }
 
-    override fun isUpgradable(): Boolean = false
-
-    override fun isIdentified(): Boolean = true
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     private fun upgrade(armor: Armor) {
         detach(curUser.belongings.backpack)

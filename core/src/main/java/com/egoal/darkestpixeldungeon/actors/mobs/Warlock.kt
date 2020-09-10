@@ -75,7 +75,7 @@ class Warlock : Mob(), Callback {
 
         if (enemy!!.checkHit(dmg)) {
             if (enemy === Dungeon.hero && Random.Int(2) == 0) {
-                Buff.prolong(enemy, Weakness::class.java, Weakness.duration(enemy!!))
+                Buff.prolong(enemy!!, Weakness::class.java, Weakness.duration(enemy!!))
             }
 
             enemy!!.takeDamage(dmg)

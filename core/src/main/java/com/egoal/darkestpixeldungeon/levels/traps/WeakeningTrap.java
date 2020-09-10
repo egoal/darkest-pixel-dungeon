@@ -45,9 +45,9 @@ public class WeakeningTrap extends Trap {
 
     Char ch = Actor.Companion.findChar(pos);
     if (ch == Dungeon.hero) {
-      Buff.prolong(ch, Weakness.class, Weakness.Companion.duration(ch) * 2f);
+      Buff.Companion.prolong(ch, Weakness.class, Weakness.Companion.duration(ch) * 2f);
     } else if (ch != null) {
-      Buff.prolong(ch, Slow.class, Slow.duration(ch));
+      Buff.Companion.prolong(ch, Slow.class, Slow.Companion.duration(ch));
     }
   }
 }

@@ -34,6 +34,11 @@ abstract class Key(var depth: Int = 0) : Item() {
         unique = true
     }
 
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
+
     override fun isSimilar(item: Item) = 
             item.javaClass == javaClass && (item as Key).depth == depth
 
@@ -56,14 +61,10 @@ abstract class Key(var depth: Int = 0) : Item() {
         depth = bundle.getInt(DEPTH)
     }
 
-    override fun isUpgradable() = false
-
-    override fun isIdentified() = true
-
     companion object {
-        val TIME_TO_UNLOCK = 1f
+        const val TIME_TO_UNLOCK = 1f
         
-        private val DEPTH = "depth"
+        private const val DEPTH = "depth"
     }
 
 }

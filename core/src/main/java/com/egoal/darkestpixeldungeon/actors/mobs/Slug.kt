@@ -23,7 +23,7 @@ class Slug : Mob() {
 
     override fun defendDamage(dmg: Damage): Damage {
         if (dmg.type == Damage.Type.NORMAL)
-            dmg.value = max(dmg.value * 2 / 5, 1)
+            dmg.value = max(dmg.value * 3 / 5, 1)
 
         return super.defendDamage(dmg)
     }
@@ -33,8 +33,7 @@ class Slug : Mob() {
     override fun immunizedBuffs() = IMMUNS
 
     companion object {
-        private val IMMUNS = hashSetOf<Class<*>>(
-                Bleeding::class.java, Terror::class.java)
+        private val IMMUNS = hashSetOf<Class<*>>(Bleeding::class.java, Terror::class.java)
     }
 }
 

@@ -66,7 +66,7 @@ public class DisarmingTrap extends Trap {
       Hero hero = Dungeon.hero;
       KindOfWeapon weapon = hero.getBelongings().getWeapon();
 
-      if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
+      if (weapon != null && !(weapon instanceof Knuckles) && !weapon.getCursed()) {
 
         int cell = Dungeon.level.randomRespawnCell();
         if (cell != -1) {

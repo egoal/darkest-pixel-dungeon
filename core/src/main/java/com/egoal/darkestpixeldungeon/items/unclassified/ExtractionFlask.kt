@@ -123,7 +123,10 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         return desc
     }
 
-    override fun isUpgradable(): Boolean = false
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     override fun enchantByBlueprint() {
         enhanced = true
@@ -256,7 +259,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
     }
 
     class PurifyCounter : FlavourBuff() {
-        override fun attachTo(target: Char?): Boolean {
+        override fun attachTo(target: Char): Boolean {
             val attached = super.attachTo(target)
             if (attached) GLog.w(M.L(ExtractionFlask::class.java, "start_purify"))
             return attached

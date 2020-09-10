@@ -152,7 +152,7 @@ class UnstableSpellbook : Artifact() {
         }
     }
 
-    override fun passiveBuff(): ArtifactBuff? = bookRecharge()
+    override fun passiveBuff()= bookRecharge()
 
     override fun upgrade(): Item {
         super.upgrade()

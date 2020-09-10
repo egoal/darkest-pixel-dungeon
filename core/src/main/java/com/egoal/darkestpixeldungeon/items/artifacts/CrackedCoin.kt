@@ -87,7 +87,7 @@ class CrackedCoin : Artifact() {
                     hero.busy()
                     Sample.INSTANCE.play(Assets.SND_MELD)
                     activeBuff = activeBuff()
-                    activeBuff.attachTo(hero)
+                    activeBuff!!.attachTo(hero)
                     hero.sprite.operate(hero.pos)
                 }
             } else {
@@ -115,7 +115,7 @@ class CrackedCoin : Artifact() {
         super.activate(ch)
         if (shieldActived) {
             activeBuff = activeBuff()
-            activeBuff.attachTo(ch)
+            activeBuff!!.attachTo(ch)
         }
     }
 

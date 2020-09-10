@@ -90,9 +90,10 @@ class Amulet : Item() {
 
     }
 
-    override fun isIdentified(): Boolean = true
-
-    override fun isUpgradable(): Boolean = false
+    override val isUpgradable: Boolean
+        get() = false
+    override val isIdentified: Boolean
+        get() = true
 
     companion object {
 

@@ -57,9 +57,9 @@ public class WndItem extends Window {
     titlebar.setRect(0, 0, width, 0);
     add(titlebar);
 
-    if (item.levelKnown && item.level() > 0) {
+    if (item.getLevelKnown() && item.level() > 0) {
       titlebar.color(ItemSlot.UPGRADED);
-    } else if (item.levelKnown && item.level() < 0) {
+    } else if (item.getLevelKnown() && item.level() < 0) {
       titlebar.color(ItemSlot.DEGRADED);
     }
 
@@ -96,7 +96,7 @@ public class WndItem extends Window {
         add(btn);
         line.add(btn);
 
-        if (action.equals(item.defaultAction)) {
+        if (action.equals(item.getDefaultAction())) {
           btn.textColor(TITLE_COLOR);
         }
 
