@@ -408,7 +408,7 @@ public class GameScene extends PixelScene {
               Dungeon.hero.getHeroPerk().has(LevelPerception.class) &&
               ((RegularLevel) Dungeon.level).secretDoors() > 0)
         GLog.n(Messages.get(this, "secrets"));
-      
+
       InterlevelScene.Companion.setMode(InterlevelScene.Mode.NONE);
 
       fadeIn();
@@ -573,8 +573,9 @@ public class GameScene extends PixelScene {
   }
 
   private void addTrapSprite(Trap trap) {
-    (trap.sprite = (TrapSprite) traps.recycle(TrapSprite.class)).reset(trap);
-    trap.sprite.visible = trap.visible;
+    trap.sprite = (TrapSprite)traps.recycle(TrapSprite.class);
+    trap.sprite.reset(trap);
+    trap.getSprite().visible = trap.getVisible();
   }
 
   private void addBlobSprite(final Blob gas) {
@@ -711,7 +712,7 @@ public class GameScene extends PixelScene {
       if (m != null && ((BubbleText) m).target == target)
         return (BubbleText) m;
     }
-    
+
     // create new one
     return sentence();
   }
@@ -945,9 +946,9 @@ public class GameScene extends PixelScene {
     }
 
     Trap trap = Dungeon.level.getTraps().get(cell);
-    if (trap != null && trap.visible) {
+    if (trap != null && trap.getVisible()) {
       objects.add(trap);
-      names.add(Messages.titleCase(trap.name));
+      names.add(Messages.titleCase(trap.getName()));
     }
 
     if (objects.isEmpty()) {

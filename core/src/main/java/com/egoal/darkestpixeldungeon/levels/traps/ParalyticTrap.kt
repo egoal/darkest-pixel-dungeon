@@ -18,21 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.windows;
+package com.egoal.darkestpixeldungeon.levels.traps
 
-import com.egoal.darkestpixeldungeon.levels.traps.Trap;
-import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
+import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.actors.blobs.ParalyticGas
+import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.sprites.TrapSprite
 
-public class WndInfoTrap extends WndTitledMessage {
+class ParalyticTrap : Trap() {
 
-  public WndInfoTrap(Trap trap) {
+    init {
+        color = TrapSprite.YELLOW
+        shape = TrapSprite.GRILL
+    }
 
-    super(new TrapSprite(trap.getColor() + (trap.getShape() * 16)),
-            trap.getName(),
-            (!trap.getActive() ? Messages.get(WndInfoTrap.class, "inactive") +
-                    "\n\n" : "") + trap.desc());
+    override fun activate() {
 
-  }
+        GameScene.add(Blob.seed(pos, 80 + 5 * Dungeon.depth, ParalyticGas::class.java))
 
+    }
 }

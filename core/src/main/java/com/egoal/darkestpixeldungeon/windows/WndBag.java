@@ -336,7 +336,7 @@ public class WndBag extends WndTabbed {
 
   private static class Placeholder extends Item {
     {
-      setName(null);
+      setName("");
     }
 
     public Placeholder(int image) {
@@ -411,7 +411,7 @@ public class WndBag extends WndTabbed {
           }
         }
 
-        if (item.name() == null) {
+        if (item.name().equals("")) {
           enable(false);
         } else {
           enable(filter != null ? filter.enable(item) : filterByMode(item));

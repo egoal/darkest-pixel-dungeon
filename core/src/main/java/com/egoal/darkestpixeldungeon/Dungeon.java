@@ -62,7 +62,7 @@ import java.util.HashSet;
 public class Dungeon {
 
   public static int initialDepth_ = -1;
-  public static final String VERSION_STRING = "0.5.0-0.4";
+  public static final String VERSION_STRING = "0.5.0-0.5";
 
   public static int transmutation;  // depth number for a well of transmutation
 

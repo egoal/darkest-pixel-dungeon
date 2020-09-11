@@ -184,9 +184,9 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         if (Dungeon.hero.STR() > STRReq())
             info += " " + M.L(MissileWeapon::class.java, "excess_str", strCorrection(Dungeon.hero))
 
-        if (enchantment != null && (cursedKnown || !enchantment.curse())) {
-            info += "\n\n" + M.L(Weapon::class.java, "enchanted", enchantment.name())
-            info += " " + M.L(enchantment, "desc")
+        if (enchantment != null && (cursedKnown || !enchantment!!.curse())) {
+            info += "\n\n" + M.L(Weapon::class.java, "enchanted", enchantment!!.name())
+            info += " " + M.L(enchantment!!, "desc")
         }
 
         if (cursed && isEquipped(Dungeon.hero)) {

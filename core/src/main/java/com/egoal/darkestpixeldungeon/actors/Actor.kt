@@ -42,11 +42,11 @@ abstract class Actor : Bundlable {
 
     protected abstract fun act(): Boolean
 
-    protected open fun spend(time: Float) {
+    open fun spend(time: Float) {
         this.time += time
     }
 
-    protected fun postpone(time: Float) {
+    fun postpone(time: Float) {
         if (this.time < now + time)
             this.time = now + time
     }

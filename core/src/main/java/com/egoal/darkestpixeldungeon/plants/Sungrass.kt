@@ -71,16 +71,14 @@ class Sungrass : Plant(4) {
             }
             if (count == 5) {
                 if (level <= healCurr.toDouble() * .025 * target.HT.toDouble()) {
-                    target.HP = Math.min(target.HT, target.HP + level)
-                    target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)
+                    target.recoverHP(level, this)
                     detach()
                 } else {
-                    target.HP = Math.min(target.HT, target.HP + (healCurr.toDouble() * .025
-                            * target.HT.toDouble()).toInt())
-                    level -= (healCurr.toDouble() * .025 * target.HT.toDouble()).toInt()
-                    if (healCurr < 6)
-                        healCurr++
-                    target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)
+                    val heal = (healCurr * 0.025f * target.HT).toInt()
+                    level -= heal
+                    if (healCurr < 6) healCurr++
+
+                    target.recoverHP(heal, this)
                 }
                 if (target.HP == target.HT && target is Hero) {
                     (target as Hero).resting = false

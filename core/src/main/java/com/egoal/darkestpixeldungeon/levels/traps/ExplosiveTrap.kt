@@ -18,21 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.windows;
+package com.egoal.darkestpixeldungeon.levels.traps
 
-import com.egoal.darkestpixeldungeon.levels.traps.Trap;
-import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
+import com.egoal.darkestpixeldungeon.items.unclassified.Bomb
+import com.egoal.darkestpixeldungeon.sprites.TrapSprite
 
-public class WndInfoTrap extends WndTitledMessage {
+class ExplosiveTrap : Trap() {
 
-  public WndInfoTrap(Trap trap) {
+    init {
+        color = TrapSprite.ORANGE
+        shape = TrapSprite.DIAMOND
+    }
 
-    super(new TrapSprite(trap.getColor() + (trap.getShape() * 16)),
-            trap.getName(),
-            (!trap.getActive() ? Messages.get(WndInfoTrap.class, "inactive") +
-                    "\n\n" : "") + trap.desc());
-
-  }
+    override fun activate() {
+        Bomb().explode(pos)
+    }
 
 }

@@ -5,18 +5,19 @@ import android.widget.GridLayout
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import kotlin.math.ceil
+import kotlin.math.max
 
 /**
  * Created by 93942 on 9/6/2018.
  */
 
 class Mending : Buff() {
-
     var recoveryValue = 0
 
     init {
@@ -45,8 +46,7 @@ class Mending : Buff() {
         if (v <= 0.1) {
             detach()
         } else {
-            target.HP = Math.min(target.HT, target.HP + Math.max(v, 1))
-            target.sprite.emitter().start(Speck.factory(Speck.HEALING), .4f, 4)
+            target.recoverHP(max(v, 1), this)
         }
 
         spend(1f)
@@ -54,17 +54,11 @@ class Mending : Buff() {
         return true
     }
 
-    override fun icon(): Int {
-        return BuffIndicator.MENDING
-    }
+    override fun icon(): Int = BuffIndicator.MENDING
 
-    override fun toString(): String {
-        return Messages.get(this, "name")
-    }
+    override fun toString(): String = M.L(this, "name")
 
-    override fun desc(): String {
-        return Messages.get(this, "desc", recoveryValue)
-    }
+    override fun desc(): String = M.L(this, "desc", recoveryValue)
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

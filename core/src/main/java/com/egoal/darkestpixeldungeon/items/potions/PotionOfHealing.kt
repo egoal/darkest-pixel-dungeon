@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.actors.hero.perks.EfficientPotionOfHealing
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import kotlin.math.min
 
@@ -55,19 +56,19 @@ class PotionOfHealing : Potion() {
         Buff.detach(hero, Bleeding::class.java)
 
         if (reinforced) {
-            hero.HP = Math.min(2 * hero.HT, hero.HT + hero.HP)
+            hero.HP = min(2 * hero.HT, hero.HT + hero.HP)
 
             Buff.detach(hero, Poison::class.java)
             Buff.detach(hero, Cripple::class.java)
             Buff.detach(hero, Weakness::class.java)
             Buff.detach(hero, Burning::class.java)
 
-            GLog.p(Messages.get(this, "heal"))
+            GLog.p(M.L(this, "heal"))
         } else {
             val value = recoverValue(hero)
             // directly recover some health, since buff is act later than chars
             val directRecover = value / 4
-            hero.HP = Math.min(hero.HT, hero.HP + directRecover)
+            hero.recoverHP(directRecover, this)
 
             val m = hero.buff(Mending::class.java)
             if (m != null) {

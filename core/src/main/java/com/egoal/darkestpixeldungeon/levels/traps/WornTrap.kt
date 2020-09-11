@@ -18,21 +18,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.windows;
+package com.egoal.darkestpixeldungeon.levels.traps
 
-import com.egoal.darkestpixeldungeon.levels.traps.Trap;
-import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
+import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.TrapSprite
 
-public class WndInfoTrap extends WndTitledMessage {
+class WornTrap : Trap() {
 
-  public WndInfoTrap(Trap trap) {
+    init {
+        color = TrapSprite.BLACK
+        shape = TrapSprite.DOTS
+    }
 
-    super(new TrapSprite(trap.getColor() + (trap.getShape() * 16)),
-            trap.getName(),
-            (!trap.getActive() ? Messages.get(WndInfoTrap.class, "inactive") +
-                    "\n\n" : "") + trap.desc());
+    override fun hide(): Trap {
+        //this one can't be hidden
+        return reveal()
+    }
 
-  }
-
+    override fun activate() {
+        CellEmitter.get(pos).burst(Speck.factory(Speck.STEAM), 6)
+        GLog.i(Messages.get(this, "nothing"))
+    }
 }

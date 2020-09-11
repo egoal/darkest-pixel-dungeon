@@ -74,10 +74,10 @@ public class TrapSprite extends Image {
 
     revive();
 
-    reset((trap.active ? trap.color : BLACK) + (trap.shape * 16));
+    reset((trap.getActive() ? trap.getColor() : BLACK) + (trap.getShape() * 16));
     alpha(1f);
 
-    pos = trap.pos;
+    pos = trap.getPos();
     x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE;
     y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE;
 

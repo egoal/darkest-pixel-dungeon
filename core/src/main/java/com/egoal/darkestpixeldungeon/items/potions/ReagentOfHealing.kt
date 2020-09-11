@@ -77,11 +77,9 @@ class ReagentOfHealing : Item() {
         val ratio = hero.HP.toFloat() / hero.HT
         val amount = max(round((1f - 2f * ratio) * hero.HT).toInt(), 1) // usually, recover to about 1f-ratio
 
-        hero.HP += amount
+        hero.recoverHP(amount, this)
 
-        hero.sprite.showStatus(CharSprite.POSITIVE, "+$amount")
-        hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, min(6, amount))
-        if (ratio < 0.15f) {
+        if (hero.isAlive && ratio < 0.15f) {
             hero.sayShort(HeroLines.SAVED_ME)
             hero.recoverSanity(Random.Float(2f, 6f - ratio / 0.05f)) // 2~3 +
         }

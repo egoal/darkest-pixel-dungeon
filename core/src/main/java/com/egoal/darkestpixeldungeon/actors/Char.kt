@@ -437,7 +437,10 @@ abstract class Char : Actor() {
     open fun recoverHP(dhp: Int, src: Any? = null) {
         if (dhp == 0) return
 
-        HP = min(HT, HP + dhp)
+        if (dhp > 0) {
+            if (HP < HT) HP = min(HT, HP + dhp)
+        } else HP += dhp
+
         if (dhp > 0) sprite.showStatus(CharSprite.POSITIVE, "+$dhp")
         else sprite.showStatus(CharSprite.NEGATIVE, "$dhp")
 

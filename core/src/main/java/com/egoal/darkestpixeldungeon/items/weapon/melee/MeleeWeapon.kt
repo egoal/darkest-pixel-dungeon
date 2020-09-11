@@ -72,10 +72,9 @@ open class MeleeWeapon : Weapon() {
             Imbue.HEAVY -> info += "\n\n" + M.L(Weapon::class.java, "heavier")
         }
 
-        if (enchantment != null && (cursedKnown || !enchantment.curse())) {
-            info += "\n\n" + M.L(Weapon::class.java, "enchanted", enchantment
-                    .name())
-            info += " " + M.L(enchantment, "desc")
+        if (enchantment != null && (cursedKnown || !enchantment!!.curse())) {
+            info += "\n\n" + M.L(Weapon::class.java, "enchanted", enchantment!!.name())
+            info += " " + M.L(enchantment!!, "desc")
         }
 
         if (cursed && isEquipped(Dungeon.hero)) {

@@ -18,21 +18,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.windows;
+package com.egoal.darkestpixeldungeon.items.weapon.enchantments
 
-import com.egoal.darkestpixeldungeon.levels.traps.Trap;
-import com.egoal.darkestpixeldungeon.messages.Messages;
-import com.egoal.darkestpixeldungeon.sprites.TrapSprite;
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
-public class WndInfoTrap extends WndTitledMessage {
+class Projecting : Weapon.Enchantment() {
 
-  public WndInfoTrap(Trap trap) {
+    override fun proc(weapon: Weapon, damage: Damage): Damage {
+        //Does nothing as a proc, instead increases weapon range.
+        //See weapon.reachFactor, and MissileWeapon.throwPos;
+        return damage
+    }
 
-    super(new TrapSprite(trap.getColor() + (trap.getShape() * 16)),
-            trap.getName(),
-            (!trap.getActive() ? Messages.get(WndInfoTrap.class, "inactive") +
-                    "\n\n" : "") + trap.desc());
+    override fun glowing(): ItemSprite.Glowing {
+        return GREY
+    }
 
-  }
+    companion object {
+
+        private val GREY = ItemSprite.Glowing(0x888888)
+    }
 
 }

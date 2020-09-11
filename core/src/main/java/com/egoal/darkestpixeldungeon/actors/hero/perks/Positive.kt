@@ -158,11 +158,7 @@ class VampiricCrit : Perk(5) {
         val eff = min(hero.HT - hero.HP, ((0.1f + 0.15f * level) * dmg.value).toInt())
 
         if (eff > 0)
-            hero.apply {
-                HP += eff
-                sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 1)
-                sprite.showStatus(CharSprite.POSITIVE, "$eff")
-            }
+            hero.recoverHP(eff, this)
     }
 }
 
