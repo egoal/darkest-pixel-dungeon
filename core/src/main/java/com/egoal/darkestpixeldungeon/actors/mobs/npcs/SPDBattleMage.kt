@@ -8,12 +8,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.items.unclassified.Amulet
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
-import com.egoal.darkestpixeldungeon.sprites.MobSprite
+import com.egoal.darkestpixeldungeon.sprites.SimpleMobSprite
 import com.egoal.darkestpixeldungeon.windows.WndDialogue
-import com.egoal.darkestpixeldungeon.windows.WndOptions
-import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Random
 
 class SPDBattleMage : NPC() {
@@ -48,28 +44,11 @@ class SPDBattleMage : NPC() {
     }
 
     companion object {
-        class Sprite : MobSprite() {
-            init {
-                texture(Assets.SPD_BATTLE_MAGE)
-
-                val frames = TextureFilm(texture, 16, 16)
-
-                idle = Animation(1, true)
-                idle.frames(frames, 0, 1)
-
-                run = Animation(20, true)
-                run.frames(frames, 0)
-
-                die = Animation(20, true)
-                die.frames(frames, 0)
-
-                play(idle)
-            }
-
+        class Sprite : SimpleMobSprite(Assets.SPD_BATTLE_MAGE) {
             override fun link(ch: Char) {
                 super.link(ch)
 
-                add(CharSprite.State.CHILLED)
+                add(State.CHILLED)
             }
         }
     }

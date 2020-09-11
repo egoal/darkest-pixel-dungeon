@@ -33,19 +33,19 @@ public class GolemSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 16, 16);
 
-    idle = new Animation(4, true);
-    idle.frames(frames, 0, 1);
+    setIdle(new Animation(4, true));
+    getIdle().frames(frames, 0, 1);
 
-    run = new Animation(12, true);
-    run.frames(frames, 2, 3, 4, 5);
+    setRun(new Animation(12, true));
+    getRun().frames(frames, 2, 3, 4, 5);
 
-    attack = new Animation(10, false);
-    attack.frames(frames, 6, 7, 8);
+    setAttack(new Animation(10, false));
+    getAttack().frames(frames, 6, 7, 8);
 
-    die = new Animation(15, false);
-    die.frames(frames, 9, 10, 11, 12, 13);
+    setDie(new Animation(15, false));
+    getDie().frames(frames, 9, 10, 11, 12, 13);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -55,7 +55,7 @@ public class GolemSprite extends MobSprite {
 
   @Override
   public void onComplete(Animation anim) {
-    if (anim == die) {
+    if (anim == getDie()) {
       emitter().burst(ElmoParticle.FACTORY, 4);
     }
     super.onComplete(anim);

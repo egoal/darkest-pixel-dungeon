@@ -111,7 +111,7 @@ public class StatusPane extends Component {
     btnMenu = new MenuButton();
     add(btnMenu);
 
-    portrait = HeroSprite.Portrait(Dungeon.hero.getHeroClass(), lastTier);
+    portrait = HeroSprite.Companion.Portrait(Dungeon.hero.getHeroClass(), lastTier);
     add(portrait);
 
     int compassTarget = Dungeon.level.getExit();
@@ -308,7 +308,7 @@ public class StatusPane extends Component {
     int tier = Dungeon.hero.tier();
     if (tier != lastTier) {
       lastTier = tier;
-      portrait.copy(HeroSprite.Portrait(Dungeon.hero.getHeroClass(), tier));
+      portrait.copy(HeroSprite.Companion.Portrait(Dungeon.hero.getHeroClass(), tier));
     }
   }
 

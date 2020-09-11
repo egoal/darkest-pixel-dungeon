@@ -38,37 +38,37 @@ public class GnollTricksterSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 15);
 
-    idle = new MovieClip.Animation(2, true);
-    idle.frames(frames, 21, 21, 21, 22, 21, 21, 22, 22);
+    setIdle(new MovieClip.Animation(2, true));
+    getIdle().frames(frames, 21, 21, 21, 22, 21, 21, 22, 22);
 
-    run = new MovieClip.Animation(12, true);
-    run.frames(frames, 25, 26, 27, 28);
+    setRun(new MovieClip.Animation(12, true));
+    getRun().frames(frames, 25, 26, 27, 28);
 
-    attack = new MovieClip.Animation(12, false);
-    attack.frames(frames, 23, 24, 21);
+    setAttack(new MovieClip.Animation(12, false));
+    getAttack().frames(frames, 23, 24, 21);
 
-    cast = attack.clone();
+    cast = getAttack().clone();
 
-    die = new MovieClip.Animation(12, false);
-    die.frames(frames, 29, 30, 31);
+    setDie(new MovieClip.Animation(12, false));
+    getDie().frames(frames, 29, 30, 31);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
   public void attack(int cell) {
-    if (!Dungeon.level.adjacent(cell, ch.getPos())) {
+    if (!Dungeon.level.adjacent(cell, getCh().getPos())) {
 
       ((MissileSprite) parent.recycle(MissileSprite.class)).
-              reset(ch.getPos(), cell, new CurareDart(), new Callback() {
+              reset(getCh().getPos(), cell, new CurareDart(), new Callback() {
                 @Override
                 public void call() {
-                  ch.onAttackComplete();
+                  getCh().onAttackComplete();
                 }
               });
 
       play(cast);
-      turnTo(ch.getPos(), cell);
+      turnTo(getCh().getPos(), cell);
 
     } else {
 

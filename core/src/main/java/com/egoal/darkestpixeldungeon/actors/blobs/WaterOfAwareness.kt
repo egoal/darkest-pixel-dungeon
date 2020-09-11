@@ -43,7 +43,7 @@ class WaterOfAwareness : WellWater() {
     override fun affectHero(hero: Hero): Boolean {
 
         Sample.INSTANCE.play(Assets.SND_DRINK)
-        emitter.parent.add(Identification(DungeonTilemap.tileCenterToWorld(pos)))
+        emitter!!.parent.add(Identification(DungeonTilemap.tileCenterToWorld(pos)))
 
         hero.belongings.observe()
 
@@ -63,7 +63,7 @@ class WaterOfAwareness : WellWater() {
         Buff.affect(hero, Awareness::class.java, Awareness.DURATION)
         Dungeon.observe()
 
-        Dungeon.hero.interrupt()
+        hero.interrupt()
 
         GLog.p(Messages.get(this, "procced"))
 
@@ -80,7 +80,7 @@ class WaterOfAwareness : WellWater() {
         item.identify()
         Badges.validateItemLevelAquired(item)
 
-        emitter.parent.add(Identification(DungeonTilemap.tileCenterToWorld(pos)))
+        emitter!!.parent.add(Identification(DungeonTilemap.tileCenterToWorld(pos)))
 
         Journal.remove(Journal.Feature.WELL_OF_AWARENESS)
 

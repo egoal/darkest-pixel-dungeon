@@ -329,12 +329,12 @@ public class SurfaceScene extends PixelScene {
   private static class Pet extends RatSprite {
 
     public void jump() {
-      play(run);
+      play(getRun());
     }
 
     @Override
     public void onComplete(Animation anim) {
-      if (anim == run) {
+      if (anim == getRun()) {
         idle();
       }
     }

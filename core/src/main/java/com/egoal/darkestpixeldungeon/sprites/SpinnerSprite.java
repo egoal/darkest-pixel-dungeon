@@ -32,19 +32,19 @@ public class SpinnerSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 16, 16);
 
-    idle = new Animation(10, true);
-    idle.frames(frames, 0, 0, 0, 0, 0, 1, 0, 1);
+    setIdle(new Animation(10, true));
+    getIdle().frames(frames, 0, 0, 0, 0, 0, 1, 0, 1);
 
-    run = new Animation(15, true);
-    run.frames(frames, 0, 2, 0, 3);
+    setRun(new Animation(15, true));
+    getRun().frames(frames, 0, 2, 0, 3);
 
-    attack = new Animation(12, false);
-    attack.frames(frames, 0, 4, 5, 0);
+    setAttack(new Animation(12, false));
+    getAttack().frames(frames, 0, 4, 5, 0);
 
-    die = new Animation(12, false);
-    die.frames(frames, 6, 7, 8, 9);
+    setDie(new Animation(12, false));
+    getDie().frames(frames, 6, 7, 8, 9);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override

@@ -41,21 +41,21 @@ public class GhostSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 14, 15);
 
-    idle = new Animation(5, true);
-    idle.frames(frames, 0, 1);
+    setIdle(new Animation(5, true));
+    getIdle().frames(frames, 0, 1);
 
-    run = new Animation(10, true);
-    run.frames(frames, 0, 1);
+    setRun(new Animation(10, true));
+    getRun().frames(frames, 0, 1);
 
-    attack = new Animation(10, false);
-    attack.frames(frames, 0, 2, 3);
+    setAttack(new Animation(10, false));
+    getAttack().frames(frames, 0, 2, 3);
 
-    zap = attack.clone();
+    setZap(getAttack().clone());
 
-    die = new Animation(8, false);
-    die.frames(frames, 0, 4, 5, 6, 7);
+    setDie(new Animation(8, false));
+    getDie().frames(frames, 0, 4, 5, 6, 7);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -79,16 +79,16 @@ public class GhostSprite extends MobSprite {
 
   @Override
   public void zap(int cell) {
-    turnTo(ch.getPos(), cell);
-    play(zap);
+    turnTo(getCh().getPos(), cell);
+    play(getZap());
 
-    MagicMissile.whiteLight(parent, ch.getPos(), cell, (GhostHero)ch);
+    MagicMissile.whiteLight(parent, getCh().getPos(), cell, (GhostHero) getCh());
     Sample.INSTANCE.play(Assets.SND_ZAP);
   }
 
   @Override
   public void onComplete(Animation anim) {
-    if (anim == zap)
+    if (anim == getZap())
       idle();
     super.onComplete(anim);
   }

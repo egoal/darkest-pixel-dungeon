@@ -35,22 +35,22 @@ public class SeniorSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 15, 14);
 
-    idle = new Animation(6, true);
-    idle.frames(frames, 18, 17, 18, 19);
+    setIdle(new Animation(6, true));
+    getIdle().frames(frames, 18, 17, 18, 19);
 
-    run = new Animation(15, true);
-    run.frames(frames, 28, 29, 30, 31, 32, 33);
+    setRun(new Animation(15, true));
+    getRun().frames(frames, 28, 29, 30, 31, 32, 33);
 
-    attack = new Animation(12, false);
-    attack.frames(frames, 20, 21, 20, 21);
+    setAttack(new Animation(12, false));
+    getAttack().frames(frames, 20, 21, 20, 21);
 
     kick = new Animation(10, false);
     kick.frames(frames, 22, 23, 22);
 
-    die = new Animation(15, false);
-    die.frames(frames, 18, 24, 25, 25, 26, 27);
+    setDie(new Animation(15, false));
+    getDie().frames(frames, 18, 24, 25, 25, 26, 27);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -63,6 +63,6 @@ public class SeniorSprite extends MobSprite {
 
   @Override
   public void onComplete(Animation anim) {
-    super.onComplete(anim == kick ? attack : anim);
+    super.onComplete(anim == kick ? getAttack() : anim);
   }
 }

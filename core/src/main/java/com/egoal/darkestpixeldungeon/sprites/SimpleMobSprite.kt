@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.sprites
 import com.watabou.noosa.TextureFilm
 
 // finally... i add this
+// 2 frame 16 x 16 idle sprite, used widely for NPC
 open class SimpleMobSprite(texfile: String) : MobSprite() {
     init {
         texture(texfile)

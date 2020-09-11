@@ -20,6 +20,7 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import java.util.ArrayList
 
@@ -58,7 +59,7 @@ class Pickaxe : Weapon() {
             // mine
             hero.spend(TIME_TO_MINE)
             hero.busy()
-            hero.sprite.attack(i) {
+            hero.sprite.attack(i, Callback {
                 CellEmitter.center(i).burst(Speck.factory(Speck.STAR), 7)
                 Sample.INSTANCE.play(Assets.SND_EVOKE)
 
@@ -77,7 +78,7 @@ class Pickaxe : Weapon() {
                 }
 
                 hero.onOperateComplete()
-            }
+            })
         }
     }
 

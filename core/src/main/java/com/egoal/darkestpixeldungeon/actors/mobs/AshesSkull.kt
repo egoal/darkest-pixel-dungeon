@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.Callback
 import com.watabou.utils.Random
 import java.util.HashSet
 
@@ -66,7 +67,7 @@ class AshesSkull : Mob() {
         val dst = b.path[b.dist - 1]
         val attackFromShadow = !Dungeon.visible[pos]
 
-        sprite.jump(pos, dst) {
+        sprite.jump(pos, dst, Callback {
             move(dst)
             // no press, its flying
             if (attackFromShadow && target === Dungeon.hero) {
@@ -79,7 +80,7 @@ class AshesSkull : Mob() {
             Sample.INSTANCE.play(Assets.SND_TRAP)
             spend(1f)
             next()
-        }
+        })
 
         return true
     }
@@ -123,7 +124,7 @@ class AshesSkull : Mob() {
             run.frames(frames, 0, 1)
 
             attack = Animation(10, false)
-            attack.frames(frames, 0, 1, 2, 3, 4)
+            attack!!.frames(frames, 0, 1, 2, 3, 4)
 
             die = Animation(8, false)
             die.frames(frames, 0, 4, 3, 5)

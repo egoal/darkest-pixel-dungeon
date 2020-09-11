@@ -39,16 +39,16 @@ public class BlacksmithSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 13, 16);
 
-    idle = new Animation(15, true);
-    idle.frames(frames, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3);
+    setIdle(new Animation(15, true));
+    getIdle().frames(frames, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3);
 
-    run = new Animation(20, true);
-    run.frames(frames, 0);
+    setRun(new Animation(20, true));
+    getRun().frames(frames, 0);
 
-    die = new Animation(20, false);
-    die.frames(frames, 0);
+    setDie(new Animation(20, false));
+    getDie().frames(frames, 0);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -74,9 +74,9 @@ public class BlacksmithSprite extends MobSprite {
   public void onComplete(Animation anim) {
     super.onComplete(anim);
 
-    if (visible && emitter != null && anim == idle) {
+    if (visible && emitter != null && anim == getIdle()) {
       emitter.burst(Speck.factory(Speck.FORGE), 3);
-      float volume = 0.2f / (Dungeon.level.distance(ch.getPos(), Dungeon.hero.getPos()));
+      float volume = 0.2f / (Dungeon.level.distance(getCh().getPos(), Dungeon.hero.getPos()));
       Sample.INSTANCE.play(Assets.SND_EVOKE, volume, volume, 0.8f);
     }
   }

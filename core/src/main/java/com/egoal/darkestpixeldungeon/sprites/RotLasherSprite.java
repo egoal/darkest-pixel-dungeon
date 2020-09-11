@@ -32,18 +32,18 @@ public class RotLasherSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 16);
 
-    idle = new Animation(0, true);
-    idle.frames(frames, 0);
+    setIdle(new Animation(0, true));
+    getIdle().frames(frames, 0);
 
-    run = new Animation(0, true);
-    run.frames(frames, 0);
+    setRun(new Animation(0, true));
+    getRun().frames(frames, 0);
 
-    attack = new Animation(24, false);
-    attack.frames(frames, 0, 1, 2, 2, 1);
+    setAttack(new Animation(24, false));
+    getAttack().frames(frames, 0, 1, 2, 2, 1);
 
-    die = new Animation(12, false);
-    die.frames(frames, 3, 4, 5, 6);
+    setDie(new Animation(12, false));
+    getDie().frames(frames, 3, 4, 5, 6);
 
-    play(idle);
+    play(getIdle());
   }
 }

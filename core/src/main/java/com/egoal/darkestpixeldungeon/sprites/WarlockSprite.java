@@ -36,33 +36,33 @@ public class WarlockSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 15);
 
-    idle = new Animation(2, true);
-    idle.frames(frames, 0, 0, 0, 1, 0, 0, 1, 1);
+    setIdle(new Animation(2, true));
+    getIdle().frames(frames, 0, 0, 0, 1, 0, 0, 1, 1);
 
-    run = new Animation(15, true);
-    run.frames(frames, 0, 2, 3, 4);
+    setRun(new Animation(15, true));
+    getRun().frames(frames, 0, 2, 3, 4);
 
-    attack = new Animation(12, false);
-    attack.frames(frames, 0, 5, 6);
+    setAttack(new Animation(12, false));
+    getAttack().frames(frames, 0, 5, 6);
 
-    zap = attack.clone();
+    setZap(getAttack().clone());
 
-    die = new Animation(15, false);
-    die.frames(frames, 0, 7, 8, 8, 9, 10);
+    setDie(new Animation(15, false));
+    getDie().frames(frames, 0, 7, 8, 8, 9, 10);
 
-    play(idle);
+    play(getIdle());
   }
 
   public void zap(int cell) {
 
-    turnTo(ch.getPos(), cell);
-    play(zap);
+    turnTo(getCh().getPos(), cell);
+    play(getZap());
 
-    MagicMissile.shadow(parent, ch.getPos(), cell,
+    MagicMissile.shadow(parent, getCh().getPos(), cell,
             new Callback() {
               @Override
               public void call() {
-                ((Warlock) ch).onZapComplete();
+                ((Warlock) getCh()).onZapComplete();
               }
             });
     Sample.INSTANCE.play(Assets.SND_ZAP);
@@ -70,7 +70,7 @@ public class WarlockSprite extends MobSprite {
 
   @Override
   public void onComplete(Animation anim) {
-    if (anim == zap) {
+    if (anim == getZap()) {
       idle();
     }
     super.onComplete(anim);

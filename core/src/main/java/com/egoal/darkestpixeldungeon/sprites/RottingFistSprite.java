@@ -35,19 +35,19 @@ public class RottingFistSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 24, 17);
 
-    idle = new Animation(2, true);
-    idle.frames(frames, 0, 0, 1);
+    setIdle(new Animation(2, true));
+    getIdle().frames(frames, 0, 0, 1);
 
-    run = new Animation(3, true);
-    run.frames(frames, 0, 1);
+    setRun(new Animation(3, true));
+    getRun().frames(frames, 0, 1);
 
-    attack = new Animation(2, false);
-    attack.frames(frames, 0);
+    setAttack(new Animation(2, false));
+    getAttack().frames(frames, 0);
 
-    die = new Animation(10, false);
-    die.frames(frames, 0, 2, 3, 4);
+    setDie(new Animation(10, false));
+    getDie().frames(frames, 0, 2, 3, 4);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -61,10 +61,10 @@ public class RottingFistSprite extends MobSprite {
   @Override
   public void onComplete(Animation anim) {
     super.onComplete(anim);
-    if (anim == attack) {
+    if (anim == getAttack()) {
       speed.set(0);
       acc.set(0);
-      place(ch.getPos());
+      place(getCh().getPos());
 
       Camera.main.shake(4, 0.2f);
     }

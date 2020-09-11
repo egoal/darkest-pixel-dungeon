@@ -21,42 +21,57 @@
 package com.egoal.darkestpixeldungeon.sprites
 
 import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.MirrorImage
+import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.Assets
+import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
+import com.watabou.noosa.particles.Emitter
 
-class MirrorSprite : MobSprite() {
+class RotHeartSprite : MobSprite() {
+    private var cloud: Emitter? = null
+
     init {
-        texture(Dungeon.hero.heroClass.spritesheet())
-        updateArmor(0)
-        idle()
+        texture(Assets.ROT_HEART)
+
+        val frames = TextureFilm(texture, 16, 16)
+
+        idle = Animation(1, true)
+        idle.frames(frames, 0)
+
+        run = Animation(1, true)
+        run.frames(frames, 0)
+
+        attack = Animation(1, false)
+        attack!!.frames(frames, 0)
+
+        die = Animation(8, false)
+        die.frames(frames, 1, 2, 3, 4, 5, 6, 7, 7, 7)
+
+        play(idle)
     }
 
     override fun link(ch: Char) {
         super.link(ch)
-        updateArmor((ch as MirrorImage).tier)
+
+        if (cloud == null) {
+            cloud = emitter()
+            cloud!!.pour(Speck.factory(Speck.TOXIC), 0.7f)
+        }
     }
 
-    fun updateArmor(tier: Int) {
-        val film = TextureFilm(HeroSprite.tiers(), tier, FRAME_WIDTH, FRAME_HEIGHT)
-
-        idle = Animation(1, true)
-        idle.frames(film, 0, 0, 0, 1, 0, 0, 1, 1)
-
-        run = Animation(20, true)
-        run.frames(film, 2, 3, 4, 5, 6, 7)
-
-        die = Animation(20, false)
-        die.frames(film, 0)
-
-        attack = Animation(15, false)
-        attack!!.frames(film, 13, 14, 15, 0)
-
-        idle()
+    override fun turnTo(from: Int, to: Int) {
+        //do nothing
     }
 
-    companion object {
-        private const val FRAME_WIDTH = 12
-        private const val FRAME_HEIGHT = 15
+    override fun update() {
+        super.update()
+
+        cloud?.visible = visible
+    }
+
+    override fun die() {
+        super.die()
+
+        cloud?.on = false
     }
 }

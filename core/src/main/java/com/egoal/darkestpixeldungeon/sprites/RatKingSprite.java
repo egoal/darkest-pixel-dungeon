@@ -43,18 +43,18 @@ public class RatKingSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 16, 17);
 
-    idle = new Animation(2, true);
-    idle.frames(frames, c + 0, c + 0, c + 0, c + 1);
+    setIdle(new Animation(2, true));
+    getIdle().frames(frames, c + 0, c + 0, c + 0, c + 1);
 
-    run = new Animation(10, true);
-    run.frames(frames, c + 2, c + 3, c + 4, c + 5, c + 6);
+    setRun(new Animation(10, true));
+    getRun().frames(frames, c + 2, c + 3, c + 4, c + 5, c + 6);
 
-    attack = new Animation(15, false);
-    attack.frames(frames, c + 0);
+    setAttack(new Animation(15, false));
+    getAttack().frames(frames, c + 0);
 
-    die = new Animation(10, false);
-    die.frames(frames, c + 0);
+    setDie(new Animation(10, false));
+    getDie().frames(frames, c + 0);
 
-    play(idle);
+    play(getIdle());
   }
 }

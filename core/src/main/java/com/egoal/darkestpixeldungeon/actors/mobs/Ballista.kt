@@ -134,9 +134,9 @@ open class Ballista : Mob() {
                 run.frames(frames, 0, 2)
 
                 attack = Animation(8, false)
-                attack.frames(frames, 0, 2, 3)
+                attack!!.frames(frames, 0, 2, 3)
 
-                zap = attack.clone()
+                zap = attack!!.clone()
 
                 die = Animation(8, false)
                 die.frames(frames, 4, 5, 6)

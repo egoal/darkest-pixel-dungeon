@@ -16,15 +16,15 @@ public class ScrollSellerSprite extends MobSprite {
 
     // set animations
     TextureFilm frames = new TextureFilm(texture, 12, 15);
-    idle = new MovieClip.Animation(1, true);
-    idle.frames(frames, 0, 1);
+    setIdle(new MovieClip.Animation(1, true));
+    getIdle().frames(frames, 0, 1);
 
-    die = new MovieClip.Animation(20, false);
-    die.frames(frames, 0);
+    setDie(new MovieClip.Animation(20, false));
+    getDie().frames(frames, 0);
 
-    run = idle.clone();
-    attack = idle.clone();
+    setRun(getIdle().clone());
+    setAttack(getIdle().clone());
 
-    play(idle);
+    play(getIdle());
   }
 }

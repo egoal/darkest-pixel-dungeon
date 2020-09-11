@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.HighGrass
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import java.util.ArrayList
 import kotlin.math.round
@@ -30,7 +31,7 @@ class Sickle : MeleeWeapon() {
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)
         if (action == CUT) {
-            hero.sprite.attack(hero.pos) {
+            hero.sprite.attack(hero.pos, Callback {
                 var affected = false
                 for (i in PathFinder.NEIGHBOURS8) {
                     val cell = hero.pos + i
@@ -52,7 +53,7 @@ class Sickle : MeleeWeapon() {
                 }
 
                 if (affected) Dungeon.observe()
-            }
+            })
             hero.spendAndNext(1f)
         }
     }

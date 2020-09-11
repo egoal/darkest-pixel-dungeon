@@ -23,6 +23,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.Callback
 import com.watabou.utils.Random
 import kotlin.math.max
 
@@ -144,7 +145,7 @@ class Combo : Buff(), ActionIndicator.Action {
             if (enemy == null || !(target as Hero).canAttack(enemy) || target.isCharmedBy(enemy))
                 GLog.w(M.L(Combo::class.java, "bad_target"))
             else {
-                target.sprite.attack(cell) {
+                target.sprite.attack(cell, Callback {
                     type = when {
                         count >= 10 -> FinisherType.FURY
 //                        count >= 8 -> FinisherType.CRUSH
@@ -153,7 +154,7 @@ class Combo : Buff(), ActionIndicator.Action {
                         else -> FinisherType.CLOBBER
                     }
                     doAttack(enemy)
-                }
+                })
             }
         }
 
@@ -234,9 +235,9 @@ class Combo : Buff(), ActionIndicator.Action {
                     // death!!!!
                     --count
                     if (count > 0 && enemy.isAlive)
-                        target.sprite.attack(enemy.pos) {
+                        target.sprite.attack(enemy.pos, Callback {
                             doAttack(enemy)
-                        }
+                        })
                     else {
                         detach()
                         ActionIndicator.clearAction(this@Combo)

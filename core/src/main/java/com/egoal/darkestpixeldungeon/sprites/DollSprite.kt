@@ -53,12 +53,12 @@ class DollSprite : CharSprite() {
         die.frames(body, 8, 9, 10, 11, 12, 11)
 
         attack = IndexedAnimation(15, false)
-        attack.frames(body, 13, 14, 15, 0)
+        attack!!.frames(body, 13, 14, 15, 0)
 
-        zap = attack.clone()
+        zap = attack!!.clone()
 
         operate = IndexedAnimation(8, false)
-        operate.frames(body, 16, 17, 16, 17)
+        operate!!.frames(body, 16, 17, 16, 17)
 
         fly = IndexedAnimation(1, true)
         fly.frames(body, 18)
@@ -112,7 +112,7 @@ class DollSprite : CharSprite() {
     }
 
     // do nothing to reduce the violence rating of the game
-    override fun bloodBurstA(from: PointF?, damage: Int) {}
+    override fun bloodBurstA(from: PointF, damage: Int) {}
 
     override fun update() {
         sleeping = ch.isAlive && (ch as Hero).resting

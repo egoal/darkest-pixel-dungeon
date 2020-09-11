@@ -12,16 +12,16 @@ public class AlchemistSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 14);   // width & height
 
-    idle = new Animation(5, true);
-    idle.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4,
+    setIdle(new Animation(5, true));
+    getIdle().frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4,
             1, 2, 3, 4, 4, 4);
 
-    run = new Animation(20, true);
-    run.frames(frames, 0);
+    setRun(new Animation(20, true));
+    getRun().frames(frames, 0);
 
-    die = new Animation(20, false);
-    die.frames(frames, 0);
+    setDie(new Animation(20, false));
+    getDie().frames(frames, 0);
 
-    play(idle);
+    play(getIdle());
   }
 }

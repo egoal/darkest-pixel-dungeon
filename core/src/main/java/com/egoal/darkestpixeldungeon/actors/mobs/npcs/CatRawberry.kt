@@ -66,6 +66,8 @@ class CatRawberry : NPC.Unbreakable() {
                 die = MovieClip.Animation(20, true)
                 die.frames(frames, 0)
 
+                attack = idle.clone()
+
                 play(idle)
             }
         }

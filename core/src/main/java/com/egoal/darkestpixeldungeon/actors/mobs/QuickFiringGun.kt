@@ -37,9 +37,9 @@ class QuickFiringGun : Ballista() {
                 run.frames(frames, 7, 9)
 
                 attack = Animation(8, false)
-                attack.frames(frames, 7, 9, 10)
+                attack!!.frames(frames, 7, 9, 10)
 
-                zap = attack.clone()
+                zap = attack!!.clone()
 
                 die = Animation(8, false)
                 die.frames(frames, 11, 12, 13)

@@ -32,21 +32,21 @@ public class AcidicSprite extends ScorpioSprite {
 
     TextureFilm frames = new TextureFilm(texture, 18, 17);
 
-    idle = new Animation(12, true);
-    idle.frames(frames, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 16, 15, 16);
+    setIdle(new Animation(12, true));
+    getIdle().frames(frames, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 16, 15, 16);
 
-    run = new Animation(4, true);
-    run.frames(frames, 19, 20);
+    setRun(new Animation(4, true));
+    getRun().frames(frames, 19, 20);
 
-    attack = new Animation(15, false);
-    attack.frames(frames, 14, 17, 18);
+    setAttack(new Animation(15, false));
+    getAttack().frames(frames, 14, 17, 18);
 
-    zap = attack.clone();
+    setZap(getAttack().clone());
 
-    die = new Animation(12, false);
-    die.frames(frames, 14, 21, 22, 23, 24);
+    setDie(new Animation(12, false));
+    getDie().frames(frames, 14, 21, 22, 23, 24);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override

@@ -33,16 +33,16 @@ public class SheepSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 16, 15);
 
-    idle = new Animation(8, true);
-    idle.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0);
+    setIdle(new Animation(8, true));
+    getIdle().frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0);
 
-    run = idle.clone();
-    attack = idle.clone();
+    setRun(getIdle().clone());
+    setAttack(getIdle().clone());
 
-    die = new Animation(20, false);
-    die.frames(frames, 0);
+    setDie(new Animation(20, false));
+    getDie().frames(frames, 0);
 
-    play(idle);
+    play(getIdle());
     curFrame = Random.Int(curAnim.frames.length);
   }
 }

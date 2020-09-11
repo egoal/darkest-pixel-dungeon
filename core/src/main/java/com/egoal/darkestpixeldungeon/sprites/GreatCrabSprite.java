@@ -33,19 +33,19 @@ public class GreatCrabSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 16, 16);
 
-    idle = new MovieClip.Animation(5, true);
-    idle.frames(frames, 16, 17, 16, 18);
+    setIdle(new MovieClip.Animation(5, true));
+    getIdle().frames(frames, 16, 17, 16, 18);
 
-    run = new MovieClip.Animation(10, true);
-    run.frames(frames, 19, 20, 21, 22);
+    setRun(new MovieClip.Animation(10, true));
+    getRun().frames(frames, 19, 20, 21, 22);
 
-    attack = new MovieClip.Animation(12, false);
-    attack.frames(frames, 23, 24, 25);
+    setAttack(new MovieClip.Animation(12, false));
+    getAttack().frames(frames, 23, 24, 25);
 
-    die = new MovieClip.Animation(12, false);
-    die.frames(frames, 26, 27, 28, 29);
+    setDie(new MovieClip.Animation(12, false));
+    getDie().frames(frames, 26, 27, 28, 29);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override

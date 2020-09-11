@@ -35,19 +35,19 @@ public class ImpSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 14);
 
-    idle = new Animation(10, true);
-    idle.frames(frames,
+    setIdle(new Animation(10, true));
+    getIdle().frames(frames,
             0, 1, 2, 3, 0, 1, 2, 3, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
             0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 3, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4,
             0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4);
 
-    run = new Animation(20, true);
-    run.frames(frames, 0);
+    setRun(new Animation(20, true));
+    getRun().frames(frames, 0);
 
-    die = new Animation(10, false);
-    die.frames(frames, 0, 3, 2, 1, 0, 3, 2, 1, 0);
+    setDie(new Animation(10, false));
+    getDie().frames(frames, 0, 3, 2, 1, 0, 3, 2, 1, 0);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -61,7 +61,7 @@ public class ImpSprite extends MobSprite {
 
   @Override
   public void onComplete(Animation anim) {
-    if (anim == die) {
+    if (anim == getDie()) {
 
       emitter().burst(Speck.factory(Speck.WOOL), 15);
       killAndErase();

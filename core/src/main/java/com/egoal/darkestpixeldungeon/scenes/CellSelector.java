@@ -70,9 +70,8 @@ public class CellSelector extends TouchArea {
     //This can lead to none-whole coordinate, which need to be aligned with 
     // the zoom
     for (Char c : Actor.Companion.chars()) {
-      if (c.getSprite() != null && !c.getSprite().isMoving) {
-        c.getSprite().point(c.getSprite().worldToCamera(c.getPos()));
-      }
+      if(c.getHasSprite() && !c.sprite.isMoving())
+        c.sprite.point(c.sprite.worldToCamera(c.getPos()));
     }
 
     return value;

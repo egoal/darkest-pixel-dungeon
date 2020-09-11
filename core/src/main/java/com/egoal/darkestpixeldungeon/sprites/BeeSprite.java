@@ -32,19 +32,19 @@ public class BeeSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 16, 16);
 
-    idle = new Animation(12, true);
-    idle.frames(frames, 0, 1, 1, 0, 2, 2);
+    setIdle(new Animation(12, true));
+    getIdle().frames(frames, 0, 1, 1, 0, 2, 2);
 
-    run = new Animation(15, true);
-    run.frames(frames, 0, 1, 1, 0, 2, 2);
+    setRun(new Animation(15, true));
+    getRun().frames(frames, 0, 1, 1, 0, 2, 2);
 
-    attack = new Animation(20, false);
-    attack.frames(frames, 3, 4, 5, 6);
+    setAttack(new Animation(20, false));
+    getAttack().frames(frames, 3, 4, 5, 6);
 
-    die = new Animation(20, false);
-    die.frames(frames, 7, 8, 9, 10);
+    setDie(new Animation(20, false));
+    getDie().frames(frames, 7, 8, 9, 10);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override

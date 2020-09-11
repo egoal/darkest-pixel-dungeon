@@ -80,7 +80,7 @@ class DevilGhost : Wraith() {
             run.frames(frames, 0)
 
             attack = Animation(15, false)
-            attack.frames(frames, 0, 0, 0)
+            attack!!.frames(frames, 0, 0, 0)
 
             die = Animation(10, false)
             die.frames(frames, 0)

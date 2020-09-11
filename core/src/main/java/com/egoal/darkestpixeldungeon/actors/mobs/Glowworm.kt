@@ -103,7 +103,7 @@ class Glowworm(private var level: Int = 1) : Mob() {
             run = idle.clone()
 
             attack = Animation(15, false)
-            attack.frames(frames, 2, 3, 4)
+            attack!!.frames(frames, 2, 3, 4)
 
             die = Animation(9, false)
             die.frames(frames, 5, 6, 7)

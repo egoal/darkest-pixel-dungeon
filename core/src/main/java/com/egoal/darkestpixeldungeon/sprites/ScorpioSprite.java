@@ -37,21 +37,21 @@ public class ScorpioSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 18, 17);
 
-    idle = new Animation(12, true);
-    idle.frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 2);
+    setIdle(new Animation(12, true));
+    getIdle().frames(frames, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 2);
 
-    run = new Animation(8, true);
-    run.frames(frames, 5, 5, 6, 6);
+    setRun(new Animation(8, true));
+    getRun().frames(frames, 5, 5, 6, 6);
 
-    attack = new Animation(15, false);
-    attack.frames(frames, 0, 3, 4);
+    setAttack(new Animation(15, false));
+    getAttack().frames(frames, 0, 3, 4);
 
-    zap = attack.clone();
+    setZap(getAttack().clone());
 
-    die = new Animation(12, false);
-    die.frames(frames, 0, 7, 8, 9, 10);
+    setDie(new Animation(12, false));
+    getDie().frames(frames, 0, 7, 8, 9, 10);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -61,11 +61,11 @@ public class ScorpioSprite extends MobSprite {
 
   @Override
   public void attack(int cell) {
-    if (!Dungeon.level.adjacent(cell, ch.getPos())) {
+    if (!Dungeon.level.adjacent(cell, getCh().getPos())) {
 
       cellToAttack = cell;
-      turnTo(ch.getPos(), cell);
-      play(zap);
+      turnTo(getCh().getPos(), cell);
+      play(getZap());
 
     } else {
 
@@ -76,14 +76,14 @@ public class ScorpioSprite extends MobSprite {
 
   @Override
   public void onComplete(Animation anim) {
-    if (anim == zap) {
+    if (anim == getZap()) {
       idle();
 
       ((MissileSprite) parent.recycle(MissileSprite.class)).
-              reset(ch.getPos(), cellToAttack, new Dart(), new Callback() {
+              reset(getCh().getPos(), cellToAttack, new Dart(), new Callback() {
                 @Override
                 public void call() {
-                  ch.onAttackComplete();
+                  getCh().onAttackComplete();
                 }
               });
     } else {

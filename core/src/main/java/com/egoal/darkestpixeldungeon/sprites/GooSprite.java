@@ -43,11 +43,11 @@ public class GooSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 20, 14);
 
-    idle = new Animation(10, true);
-    idle.frames(frames, 2, 1, 0, 0, 1);
+    setIdle(new Animation(10, true));
+    getIdle().frames(frames, 2, 1, 0, 0, 1);
 
-    run = new Animation(15, true);
-    run.frames(frames, 3, 2, 1, 2);
+    setRun(new Animation(15, true));
+    getRun().frames(frames, 3, 2, 1, 2);
 
     pump = new Animation(20, true);
     pump.frames(frames, 4, 3, 2, 1, 0);
@@ -55,13 +55,13 @@ public class GooSprite extends MobSprite {
     pumpAttack = new Animation(20, false);
     pumpAttack.frames(frames, 4, 3, 2, 1, 0, 7);
 
-    attack = new Animation(10, false);
-    attack.frames(frames, 8, 9, 10);
+    setAttack(new Animation(10, false));
+    getAttack().frames(frames, 8, 9, 10);
 
-    die = new Animation(10, false);
-    die.frames(frames, 5, 6, 7);
+    setDie(new Animation(10, false));
+    getDie().frames(frames, 5, 6, 7);
 
-    play(idle);
+    play(getIdle());
 
     spray = centerEmitter();
     spray.autoKill = false;
@@ -145,8 +145,8 @@ public class GooSprite extends MobSprite {
     if (anim == pumpAttack) {
 
       idle();
-      ch.onAttackComplete();
-    } else if (anim == die) {
+      getCh().onAttackComplete();
+    } else if (anim == getDie()) {
       spray.killAndErase();
     }
   }

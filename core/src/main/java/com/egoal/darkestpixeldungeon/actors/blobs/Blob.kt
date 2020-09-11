@@ -34,7 +34,7 @@ open class Blob : Actor() {
     lateinit var cur: IntArray
     protected lateinit var off: IntArray
 
-    lateinit var emitter: BlobEmitter
+    var emitter: BlobEmitter? = null
 
     var area = Rect()
 

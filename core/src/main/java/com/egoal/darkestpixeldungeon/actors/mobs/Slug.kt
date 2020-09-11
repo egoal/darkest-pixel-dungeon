@@ -50,7 +50,7 @@ class SlugSprite : MobSprite() {
         run.frames(frames, 0, 1, 2)
 
         attack = Animation(15, false)
-        attack.frames(frames, 3, 4, 5, 6, 7)
+        attack!!.frames(frames, 3, 4, 5, 6, 7)
 
         die = Animation(10, false)
         die.frames(frames, 8, 9, 10, 11)

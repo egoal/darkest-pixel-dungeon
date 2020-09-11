@@ -68,7 +68,7 @@ class WarriorArmor : ClassArmor() {
 
                     val dest = cell
                     curUser.busy()
-                    curUser.sprite.jump(curUser.pos, cell) {
+                    curUser.sprite.jump(curUser.pos, cell, Callback {
                         curUser.move(dest)
                         Dungeon.level.press(dest, curUser)
                         Dungeon.observe()
@@ -86,7 +86,7 @@ class WarriorArmor : ClassArmor() {
                         Camera.main.shake(2f, 0.5f)
 
                         curUser.spendAndNext(LEAP_TIME.toFloat())
-                    }
+                    })
                 }
             }
 

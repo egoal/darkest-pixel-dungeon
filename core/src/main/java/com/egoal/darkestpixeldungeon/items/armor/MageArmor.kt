@@ -40,6 +40,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.Callback
 import com.watabou.utils.Random
 import java.util.ArrayList
 
@@ -99,14 +100,14 @@ class MageArmor : ClassArmor(), GreatBlueprint.Enchantable {
 
                 Buff.prolong(Item.curUser, FlyCoolDown::class.java, Random.Float(20f, 25f))
                 Item.curUser.busy()
-                Item.curUser.sprite.jump(Item.curUser.pos, dst) {
+                Item.curUser.sprite.jump(Item.curUser.pos, dst, Callback {
                     Item.curUser.move(dst)
                     Dungeon.level.press(dst, Item.curUser)
                     Dungeon.observe()
                     GameScene.updateFog()
 
                     Item.curUser.spendAndNext(1f)
-                }
+                })
                 Sample.INSTANCE.play(Assets.SND_PUFF)
             }
         }

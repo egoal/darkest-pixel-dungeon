@@ -32,18 +32,18 @@ public class BatSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 15, 15);
 
-    idle = new Animation(8, true);
-    idle.frames(frames, 0, 1);
+    setIdle(new Animation(8, true));
+    getIdle().frames(frames, 0, 1);
 
-    run = new Animation(12, true);
-    run.frames(frames, 0, 1);
+    setRun(new Animation(12, true));
+    getRun().frames(frames, 0, 1);
 
-    attack = new Animation(12, false);
-    attack.frames(frames, 2, 3, 0, 1);
+    setAttack(new Animation(12, false));
+    getAttack().frames(frames, 2, 3, 0, 1);
 
-    die = new Animation(12, false);
-    die.frames(frames, 4, 5, 6);
+    setDie(new Animation(12, false));
+    getDie().frames(frames, 4, 5, 6);
 
-    play(idle);
+    play(getIdle());
   }
 }

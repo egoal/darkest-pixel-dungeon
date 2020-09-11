@@ -44,8 +44,8 @@ public class EyeSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 16, 18);
 
-    idle = new Animation(8, true);
-    idle.frames(frames, 0, 1, 2);
+    setIdle(new Animation(8, true));
+    getIdle().frames(frames, 0, 1, 2);
 
     charging = new Animation(12, true);
     charging.frames(frames, 3, 4);
@@ -55,17 +55,17 @@ public class EyeSprite extends MobSprite {
     chargeParticles.pour(MagicMissile.MagicParticle.ATTRACTING, 0.05f);
     chargeParticles.on = false;
 
-    run = new Animation(12, true);
-    run.frames(frames, 5, 6);
+    setRun(new Animation(12, true));
+    getRun().frames(frames, 5, 6);
 
-    attack = new Animation(8, false);
-    attack.frames(frames, 4, 3);
-    zap = attack.clone();
+    setAttack(new Animation(8, false));
+    getAttack().frames(frames, 4, 3);
+    setZap(getAttack().clone());
 
-    die = new Animation(8, false);
-    die.frames(frames, 7, 8, 9);
+    setDie(new Animation(8, false));
+    getDie().frames(frames, 7, 8, 9);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -82,7 +82,7 @@ public class EyeSprite extends MobSprite {
   }
 
   public void charge(int pos) {
-    turnTo(ch.getPos(), pos);
+    turnTo(getCh().getPos(), pos);
     play(charging);
   }
 
@@ -102,14 +102,14 @@ public class EyeSprite extends MobSprite {
   public void onComplete(Animation anim) {
     super.onComplete(anim);
 
-    if (anim == zap) {
-      if (Dungeon.visible[ch.getPos()] || Dungeon.visible[zapPos]) {
+    if (anim == getZap()) {
+      if (Dungeon.visible[getCh().getPos()] || Dungeon.visible[zapPos]) {
         parent.add(new Beam.DeathRay(center(), DungeonTilemap
                 .tileCenterToWorld(zapPos)));
       }
-      ((Eye) ch).deathGaze();
-      ch.next();
-    } else if (anim == die) {
+      ((Eye) getCh()).deathGaze();
+      getCh().next();
+    } else if (anim == getDie()) {
       chargeParticles.killAndErase();
     }
   }

@@ -35,22 +35,22 @@ public class MonkSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 15, 14);
 
-    idle = new Animation(6, true);
-    idle.frames(frames, 1, 0, 1, 2);
+    setIdle(new Animation(6, true));
+    getIdle().frames(frames, 1, 0, 1, 2);
 
-    run = new Animation(15, true);
-    run.frames(frames, 11, 12, 13, 14, 15, 16);
+    setRun(new Animation(15, true));
+    getRun().frames(frames, 11, 12, 13, 14, 15, 16);
 
-    attack = new Animation(12, false);
-    attack.frames(frames, 3, 4, 3, 4);
+    setAttack(new Animation(12, false));
+    getAttack().frames(frames, 3, 4, 3, 4);
 
     kick = new Animation(10, false);
     kick.frames(frames, 5, 6, 5);
 
-    die = new Animation(15, false);
-    die.frames(frames, 1, 7, 8, 8, 9, 10);
+    setDie(new Animation(15, false));
+    getDie().frames(frames, 1, 7, 8, 8, 9, 10);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
@@ -63,6 +63,6 @@ public class MonkSprite extends MobSprite {
 
   @Override
   public void onComplete(Animation anim) {
-    super.onComplete(anim == kick ? attack : anim);
+    super.onComplete(anim == kick ? getAttack() : anim);
   }
 }

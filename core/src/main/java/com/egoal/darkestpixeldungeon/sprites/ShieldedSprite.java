@@ -32,18 +32,18 @@ public class ShieldedSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 16);
 
-    idle = new Animation(2, true);
-    idle.frames(frames, 21, 21, 21, 22, 21, 21, 22, 22);
+    setIdle(new Animation(2, true));
+    getIdle().frames(frames, 21, 21, 21, 22, 21, 21, 22, 22);
 
-    run = new Animation(12, true);
-    run.frames(frames, 25, 26, 27, 28);
+    setRun(new Animation(12, true));
+    getRun().frames(frames, 25, 26, 27, 28);
 
-    attack = new Animation(12, false);
-    attack.frames(frames, 23, 24);
+    setAttack(new Animation(12, false));
+    getAttack().frames(frames, 23, 24);
 
-    die = new Animation(12, false);
-    die.frames(frames, 29, 30, 31);
+    setDie(new Animation(12, false));
+    getDie().frames(frames, 29, 30, 31);
 
-    play(idle);
+    play(getIdle());
   }
 }

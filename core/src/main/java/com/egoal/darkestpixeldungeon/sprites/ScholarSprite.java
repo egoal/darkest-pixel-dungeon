@@ -16,15 +16,15 @@ public class ScholarSprite extends MobSprite {
 
     // set animations
     TextureFilm frames = new TextureFilm(texture, 12, 15);
-    idle = new MovieClip.Animation(2, true);
-    idle.frames(frames, 0, 1, 2, 3);
+    setIdle(new MovieClip.Animation(2, true));
+    getIdle().frames(frames, 0, 1, 2, 3);
 
-    run = new MovieClip.Animation(20, true);
-    run.frames(frames, 0);
+    setRun(new MovieClip.Animation(20, true));
+    getRun().frames(frames, 0);
 
-    die = new MovieClip.Animation(20, true);
-    die.frames(frames, 0);
+    setDie(new MovieClip.Animation(20, true));
+    getDie().frames(frames, 0);
 
-    play(idle);
+    play(getIdle());
   }
 }

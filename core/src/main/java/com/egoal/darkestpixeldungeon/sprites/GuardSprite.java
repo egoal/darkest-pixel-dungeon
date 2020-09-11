@@ -34,24 +34,24 @@ public class GuardSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 16);
 
-    idle = new Animation(2, true);
-    idle.frames(frames, 0, 0, 0, 1, 0, 0, 1, 1);
+    setIdle(new Animation(2, true));
+    getIdle().frames(frames, 0, 0, 0, 1, 0, 0, 1, 1);
 
-    run = new MovieClip.Animation(15, true);
-    run.frames(frames, 2, 3, 4, 5, 6, 7);
+    setRun(new MovieClip.Animation(15, true));
+    getRun().frames(frames, 2, 3, 4, 5, 6, 7);
 
-    attack = new MovieClip.Animation(12, false);
-    attack.frames(frames, 8, 9, 10);
+    setAttack(new MovieClip.Animation(12, false));
+    getAttack().frames(frames, 8, 9, 10);
 
-    die = new MovieClip.Animation(8, false);
-    die.frames(frames, 11, 12, 13, 14);
+    setDie(new MovieClip.Animation(8, false));
+    getDie().frames(frames, 11, 12, 13, 14);
 
-    play(idle);
+    play(getIdle());
   }
 
   @Override
   public void play(Animation anim) {
-    if (anim == die) {
+    if (anim == getDie()) {
       emitter().burst(ShadowParticle.UP, 4);
     }
     super.play(anim);

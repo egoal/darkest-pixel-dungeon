@@ -34,28 +34,28 @@ public class ShamanSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 12, 15);
 
-    idle = new Animation(2, true);
-    idle.frames(frames, 0, 0, 0, 1, 0, 0, 1, 1);
+    setIdle(new Animation(2, true));
+    getIdle().frames(frames, 0, 0, 0, 1, 0, 0, 1, 1);
 
-    run = new Animation(12, true);
-    run.frames(frames, 4, 5, 6, 7);
+    setRun(new Animation(12, true));
+    getRun().frames(frames, 4, 5, 6, 7);
 
-    attack = new Animation(12, false);
-    attack.frames(frames, 2, 3, 0);
+    setAttack(new Animation(12, false));
+    getAttack().frames(frames, 2, 3, 0);
 
-    zap = attack.clone();
+    setZap(getAttack().clone());
 
-    die = new Animation(12, false);
-    die.frames(frames, 8, 9, 10);
+    setDie(new Animation(12, false));
+    getDie().frames(frames, 8, 9, 10);
 
-    play(idle);
+    play(getIdle());
   }
 
   public void zap(int pos) {
 
-    parent.add(new Lightning(ch.getPos(), pos, (Shaman) ch));
+    parent.add(new Lightning(getCh().getPos(), pos, (Shaman) getCh()));
 
-    turnTo(ch.getPos(), pos);
-    play(zap);
+    turnTo(getCh().getPos(), pos);
+    play(getZap());
   }
 }

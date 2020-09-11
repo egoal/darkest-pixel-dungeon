@@ -41,21 +41,21 @@ public class TenguSprite extends MobSprite {
 
     TextureFilm frames = new TextureFilm(texture, 14, 16);
 
-    idle = new Animation(2, true);
-    idle.frames(frames, 0, 0, 0, 1);
+    setIdle(new Animation(2, true));
+    getIdle().frames(frames, 0, 0, 0, 1);
 
-    run = new Animation(15, false);
-    run.frames(frames, 2, 3, 4, 5, 0);
+    setRun(new Animation(15, false));
+    getRun().frames(frames, 2, 3, 4, 5, 0);
 
-    attack = new Animation(15, false);
-    attack.frames(frames, 6, 7, 7, 0);
+    setAttack(new Animation(15, false));
+    getAttack().frames(frames, 6, 7, 7, 0);
 
-    cast = attack.clone();
+    cast = getAttack().clone();
 
-    die = new Animation(8, false);
-    die.frames(frames, 8, 9, 10, 10, 10, 10, 10, 10);
+    setDie(new Animation(8, false));
+    getDie().frames(frames, 8, 9, 10, 10, 10, 10, 10, 10);
 
-    play(run.clone());
+    play(getRun().clone());
   }
 
   @Override
@@ -63,10 +63,10 @@ public class TenguSprite extends MobSprite {
 
     place(to);
 
-    play(run);
+    play(getRun());
     turnTo(from, to);
 
-    isMoving = true;
+    setMoving(true);
 
     if (Level.Companion.getWater()[to]) {
       GameScene.ripple(to);
@@ -76,21 +76,21 @@ public class TenguSprite extends MobSprite {
 
   @Override
   public void attack(int cell) {
-    if (!Dungeon.level.adjacent(cell, ch.getPos())) {
+    if (!Dungeon.level.adjacent(cell, getCh().getPos())) {
 
       final Char enemy = Actor.Companion.findChar(cell);
 
       ((MissileSprite) parent.recycle(MissileSprite.class)).
-              reset(ch.getPos(), cell, new Shuriken(), new Callback() {
+              reset(getCh().getPos(), cell, new Shuriken(), new Callback() {
                 @Override
                 public void call() {
-                  ch.next();
-                  if (enemy != null) ch.attack(enemy);
+                  getCh().next();
+                  if (enemy != null) getCh().attack(enemy);
                 }
               });
 
       play(cast);
-      turnTo(ch.getPos(), cell);
+      turnTo(getCh().getPos(), cell);
 
     } else {
 
@@ -101,9 +101,9 @@ public class TenguSprite extends MobSprite {
 
   @Override
   public void onComplete(Animation anim) {
-    if (anim == run) {
+    if (anim == getRun()) {
       synchronized (this) {
-        isMoving = false;
+        setMoving(false);
         idle();
 
         notifyAll();
@@ -120,10 +120,10 @@ public class TenguSprite extends MobSprite {
       TextureFilm frames = new TextureFilm(texture, 14, 16);
 
       // reverse run...
-      die = new Animation(15, false);
-      die.frames(frames, 0, 5, 4, 3, 2);
+      setDie(new Animation(15, false));
+      getDie().frames(frames, 0, 5, 4, 3, 2);
 
-      play(run.clone());
+      play(getRun().clone());
     }
   }
 }

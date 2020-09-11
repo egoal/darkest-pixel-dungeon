@@ -199,7 +199,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
                 run.frames(frames, 0, 2)
 
                 attack = Animation(10, false)
-                attack.frames(frames, 0, 2, 3, 4, 4)
+                attack!!.frames(frames, 0, 2, 3, 4, 4)
 
                 die = Animation(8, false)
                 die.frames(frames, 0, 2)

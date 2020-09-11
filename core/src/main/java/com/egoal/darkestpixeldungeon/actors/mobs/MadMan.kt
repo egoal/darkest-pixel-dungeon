@@ -140,9 +140,9 @@ class MadMan : Mob(), Callback {
             run.frames(frames, 3, 4, 5, 6)
 
             attack = MovieClip.Animation(8, false)
-            attack.frames(frames, 10, 11, 12)
+            attack!!.frames(frames, 10, 11, 12)
 
-            zap = attack.clone()
+            zap = attack!!.clone()
 
             die = MovieClip.Animation(8, false)
             die.frames(frames, 7, 8, 9)

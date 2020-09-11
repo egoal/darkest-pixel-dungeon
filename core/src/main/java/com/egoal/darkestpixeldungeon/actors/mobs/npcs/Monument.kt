@@ -74,6 +74,7 @@ class Monument : NPC.Unbreakable() {
             run.frames(frames, 1, 2, 3, 4, 5)
 
             die = idle.clone()
+            attack = idle.clone()
 
             play(idle)
         }
