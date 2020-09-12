@@ -258,8 +258,6 @@ enum class HeroClass(private val title: String) {
             hero.heroPerk.add(LowHealthRegeneration())
             hero.heroPerk.add(Discount().apply { level = -1 })
             hero.heroPerk.add(PolearmMaster())
-
-            // hero.subClass = HeroSubClass.LANCER
         }
     }
     ;

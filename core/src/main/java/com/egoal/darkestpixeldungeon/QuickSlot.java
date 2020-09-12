@@ -31,13 +31,11 @@ import java.util.Collection;
 public class QuickSlot {
 
   /**
-   * Slots contain objects which are also in a player's inventory. The one 
-   * exception to this is when quantity is 0,
-   * which can happen for a stackable item that has been 'used up', these are
-   * refered to a placeholders.
+   * Slots contain objects which are also in a player's inventory. The one exception to this is when quantity is 0,
+   * which can happen for a stackable item that has been 'used up', these are refered to a placeholders.
    */
 
-  //note that the current max size is coded at 4, due to UI constraints, but 
+  // note that the current max size is coded at 4, due to UI constraints, but
   // it could be much much bigger with no issue.
   public static int SIZE = 8; // 4;
   private Item[] slots = new Item[SIZE];

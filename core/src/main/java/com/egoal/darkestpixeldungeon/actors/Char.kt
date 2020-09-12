@@ -21,35 +21,13 @@
 package com.egoal.darkestpixeldungeon.actors
 
 import com.egoal.darkestpixeldungeon.Statistics
-import com.egoal.darkestpixeldungeon.actors.buffs.Bless
-import com.egoal.darkestpixeldungeon.actors.buffs.Chill
-import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
-import com.egoal.darkestpixeldungeon.actors.buffs.Frost
-import com.egoal.darkestpixeldungeon.actors.buffs.Ignorant
-import com.egoal.darkestpixeldungeon.actors.buffs.LifeLink
-import com.egoal.darkestpixeldungeon.actors.buffs.MustDodge
-import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny
-import com.egoal.darkestpixeldungeon.actors.buffs.Roots
-import com.egoal.darkestpixeldungeon.actors.buffs.SharpVision
-import com.egoal.darkestpixeldungeon.actors.buffs.Shock
-import com.egoal.darkestpixeldungeon.actors.buffs.Unbalance
-import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Charm
-import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
-import com.egoal.darkestpixeldungeon.actors.buffs.EarthImbue
-import com.egoal.darkestpixeldungeon.actors.buffs.FireImbue
-import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep
-import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
-import com.egoal.darkestpixeldungeon.actors.buffs.Slow
-import com.egoal.darkestpixeldungeon.actors.buffs.Speed
-import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Door
@@ -319,6 +297,12 @@ abstract class Char : Actor() {
             return -1 //! be negative
         }
 
+        if (dmg.type != Damage.Type.MENTAL)
+            buff(ResistAny::class.java)?.let {
+                it.resist()
+                return 0
+            }
+
         // life link
         buff(LifeLink::class.java)?.let {
             val ch = Actor.findById(it.linker)
@@ -356,6 +340,8 @@ abstract class Char : Actor() {
                     GLog.i(M.L(Char::class.java, "out_of_paralysis", name))
             }
         }
+
+        buff(Doom::class.java)?.let { dmg.value *= 2 }
 
         // deal with types
         //todo: the damage number can have different colour refer to the attached elements
@@ -438,14 +424,19 @@ abstract class Char : Actor() {
         if (dhp == 0) return
 
         if (dhp > 0) {
+            if (buff(Decayed::class.java) != null) {
+                recoverHP(-dhp, src)
+                return
+            }
+
             if (HP < HT) HP = min(HT, HP + dhp)
         } else HP += dhp
 
-        if (dhp > 0) sprite.showStatus(CharSprite.POSITIVE, "+$dhp")
-        else sprite.showStatus(CharSprite.NEGATIVE, "$dhp")
-
         // heal to death...
         if (HP < 0) HP = 0
+
+        if (dhp > 0) sprite.showStatus(CharSprite.POSITIVE, "+$dhp")
+        else sprite.showStatus(CharSprite.NEGATIVE, "$dhp")
 
         if (!isAlive) die(src)
     }

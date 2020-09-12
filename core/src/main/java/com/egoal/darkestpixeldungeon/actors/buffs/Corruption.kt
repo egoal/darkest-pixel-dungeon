@@ -36,7 +36,7 @@ open class Corruption : Buff() {
     }
 
     override fun attachTo(target: Char): Boolean {
-        target.camp = com.egoal.darkestpixeldungeon.actors.Char.Camp.HERO
+        target.camp = Char.Camp.HERO
         return super.attachTo(target)
     }
 

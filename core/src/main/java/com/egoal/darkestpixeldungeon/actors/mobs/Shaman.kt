@@ -112,21 +112,23 @@ class Shaman : Mob(), Callback {
 
     inner class HuntingAI : Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
-            val enemy = enemy!!
-            if (buffcd <= 0f && enemyInFOV && !isCharmedBy(enemy) && (!canAttack(enemy) || distance(enemy) <= 1)) {
-                // ^ cannot attack or is face to face, find nearby friends to give Rage
-                // others are preferred
-                val nearbys = Dungeon.level.mobs.filter { mob ->
-                    !(mob === this@Shaman) && mob.camp == camp && mob.buff(Rage::class.java) == null &&
-                            Level.fieldOfView[mob.pos] && Dungeon.level.distance(pos, mob.pos) <= 4
-                }
+            if (enemyInFOV) {
+                val enemy = enemy!!
+                if (buffcd <= 0f && !isCharmedBy(enemy!!) && (!canAttack(enemy) || distance(enemy) <= 1)) {
+                    // ^ cannot attack or is face to face, find nearby friends to give Rage
+                    // others are preferred
+                    val nearbys = Dungeon.level.mobs.filter { mob ->
+                        !(mob === this@Shaman) && mob.camp == camp && mob.buff(Rage::class.java) == null &&
+                                Level.fieldOfView[mob.pos] && Dungeon.level.distance(pos, mob.pos) <= 4
+                    }
 
-                if (nearbys.isNotEmpty()) {
-                    buffRage(Random.element(nearbys))
-                    return true
-                } else if (buff(Rage::class.java) == null) {
-                    buffRage(this@Shaman)
-                    return true
+                    if (nearbys.isNotEmpty()) {
+                        buffRage(Random.element(nearbys))
+                        return true
+                    } else if (buff(Rage::class.java) == null) {
+                        buffRage(this@Shaman)
+                        return true
+                    }
                 }
             }
 

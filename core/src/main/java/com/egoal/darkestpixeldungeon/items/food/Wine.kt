@@ -4,8 +4,10 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
+import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Drunkard
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
@@ -46,6 +48,11 @@ open class Wine(val gourdValue: Int = 5) : Item() {
         super.execute(hero, action)
 
         if (action === AC_DRINK) {
+            if (hero.subClass == HeroSubClass.WINEBIBBER) {
+                hero.say(M.L(Wine::class.java, "boring"))
+                return
+            }
+
             detach(hero.belongings.backpack)
             hero.spend(TIME_TO_DRINK)
             hero.busy()
@@ -60,7 +67,7 @@ open class Wine(val gourdValue: Int = 5) : Item() {
             } else {
                 hero.recoverSanity(value)
                 // get drunk
-                Buff.prolong(hero, Drunk::class.java, Drunk.duration(hero))
+                Drunk.Affect(hero)
                 // hero.takeDamage(Damage(hero.HP / 4, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE))
             }
 

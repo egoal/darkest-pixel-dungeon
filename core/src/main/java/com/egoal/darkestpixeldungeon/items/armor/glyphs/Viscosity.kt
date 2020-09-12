@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.items.armor.Armor
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
@@ -34,6 +35,7 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
+import kotlin.math.max
 
 class Viscosity : Armor.Glyph() {
 
@@ -41,15 +43,11 @@ class Viscosity : Armor.Glyph() {
         val attacker = damage.from as Char
         val defender = damage.to as Char
 
-        if (damage.type == Damage.Type.MENTAL || damage.value <= 0) {
-            damage.value = 0
-            return damage
-        }
+        if (damage.type == Damage.Type.MENTAL || damage.value <= 0) return damage
 
-        val level = Math.max(0, armor.level())
+        val level = max(0, armor.level())
 
         if (Random.Int(level + 4) >= 3) {
-
             var debuff = defender.buff(DeferedDamage::class.java)
             if (debuff == null) {
                 debuff = DeferedDamage()
@@ -57,8 +55,7 @@ class Viscosity : Armor.Glyph() {
             }
             debuff.prolong(damage.value)
 
-            defender.sprite.showStatus(CharSprite.WARNING, Messages.get(this,
-                    "deferred", damage.value))
+            defender.sprite.showStatus(CharSprite.WARNING, Messages.get(this, "deferred", damage.value))
 
             damage.value = 0
             return damage
@@ -68,18 +65,14 @@ class Viscosity : Armor.Glyph() {
         }
     }
 
-    override fun glowing(): ItemSprite.Glowing {
-        return PURPLE
-    }
+    override fun glowing(): ItemSprite.Glowing = PURPLE
 
     class DeferedDamage : Buff() {
-
-        protected var damage = 0
+        private var damage = 0
 
         override fun storeInBundle(bundle: Bundle) {
             super.storeInBundle(bundle)
             bundle.put(DAMAGE, damage)
-
         }
 
         override fun restoreFromBundle(bundle: Bundle) {
@@ -100,18 +93,14 @@ class Viscosity : Armor.Glyph() {
             this.damage += damage
         }
 
-        override fun icon(): Int {
-            return BuffIndicator.DEFERRED
-        }
+        override fun icon(): Int = BuffIndicator.DEFERRED
 
-        override fun toString(): String {
-            return Messages.get(this, "name")
-        }
+        override fun toString(): String = M.L(this, "name")
 
         override fun act(): Boolean {
             if (target.isAlive) {
 
-                val damageThisTick = Math.max(1, damage / 10)
+                val damageThisTick = max(1, damage / 10)
                 target.takeDamage(Damage(damageThisTick, this, target))
                 if (target === Dungeon.hero && !target.isAlive) {
 
@@ -128,26 +117,20 @@ class Viscosity : Armor.Glyph() {
                 }
 
             } else {
-
                 detach()
-
             }
 
             return true
         }
 
-        override fun desc(): String {
-            return Messages.get(this, "desc", damage)
-        }
+        override fun desc(): String = M.L(this, "desc", damage)
 
         companion object {
-
-            private val DAMAGE = "damage"
+            private const val DAMAGE = "damage"
         }
     }
 
     companion object {
-
         private val PURPLE = ItemSprite.Glowing(0x8844CC)
     }
 }

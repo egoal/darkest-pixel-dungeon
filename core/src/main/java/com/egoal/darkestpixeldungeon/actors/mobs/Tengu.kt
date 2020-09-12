@@ -255,13 +255,14 @@ class Tengu : Mob() {
     private inner class Hunting : Mob.Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
             enemySeen = enemyInFOV
-            val enemy = enemy!!
-            if (enemyInFOV && !isCharmedBy(enemy) && canAttack(enemy)) return doAttack(enemy)
+
+
+            if (enemyInFOV && !isCharmedBy(enemy!!) && canAttack(enemy!!)) return doAttack(enemy!!)
             else {
-                if (enemyInFOV) target = enemy.pos
+                if (enemyInFOV) target = enemy!!.pos
                 else {
                     chooseEnemy()
-                    target = enemy.pos
+                    target = enemy!!.pos
                 }
 
                 spend(Actor.TICK)
@@ -269,9 +270,6 @@ class Tengu : Mob() {
             }
         }
     }
-
-    private val IMMUNITIES = hashSetOf<Class<*>>(Terror::class.java, Corruption::class.java,
-            Charm::class.java, Chill::class.java, MagicalSleep::class.java)
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
 
@@ -311,5 +309,8 @@ class Tengu : Mob() {
 
     companion object {
         private const val ATTACK_STAGE = "attack_stage"
+
+        private val IMMUNITIES = hashSetOf<Class<*>>(Terror::class.java, Corruption::class.java,
+                Charm::class.java, Chill::class.java, MagicalSleep::class.java)
     }
 }

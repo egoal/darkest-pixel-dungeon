@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Bundle
+import kotlin.math.round
 
 class Fragile : Weapon.Enchantment() {
     private var hits = 0
@@ -33,7 +34,8 @@ class Fragile : Weapon.Enchantment() {
         val defender = damage.to as Char
         val attacker = damage.from as Char
         //degrades from 100% to 25% damage over 150 hits
-        damage.value *= (1f - hits * 0.005f).toInt()
+        damage.value = round(damage.value * (1f - hits * 0.005f)).toInt()
+
         if (hits < 150) hits++
         return damage
     }
@@ -55,10 +57,9 @@ class Fragile : Weapon.Enchantment() {
     }
 
     companion object {
-
         private val BLACK = ItemSprite.Glowing(0x000000)
 
-        private val HITS = "hits"
+        private const val HITS = "hits"
     }
 
 }

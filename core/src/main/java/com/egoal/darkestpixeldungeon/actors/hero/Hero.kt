@@ -418,7 +418,7 @@ class Hero : Char() {
 
         buff(SeeThrough::class.java)?.processDamage(dmg)
 
-        buff(Drunk::class.java)?.let { Drunk.procOutcomingDamage(dmg) }
+        buff(Drunk::class.java)?.procGivenDamage(dmg)
 
         if (dmg.value < 0) dmg.value = 0
 
@@ -455,9 +455,8 @@ class Hero : Char() {
         if (dmg.type == Damage.Type.MENTAL) {
             //todo: mental defense
         } else {
-            buff(CapeOfThorns.Thorns::class.java)?.let { it.proc(dmg) }
-
-            belongings.weapon?.let { it.defendDamage(dmg) }
+            buff(CapeOfThorns.Thorns::class.java)?.proc(dmg)
+            belongings.weapon?.defendDamage(dmg)
 
             var dr = 0
             belongings.armor?.let {
@@ -561,9 +560,13 @@ class Hero : Char() {
         // sniper perk
         // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`objectid` = (dmg.to as Char).id()
             Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
-        else if (isUsingPolearm())
-        // exile perk
-            heroPerk.get(PolearmMaster::class.java)?.proc(dmg, belongings.weapon as MeleeWeapon)
+        else {
+            // exile perk
+            if (isUsingPolearm())
+                heroPerk.get(PolearmMaster::class.java)?.proc(dmg, belongings.weapon as MeleeWeapon)
+
+            if (subClass == HeroSubClass.WINEBIBBER) buff(Drunk::class.java)?.attackProc(dmg)
+        }
 
         // critical damage
         if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
@@ -616,6 +619,9 @@ class Hero : Char() {
         buff(CrackedCoin.Shield::class.java)?.procTakenDamage(dmg)
         buff(DragonsSquama.Recharge::class.java)?.procTakenDamage(dmg)
 
+        val drunk = buff(Drunk::class.java)
+        drunk?.procTakenDamage(dmg)
+
         if (dmg.type == Damage.Type.MENTAL) return takeMentalDamage(dmg)
 
         val dmgToken = super.takeDamage(dmg)
@@ -645,7 +651,10 @@ class Hero : Char() {
 
             if (tag != null) sayShort(tag!!)
 
-            takeMentalDamage(Damage(min(round(value).toInt(), 15), dmg.from, dmg.to).type(Damage.Type.MENTAL))
+            // todo: this is fragile
+            val mentaldmg = Damage(min(round(value).toInt(), 15), dmg.from, dmg.to).type(Damage.Type.MENTAL)
+            drunk?.procTakenDamage(mentaldmg)
+            takeMentalDamage(mentaldmg)
         }
 
         return dmgToken
@@ -654,7 +663,15 @@ class Hero : Char() {
     private fun takeMentalDamage(dmg: Damage): Int {
         if (dmg.value <= 0) return 0
 
-        if (heroClass == HeroClass.EXILE) dmg.value += Random.Int(0, 1)
+        if (heroClass == HeroClass.EXILE) {
+            var v = 2
+            if (subClass == HeroSubClass.WINEBIBBER && buff(Drunk::class.java) == null) {
+                v += 2
+            }
+
+
+            dmg.value += Random.Int(1, v)
+        }
         if (!dmg.isFeatured(Damage.Feature.ACCURATE)) {
             val chance = GameMath.ProbabilityPlus(
                     heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
@@ -663,6 +680,9 @@ class Hero : Char() {
             if (Random.Float() < chance) {
                 dmg.value = 0
                 sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
+            } else {
+                if (heroClass == HeroClass.EXILE && Random.Int(10) == 0 && buff(Drunk::class.java) == null)
+                    sayShort("grim_${Random.Int(3)}") //todo: this is fragile
             }
         }
 
@@ -1141,6 +1161,7 @@ class Hero : Char() {
 
     fun onEvasion(dmg: Damage) {
         heroPerk.get(CounterStrike::class.java)?.procEvasionDamage(dmg)
+        if (subClass == HeroSubClass.WINEBIBBER) buff(Drunk::class.java)?.onEvade(dmg)
     }
 
     // called when killed a char by attack

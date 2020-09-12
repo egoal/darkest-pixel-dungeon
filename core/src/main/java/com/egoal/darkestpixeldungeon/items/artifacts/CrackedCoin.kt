@@ -68,6 +68,7 @@ class CrackedCoin : Artifact() {
         val actions = super.actions(hero)
         if (isEquipped(hero)) {
             actions.add(AC_SHIELD)
+            actions.add(AC_SHELL)
         }
 
         return actions

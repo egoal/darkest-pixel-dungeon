@@ -138,7 +138,8 @@ class WandOfCorruption : Wand() {
 
         } else {
             // in dpd, i give the vulnerable
-            Buff.prolong(enemy, Vulnerable::class.java, Vulnerable.DURATION * 2).ratio = 1.5f
+//            Buff.prolong(enemy, Vulnerable::class.java, Vulnerable.DURATION * 2).ratio = 1.5f
+            Buff.affect(enemy, Doom::class.java)
         }
     }
 
@@ -190,6 +191,7 @@ class WandOfCorruption : Wand() {
                 Slow::class.java to 2f,
                 Paralysis::class.java to 1f,
                 SoulMark::class.java to 1f,
+                Decayed::class.java to 1f,
 
                 Charm::class.java to 0f,
                 SoulMark::class.java to 0f,

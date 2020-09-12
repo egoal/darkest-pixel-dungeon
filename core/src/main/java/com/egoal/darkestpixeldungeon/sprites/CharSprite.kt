@@ -405,7 +405,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
     }
 
     fun showAlert() {
-        if (emo !is EmoIcon.Sleep) {
+        if(emo !is EmoIcon.Alert){
             emo?.killAndErase()
 
             emo = EmoIcon.Alert(this)

@@ -36,6 +36,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.plants.Dreamfoil
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
@@ -100,6 +101,7 @@ class PotionOfPurity : Potion() {
     override fun apply(hero: Hero) {
         GLog.w(Messages.get(this, "no_smell"))
         Buff.prolong(hero, GasesImmunity::class.java, GasesImmunity.DURATION * if (reinforced) 2 else 1)
+        for (cls in Dreamfoil.buffs) Buff.detach(hero, cls)
         setKnown()
     }
 

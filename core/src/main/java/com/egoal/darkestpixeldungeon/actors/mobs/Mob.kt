@@ -578,8 +578,8 @@ abstract class Mob : Char() {
     protected inner class Sleeping : AiState {
 
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
-            if (enemyInFOV && Random.Int(distance(enemy!!) / 2 + 1 + enemy!!.stealth() +
-                            if (enemy!!.flying) 2 else 0) == 0) {
+            if (enemyInFOV &&
+                    Random.Int(distance(enemy!!) / 2 + 1 + enemy!!.stealth() + if (enemy!!.flying) 2 else 0) == 0) {
 
                 enemySeen = true
 
@@ -599,9 +599,7 @@ abstract class Mob : Char() {
             return true
         }
 
-        override fun status(): String {
-            return Messages.get(this, "status", name)
-        }
+        override fun status(): String = M.L(this, "status", name)
     }
 
     protected open inner class Wandering : AiState {

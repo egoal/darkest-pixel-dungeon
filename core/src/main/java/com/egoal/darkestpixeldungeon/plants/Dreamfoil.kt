@@ -61,14 +61,9 @@ class Dreamfoil : Plant(10) {
     }
 
     companion object {
-        private val buffs = setOf(Poison::class.java,
-                Cripple::class.java,
-                Weakness::class.java,
-                Bleeding::class.java,
-                Drowsy::class.java,
-                Slow::class.java,
-                Vertigo::class.java,
-                Vulnerable::class.java,
-                Drunk::class.java)
+        val buffs = setOf(Poison::class.java, Cripple::class.java, Weakness::class.java,
+                Bleeding::class.java, Drowsy::class.java, Slow::class.java,
+                Vertigo::class.java, Vulnerable::class.java, Drunk::class.java,
+                Decayed::class.java)
     }
 }

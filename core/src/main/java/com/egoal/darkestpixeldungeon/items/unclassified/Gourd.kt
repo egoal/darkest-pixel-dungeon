@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
 import com.egoal.darkestpixeldungeon.actors.buffs.Tipsy
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.messages.M
@@ -76,22 +77,38 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
     }
 
     private fun drink(hero: Hero) {
-        val dv = min(2, volume)
-        volume -= dv
+        if (hero.subClass == HeroSubClass.WINEBIBBER) {
+            if (volume < 5) {
+                hero.say(M.L(this, "too_less"))
+                return
+            }
 
-        var value = min(Random.Float(2f * dv, hero.pressure.pressure * 0.2f * dv), 12f)
+            val dv = 5
+            volume -= dv
 
-        // exile cannot get Drunkard perk.
-        val tipsy = hero.buff(Tipsy::class.java)
-        if (tipsy == null) {
+            var value = min(Random.Float(20f, hero.pressure.pressure * 0.8f), 50f)
+            if (enchanted) value += value / 4f
 
-            Buff.prolong(hero, Tipsy::class.java, 15f * dv)
-            if (enchanted) value += value / 3f
+            hero.recoverSanity(value)
+            Buff.prolong(hero, Drunk::class.java, 180f)
+            hero.say(M.L(this, "get_drunk"))
         } else {
-            tipsy.detach()
-            Buff.prolong(hero, Drunk::class.java, Drunk.duration(hero) + tipsy.cooldown() / 2f)
+            val dv = min(2, volume)
+            volume -= dv
+
+            var value = min(Random.Float(2f * dv, hero.pressure.pressure * 0.2f * dv), 12f)
+
+            // exile cannot get Drunkard perk.
+            val tipsy = hero.buff(Tipsy::class.java)
+            if (tipsy == null) {
+                Buff.prolong(hero, Tipsy::class.java, 15f * dv)
+                if (enchanted) value += value / 3f
+            } else {
+                tipsy.detach()
+                Drunk.Affect(hero, Drunk.duration(hero) + tipsy.cooldown() / 2f)
+            }
+            hero.recoverSanity(value)
         }
-        hero.recoverSanity(value)
 
         hero.sprite.operate(hero.pos)
         Sample.INSTANCE.play(Assets.SND_DRINK)
