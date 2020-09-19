@@ -297,7 +297,7 @@ abstract class Char : Actor() {
             return -1 //! be negative
         }
 
-        if (dmg.type != Damage.Type.MENTAL)
+        if (dmg.type != Damage.Type.MENTAL && dmg.from !is Hunger)
             buff(ResistAny::class.java)?.let {
                 it.resist()
                 return 0

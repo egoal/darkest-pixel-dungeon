@@ -7,9 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob
-import com.egoal.darkestpixeldungeon.actors.mobs.QuickFiringGun
-import com.egoal.darkestpixeldungeon.actors.mobs.Rat
+import com.egoal.darkestpixeldungeon.actors.mobs.*
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor

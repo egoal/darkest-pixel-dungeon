@@ -119,10 +119,11 @@ class Statuary : NPC.Unbreakable() {
                         GLog.h(M.L(this, "infuse"))
                     }
                 } else if (dice == 1) {
-                    if (GoddessRadiance().identify().collect()) {
-                        hero.spendAndNext(3f)
-                        GLog.p(M.L(this, "radiance"))
-                    }
+                    val gr = GoddessRadiance().identify()
+                    if (!gr.collect()) Dungeon.level.drop(gr, hero.pos).sprite.drop()
+
+                    hero.spendAndNext(3f)
+                    GLog.p(M.L(this, "radiance"))
                 }
             }
         } else { // blasphemy

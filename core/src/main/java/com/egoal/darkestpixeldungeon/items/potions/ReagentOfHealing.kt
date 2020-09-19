@@ -14,6 +14,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.max
@@ -75,7 +76,7 @@ class ReagentOfHealing : Item() {
         Buff.detach(hero, Bleeding::class.java)
 
         val ratio = hero.HP.toFloat() / hero.HT
-        val amount = max(round((1f - 2f * ratio) * hero.HT).toInt(), 1) // usually, recover to about 1f-ratio
+        val amount = GameMath.clamp(round((1f - 2f * ratio) * hero.HT).toInt(), 1, 50) // usually, recover to about 1f-ratio
 
         hero.recoverHP(amount, this)
 

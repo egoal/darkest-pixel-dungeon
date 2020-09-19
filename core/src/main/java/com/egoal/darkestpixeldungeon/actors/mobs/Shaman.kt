@@ -79,6 +79,7 @@ class Shaman : Mob(), Callback {
                 if (Level.water[enemy.pos] && !enemy.flying)
                     dmg.value = (dmg.value.toFloat() * 1.5f).toInt()
 
+                enemy.defendDamage(dmg)
                 enemy.takeDamage(dmg)
 
                 enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3)

@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
@@ -254,11 +255,22 @@ class ExtraDexterousGrowth : Perk(5) {
 class LowHealthRegeneration : Perk(5) {
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_REG
 
-    fun extraRegeneration(hero: Hero): Float {
-        if (hero.HP > hero.HT * 0.3f) return 0f
-
-        return 1f * level // todo:
+    //    fun extraRegeneration(hero: Hero): Float {
+//        if (hero.HP > hero.HT * 0.3f) return 0f
+//
+//        return 1f * level // todo:
+//    }
+    fun onDamageTaken(hero: Hero) {
+        if (hero.HP <= hero.HT * trigger())
+            Buff.affect(hero, FastRecovery::class.java).apply {
+                limit = limit()
+                speed = speed()
+            }
     }
+
+    private fun trigger() = 0.2f + level * 0.05f
+    private fun speed() = level * 1
+    private fun limit() = 0.4f + level * 0.1f
 }
 
 class ExtraPerkChoice : Perk() {

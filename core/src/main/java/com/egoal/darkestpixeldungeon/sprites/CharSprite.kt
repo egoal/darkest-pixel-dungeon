@@ -201,6 +201,11 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
         play(zap)
     }
 
+    fun zap(cell: Int, onZap: Callback) {
+        animCallback = onZap
+        zap(cell)
+    }
+
     open fun turnTo(from: Int, to: Int) {
         val fx = from % Dungeon.level.width()
         val tx = to % Dungeon.level.width()
@@ -405,7 +410,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
     }
 
     fun showAlert() {
-        if(emo !is EmoIcon.Alert){
+        if (emo !is EmoIcon.Alert) {
             emo?.killAndErase()
 
             emo = EmoIcon.Alert(this)

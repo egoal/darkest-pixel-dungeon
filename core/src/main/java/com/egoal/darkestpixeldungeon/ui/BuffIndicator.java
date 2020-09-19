@@ -106,6 +106,7 @@ public class BuffIndicator extends Component {
   public static final int GOLD_SHIELD = 61;
   public static final int TIPSY = 62;
   public static final int DECAYED = CORRUPT;
+  public static final int FAST_RECOVERY = 63;
 
   public static final int SIZE = 7;
 

@@ -85,6 +85,7 @@ class Penetration : Buff(), ActionIndicator.Action {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         hits = bundle.getInt(HIT_STR)
+        if (hits >= HIT_TIMES) ActionIndicator.setAction(this)
     }
 
     private class stab : FlavourBuff() {
@@ -109,7 +110,7 @@ class Penetration : Buff(), ActionIndicator.Action {
 
                 Actor.addDelayed(Pushing(hero, hero.pos, dst, Callback {
                     // knock back
-                    if(throwdis>0) WandOfBlastWave.throwChar(enemy, knock_shot, 1)
+                    if (throwdis > 0) WandOfBlastWave.throwChar(enemy, knock_shot, 1)
 
                     landHero(hero, dst)
 

@@ -134,7 +134,7 @@ class Belongings(private val owner: Hero) : MutableIterable<Item> {
 
     fun randomUnequipped(): Item? = Random.element(backpack.items)
 
-    fun equippedItems(): Array<Item?> = arrayOf(weapon, armor, misc1, misc2, misc3)
+    fun equippedItems(): Array<Item?> = arrayOf(weapon, armor, helmet, misc1, misc2, misc3)
 
     fun miscs() = sequence {
         yield(misc1)

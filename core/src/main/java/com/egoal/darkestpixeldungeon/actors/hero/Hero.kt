@@ -166,7 +166,7 @@ class Hero : Char() {
         if (buff(Berserk::class.java)?.berserking() == true) return 0f
 
         var reg = regeneration
-        reg += heroPerk.get(LowHealthRegeneration::class.java)?.extraRegeneration(this) ?: 0f
+        // reg += heroPerk.get(LowHealthRegeneration::class.java)?.extraRegeneration(this) ?: 0f
 
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
@@ -625,6 +625,8 @@ class Hero : Char() {
         if (dmg.type == Damage.Type.MENTAL) return takeMentalDamage(dmg)
 
         val dmgToken = super.takeDamage(dmg)
+        heroPerk.get(LowHealthRegeneration::class.java)?.onDamageTaken(this)
+
         if (isAlive) {
             //todo: refactor
             var tag: String? = null
@@ -670,7 +672,7 @@ class Hero : Char() {
             }
 
 
-            dmg.value += Random.Int(1, v)
+            dmg.value += Random.Int(0, v)
         }
         if (!dmg.isFeatured(Damage.Feature.ACCURATE)) {
             val chance = GameMath.ProbabilityPlus(
