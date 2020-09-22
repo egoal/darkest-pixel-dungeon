@@ -39,6 +39,8 @@ class Drunk : FlavourBuff() {
             dmg.addFeature(Damage.Feature.CRITICAL)
             prolong(hero, MustDodge::class.java, 2f).addDodgeTypeAll()
 
+            if (Random.Float() < 0.35f) hero.recoverSanity(Random.Float(5f))
+
             hero.sprite.showStatus(CharSprite.WARNING, M.L(this, "boxing"))
         }
     }

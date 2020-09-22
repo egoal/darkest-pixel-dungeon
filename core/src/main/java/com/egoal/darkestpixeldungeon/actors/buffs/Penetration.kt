@@ -56,8 +56,9 @@ class Penetration : Buff(), ActionIndicator.Action {
         // delay invoke
         prolong(hero, stab::class.java, TIME_PREPARE).enemy = enemy
 
-        hero.sprite.showStatus(CharSprite.NEUTRAL, M.L(this, "prepare"))
+        // hero.sprite.showStatus(CharSprite.NEUTRAL, M.L(this, "prepare"))
         hero.sprite.operate(enemy.pos)
+        prolong(hero, SeeThrough::class.java, TIME_PREPARE + 0.01f).enemyid = enemy.id()
         hero.spendAndNext(TIME_PREPARE + 0.01f) // or may set priority for stab.
     }
 
@@ -112,10 +113,15 @@ class Penetration : Buff(), ActionIndicator.Action {
                     // knock back
                     if (throwdis > 0) WandOfBlastWave.throwChar(enemy, knock_shot, 1)
 
+                    val distance = Dungeon.level.distance(hero.pos, dst)
                     landHero(hero, dst)
 
-                    // simple attack, may miss.
+                    // simple attack
                     hero.attack(enemy)
+                    if (enemy.isAlive && distance <= 3) {
+                        prolong(enemy, Unbalance::class.java, 2f)
+                    }
+
                     hero.spendAndNext(TIME_STAB)
 
                     Camera.main.shake(2f, 0.5f)
