@@ -51,16 +51,14 @@ class WandOfVenom : DamageWand() {
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.POISON)
 
     override fun onZap(bolt: Ballistica) {
-        Actor.findChar(bolt.collisionPos)?.let {
-            val dmg = giveDamage(it)
-            onMissileHit(it, Dungeon.hero, dmg)
-            it.takeDamage(dmg)
-
-            it.sprite.burst(0x8844ff, level() / 2 + 2)
+        Actor.findChar(bolt.collisionPos)?.let { ch ->
+            damage(ch, {
+                if (it) ch.sprite.burst(particleColor(), level() / 2 + 2)
+            })
         }
 
         val venomGas = Blob.seed(bolt.collisionPos, 40 + 10 * level(), VenomGas::class.java)
-        (venomGas as VenomGas).setStrength(level() + 1)
+        venomGas.setStrength(level() + 1)
         GameScene.add(venomGas)
     }
 

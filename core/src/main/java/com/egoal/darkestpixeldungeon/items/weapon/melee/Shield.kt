@@ -20,8 +20,8 @@ abstract class Shield : MeleeWeapon() {
         if (dmg.from is Char && dmg.to is Char) {
             val attacker = dmg.from as Char
             val defender = dmg.to as Char
-            return Random.Float(attacker.attackSkill(defender)) <
-                    Random.Float(defender.defenseSkill(attacker))
+            
+            return Random.Float(attacker.atkSkill) < Random.Float(defender.defSkill)
         }
 
         return false

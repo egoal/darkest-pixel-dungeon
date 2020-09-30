@@ -51,8 +51,10 @@ class Tengu : Mob() {
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addFeature(Damage.Feature.RANGED)
 
-    override fun checkHit(dmg: Damage): Boolean {
-        return super.checkHit(dmg) && (!dmg.isFeatured(Damage.Feature.RANGED) || super.checkHit(dmg))
+    override fun dexRoll(damage: Damage): Float {
+        var dex = super.dexRoll(damage)
+        if (damage.isFeatured(Damage.Feature.RANGED)) dex *= 2f
+        return dex
     }
 
     override fun canAttack(enemy: Char): Boolean {
@@ -282,6 +284,7 @@ class Tengu : Mob() {
             EXP = 0
             maxLvl = 1
 
+            atkSkill = 20f
             defSkill = 10f
 
             name = M.L(Tengu::class.java, "name")
@@ -295,8 +298,6 @@ class Tengu : Mob() {
 
             tengu.magicalResistance = magicalResistance // reset tengu's magical resistance.
         }
-
-        override fun attackSkill(target: Char): Float = 20f
 
         override fun takeDamage(dmg: Damage): Int {
             HP = 0

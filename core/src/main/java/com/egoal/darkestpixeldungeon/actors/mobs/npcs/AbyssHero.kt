@@ -49,6 +49,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     private fun initLevelStatus(lvl: Int) {
         level = lvl
 
+        atkSkill = 10f + 2f * level
         defSkill = 10f + 2f * level
         HT = 20 + level * 5
         HP = HT
@@ -61,6 +62,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         level = Dungeon.hero.lvl / 2 - (3 - Dungeon.depth / 5)
         level = GameMath.clamp(level, 1, 10)
 
+        atkSkill = 10f + level * 2f
         defSkill = 5f + Dungeon.hero.lvl
         HT = Math.max(Dungeon.hero.HT / 2, Dungeon.hero.HP)
         HP = HT
@@ -85,8 +87,6 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
         return true
     }
-
-    override fun attackSkill(target: Char): Float = 10f + level * 2f
 
     override fun giveDamage(enemy: Char): Damage {
         val dmg = Damage(Random.IntRange(1 + level, 5 + 8 * level), this, enemy).addElement(Damage.Element.SHADOW)

@@ -81,15 +81,16 @@ class WandOfFireblast : DamageWand() {
                 GameScene.add(Blob.seed(cell, 1 + chargesPerCast(), Fire::class.java))
             val ch = Actor.findChar(cell)
             if (ch != null) {
+                damage(ch, {
+                    if (it) Buff.affect(ch, Burning::class.java).reignite(ch)
 
-                ch.takeDamage(giveDamage(ch))
-                Buff.affect(ch, Burning::class.java).reignite(ch)
-                when (chargesPerCast()) {
-                    1 -> {
-                    }
-                    2 -> Buff.affect(ch, Cripple::class.java, 4f)
-                    3 -> Buff.affect(ch, Paralysis::class.java, 4f)
-                }//no effects
+                    when (chargesPerCast()) {
+                        1 -> {
+                        }
+                        2 -> Buff.affect(ch, Cripple::class.java, 4f)
+                        3 -> Buff.affect(ch, Paralysis::class.java, 4f)
+                    }//no effects
+                })
             }
         }
     }

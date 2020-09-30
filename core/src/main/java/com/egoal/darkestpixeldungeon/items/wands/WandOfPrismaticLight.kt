@@ -58,17 +58,11 @@ class WandOfPrismaticLight : DamageWand() {
         collisionProperties = Ballistica.MAGIC_BOLT
     }
 
-    override fun min(lvl: Int): Int {
-        return 1 + lvl
-    }
+    override fun min(lvl: Int): Int = 1 + lvl
 
-    override fun max(lvl: Int): Int {
-        return 7 + 3 * lvl
-    }
+    override fun max(lvl: Int): Int = 7 + 3 * lvl
 
-    override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).addElement(Damage.Element.HOLY)
-    }
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.HOLY)
 
     override fun onZap(beam: Ballistica) {
         val ch = Actor.findChar(beam.collisionPos)
@@ -81,24 +75,26 @@ class WandOfPrismaticLight : DamageWand() {
     }
 
     private fun affectTarget(ch: Char) {
-        // view mark
-        Buff.prolong(ch, ViewMark::class.java, 4f + level()).observer = curUser.id()
+        damage(ch, {
+            if (it) {
+                // view mark
+                Buff.prolong(ch, ViewMark::class.java, 4f + level()).observer = curUser.id()
 
-        //three in (5+lvl) chance of failing
-        if (Random.Int(5 + level()) >= 3) {
-            Buff.prolong(ch, Blindness::class.java, 2f + level() * 0.333f)
-            ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6)
-        }
+                //three in (5+lvl) chance of failing
+                if (Random.Int(5 + level()) >= 3) {
+                    Buff.prolong(ch, Blindness::class.java, 2f + level() * 0.333f)
+                    ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6)
+                }
 
-        if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)) {
-            ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level())
-            Sample.INSTANCE.play(Assets.SND_BURNING)
+                if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)) {
+                    ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level())
+                    Sample.INSTANCE.play(Assets.SND_BURNING)
 
-        } else {
-            ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level())
-        }
-
-        ch.takeDamage(giveDamage(ch))
+                } else {
+                    ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level())
+                }
+            }
+        })
     }
 
     private fun affectMap(beam: Ballistica) {

@@ -31,16 +31,10 @@ object Chasm {
     var JumpConfirmed = false
 
     fun HeroJump(hero: Hero) {
-        GameScene.show(object : WndOptions(Messages.get(Chasm::class.java, "chasm"),
-                Messages.get(Chasm::class.java, "jump"),
-                Messages.get(Chasm::class.java, "yes"), Messages.get(Chasm::class.java, "no")) {
-            override fun onSelect(index: Int) {
-                if (index == 0) {
-                    JumpConfirmed = true
-                    hero.resume()
-                }
-            }
-        })
+        WndOptions.Confirm(M.L(Chasm::class.java, "chasm"), M.L(Chasm::class.java, "jump")) {
+            JumpConfirmed = true
+            hero.resume()
+        }
     }
 
     fun HeroFall(pos: Int) {

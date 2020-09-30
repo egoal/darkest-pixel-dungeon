@@ -348,7 +348,7 @@ class Astrolabe : Artifact() {
         }
 
         override fun invoke_directly(user: Hero, a: Astrolabe) {
-            Buff.prolong(user, MustDodge::class.java, 3f).addDodgeTypeAll()
+            Buff.prolong(user, MustDodge::class.java, 3f)
         }
     }
 
@@ -428,7 +428,7 @@ class Astrolabe : Artifact() {
 
         override fun invoke_on_target(user: Hero, a: Astrolabe, c: Char?) {
             if (check_is_other(c)) {
-                var cost = user!!.HT / 10
+                var cost = user.HT / 10
                 if (cost >= user.HP) cost = user.HP - 1
                 val dmg = cost * 2
 
@@ -483,11 +483,11 @@ class Astrolabe : Artifact() {
         override fun onSelect(cell: Int?) {
             if (cell != null) {
                 if (Dungeon.level.visited[cell] || Dungeon.level.mapped[cell]) {
-                    Buff.prolong(user_!!, buff::class.java, 2f).targetpos = cell
+                    Buff.prolong(user_, buff::class.java, 2f).targetpos = cell
 
-                    user_!!.spend(TIME_TO_CHANT)
-                    user_!!.busy()
-                    user_!!.sprite.operate(user_!!.pos)
+                    user_.spend(TIME_TO_CHANT)
+                    user_.busy()
+                    user_.sprite.operate(user_!!.pos)
                 } else
                     GLog.w(M.L(Astrolabe.Invoker::class.java, "not_select_target"))
             }

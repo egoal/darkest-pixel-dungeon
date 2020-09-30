@@ -42,11 +42,9 @@ class WandOfMagicMissile : DamageWand() {
 
     override fun onZap(bolt: Ballistica) {
         Actor.findChar(bolt.collisionPos)?.let { ch ->
-            val dmg = giveDamage(ch)
-            onMissileHit(ch, Dungeon.hero, dmg)
-            ch.takeDamage(dmg)
-
-            ch.sprite.burst(-0x1, level() / 2 + 2)
+            damage(ch, {
+                if (it) ch.sprite.burst(particleColor(), level() / 2 + 2)
+            })
         }
     }
 

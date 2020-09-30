@@ -57,11 +57,7 @@ abstract class NPC : Mob() {
     override fun beckon(cell: Int) {}
 
     abstract fun interact(): Boolean
-
-    override fun act(): Boolean {
-        return super.act()
-    }
-
+    
     protected fun tell(text: String) {
         GameScene.show(WndQuest(this, text))
     }
@@ -72,7 +68,7 @@ abstract class NPC : Mob() {
             return super.act()
         }
 
-        override fun defenseSkill(enemy: Char): Float = 1000f
+        override fun dexRoll(damage: Damage): Float = 1000f
         override fun takeDamage(dmg: Damage): Int = 0
         override fun add(buff: Buff) {}
 

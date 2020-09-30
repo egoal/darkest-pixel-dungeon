@@ -56,6 +56,7 @@ class Piranha : Mob() {
         HT = 10 + Dungeon.depth * 5
         HP = HT
         defSkill = 10f + Dungeon.depth * 2
+        atkSkill = 20f + Dungeon.depth * 2
     }
 
     override fun act(): Boolean {
@@ -87,9 +88,7 @@ class Piranha : Mob() {
 
     private fun damageRoll(): Int = Random.NormalIntRange(Dungeon.depth, 2 + Dungeon.depth * 2)
 
-    override fun giveDamage(target: Char): Damage = Damage(damageRoll(), this, target)
-
-    override fun attackSkill(target: Char): Float = 20f + Dungeon.depth * 2f
+    override fun giveDamage(enemy: Char): Damage = Damage(damageRoll(), this, enemy)
 
     override fun attackProc(damage: Damage): Damage {
         if (Random.Int(2) == 0)

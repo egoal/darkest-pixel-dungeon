@@ -97,7 +97,9 @@ class WitchDoctor : Mob() {
             sprite.showStatus(CharSprite.POSITIVE, M.L(WitchDoctor::class.java, "heal"))
             healCD = HEAL_CD
             sprite.zap(ch.pos, Callback {
-                ch.recoverHP(ch.HT / 10 + 5, this@WitchDoctor)
+                var value = Random.IntRange(8, ch.HT / 10 + 5)
+                if (ch.camp == camp) value += 5 // heal allys 
+                ch.recoverHP(value, this@WitchDoctor)
                 spend(TIME_TO_HEAL)
                 next()
             })
@@ -161,7 +163,7 @@ class WitchDoctor : Mob() {
 
     companion object {
         private const val DECAY_CD = 18f
-        private const val HEAL_CD = 4f
+        private const val HEAL_CD = 5f
 
         private const val TIME_TO_DECAY = 1f
         private const val TIME_TO_HEAL = 1f

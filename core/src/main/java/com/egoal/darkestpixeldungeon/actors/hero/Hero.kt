@@ -296,21 +296,21 @@ class Hero : Char() {
         return res
     }
 
-    override fun attackSkill(target: Char): Float {
-        var accuracy = pressure.accuracyFactor()
+    override fun accRoll(damage: Damage): Float {
+        var acc = super.accRoll(damage)
 
-        if (buff(Drunk::class.java) != null) accuracy *= 0.75f
+        acc *= pressure.accuracyFactor()
+        if (buff(Drunk::class.java) != null) acc *= 0.75f
 
         // weapon
-        accuracy *= (rangedWeapon ?: belongings.weapon)?.accuracyFactor(Dungeon.hero, target) ?: 1f
+        acc *= (rangedWeapon ?: belongings.weapon)?.accuracyFactor(this, damage.to as Char) ?: 1f
 
-        //todo: refactor
-        if (isUsingPolearm() && heroPerk.has(PolearmMaster::class.java)) accuracy *= 1.1f
+        //todo: refacter this
+        if (isUsingPolearm()) acc *= heroPerk.get(PolearmMaster::class.java)?.accFactor() ?: 1f
 
-        if (belongings.helmet is MaskOfHorror && belongings.helmet!!.cursed) accuracy *= 0.75f
+        if (belongings.helmet is MaskOfHorror && belongings.helmet!!.cursed) acc *= 0.75f
 
-
-        return atkSkill * accuracy
+        return acc
     }
 
     fun evasionProbability(): Float {
@@ -335,31 +335,32 @@ class Hero : Char() {
         return 1 - e
     }
 
-    override fun defenseSkill(enemy: Char): Float {
-        // evasion check
+    override fun dexRoll(damage: Damage): Float {
+        // evasion
         if (Random.Float() < evasionProbability()) return 1000f
 
-        var bonus = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
-        var evasion = 1.1f.pow(bonus)
+        var dex = super.dexRoll(damage)
 
-        if (paralysed > 0) evasion *= 0.5f
+        val roe = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
+        var factor = 1.1f.pow(roe)
 
-        if (heroClass == HeroClass.SORCERESS) evasion *= 0.8f
+        if (paralysed > 0) factor *= 0.5f
 
-        evasion *= pressure.evasionFactor()
+        if (heroClass == HeroClass.SORCERESS) factor *= 0.8f
+
+        factor *= pressure.evasionFactor()
 
         val estr = (belongings.armor?.STRReq() ?: 10) - STR()
-        if (estr > 0) {
-            // heavy
-            return defSkill * evasion / Math.pow(1.5, estr.toDouble()).toFloat()
-        } else {
-            // ligh
-            bonus = if (heroPerk.has(LowWeightDexterous::class.java)) -estr else 0
+        if (estr > 0) factor *= 1f / 1.5f.pow(estr)
+        else {
+            var bonus = if (heroPerk.has(LowWeightDexterous::class.java)) -estr.toFloat() else 0f
+            if (belongings.armor?.hasGlyph(Swiftness::class.java) == true)
+                bonus += 5f + belongings.armor!!.level() * 1.5f
 
-            if (belongings.armor?.hasGlyph(Swiftness::class.java) != null)
-                bonus += 5 + belongings.armor!!.level() * 3 / 2
-            return (defSkill + bonus) * evasion
+            dex += Random.Float(bonus)
         }
+        
+        return dex * factor
     }
 
     fun canSurpriseAttack(): Boolean {
@@ -431,24 +432,6 @@ class Hero : Char() {
             dmg.addFeature(Damage.Feature.ACCURATE)
 
         return dmg
-    }
-
-    fun procWandDamage(dmg: Damage) {
-        dmg.value = round(dmg.value * arcaneFactor()).toInt()
-
-        val bonus = Ring.getBonus(this, RingOfSharpshooting.Aim::class.java)
-        if (bonus != 0) {
-            val ratio = 2.5f - 1.5f * 0.9f.pow(bonus)
-            dmg.value = round(dmg.value * ratio).toInt()
-        }
-
-        val arcane = Ring.getBonus(this, RingOfArcane.Arcane::class.java)
-        if (arcane > 0 && Random.Float() < 0.8f * (1f - 0.925f.pow(arcane))) {
-            dmg.value = round(dmg.value * 1.5f).toInt()
-            dmg.addFeature(Damage.Feature.CRITICAL)
-        }
-
-        heroPerk.get(ArcaneCrit::class.java)?.affectDamage(this, dmg)
     }
 
     override fun defendDamage(dmg: Damage): Damage {

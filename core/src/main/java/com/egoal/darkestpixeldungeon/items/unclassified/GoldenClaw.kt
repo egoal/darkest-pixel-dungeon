@@ -140,14 +140,12 @@ open class GoldenClaw : Item() {
         override fun execute(hero: Hero, action: String) {
             super.execute(hero, action)
             if (action === AC_EXEC) {
-                GameScene.show(object : WndOptions(ItemSprite(this), M.L(this, "name"), "", M.L(this, "opt_mob"), M.L(this, "opt_item")) {
-                    override fun onSelect(index: Int) {
-                        if (index == 0) {
-                            if (cooldown > 0) GLog.w(M.L(Evil::class.java, "cooldown"))
-                            else GameScene.selectCell(caster)
-                        } else this@Evil.execute(hero, AC_USE)
-                    }
-                })
+                WndOptions.Show(ItemSprite(this), name, "", M.L(this, "opt_mob"), M.L(this, "opt_item")) {
+                    if (it == 0) {
+                        if (cooldown > 0) GLog.w(M.L(Evil::class.java, "cooldown"))
+                        else GameScene.selectCell(caster)
+                    } else execute(hero, AC_USE)
+                }
             }
         }
 

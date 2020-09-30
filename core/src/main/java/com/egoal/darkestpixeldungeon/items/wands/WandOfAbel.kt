@@ -45,10 +45,8 @@ class WandOfAbel : DamageWand() {
                 Dungeon.observe()
             } else GLog.w(M.L(this, "cannot_swap"))
 
-            val dmg = giveDamage(ch)
-            onMissileHit(ch, Item.curUser, dmg)
-            ch.takeDamage(dmg)
-
+            damage(ch)
+            
             if (ch.isAlive)
                 Buff.prolong(ch, Paralysis::class.java, 0.2f + level() / 5f)
 

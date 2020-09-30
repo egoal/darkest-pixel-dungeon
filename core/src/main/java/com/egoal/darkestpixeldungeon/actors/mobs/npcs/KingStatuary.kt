@@ -16,7 +16,7 @@ import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
 
-class KingStatuary : NPC() {
+class KingStatuary : NPC.Unbreakable() {
     init {
         spriteClass = Sprite::class.java
 
@@ -91,18 +91,6 @@ class KingStatuary : NPC() {
         super.restoreFromBundle(bundle)
         hasCrown = bundle.getBoolean(HAS_CROWN)
     }
-
-    // unbreakable
-    override fun act(): Boolean {
-        throwItem()
-        return super.act()
-    }
-
-    override fun defenseSkill(enemy: Char): Float = 1000f
-
-    override fun takeDamage(dmg: Damage): Int = 0
-
-    override fun add(buff: Buff) {}
 
     companion object {
         private const val HAS_CROWN = "has-crown"

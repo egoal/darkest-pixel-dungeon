@@ -34,6 +34,7 @@ class MadMan : Mob(), Callback {
         HT = 10 + 2 * Dungeon.depth
         HP = HT
         defSkill = 5f + Dungeon.depth
+        atkSkill = 10f + Dungeon.depth
 
         EXP = min(3 + Dungeon.depth / 2, 12)
         maxLvl = Dungeon.depth + 3
@@ -60,8 +61,6 @@ class MadMan : Mob(), Callback {
     }
 
     override fun attackDelay(): Float = 1f
-
-    override fun attackSkill(target: Char): Float = 10f + Dungeon.depth
 
     override fun defendDamage(dmg: Damage): Damage {
         // lower physical defense,

@@ -43,6 +43,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 
@@ -135,17 +136,9 @@ open class Potion : Item() {
                 if (this is PotionOfLiquidFlame ||
                         this is PotionOfToxicGas ||
                         this is PotionOfParalyticGas) {
-                    GameScene.show(
-                            object : WndOptions(Messages.get(Potion::class.java, "harmful"),
-                                    Messages.get(Potion::class.java, "sure_drink"),
-                                    Messages.get(Potion::class.java, "yes"), Messages.get(Potion::class.java, "no")) {
-                                override fun onSelect(index: Int) {
-                                    if (index == 0) {
-                                        drink(hero)
-                                    }
-                                }
-                            }
-                    )
+                    WndOptions.Confirm(M.L(Potion::class.java, "harmful"), M.L(Potion::class.java, "sure_drink")) {
+                        drink(hero)
+                    }
                 } else {
                     drink(hero)
                 }
@@ -168,19 +161,10 @@ open class Potion : Item() {
                         this is PotionOfStrength ||
                         this is PotionOfInvisibility ||
                         this is PotionOfMight)) {
-
-            GameScene.show(
-                    object : WndOptions(Messages.get(Potion::class.java, "beneficial"),
-                            Messages.get(Potion::class.java, "sure_throw"),
-                            Messages.get(Potion::class.java, "yes"), Messages.get(Potion::class.java, "no")) {
-                        override fun onSelect(index: Int) {
-                            if (index == 0) {
-                                super@Potion.doThrow(hero)
-                            }
-                        }
-                    }
-            )
-
+            
+            WndOptions.Confirm(M.L(Potion::class.java, "beneficial"), M.L(Potion::class.java, "sure_throw")){
+                doThrow(hero)
+            }
         } else {
             super.doThrow(hero)
         }
@@ -289,7 +273,8 @@ open class Potion : Item() {
 
         private const val TIME_TO_DRINK = 1f
 
-        private val potions = arrayOf(PotionOfHealing::class.java, PotionOfExperience::class.java, PotionOfToxicGas::class.java,
+        private val potions = arrayOf(
+                PotionOfHealing::class.java, PotionOfExperience::class.java, PotionOfToxicGas::class.java,
                 PotionOfLiquidFlame::class.java, PotionOfStrength::class.java, PotionOfParalyticGas::class.java,
                 PotionOfLevitation::class.java, PotionOfMindVision::class.java, PotionOfPurity::class.java,
                 PotionOfInvisibility::class.java, PotionOfMight::class.java, PotionOfFrost::class.java,

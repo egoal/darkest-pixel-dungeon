@@ -72,14 +72,13 @@ class Bee : Mob() {
 
         HT = (2 + level) * 4
         defSkill = (9 + level).toFloat()
+        atkSkill = defSkill
     }
 
     fun setPotInfo(potPos: Int, potHolder: Char?) {
         this.potPos = potPos
         this.potHolder = potHolder?.id() ?: -1
     }
-
-    override fun attackSkill(target: Char): Float = defSkill
 
     override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(HT / 10, HT / 4), this, target)
 

@@ -45,13 +45,9 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
 
         if (action == AC_USE) {
             if (prickValue(hero) > hero.HP * 2 / 3) {
-                GameScene.show(object : WndOptions(ItemSprite(this), M.L(this, "name"),
-                        M.L(this, "prick_warn"),
-                        M.L(this, "yes"), M.L(this, "no")) {
-                    override fun onSelect(index: Int) {
-                        if (index == 0) prick(hero)
-                    }
-                })
+                WndOptions.Confirm(ItemSprite(this), M.L(this, "name"), M.L(this, "prick_warn")) {
+                    prick(hero)
+                }
             } else prick(hero)
         }
     }

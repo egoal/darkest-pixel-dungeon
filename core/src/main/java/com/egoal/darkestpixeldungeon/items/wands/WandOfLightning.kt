@@ -53,17 +53,12 @@ class WandOfLightning : DamageWand() {
         image = ItemSpriteSheet.WAND_LIGHTNING
     }
 
-    override fun min(lvl: Int): Int {
-        return 5 + lvl
-    }
+    override fun min(lvl: Int): Int = 5 + lvl
 
-    override fun max(lvl: Int): Int {
-        return 8 + 5 * lvl
-    }
+    override fun max(lvl: Int): Int = 10 + 5 * lvl
 
-    override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).addElement(Damage.Element.LIGHT)
-    }
+    override fun giveDamage(enemy: Char): Damage = 
+            super.giveDamage(enemy).addElement(Damage.Element.LIGHT).addFeature(Damage.Feature.ACCURATE)
 
     override fun onZap(bolt: Ballistica) {
 
@@ -72,14 +67,13 @@ class WandOfLightning : DamageWand() {
         //if the main targetpos is in water, all affected take full damage
         if (Level.water[bolt.collisionPos]) multipler = 1f
 
-        val min = 5 + level()
-        val max = 10 + 5 * level()
-
         for (ch in affected) {
             val dmg = giveDamage(ch)
             dmg.value = Math.round(dmg.value * multipler)
-            ch.takeDamage(dmg)
 
+            Char.ProcessWandDamage(dmg, particleColor())
+
+            // note the damage is accurate 
             if (ch === Dungeon.hero) Camera.main.shake(2f, 0.3f)
             ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3)
             ch.sprite.flash()

@@ -29,6 +29,14 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.egoal.darkestpixeldungeon.actors.hero.perks.ArcaneCrit
+import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPerception
+import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
+import com.egoal.darkestpixeldungeon.effects.Splash
+import com.egoal.darkestpixeldungeon.items.rings.Ring
+import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy
+import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
+import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Door
 import com.egoal.darkestpixeldungeon.messages.M
@@ -37,16 +45,11 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
 import com.watabou.noosa.audio.Sample
-import com.watabou.utils.Bundle
-import com.watabou.utils.GameMath
-import com.watabou.utils.PathFinder
-import com.watabou.utils.Random
+import com.watabou.utils.*
 
 import java.util.Arrays
 import java.util.HashSet
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.round
+import kotlin.math.*
 
 abstract class Char : Actor() {
     enum class Camp {
@@ -150,141 +153,17 @@ abstract class Char : Actor() {
     open fun attack(enemy: Char): Boolean {
         if (!enemy.isAlive) return false
 
-        val visibleFight = Dungeon.visible[pos] || Dungeon.visible[enemy.pos]
+        var hit = true
+        ProcessAttackDamage(giveDamage(enemy), { hit = it })
 
-        var dmg = giveDamage(enemy)
-        if (enemy.checkHit(dmg)) {
-            // enemy armor defense
-            if (dmg.type != Damage.Type.MAGICAL && !dmg.isFeatured(Damage.Feature.PURE) &&
-                    !(this is Hero && rangedWeapon != null && subClass === HeroSubClass.SNIPER)) // sniper's perk: ignore defense
-                dmg = enemy.defendDamage(dmg)
-
-            dmg = attackProc(dmg)
-
-            //todo: may move this to Hero::defenseProc
-            if (dmg.type != Damage.Type.MENTAL)
-                enemy.buff(ResistAny::class.java)?.let {
-                    it.resist()
-                    dmg.value = 0
-                }
-
-            dmg = enemy.defenseProc(dmg)
-
-            if (visibleFight && !TimekeepersHourglass.IsTimeStopped()) {
-                if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0)
-                    Sample.INSTANCE.play(Assets.SND_CRITICAL, 1f, 1f, 1f)
-                else
-                    Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(0.8f, 1.25f))
-            }
-
-            // may died in proc
-            if (!enemy.isAlive) return true
-
-            // camera shake, todo: add more effects here
-            var shake = 0f
-            if (enemy === Dungeon.hero)
-                shake = (dmg.value / (enemy.HT / 4)).toFloat()
-            if (shake > 1f)
-                Camera.main.shake(GameMath.gate(1f, shake, 5f), .3f)
-
-            // take!
-            val value = enemy.takeDamage(dmg)
-            if (value < 0) {
-                // ^^^ this is the only case when time stop! not a good design, but
-                // works for now.
-                enemy.sprite.flash() // let the player know, "i hit it"
-                return true
-            }
-
-            // buffs, dont know why this piece of code exists,
-            // maybe the mage? or the attack effect?
-            if (buff(FireImbue::class.java) != null)
-                buff(FireImbue::class.java)!!.proc(enemy)
-            if (buff(EarthImbue::class.java) != null)
-                buff(EarthImbue::class.java)!!.proc(enemy)
-
-            if (this === Dungeon.hero)
-                Statistics.HighestDamage = max(Statistics.HighestDamage, value)
-
-            // effects
-            // burst blood
-            if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
-                enemy.sprite.bloodBurstB(sprite.center(), value)
-                enemy.sprite.spriteBurst(sprite.center(), value)
-                enemy.sprite.flash()
-            } else {
-                enemy.sprite.bloodBurstA(sprite.center(), value)
-                enemy.sprite.flash()
-            }
-
-            // WeaponFlash.Companion.Flash(this, enemy);
-
-            if (!enemy.isAlive && visibleFight) {
-                if (enemy === Dungeon.hero) {
-                    // hero die
-                    Dungeon.fail(javaClass)
-                    GLog.n(Messages.capitalize(Messages.get(Char::class.java, "kill", name)))
-                } else if (this === Dungeon.hero) {
-                    // killed by hero
-                    Dungeon.hero.onKillChar(enemy)
-                }
-            }
-
-            return true
-        } else {
-            if (enemy === Dungeon.hero) Dungeon.hero.onEvasion(dmg)
-
-            // missed
-            if (visibleFight) {
-                val str = enemy.defenseVerb()
-                enemy.sprite.showStatus(CharSprite.NEUTRAL, str)
-
-                Sample.INSTANCE.play(Assets.SND_MISS)
-            }
-
-            return false
-        }
+        return hit
     }
+
+    open fun checkHit(dmg: Damage): Boolean = CheckDamageHit(dmg)
 
     open fun giveDamage(enemy: Char): Damage = Damage(1, this, enemy)
 
     open fun defendDamage(dmg: Damage): Damage = dmg
-
-    open fun checkHit(dmg: Damage): Boolean {
-        val attacker = dmg.from as Char
-        val defender = dmg.to as Char
-
-        // shocked, must miss
-        if (attacker.buff(Shock::class.java) != null) return false
-
-        if (defender.buff(Unbalance::class.java) != null) return true
-
-        // must dodge, cannot hit
-        val md = defender.buff(MustDodge::class.java)
-        if (md != null && md.canDodge(dmg))
-            return false
-
-        // when from no where, be accurate
-        if (dmg.from is Mob && !Dungeon.visible[(dmg.from as Char).pos])
-            dmg.addFeature(Damage.Feature.ACCURATE)
-
-        if (dmg.isFeatured(Damage.Feature.ACCURATE))
-            return true
-
-        var acuRoll = Random.Float(attacker.attackSkill(defender))
-        var defRoll = Random.Float(defender.defenseSkill(attacker))
-
-        // buff fix
-        if (attacker.buff(Bless::class.java) != null) acuRoll *= 1.2f
-        if (defender.buff(Bless::class.java) != null) defRoll *= 1.2f
-        if (defender.buff(Roots::class.java) != null) defRoll *= .5f
-
-        var bonus = 1f
-        if (dmg.type == Damage.Type.MAGICAL || dmg.type == Damage.Type.MENTAL)
-            bonus = 2f
-
-        return bonus * acuRoll >= defRoll
-    }
 
     open fun attackProc(dmg: Damage): Damage = dmg
 
@@ -405,9 +284,21 @@ abstract class Char : Actor() {
     }
 
     // attack or edoge ratio
-    open fun attackSkill(target: Char): Float = atkSkill
+    open fun accRoll(damage: Damage): Float {
+        var acc = Random.Float(atkSkill)
 
-    open fun defenseSkill(enemy: Char): Float = defSkill
+        if (buff(Bless::class.java) != null) acc *= 1.2f
+
+        return acc
+    }
+
+    open fun dexRoll(damage: Damage): Float {
+        var dex = Random.Float(defSkill)
+        if (buff(Bless::class.java) != null) dex *= 1.2f
+        if (buff(Roots::class.java) != null) dex *= 0.5f
+
+        return dex
+    }
 
     fun defenseVerb(): String = M.L(this, "def_verb")
 
@@ -573,5 +464,184 @@ abstract class Char : Actor() {
         private const val BUFFS = "buffs"
 
         private val EMPTY = HashSet<Class<*>>()
+
+        // split the whole attack process
+        // hit check, but considered the visibility
+        fun CheckDamageHit(damage: Damage): Boolean {
+            val attacker = damage.from as Char
+            val defender = damage.to as Char
+
+            if (attacker.buff(Shock::class.java) != null || defender.buff(MustDodge::class.java) != null) return false
+
+            if (defender.buff(Unbalance::class.java) != null) return true
+
+            // mob attack from no where, accurate
+            if (attacker is Mob && !Dungeon.visible[attacker.pos]) damage.addFeature(Damage.Feature.ACCURATE)
+
+            if (damage.isFeatured(Damage.Feature.ACCURATE)) return true
+
+            val acc = attacker.accRoll(damage)
+            val dex = defender.dexRoll(damage)
+
+            // type bonus
+            var bonus = 1f
+            if (damage.type == Damage.Type.MAGICAL || damage.type == Damage.Type.MENTAL)
+                bonus = 2f
+
+            return bonus * acc >= dex
+        }
+
+        // attack process
+        //note: if you want to skip the hit check process someday, just make the damage ACCURATE.
+        fun ProcessAttackDamage(damage: Damage, onHit: ((Boolean) -> Unit)? = null, onKilled: (() -> Unit)? = null) {
+            val attacker = damage.from as Char
+            val defender = damage.to as Char
+            val attackerIsHero = attacker === Dungeon.hero
+            val defenderIsHero = defender === Dungeon.hero
+            val visibleFight = Dungeon.visible[attacker.pos] || Dungeon.visible[defender.pos]
+
+            val hit = CheckDamageHit(damage)
+            onHit?.invoke(hit)
+
+            if (!hit) {
+                if (defenderIsHero) Dungeon.hero.onEvasion(damage)
+
+                if (visibleFight) {
+                    defender.sprite.showStatus(CharSprite.NEUTRAL, defender.defenseVerb())
+                    Sample.INSTANCE.play(Assets.SND_MISS)
+                }
+
+                return
+            }
+
+            var dmg = damage
+
+            // armor
+            if (dmg.type != Damage.Type.MAGICAL && !dmg.isFeatured(Damage.Feature.PURE) &&
+                    !(attackerIsHero && (attacker as Hero).rangedWeapon != null && attacker.subClass === HeroSubClass.SNIPER)) // sniper's perk
+                dmg = defender.defendDamage(dmg)
+
+            dmg = attacker.attackProc(dmg)
+
+            // manifold shield resist
+            if (dmg.type != Damage.Type.MENTAL)
+                defender.buff(ResistAny::class.java)?.let {
+                    it.resist()
+                    dmg.value = 0
+                }
+
+            dmg = defender.defenseProc(dmg)
+
+            // sound
+            if (visibleFight && !TimekeepersHourglass.IsTimeStopped()) {
+                if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0)
+                    Sample.INSTANCE.play(Assets.SND_CRITICAL, 1f, 1f, 1f)
+                else Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(0.8f, 1.25f))
+            }
+
+            if (!defender.isAlive) return // already died in procs
+
+            // camera shake
+            if (attackerIsHero) {
+                val shake = dmg.value * 4f / defender.HT
+                if (shake > 1f) Camera.main.shake(GameMath.clampf(shake, 1f, 5f), 0.3f)
+            }
+
+            // take
+            val value = defender.takeDamage(dmg)
+            if (value < 0) {
+                //fixme: value only be nagetive when time stop. this is fragile
+                defender.sprite.flash() // let the player know he/she hit it.
+                return
+            }
+
+            attacker.buff(FireImbue::class.java)?.proc(defender)
+            attacker.buff(EarthImbue::class.java)?.proc(defender)
+
+            if (attackerIsHero)
+                Statistics.HighestDamage = max(Statistics.HighestDamage, value)
+
+            // efx
+            if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+                defender.sprite.bloodBurstB(attacker.sprite.center(), value)
+                defender.sprite.spriteBurst(attacker.sprite.center(), value)
+                defender.sprite.flash()
+            } else {
+                defender.sprite.bloodBurstA(attacker.sprite.center(), value)
+                defender.sprite.flash()
+            }
+
+            if (!defender.isAlive) {
+                // killed
+                onKilled?.invoke()
+
+                if (visibleFight) {
+                    if (defender === Dungeon.hero) {
+                        Dungeon.fail(attacker.javaClass)
+                        GLog.n(M.CL(Char::class.java, "kill", attacker.name))
+                    } else if (attackerIsHero) {
+                        (attacker as Hero).onKillChar(defender)
+                    }
+                }
+            }
+        }
+
+        // currently damage.from must be Hero
+        // this is a hero specified process, but may be extended someday.
+        // note that the damage 'giver' may not be wand in the future, by then the wand perk process still in Wand classes
+        fun ProcessWandDamage(damage: Damage, particleColor: Int = 0xffffff,
+                              onHit: ((Boolean) -> Unit)? = null, onKilled: (() -> Unit)? = null) {
+            val hero = damage.from as Hero
+            val defender = damage.to as Char
+            val visibleFight = Dungeon.visible[hero.pos] || Dungeon.visible[defender.pos]
+
+            // proc the given damage. eg. hero perk
+            var dmg = damage
+            dmg.value = round(dmg.value * hero.arcaneFactor()).toInt()
+
+            val ross = Ring.getBonus(hero, RingOfSharpshooting.Aim::class.java)
+            if (ross != 0) {
+                val ratio = 2.5f - 1.5f * 0.9f.pow(ross)
+                dmg.value = round(dmg.value * ratio).toInt()
+            }
+
+            val roa = Ring.getBonus(hero, RingOfAccuracy.Accuracy::class.java)
+            if (roa > 0 && Random.Float() < 0.8f * (1f - 0.925f.pow(roa))) {
+                //note: not bounded.
+                dmg.value = round(dmg.value * 1.5f).toInt()
+                dmg.addFeature(Damage.Feature.CRITICAL)
+            }
+
+            hero.heroPerk.get(ArcaneCrit::class.java)?.affectDamage(hero, dmg)
+
+            // check hit 
+            val hit = CheckDamageHit(damage) //todo: may use a specified wand damage check
+            onHit?.invoke(hit)
+
+            if (!hit) {
+                hero.sprite.showStatus(CharSprite.NEUTRAL, M.L(Hero::class.java, "lost_verb"))
+                return
+            }
+            // on hit
+            hero.heroPerk.get(WandPiercing::class.java)?.onHit(defender)
+
+
+            // no need to check armor defense,
+
+            // resistance already in this 'take' step
+            defender.takeDamage(dmg) 
+
+            //todo: critical effects
+            if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+                Sample.INSTANCE.play(Assets.SND_BLAST)
+                Splash.at(defender.sprite.center(),
+                        PointF.angle(hero.sprite.center(), defender.sprite.center()),
+                        PI.toFloat() / 3f, particleColor, Random.NormalIntRange(12, 20))
+            }
+
+            if (!defender.isAlive) {
+                onKilled?.invoke()
+            }
+        }
     }
 }

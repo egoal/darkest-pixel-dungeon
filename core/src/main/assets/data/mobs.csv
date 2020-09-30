@@ -6,7 +6,7 @@ Crab,16,12,5,4,9,0.1667,MysteryMeat,2,8,,,,0,3,-0.2,,,0.1,-0.2,,,
 FetidRat,20,12,6,4,5,,,1,4,,,,0,2,,,0.2,,,0.2,-0.25,MINIBOSS DEMONIC
 GnollTrickster,20,16,6,5,8,1,,1,5,,,,0,2,,,,-0.2,,,,MINIBOSS
 GreatCrab,25,12,0,6,9,0.1667,,1,8,,,,0,4,,,,0.1,-0.2,,,MINIBOSS
-Goo,100,,8,10,,0.333,LloydsBeacon,,,,,,0,2,0.25,-0.25,0.2,,,,-0.3,BOSS DEMONIC
+Goo,100,10,8,10,,0.333,LloydsBeacon,,,,,,0,2,0.25,-0.25,0.2,,,,-0.3,BOSS DEMONIC
 Swarm,50,10,5,3,9,0.1667,PotionOfHealing,,,,,,,,,,,,,,,
 Skeleton,25,12,9,5,10,0.175,,2,10,,,,1,2,,-0.3,,,,,-0.3,UNDEAD
 Thief,20,12,6,5,10,0.1,MasterThievesArmband,1,8,,0.1,1.5,0,3,0.15,,0.2,-0.15,,,-0.2,DEMONIC

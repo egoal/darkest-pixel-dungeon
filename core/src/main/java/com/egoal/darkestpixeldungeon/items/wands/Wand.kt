@@ -55,7 +55,7 @@ import java.util.ArrayList
 import kotlin.math.min
 import kotlin.math.pow
 
-abstract class Wand : Item() {
+abstract class Wand(val isMissile: Boolean = true) : Item() {
     var maxCharges = initialCharges()
     var curCharges = maxCharges
     var partialCharge = 0f

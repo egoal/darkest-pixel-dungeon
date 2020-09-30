@@ -81,9 +81,7 @@ class WandOfBlastWave : DamageWand() {
 
         //throws the char at the center of the blast
         Actor.findChar(bolt.collisionPos)?.let {
-            val dmg = giveDamage(it)
-            onMissileHit(it, Dungeon.hero, dmg)
-            it.takeDamage(dmg)
+            damage(it)
 
             if (it.isAlive && bolt.path.size > bolt.dist + 1) {
                 val traj = Ballistica(it.pos, bolt.path[bolt.dist + 1], Ballistica.MAGIC_BOLT)

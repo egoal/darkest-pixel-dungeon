@@ -20,20 +20,16 @@
  */
 package com.egoal.darkestpixeldungeon.items.potions
 
-import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Burning
-import com.egoal.darkestpixeldungeon.actors.buffs.Mending
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison
-import com.egoal.darkestpixeldungeon.actors.buffs.Weakness
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.perks.EfficientPotionOfHealing
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import kotlin.math.min
 
 class PotionOfHealing : Potion() {
@@ -48,11 +44,6 @@ class PotionOfHealing : Potion() {
     }
 
     override fun apply(hero: Hero) {
-        setKnown()
-        cure(Dungeon.hero)
-    }
-
-    private fun cure(hero: Hero) {
         Buff.detach(hero, Bleeding::class.java)
 
         if (reinforced) {
@@ -64,18 +55,31 @@ class PotionOfHealing : Potion() {
             Buff.detach(hero, Burning::class.java)
 
             GLog.p(M.L(this, "heal"))
-        } else {
-            val value = recoverValue(hero)
-            // directly recover some health, since buff is act later than chars
-            val directRecover = value / 4
-            hero.recoverHP(directRecover, this)
+            hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4)
 
-            val m = hero.buff(Mending::class.java)
-            if (m != null) {
-                m.set(m.recoveryValue + value - directRecover)
-            } else {
-                Buff.affect(hero, Mending::class.java).set(value - directRecover)
-            }
+            setKnown()
+        } else {
+            if (isKnown && hero.buff(Decayed::class.java) != null)
+                WndOptions.Confirm(ItemSprite(this), name, M.L(this, "decayed")) {
+                    doDrink(hero)
+                }
+            else doDrink(hero)
+        }
+    }
+
+    private fun doDrink(hero: Hero) {
+        setKnown()
+
+        val value = recoverValue(hero)
+        // directly recover some health, since buff is act later than chars
+        val directRecover = value / 4
+        hero.recoverHP(directRecover, this)
+
+        val m = hero.buff(Mending::class.java)
+        if (m != null) {
+            m.set(m.recoveryValue + value - directRecover)
+        } else {
+            Buff.affect(hero, Mending::class.java).set(value - directRecover)
         }
 
         hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4)

@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Earthroot
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -35,13 +36,9 @@ class HeartOfSatan : Artifact() {
         if (action == AC_PRICK) {
             if (prickValue() > hero.HP * 3 / 4) {
                 // warning
-                GameScene.show(object : WndOptions(ItemSprite(this), Messages.get(this, "name"),
-                        Messages.get(this, "prick_warn"),
-                        Messages.get(this, "yes"), Messages.get(this, "no")) {
-                    override fun onSelect(index: Int) {
-                        if (index == 0) prick(hero)
-                    }
-                })
+                WndOptions.Confirm(ItemSprite(this), M.L(this, "name"), M.L(this, "prick_warn")) {
+                    prick(hero)
+                }
             } else
                 prick(hero)
         }

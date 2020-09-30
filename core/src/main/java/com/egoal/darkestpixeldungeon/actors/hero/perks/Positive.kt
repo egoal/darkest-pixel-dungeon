@@ -594,6 +594,8 @@ class PolearmMaster : Perk(2) {
         }
     }
 
+    fun accFactor() = 1f + 0.1f * level
+
     // exile wont get this, while other class can never reach level 2
     // note: i havnt fix the perk upgrade bug, so level 2 may still be possible
     override fun canBeGain(hero: Hero): Boolean = hero.heroClass != HeroClass.EXILE

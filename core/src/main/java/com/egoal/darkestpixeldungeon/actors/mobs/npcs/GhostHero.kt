@@ -45,6 +45,7 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
         camp = Camp.HERO
 
         defSkill = (Dungeon.hero.lvl + 4) * 2f
+        atkSkill = defSkill / 2f + 5f
         HT = 10 + roseLevel * 5
         HP = HT
         timeLeft = 30f * roseLevel + 60f
@@ -154,8 +155,6 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
 
         next()
     }
-
-    override fun attackSkill(target: Char): Float = defSkill / 2 + 5
 
     override fun giveDamage(enemy: Char): Damage {
         val lvl = (HT - 10) / 3

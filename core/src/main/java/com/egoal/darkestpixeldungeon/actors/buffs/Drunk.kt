@@ -37,7 +37,7 @@ class Drunk : FlavourBuff() {
         if (Random.Float() < 0.12f) {
             dmg.value += dmg.value / 4
             dmg.addFeature(Damage.Feature.CRITICAL)
-            prolong(hero, MustDodge::class.java, 2f).addDodgeTypeAll()
+            prolong(hero, MustDodge::class.java, 2f)
 
             if (Random.Float() < 0.35f) hero.recoverSanity(Random.Float(5f))
 

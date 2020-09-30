@@ -66,24 +66,11 @@ class MagicBow : MeleeWeapon() {
         }
 
         val dmg = giveShootDamage(hero, enemy)
-        // still need a hit check
-        if (enemy.checkHit(dmg)) {
-            //todo: may proc enchantment here.
-//            hero.attackProc(dmg)
-//            if (!enemy.isAlive) return
 
-            enemy.defendDamage(dmg)
-            enemy.defenseProc(dmg)
-            enemy.takeDamage(dmg)
-            enemy.sprite.burst(0x57e14e, level() / 2 + 2)
-
-            Statistics.HighestDamage = max(Statistics.HighestDamage, dmg.value)
-            if (!enemy.isAlive) hero.onKillChar(enemy)
-
-            Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(0.8f, 1.25f))
-        } else {
-            enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb())
-        }
+        Char.ProcessAttackDamage(dmg, { 
+            if(it) enemy.sprite.burst(0x57e14e, level() / 2 + 2)
+        })
+        
         Invisibility.dispel()
     }
 

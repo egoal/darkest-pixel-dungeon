@@ -91,15 +91,16 @@ class Goo : Mob() {
         return dmg
     }
 
-    override fun attackSkill(target: Char): Float {
-        var attack = 10f
-        if (HP * 2 <= HT) attack = 15f
-        if (pumpedUp > 0) attack *= 2f
-        return attack
+    override fun accRoll(damage: Damage): Float {
+        var acc = super.accRoll(damage)
+        if (HP <= HT / 2) acc *= 1.5f
+        if (pumpedUp > 0) acc *= 2f
+
+        return acc
     }
 
-    override fun defenseSkill(enemy: Char): Float {
-        return super.defenseSkill(enemy) * if (HP * 2 <= HT) 1.5f else 1f
+    override fun dexRoll(damage: Damage): Float {
+        return super.dexRoll(damage) * if (HP <= HT / 2) 1.5f else 1f
     }
 
     public override fun act(): Boolean {

@@ -49,11 +49,7 @@ abstract class DamageWand : Wand() {
 
     abstract fun max(lvl: Int): Int
 
-    open fun giveDamage(enemy: Char): Damage {
-        val dmg = Damage(damageRoll(), Item.curUser, enemy).type(Damage.Type.MAGICAL)
-        Item.curUser!!.procWandDamage(dmg)
-        return dmg
-    }
+    open fun giveDamage(enemy: Char): Damage = Damage(damageRoll(), curUser, enemy).type(Damage.Type.MAGICAL)
 
     fun damageRoll(): Int = round(Random.NormalIntRange(min(), max()) * Dungeon.hero.arcaneFactor()).toInt()
 
@@ -64,15 +60,8 @@ abstract class DamageWand : Wand() {
 
     protected open fun particleColor(): Int = 0xffffff
 
-    //todo: refactor the missile handle
-    open fun onMissileHit(char: Char, hero: Hero, dmg: Damage) {
-        hero.heroPerk.get(WandPiercing::class.java)?.onHit(char)
-
-        //todo: critical effects
-        if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
-            Sample.INSTANCE.play(Assets.SND_BLAST)
-            Splash.at(char.sprite.center(), PointF.angle(hero.sprite.center(), char.sprite.center()),
-                    PI.toFloat() / 3f, particleColor(), Random.NormalIntRange(12, 20))
-        }
+    protected fun damage(enemy: Char, onHit: ((Boolean) -> Unit)? = null, onKilled: (() -> Unit)? = null) {
+        val damage = giveDamage(enemy)
+        Char.ProcessWandDamage(damage, particleColor(), onHit, onKilled)
     }
 }

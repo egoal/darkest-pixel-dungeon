@@ -62,6 +62,7 @@ open class Statue : Mob() {
         HT = 15 + Dungeon.depth * 5
         HP = HT
         defSkill = 4f + Dungeon.depth
+        atkSkill = 9f + Dungeon.depth
     }
 
     override fun storeInBundle(bundle: Bundle) {
@@ -90,7 +91,7 @@ open class Statue : Mob() {
         return dmg
     }
 
-    override fun attackSkill(target: Char): Float = (9f + Dungeon.depth) * weapon.ACC
+    override fun accRoll(damage: Damage): Float = super.accRoll(damage) * weapon.ACC
 
     override fun attackDelay(): Float = weapon.DLY
 

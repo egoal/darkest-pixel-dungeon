@@ -12,7 +12,7 @@ import com.egoal.darkestpixeldungeon.sprites.SimpleMobSprite
 import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.watabou.utils.Random
 
-class SPDBattleMage : NPC() {
+class SPDBattleMage : NPC.Unbreakable() {
     init {
         spriteClass = Sprite::class.java
 
@@ -53,18 +53,5 @@ class SPDBattleMage : NPC() {
         }
     }
 
-    // unbreakable
     override fun reset() = true
-
-    override fun act(): Boolean {
-        throwItem()
-        return super.act()
-    }
-
-    override fun defenseSkill(enemy: Char): Float = 1000f
-
-    override fun takeDamage(dmg: Damage): Int = 0
-
-    override fun add(buff: Buff) = Unit
-
 }

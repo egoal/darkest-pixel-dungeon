@@ -32,12 +32,9 @@ class HomurasShield : Artifact() {
             else if (cursed) GLog.w(M.L(this, "cursed"))
             else if (charge < chargeCap) GLog.w(M.L(this, "no_charge"))
             else {
-                GameScene.show(object : WndOptions(ItemSprite(this), M.L(this, "name"),
-                        M.L(this, "return_warn"), M.L(this, "yes"), M.L(this, "no")) {
-                    override fun onSelect(index: Int) {
-                        if (index == 0) reflux()
-                    }
-                })
+                WndOptions.Confirm(ItemSprite(this), name, M.L(this, "return_warn")) {
+                    reflux()
+                }
             }
         }
     }

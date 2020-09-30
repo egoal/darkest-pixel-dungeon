@@ -46,6 +46,7 @@ class RotLasher : Mob() {
         EXP = level / 3 + 1
         maxLvl = level + 2
 
+        atkSkill = 10f + level
         defSkill = 3f + level
         enemySeen = true
     }
@@ -56,8 +57,6 @@ class RotLasher : Mob() {
 
         return super.act()
     }
-
-    override fun attackSkill(target: Char): Float = 10f + level
 
     override fun giveDamage(enemy: Char): Damage = Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, enemy)
 

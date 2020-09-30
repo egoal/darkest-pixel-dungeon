@@ -93,9 +93,8 @@ class WandOfDisintegration : DamageWand() {
 
         val lvl = level + (chars.size - 1) + terrainBonus
         for (ch in chars) {
-            // ch.damage( damageRoll(lvl), this );
-            ch.takeDamage(Damage(damageRoll(lvl), curUser, ch).type(Damage.Type
-                    .MAGICAL).addFeature(Damage.Feature.PURE))
+            val damage = Damage(damageRoll(lvl), curUser, ch).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE)
+            Char.ProcessWandDamage(damage)
             ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange(1, 2))
             ch.sprite.flash()
         }

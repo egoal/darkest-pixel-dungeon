@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.ui.StatusPane
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndDialogue
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
@@ -76,7 +77,8 @@ class Statuary : NPC.Unbreakable() {
         if (!isActive) return false
 
         Journal.add(name)
-        WndDialogue.Show(this, description(), M.L(this, "agree_${type.title}"), M.L(this, "disagree_${type.title}")) {
+        
+        WndOptions.Show(sprite(), name, description(), M.L(this, "agree_${type.title}"), M.L(this, "disagree_${type.title}")) {
             Dungeon.hero.spend(1f)
 
             val agree = it == 0

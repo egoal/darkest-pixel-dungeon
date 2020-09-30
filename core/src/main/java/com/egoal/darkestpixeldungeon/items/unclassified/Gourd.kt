@@ -14,7 +14,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
-import com.egoal.darkestpixeldungeon.windows.WndConfirm
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -60,10 +60,10 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
 
     private fun irrigate(wine: Wine) {
         if (wine.gourdValue + volume > CAPACITY) {
-            GameScene.show(WndConfirm(ItemSprite(this), name(), M.L(this, "no_enough_space")) {
+            WndOptions.Confirm(ItemSprite(this), name(), M.L(this, "no_enough_space")) {
                 volume = CAPACITY - wine.gourdValue
                 irrigate(wine)
-            })
+            }
         }
 
         wine.detach(curUser.belongings.backpack)

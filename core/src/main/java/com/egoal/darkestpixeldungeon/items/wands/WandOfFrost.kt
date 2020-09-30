@@ -41,17 +41,17 @@ class WandOfFrost : DamageWand() {
         Actor.findChar(attack.collisionPos)?.let { ch ->
             val dmg = giveDamage(ch)
 
-            // nothing to do wit a frozen targetpos
+            // nothing to do wit a frozen target pos
             if (ch.buff(Frost::class.java) != null) return
 
             if (ch.buff(Chill::class.java) != null) {
                 val chill = ch.buff(Chill::class.java)!!.cooldown()
                 dmg.value = round(dmg.value * 0.95f.pow(chill)).toInt()
-            } else
-                ch.sprite.burst(0xff99ccff.toInt(), level() / 2 + 2)
+            }
 
-            onMissileHit(ch, Dungeon.hero, dmg)
-            ch.takeDamage(dmg)
+            Char.ProcessWandDamage(dmg, particleColor(), {
+                if (it) ch.sprite.burst(particleColor(), level() / 2 + 2)
+            })
 
             if (ch.isAlive) {
                 val duration = if (Level.water[ch.pos]) 4 + level() else 2 + level()

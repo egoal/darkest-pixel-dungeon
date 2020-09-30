@@ -33,9 +33,7 @@ class Mimic : Mob() {
     private var level = 0
     var items = mutableListOf<Item>()
 
-    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(HT / 10, HT / 4), this, target)
-
-    override fun attackSkill(target: Char): Float = 9f + level
+    override fun giveDamage(enemy: Char): Damage = Damage(Random.NormalIntRange(HT / 10, HT / 4), this, enemy)
 
     override fun die(cause: Any?) {
         super.die(cause)
@@ -55,7 +53,8 @@ class Mimic : Mob() {
         HT = (1 + level) * 6
         HP = HT
         EXP = 2 + 2 * (level - 1) / 5
-        defSkill = attackSkill(this) / 2
+        atkSkill = 9f + level
+        defSkill = atkSkill / 2f
 
         enemySeen = true
     }
