@@ -43,7 +43,7 @@ import com.watabou.utils.Random
 
 import java.util.ArrayList
 
-class WandOfLightning : DamageWand() {
+class WandOfLightning : DamageWand(isMissile = false) {
 
     private val affected = ArrayList<Char>()
 
@@ -71,7 +71,7 @@ class WandOfLightning : DamageWand() {
             val dmg = giveDamage(ch)
             dmg.value = Math.round(dmg.value * multipler)
 
-            Char.ProcessWandDamage(dmg, particleColor())
+            processWandDamage(dmg)
 
             // note the damage is accurate 
             if (ch === Dungeon.hero) Camera.main.shake(2f, 0.3f)

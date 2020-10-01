@@ -11,7 +11,6 @@ import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Stunning
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.M
@@ -22,7 +21,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
 
-class WandOfAbel : DamageWand() {
+class WandOfAbel : DamageWand(isMissile = true) {
     init {
         image = ItemSpriteSheet.WAND_SWAP
 
@@ -35,29 +34,18 @@ class WandOfAbel : DamageWand() {
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
 
-    override fun onZap(bolt: Ballistica) {
+    override fun onZap(attack: Ballistica) {
         // swap with char
-        val ch = Actor.findChar(bolt.collisionPos)
-        if (ch != null) {
-            // swap
-            if (!ch.rooted && !Dungeon.hero.rooted && !ch.properties().contains(Char.Property.IMMOVABLE)) {
-                swap(ch, Dungeon.hero)
-                Dungeon.observe()
-            } else GLog.w(M.L(this, "cannot_swap"))
-
-            damage(ch)
-            
-            if (ch.isAlive)
-                Buff.prolong(ch, Paralysis::class.java, 0.2f + level() / 5f)
-
+        if (Actor.findChar(attack.collisionPos) != null) {
+            super.onZap(attack) // see on Hit
             return
         }
-
-        // swap with heap
-        val heap = Dungeon.level.heaps.get(bolt.collisionPos)
+        
+        // swap with heap, wont miss
+        val heap = Dungeon.level.heaps.get(attack.collisionPos)
         if (heap != null && !heap.empty()) {
             val heroPos = Item.curUser.pos
-            moveChar(Item.curUser, bolt.collisionPos)
+            moveChar(Item.curUser, attack.collisionPos)
 
             if (heap.type == Heap.Type.HEAP)
                 Dungeon.level.drop(heap.pickUp(), heroPos) // simply switch with the top item...
@@ -71,7 +59,7 @@ class WandOfAbel : DamageWand() {
                 // merge with the current heap
                 val theHeap = Dungeon.level.heaps.get(heroPos)
                 if (theHeap != null) {
-                    for(item in theHeap.items) newHeap.drop(item)
+                    for (item in theHeap.items) newHeap.drop(item)
                     theHeap.destroy()
                 }
 
@@ -88,6 +76,19 @@ class WandOfAbel : DamageWand() {
 
             return
         }
+    }
+
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
+        
+        val ch = damage.to as Char
+        // swap
+        if (!ch.rooted && !curUser.rooted && !ch.properties().contains(Char.Property.IMMOVABLE)) {
+            swap(ch, curUser)
+            Dungeon.observe()
+        } else GLog.w(M.L(this, "cannot_swap"))
+
+        Buff.prolong(ch, Paralysis::class.java, 0.2f + level() / 5f)
     }
 
     override fun fx(bolt: Ballistica, callback: Callback) {

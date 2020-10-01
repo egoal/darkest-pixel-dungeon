@@ -44,11 +44,14 @@ import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 
 import java.util.HashSet
+import kotlin.math.pow
+import kotlin.math.round
 
-class WandOfFireblast : DamageWand() {
+class WandOfFireblast : DamageWand(isMissile = false) {
 
     //the actual affected cells
     private var affectedCells: HashSet<Int>? = null
+
     //the cells to trace fire shots to, for visual effects.
     private var visualCells: HashSet<Int>? = null
     private var direction = 0
@@ -60,38 +63,36 @@ class WandOfFireblast : DamageWand() {
     }
 
     //1x/1.5x/2.25x damage
-    override fun min(lvl: Int): Int {
-        return Math.round((1 + lvl) * Math.pow(1.5, (chargesPerCast() - 1).toDouble())).toInt()
-    }
+    override fun min(lvl: Int): Int = round((1 + lvl) * 1.5f.pow(chargesPerCast() - 1)).toInt()
 
     //1x/1.5x/2.25x damage
-    override fun max(lvl: Int): Int {
-        return Math.round((7 + 3 * lvl) * Math.pow(1.5, (chargesPerCast() - 1).toDouble())).toInt()
-    }
+    override fun max(lvl: Int): Int = round((7 + 3 * lvl) * 1.5f.pow(chargesPerCast() - 1)).toInt()
 
+    // accurate
     override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).addElement(Damage.Element.FIRE)
+        return super.giveDamage(enemy).addElement(Damage.Element.FIRE).addFeature(Damage.Feature.ACCURATE)
     }
 
     override fun onZap(bolt: Ballistica) {
-
         for (cell in affectedCells!!) {
 
             if (Level.flamable[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
                 GameScene.add(Blob.seed(cell, 1 + chargesPerCast(), Fire::class.java))
             val ch = Actor.findChar(cell)
-            if (ch != null) {
-                damage(ch, {
-                    if (it) Buff.affect(ch, Burning::class.java).reignite(ch)
+            if (ch != null) damage(ch)
+        }
+    }
+    
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
 
-                    when (chargesPerCast()) {
-                        1 -> {
-                        }
-                        2 -> Buff.affect(ch, Cripple::class.java, 4f)
-                        3 -> Buff.affect(ch, Paralysis::class.java, 4f)
-                    }//no effects
-                })
+        val ch = damage.to as Char
+        Buff.affect(ch, Burning::class.java).reignite(ch)
+        when (chargesPerCast()) {
+            1 -> {
             }
+            2 -> Buff.affect(ch, Cripple::class.java, 4f)
+            3 -> Buff.affect(ch, Paralysis::class.java, 4f)
         }
     }
 

@@ -47,14 +47,17 @@ import com.watabou.utils.Random
 
 import java.util.HashMap
 
-class WandOfCorruption : Wand() {
+class WandOfCorruption : DamageWand.NoDamage(true) {
     init {
         image = ItemSpriteSheet.WAND_CORRUPTION
     }
 
-    override fun onZap(bolt: Ballistica) {
-        val mob = Actor.findChar(bolt.collisionPos)
-        if (mob != null && mob is Mob) {
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
+
+        // do corruption
+        val mob = damage.to as Char
+        if (mob is Mob) {
             val corruptingPower = 2f + level()
             // todo: clean
             var enemyResist = when {
@@ -91,6 +94,7 @@ class WandOfCorruption : Wand() {
                 else debuffEnemy(mob, MINOR_DEBUFFS)
             }
         }
+
     }
 
     private fun debuffEnemy(enemy: Mob, category: HashMap<Class<out FlavourBuff>, Float>) {
@@ -105,7 +109,7 @@ class WandOfCorruption : Wand() {
 
     private fun corruptEnemy(enemy: Mob) {
         //cannot re-corrupt or doom an enemy, so give them a major debuff instead
-        if (enemy.buff(Corruption::class.java) != null || enemy.buff(Vulnerable::class.java) != null) {
+        if (enemy.buff(Corruption::class.java) != null || enemy.buff(Doom::class.java) != null) {
             GLog.w(Messages.get(this, "already_corrupted"))
             return
         }

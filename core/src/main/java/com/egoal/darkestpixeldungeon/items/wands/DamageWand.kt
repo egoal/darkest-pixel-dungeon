@@ -22,25 +22,31 @@ package com.egoal.darkestpixeldungeon.items.wands
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.ArcaneCrit
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
-import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Splash
-import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle
-import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.rings.Ring
+import com.egoal.darkestpixeldungeon.items.rings.RingOfArcane
+import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
+import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PointF
 import com.watabou.utils.Random
 import kotlin.math.PI
+import kotlin.math.pow
 import kotlin.math.round
 
 // for wands that directly damage a targetpos
 // wands with AOE effects count here (e.g. fireblast), but wands with indrect
 // damage do not (e.g. venom, transfusion)
-abstract class DamageWand : Wand() {
+//todo: from 0.5.0 this class can be merged with class Wand
+abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
     fun min(): Int = min(level())
 
     abstract fun min(lvl: Int): Int
@@ -51,7 +57,7 @@ abstract class DamageWand : Wand() {
 
     open fun giveDamage(enemy: Char): Damage = Damage(damageRoll(), curUser, enemy).type(Damage.Type.MAGICAL)
 
-    fun damageRoll(): Int = round(Random.NormalIntRange(min(), max()) * Dungeon.hero.arcaneFactor()).toInt()
+    private fun damageRoll(): Int = round(Random.NormalIntRange(min(), max()) * Dungeon.hero.arcaneFactor()).toInt()
 
     fun damageRoll(lvl: Int): Int = round(Random.NormalIntRange(min(lvl), max(lvl)) * Dungeon.hero.arcaneFactor()).toInt()
 
@@ -60,8 +66,85 @@ abstract class DamageWand : Wand() {
 
     protected open fun particleColor(): Int = 0xffffff
 
-    protected fun damage(enemy: Char, onHit: ((Boolean) -> Unit)? = null, onKilled: (() -> Unit)? = null) {
-        val damage = giveDamage(enemy)
-        Char.ProcessWandDamage(damage, particleColor(), onHit, onKilled)
+    // wand hit process
+    override fun onZap(attack: Ballistica) {
+        Actor.findChar(attack.collisionPos)?.let { damage(it) }
+    }
+
+    protected fun damage(enemy: Char): Boolean = processWandDamage(giveDamage(enemy))
+    
+    protected fun processWandDamage(damage: Damage): Boolean {
+        val hero = damage.from as Hero
+        val enemy = damage.to as Char
+        
+        val visibleFight = Dungeon.visible[hero.pos] || Dungeon.visible[enemy.pos]
+
+        procGivenDamage(damage)
+
+        // hit check
+        val hit = Char.CheckDamageHit(damage) //todo: use a specified wand damage check
+
+        if (!hit) {
+            onMissed(damage)
+            hero.sprite.showStatus(CharSprite.NEUTRAL, M.L(Hero::class.java, "lost_verb"))
+            return false
+        }
+
+        onHit(damage)
+
+        // directly goto damage taken, check resistance 
+        enemy.takeDamage(damage)
+
+        // fx
+        if (damage.isFeatured(Damage.Feature.CRITICAL) && visibleFight) {
+            Sample.INSTANCE.play(Assets.SND_BLAST)
+            Splash.at(enemy.sprite.center(), PointF.angle(hero.sprite.center(), enemy.sprite.center()),
+                    PI.toFloat() / 3f, particleColor(), Random.NormalIntRange(12, 20))
+        }
+
+        if (!enemy.isAlive) onKilled(damage)
+
+        return true
+    }
+
+    // moments
+    private fun procGivenDamage(damage: Damage) {
+        if (damage.value == 0) return // no damage wand.
+
+        val hero = curUser
+        var af = hero.arcaneFactor()
+
+        if (isMissile) {
+            val ross = Ring.getBonus(hero, RingOfSharpshooting.Aim::class.java)
+            if (ross != 0) {
+                af *= 2.5f - 1.5f * 0.9f.pow(ross)
+            }
+        }
+
+        val roa = Ring.getBonus(hero, RingOfArcane.Arcane::class.java)
+        if (roa > 0 && Random.Float() < 0.8f * (1f - 0.925f.pow(roa))) {
+            af *= 1.5f // not bounded
+            damage.addFeature(Damage.Feature.CRITICAL)
+        }
+
+        damage.value = round(damage.value * af).toInt()
+
+        hero.heroPerk.get(ArcaneCrit::class.java)?.affectDamage(hero, damage)
+    }
+
+    protected open fun onHit(damage: Damage) {
+        if (isMissile) curUser.heroPerk.get(WandPiercing::class.java)?.onHit(damage.to as Char)
+    }
+
+    protected open fun onMissed(damage: Damage) {}
+
+    protected open fun onKilled(damage: Damage) {}
+
+    // simple compatible for none damage wand
+    abstract class NoDamage(isMissile: Boolean) : DamageWand(isMissile) {
+        final override fun min(lvl: Int): Int = 0
+        final override fun max(lvl: Int): Int = 0
+
+        override fun statsDesc(): String = M.L(this, "stats_desc")
     }
 }

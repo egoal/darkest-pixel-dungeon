@@ -37,7 +37,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 
-class WandOfVenom : DamageWand() {
+class WandOfVenom : DamageWand(isMissile = true) {
     init {
         image = ItemSpriteSheet.WAND_VENOM
 
@@ -51,15 +51,17 @@ class WandOfVenom : DamageWand() {
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.POISON)
 
     override fun onZap(bolt: Ballistica) {
-        Actor.findChar(bolt.collisionPos)?.let { ch ->
-            damage(ch, {
-                if (it) ch.sprite.burst(particleColor(), level() / 2 + 2)
-            })
-        }
+        super.onZap(bolt)
 
         val venomGas = Blob.seed(bolt.collisionPos, 40 + 10 * level(), VenomGas::class.java)
         venomGas.setStrength(level() + 1)
         GameScene.add(venomGas)
+    }
+
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
+        val ch = damage.to as Char
+        ch.sprite.burst(particleColor(), level() / 2 + 2)
     }
 
     override fun fx(bolt: Ballistica, callback: Callback) {

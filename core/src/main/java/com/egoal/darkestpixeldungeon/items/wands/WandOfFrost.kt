@@ -22,7 +22,7 @@ import com.watabou.utils.Random
 import kotlin.math.pow
 import kotlin.math.round
 
-class WandOfFrost : DamageWand() {
+class WandOfFrost : DamageWand(isMissile = true) {
     init {
         image = ItemSpriteSheet.WAND_FROST
     }
@@ -32,31 +32,33 @@ class WandOfFrost : DamageWand() {
     override fun max(lvl: Int): Int = 8 + 5 * lvl
 
     override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).addElement(Damage.Element.ICE)
+        val damage = super.giveDamage(enemy).addElement(Damage.Element.ICE)
+
+        if (enemy.buff(Frost::class.java) != null) {
+            damage.value = 0
+            return damage
+        }
+
+        val chill = enemy.buff(Chill::class.java)?.cooldown() ?: 0f
+        if (chill > 0f)
+            damage.value = round(damage.value * 0.95f.pow(chill)).toInt()
+
+        return damage
     }
 
     override fun onZap(attack: Ballistica) {
         Dungeon.level.heaps.get(attack.collisionPos)?.freeze()
 
-        Actor.findChar(attack.collisionPos)?.let { ch ->
-            val dmg = giveDamage(ch)
+        super.onZap(attack)
+    }
 
-            // nothing to do wit a frozen target pos
-            if (ch.buff(Frost::class.java) != null) return
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
 
-            if (ch.buff(Chill::class.java) != null) {
-                val chill = ch.buff(Chill::class.java)!!.cooldown()
-                dmg.value = round(dmg.value * 0.95f.pow(chill)).toInt()
-            }
-
-            Char.ProcessWandDamage(dmg, particleColor(), {
-                if (it) ch.sprite.burst(particleColor(), level() / 2 + 2)
-            })
-
-            if (ch.isAlive) {
-                val duration = if (Level.water[ch.pos]) 4 + level() else 2 + level()
-                Buff.prolong(ch, Chill::class.java, duration.toFloat())
-            }
+        val ch = damage.to as Char
+        if (ch.isAlive) {
+            val duration = if (Level.water[ch.pos]) 4 + level() else 2 + level()
+            Buff.prolong(ch, Chill::class.java, duration.toFloat())
         }
     }
 

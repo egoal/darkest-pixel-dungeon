@@ -50,7 +50,7 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.PointF
 import com.watabou.utils.Random
 
-class WandOfPrismaticLight : DamageWand() {
+class WandOfPrismaticLight : DamageWand(isMissile = false) {
 
     init {
         image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT
@@ -62,39 +62,40 @@ class WandOfPrismaticLight : DamageWand() {
 
     override fun max(lvl: Int): Int = 7 + 3 * lvl
 
-    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.HOLY)
+    override fun giveDamage(enemy: Char): Damage {
+        val damage = super.giveDamage(enemy).addElement(Damage.Element.HOLY)
+        if (enemy.properties().contains(Char.Property.DEMONIC) || enemy.properties().contains(Char.Property.UNDEAD))
+            damage.value += damage.value / 4
+        return damage
+    }
 
     override fun onZap(beam: Ballistica) {
-        val ch = Actor.findChar(beam.collisionPos)
-        if (ch != null) {
-            affectTarget(ch)
-        }
+        super.onZap(beam)
+
         affectMap(beam)
 
         Buff.affect(curUser, Light::class.java).prolong(4f + level() * 4f)
     }
 
-    private fun affectTarget(ch: Char) {
-        damage(ch, {
-            if (it) {
-                // view mark
-                Buff.prolong(ch, ViewMark::class.java, 4f + level()).observer = curUser.id()
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
 
-                //three in (5+lvl) chance of failing
-                if (Random.Int(5 + level()) >= 3) {
-                    Buff.prolong(ch, Blindness::class.java, 2f + level() * 0.333f)
-                    ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6)
-                }
+        val ch = damage.to as Char
+        // view mark
+        Buff.prolong(ch, ViewMark::class.java, 4f + level()).observer = curUser.id()
 
-                if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)) {
-                    ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level())
-                    Sample.INSTANCE.play(Assets.SND_BURNING)
+        //three in (5+lvl) chance of failing
+        if (Random.Int(5 + level()) >= 3) {
+            Buff.prolong(ch, Blindness::class.java, 2f + level() * 0.333f)
+            ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6)
+        }
 
-                } else {
-                    ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level())
-                }
-            }
-        })
+        if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)) {
+            ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level())
+            Sample.INSTANCE.play(Assets.SND_BURNING)
+        } else {
+            ch.sprite.centerEmitter().burst(RainbowParticle.BURST, 10 + level())
+        }
     }
 
     private fun affectMap(beam: Ballistica) {

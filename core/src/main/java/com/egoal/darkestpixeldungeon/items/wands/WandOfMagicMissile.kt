@@ -31,7 +31,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-class WandOfMagicMissile : DamageWand() {
+class WandOfMagicMissile : DamageWand(isMissile = true) {
     init {
         image = ItemSpriteSheet.WAND_MAGIC_MISSILE
     }
@@ -39,13 +39,10 @@ class WandOfMagicMissile : DamageWand() {
     override fun min(lvl: Int): Int = 2 + 2 * lvl
 
     override fun max(lvl: Int): Int = 10 + lvl * 5 / 2
-
-    override fun onZap(bolt: Ballistica) {
-        Actor.findChar(bolt.collisionPos)?.let { ch ->
-            damage(ch, {
-                if (it) ch.sprite.burst(particleColor(), level() / 2 + 2)
-            })
-        }
+    
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
+        (damage.to as Char).sprite.burst(particleColor(), level() / 2 + 2)
     }
 
     override fun onHit(staff: MagesStaff, damage: Damage) {

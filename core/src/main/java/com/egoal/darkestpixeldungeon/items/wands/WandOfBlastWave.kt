@@ -47,7 +47,7 @@ import com.watabou.utils.Random
 import kotlin.math.min
 import kotlin.math.round
 
-class WandOfBlastWave : DamageWand() {
+class WandOfBlastWave : DamageWand(isMissile = true) {
     init {
         image = ItemSpriteSheet.WAND_BLAST_WAVE
 
@@ -70,6 +70,7 @@ class WandOfBlastWave : DamageWand() {
         //throws other chars around the center.
         for (i in PathFinder.NEIGHBOURS8) {
             Actor.findChar(bolt.collisionPos + i)?.let {
+                // note: not extra effect
                 it.takeDamage(giveDamage(it).apply { value = round(value * .0667).toInt() })
                 if (it.isAlive) {
                     val traj = Ballistica(it.pos, it.pos + i, Ballistica.MAGIC_BOLT)
@@ -79,15 +80,15 @@ class WandOfBlastWave : DamageWand() {
             }
         }
 
-        //throws the char at the center of the blast
+        // throws the char at the center of the blast
+        super.onZap(bolt)
         Actor.findChar(bolt.collisionPos)?.let {
-            damage(it)
-
-            if (it.isAlive && bolt.path.size > bolt.dist + 1) {
-                val traj = Ballistica(it.pos, bolt.path[bolt.dist + 1], Ballistica.MAGIC_BOLT)
-                val str = level() + 3
-                throwChar(it, traj, str)
-            }
+            if (damage(it))
+                if (it.isAlive && bolt.path.size > bolt.dist + 1) {
+                    val traj = Ballistica(it.pos, bolt.path[bolt.dist + 1], Ballistica.MAGIC_BOLT)
+                    val str = level() + 3
+                    throwChar(it, traj, str)
+                }
         }
 
         if (!curUser.isAlive) {

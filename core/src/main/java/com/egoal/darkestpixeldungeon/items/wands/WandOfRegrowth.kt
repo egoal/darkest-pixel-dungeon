@@ -53,7 +53,7 @@ import java.util.ArrayList
 import java.util.HashSet
 import kotlin.math.max
 
-class WandOfRegrowth : Wand() {
+class WandOfRegrowth : DamageWand.NoDamage(isMissile = false) {
     //the actual affected cells
     private var affectedCells: HashSet<Int>? = null
     //the cells to trace growth particles to, for visual effects.
@@ -67,7 +67,6 @@ class WandOfRegrowth : Wand() {
     }
 
     override fun onZap(bolt: Ballistica) {
-
         //ignore tiles which can't have anything grow in them.
         val i = affectedCells!!.iterator()
         while (i.hasNext()) {
@@ -107,7 +106,6 @@ class WandOfRegrowth : Wand() {
             val ch = Actor.findChar(i)
 
             GameScene.add(Blob.seed(i, 10, Regrowth::class.java))
-
         }
     }
 

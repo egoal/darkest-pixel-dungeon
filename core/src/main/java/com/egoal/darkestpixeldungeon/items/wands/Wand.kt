@@ -55,7 +55,7 @@ import java.util.ArrayList
 import kotlin.math.min
 import kotlin.math.pow
 
-abstract class Wand(val isMissile: Boolean = true) : Item() {
+abstract class Wand(val isMissile: Boolean) : Item() {
     var maxCharges = initialCharges()
     var curCharges = maxCharges
     var partialCharge = 0f
@@ -97,6 +97,7 @@ abstract class Wand(val isMissile: Boolean = true) : Item() {
 
     protected abstract fun onZap(attack: Ballistica)
 
+    // battle mage.
     abstract fun onHit(staff: MagesStaff, damage: Damage)
 
     override fun collect(container: Bag): Boolean {
@@ -186,8 +187,8 @@ abstract class Wand(val isMissile: Boolean = true) : Item() {
     }
 
     open fun updateLevel() {
-        maxCharges = Math.min(initialCharges() + level(), 10)
-        curCharges = Math.min(curCharges, maxCharges)
+        maxCharges = min(initialCharges() + level(), 10)
+        curCharges = min(curCharges, maxCharges)
     }
 
     protected open fun initialCharges(): Int = 2
@@ -306,8 +307,7 @@ abstract class Wand(val isMissile: Boolean = true) : Item() {
         private fun recharge() {
             val missingCharges = maxCharges - curCharges
 
-            val turnsToCharge = (BASE_CHARGE_DELAY + SCALING_CHARGE_ADDITION * Math.pow(scalingFactor.toDouble(),
-                    missingCharges.toDouble())).toFloat()
+            val turnsToCharge = BASE_CHARGE_DELAY + SCALING_CHARGE_ADDITION * scalingFactor.pow(missingCharges)
 
             val lock = target.buff(LockedFloor::class.java)
             if (lock == null || lock.regenOn())
@@ -360,7 +360,7 @@ abstract class Wand(val isMissile: Boolean = true) : Item() {
                     val shot = Ballistica(curUser.pos, target, curWand.collisionProperties)
                     val cell = shot.collisionPos
 
-                    if (target == curUser.pos || cell == Item.Companion.curUser.pos) {
+                    if (target == curUser.pos || cell == curUser.pos) {
                         GLog.i(Messages.get(Wand::class.java, "self_target"))
                         return
                     }
@@ -374,29 +374,31 @@ abstract class Wand(val isMissile: Boolean = true) : Item() {
                     else
                         QuickSlotButton.target(Actor.findChar(cell))
 
-                    if (curWand.curCharges >= if (curWand.cursed) 1 else curWand.chargesPerCast()) {
-                        curUser.busy()
-
-                        if (curWand.cursed) {
-                            CursedWand.cursedZap(curWand, curUser, Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT))
-                            if (!curWand.cursedKnown) {
-                                curWand.cursedKnown = true
-                                GLog.n(Messages.get(Wand::class.java, "curse_discover", curWand.name()))
-                            }
-                        } else {
-                            curWand.cursedKnown = true
-                            curWand.fx(shot, Callback {
-                                curWand.onZap(shot)
-                                curWand.wandUsed()
-                            })
-                        }
-                        if (!curUser.heroPerk.has(StealthCaster::class.java))
-                            Invisibility.dispel()
-
-                    } else {
+                    val cost = if (curWand.cursed) 1 else curWand.chargesPerCast()
+                    if (curWand.curCharges < cost) {
                         GLog.w(Messages.get(Wand::class.java, "fizzles"))
+                        return
                     }
 
+                    // cast
+                    curUser.busy()
+
+                    if (curWand.cursed) {
+                        CursedWand.cursedZap(curWand, curUser, Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT))
+                        if (!curWand.cursedKnown) {
+                            curWand.cursedKnown = true
+                            GLog.n(Messages.get(Wand::class.java, "curse_discover", curWand.name()))
+                        }
+                    } else {
+                        curWand.cursedKnown = true
+                        curWand.fx(shot, Callback {
+                            curWand.onZap(shot)
+                            curWand.wandUsed()
+                        })
+                    }
+                    
+                    if (!curUser.heroPerk.has(StealthCaster::class.java))
+                        Invisibility.dispel()
                 }
             }
 

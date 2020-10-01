@@ -39,10 +39,10 @@ import com.watabou.utils.Random
 import java.util.ArrayList
 import kotlin.math.min
 
-class WandOfDisintegration : DamageWand() {
+class WandOfDisintegration : DamageWand(isMissile = false) {
     init {
         image = ItemSpriteSheet.WAND_DISINTEGRATION
-
+        
         collisionProperties = Ballistica.WONT_STOP
     }
 
@@ -94,7 +94,7 @@ class WandOfDisintegration : DamageWand() {
         val lvl = level + (chars.size - 1) + terrainBonus
         for (ch in chars) {
             val damage = Damage(damageRoll(lvl), curUser, ch).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE)
-            Char.ProcessWandDamage(damage)
+            processWandDamage(damage)
             ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange(1, 2))
             ch.sprite.flash()
         }

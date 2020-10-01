@@ -21,7 +21,7 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class WandOfHypnosis : Wand() {
+class WandOfHypnosis : DamageWand.NoDamage(isMissile = true) {
     init {
         image = ItemSpriteSheet.WAND_HYPNOSIS
     }
@@ -34,13 +34,18 @@ class WandOfHypnosis : Wand() {
     }
 
     override fun onZap(attack: Ballistica) {
+        super.onZap(attack)
+        
         val cell = attack.collisionPos
-        Actor.findChar(cell)?.let {
-            Buff.affect(it, MagicalSleep.Deep::class.java).ratio = 0.75f - 0.5f * 0.85f.pow(level())
-            it.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 3 + level())
-        }
-
         GameScene.add(Blob.seed(cell, 12, ConfusionGas::class.java))
+    }
+
+    override fun onHit(damage: Damage) {
+        super.onHit(damage)
+
+        val ch = damage.to as Char
+        Buff.affect(ch, MagicalSleep.Deep::class.java).ratio = 0.75f - 0.5f * 0.85f.pow(level())
+        ch.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 3 + level())
     }
 
     override fun onHit(staff: MagesStaff, damage: Damage) {
