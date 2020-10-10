@@ -27,9 +27,7 @@ class ViewMark : FlavourBuff() {
         observer = bundle.getInt(OBSERVER)
     }
 
-    override fun icon(): Int {
-        return BuffIndicator.STARE
-    }
+    override fun icon(): Int = BuffIndicator.STARE
 
     override fun toString(): String {
         return Messages.get(this, "name")

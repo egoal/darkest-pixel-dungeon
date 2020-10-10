@@ -160,6 +160,12 @@ class Pressure : Buff(), Hero.Doom {
         Level.COLLAPSE -> 0f
     }
 
+    fun chargeFactor(): Float = when (level) {
+        Level.CONFIDENT, Level.NORMAL -> 1f
+        Level.NERVOUS -> 0.7f
+        Level.COLLAPSE -> 0f
+    }
+
     //
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

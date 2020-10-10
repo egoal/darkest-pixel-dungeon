@@ -113,7 +113,6 @@ class Hunger : Buff(), Hero.Doom {
                     hero.interrupt()
 
                 } else if (newLevel >= HUNGRY && level < HUNGRY) {
-
                     GLog.w(Messages.get(this, "onhungry"))
                     statusUpdated = true
                 }

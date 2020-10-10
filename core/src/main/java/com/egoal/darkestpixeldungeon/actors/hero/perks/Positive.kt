@@ -28,7 +28,9 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
+import com.watabou.utils.GameMath
 import com.watabou.utils.Random
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
@@ -252,6 +254,12 @@ class ExtraDexterousGrowth : Perk(5) {
     }
 }
 
+class EvasionTenacity : Perk(3) {
+    fun procEvasionDamage(dmg: Damage) {
+        (dmg.to as Hero).SHLD += level * 2
+    }
+}
+
 class LowHealthRegeneration : Perk(5) {
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_REG
 
@@ -414,13 +422,33 @@ class ArcaneCrit : Perk(5) {
     }
 }
 
-class WandPiercing : Perk() {
+class WandPiercing : Perk(3) {
     override fun image(): Int = PerkImageSheet.WAND_PIERCING
 
     fun onHit(char: Char) {
-        char.magicalResistance -= 0.15f // fixme:
+        char.magicalResistance -= ratio()// fixme:
+    }
+
+    override fun description(): String = M.L(this, "desc", (ratio() * 100).toInt())
+
+    private fun ratio() = 0.05f + 0.04f * level
+}
+
+class CloseZap : Perk() {
+    fun procDamage(damage: Damage) {
+        val dis = Dungeon.level.distance((damage.from as Char).pos, (damage.to as Char).pos)
+        // 1.225, 1.15, 1.075, 1, 0.9, 0.8, ...
+        var ratio = if (dis <= 4) 1.3f - 0.075f * dis else max(1.4f - dis * 0.1f, 0.1f)
+        if (dis == 1 && Random.Float() < 0.1f) {
+            ratio *= 1.1f
+            damage.addFeature(Damage.Feature.CRITICAL)
+        }
+
+        damage.value = round(damage.value * ratio).toInt()
     }
 }
+
+class PreheatedZap : Perk() {}
 
 class ExplodeBrokenShot : Perk() {
     override fun image(): Int = PerkImageSheet.SHOT_EXPLODE

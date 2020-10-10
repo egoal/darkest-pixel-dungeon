@@ -201,7 +201,9 @@ class Hero : Char() {
     }
 
     fun wandChargeFactor(): Float {
-        var factor = heroPerk.get(WandCharger::class.java)?.factor() ?: 1f
+        var factor = pressure.chargeFactor()
+        
+        factor *= heroPerk.get(WandCharger::class.java)?.factor() ?: 1f
         belongings.helmet?.let {
             if (it is WizardHat)
                 factor = if (it.cursed) 0.9f else 1.15f
@@ -359,7 +361,7 @@ class Hero : Char() {
 
             dex += Random.Float(bonus)
         }
-        
+
         return dex * factor
     }
 
@@ -1146,6 +1148,7 @@ class Hero : Char() {
 
     fun onEvasion(dmg: Damage) {
         heroPerk.get(CounterStrike::class.java)?.procEvasionDamage(dmg)
+        heroPerk.get(EvasionTenacity::class.java)?.procEvasionDamage(dmg)
         if (subClass == HeroSubClass.WINEBIBBER) buff(Drunk::class.java)?.onEvade(dmg)
     }
 

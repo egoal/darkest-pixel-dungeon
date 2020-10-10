@@ -119,6 +119,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 ExtraEvasion() to 1f,
                 CounterStrike() to 1f,
                 ExtraDexterousGrowth() to 1f,
+                EvasionTenacity() to 1f,
                 ExtraPerkChoice() to 1f,
                 BrewEnhancedPotion() to 1f,
                 Knowledgeable() to 0.75f, // this is not ready
@@ -133,7 +134,9 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 QuickZap() to 1f,
                 StealthCaster() to 1f,
                 ArcaneCrit() to 1.2f,
-                WandPiercing() to 1f,
+                WandPiercing() to 1.25f,
+                CloseZap() to 1f, 
+                PreheatedZap() to 1f, 
                 ExplodeBrokenShot() to 1f,
                 RangedShot() to 1f,
                 FinishingShot() to 1f,

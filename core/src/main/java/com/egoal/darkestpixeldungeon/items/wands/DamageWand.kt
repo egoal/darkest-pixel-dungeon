@@ -25,8 +25,12 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Preheated
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.ArcaneCrit
+import com.egoal.darkestpixeldungeon.actors.hero.perks.CloseZap
+import com.egoal.darkestpixeldungeon.actors.hero.perks.PreheatedZap
 import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
 import com.egoal.darkestpixeldungeon.effects.Splash
 import com.egoal.darkestpixeldungeon.items.rings.Ring
@@ -72,11 +76,11 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
     }
 
     protected fun damage(enemy: Char): Boolean = processWandDamage(giveDamage(enemy))
-    
+
     protected fun processWandDamage(damage: Damage): Boolean {
         val hero = damage.from as Hero
         val enemy = damage.to as Char
-        
+
         val visibleFight = Dungeon.visible[hero.pos] || Dungeon.visible[enemy.pos]
 
         procGivenDamage(damage)
@@ -108,6 +112,7 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
     }
 
     // moments
+    //note: the wand damage is never bounded, 
     private fun procGivenDamage(damage: Damage) {
         if (damage.value == 0) return // no damage wand.
 
@@ -129,14 +134,23 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
 
         damage.value = round(damage.value * af).toInt()
 
+        hero.buff(Preheated::class.java)?.affectWandDamage(damage) // detach here.
+
         hero.heroPerk.get(ArcaneCrit::class.java)?.affectDamage(hero, damage)
+        hero.heroPerk.get(CloseZap::class.java)?.procDamage(damage)
     }
 
     protected open fun onHit(damage: Damage) {
         if (isMissile) curUser.heroPerk.get(WandPiercing::class.java)?.onHit(damage.to as Char)
     }
 
-    protected open fun onMissed(damage: Damage) {}
+    //todo: may use Hero::onEvasion.
+    protected open fun onMissed(damage: Damage) {
+        val hero = curUser
+        hero.heroPerk.get(PreheatedZap::class.java)?.let {
+            Buff.prolong(hero, Preheated::class.java, 5f)
+        }
+    }
 
     protected open fun onKilled(damage: Damage) {}
 
