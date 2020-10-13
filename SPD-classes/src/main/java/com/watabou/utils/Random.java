@@ -62,6 +62,12 @@ public class Random {
     return Math.min(IntRange(low, high), IntRange(low, high));
   }
 
+  public static float RandomLW(float a, float b)
+  {
+    float y = Random.Float();
+    if(a==b) return y;
+    return (float)(Math.sqrt((b*b-a*a)*y+a*a)-a)/(b-a);
+  }
 
   public static int chances(float[] chances) {
 

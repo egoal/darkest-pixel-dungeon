@@ -186,8 +186,11 @@ open class Armor(var tier: Int) : EquipableItem() {
         return max(DRMin(lvl), effectiveTier * (2 + lvl))
     }
 
-    // @JvmOverloads
     fun DRMin(lvl: Int = level()): Int = if (glyph is Stone) 2 + 2 * lvl else lvl
+
+    // base: 5, 6, 7, 8, 9, 10
+    // scaling: 2, 2, 2.5, 2.5, 3, 3, 3.5
+    open fun MRES(lvl: Int = level()): Float = ((4f + tier) + (2f + (tier - 1) / 2 * 0.5f) * lvl) / 100f
 
     override fun upgrade(): Item = upgrade(false)
 
@@ -221,7 +224,6 @@ open class Armor(var tier: Int) : EquipableItem() {
         return damage
     }
 
-
     override fun name(): String {
         return if (glyph != null && (cursedKnown || !glyph!!.curse()))
             glyph!!.name(super.name())
@@ -233,7 +235,8 @@ open class Armor(var tier: Int) : EquipableItem() {
         var info = desc()
 
         if (levelKnown) {
-            info += "\n\n" + Messages.get(Armor::class.java, "curr_absorb", DRMin(), DRMax(), STRReq())
+            info += "\n\n" + Messages.get(Armor::class.java, "curr_absorb",
+                    DRMin(), DRMax(), round(MRES() * 100f).toInt(), STRReq())
 
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Armor::class.java, "too_heavy")
@@ -241,7 +244,8 @@ open class Armor(var tier: Int) : EquipableItem() {
                 info += " " + Messages.get(Armor::class.java, "excess_str")
             }
         } else {
-            info += "\n\n" + Messages.get(Armor::class.java, "avg_absorb", DRMin(0), DRMax(0), STRReq(0))
+            info += "\n\n" + Messages.get(Armor::class.java, "avg_absorb",
+                    DRMin(0), DRMax(0), round(MRES(0) * 100f).toInt(), STRReq(0))
 
             if (STRReq(0) > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Armor::class.java, "probably_too_heavy")

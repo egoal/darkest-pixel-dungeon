@@ -38,12 +38,26 @@ class WitchDoctor : Mob() {
         return super.act()
     }
 
+    override fun canAttack(enemy: Char): Boolean = Dungeon.level.distance(pos, enemy.pos) <= 2
+
     // 1. try decay enemy
     // 2. try heal: ally > enemy > self
     // 3. normal attack or run
     //todo: refactor to behaviour list as i do in cloud-dungeon
     inner class HuntingAI : Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
+            // try heal allys
+            if (healCD < 0f) {
+                val allyToHeal = Dungeon.level.mobs.filter {
+                    it !== this@WitchDoctor && it.camp == camp &&
+                            Level.fieldOfView[it.pos] && (it.HP.toFloat() / it.HT) < 0.75f
+                }.minBy { it.HP.toFloat() / it.HT }
+                if (allyToHeal != null) {
+                    heal(allyToHeal)
+                    return false
+                }
+            }
+
             if (enemyInFOV) {
                 val enemy = enemy!!
 
@@ -60,18 +74,8 @@ class WitchDoctor : Mob() {
                 }
 
                 if (healCD <= 0f) {
-                    // heal ally?
-                    val allyToHeal = Dungeon.level.mobs.filter { it ->
-                        it !== this@WitchDoctor && it.camp == camp &&
-                                Level.fieldOfView[it.pos] && (it.HP.toFloat() / it.HT) < 0.75f
-                    }.minBy { it.HP.toFloat() / it.HT }
-                    if (allyToHeal != null) {
-                        heal(allyToHeal)
-                        return false
-                    }
-
                     // damage enemy
-                    if (enemyIsDecayed && HP > HT / 4) {
+                    if (enemyIsDecayed && HP >= HT / 5) {
                         heal(enemy)
                         return false
                     }
@@ -84,10 +88,10 @@ class WitchDoctor : Mob() {
                 }
 
                 // no skill to cast && face to face, run if low health...
-                if (HP <= HT / 2 && Dungeon.level.adjacent(enemy.pos, pos)) {
-                    if (getFurther(enemy.pos))
-                        return true
-                }
+//                if (HP <= HT / 2 && Dungeon.level.adjacent(enemy.pos, pos)) {
+//                    if (getFurther(enemy.pos))
+//                        return true
+//                }
             }
 
             return super.act(enemyInFOV, justAlerted)
@@ -163,7 +167,7 @@ class WitchDoctor : Mob() {
 
     companion object {
         private const val DECAY_CD = 18f
-        private const val HEAL_CD = 5f
+        private const val HEAL_CD = 4f
 
         private const val TIME_TO_DECAY = 1f
         private const val TIME_TO_HEAL = 1f

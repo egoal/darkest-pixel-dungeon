@@ -42,6 +42,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
+import kotlin.math.round
 
 class Shaman : Mob(), Callback {
 
@@ -75,27 +76,20 @@ class Shaman : Mob(), Callback {
 
             val dmg = giveDamage(enemy).addFeature(Damage.Feature.RANGED)
 
-            if (enemy.checkHit(dmg)) {
-                if (Level.water[enemy.pos] && !enemy.flying)
-                    dmg.value = (dmg.value.toFloat() * 1.5f).toInt()
-
-                enemy.defendDamage(dmg)
-                enemy.takeDamage(dmg)
+            ProcessAttackDamage(dmg, onHit = {
+                if (Level.water[enemy.pos] && !enemy.flying) dmg.value = dmg.value * 3 / 2
 
                 enemy.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3)
                 enemy.sprite.flash()
 
                 if (enemy === Dungeon.hero) {
-
                     Camera.main.shake(2f, 0.3f)
-
-                    if (!enemy.isAlive) {
-                        Dungeon.fail(javaClass)
-                        GLog.n(Messages.get(this, "zap_kill"))
-                    }
                 }
-            } else {
-                enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb())
+            }) {
+                if (enemy === Dungeon.hero) {
+                    Dungeon.fail(javaClass)
+                    GLog.n(Messages.get(this, "zap_kill"))
+                }
             }
 
             return !visible

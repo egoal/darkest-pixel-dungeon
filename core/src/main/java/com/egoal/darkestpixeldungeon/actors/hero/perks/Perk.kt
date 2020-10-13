@@ -16,15 +16,9 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
 
     open fun upgradable(): Boolean = level < maxLevel && canBeGain(Dungeon.hero)
 
-    open fun upgrade() {
-        assert(upgradable())
-        level += 1
-    }
+    open fun upgrade() { level += 1 }
 
-    open fun downgrade() {
-        assert(level > 1)
-        level -= 1
-    }
+    open fun downgrade() { level -= 1 }
 
     fun isAcquireAllowed(hero: Hero): Boolean {
         if (!canBeGain(hero)) return false
@@ -120,6 +114,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 CounterStrike() to 1f,
                 ExtraDexterousGrowth() to 1f,
                 EvasionTenacity() to 1f,
+                Blur() to 1f,
                 ExtraPerkChoice() to 1f,
                 BrewEnhancedPotion() to 1f,
                 Knowledgeable() to 0.75f, // this is not ready
@@ -136,7 +131,8 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 ArcaneCrit() to 1.2f,
                 WandPiercing() to 1.25f,
                 CloseZap() to 1f, 
-                PreheatedZap() to 1f, 
+                PreheatedZap() to 1f,
+                ManaDrine() to 1f,
                 ExplodeBrokenShot() to 1f,
                 RangedShot() to 1f,
                 FinishingShot() to 1f,

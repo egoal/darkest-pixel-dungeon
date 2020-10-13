@@ -39,6 +39,7 @@ import com.egoal.darkestpixeldungeon.ui.CustomTileVisual
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.actors.blobs.MagicWellWater
 import com.egoal.darkestpixeldungeon.actors.blobs.WellWater
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
@@ -674,7 +675,7 @@ abstract class Level : Bundlable {
 
     open fun drop(item: Item, cell: Int): Heap {
         var cell = cell
-        
+
         // don't drop on them
         if (map[cell] == Terrain.ALCHEMY || map[cell] == Terrain.ENCHANTING_STATION) {
             var n: Int

@@ -18,12 +18,12 @@ class TomeOfRetrain : Book() {
 
     override val isIdentified: Boolean
         get() = true
-    
+
     override fun price(): Int = 100
 
     override fun doRead(hero: Hero) {
         //todo: refactor
-        val perks = hero.heroPerk.perks.filter { it !is RavenousAppetite }
+        val perks = hero.heroPerk.perks.filter { it !is RavenousAppetite && it.level > 0 }
         if (perks.isEmpty()) {
             GLog.w(M.L(Book::class.java, "cannot_understand"))
             return

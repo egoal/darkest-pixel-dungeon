@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.books.TomeOfRetrain
 import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
@@ -200,7 +201,7 @@ enum class HeroClass(private val title: String) {
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
 
-            hero.magicalResistance = 0.2f
+            hero.magicalResistance = 0.15f
             hero.addResistances(Damage.Element.all(), 0.1f)
             hero.addResistances(Damage.Element.POISON, 0.5f)
         }
@@ -233,7 +234,7 @@ enum class HeroClass(private val title: String) {
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
 
-            hero.magicalResistance = 0.1f
+            hero.magicalResistance = 0.06f
             hero.addResistances(Damage.Element.ICE, 0.25f)
             hero.addResistances(Damage.Element.FIRE, -0.2f)
             hero.addResistances(Damage.Element.SHADOW, 0.2f)
@@ -289,7 +290,7 @@ enum class HeroClass(private val title: String) {
     protected open fun initHeroStatus(hero: Hero) {
         hero.atkSkill = 10f
         hero.defSkill = 5f
-        hero.magicalResistance = 0.15f
+        hero.magicalResistance = 0.09f
     }
 
     protected open fun initHeroClass(hero: Hero) {
@@ -303,6 +304,7 @@ enum class HeroClass(private val title: String) {
         Dungeon.limitedDrops.seedBag.drop()
 
         // WandOfAbel().identify().collect()
+//        TomeOfPerk().quantity(99).collect()
     }
 
     // called when hero level up

@@ -54,6 +54,10 @@ abstract class NPC : Mob() {
         }
     }
 
+    override fun act(): Boolean {
+        return super.act()
+    }
+
     override fun beckon(cell: Int) {}
 
     abstract fun interact(): Boolean

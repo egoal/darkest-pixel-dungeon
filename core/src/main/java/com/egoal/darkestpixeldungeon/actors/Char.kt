@@ -41,6 +41,7 @@ import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Door
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
@@ -236,8 +237,15 @@ abstract class Char : Actor() {
             Damage.Type.MAGICAL -> HP -= dmg.value
         }
 
-        //note: this is a important setting
-        if (HP < 0) HP = 0
+        if (HP <= 0) {
+            val ten = buff(Tenacity::class.java)
+            if (ten != null) {
+                HP = 1
+                GameScene.flash(0xFF0000)
+                ten.detach()
+            } else
+                HP = 0 //note: this is a important setting
+        }
 
         // show damage value
         if (buff(Ignorant::class.java) == null) {
@@ -542,7 +550,7 @@ abstract class Char : Actor() {
             if (!defender.isAlive) return // already died in procs
 
             // camera shake
-            if (attackerIsHero) {
+            if (defenderIsHero || dmg.isFeatured(Damage.Feature.CRITICAL)) {
                 val shake = dmg.value * 4f / defender.HT
                 if (shake > 1f) Camera.main.shake(GameMath.clampf(shake, 1f, 5f), 0.3f)
             }

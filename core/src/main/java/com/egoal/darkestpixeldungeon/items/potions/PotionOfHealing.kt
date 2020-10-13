@@ -30,6 +30,7 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.windows.WndOptions
+import kotlin.math.max
 import kotlin.math.min
 
 class PotionOfHealing : Potion() {
@@ -86,8 +87,8 @@ class PotionOfHealing : Potion() {
     }
 
     private fun recoverValue(hero: Hero): Int =
-            if (hero.heroPerk.has(EfficientPotionOfHealing::class.java)) hero.HT * 3 / 2
-            else min(hero.HT, hero.HT / 3 + 40)
+            if (hero.heroPerk.has(EfficientPotionOfHealing::class.java)) hero.HT * 2
+            else max(hero.HT, hero.HT / 3 + 60)
 
     override fun price(): Int =
             if (isKnown) (30 * quantity * (if (reinforced) 1.5f else 1f)).toInt()

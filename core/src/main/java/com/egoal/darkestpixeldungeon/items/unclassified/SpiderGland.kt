@@ -20,6 +20,12 @@ class SpiderGland : Item() {
         defaultAction = AC_THROW
     }
 
+    override val isUpgradable: Boolean
+        get() = false
+
+    override val isIdentified: Boolean
+        get() = true
+
     override fun onThrow(cell: Int) {
         if (Level.pit[cell]) super.onThrow(cell)
         else {

@@ -20,18 +20,15 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs
 
-import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
+import kotlin.math.min
 
 class Recharging : FlavourBuff() {
 
-    override fun icon(): Int {
-        return BuffIndicator.RECHARGING
-    }
+    override fun icon(): Int = BuffIndicator.RECHARGING
 
-    override fun toString(): String {
-        return Messages.get(this, "name")
-    }
+    override fun toString(): String = M.L(this, "name")
 
     //want to process partial turns for this buff, and not count it when it's
     // expiring.
@@ -43,11 +40,7 @@ class Recharging : FlavourBuff() {
     // time, and act accordingly.
     //otherwise this causes inconsistent behaviour where this may detach
     // before, or after, a wand charger acts.
-    fun remainder(): Float {
-        return Math.min(1f, this.cooldown())
-    }
+    fun remainder(): Float = min(1f, this.cooldown())
 
-    override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
-    }
+    override fun desc(): String = M.L(this, "desc", dispTurns())
 }

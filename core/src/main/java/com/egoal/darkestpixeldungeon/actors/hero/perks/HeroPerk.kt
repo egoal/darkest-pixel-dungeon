@@ -28,13 +28,17 @@ class HeroPerk : Bundlable {
         }
     }
 
+    // todo:
     fun downgrade(perk: Perk) {
         val it = perks.find { perk.javaClass == it.javaClass }!!
-        // 
-        if (it.level == 1) {
+
+        if (it.level > 0) it.downgrade()
+        else if (it.level < 0) it.upgrade()
+
+        if (it.level == 0) {
             perks.remove(it)
             it.onLose()
-        } else it.downgrade()
+        }
     }
 
     fun remove(perk: Perk) {

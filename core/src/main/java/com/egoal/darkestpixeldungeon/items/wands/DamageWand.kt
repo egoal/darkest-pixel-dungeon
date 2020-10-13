@@ -25,13 +25,9 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Preheated
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.perks.ArcaneCrit
-import com.egoal.darkestpixeldungeon.actors.hero.perks.CloseZap
-import com.egoal.darkestpixeldungeon.actors.hero.perks.PreheatedZap
-import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
+import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.effects.Splash
 import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfArcane
@@ -77,6 +73,21 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
 
     protected fun damage(enemy: Char): Boolean = processWandDamage(giveDamage(enemy))
 
+    private fun checkHit(damage: Damage): Boolean {
+//        return Char.CheckDamageHit(damage) //todo: use a specified wand damage check
+        val attacker = curUser
+        val defender = damage.to as Char
+
+        if (attacker.buff(Shock::class.java) != null || defender.buff(MustDodge::class.java) != null) return false
+
+        if (defender.buff(Unbalance::class.java) != null) return true
+
+        if (damage.value == 0 || damage.isFeatured(Damage.Feature.ACCURATE)) return true // non damage wand, dont miss
+
+        val bonus = 2f * 0.9f.pow(Dungeon.level.distance(attacker.pos, defender.pos)) // more acc
+        return attacker.accRoll(damage) * bonus > defender.dexRoll(damage)
+    }
+
     protected fun processWandDamage(damage: Damage): Boolean {
         val hero = damage.from as Hero
         val enemy = damage.to as Char
@@ -86,7 +97,7 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
         procGivenDamage(damage)
 
         // hit check
-        val hit = Char.CheckDamageHit(damage) //todo: use a specified wand damage check
+        val hit = checkHit(damage)
 
         if (!hit) {
             onMissed(damage)
@@ -152,7 +163,10 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
         }
     }
 
-    protected open fun onKilled(damage: Damage) {}
+    protected open fun onKilled(damage: Damage) {
+        val hero = curUser
+        hero.heroPerk.get(ManaDrine::class.java)?.affect(hero)
+    }
 
     // simple compatible for none damage wand
     abstract class NoDamage(isMissile: Boolean) : DamageWand(isMissile) {

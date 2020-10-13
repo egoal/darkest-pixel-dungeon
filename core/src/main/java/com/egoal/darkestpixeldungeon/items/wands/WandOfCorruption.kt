@@ -140,11 +140,8 @@ class WandOfCorruption : DamageWand.NoDamage(true) {
 //                curUser.earnExp(enemy.EXP);
 //            }
 
-        } else {
-            // in dpd, i give the vulnerable
-//            Buff.prolong(enemy, Vulnerable::class.java, Vulnerable.DURATION * 2).ratio = 1.5f
+        } else
             Buff.affect(enemy, Doom::class.java)
-        }
     }
 
     override fun onHit(staff: MagesStaff, damage: Damage) {

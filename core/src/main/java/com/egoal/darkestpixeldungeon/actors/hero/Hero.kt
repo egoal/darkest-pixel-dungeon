@@ -115,8 +115,11 @@ class Hero : Char() {
 
     override fun magicalResistance(): Float {
         var mr = super.magicalResistance()
+        // mr += belongings.armor?.MRES() ?: 0f // linearly
+        if (belongings.armor != null)
+            mr = GameMath.ProbabilityPlus(mr, belongings.armor!!.MRES())
         heroPerk.get(ExtraMagicalResistance::class.java)?.let {
-            mr = 1f - (1f - mr) * (1f - it.ratio())
+            mr = GameMath.ProbabilityPlus(mr, it.ratio())
         }
 
         return mr
@@ -202,7 +205,7 @@ class Hero : Char() {
 
     fun wandChargeFactor(): Float {
         var factor = pressure.chargeFactor()
-        
+
         factor *= heroPerk.get(WandCharger::class.java)?.factor() ?: 1f
         belongings.helmet?.let {
             if (it is WizardHat)
@@ -1149,6 +1152,8 @@ class Hero : Char() {
     fun onEvasion(dmg: Damage) {
         heroPerk.get(CounterStrike::class.java)?.procEvasionDamage(dmg)
         heroPerk.get(EvasionTenacity::class.java)?.procEvasionDamage(dmg)
+        buff(Blur.Counter::class.java)?.onEvade()
+
         if (subClass == HeroSubClass.WINEBIBBER) buff(Drunk::class.java)?.onEvade(dmg)
     }
 

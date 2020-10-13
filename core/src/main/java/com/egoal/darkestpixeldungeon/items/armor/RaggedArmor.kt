@@ -21,4 +21,6 @@ class RaggedArmor : Armor(0) {
     }
 
     override fun STRReq(lvl: Int): Int = super.STRReq(lvl) - 3
+
+    override fun MRES(lvl: Int): Float = (9f + lvl) / 100f
 }

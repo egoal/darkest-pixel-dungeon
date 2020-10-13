@@ -35,6 +35,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.WarlockSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
 
@@ -73,19 +74,14 @@ class Warlock : Mob(), Callback {
 
         val dmg = giveDamage(enemy!!).addFeature(Damage.Feature.RANGED)
 
-        if (enemy!!.checkHit(dmg)) {
-            if (enemy === Dungeon.hero && Random.Int(2) == 0) {
+        ProcessAttackDamage(dmg, onHit = {
+            if (enemy === Dungeon.hero && Random.Int(2) == 0)
                 Buff.prolong(enemy!!, Weakness::class.java, Weakness.duration(enemy!!))
-            }
-
-            enemy!!.takeDamage(dmg)
-
-            if (!enemy!!.isAlive && enemy === Dungeon.hero) {
+        }) {
+            if (enemy === Dungeon.hero) {
                 Dungeon.fail(javaClass)
-                GLog.n(Messages.get(this, "bolt_kill"))
+                GLog.n(M.L(this, "bolt_kill"))
             }
-        } else {
-            enemy!!.sprite.showStatus(CharSprite.NEUTRAL, enemy!!.defenseVerb())
         }
     }
 

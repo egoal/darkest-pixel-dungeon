@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import kotlin.math.min
 
 open class WellWater : Blob() {
 
@@ -98,7 +99,7 @@ open class WellWater : Blob() {
                         place = pos + PathFinder.NEIGHBOURS8[Random.Int(8)]
                     } while (!Level.passable[place] && !Level.avoid[place])
                     Dungeon.level.drop(heap.pickUp(), place).sprite.drop()
-                    
+
                     return false
                 }
             }
