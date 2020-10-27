@@ -42,6 +42,7 @@ import com.egoal.darkestpixeldungeon.sprites.HeroSprite
 import com.egoal.darkestpixeldungeon.ui.*
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndGainNewPerk
 import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
 import com.egoal.darkestpixeldungeon.windows.WndResurrect
 import com.watabou.noosa.Camera
@@ -78,6 +79,8 @@ class Hero : Char() {
     var regeneration = 0.1f
 
     var reservedPerks = 0
+    val spawnedPerks = ArrayList<Perk>()
+
     private var perkGained_ = 0
     var perkGained: Int
         get() = perkGained_
@@ -374,7 +377,8 @@ class Hero : Char() {
 
         if (rangedWeapon == null &&
                 (belongings.weapon is Flail || belongings.weapon is Lance ||
-                        belongings.weapon is DriedLeg)) return false
+                        belongings.weapon is DriedLeg))
+            return false
 
         return true
     }
@@ -653,31 +657,32 @@ class Hero : Char() {
     private fun takeMentalDamage(dmg: Damage): Int {
         if (dmg.value <= 0) return 0
 
+        var value = dmg.value.toFloat()
+
         if (heroClass == HeroClass.EXILE) {
-            var v = 2
+            var v = 1f
             if (subClass == HeroSubClass.WINEBIBBER && buff(Drunk::class.java) == null) {
-                v += 2
+                v += 1.5f
             }
 
 
-            dmg.value += Random.Int(0, v)
+            value += Random.Float(0f, v)
         }
-        if (!dmg.isFeatured(Damage.Feature.ACCURATE)) {
-            val chance = GameMath.ProbabilityPlus(
-                    heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
-                    buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f)
 
-            if (Random.Float() < chance) {
-                dmg.value = 0
-                sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
-            } else {
-                if (heroClass == HeroClass.EXILE && Random.Int(10) == 0 && buff(Drunk::class.java) == null)
-                    sayShort("grim_${Random.Int(3)}") //todo: this is fragile
-            }
+        val chance = GameMath.ProbabilityPlus(
+                heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
+                buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f)
+
+        if (Random.Float() < chance) {
+            value = 0f
+            sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
+        } else {
+            if (heroClass == HeroClass.EXILE && Random.Int(10) == 0 && buff(Drunk::class.java) == null)
+                sayShort("grim_${Random.Int(3)}") //todo: this is fragile
         }
 
         // keep in mind that SAN is pressure, it increases
-        val rv = pressure.upPressure(dmg.value.toFloat()).toInt()
+        val rv = pressure.upPressure(value).toInt()
         val WARNING = 0x0A0A0A
 
         if (rv > 0 && buff(Ignorant::class.java) == null)
@@ -939,6 +944,7 @@ class Hero : Char() {
                 }
 
                 if (lvl == 12 && Dungeon.hero.subClass == HeroSubClass.NONE) {
+                    Badges.validateMastery()
                     WndMasterSubclass.Show(this)
                 }
             } else {
@@ -1319,6 +1325,7 @@ class Hero : Char() {
         private const val RESERVED_PERKS = "reserved_perks"
         private const val CHALLENGE = "challenge"
         private const val PERK_GAIN = "perk_gain"
+        private const val SPAWNED_PERKS = "spawned-perks"
     }
 
     // store
@@ -1344,6 +1351,7 @@ class Hero : Char() {
         bundle.put(MAGICAL_RESISTANCE, magicalResistance)
 
         bundle.put(RESERVED_PERKS, reservedPerks)
+        if (spawnedPerks.isNotEmpty()) bundle.put(SPAWNED_PERKS, spawnedPerks)
         bundle.put(PERK_GAIN, perkGained_)
 
         if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
@@ -1374,8 +1382,11 @@ class Hero : Char() {
         magicalResistance = bundle.getFloat(MAGICAL_RESISTANCE)
 
         reservedPerks = bundle.getInt(RESERVED_PERKS)
-        perkGained_ = bundle.getInt(PERK_GAIN)
 
+        perkGained_ = bundle.getInt(PERK_GAIN)
+        spawnedPerks.clear()
+        if (bundle.contains(SPAWNED_PERKS))
+            for (p in bundle.getCollection(SPAWNED_PERKS)) if (p is Perk) spawnedPerks.add(p)
         belongings.restoreFromBundle(bundle)
 
         val pre = buff(Pressure::class.java)

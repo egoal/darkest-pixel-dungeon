@@ -550,7 +550,7 @@ abstract class Char : Actor() {
             if (!defender.isAlive) return // already died in procs
 
             // camera shake
-            if (defenderIsHero || dmg.isFeatured(Damage.Feature.CRITICAL)) {
+            if (defenderIsHero) { //  || dmg.isFeatured(Damage.Feature.CRITICAL)
                 val shake = dmg.value * 4f / defender.HT
                 if (shake > 1f) Camera.main.shake(GameMath.clampf(shake, 1f, 5f), 0.3f)
             }

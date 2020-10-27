@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.StatueSprite
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
+import com.egoal.darkestpixeldungeon.items.weapon.melee.SpikeShield
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
@@ -54,7 +55,7 @@ open class Statue : Mob() {
 
         do {
             weapon = Generator.WEAPON.generate() as Weapon
-        } while (weapon !is MeleeWeapon || weapon.cursed)
+        } while (weapon !is MeleeWeapon || weapon.cursed || weapon is SpikeShield)
 
         weapon.identify()
         weapon.enchant(Weapon.Enchantment.random())

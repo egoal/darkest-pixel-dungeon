@@ -20,12 +20,17 @@
  */
 package com.egoal.darkestpixeldungeon.windows
 
+import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
-import com.watabou.noosa.Group
+import com.egoal.darkestpixeldungeon.ui.PerkSlot
+import com.watabou.gltextures.TextureCache
+import com.watabou.noosa.*
+import com.watabou.noosa.ui.Button
+import kotlin.contracts.contract
 
 class WndClass(private val cl: HeroClass) : WndTabbed() {
     private val tabPerks: PerksTab
@@ -106,6 +111,57 @@ class WndClass(private val cl: HeroClass) : WndTabbed() {
                     width = w
                 }
             }
+
+            val cb = ColorBlock(width, 1f, 0xff000000.toInt())
+            cb.x = MARGIN.toFloat()
+            cb.y = pos + MARGIN
+            add(cb)
+            pos = cb.y + cb.height()
+
+            // align initial perks
+            // todo: clean this.
+            val description = PixelScene.renderMultiline(6).apply {
+                maxWidth(width.toInt())
+            }
+            add(description)
+
+            for (pr in cl.initialPerks().withIndex()) {
+                val x = MARGIN + pr.index % 4 * 23f
+                val y = pos + pr.index / 4 * 23f
+
+                val perk = pr.value
+
+                val pb = object : Button() {
+
+                    private lateinit var icon: Image
+
+                    override fun createChildren() {
+                        super.createChildren()
+                        val icons = TextureCache.get(Assets.PERKS)
+                        icon = Image(icons)
+                        icon.frame(TextureFilm(icons, 16, 16).get(perk.image()))
+                        add(icon)
+                    }
+
+                    override fun layout() {
+                        super.layout()
+
+                        icon.x = x + (width - icon.width) / 2f
+                        icon.y = y + (height - icon.height) / 2f
+                    }
+
+                    override fun onClick() {
+                        description.text(perk.description())
+                    }
+                }
+
+                pb.setRect(x, y, 22f, 22f)
+                add(pb)
+            }
+            pos += MARGIN + 23f
+
+            description.setPos(MARGIN.toFloat(), pos + MARGIN)
+            pos += MARGIN + 30f
 
             width += MARGIN + dotWidth
             height = pos + MARGIN

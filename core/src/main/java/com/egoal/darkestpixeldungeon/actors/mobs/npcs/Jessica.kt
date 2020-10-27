@@ -23,21 +23,47 @@ import com.watabou.utils.Random
 class Jessica : NPC.Unbreakable() {
     init {
         spriteClass = JessicaSprite::class.java
+
+        properties.add(Property.IMMOVABLE)
     }
 
     /// do something
     override fun interact(): Boolean {
         sprite.turnTo(pos, Dungeon.hero.pos)
-        if (!Quest.completed_) {
-            val cd = Dungeon.hero.belongings.getItem(CallysDiary::class.java)
-            if (cd == null) {
-                Quest.given_ = true
-                WndDialogue.Show(this, M.L(this, "please"), M.L(this, "ok"), M.L(this, "sorry")) {}
+
+        // give, complete,
+        if (!Quest.given_) {
+            WndDialogue.Show(this, M.L(this, "please"), M.L(this, "ok"), M.L(this, "sorry")) {
+                if (it == 0) {
+                    Quest.given_ = true
+                    tell(M.L(Jessica::class.java, "good-luck"))
+                }
+            }
+        } else if (!Quest.completed_) {
+            val content = M.L(this, "how-is-it-going")
+            if (Dungeon.hero.lvl == 1) { //todo: should use Statistics::DeepestFloor
+                // not into the dungeon
+                WndDialogue.Show(this, content, M.L(this, "ok")) {}
             } else {
-                cd.detach(Dungeon.hero.belongings.backpack)
-                GLog.w(Messages.get(this, "return_book"))
-                Quest.completed_ = true
-                tell(Messages.get(this, "thank_you"))
+                val cd = Dungeon.hero.belongings.getItem(CallysDiary::class.java)
+
+                if (cd == null) WndDialogue.Show(this, content, M.L(this, "no-found")) {
+                    Quest.completed_ = true
+                    tell(M.L(Jessica::class.java, "pity-no-found"))
+                }
+                else {
+                    WndDialogue.Show(this, content, M.L(this, "found"), M.L(this, "found-lie")) {
+                        if (it == 0) {
+                            cd.detach(Dungeon.hero.belongings.backpack)
+                            GLog.w(M.L(Jessica::class.java, "return_book"))
+                            Quest.completed_ = true
+                            tell(M.L(Jessica::class.java, "thank_you"))
+                        } else if (it == 1) {
+                            Quest.completed_ = true
+                            tell(M.L(Jessica::class.java, "thank_you_lie"))
+                        }
+                    }
+                }
             }
         } else {
             tell(Messages.get(this, "farewell"))

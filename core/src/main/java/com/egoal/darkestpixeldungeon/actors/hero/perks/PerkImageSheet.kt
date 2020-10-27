@@ -58,6 +58,11 @@ object PerkImageSheet {
     const val LOW_WEIGHT_DEX = 51
     const val MANIAC = 52
     const val POLEARM = 53
+    const val CLOSE_ZAP = 54
+    const val EVASION_TENACITY = 55
+    const val PREHEATED_ZAP = 56
+    const val MANA_DRINE = 57
+    const val BLUR = 58
 
     private const val NEGATIVE = 64
     const val APPETITE_RAVENOUS = NEGATIVE + 0

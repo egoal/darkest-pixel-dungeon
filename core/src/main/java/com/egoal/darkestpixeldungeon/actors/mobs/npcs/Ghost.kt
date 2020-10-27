@@ -274,32 +274,41 @@ class Ghost : NPC.Unbreakable() {
         fun completed(): Boolean = spawned && processed
 
         private fun PreparePrize() {
-            //50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
             val itemTierRoll = Random.Float()
             val wepTier: Int
 
-            if (itemTierRoll < 0.4f) {
-                wepTier = 2
-                armor = LeatherArmor()
-            } else if (itemTierRoll < 0.75f) {
-                wepTier = 3
-                armor = MailArmor()
-            } else if (itemTierRoll < 0.95f) {
-                wepTier = 4
-                armor = ScaleArmor()
-            } else {
-                wepTier = 5
-                armor = PlateArmor()
+            // %10, %35, %30, %20, %5
+            when {
+                itemTierRoll < 0.1f -> {
+                    wepTier = 1
+                    armor = LeatherArmor()
+                }
+                itemTierRoll < 0.45f -> {
+                    wepTier = 2
+                    armor = LeatherArmor()
+                }
+                itemTierRoll < 0.75f -> {
+                    wepTier = 3
+                    armor = MailArmor()
+                }
+                itemTierRoll < 0.95f -> {
+                    wepTier = 4
+                    armor = ScaleArmor()
+                }
+                else -> {
+                    wepTier = 5
+                    armor = PlateArmor()
+                }
             }
 
             do {
-                weapon = Generator.WEAPON.MELEE.tier(wepTier - 1).generate() as Weapon
+                weapon = Generator.WEAPON.MELEE.tier(wepTier).generate() as Weapon
             } while (weapon !is MeleeWeapon)
-            weapon!!.level(0) // if ((weapon as MeleeWeapon).tier == 1) 1 else 0)
+            weapon!!.level(0)
             weapon!!.cursed = false
             weapon!!.enchant(null)
 
-            //50%:+0, 30%:+1, 15%:+2, 5%:+3
+            //40%:+0, 40%:+1, 15%:+2, 5%:+3
             val itemLevelRoll = Random.Float()
             val itemLevel = when {
                 itemLevelRoll < 0.4f -> 0

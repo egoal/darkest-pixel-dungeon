@@ -19,6 +19,8 @@ class Scholar : NPC.Unbreakable() {
     init {
         name = Messages.get(this, "name")
         spriteClass = ScholarSprite::class.java
+
+        properties.add(Property.IMMOVABLE)
     }
 
     /// do something

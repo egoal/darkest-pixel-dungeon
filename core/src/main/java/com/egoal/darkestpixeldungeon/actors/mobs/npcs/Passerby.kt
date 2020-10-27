@@ -12,6 +12,8 @@ import com.watabou.utils.Bundle
 class Passerby : NPC.Unbreakable() {
     init {
         spriteClass = Sprite::class.java
+
+        properties.add(Property.IMMOVABLE)
     }
 
     var everMet = false

@@ -39,6 +39,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PointF
 import com.watabou.utils.Random
 import kotlin.math.PI
+import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -84,7 +85,8 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
 
         if (damage.value == 0 || damage.isFeatured(Damage.Feature.ACCURATE)) return true // non damage wand, dont miss
 
-        val bonus = 2f * 0.9f.pow(Dungeon.level.distance(attacker.pos, defender.pos)) // more acc
+        val bonus = max(1f, 2f - 0.1f * Dungeon.level.distance(attacker.pos, defender.pos)) * 1.2f.pow(level())
+        // 2f * 0.9f.pow(Dungeon.level.distance(attacker.pos, defender.pos)) // more acc
         return attacker.accRoll(damage) * bonus > defender.dexRoll(damage)
     }
 
@@ -159,7 +161,7 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
     protected open fun onMissed(damage: Damage) {
         val hero = curUser
         hero.heroPerk.get(PreheatedZap::class.java)?.let {
-            Buff.prolong(hero, Preheated::class.java, 5f)
+            Buff.prolong(hero, Preheated::class.java, 10f)
         }
     }
 

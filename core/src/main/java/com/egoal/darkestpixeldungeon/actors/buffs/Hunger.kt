@@ -125,7 +125,7 @@ class Hunger : Buff(), Hero.Doom {
 
 
             val step = when {
-                target.buff(Drunk::class.java) != null -> STEP * 0.6f
+                target.buff(Drunk::class.java) != null -> STEP * 0.8f
                 (target as Hero).heroPerk.has(Dieting::class.java) -> STEP * 1.2f
                 else -> STEP
             }

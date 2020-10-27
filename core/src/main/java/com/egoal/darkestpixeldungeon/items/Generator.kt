@@ -134,7 +134,8 @@ object Generator {
                     RunicBlade::class to 4f,
                     AssassinsBlade::class to 4f,
                     SpikeShield::class to 5f,
-                    Pitchfork::class to 5f
+                    Pitchfork::class to 5f,
+                    Halberd::class to 4f
             ))
 
             object T5 : BalancedClassMapGenerator(hashMapOf(

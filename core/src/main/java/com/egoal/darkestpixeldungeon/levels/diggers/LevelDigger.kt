@@ -104,7 +104,7 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
     }
 
     private fun digFirstRoomAnnular() {
-        val inner = if (Random.Float() < 0.075f) 1 else Random.Int(6, level.width() / 2 - 6)
+        val inner = if (Random.Float() < 0.05f) 2 else Random.Int(8, level.width() / 2 - 6)
         digFirstRoomAnnular(Rect(inner, level.width() - 1 - inner, inner, level.height() - 1 - inner), Random.Int(2, 4))
     }
 

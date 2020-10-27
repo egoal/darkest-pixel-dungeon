@@ -27,9 +27,9 @@ class WandOfFrost : DamageWand(isMissile = true) {
         image = ItemSpriteSheet.WAND_FROST
     }
 
-    override fun min(lvl: Int): Int = 2 + lvl
+    override fun min(lvl: Int): Int = 3 + lvl
 
-    override fun max(lvl: Int): Int = 8 + 5 * lvl
+    override fun max(lvl: Int): Int = 9 + lvl * 11 / 2
 
     override fun giveDamage(enemy: Char): Damage {
         val damage = super.giveDamage(enemy).addElement(Damage.Element.ICE)

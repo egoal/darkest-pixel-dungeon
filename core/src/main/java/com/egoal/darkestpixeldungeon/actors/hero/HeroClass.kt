@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.books.TomeOfRetrain
 import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
+import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary
 import com.egoal.darkestpixeldungeon.items.food.Blandfruit
 import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Food
@@ -45,6 +46,7 @@ enum class HeroClass(private val title: String) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_WARRIOR
         override fun spritesheet(): String = Assets.WARRIOR
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "warrior_perk$it") }
+        override fun initialPerks(): List<Perk> = listOf(Drunkard(), GoodAppetite(), RavenousAppetite())
 
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
@@ -78,12 +80,6 @@ enum class HeroClass(private val title: String) {
 
             PotionOfStrength().setKnown()
 
-            // perks
-            hero.heroPerk.add(Drunkard())
-            hero.heroPerk.add(GoodAppetite())
-            hero.heroPerk.add(RavenousAppetite())
-            // hero.heroPerk.add(StrongConstitution())
-
             // resists
             hero.addResistances(Damage.Element.FIRE, 0.1f)
             hero.addResistances(Damage.Element.LIGHT, -0.1f)
@@ -95,6 +91,7 @@ enum class HeroClass(private val title: String) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_MAGE
         override fun spritesheet(): String = Assets.MAGE
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "mage_perk$it") }
+        override fun initialPerks(): List<Perk> = listOf(GoodAppetite(), WandPerception(), PreheatedZap())
 
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
@@ -114,9 +111,6 @@ enum class HeroClass(private val title: String) {
 
             ScrollOfUpgrade().setKnown()
 
-            hero.heroPerk.add(GoodAppetite())
-            hero.heroPerk.add(WandPerception())
-
             hero.addResistances(Damage.Element.FIRE, 0.1f)
             hero.addResistances(Damage.Element.POISON, -0.2f)
             hero.addResistances(Damage.Element.LIGHT, -0.1f)
@@ -128,6 +122,7 @@ enum class HeroClass(private val title: String) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_ROGUE
         override fun spritesheet(): String = Assets.ROGUE
         override fun perks(): List<String> = (1..6).map { Messages.get(HeroClass::class.java, "rogue_perk$it") }
+        override fun initialPerks(): List<Perk> = listOf(LowWeightDexterous(), Dieting(), ExtraCritProbability(), Keen())
 
         override fun onHeroUpgraded(hero: Hero) {
             hero.criticalChance += 0.1f / 100f
@@ -149,11 +144,6 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(0, cloak)
             Dungeon.quickslot.setSlot(1, darts)
 
-            hero.heroPerk.add(LowWeightDexterous())
-            hero.heroPerk.add(Dieting())
-            hero.heroPerk.add(ExtraCritProbability())
-            hero.heroPerk.add(Keen())
-
             ScrollOfMagicMapping().setKnown()
 
             hero.addResistances(Damage.Element.POISON, 0.2f)
@@ -166,6 +156,7 @@ enum class HeroClass(private val title: String) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_HUNTRESS
         override fun spritesheet(): String = Assets.HUNTRESS
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "huntress_perk$it") }
+        override fun initialPerks(): List<Perk> = listOf(NightVision(), Telepath())
 
         override fun initHeroClass(hero: Hero) {
             super.initHeroClass(hero)
@@ -175,9 +166,6 @@ enum class HeroClass(private val title: String) {
             val b = Boomerang()
             b.identify().collect()
             Dungeon.quickslot.setSlot(0, b)
-
-            hero.heroPerk.add(NightVision())
-            hero.heroPerk.add(Telepath())
 
             PotionOfMindVision().setKnown()
 
@@ -191,6 +179,7 @@ enum class HeroClass(private val title: String) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_SORCERESS
         override fun spritesheet(): String = Assets.DPD_SORCERESS
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "sorceress_perk$it") }
+        override fun initialPerks(): List<Perk> = listOf(Discount(), Optimistic())
 
         override fun onHeroUpgraded(hero: Hero) {
             hero.HT -= 1
@@ -220,9 +209,6 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(1, darts)
 
             PotionOfToxicGas().identify().collect()
-
-            hero.heroPerk.add(Discount())
-            hero.heroPerk.add(Optimistic())
         }
     },
 
@@ -230,11 +216,12 @@ enum class HeroClass(private val title: String) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_EXILE
         override fun spritesheet(): String = Assets.EXILE
         override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "exile_perk$it") }
+        override fun initialPerks(): List<Perk> = listOf(LowHealthRegeneration(), Discount().apply { level = -1 }, PolearmMaster())
 
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
 
-            hero.magicalResistance = 0.06f
+            hero.magicalResistance = 0.04f
             hero.addResistances(Damage.Element.ICE, 0.25f)
             hero.addResistances(Damage.Element.FIRE, -0.2f)
             hero.addResistances(Damage.Element.SHADOW, 0.2f)
@@ -255,10 +242,6 @@ enum class HeroClass(private val title: String) {
             Dungeon.quickslot.setSlot(1, fc)
 
             ScrollOfRage().identify()
-
-            hero.heroPerk.add(LowHealthRegeneration())
-            hero.heroPerk.add(Discount().apply { level = -1 })
-            hero.heroPerk.add(PolearmMaster())
         }
     }
     ;
@@ -281,6 +264,7 @@ enum class HeroClass(private val title: String) {
     abstract fun masteryBadge(): Badges.Badge
     abstract fun spritesheet(): String
     abstract fun perks(): List<String>
+    abstract fun initialPerks(): List<Perk>
 
     fun storeInBundle(bundle: Bundle) {
         bundle.put(CLASS, toString())
@@ -290,7 +274,7 @@ enum class HeroClass(private val title: String) {
     protected open fun initHeroStatus(hero: Hero) {
         hero.atkSkill = 10f
         hero.defSkill = 5f
-        hero.magicalResistance = 0.09f
+        hero.magicalResistance = 0.08f
     }
 
     protected open fun initHeroClass(hero: Hero) {
@@ -302,6 +286,8 @@ enum class HeroClass(private val title: String) {
 
         SeedPouch().identify().collect()
         Dungeon.limitedDrops.seedBag.drop()
+
+        for (p in initialPerks()) hero.heroPerk.add(p)
 
         // WandOfAbel().identify().collect()
 //        TomeOfPerk().quantity(99).collect()

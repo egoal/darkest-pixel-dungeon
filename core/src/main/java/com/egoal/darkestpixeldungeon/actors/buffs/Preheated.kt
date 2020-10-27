@@ -17,9 +17,9 @@ class Preheated : FlavourBuff() {
     override fun desc(): String = M.L(this, "desc", dispTurns())
 
     fun affectWandDamage(damage: Damage) {
-        damage.addFeature(Damage.Feature.CRITICAL)
+        damage.addFeature(Damage.Feature.CRITICAL or Damage.Feature.ACCURATE)
         damage.value = round(damage.value * 1.25f).toInt()
-        
+
         detach()
     }
 }

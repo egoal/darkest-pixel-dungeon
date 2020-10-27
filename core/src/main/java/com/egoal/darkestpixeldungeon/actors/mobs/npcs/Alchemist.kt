@@ -40,6 +40,8 @@ import kotlin.math.min
 class Alchemist : NPC.Unbreakable() {
     init {
         spriteClass = AlchemistSprite::class.java
+
+        properties.add(Property.IMMOVABLE)
     }
 
     override fun interact(): Boolean {

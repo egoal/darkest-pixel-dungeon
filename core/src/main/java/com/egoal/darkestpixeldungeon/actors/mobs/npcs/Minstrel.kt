@@ -24,6 +24,8 @@ import com.watabou.noosa.TextureFilm
 class Minstrel : NPC.Unbreakable() {
     init {
         spriteClass = MinstrelSprite::class.java
+
+        properties.add(Property.IMMOVABLE)
     }
 
     override fun interact(): Boolean {

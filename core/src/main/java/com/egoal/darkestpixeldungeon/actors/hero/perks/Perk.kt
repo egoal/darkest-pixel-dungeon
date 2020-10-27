@@ -16,9 +16,13 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
 
     open fun upgradable(): Boolean = level < maxLevel && canBeGain(Dungeon.hero)
 
-    open fun upgrade() { level += 1 }
+    open fun upgrade() {
+        level += 1
+    }
 
-    open fun downgrade() { level -= 1 }
+    open fun downgrade() {
+        level -= 1
+    }
 
     fun isAcquireAllowed(hero: Hero): Boolean {
         if (!canBeGain(hero)) return false
@@ -62,17 +66,17 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
             override fun image(): Int = PerkImageSheet.LUCK_FROM_ME
         }
 
-        fun RandomPositive(hero: Hero): Perk = KRandom.Chances(
-                positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) })
-                ?: LuckFromAuthor()
+        fun RandomPositive(hero: Hero): Perk = KRandom.Chances(positives.filter {
+            it.value > 0f && it.key.isAcquireAllowed(hero)
+        })?.javaClass?.newInstance() ?: LuckFromAuthor()
 
         fun RandomPositives(hero: Hero, count: Int): List<Perk> {
             val avialables = positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) }
             return if (avialables.size > count)
-                KRandom.Chances(avialables, count)
+                KRandom.Chances(avialables, count).map { it.javaClass.newInstance() }
             else {
-                val perks = ArrayList<Perk>()
-                perks.addAll(avialables.keys)
+                val perks = avialables.keys.map { it.javaClass.newInstance() }.toMutableList()
+
                 for (i in 1..(count - perks.size)) perks.add(LuckFromAuthor())
                 perks
             }
@@ -130,7 +134,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 StealthCaster() to 1f,
                 ArcaneCrit() to 1.2f,
                 WandPiercing() to 1.25f,
-                CloseZap() to 1f, 
+                CloseZap() to 1f,
                 PreheatedZap() to 1f,
                 ManaDrine() to 1f,
                 ExplodeBrokenShot() to 1f,

@@ -41,6 +41,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.egoal.darkestpixeldungeon.utils.GLog;
+import com.egoal.darkestpixeldungeon.windows.WndGainNewPerk;
 import com.egoal.darkestpixeldungeon.windows.WndResurrect;
 import com.egoal.darkestpixeldungeon.items.Item;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
@@ -62,7 +63,7 @@ import java.util.HashSet;
 public class Dungeon {
 
     public static int initialDepth_ = -1;
-    public static final String VERSION_STRING = "0.5.0-2";
+    public static final String VERSION_STRING = "";
 
     //enum of items which have limited spawns, records how many have spawned
     //could all be their own separate numbers, but this allows iterating, much
@@ -560,12 +561,12 @@ public class Dungeon {
             }
             bundle.put(CHAPTERS, ids);
 
+            // quests
             Bundle quests = new Bundle();
             Ghost.Quest.INSTANCE.storeInBundle(quests);
             Wandmaker.Quest.INSTANCE.storeInBundle(quests);
             Blacksmith.Quest.INSTANCE.storeInBundle(quests);
             Imp.Quest.INSTANCE.storeInBundle(quests);
-            // dpd save
             Alchemist.Quest.INSTANCE.storeInBundle(quests);
             Jessica.Quest.INSTANCE.storeInBundle(quests);
             Yvette.Quest.INSTANCE.StoreInBundle(quests);

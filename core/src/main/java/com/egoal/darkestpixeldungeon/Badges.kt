@@ -818,8 +818,7 @@ object Badges {
     fun validateNoKilling() {
         if (Dungeon.IsChallenged()) return
 
-        if (!local.contains(Badge.NO_MONSTERS_SLAIN) && Statistics
-                        .CompletedWithNoKilling) {
+        if (!local.contains(Badge.NO_MONSTERS_SLAIN) && Statistics.CompletedWithNoKilling) {
             val badge = Badge.NO_MONSTERS_SLAIN
             local.add(badge)
             displayBadge(badge)

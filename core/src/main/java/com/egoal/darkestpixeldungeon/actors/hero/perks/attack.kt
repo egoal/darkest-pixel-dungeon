@@ -9,8 +9,10 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.buffs.TimeDilation
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
+import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
@@ -99,10 +101,21 @@ class PolearmMaster : Perk(2) {
     override fun image(): Int = PerkImageSheet.POLEARM
 
     fun proc(damage: Damage, weapon: MeleeWeapon) {
+        val attacker = damage.from as Char
         val defender = damage.to as Char
         val ratio = 0.1f + weapon.tier * 0.05f * level // 0.15 ~ 0.35 => 0.2 ~ 0.6
 
-        if (com.watabou.utils.Random.Float() < ratio) {
+
+        if (Dungeon.level.adjacent(defender.pos, attacker.pos) && com.watabou.utils.Random.Float() < ratio) {
+            val duration = 1f + weapon.tier + weapon.DLY
+            Buff.prolong(defender, Cripple::class.java, duration)
+
+            // knock back
+            val opp = defender.pos + (defender.pos - attacker.pos)
+            val shot = Ballistica(defender.pos, opp, Ballistica.MAGIC_BOLT)
+
+            WandOfBlastWave.throwChar(defender, shot, 1)
+        } else if (com.watabou.utils.Random.Float() < ratio) {
             val duration = 1f + weapon.tier + weapon.DLY
             Buff.prolong(defender, Cripple::class.java, duration)
         }

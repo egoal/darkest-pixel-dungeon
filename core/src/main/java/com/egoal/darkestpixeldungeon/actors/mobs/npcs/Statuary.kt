@@ -263,6 +263,7 @@ class Statuary : NPC.Unbreakable() {
             GameScene.updateFog()
 
             val item = if (Random.Float() < 0.4f) Generator.WEAPON.generate() else Generator.ARMOR.generate()
+            item.level(0)
             if (item is Armor) {
                 item.inscribe(Armor.Glyph.randomCurse())
                 item.cursed = true

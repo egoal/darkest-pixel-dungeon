@@ -5,10 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.ConfusionGas
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Drowsy
-import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep
-import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MagesStaff
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
@@ -35,7 +32,7 @@ class WandOfHypnosis : DamageWand.NoDamage(isMissile = true) {
 
     override fun onZap(attack: Ballistica) {
         super.onZap(attack)
-        
+
         val cell = attack.collisionPos
         GameScene.add(Blob.seed(cell, 12, ConfusionGas::class.java))
     }
@@ -44,8 +41,19 @@ class WandOfHypnosis : DamageWand.NoDamage(isMissile = true) {
         super.onHit(damage)
 
         val ch = damage.to as Char
-        Buff.affect(ch, MagicalSleep.Deep::class.java).ratio = 0.75f - 0.5f * 0.85f.pow(level())
-        ch.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 3 + level())
+        // delay to avoid canceled the wand damage.
+        object : FlavourBuff() {
+            init {
+                actPriority = Int.MIN_VALUE
+            }
+
+            override fun act(): Boolean {
+                Buff.affect(ch, MagicalSleep.Deep::class.java).ratio = 0.75f - 0.5f * 0.85f.pow(level())
+                ch.sprite.centerEmitter().start(Speck.factory(Speck.NOTE), 0.3f, 3 + level())
+
+                return super.act()
+            }
+        }.attachTo(ch)
     }
 
     override fun onHit(staff: MagesStaff, damage: Damage) {

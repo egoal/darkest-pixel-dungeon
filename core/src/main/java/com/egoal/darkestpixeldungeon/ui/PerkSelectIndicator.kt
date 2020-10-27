@@ -24,7 +24,7 @@ class PerkSelectIndicator : Tag(0xff4c4c) {
         super.createChildren()
 
         bg.flipHorizontal(true)
-        
+
         number = BitmapText(PixelScene.pixelFont)
         add(number)
 
@@ -63,9 +63,7 @@ class PerkSelectIndicator : Tag(0xff4c4c) {
     }
 
     override fun onClick() {
-        Dungeon.hero.reservedPerks--
         Dungeon.hero.interrupt()
-        val cnt = if (Dungeon.hero.heroPerk.has(ExtraPerkChoice::class.java)) 5 else 3
-        GameScene.show(WndGainNewPerk.CreateWithRandomPositives(cnt))
+        WndGainNewPerk.Show(Dungeon.hero)
     }
 }

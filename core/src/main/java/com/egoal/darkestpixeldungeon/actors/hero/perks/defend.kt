@@ -13,6 +13,8 @@ import kotlin.math.pow
 import kotlin.math.round
 
 class Blur : Perk() {
+    override fun image(): Int = PerkImageSheet.BLUR
+
     override fun onGain() {
         Buff.affect(Dungeon.hero, Counter::class.java)
     }
@@ -28,9 +30,12 @@ class Blur : Perk() {
         fun onEvade() {
             if (Dungeon.hero.buff(Tenacity::class.java) != null) return
             val i = moments.withIndex().minBy { it.value }!!.index
-            moments[i] = 4f
+            moments[i] = 5f
 
-            if (moments.all { it > 0f }) Buff.prolong(Dungeon.hero, Tenacity::class.java, 10f)
+            if (moments.all { it > 0f }) {
+                moments.fill(-1f)
+                prolong(Dungeon.hero, Tenacity::class.java, 20f)
+            }
         }
 
         override fun act(): Boolean {
@@ -64,8 +69,11 @@ class CounterStrike : Perk() {
 }
 
 class EvasionTenacity : Perk(3) {
+    override fun image(): Int = PerkImageSheet.EVASION_TENACITY
+
     fun procEvasionDamage(dmg: Damage) {
-        (dmg.to as Hero).SHLD += level * 2
+        val hero = dmg.to as Hero
+        if (hero.SHLD < hero.HT) hero.SHLD += level * 2
     }
 }
 

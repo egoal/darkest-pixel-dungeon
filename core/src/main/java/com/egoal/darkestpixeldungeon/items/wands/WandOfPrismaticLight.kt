@@ -58,9 +58,9 @@ class WandOfPrismaticLight : DamageWand(isMissile = false) {
         collisionProperties = Ballistica.MAGIC_BOLT
     }
 
-    override fun min(lvl: Int): Int = 1 + lvl
+    override fun min(lvl: Int): Int = 2 + 2 * lvl
 
-    override fun max(lvl: Int): Int = 7 + 3 * lvl
+    override fun max(lvl: Int): Int = 9 + 3 * lvl
 
     override fun giveDamage(enemy: Char): Damage {
         val damage = super.giveDamage(enemy).addElement(Damage.Element.HOLY)

@@ -63,10 +63,10 @@ class WandOfFireblast : DamageWand(isMissile = false) {
     }
 
     //1x/1.5x/2.25x damage
-    override fun min(lvl: Int): Int = round((1 + lvl) * 1.5f.pow(chargesPerCast() - 1)).toInt()
+    override fun min(lvl: Int): Int = round((2 + lvl) * 1.5f.pow(chargesPerCast() - 1)).toInt()
 
     //1x/1.5x/2.25x damage
-    override fun max(lvl: Int): Int = round((7 + 3 * lvl) * 1.5f.pow(chargesPerCast() - 1)).toInt()
+    override fun max(lvl: Int): Int = round((8 + lvl * 7 / 2) * 1.5f.pow(chargesPerCast() - 1)).toInt()
 
     // accurate
     override fun giveDamage(enemy: Char): Damage {
@@ -82,7 +82,7 @@ class WandOfFireblast : DamageWand(isMissile = false) {
             if (ch != null) damage(ch)
         }
     }
-    
+
     override fun onHit(damage: Damage) {
         super.onHit(damage)
 

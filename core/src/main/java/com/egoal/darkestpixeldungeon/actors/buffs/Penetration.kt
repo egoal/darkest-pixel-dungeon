@@ -25,6 +25,11 @@ import com.watabou.utils.Callback
 class Penetration : Buff(), ActionIndicator.Action {
     private var hits = HIT_TIMES - 1
 
+    override fun detach() {
+        super.detach()
+        ActionIndicator.clearAction(this)
+    }
+
     fun hit() {
         if (!(target as Hero).isUsingPolearm()) return
 

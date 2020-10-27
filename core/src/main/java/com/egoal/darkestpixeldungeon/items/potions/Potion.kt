@@ -155,6 +155,7 @@ open class Potion : Item() {
 
     override fun doThrow(hero: Hero) {
 
+        // todo:
         if (isKnown && (this is PotionOfExperience ||
                         this is PotionOfHealing ||
                         this is PotionOfMindVision ||
@@ -163,7 +164,7 @@ open class Potion : Item() {
                         this is PotionOfMight)) {
             
             WndOptions.Confirm(M.L(Potion::class.java, "beneficial"), M.L(Potion::class.java, "sure_throw")){
-                doThrow(hero)
+                super.doThrow(hero)
             }
         } else {
             super.doThrow(hero)

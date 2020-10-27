@@ -30,6 +30,8 @@ class ArcaneCrit : Perk(5) {
 }
 
 class CloseZap : Perk() {
+    override fun image(): Int = PerkImageSheet.CLOSE_ZAP
+
     fun procDamage(damage: Damage) {
         val dis = Dungeon.level.distance((damage.from as Char).pos, (damage.to as Char).pos)
         // 1.225, 1.15, 1.075, 1, 0.9, 0.8, ...
@@ -44,12 +46,15 @@ class CloseZap : Perk() {
 }
 
 class ManaDrine : Perk() {
+    override fun image(): Int = PerkImageSheet.MANA_DRINE
     fun affect(hero: Hero) {
         Buff.affect(hero, Recharging::class.java, 1f) // +0.25 for all wands
     }
 }
 
-class PreheatedZap : Perk()
+class PreheatedZap : Perk() {
+    override fun image(): Int = PerkImageSheet.PREHEATED_ZAP
+}
 
 class QuickZap : Perk() {
     override fun image(): Int = PerkImageSheet.WAND_QUICK_ZAP

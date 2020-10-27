@@ -28,9 +28,9 @@ class WandOfAbel : DamageWand(isMissile = true) {
         collisionProperties = Ballistica.STOP_TARGET or Ballistica.STOP_TERRAIN
     }
 
-    override fun min(lvl: Int): Int = 2 + lvl
+    override fun min(lvl: Int): Int = 3 + lvl
 
-    override fun max(lvl: Int): Int = 8 + lvl * 5 / 2
+    override fun max(lvl: Int): Int = 9 + lvl * 3
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
 

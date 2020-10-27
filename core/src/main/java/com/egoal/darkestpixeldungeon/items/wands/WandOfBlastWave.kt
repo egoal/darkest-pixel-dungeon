@@ -54,9 +54,9 @@ class WandOfBlastWave : DamageWand(isMissile = true) {
         collisionProperties = Ballistica.PROJECTILE
     }
 
-    override fun min(lvl: Int): Int = 1 + lvl
+    override fun min(lvl: Int): Int = 2 + lvl
 
-    override fun max(lvl: Int): Int = 7 + 3 * lvl
+    override fun max(lvl: Int): Int = 8 + lvl * 7 / 2
 
     override fun onZap(bolt: Ballistica) {
         Sample.INSTANCE.play(Assets.SND_BLAST)
@@ -81,7 +81,6 @@ class WandOfBlastWave : DamageWand(isMissile = true) {
         }
 
         // throws the char at the center of the blast
-        super.onZap(bolt)
         Actor.findChar(bolt.collisionPos)?.let {
             if (damage(it))
                 if (it.isAlive && bolt.path.size > bolt.dist + 1) {

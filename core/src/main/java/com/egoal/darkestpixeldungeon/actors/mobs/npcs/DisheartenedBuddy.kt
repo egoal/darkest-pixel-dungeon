@@ -19,7 +19,7 @@ class DisheartenedBuddy : NPC.Unbreakable() {
 
     init {
         spriteClass = DisheartenedBuddySprite::class.java
-        
+
         properties.add(Property.IMMOVABLE)
     }
 

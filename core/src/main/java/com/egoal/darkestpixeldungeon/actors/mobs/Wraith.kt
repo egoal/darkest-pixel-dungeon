@@ -73,6 +73,8 @@ open class Wraith : Mob() {
     override fun giveDamage(target: Char): Damage =
             Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, target)
 
+    override fun dexRoll(damage: Damage): Float = if(damage.type==Damage.Type.NORMAL) super.dexRoll(damage) else 0f
+
     open fun adjustStats(level: Int) {
         this.level = level
         atkSkill = 10f + level

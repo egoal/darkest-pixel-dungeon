@@ -53,11 +53,11 @@ class WandOfLightning : DamageWand(isMissile = false) {
         image = ItemSpriteSheet.WAND_LIGHTNING
     }
 
-    override fun min(lvl: Int): Int = 5 + lvl
+    override fun min(lvl: Int): Int = 6 + lvl
 
-    override fun max(lvl: Int): Int = 10 + 5 * lvl
+    override fun max(lvl: Int): Int = 12 + lvl * 11 / 2
 
-    override fun giveDamage(enemy: Char): Damage = 
+    override fun giveDamage(enemy: Char): Damage =
             super.giveDamage(enemy).addElement(Damage.Element.LIGHT).addFeature(Damage.Feature.ACCURATE)
 
     override fun onZap(bolt: Ballistica) {

@@ -42,14 +42,14 @@ import kotlin.math.min
 class WandOfDisintegration : DamageWand(isMissile = false) {
     init {
         image = ItemSpriteSheet.WAND_DISINTEGRATION
-        
+
         collisionProperties = Ballistica.WONT_STOP
     }
 
 
-    override fun min(lvl: Int): Int = 2 + lvl
+    override fun min(lvl: Int): Int = 3 + lvl
 
-    override fun max(lvl: Int): Int = 8 + 4 * lvl
+    override fun max(lvl: Int): Int = 9 + lvl * 9 / 2
 
     override fun giveDamage(enemy: Char): Damage {
         return super.giveDamage(enemy).addFeature(Damage.Feature.PURE)

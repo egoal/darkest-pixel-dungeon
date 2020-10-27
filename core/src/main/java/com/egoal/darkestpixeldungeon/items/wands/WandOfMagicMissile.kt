@@ -36,9 +36,9 @@ class WandOfMagicMissile : DamageWand(isMissile = true) {
         image = ItemSpriteSheet.WAND_MAGIC_MISSILE
     }
 
-    override fun min(lvl: Int): Int = 2 + 2 * lvl
+    override fun min(lvl: Int): Int = 3 + 2 * lvl
 
-    override fun max(lvl: Int): Int = 10 + lvl * 5 / 2
+    override fun max(lvl: Int): Int = 12 + lvl * 3
     
     override fun onHit(damage: Damage) {
         super.onHit(damage)
