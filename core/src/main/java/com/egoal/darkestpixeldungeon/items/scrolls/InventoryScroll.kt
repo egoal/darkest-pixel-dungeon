@@ -46,7 +46,8 @@ abstract class InventoryScroll : Scroll() {
     }
 
     private fun confirmCancelation() {
-        GameScene.show(object : WndOptions(name(), M.L(this, "warning"), M.L(this, "yes"), M.L(this, "no")) {
+        GameScene.show(object : WndOptions(name(), M.L(InventoryScroll::class.java, "warning"),
+                M.L(InventoryScroll::class.java, "yes"), M.L(InventoryScroll::class.java, "no")) {
             override fun onSelect(index: Int) {
                 when (index) {
                     0 -> {
