@@ -27,17 +27,17 @@ import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
 
-class Displacing : Weapon.Enchantment() {
+class Displacing : Inscription.Curse(3) {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
         val attacker = damage.from as Char
 
-        if (Random.Int(12) == 0 && !defender.properties().contains(com.egoal.darkestpixeldungeon.actors.Char.Property
-                        .IMMOVABLE)) {
+        if (Random.Int(12) == 0 && !defender.properties().contains(Char.Property.IMMOVABLE)) {
             var count = 10
             var newPos: Int
             do {
@@ -68,19 +68,6 @@ class Displacing : Weapon.Enchantment() {
         }
 
         return damage
-    }
-
-    override fun curse(): Boolean {
-        return true
-    }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return BLACK
-    }
-
-    companion object {
-
-        private val BLACK = ItemSprite.Glowing(0x000000)
     }
 
 }

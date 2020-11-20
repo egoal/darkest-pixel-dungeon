@@ -72,7 +72,12 @@ open class MeleeWeapon : Weapon() {
             Imbue.HEAVY -> info += "\n\n" + M.L(Weapon::class.java, "heavier")
         }
 
-        if (enchantment != null && (cursedKnown || !enchantment!!.curse())) {
+        if (inscription != null && (cursedKnown || !inscription!!.curse)) {
+            info += "\n\n" + M.L(Weapon::class.java, "inscribed", inscription!!.name())
+            info += " " + M.L(inscription!!, "desc")
+        }
+
+        if (enchantment != null) {
             info += "\n\n" + M.L(Weapon::class.java, "enchanted", enchantment!!.name())
             info += " " + M.L(enchantment!!, "desc")
         }
@@ -88,10 +93,10 @@ open class MeleeWeapon : Weapon() {
 
     override fun price(): Int {
         var price = 20 * tier
-        if (hasGoodEnchant()) {
+        if (hasGoodInscription()) {
             price = price * 3 / 2
         }
-        if (cursedKnown && (cursed || hasCurseEnchant())) {
+        if (cursedKnown && (cursed || hasCurseInscription())) {
             price /= 2
         }
         if (levelKnown && level() > 0) {

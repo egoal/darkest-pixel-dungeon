@@ -1,7 +1,8 @@
-package com.egoal.darkestpixeldungeon.items.weapon.enchantments
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
@@ -9,7 +10,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
  * Created by 93942 on 10/13/2018.
  */
 
-class Suppress : Weapon.Enchantment() {
+class Suppress : Inscription(8) {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         if (damage.to is Char) {
@@ -21,11 +22,4 @@ class Suppress : Weapon.Enchantment() {
 
         return damage
     }
-
-    override fun glowing(): ItemSprite.Glowing = GREY
-
-    companion object {
-        private val GREY = ItemSprite.Glowing(0x444444)
-    }
-
 }

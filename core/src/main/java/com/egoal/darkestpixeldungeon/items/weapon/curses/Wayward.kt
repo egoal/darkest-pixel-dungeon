@@ -20,29 +20,13 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.curses
 
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
-class Wayward : Weapon.Enchantment() {
-
+class Wayward : Inscription.Curse(8) {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         //no proc effect, see weapon.accuracyFactor for effect
         return damage
     }
-
-    override fun curse(): Boolean {
-        return true
-    }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return BLACK
-    }
-
-    companion object {
-
-        private val BLACK = ItemSprite.Glowing(0x000000)
-    }
-
 }

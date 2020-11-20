@@ -4,11 +4,12 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
 
-class Bloodthirsty : Weapon.Enchantment(), Hero.Doom {
+class Bloodthirsty : Inscription.Curse(2) , Hero.Doom {
     private var thirsty = 0
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
@@ -25,15 +26,7 @@ class Bloodthirsty : Weapon.Enchantment(), Hero.Doom {
         return damage
     }
 
-    override fun curse(): Boolean = true
-
-    override fun glowing(): ItemSprite.Glowing = DARK_RED
-
     override fun onDeath() {
         Dungeon.fail(javaClass)
-    }
-
-    companion object {
-        private val DARK_RED = ItemSprite.Glowing(0x902626)
     }
 }

@@ -1,9 +1,10 @@
-package com.egoal.darkestpixeldungeon.items.weapon.enchantments
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
@@ -12,7 +13,7 @@ import com.watabou.utils.Random
  * Created by 93942 on 6/2/2018.
  */
 
-class Holy : Weapon.Enchantment() {
+class Holy : Inscription(3) {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         // to undead or demonic
@@ -31,11 +32,5 @@ class Holy : Weapon.Enchantment() {
         }
 
         return damage.addElement(Damage.Element.HOLY)
-    }
-
-    override fun glowing(): ItemSprite.Glowing = LIGHT_YELLOW
-
-    companion object {
-        private val LIGHT_YELLOW = ItemSprite.Glowing(0xFFFFA0)
     }
 }

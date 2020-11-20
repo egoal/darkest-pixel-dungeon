@@ -419,7 +419,7 @@ public class WndBag extends WndTabbed {
           if (!active && mode == Mode.UNIDED_OR_CURSED) {
             if (item instanceof Weapon) {
               Weapon w = (Weapon) item;
-              enable(w.hasCurseEnchant());
+              enable(w.hasCurseInscription());
             }
             if (item instanceof Armor) {
               Armor a = (Armor) item;

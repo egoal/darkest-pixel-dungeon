@@ -26,8 +26,8 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraStrengthPower
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Arrogant
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Bloodthirsty
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Provocation
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Dazzling
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Dazzling
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Projecting
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.items.Item
@@ -43,17 +43,17 @@ import com.egoal.darkestpixeldungeon.items.weapon.curses.Sacrificial
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Wayward
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Chilling
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Eldritch
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Lucky
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Eldritch
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Lucky
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Storming
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Stunning
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Suppress
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Storming
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Stunning
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Suppress
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vorpal
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vorpal
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -75,6 +75,7 @@ abstract class Weapon : KindOfWeapon() {
 
     private var hitsToKnow = HITS_TO_KNOW
 
+    var inscription: Inscription? = null
     var enchantment: Enchantment? = null
 
     enum class Imbue(private val damageFactor: Float, private val delayFactor: Float, private val strFix: Int) {
@@ -93,8 +94,8 @@ abstract class Weapon : KindOfWeapon() {
 
     override fun proc(dmg: Damage): Damage {
         var dmg = dmg
-        if (enchantment != null)
-            dmg = enchantment!!.proc(this, dmg)
+        if (inscription != null) dmg = inscription!!.proc(this, dmg)
+        if (enchantment != null) dmg = enchantment!!.proc(this, dmg)
 
         if (!levelKnown) {
             if (--hitsToKnow <= 0) {
@@ -110,6 +111,7 @@ abstract class Weapon : KindOfWeapon() {
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(UNFAMILIRIARITY, hitsToKnow)
+        bundle.put(INSCRIPTION, inscription)
         bundle.put(ENCHANTMENT, enchantment)
         bundle.put(IMBUE, imbue)
     }
@@ -117,6 +119,7 @@ abstract class Weapon : KindOfWeapon() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         hitsToKnow = bundle.getInt(UNFAMILIRIARITY)
+        inscription = bundle.get(INSCRIPTION) as Inscription?
         enchantment = bundle.get(ENCHANTMENT) as Enchantment?
         imbue = bundle.getEnum(IMBUE, Imbue::class.java)
     }
@@ -124,7 +127,7 @@ abstract class Weapon : KindOfWeapon() {
     override fun accuracyFactor(hero: Hero, target: Char): Float {
         var encumbrance = STRReq() - hero.STR()
 
-        if (hasEnchant(Wayward::class.java))
+        if (isInscribed(Wayward::class.java))
             encumbrance = max(3, encumbrance + 3)
 
         var acc = ACC
@@ -149,7 +152,7 @@ abstract class Weapon : KindOfWeapon() {
         return if (encumbrance > 0) dly * 1.2f.pow(encumbrance) else dly
     }
 
-    override fun reachFactor(hero: Hero): Int = if (hasEnchant(Projecting::class.java)) RCH + 1 else RCH
+    override fun reachFactor(hero: Hero): Int = if (isInscribed(Projecting::class.java)) RCH + 1 else RCH
 
     override fun giveDamage(hero: Hero, target: Char): Damage {
         val dmg = super.giveDamage(hero, target)
@@ -169,28 +172,26 @@ abstract class Weapon : KindOfWeapon() {
 
     abstract fun STRReq(lvl: Int): Int
 
-    open fun upgrade(enchant: Boolean): Item {
-        if (enchant && (enchantment == null || enchantment!!.curse())) {
-            enchant(Enchantment.random())
-        } else if (!enchant && Random.Float() > 0.9f.pow(level())) {
-            enchant(null)
+    open fun upgrade(inscribe: Boolean): Item {
+        if (inscribe && (inscription == null || inscription!!.curse)) {
+            inscribe()
+        } else if (!inscribe && Random.Float() > 0.9f.pow(level())) {
+            inscribe(null)
         }
 
         return super.upgrade()
     }
 
     override fun name(): String {
-        return if (enchantment != null && (cursedKnown || !enchantment!!.curse()))
-            enchantment!!.name(super.name())
-        else
-            super.name()
+        return if (inscription != null && (cursedKnown || !inscription!!.curse)) inscription!!.name(super.name())
+        else super.name()
     }
 
     override fun random(): Item {
         val roll = Random.Float()
         if (roll < 0.3f) {
             //30% chance to be level 0 and cursed
-            enchant(Enchantment.randomCurse())
+            inscribe(Inscription.randomNegative())
             cursed = true
             return this
         } else if (roll < 0.75f) {
@@ -205,85 +206,43 @@ abstract class Weapon : KindOfWeapon() {
 
         //if not cursed, 10% chance to be enchanted (7% overall)
         if (Random.Int(10) == 0)
-            enchant()
+            inscribe()
 
         return this
     }
 
-    open fun enchant(ench: Enchantment?): Weapon {
-        enchantment = ench
+    open fun inscribe(insc: Inscription?): Weapon {
+        inscription = insc
         return this
     }
 
-    open fun enchant(): Weapon {
-        val oldEnchantment = enchantment?.javaClass
-        var ench = Enchantment.random()
-        while (ench.javaClass == oldEnchantment) {
-            ench = Enchantment.random()
-        }
+    open fun inscribe(): Weapon {
+        val old = inscription?.javaClass
+        var new = Inscription.randomPositive()
+        while (new.javaClass == old) new = Inscription.randomPositive()
 
-        return enchant(ench)
+        return inscribe(new)
+    }
+
+    open fun isInscribed(type: Class<out Inscription>): Boolean = inscription?.javaClass == type
+
+    fun hasGoodInscription(): Boolean = inscription?.curse == false
+    fun hasCurseInscription(): Boolean = inscription?.curse == true
+
+    fun enchant(type: Class<out Enchantment>, duration: Int): Weapon {
+        enchantment = type.newInstance().apply { left = duration }
+        return this
     }
 
     open fun hasEnchant(type: Class<out Enchantment>): Boolean = enchantment?.javaClass == type
 
-    fun hasGoodEnchant(): Boolean = enchantment?.curse() == false
-
-    fun hasCurseEnchant(): Boolean = enchantment?.curse() == true
-
-    override fun glowing(): ItemSprite.Glowing? {
-        return if (enchantment != null && (cursedKnown || !enchantment!!.curse()))
-            enchantment!!.glowing()
-        else
-            null
-    }
-
-    abstract class Enchantment : Bundlable {
-        abstract fun proc(weapon: Weapon, damage: Damage): Damage
-
-        fun name(): String = if (!curse()) name(Messages.get(this, "enchant")) else name(Messages.get(Item::class.java, "curse"))
-
-        fun name(weaponName: String): String = M.L(this, "name", weaponName)
-
-        fun desc(): String = M.L(this, "desc")
-
-        open fun curse(): Boolean = false
-
-        override fun restoreFromBundle(bundle: Bundle) {}
-
-        override fun storeInBundle(bundle: Bundle) {}
-
-        abstract fun glowing(): ItemSprite.Glowing
-
-        companion object {
-            private val enchants = arrayOf(
-                    Blazing::class.java, Venomous::class.java, Vorpal::class.java, Shocking::class.java,
-                    Chilling::class.java, Eldritch::class.java, Lucky::class.java, Projecting::class.java,
-                    Unstable::class.java, Dazzling::class.java, Suppress::class.java, Storming::class.java,
-                    Grim::class.java, Stunning::class.java, Vampiric::class.java)
-            private val chances = floatArrayOf(10f, 10f, 10f, 10f,
-                    5f, 5f, 5f, 5f,
-                    5f, 5f, 5f, 5f,
-                    2f, 2f, 2f)
-
-            private val curses = arrayOf(
-                    Annoying::class.java, Displacing::class.java, Exhausting::class.java, Fragile::class.java,
-                    Sacrificial::class.java, Wayward::class.java, Arrogant::class.java, Provocation::class.java,
-                    Bloodthirsty::class.java)
-
-            fun random(): Enchantment = enchants[Random.chances(chances)].newInstance()
-
-            fun randomCurse(): Enchantment = Random.oneOf(*curses).newInstance()
-        }
-
-    }
+    override fun glowing(): ItemSprite.Glowing? = enchantment?.glowing()
 
     companion object {
         private const val HITS_TO_KNOW = 20
 
-        private const val TXT_TO_STRING = "%s :%d"
-
         private const val UNFAMILIRIARITY = "unfamiliarity"
+        private const val INSCRIPTION = "inscription"
         private const val ENCHANTMENT = "enchantment"
         private const val IMBUE = "imbue"
     }

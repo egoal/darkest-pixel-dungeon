@@ -306,7 +306,7 @@ class Ghost : NPC.Unbreakable() {
             } while (weapon !is MeleeWeapon)
             weapon!!.level(0)
             weapon!!.cursed = false
-            weapon!!.enchant(null)
+            weapon!!.inscribe(null)
 
             //40%:+0, 40%:+1, 15%:+2, 5%:+3
             val itemLevelRoll = Random.Float()
@@ -320,7 +320,7 @@ class Ghost : NPC.Unbreakable() {
             armor!!.upgrade(itemLevel)
 
             //10% to be enchanted
-            if ((weapon as MeleeWeapon).tier == 1 || Random.Int(10) == 0) weapon!!.enchant()
+            if ((weapon as MeleeWeapon).tier == 1 || Random.Int(10) == 0) weapon!!.inscribe()
             if (Random.Int(10) == 0) armor!!.inscribe()
 
             weapon!!.identify()

@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.effects.Lightning
 import com.egoal.darkestpixeldungeon.effects.particles.SparkParticle
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
@@ -35,13 +36,13 @@ import com.watabou.utils.Random
 import java.util.ArrayList
 import java.util.HashSet
 
-class Shocking : Weapon.Enchantment() {
+class Shocking : Enchantment() {
 
     private val affected = ArrayList<Char>()
 
     private val arcs = ArrayList<Lightning.Arc>()
 
-    override fun proc(weapon: Weapon, damage: Damage): Damage {
+    override fun procImpl(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
         val attacker = damage.from as Char
         // lvl 0 - 33%
@@ -66,9 +67,7 @@ class Shocking : Weapon.Enchantment() {
 
     }
 
-    override fun glowing(): ItemSprite.Glowing {
-        return WHITE
-    }
+    override fun glowing(): ItemSprite.Glowing = WHITE
 
     private fun hit(ch: Char, damage: Int) {
 

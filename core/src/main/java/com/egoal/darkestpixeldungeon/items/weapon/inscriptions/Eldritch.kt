@@ -18,45 +18,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.enchantments
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
-import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.effects.Splash
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
-import com.watabou.utils.PointF
+import com.egoal.darkestpixeldungeon.actors.buffs.Terror
+import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.watabou.utils.Random
+import kotlin.math.max
 
-class Vorpal : Weapon.Enchantment() {
-
+class Eldritch : Inscription(1) {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
-        // lvl 0 - 33%
-        // lvl 1 - 50%
-        // lvl 2 - 60%
-        val level = Math.max(0, weapon.level())
+        // lvl 0 - 20%
+        // lvl 1 - 33%
+        // lvl 2 - 43%
+        val level = max(0, weapon.level())
 
-        if (Random.Int(level + 3) >= 2) {
+        if (Random.Int(level + 5) >= 4) {
 
-            Buff.affect(defender, Bleeding::class.java).set(damage.value / 4)
-            Splash.at(defender.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
-                    defender.sprite.blood(), 10)
+            if (defender === Dungeon.hero) {
+                Buff.affect(defender, Vertigo::class.java, Vertigo.duration(defender))
+            } else {
+                Buff.affect(defender, Terror::class.java, Terror.DURATION).objectid = (damage.from as Char).id()
+            }
 
         }
 
         return damage
     }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return RED
-    }
-
-    companion object {
-
-        private val RED = ItemSprite.Glowing(0xAA6666)
-    }
-
 }

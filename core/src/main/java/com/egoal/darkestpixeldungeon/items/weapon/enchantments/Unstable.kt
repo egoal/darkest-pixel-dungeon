@@ -20,17 +20,17 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon.enchantments
 
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.*
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
 
-class Unstable : Weapon.Enchantment() {
+class Unstable : Enchantment() {
 
-    override fun proc(weapon: Weapon, damage: Damage): Damage {
-        Random.oneOf(*randomEnchants).newInstance().proc(weapon, damage)
+    override fun procImpl(weapon: Weapon, damage: Damage): Damage {
+        Random.oneOf(*enchantments).newInstance().apply { left = 100 }.proc(weapon, damage)
         return damage
     }
 
@@ -40,9 +40,9 @@ class Unstable : Weapon.Enchantment() {
 
         private val WHITE = ItemSprite.Glowing(0xFFFFFF)
 
-        private val randomEnchants = arrayOf(
-                Blazing::class.java, Chilling::class.java, Dazzling::class.java, Eldritch::class.java,
-                Grim::class.java, Lucky::class.java, Shocking::class.java, Stunning::class.java,
-                Vampiric::class.java, Vorpal::class.java)
+        private val enchantments = arrayOf<Class<out Enchantment>>(
+                Blazing::class.java, Chilling::class.java, Shocking::class.java,
+                Unstable::class.java, Venomous::class.java
+        )
     }
 }

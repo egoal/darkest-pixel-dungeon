@@ -24,11 +24,12 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
 
-class Sacrificial : Weapon.Enchantment() {
+class Sacrificial : Inscription.Curse(7) {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
@@ -40,18 +41,4 @@ class Sacrificial : Weapon.Enchantment() {
 
         return damage
     }
-
-    override fun curse(): Boolean {
-        return true
-    }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return BLACK
-    }
-
-    companion object {
-
-        private val BLACK = ItemSprite.Glowing(0x000000)
-    }
-
 }

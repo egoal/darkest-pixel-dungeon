@@ -1,13 +1,14 @@
-package com.egoal.darkestpixeldungeon.items.weapon.enchantments
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Bundle
 import kotlin.math.max
 
-class Storming : Weapon.Enchantment() {
+class Storming : Inscription(6) {
 
     private var id = -1
     private var acc = 0
@@ -27,8 +28,6 @@ class Storming : Weapon.Enchantment() {
         return damage
     }
 
-    override fun glowing(): ItemSprite.Glowing = GREY
-
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(ID, id)
@@ -44,7 +43,5 @@ class Storming : Weapon.Enchantment() {
     companion object {
         private const val ID = "id"
         private const val ACC = "acc"
-
-        private val GREY = ItemSprite.Glowing(0x404040)
     }
 }

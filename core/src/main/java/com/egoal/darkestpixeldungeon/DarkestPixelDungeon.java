@@ -24,10 +24,14 @@ import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Eldritch;
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim;
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Lucky;
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Stunning;
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric;
 import com.egoal.darkestpixeldungeon.messages.Languages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -39,8 +43,6 @@ import com.watabou.noosa.audio.Sample;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Locale;
 
 public class DarkestPixelDungeon extends Game {
@@ -117,14 +119,14 @@ public class DarkestPixelDungeon extends Game {
     //0.4.0
     //enchants/glyphs
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim.class,
+            Grim.class,
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Death");
     com.watabou.utils.Bundle.addAlias(
             com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
                     .class,
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Fire");
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Eldritch
+            Eldritch
                     .class,
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Horror");
     com.watabou.utils.Bundle.addAlias(
@@ -133,14 +135,14 @@ public class DarkestPixelDungeon extends Game {
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments" +
                     ".Instability");
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric
+            Vampiric
                     .class,
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Leech");
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Lucky.class,
+            Lucky.class,
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Luck");
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Stunning
+            Stunning
                     .class,
             "com.egoal.darkestpixeldungeon.items.weapon.enchantments" +
                     ".Paralysis");

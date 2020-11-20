@@ -9,13 +9,12 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.effects.Flare
-import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
 import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
 import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.unclassified.ArmorKit
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim
 import com.egoal.darkestpixeldungeon.levels.CityBossLevel
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
@@ -23,7 +22,6 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.KingSprite
 import com.egoal.darkestpixeldungeon.sprites.UndeadSprite
 import com.egoal.darkestpixeldungeon.ui.BossHealthBar
-import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder

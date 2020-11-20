@@ -28,13 +28,14 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 
-class Annoying : Weapon.Enchantment() {
+class Annoying : Inscription.Curse(0) {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
@@ -52,18 +53,4 @@ class Annoying : Weapon.Enchantment() {
 
         return damage
     }
-
-    override fun curse(): Boolean {
-        return true
-    }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return BLACK
-    }
-
-    companion object {
-
-        private val BLACK = ItemSprite.Glowing(0x000000)
-    }
-
 }

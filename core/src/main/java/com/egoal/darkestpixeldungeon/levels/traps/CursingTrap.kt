@@ -34,6 +34,7 @@ import com.egoal.darkestpixeldungeon.items.KindOfWeapon
 import com.egoal.darkestpixeldungeon.items.KindofMisc
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.items.rings.Ring
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite
@@ -138,8 +139,8 @@ class CursingTrap : Trap() {
             item.cursed = item.cursedKnown
 
             if (item is Weapon) {
-                if (item.enchantment == null) {
-                    item.enchantment = Weapon.Enchantment.randomCurse()
+                if (item.inscription == null) {
+                    item.inscribe(Inscription.randomNegative())
                 }
             }
             if (item is Armor) {

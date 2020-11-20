@@ -74,7 +74,7 @@ class GuardianTrap : Trap() {
 
         init {
 
-            weapon.enchant(null)
+            weapon.inscribe(null)
             weapon.degrade(weapon.level())
         }
 

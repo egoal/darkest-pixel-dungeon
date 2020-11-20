@@ -26,7 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Dementage
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.StatueSprite
 import com.egoal.darkestpixeldungeon.Dungeon
@@ -58,7 +58,7 @@ open class Statue : Mob() {
         } while (weapon !is MeleeWeapon || weapon.cursed || weapon is SpikeShield)
 
         weapon.identify()
-        weapon.enchant(Weapon.Enchantment.random())
+        weapon.inscribe()
 
         HT = 15 + Dungeon.depth * 5
         HP = HT

@@ -18,7 +18,7 @@ object EnchantingStation {
         !src.isIdentified || !tgt.isIdentified -> Messages.get(this, "unidentified")
         src.cursed || tgt.cursed -> Messages.get(this, "cursed")
         src is Weapon -> when {
-            src.enchantment == null -> Messages.get(this, "no_enchantment")
+            src.inscription == null -> Messages.get(this, "no_enchantment")
             tgt !is Weapon -> Messages.get(this, "wrong_type")
             else -> null
         }
@@ -35,7 +35,7 @@ object EnchantingStation {
 
         return when (src) {
             is Weapon -> {
-                (tgt as Weapon).enchant(src.enchantment)
+                (tgt as Weapon).inscribe(src.inscription)
                 true
             }
             is Armor -> {

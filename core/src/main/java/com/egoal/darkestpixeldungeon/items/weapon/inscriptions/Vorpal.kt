@@ -18,36 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.enchantments
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
-import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite.Glowing
+import com.egoal.darkestpixeldungeon.effects.Splash
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
+import com.watabou.utils.PointF
 import com.watabou.utils.Random
 import kotlin.math.max
 
-class Lucky : Weapon.Enchantment() {
-    private val rpr = Random.PseudoRadix(RADIX)
-
+class Vorpal : Inscription(10) {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
+        val defender = damage.to as Char
+        // lvl 0 - 33%
+        // lvl 1 - 50%
+        // lvl 2 - 60%
         val level = max(0, weapon.level())
-        val ratio = (55f + level) / 100f
-        if (rpr.check(ratio)) damage.value *= 2
-        else damage.value = 0
+
+        if (Random.Int(level + 3) >= 2) {
+
+            Buff.affect(defender, Bleeding::class.java).set(damage.value / 4)
+            Splash.at(defender.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
+                    defender.sprite.blood(), 10)
+
+        }
 
         return damage
-    }
-
-    override fun glowing(): Glowing = GREEN
-
-    companion object {
-        private const val RADIX = 10
-
-        private val GREEN = Glowing(0x00FF00)
     }
 }

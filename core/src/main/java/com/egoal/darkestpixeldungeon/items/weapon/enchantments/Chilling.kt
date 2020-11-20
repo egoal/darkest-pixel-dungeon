@@ -25,13 +25,14 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill
 import com.egoal.darkestpixeldungeon.effects.Splash
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
 
-class Chilling : Weapon.Enchantment() {
+class Chilling : Enchantment() {
 
-    override fun proc(weapon: Weapon, damage: Damage): Damage {
+    override fun procImpl(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
         // lvl 0 - 20%
         // lvl 1 - 33%
@@ -47,12 +48,9 @@ class Chilling : Weapon.Enchantment() {
         return damage.addElement(Damage.Element.ICE)
     }
 
-    override fun glowing(): ItemSprite.Glowing {
-        return TEAL
-    }
+    override fun glowing(): ItemSprite.Glowing = TEAL
 
     companion object {
-
         private val TEAL = ItemSprite.Glowing(0x00FFFF)
     }
 

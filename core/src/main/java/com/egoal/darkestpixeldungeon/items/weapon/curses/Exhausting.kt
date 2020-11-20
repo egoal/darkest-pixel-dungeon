@@ -27,9 +27,10 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Weakness
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.watabou.utils.Random
 
-class Exhausting : Weapon.Enchantment() {
+class Exhausting : Inscription.Curse(4) {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
@@ -40,18 +41,5 @@ class Exhausting : Weapon.Enchantment() {
         }
 
         return damage
-    }
-
-    override fun curse(): Boolean {
-        return true
-    }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return BLACK
-    }
-
-    companion object {
-
-        private val BLACK = ItemSprite.Glowing(0x000000)
     }
 }

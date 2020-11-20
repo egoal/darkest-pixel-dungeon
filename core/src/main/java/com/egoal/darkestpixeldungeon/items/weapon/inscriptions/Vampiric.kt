@@ -18,38 +18,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.curses
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
-import com.watabou.utils.Bundle
+import com.watabou.utils.Random
+
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.round
 
-class Fragile : Inscription.Curse(5) {
-    private var hits = 0
-
+class Vampiric : Inscription(9) {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
         val attacker = damage.from as Char
-        //degrades from 100% to 25% damage over 150 hits
-        damage.value = round(damage.value * (1f - hits * 0.005f)).toInt()
 
-        if (hits < 150) hits++
-        return damage
-    }
+        val level = max(0, weapon.level())
 
-    override fun restoreFromBundle(bundle: Bundle) {
-        hits = bundle.getInt(HITS)
-    }
+        // lvl 0 - 20% -> .25
+        // lvl 1 - 21.5% -> .268
+        // lvl 2 - 23% -> .286
+        val maxValue = round(damage.value * ((level + 10) / (level + 40).toFloat())).toInt()
+        val effValue = min(Random.IntRange(0, maxValue), attacker.HT - attacker.HP)
 
-    override fun storeInBundle(bundle: Bundle) {
-        bundle.put(HITS, hits)
-    }
+        if (effValue > 0)
+            attacker.recoverHP(effValue, this)
 
-    companion object {
-        private const val HITS = "hits"
+        return damage.addElement(Damage.Element.SHADOW)
     }
 }

@@ -4,6 +4,8 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
@@ -49,9 +51,9 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
 
     // enchanting, prefer to enchant the one without enchantment
     // or you could just split them, enchant, then dual again.
-    override fun enchant(): Weapon = selectEnchantSword().enchant()
+    override fun inscribe(): Weapon = selectEnchantSword().inscribe()
 
-    override fun enchant(ench: Enchantment?): Weapon = selectEnchantSword().enchant(ench)
+    override fun inscribe(insc: Inscription?): Weapon = selectEnchantSword().inscribe(insc)
 
     override fun hasEnchant(type: Class<out Enchantment>): Boolean = left.hasEnchant(type) || right.hasEnchant(type)
 

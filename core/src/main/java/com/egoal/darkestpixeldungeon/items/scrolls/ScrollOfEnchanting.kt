@@ -41,7 +41,7 @@ class ScrollOfEnchanting : InventoryScroll() {
     override fun onItemSelected(item: Item) {
 
         if (item is Weapon)
-            item.enchant()
+            item.inscribe()
         else
             (item as Armor).inscribe()
 

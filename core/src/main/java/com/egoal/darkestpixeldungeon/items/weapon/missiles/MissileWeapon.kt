@@ -18,7 +18,7 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Projecting
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Projecting
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.noosa.audio.Sample
@@ -50,7 +50,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { remove(EquipableItem.AC_EQUIP) }
 
     override fun throwPos(user: Hero, dst: Int): Int {
-        if (hasEnchant(Projecting::class.java) &&
+        if (isInscribed(Projecting::class.java) &&
                 !Level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4)
             return dst
 
@@ -184,7 +184,12 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
         if (Dungeon.hero.STR() > STRReq())
             info += " " + M.L(MissileWeapon::class.java, "excess_str", strCorrection(Dungeon.hero))
 
-        if (enchantment != null && (cursedKnown || !enchantment!!.curse())) {
+        if (inscription != null && (cursedKnown || !inscription!!.curse)) {
+            info += "\n\n" + M.L(Weapon::class.java, "inscribed", inscription!!.name())
+            info += " " + M.L(inscription!!, "desc")
+        }
+
+        if (enchantment != null) {
             info += "\n\n" + M.L(Weapon::class.java, "enchanted", enchantment!!.name())
             info += " " + M.L(enchantment!!, "desc")
         }

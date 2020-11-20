@@ -28,7 +28,7 @@ import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Grim
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.WraithSprite
 import com.watabou.noosa.tweeners.AlphaTweener

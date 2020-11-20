@@ -18,9 +18,10 @@ import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood
 import com.egoal.darkestpixeldungeon.items.artifacts.GoddessRadiance
 import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.UnholyBlood
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Holy
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Vampiric
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Holy
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
@@ -29,7 +30,6 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.ui.StatusPane
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
@@ -116,7 +116,7 @@ class Statuary : NPC.Unbreakable() {
                 if (dice == 8 || dice == 9) {
                     if (hero.belongings.weapon is Weapon) {
                         val w = hero.belongings.weapon as Weapon
-                        w.enchant(Holy())
+                        w.inscribe(Holy())
 
                         GLog.h(M.L(this, "infuse"))
                     }
@@ -142,7 +142,7 @@ class Statuary : NPC.Unbreakable() {
                 item.cursed = true
                 item.cursedKnown = true
 
-                if (item is Weapon) item.enchantment = Weapon.Enchantment.randomCurse()
+                if (item is Weapon) item.inscribe(Inscription.randomNegative())
                 else if (item is Armor) item.glyph = Armor.Glyph.randomCurse()
             }
 
@@ -199,7 +199,7 @@ class Statuary : NPC.Unbreakable() {
                     GLog.i(M.L(this, "upht"))
 
                     if (Random.Int(5) == 0) {
-                        (hero.belongings.weapon as Weapon?)?.enchant(Vampiric())
+                        (hero.belongings.weapon as Weapon?)?.inscribe(Vampiric())
                         GLog.h(M.L(this, "infuse"))
                     }
                 } else {
@@ -268,7 +268,7 @@ class Statuary : NPC.Unbreakable() {
                 item.inscribe(Armor.Glyph.randomCurse())
                 item.cursed = true
             } else if (item is MeleeWeapon) {
-                item.enchant(Weapon.Enchantment.randomCurse())
+                item.inscribe(Inscription.randomNegative())
                 item.cursed = true
             }
 

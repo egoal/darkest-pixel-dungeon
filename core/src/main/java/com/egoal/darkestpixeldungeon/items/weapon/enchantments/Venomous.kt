@@ -26,14 +26,15 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.PoisonParticle
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite.Glowing
 import com.watabou.utils.Random
 
-class Venomous : Weapon.Enchantment() {
+class Venomous : Enchantment() {
 
-    override fun proc(weapon: Weapon, damage: Damage): Damage {
+    override fun procImpl(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
         val attacker = damage.from as Char
         // lvl 0 - 33%
@@ -45,15 +46,12 @@ class Venomous : Weapon.Enchantment() {
 
             Buff.affect(defender, Poison::class.java).extend(Poison.durationFactor(defender) * (level / 2 + 1))
             CellEmitter.center(defender.pos).burst(PoisonParticle.SPLASH, 5)
-
         }
 
         return damage.addElement(Damage.Element.POISON)
     }
 
-    override fun glowing(): Glowing {
-        return PURPLE
-    }
+    override fun glowing(): Glowing = PURPLE
 
     companion object {
 

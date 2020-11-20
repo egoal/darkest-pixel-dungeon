@@ -18,43 +18,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.enchantments
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
+import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.watabou.utils.Random
-
-import java.util.EventListener
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.round
 
-class Vampiric : Weapon.Enchantment() {
+class Grim : Inscription(2) {
+
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
         val attacker = damage.from as Char
 
         val level = max(0, weapon.level())
 
-        // lvl 0 - 20% -> .25
-        // lvl 1 - 21.5% -> .268
-        // lvl 2 - 23% -> .286
-        val maxValue = round(damage.value * ((level + 10) / (level + 40).toFloat())).toInt()
-        val effValue = min(Random.IntRange(0, maxValue), attacker.HT - attacker.HP)
+        val enemyHealth = defender.HP - damage.value
+        if (enemyHealth == 0)
+            return damage //no point in proccing if they're already dead.
 
-        if (effValue > 0)
-            attacker.recoverHP(effValue, this)
+        //scales from 0 - 30% based on how low hp the enemy is, plus 1% per level
+        val chance = round((defender.HT - enemyHealth) / defender.HT.toFloat() * 30 + level)
 
-        return damage.addElement(Damage.Element.SHADOW)
-    }
+        if (Random.Int(100) < chance) {
+            defender.takeDamage(Damage(defender.HP, this, defender).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.DEATH).addElement(Damage.Element.SHADOW))
+            defender.sprite.emitter().burst(ShadowParticle.UP, 5)
 
-    override fun glowing(): ItemSprite.Glowing = RED
+            if (!defender.isAlive && attacker is Hero)
+                Badges.validateGrimWeapon()
+        }
 
-    companion object {
-        private val RED = ItemSprite.Glowing(0x660022)
+        return damage
     }
 }

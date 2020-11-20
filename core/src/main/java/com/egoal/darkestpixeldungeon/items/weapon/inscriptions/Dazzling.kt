@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.weapon.enchantments
+package com.egoal.darkestpixeldungeon.items.weapon.inscriptions
 
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -26,12 +26,12 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.effects.Speck
-import com.egoal.darkestpixeldungeon.items.artifacts.CapeOfThorns
+import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
 
-class Dazzling : Weapon.Enchantment() {
+class Dazzling : Inscription(0) {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val defender = damage.to as Char
@@ -50,14 +50,4 @@ class Dazzling : Weapon.Enchantment() {
 
         return damage
     }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return YELLOW
-    }
-
-    companion object {
-
-        private val YELLOW = ItemSprite.Glowing(0xFFFF00)
-    }
-
 }

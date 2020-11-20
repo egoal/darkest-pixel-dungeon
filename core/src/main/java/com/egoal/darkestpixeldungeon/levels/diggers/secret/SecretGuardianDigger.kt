@@ -85,7 +85,7 @@ class SecretGuardianDigger : Digger() {
                 spriteClass = GuardSprite::class.java
 
                 // normal weapon
-                weapon.enchant(null)
+                weapon.inscribe(null)
                 weapon.degrade(weapon.level())
             }
 

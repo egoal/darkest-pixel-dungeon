@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
@@ -178,9 +179,9 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                         if (Random.Float() < p) {
                             val i = Random.Int(3)
                             when {
-                                (i == 0 && it.enchantment !is Venomous) -> it.enchant(Venomous())
-                                (i == 1 && it.enchantment !is Unstable) -> it.enchant(Unstable())
-                                else -> it.enchant()
+                                (i == 0 && it.enchantment !is Venomous) -> it.enchant(Venomous::class.java, 15)
+                                (i == 1 && it.enchantment !is Unstable) -> it.enchant(Unstable::class.java, 15)
+                                else -> it.enchant(Enchantment.Random(), 15)
                             }
                             GLog.w(Messages.get(this, "inscribed"))
                         }
