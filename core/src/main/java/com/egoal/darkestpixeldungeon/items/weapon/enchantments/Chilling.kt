@@ -32,7 +32,9 @@ import com.watabou.utils.Random
 
 class Chilling : Enchantment() {
 
-    override fun procImpl(weapon: Weapon, damage: Damage): Damage {
+    override fun proc(weapon: Weapon, damage: Damage): Damage {
+        use(weapon)
+
         val defender = damage.to as Char
         // lvl 0 - 20%
         // lvl 1 - 33%

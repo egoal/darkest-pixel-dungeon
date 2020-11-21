@@ -54,7 +54,7 @@ class Dreamfoil : Plant(10) {
         }
     }
 
-    class Seed : Plant.Seed(Dreamfoil::class.java, PotionOfPurity::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_DREAMFOIL
         }

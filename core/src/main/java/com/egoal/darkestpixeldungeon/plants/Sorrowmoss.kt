@@ -42,8 +42,7 @@ class Sorrowmoss : Plant(2) {
         }
     }
 
-    class Seed : Plant.Seed(plantClass = Sorrowmoss::class.java,
-            alchemyClass = PotionOfToxicGas::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_SORROWMOSS
 

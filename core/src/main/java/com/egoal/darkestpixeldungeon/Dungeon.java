@@ -306,11 +306,12 @@ public class Dungeon {
         }
         Dungeon.level.onSwitchedIn();
 
+        PathFinder.setMapSize(level.width(), level.height());
+
         // add into level.mobs, then into actor.
         hero.restoreFollowers(level, pos);
         Actor.Companion.init();
 
-        PathFinder.setMapSize(level.width(), level.height());
         visible = new boolean[level.length()];
 
         Actor respawner = level.respawner();

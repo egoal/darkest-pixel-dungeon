@@ -261,7 +261,7 @@ class WandOfRegrowth : DamageWand.NoDamage(isMissile = false) {
         }
 
         //seed is never dropped, only care about plant class
-        class Seed : Plant.Seed(Dewcatcher::class.java, PotionOfHealing::class.java)
+        class Seed : Plant.Seed()
     }
 
     class Seedpod : Plant(13) {
@@ -280,7 +280,7 @@ class WandOfRegrowth : DamageWand.NoDamage(isMissile = false) {
         }
 
         //seed is never dropped, only care about plant class
-        class Seed : Plant.Seed(Seedpod::class.java, PotionOfHealing::class.java)
+        class Seed : Plant.Seed()
     }
 
 }

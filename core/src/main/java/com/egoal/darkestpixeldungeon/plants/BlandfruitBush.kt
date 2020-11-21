@@ -32,12 +32,11 @@ class BlandfruitBush : Plant(8) {
         Dungeon.level.drop(Blandfruit(), pos).sprite.drop()
     }
 
-    class Seed : Plant.Seed(plantClass = BlandfruitBush::class.java, 
-            alchemyClass = PotionOfPhysique::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_BLANDFRUIT
         }
 
-        override fun price(): Int = 20* quantity
+        override fun price(): Int = 20 * quantity
     }
 }

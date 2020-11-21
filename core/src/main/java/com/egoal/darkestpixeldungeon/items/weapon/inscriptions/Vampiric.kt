@@ -47,6 +47,6 @@ class Vampiric : Inscription(9) {
         if (effValue > 0)
             attacker.recoverHP(effValue, this)
 
-        return damage.addElement(Damage.Element.SHADOW)
+        return damage
     }
 }

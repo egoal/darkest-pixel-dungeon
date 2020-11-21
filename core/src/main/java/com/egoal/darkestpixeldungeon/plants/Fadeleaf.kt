@@ -61,7 +61,7 @@ class Fadeleaf : Plant(6) {
             CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3)
     }
 
-    class Seed : Plant.Seed(Fadeleaf::class.java, PotionOfMindVision::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_FADELEAF
         }

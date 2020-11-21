@@ -52,7 +52,7 @@ class Blindweed : Plant(3) {
             CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4)
     }
 
-    class Seed : Plant.Seed(Blindweed::class.java, PotionOfInvisibility::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_BLINDWEED
         }

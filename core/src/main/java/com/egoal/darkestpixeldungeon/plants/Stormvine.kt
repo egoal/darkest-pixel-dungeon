@@ -35,8 +35,7 @@ class Stormvine : Plant(9) {
         }
     }
 
-    class Seed : Plant.Seed(plantClass = Stormvine::class.java, 
-            alchemyClass = PotionOfLevitation::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_STORMVINE
 

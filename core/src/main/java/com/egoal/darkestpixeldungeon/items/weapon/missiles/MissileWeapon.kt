@@ -191,7 +191,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
 
         if (enchantment != null) {
             info += "\n\n" + M.L(Weapon::class.java, "enchanted", enchantment!!.name())
-            info += " " + M.L(enchantment!!, "desc")
+            info += " " + enchantment!!.desc()
         }
 
         if (cursed && isEquipped(Dungeon.hero)) {

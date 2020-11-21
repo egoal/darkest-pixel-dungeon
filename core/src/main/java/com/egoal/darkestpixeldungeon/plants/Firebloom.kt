@@ -39,8 +39,7 @@ class Firebloom : Plant(0) {
             CellEmitter.get(pos).burst(FlameParticle.FACTORY, 5)
     }
 
-    class Seed : Plant.Seed(plantClass = Firebloom::class.java,
-            alchemyClass = PotionOfLiquidFlame::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_FIREBLOOM
 

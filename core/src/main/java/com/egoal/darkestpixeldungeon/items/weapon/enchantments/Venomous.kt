@@ -34,7 +34,9 @@ import com.watabou.utils.Random
 
 class Venomous : Enchantment() {
 
-    override fun procImpl(weapon: Weapon, damage: Damage): Damage {
+    override fun proc(weapon: Weapon, damage: Damage): Damage {
+        use(weapon)
+
         val defender = damage.to as Char
         val attacker = damage.from as Char
         // lvl 0 - 33%

@@ -16,12 +16,14 @@ import com.watabou.noosa.particles.Emitter
 import com.watabou.noosa.ui.Button
 import com.watabou.utils.Callback
 import kotlin.math.min
+import kotlin.math.sin
 
 class StartScene : PixelScene() {
     private lateinit var btnLoadGame: GameButton
     private lateinit var btnNewGame: GameButton
     private val shields = hashMapOf<HeroClass, ClassShield>()
 
+    private lateinit var tip: RenderedText
     private lateinit var slider: ClassSlideBar
     private lateinit var unlock: Group
     private var unlockText: RenderedTextMultiline? = null
@@ -113,6 +115,12 @@ class StartScene : PixelScene() {
             shields[cl] = shield
         }
 
+        tip = renderText(M.L(this, "click_for_info"), 5)
+        tip.x = left + (width - tip.width()) / 2f
+        tip.y = (buttonY - 20f) - tip.height() - 10f
+        align(tip)
+        add(tip)
+
         unlock = Group()
         add(unlock)
         if (!isHuntressUnlocked() || !IsSorceressUnlocked() || !IsExileUnlocked()) {
@@ -134,6 +142,13 @@ class StartScene : PixelScene() {
             if (Game.scene() === this@StartScene)
                 DarkestPixelDungeon.switchNoFade(StartScene::class.java)
         }
+    }
+
+    override fun update() {
+        super.update()
+
+        // todo: refactor this
+        tip.alpha(sin(Game.timeTotal * 2f) * .4f + .6f)
     }
 
     override fun destroy() {
@@ -194,7 +209,7 @@ class StartScene : PixelScene() {
             val text = when (CurrentClass) {
                 HeroClass.HUNTRESS -> M.L(this, "unlock_huntress")
                 HeroClass.SORCERESS -> M.L(this, "unlock_sorceress")
-                HeroClass.EXILE-> M.L(this, "unlock_exile")
+                HeroClass.EXILE -> M.L(this, "unlock_exile")
                 else -> ""
             }
             // unlock

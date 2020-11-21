@@ -42,8 +42,7 @@ class Icecap : Plant(1) {
                 Freezing.affect(i, fire)
     }
 
-    class Seed : Plant.Seed(plantClass = Icecap::class.java,
-            alchemyClass = PotionOfFrost::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_ICECAP
 

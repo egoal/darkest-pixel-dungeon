@@ -30,8 +30,7 @@ class Rotberry : Plant(7) {
         Dungeon.level.drop(Seed(), pos).sprite.drop()
     }
 
-    class Seed : Plant.Seed(plantClass = Rotberry::class.java, 
-            alchemyClass = PotionOfStrength::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_ROTBERRY
 

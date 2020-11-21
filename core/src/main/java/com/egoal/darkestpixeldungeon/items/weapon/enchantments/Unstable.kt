@@ -29,8 +29,10 @@ import com.watabou.utils.Random
 
 class Unstable : Enchantment() {
 
-    override fun procImpl(weapon: Weapon, damage: Damage): Damage {
-        Random.oneOf(*enchantments).newInstance().apply { left = 100 }.proc(weapon, damage)
+    override fun proc(weapon: Weapon, damage: Damage): Damage {
+        use(weapon)
+
+        Random.oneOf(*enchantments).newInstance().apply { left = 10f }.proc(weapon, damage)
         return damage
     }
 
@@ -42,7 +44,7 @@ class Unstable : Enchantment() {
 
         private val enchantments = arrayOf<Class<out Enchantment>>(
                 Blazing::class.java, Chilling::class.java, Shocking::class.java,
-                Unstable::class.java, Venomous::class.java
+                Venomous::class.java, Bashing::class.java
         )
     }
 }

@@ -229,8 +229,12 @@ abstract class Weapon : KindOfWeapon() {
     fun hasGoodInscription(): Boolean = inscription?.curse == false
     fun hasCurseInscription(): Boolean = inscription?.curse == true
 
-    fun enchant(type: Class<out Enchantment>, duration: Int): Weapon {
-        enchantment = type.newInstance().apply { left = duration }
+    fun enchant(type: Class<out Enchantment>, duration: Float): Weapon {
+        // prolong
+        if (enchantment?.javaClass == type)
+            enchantment!!.left = max(enchantment!!.left, duration)
+        else
+            enchantment = type.newInstance().apply { left = duration }
         return this
     }
 

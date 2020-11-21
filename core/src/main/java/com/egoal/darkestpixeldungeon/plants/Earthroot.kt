@@ -48,7 +48,7 @@ class Earthroot : Plant(5) {
         }
     }
 
-    class Seed : Plant.Seed(Earthroot::class.java, PotionOfParalyticGas::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_EARTHROOT
 

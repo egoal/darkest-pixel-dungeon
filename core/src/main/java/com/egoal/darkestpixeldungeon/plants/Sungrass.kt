@@ -47,7 +47,7 @@ class Sungrass : Plant(4) {
         }
     }
 
-    class Seed : Plant.Seed(Sungrass::class.java, PotionOfHealing::class.java) {
+    class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_SUNGRASS
             bones = true

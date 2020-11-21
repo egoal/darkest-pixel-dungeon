@@ -31,7 +31,9 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
+import com.egoal.darkestpixeldungeon.actors.buffs.Weakness
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.effects.Splash
 import com.egoal.darkestpixeldungeon.items.ItemStatusHandler
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -43,7 +45,10 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 
@@ -86,8 +91,8 @@ open class Potion : Item() {
 
     override fun desc(): String {
         var desc = super.desc()
-        if (reinforced)
-            desc += "\n\n" + Messages.get(this, "reinforced_desc")
+        if (isKnown) desc += "\n\n" + M.L(Potion::class.java, "smear_desc")
+        if (reinforced) desc += "\n\n" + Messages.get(this, "reinforced_desc")
         return desc
     }
 
@@ -122,6 +127,7 @@ open class Potion : Item() {
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
         actions.add(AC_DRINK)
+        if (isKnown) actions.add(AC_SMEAR)
         return actions
     }
 
@@ -150,7 +156,22 @@ open class Potion : Item() {
                 else
                     drink(hero)
             }
+        } else if (action == AC_SMEAR) {
+            GameScene.selectItem({ if (it is Weapon) onSmear(it, hero) },
+                    M.L(Potion::class.java, "select_weapon"),
+                    { it is Weapon && it.isIdentified && !it.cursed })
         }
+    }
+
+    private fun onSmear(weapon: Weapon, hero: Hero) {
+        detach(hero.belongings.backpack)
+        weapon.enchant(Enchantment.ForPotion(javaClass), if (reinforced) 40f else 24f)
+        GLog.w(M.L(Potion::class.java, "enchanted", weapon.name(), weapon.enchantment!!.name()))
+
+        SpellSprite.show(hero, SpellSprite.ENCHANT)
+        hero.spend(TIME_TO_SMEAR)
+        hero.busy()
+        hero.sprite.operate(hero.pos)
     }
 
     override fun doThrow(hero: Hero) {
@@ -162,8 +183,8 @@ open class Potion : Item() {
                         this is PotionOfStrength ||
                         this is PotionOfInvisibility ||
                         this is PotionOfMight)) {
-            
-            WndOptions.Confirm(M.L(Potion::class.java, "beneficial"), M.L(Potion::class.java, "sure_throw")){
+
+            WndOptions.Confirm(M.L(Potion::class.java, "beneficial"), M.L(Potion::class.java, "sure_throw")) {
                 super.doThrow(hero)
             }
         } else {
@@ -271,8 +292,10 @@ open class Potion : Item() {
     companion object {
 
         private const val AC_DRINK = "DRINK"
+        private const val AC_SMEAR = "SMEAR"
 
         private const val TIME_TO_DRINK = 1f
+        private const val TIME_TO_SMEAR = 1f
 
         private val potions = arrayOf(
                 PotionOfHealing::class.java, PotionOfExperience::class.java, PotionOfToxicGas::class.java,

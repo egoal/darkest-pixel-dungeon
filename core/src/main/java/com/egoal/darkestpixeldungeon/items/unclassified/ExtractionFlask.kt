@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.Potion
@@ -177,12 +178,14 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                         val x = exp(refined.toFloat() / 4f)
                         val p = x / (x + 1f) * .5f
                         if (Random.Float() < p) {
-                            val i = Random.Int(3)
-                            when {
-                                (i == 0 && it.enchantment !is Venomous) -> it.enchant(Venomous::class.java, 15)
-                                (i == 1 && it.enchantment !is Unstable) -> it.enchant(Unstable::class.java, 15)
-                                else -> it.enchant(Enchantment.Random(), 15)
+                            val i = Random.Int(4)
+                            val echt = when {
+                                (i == 0 && it.enchantment !is Venomous) -> Venomous::class.java
+                                (i == 1 && it.enchantment !is Unstable) -> Unstable::class.java
+                                else -> Enchantment.ForSeed(if (Random.Int(2) == 0) s1 else s2)
                             }
+                            it.enchant(echt, 15f)
+                            SpellSprite.show(curUser, SpellSprite.ENCHANT)
                             GLog.w(Messages.get(this, "inscribed"))
                         }
                     } else

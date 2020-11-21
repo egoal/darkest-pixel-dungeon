@@ -18,7 +18,7 @@ class SorceressWand : MeleeWeapon() {
         unique = true
 
         // give enchantment
-        enchant(Unstable::class.java, 30)
+        enchant(Unstable::class.java, 30f)
     }
 
     override fun min(lvl: Int): Int = super.min(lvl) + 1
