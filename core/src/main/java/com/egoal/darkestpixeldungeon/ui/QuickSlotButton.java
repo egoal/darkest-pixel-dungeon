@@ -100,12 +100,12 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 
       @Override
       protected void onTouchDown() {
-        icon.lightness(0.7f);
+        getIcon().lightness(0.7f);
       }
 
       @Override
       protected void onTouchUp() {
-        icon.resetColor();
+        getIcon().resetColor();
       }
     };
     slot.showParams(true, false, true);

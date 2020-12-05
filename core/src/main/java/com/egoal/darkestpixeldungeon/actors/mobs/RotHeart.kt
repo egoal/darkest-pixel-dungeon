@@ -70,11 +70,7 @@ class RotHeart : Mob() {
 
     override fun destroy() {
         super.destroy()
-        for (mob in Dungeon.level.mobs.toTypedArray()) {
-            if (mob is RotLasher) {
-                mob.die(null)
-            }
-        }
+        Dungeon.level.mobs.filterIsInstance<RotLasher>().forEach { it.die(null) }
     }
 
     override fun die(cause: Any?) {

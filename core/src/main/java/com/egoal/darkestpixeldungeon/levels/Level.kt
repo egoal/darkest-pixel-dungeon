@@ -56,6 +56,7 @@ import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
+import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
 import com.egoal.darkestpixeldungeon.items.rings.Ring
@@ -893,21 +894,17 @@ abstract class Level : Bundlable {
 
                     for (i in PathFinder.NEIGHBOURS9) fieldOfView[p + i] = true
                 }
-            } else if (c.heroPerk.has(Telepath::class.java)) {
-                for (mob in mobs) {
-                    if (!mob.isLiving) continue
-
-                    val p = mob.pos
-                    if (distance(c.pos, p) == 2) {
-
-                        if (!fieldOfView[p]) {
-                            Dungeon.hero.mindVisionEnemies.add(mob)
+            } else {
+                c.heroPerk.get(Telepath::class.java)?.let { perk ->
+                    for (mob in mobs) {
+                        if (mob.isLiving && distance(mob.pos, c.pos) <= perk.range()) {
+                            if (!fieldOfView[mob.pos]) Dungeon.hero.mindVisionEnemies.add(mob)
+                            for (i in PathFinder.NEIGHBOURS8) fieldOfView[mob.pos + i] = true
                         }
-                        for (i in PathFinder.NEIGHBOURS9)
-                            fieldOfView[p + i] = true
                     }
                 }
             }
+
             if (c.buff(Awareness::class.java) != null) {
                 for (heap in heaps.values()) {
                     val p = heap.pos
@@ -941,7 +938,8 @@ abstract class Level : Bundlable {
             return items
 
         // quota
-        items.add(Generator.FOOD.generate())
+        items.add(Food())
+        if (Random.Float() < 0.12f) items.add(Generator.FOOD.generate())
 
         val p = 0.925f.pow(Dungeon.hero.wealthBonus())
         if (Dungeon.posNeeded()) {

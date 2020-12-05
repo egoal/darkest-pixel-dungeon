@@ -157,21 +157,13 @@ open class Potion : Item() {
                     drink(hero)
             }
         } else if (action == AC_SMEAR) {
-            GameScene.selectItem({ if (it is Weapon) onSmear(it, hero) },
-                    M.L(Potion::class.java, "select_weapon"),
-                    { it is Weapon && it.isIdentified && !it.cursed })
+            GameScene.selectItem({
+                if (it != null) {
+                    detach(hero.belongings.backpack)
+                    Enchantment.DoEnchant(hero, it as Weapon, javaClass, if (reinforced) 40f else 24f)
+                }
+            }, WndBag.Mode.SMEARABLE, M.L(Potion::class.java, "select_weapon"))
         }
-    }
-
-    private fun onSmear(weapon: Weapon, hero: Hero) {
-        detach(hero.belongings.backpack)
-        weapon.enchant(Enchantment.ForPotion(javaClass), if (reinforced) 40f else 24f)
-        GLog.w(M.L(Potion::class.java, "enchanted", weapon.name(), weapon.enchantment!!.name()))
-
-        SpellSprite.show(hero, SpellSprite.ENCHANT)
-        hero.spend(TIME_TO_SMEAR)
-        hero.busy()
-        hero.sprite.operate(hero.pos)
     }
 
     override fun doThrow(hero: Hero) {
@@ -192,7 +184,7 @@ open class Potion : Item() {
         }
     }
 
-    protected fun drink(hero: Hero) {
+    protected open fun drink(hero: Hero) {
 
         detach(hero.belongings.backpack)
 

@@ -23,10 +23,8 @@ package com.egoal.darkestpixeldungeon.items.armor
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.armor.curses.Multiplicity
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Camouflage
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
@@ -39,18 +37,8 @@ import com.egoal.darkestpixeldungeon.items.armor.curses.Corrosion
 import com.egoal.darkestpixeldungeon.items.armor.curses.Displacement
 import com.egoal.darkestpixeldungeon.items.armor.curses.Metabolism
 import com.egoal.darkestpixeldungeon.items.armor.curses.Stench
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Affection
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.AntiMagic
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Brimstone
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Entanglement
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Flow
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Obfuscation
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Potential
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Repulsion
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Stone
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Swiftness
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Thorns
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Viscosity
+import com.egoal.darkestpixeldungeon.items.armor.curses.Entanglement
+import com.egoal.darkestpixeldungeon.items.armor.glyphs.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
@@ -397,18 +385,16 @@ open class Armor(var tier: Int) : EquipableItem() {
         companion object {
             private val glyphs = arrayOf(
                     Obfuscation::class.java, Swiftness::class.java, Stone::class.java, Potential::class.java,
-                    Brimstone::class.java, Viscosity::class.java, Entanglement::class.java, Repulsion::class.java,
-                    Camouflage::class.java, Flow::class.java, Affection::class.java, AntiMagic::class.java,
-                    Thorns::class.java)
+                    Brimstone::class.java, Viscosity::class.java, Repulsion::class.java, Camouflage::class.java, Flow::class.java,
+                    Affection::class.java, AntiMagic::class.java, Thorns::class.java, Tough::class.java)
             private val chances = floatArrayOf(
                     10f, 10f, 10f, 10f,
-                    5f, 5f, 5f, 5f,
-                    5f, 5f, 2f, 2f,
-                    2f)
+                    5f, 5f, 5f, 5f, 5f,
+                    3f, 3f, 3f, 3f)
 
             private val curses = arrayOf(
-                    AntiEntropy::class.java, Corrosion::class.java, Displacement::class.java, Metabolism::class.java,
-                    Multiplicity::class.java, Stench::class.java)
+                    AntiEntropy::class.java, Corrosion::class.java, Displacement::class.java, Entanglement::class.java,
+                    Metabolism::class.java, Multiplicity::class.java, Stench::class.java)
 
             fun random(): Glyph = glyphs[Random.chances(chances)].newInstance()
 

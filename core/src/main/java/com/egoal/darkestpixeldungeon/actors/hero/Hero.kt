@@ -119,8 +119,11 @@ class Hero : Char() {
     override fun magicalResistance(): Float {
         var mr = super.magicalResistance()
         // mr += belongings.armor?.MRES() ?: 0f // linearly
-        if (belongings.armor != null)
+        if (belongings.armor != null) {
             mr = GameMath.ProbabilityPlus(mr, belongings.armor!!.MRES())
+            if (belongings.armor!!.hasGlyph(AntiMagic::class.java))
+                mr = GameMath.ProbabilityPlus(mr, 0.25f)
+        }
         heroPerk.get(ExtraMagicalResistance::class.java)?.let {
             mr = GameMath.ProbabilityPlus(mr, it.ratio())
         }
@@ -669,9 +672,12 @@ class Hero : Char() {
             value += Random.Float(0f, v)
         }
 
-        val chance = GameMath.ProbabilityPlus(
+        var chance = GameMath.ProbabilityPlus(
                 heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
                 buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f)
+
+        if (belongings.helmet is Mantilla && !belongings.helmet!!.cursed)
+            chance = GameMath.ProbabilityPlus(chance, 0.1f)
 
         if (Random.Float() < chance) {
             value = 0f
@@ -973,6 +979,10 @@ class Hero : Char() {
     }
 
     override fun add(buff: Buff) {
+        if (belongings.armor?.glyph is Tough) {
+            if ((belongings.armor!!.glyph as Tough).resist(buff)) return
+        }
+
         if (immunizedBuffs().any { buff.javaClass == it }) return
 
         super.add(buff)

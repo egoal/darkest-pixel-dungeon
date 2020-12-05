@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.potions
 
+import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -30,6 +31,7 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.windows.WndOptions
+import com.watabou.noosa.audio.Sample
 import kotlin.math.max
 import kotlin.math.min
 
@@ -59,13 +61,28 @@ class PotionOfHealing : Potion() {
             hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4)
 
             setKnown()
-        } else {
-            if (isKnown && hero.buff(Decayed::class.java) != null)
-                WndOptions.Confirm(ItemSprite(this), name, M.L(this, "decayed")) {
-                    doDrink(hero)
-                }
-            else doDrink(hero)
-        }
+        } else
+            doDrink(hero)
+    }
+
+    override fun drink(hero: Hero) {
+        if (!reinforced && isKnown && hero.buff(Decayed::class.java) != null) {
+            //todo:
+            WndOptions.Confirm(ItemSprite(this), name, M.L(this, "decayed")) {
+                detach(hero.belongings.backpack)
+
+                hero.spend(1f)
+                hero.busy()
+
+                Buff.detach(hero, Bleeding::class.java)
+                doDrink(hero)
+
+                Sample.INSTANCE.play(Assets.SND_DRINK)
+
+                hero.sprite.operate(hero.pos)
+            }
+        } else
+            super.drink(hero)
     }
 
     private fun doDrink(hero: Hero) {

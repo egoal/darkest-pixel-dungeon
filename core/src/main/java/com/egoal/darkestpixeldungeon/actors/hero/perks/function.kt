@@ -216,6 +216,12 @@ class QuickLearner : Perk(3) {
     }
 }
 
-class Telepath : Perk() {
+class Telepath : Perk(2) {
     override fun image(): Int = PerkImageSheet.TELEPATH
+
+    override fun canBeGain(hero: Hero): Boolean {
+        return hero.heroClass == HeroClass.HUNTRESS || !hero.heroPerk.has(Telepath::class.java)
+    }
+
+    fun range() = 2 * level // 2, 4
 }

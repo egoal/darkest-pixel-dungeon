@@ -18,6 +18,7 @@ import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
 import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
+import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.messages.M
@@ -45,14 +46,16 @@ abstract class Plant(val image: Int) : Bundlable {
             if (it is Hero && it.subClass == HeroSubClass.WARDEN)
                 Buff.affect(it, Barkskin::class.java).level(it.HT / 3)
         }
-        Dungeon.level.heaps.get(pos)?.let { heap ->
-            val item = heap.peek()
-            if (item is Weapon) {
-                item.enchant(Enchantment.ForPotion(
-                        PlantTable.row { it.plant == this@Plant.javaClass }.potion), 10f)
-                GLog.w(M.L(Plant.Seed::class.java, "enchanted", item.name(), item.enchantment!!.name()))
+        //todo: refactor this
+        if (this !is Rotberry && this !is BlandfruitBush)
+            Dungeon.level.heaps.get(pos)?.let { heap ->
+                val item = heap.peek()
+                if (item is MeleeWeapon) {
+                    item.enchant(Enchantment.ForPotion(
+                            PlantTable.row { it.plant == this@Plant.javaClass }.potion), 10f)
+                    GLog.w(M.L(Potion::class.java, "enchanted", item.name(), item.enchantment!!.name()))
+                }
             }
-        }
 
         wither()
         activate()
@@ -136,9 +139,12 @@ abstract class Plant(val image: Int) : Bundlable {
 
                 hero.sprite.operate(hero.pos)
             } else if (action == AC_SMEAR) {
-                GameScene.selectItem(weaponSelector, M.L(Seed::class.java, "select_weapon"), WndBag.Filter {
-                    it is Weapon && it.isIdentified && !it.cursed
-                })
+                GameScene.selectItem({
+                    if (it != null) {
+                        detach(hero.belongings.backpack)
+                        Enchantment.DoEnchant(hero, it as Weapon, alchemyClass, 10f)
+                    }
+                }, WndBag.Mode.SMEARABLE, M.L(Potion::class.java, "select_weapon"))
             }
         }
 
@@ -159,21 +165,6 @@ abstract class Plant(val image: Int) : Bundlable {
                 Messages.get(plantClass, "desc")
 
         override fun info(): String = Messages.get(Seed::class.java, "info", desc())
-
-        private val weaponSelector = WndBag.Listener { item ->
-            if (item is Weapon) {
-                val hero = Dungeon.hero
-                detach(hero.belongings.backpack)
-
-                item.enchant(Enchantment.ForSeed(this@Seed), 10f)
-                GLog.w(M.L(Plant.Seed::class.java, "enchanted", item.name(), item.enchantment!!.name()))
-
-                SpellSprite.show(hero, SpellSprite.ENCHANT)
-                hero.spend(TIME_TO_SMEAR)
-                hero.busy()
-                hero.sprite.operate(hero.pos)
-            }
-        }
     }
 
     companion object {

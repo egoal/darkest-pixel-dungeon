@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.books.textbook.CallysDiary
 import com.egoal.darkestpixeldungeon.items.books.textbook.WardenSmithNotes
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
+import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
 import com.egoal.darkestpixeldungeon.items.food.Pasty
 import com.egoal.darkestpixeldungeon.items.helmets.*
 import com.egoal.darkestpixeldungeon.items.potions.*
@@ -274,9 +275,10 @@ object Generator {
     ))
 
     object FOOD : BalancedClassMapGenerator(hashMapOf(
-            Food::class to 4f,
+            Food::class to 5f,
             Pasty::class to 1f,
-            MysteryMeat::class to 0f
+            MysteryMeat::class to 0f,
+            OrchidRoot::class to 2f
     ))
 
     object GOLD : ClassMapGenerator(hashMapOf(
@@ -399,7 +401,8 @@ object Generator {
             TurtleScarf::class to 1f,
             MaskOfLider::class to 0.1f,
             GuardHelmet::class to 0.1f,
-            StrawHat::class to 0.1f
+            StrawHat::class to 0.1f,
+            Mantilla::class to 1f
     ))
 
     object BOOK : BalancedClassMapGenerator(hashMapOf(

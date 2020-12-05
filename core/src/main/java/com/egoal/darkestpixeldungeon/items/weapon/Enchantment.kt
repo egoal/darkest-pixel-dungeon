@@ -1,6 +1,8 @@
 package com.egoal.darkestpixeldungeon.items.weapon
 
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.*
 import com.egoal.darkestpixeldungeon.messages.M
@@ -62,6 +64,13 @@ abstract class Enchantment : Bundlable {
         fun ForPotion(potion: Class<out Potion>): Class<out Enchantment> = potionEnchantments[potion]
                 ?: Unstable::class.java
 
-        fun ForSeed(seed: Plant.Seed) = ForPotion(seed.alchemyClass)
+        fun DoEnchant(hero: Hero, weapon: Weapon, potion: Class<out Potion>, duration: Float) {
+            weapon.enchant(ForPotion(potion), duration)
+
+            SpellSprite.show(hero, SpellSprite.ENCHANT)
+            hero.spend(1f)
+            hero.busy()
+            hero.sprite.operate(hero.pos)
+        }
     }
 }

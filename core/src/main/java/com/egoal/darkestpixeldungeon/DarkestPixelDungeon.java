@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.egoal.darkestpixeldungeon.items.armor.curses.Entanglement;
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
 import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Eldritch;
 import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim;
@@ -169,10 +170,10 @@ public class DarkestPixelDungeon extends Game {
             com.egoal.darkestpixeldungeon.items.armor.glyphs.Potential.class,
             "com.egoal.darkestpixeldungeon.items.armor.glyphs.AntiEntropy");
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.armor.glyphs.Entanglement.class,
+            Entanglement.class,
             "com.egoal.darkestpixeldungeon.items.armor.glyphs.Metabolism");
     com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.armor.glyphs.Entanglement.class,
+            Entanglement.class,
             "com.egoal.darkestpixeldungeon.items.armor.glyphs.Multiplicity");
     com.watabou.utils.Bundle.addAlias(
             com.egoal.darkestpixeldungeon.items.armor.glyphs.Repulsion.class,

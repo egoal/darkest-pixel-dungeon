@@ -80,7 +80,7 @@ open class MagicalSleep : Buff() {
 
     companion object {
         private const val STEP = 1f
-        private const val MAX_SLEEP_TIME = 40f
+        private const val MAX_SLEEP_TIME = 30f
     }
 
     class Deep : MagicalSleep() {

@@ -50,7 +50,7 @@ public class Enchanting extends ItemSprite {
     super(item.image(), null);
     originToCenter();
 
-    color = item.glowing().color;
+    color = 0x971eff; // item.glowing().color;
 
     phase = Phase.FADE_IN;
     duration = FADE_IN_TIME;

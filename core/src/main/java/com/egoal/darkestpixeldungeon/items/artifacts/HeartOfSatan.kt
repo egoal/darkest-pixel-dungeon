@@ -80,7 +80,9 @@ class HeartOfSatan : Artifact() {
         if (isEquipped(Dungeon.hero)) {
             if (cursed)
                 desc += "\n\n" + Messages.get(this, "desc_cursed")
-            else if (level() > 0)
+            else if (level() == levelCap) {
+                desc += "\n\n" + M.L(this, "desc_lvlmax")
+            } else if (level() > 0)
                 desc += "\n\n" + Messages.get(this, "desc_hint")
         }
 

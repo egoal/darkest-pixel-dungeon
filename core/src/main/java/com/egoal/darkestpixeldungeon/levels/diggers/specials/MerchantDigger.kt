@@ -19,6 +19,7 @@ import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster
 import com.egoal.darkestpixeldungeon.items.food.BrownAle
+import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
 import com.egoal.darkestpixeldungeon.items.food.OverpricedRation
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.Potion
@@ -135,8 +136,10 @@ class MerchantDigger : RectDigger() {
 
         itemsToSpawn.add(OverpricedRation())
         itemsToSpawn.add(OverpricedRation())
-        itemsToSpawn.add(if (Random.Float() < 0.4f) Wine() else BrownAle())
-        itemsToSpawn.add(BrownAle())
+        repeat(2) {
+            itemsToSpawn.add(if (Random.Float() < 0.4f) Wine() else BrownAle())
+        }
+        itemsToSpawn.add(OrchidRoot())
 
         // no bombs anymore
 

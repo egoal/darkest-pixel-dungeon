@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.egoal.darkestpixeldungeon.items.armor.glyphs
+package com.egoal.darkestpixeldungeon.items.armor.curses
 
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -52,12 +52,11 @@ class Entanglement : Armor.Glyph() {
         return damage
     }
 
-    override fun glowing(): ItemSprite.Glowing {
-        return BROWN
-    }
+    override fun curse(): Boolean = true
+
+    override fun glowing(): ItemSprite.Glowing = BROWN
 
     companion object {
-
         private val BROWN = ItemSprite.Glowing(0x663300)
     }
 

@@ -229,12 +229,15 @@ abstract class Weapon : KindOfWeapon() {
     fun hasGoodInscription(): Boolean = inscription?.curse == false
     fun hasCurseInscription(): Boolean = inscription?.curse == true
 
-    fun enchant(type: Class<out Enchantment>, duration: Float): Weapon {
+    open fun enchant(type: Class<out Enchantment>, duration: Float): Weapon {
         // prolong
         if (enchantment?.javaClass == type)
             enchantment!!.left = max(enchantment!!.left, duration)
         else
             enchantment = type.newInstance().apply { left = duration }
+
+        GLog.w(M.L(Weapon::class.java, "on_enchanted", name(), enchantment!!.name()))
+
         return this
     }
 

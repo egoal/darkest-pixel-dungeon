@@ -7,7 +7,10 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.food.Food
+import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.Mantilla
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
@@ -260,6 +263,7 @@ enum class HeroClass(private val title: String) {
     protected open fun initHeroClass(hero: Hero) {
         hero.belongings.armor = ClothArmor().identify() as Armor
 
+        Food().collect()
         Torch().identify().collect()
 
         ScrollOfIdentify().setKnown()

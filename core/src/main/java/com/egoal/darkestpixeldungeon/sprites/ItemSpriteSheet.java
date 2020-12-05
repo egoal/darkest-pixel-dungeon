@@ -186,6 +186,7 @@ public class ItemSpriteSheet {
     public static final int RIDER_MASK = HELMET + 15;
     public static final int HELMET_GUARD = HELMET + 16;
     public static final int STRAW_HAT = HELMET + 17;
+    public  static  final int MANTILLA = HELMET+18;
 
     //16 free slots
 
@@ -334,6 +335,7 @@ public class ItemSpriteSheet {
     public static final int STEWED = FOOD + 12;
     public static final int SKEWER = FOOD + 13;
     public static final int GLAND = FOOD + 14;
+    public static final int ROOT = FOOD+15;
 
     private static final int QUEST = xy(1, 26);  //32 slots
     public static final int SKULL = QUEST + 0;

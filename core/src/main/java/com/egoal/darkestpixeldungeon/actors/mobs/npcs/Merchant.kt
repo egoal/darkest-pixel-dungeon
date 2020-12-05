@@ -262,7 +262,7 @@ open class Merchant : NPC() {
 
         fun actualHeight() = GOODS_BTN_SIZE + price.height() + GAP
 
-        fun item(): Item = item
+        fun item(): Item = item!!
 
         override fun createChildren() {
             bg = ColorBlock(GOODS_BTN_SIZE, GOODS_BTN_SIZE, GOODS_BTN_BG)

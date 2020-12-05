@@ -81,7 +81,7 @@ class RotLasher : Mob() {
 
     override fun getFurther(target: Int): Boolean = true
 
-    private inner class Waiting : Mob.Wandering() {}
+    private inner class Waiting : Mob.Wandering()
 
     companion object {
         private val IMMUNITIES: HashSet<Class<*>> = hashSetOf(ToxicGas::class.java)

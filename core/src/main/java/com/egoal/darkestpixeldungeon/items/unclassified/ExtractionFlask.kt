@@ -174,20 +174,15 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
             curUser.belongings.weapon?.let {
                 if (it is Weapon) {
                     if (it.STRReq() < curUser.STR() && !it.cursed) {
-                        // 0.2-> 0.5
-                        val x = exp(refined.toFloat() / 4f)
-                        val p = x / (x + 1f) * .5f
-                        if (Random.Float() < p) {
-                            val i = Random.Int(4)
-                            val echt = when {
-                                (i == 0 && it.enchantment !is Venomous) -> Venomous::class.java
-                                (i == 1 && it.enchantment !is Unstable) -> Unstable::class.java
-                                else -> Enchantment.ForSeed(if (Random.Int(2) == 0) s1 else s2)
-                            }
-                            it.enchant(echt, 15f)
-                            SpellSprite.show(curUser, SpellSprite.ENCHANT)
-                            GLog.w(Messages.get(this, "inscribed"))
+                        val i = Random.Int(4)
+                        val echt = when {
+                            (i == 0 && it.enchantment !is Venomous) -> Venomous::class.java
+                            (i == 1 && it.enchantment !is Unstable) -> Unstable::class.java
+                            else -> Enchantment.ForPotion(if (Random.Int(2) == 0) s1.alchemyClass else s2.alchemyClass)
                         }
+                        it.enchant(echt, 10f + refined) // 10, 11, 12 ...
+                        SpellSprite.show(curUser, SpellSprite.ENCHANT)
+                        GLog.w(Messages.get(this, "inscribed"))
                     } else
                         GLog.w(Messages.get(this, "cannot_inscribe"))
                 }

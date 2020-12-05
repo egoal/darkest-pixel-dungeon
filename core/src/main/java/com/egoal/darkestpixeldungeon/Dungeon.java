@@ -63,7 +63,7 @@ import java.util.HashSet;
 public class Dungeon {
 
     public static int initialDepth_ = -1;
-    public static final String VERSION_STRING = "0.5.1-0";
+    public static final String VERSION_STRING = "0.5.1-0.3";
 
     //enum of items which have limited spawns, records how many have spawned
     //could all be their own separate numbers, but this allows iterating, much

@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -27,12 +28,18 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
+import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.ElementalSprite
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Random
 
 import java.util.HashSet
@@ -58,6 +65,20 @@ open class Elemental : Mob() {
         return dmg
     }
 
+    override fun defenseProc(dmg: Damage): Damage {
+        if (dmg.from is Hero) {
+            val hero = dmg.from as Hero
+            if (Dungeon.level.adjacent(hero.pos, pos) && Random.Int(3) == 0) {
+                val weapon = hero.belongings.weapon
+                if (weapon is MeleeWeapon && weapon.enchantment == null) {
+                    weapon.enchant(Blazing::class.java, 8f)
+                }
+            }
+        }
+
+        return super.defenseProc(dmg)
+    }
+
     override fun add(buff: Buff) {
         if (buff is Burning) {
             if (HP < HT) {
@@ -75,6 +96,7 @@ open class Elemental : Mob() {
             super.add(buff)
         }
     }
+
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
 

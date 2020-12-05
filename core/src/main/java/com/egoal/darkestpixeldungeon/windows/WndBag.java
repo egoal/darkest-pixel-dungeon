@@ -82,7 +82,8 @@ public class WndBag extends WndTabbed {
     SCROLL,
     RING,
     EQUIPMENT,
-    ALCHEMY
+    ALCHEMY,
+    SMEARABLE
   }
 
   protected static final int COLS_P = 5;
@@ -501,6 +502,7 @@ public class WndBag extends WndTabbed {
           case QUICKSLOT:
               return item.getDefaultAction() !=null;
           case WEAPON:
+          case SMEARABLE:
               return item instanceof MeleeWeapon || item instanceof Boomerang;
           case ARMOR:
               return item instanceof Armor;
@@ -524,6 +526,8 @@ public class WndBag extends WndTabbed {
               return item instanceof Plant.Seed || item instanceof MysteryMeat || item instanceof FishBone ||
                       // item instanceof Honeypot.ShatteredPot ||
                       (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib()==null);
+//          case SMEARABLE:
+//              return item instanceof MeleeWeapon || item instanceof Boomerang;
           case ALL:
               return true;
       }

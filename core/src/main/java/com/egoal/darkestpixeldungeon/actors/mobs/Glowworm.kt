@@ -10,6 +10,13 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Light
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
+import com.egoal.darkestpixeldungeon.actors.buffs.Venom
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.potions.Potion
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
+import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
@@ -43,7 +50,7 @@ class Glowworm(private var level: Int = 1) : Mob() {
         maxLvl = level + 2
 
         defSkill = 3f + level
-        atkSkill = 10f+ level
+        atkSkill = 10f + level
     }
 
     override fun giveDamage(enemy: Char): Damage =
@@ -53,11 +60,25 @@ class Glowworm(private var level: Int = 1) : Mob() {
         value -= Random.NormalIntRange(1, level)
     }
 
+    override fun defenseProc(dmg: Damage): Damage {
+        if (dmg.from is Hero) {
+            val hero = dmg.from as Hero
+            if (Dungeon.level.adjacent(hero.pos, pos) && Random.Int(4) == 0) {
+                val weapon = hero.belongings.weapon
+                if (weapon is MeleeWeapon && weapon.enchantment == null) {
+                    weapon.enchant(Venomous::class.java, 8f)
+                }
+            }
+        }
+
+        return super.defenseProc(dmg)
+    }
+
     override fun die(cause: Any?) {
         super.die(cause)
 
         // poison & light nearby
-        GameScene.add(Blob.seed(pos, 30, ToxicGas::class.java))
+        GameScene.add(Blob.seed(pos, 20, ToxicGas::class.java))
 
         for (i in PathFinder.NEIGHBOURS8) {
             Actor.findChar(pos + i)?.let { ch ->
@@ -66,7 +87,7 @@ class Glowworm(private var level: Int = 1) : Mob() {
                     if (ch === Dungeon.hero) {
                         GLog.w(M.L(Glowworm::class.java, "light"))
                         Buff.affect(ch, Poison::class.java).set(
-                                (Random.Float(1f, 3f) + level / 2f) * Poison.durationFactor(ch))
+                                (Random.Float(1f, 3f) + level / 3f) * Poison.durationFactor(ch))
                     }
                 }
             }

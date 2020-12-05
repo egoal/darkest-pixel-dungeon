@@ -51,21 +51,24 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
 
     // enchanting, prefer to enchant the one without enchantment
     // or you could just split them, enchant, then dual again.
-    override fun inscribe(): Weapon = selectEnchantSword().inscribe()
+    override fun inscribe(): Weapon = swordToInscribe().inscribe()
 
-    override fun inscribe(insc: Inscription?): Weapon = selectEnchantSword().inscribe(insc)
+    override fun inscribe(insc: Inscription?): Weapon = swordToInscribe().inscribe(insc)
+
+    override fun isInscribed(type: Class<out Inscription>): Boolean = left.isInscribed(type) || right.isInscribed(type)
+
+    override fun enchant(type: Class<out Enchantment>, duration: Float): Weapon {
+        swordToEnchant().enchant(type, duration)
+        return this
+    }
 
     override fun hasEnchant(type: Class<out Enchantment>): Boolean = left.hasEnchant(type) || right.hasEnchant(type)
 
-    override fun glowing(): ItemSprite.Glowing? {
-        return left.glowing() ?: right.glowing()
-    }
+    override fun glowing(): ItemSprite.Glowing? = left.glowing() ?: right.glowing()
 
-    private fun selectEnchantSword(): Weapon = when {
-        left.enchantment == null -> left
-        right.enchantment == null -> right
-        else -> if (Random.Int(2) == 0) left else right
-    }
+    private fun swordToInscribe(): Weapon = if (left.inscription == null || right.inscription != null) left else right
+
+    private fun swordToEnchant(): Weapon = if (left.enchantment == null || right.enchantment != null) left else right
 
     override fun proc(dmg: Damage): Damage = left.proc(right.proc(dmg))
 
@@ -76,8 +79,14 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
         get() = true
 
     override fun desc(): String {
+        val swordName = { sword: Sword ->
+            var name = "${sword.name()}+${sword.level()}"
+            if (sword.enchantment != null) name += " (${sword.enchantment!!.name()})"
+            name
+        }
+
         var desc = super.desc()
-        desc += "\n\n${left.name()}+${left.level()} \n ${right.name()}+${right.level()}"
+        desc += "\n\n" + swordName(left) + "\n" + swordName(right)
 
         return desc
     }
@@ -95,9 +104,9 @@ class PairSwords(var left: Sword = Sword(), var right: Sword = Sword()) : MeleeW
 
         if (action == AC_SPLIT) {
             if (!left.doPickUp(hero))
-                Dungeon.level.drop(left, Dungeon.hero.pos).sprite.drop()
+                Dungeon.level.drop(left, hero.pos).sprite.drop()
             if (!right.doPickUp(hero))
-                Dungeon.level.drop(right, Dungeon.hero.pos).sprite.drop()
+                Dungeon.level.drop(right, hero.pos).sprite.drop()
 
             if (isEquipped(hero))
                 doUnequip(hero, false)
