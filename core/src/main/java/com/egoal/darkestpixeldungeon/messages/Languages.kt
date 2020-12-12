@@ -31,7 +31,7 @@ enum class Languages(val nativeName: String,
             arrayOf<String>("Egoal", "endlesssolitude", " 路人NPC"),
             arrayOf<String>(" 1834515403a", "Fevre", "Fishbone", "MrKukurykpl", "Omicronrg9", "Piedro0", "SeaMonser", "riwansia", "shenlingfeiniao")),
 
-    CHINESE_TR("繁体中文", Locale.TRADITIONAL_CHINESE, Status.REVIEWED, arrayOf<String>("Egoal"), arrayOf<String>("那些回忆")),
+    CHINESE_TR("繁体中文", Locale.TRADITIONAL_CHINESE, Status.INCOMPLETE, arrayOf<String>("Egoal"), arrayOf<String>("那些回忆")),
 
     CHINESE("中文", Locale.CHINESE, Status.REVIEWED, arrayOf<String>("Jinkeloid(zdx00793)"),
             arrayOf<String>("931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "Hmdzl001", "Tempest102"));

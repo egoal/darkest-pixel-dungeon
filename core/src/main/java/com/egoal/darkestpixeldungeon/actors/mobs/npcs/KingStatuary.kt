@@ -32,7 +32,7 @@ class KingStatuary : NPC.Unbreakable() {
         if (hasCrown) return false
 
         GameScene.show(object : WndOptions(Sprite(), name, description(),
-                M.L(this, "wear"), M.L(this, "unworthy")) {
+                M.L(KingStatuary::class.java, "wear"), M.L(KingStatuary::class.java, "unworthy")) {
             override fun onSelect(index: Int) {
                 if (index == 0) onWear()
             }
