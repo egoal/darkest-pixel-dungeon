@@ -34,6 +34,7 @@ import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.ChangesButton;
 import com.egoal.darkestpixeldungeon.ui.ErrorButton;
 import com.egoal.darkestpixeldungeon.ui.ExitButton;
+import com.egoal.darkestpixeldungeon.windows.InputDialog;
 import com.egoal.darkestpixeldungeon.windows.WndDonate;
 import com.egoal.darkestpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.BitmapText;
@@ -110,6 +111,7 @@ public class TitleScene extends PixelScene {
                 new DashboardItem(Messages.get(this, "play"), 0) {
                     @Override
                     protected void onClick() {
+                        // InputDialog.INSTANCE.GetString("input string", "unnamed");
                         DarkestPixelDungeon.switchNoFade(StartScene.class);
                     }
                 },

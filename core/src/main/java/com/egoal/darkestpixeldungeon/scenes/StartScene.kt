@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.scenes
 
+import android.util.Log
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.effects.BannerSprites
@@ -7,6 +8,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.ui.*
+import com.egoal.darkestpixeldungeon.windows.InputDialog
 import com.egoal.darkestpixeldungeon.windows.WndClass
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.*
@@ -106,7 +108,8 @@ class StartScene : PixelScene() {
             val shield = object : ClassShield(cl) {
                 override fun onTouchDown() {
                     Sample.INSTANCE.play(Assets.SND_CLICK, 1f, 1f, 1.2f)
-                    this@StartScene.add(WndClass(heroClass))
+                    // this@StartScene.add(WndClass(heroClass))
+                    InputDialog.GetString("name your hero", "unnamed"){ Log.d("dpd", "name set: $it") }
                 }
             }
             shield.setRect(shieldLeft, shieldTop, shieldW, shieldH)

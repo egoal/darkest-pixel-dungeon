@@ -152,7 +152,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         // more likely to be toxic gas
         val potion: Potion? = when {
             s1 is Sorrowmoss.Seed || s2 is Sorrowmoss.Seed -> PotionOfToxicGas()
-            Random.Int(15) == 0 -> {
+            Random.Int(20) == 0 -> {
                 GLog.w(Messages.get(this, "refine_failed"))
                 null
             }

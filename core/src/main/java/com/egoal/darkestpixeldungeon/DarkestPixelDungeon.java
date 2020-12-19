@@ -26,13 +26,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.egoal.darkestpixeldungeon.items.armor.curses.Entanglement;
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting;
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Eldritch;
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim;
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Lucky;
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Stunning;
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric;
 import com.egoal.darkestpixeldungeon.messages.Languages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
@@ -51,134 +44,14 @@ public class DarkestPixelDungeon extends Game {
   public DarkestPixelDungeon() {
     super(WelcomeScene.class);
 
-    // 0.2.4
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Piercing");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Swing");
-
-    com.watabou.utils.Bundle.addAlias(
-            ScrollOfEnchanting.class,
-            "com.egoal.darkestpixeldungeon.items.scrolls" +
-                    ".ScrollOfWeaponUpgrade");
-
-    // 0.2.4d
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon.class,
-            "com.egoal.darkestpixeldungeon.items.LloydsBeacon");
-
-    // 0.3.0, lots of wands
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfVenom.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfPoison");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfFrost.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfSlowness");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfFirebolt");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfCorruption.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfAmok");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfTelekinesis");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfFlock");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfAvalanche");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfBlink");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile.class,
-            "com.egoal.darkestpixeldungeon.items.wands.WandOfTeleportation");
-
-    //0.3.3
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.actors.mobs.FetidRat.class,
-            "Ghost$FetidRat");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.actors.mobs.GnollTrickster.class,
-            "Ghost$GnollTrickster");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.actors.mobs.GreatCrab.class,
-            "Ghost$GreatCrab");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.plants.Rotberry.class,
-            "Wandmaker$Rotberry");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.plants.Rotberry.Seed.class,
-            "Wandmaker$Rotberry$Seed");
-
-    //0.4.0
-    //enchants/glyphs
-    com.watabou.utils.Bundle.addAlias(
-            Grim.class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Death");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Fire");
-    com.watabou.utils.Bundle.addAlias(
-            Eldritch
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Horror");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments" +
-                    ".Instability");
-    com.watabou.utils.Bundle.addAlias(
-            Vampiric
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Leech");
-    com.watabou.utils.Bundle.addAlias(
-            Lucky.class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Luck");
-    com.watabou.utils.Bundle.addAlias(
-            Stunning
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments" +
-                    ".Paralysis");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Poison");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shock");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Chilling
-                    .class,
-            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Slow");
-
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.armor.glyphs.Repulsion.class,
-            "com.egoal.darkestpixeldungeon.items.armor.glyphs.Bounce");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.armor.glyphs.Repulsion.class,
-            "com.egoal.darkestpixeldungeon.items.armor.glyphs.Displacement");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.armor.glyphs.Potential.class,
-            "com.egoal.darkestpixeldungeon.items.armor.glyphs.AntiEntropy");
-    com.watabou.utils.Bundle.addAlias(
-            Entanglement.class,
-            "com.egoal.darkestpixeldungeon.items.armor.glyphs.Metabolism");
-    com.watabou.utils.Bundle.addAlias(
-            Entanglement.class,
-            "com.egoal.darkestpixeldungeon.items.armor.glyphs.Multiplicity");
-    com.watabou.utils.Bundle.addAlias(
-            com.egoal.darkestpixeldungeon.items.armor.glyphs.Repulsion.class,
-            "com.egoal.darkestpixeldungeon.items.armor.glyphs.Stench");
-
+    // we can add alias to compatible with older saves, but no need for me 23333
+    // like:
+//    com.watabou.utils.Bundle.addAlias(
+//            Grim.class,
+//            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Death");
+//    com.watabou.utils.Bundle.addAlias(
+//            com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing.class,
+//            "com.egoal.darkestpixeldungeon.items.weapon.enchantments.Fire");
   }
 
   @SuppressWarnings("deprecation")
