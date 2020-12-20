@@ -186,7 +186,6 @@ public class Dungeon {
         hero = new Hero();
         hero.live();
 
-        // StartScene.Companion.getCurrentClass().initHero(hero);
         hero.setUserName(HeroCreateScene.Companion.getUserName());
         HeroCreateScene.Companion.getCurrentClass().initHero(hero);
         HeroCreateScene.Companion.getBornPrize().collect(hero);
@@ -520,7 +519,6 @@ public class Dungeon {
             Log.d("dpd", "saving with backup.");
 
         if (hero.isAlive()) {
-
             Actor.Companion.fixTime();
             saveGame(gameFile(hero.getHeroClass()), doBackup ? backupGameFile(hero
                     .getHeroClass()) : null);

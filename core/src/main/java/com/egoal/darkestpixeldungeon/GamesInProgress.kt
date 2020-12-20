@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon
 
+import android.os.Build
+import android.util.Log
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.watabou.noosa.Game
@@ -33,9 +35,10 @@ object GamesInProgress {
 
     private val progresses = arrayOfNulls<Info?>(MAX_SLOT)
 
-    private fun gameFile(slot: Int) = "slot$slot.dat"
-    private fun depthFile(slot: Int, depth: Int) = "slot$slot-depth$depth.dat"
-    private fun backupGameFile(slot: Int) = "backup_slot$slot.dat"
+    fun gameFile(slot: Int) = "slot$slot.dat"
+    fun depthFile(slot: Int, depth: Int) = "slot$slot-depth$depth.dat"
+    fun backupGameFile(slot: Int) = "backup_slot$slot.dat"
+    fun backupDepthFile(slot: Int) = "backup_level_slot$slot.dat"
 
     var curSlot: Int = 0
 
