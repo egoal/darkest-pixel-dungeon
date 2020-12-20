@@ -21,12 +21,66 @@
 package com.egoal.darkestpixeldungeon
 
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 
 import java.io.IOException
 import java.util.HashMap
 
 object GamesInProgress {
+    private const val MAX_SLOT = 6 // enough to compatible with pre 0.6.0 saves
+
+    private val progresses = arrayOfNulls<Info?>(MAX_SLOT)
+
+    private fun gameFile(slot: Int) = "slot$slot.dat"
+    private fun depthFile(slot: Int, depth: Int) = "slot$slot-depth$depth.dat"
+    private fun backupGameFile(slot: Int) = "backup_slot$slot.dat"
+
+    var curSlot: Int = 0
+
+    fun reloadAll(): Array<Info?> {
+        for (i in 0 until MAX_SLOT) {
+            if (progresses[i] == null)
+                progresses[i] = load(i)
+        }
+
+        // load old saves
+        //todo: remove this in later version
+
+        return progresses
+    }
+
+    private fun load(slot: Int): Info? {
+        var info: Info?
+
+        try {
+            val bundle = Dungeon.gameBundle(gameFile(slot))
+            info = Info()
+            Dungeon.preview(info, bundle)
+        } catch (e: IOException) {
+            info = null
+        }
+
+        return info
+    }
+
+    fun get(slot: Int) = progresses[slot]
+
+    fun add() {}
+
+    fun delete(slot: Int, deleteLevels: Boolean, deleteBackup: Boolean) {
+        Game.instance.deleteFile(gameFile(slot))
+
+        if (deleteLevels) {
+            var depth = 0
+            while (Game.instance.deleteFile(depthFile(slot, depth))) ++depth
+        }
+
+        if (deleteBackup) Game.instance.deleteFile(backupGameFile(slot))
+    }
+
+    // old
     private val state = HashMap<HeroClass, Info?>()
 
     fun check(cl: HeroClass): Info? {
@@ -72,8 +126,15 @@ object GamesInProgress {
     }
 
     class Info(val isBackup: Boolean = false) {
-        var depth: Int = 0
-        var level: Int = 0
+        var name: String = "Unnamed"
+
+        var heroClass = HeroClass.ROGUE
+        var subClass = HeroSubClass.NONE
+
+        var depth = 0
+        var level = 0
+        var armorTier = 0
+
         var challenge: Challenge? = null
 
         val isChallenged: Boolean get() = challenge != null

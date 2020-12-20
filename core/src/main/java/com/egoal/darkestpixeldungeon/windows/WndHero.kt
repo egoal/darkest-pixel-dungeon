@@ -116,17 +116,25 @@ class WndHero : WndTabbed() {
 
             val hero = Dungeon.hero
 
-            val title = IconTitle()
-            title.icon(HeroSprite.avatar(hero.heroClass, hero.tier()))
-            if (hero.givenName() == hero.className())
-                title.label(Messages.get(this, "title", hero.lvl, hero.className())
-                        .toUpperCase(Locale.ENGLISH))
-            else
-                title.label((hero.givenName() + "\n" + Messages.get(this, "title",
-                        hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH))
+            val title = IconTitle(HeroSprite.avatar(hero.heroClass, hero.tier()), hero.userName)
+//            title.icon(HeroSprite.avatar(hero.heroClass, hero.tier()))
+//            if (hero.givenName() == hero.className())
+//                title.label(Messages.get(this, "title", hero.lvl, hero.className())
+//                        .toUpperCase(Locale.ENGLISH))
+//            else
+//                title.label((hero.givenName() + "\n" + Messages.get(this, "title",
+//                        hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH))
             title.color(Window.SHPX_COLOR)
             title.setRect(0f, 0f, WIDTH / 2f, 0f)
             add(title)
+
+            pos = title.bottom() + 2 * GAP5
+
+            val className = M.L(this, "title", hero.lvl, hero.className()).toUpperCase(Locale.ENGLISH)
+            val classNameText = PixelScene.renderText(className, 8)
+            classNameText.x = 0f
+            classNameText.y = pos
+            add(classNameText)
 
             if (hero.lvl >= 12 && hero.subClass == HeroSubClass.NONE) {
                 val btn = object : RedButton(M.L(this, "choose_way")) {
@@ -135,19 +143,21 @@ class WndHero : WndTabbed() {
                         WndMasterSubclass.Show(hero)
                     }
                 }
-                btn.setRect(title.right() + GAP5, title.top(), 40f, title.height())
+                btn.setRect(classNameText.x + classNameText.width() + GAP5, classNameText.y, 40f, classNameText.height())
                 add(btn)
             } else {
-                hero.challenge?.let { 
-                    val btn = object : RedButton(it.title()){
-                        override fun onClick() { GameScene.show(WndMessage(it.desc())) }
+                hero.challenge?.let {
+                    val btn = object : RedButton(it.title()) {
+                        override fun onClick() {
+                            GameScene.show(WndMessage(it.desc()))
+                        }
                     }
-                    btn.setRect(title.right() + GAP5, title.top(), 40f, title.height())
+                    btn.setRect(classNameText.x + classNameText.width() + GAP5, classNameText.y, 40f, classNameText.height())
                     add(btn)
                 }
             }
 
-            pos = title.bottom() + 2 * GAP5
+            pos = classNameText.y + classNameText.height() + 2 * GAP5
 
             statSlot(Messages.get(this, "str"), hero.STR())
             if (hero.SHLD > 0)

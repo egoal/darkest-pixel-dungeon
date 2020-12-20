@@ -38,6 +38,7 @@ public class Chrome {
     
     DPD_BOOK,
     DIALOG_OPTION,
+    TOAST_DARKER,
   }
 
   ;
@@ -51,6 +52,8 @@ public class Chrome {
         return new NinePatch(Asset, 22, 0, 18, 18, 5);
       case TOAST_TR:
         return new NinePatch(Asset, 40, 0, 18, 18, 5);
+      case TOAST_DARKER:
+        return new NinePatch(Asset, 88, 22, 18, 18, 5);
       case BUTTON:
         return new NinePatch(Asset, 58, 0, 6, 6, 2);
       case TAG:

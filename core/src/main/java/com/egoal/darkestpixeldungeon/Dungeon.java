@@ -38,6 +38,7 @@ import com.egoal.darkestpixeldungeon.levels.*;
 import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel;
 import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
+import com.egoal.darkestpixeldungeon.scenes.HeroCreateScene;
 import com.egoal.darkestpixeldungeon.scenes.StartScene;
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.egoal.darkestpixeldungeon.utils.GLog;
@@ -143,7 +144,6 @@ public class Dungeon {
     public static int version;
 
     public static void init() {
-
         version = Game.versionCode;
 
         Actor.Companion.clear();
@@ -180,13 +180,16 @@ public class Dungeon {
         Jessica.Quest.INSTANCE.reset();
         Yvette.Quest.INSTANCE.Reset();
 
+        Badges.INSTANCE.reset();
+
+        // hero init
         hero = new Hero();
         hero.live();
 
-        Badges.INSTANCE.reset();
-
-//    StartScene.curClass.initHero(hero);
-        StartScene.Companion.getCurrentClass().initHero(hero);
+        // StartScene.Companion.getCurrentClass().initHero(hero);
+        hero.setUserName(HeroCreateScene.Companion.getUserName());
+        HeroCreateScene.Companion.getCurrentClass().initHero(hero);
+        HeroCreateScene.Companion.getBornPrize().collect(hero);
     }
 
     public static boolean IsChallenged() {

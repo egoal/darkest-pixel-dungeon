@@ -162,6 +162,7 @@ class InterlevelScene : PixelScene() {
     private fun descend() {
         Actor.fixTime()
         if (Dungeon.hero == null) {
+            // start a new game
             Dungeon.init()
             if (noStory) {
                 Dungeon.chapters.add(WndStory.ID_SEWERS)

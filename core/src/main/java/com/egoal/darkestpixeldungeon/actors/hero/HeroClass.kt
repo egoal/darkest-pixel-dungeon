@@ -28,7 +28,7 @@ enum class HeroClass(private val title: String) {
     WARRIOR("warrior") {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_WARRIOR
         override fun spritesheet(): String = Assets.WARRIOR
-        override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "warrior_perk$it") }
+        override fun perks(): List<String> = (1..3).map { Messages.get(HeroClass::class.java, "warrior_perk$it") }
         override fun initialPerks(): List<Perk> = listOf(Drunkard(), GoodAppetite(), RavenousAppetite())
 
         override fun initHeroStatus(hero: Hero) {
@@ -73,7 +73,7 @@ enum class HeroClass(private val title: String) {
     MAGE("mage") {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_MAGE
         override fun spritesheet(): String = Assets.MAGE
-        override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "mage_perk$it") }
+        override fun perks(): List<String> = (1..3).map { Messages.get(HeroClass::class.java, "mage_perk$it") }
         override fun initialPerks(): List<Perk> = listOf(GoodAppetite(), WandPerception(), PreheatedZap())
 
         override fun initHeroClass(hero: Hero) {
@@ -104,7 +104,7 @@ enum class HeroClass(private val title: String) {
     ROGUE("rogue") {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_ROGUE
         override fun spritesheet(): String = Assets.ROGUE
-        override fun perks(): List<String> = (1..6).map { Messages.get(HeroClass::class.java, "rogue_perk$it") }
+        override fun perks(): List<String> = (1..4).map { Messages.get(HeroClass::class.java, "rogue_perk$it") }
         override fun initialPerks(): List<Perk> = listOf(LowWeightDexterous(), Dieting(), ExtraCritProbability(), Keen())
 
         override fun onHeroUpgraded(hero: Hero) {
@@ -138,7 +138,7 @@ enum class HeroClass(private val title: String) {
     HUNTRESS("huntress") {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_HUNTRESS
         override fun spritesheet(): String = Assets.HUNTRESS
-        override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "huntress_perk$it") }
+        override fun perks(): List<String> = (1..4).map { Messages.get(HeroClass::class.java, "huntress_perk$it") }
         override fun initialPerks(): List<Perk> = listOf(NightVision(), Telepath())
 
         override fun initHeroClass(hero: Hero) {
@@ -161,7 +161,7 @@ enum class HeroClass(private val title: String) {
     SORCERESS("sorceress") {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_SORCERESS
         override fun spritesheet(): String = Assets.DPD_SORCERESS
-        override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "sorceress_perk$it") }
+        override fun perks(): List<String> = (1..4).map { Messages.get(HeroClass::class.java, "sorceress_perk$it") }
         override fun initialPerks(): List<Perk> = listOf(Discount(), Optimistic())
 
         override fun onHeroUpgraded(hero: Hero) {
@@ -173,6 +173,7 @@ enum class HeroClass(private val title: String) {
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
 
+            hero.regeneration += 0.02f
             hero.magicalResistance = 0.15f
             hero.addResistances(Damage.Element.all(), 0.1f)
             hero.addResistances(Damage.Element.POISON, 0.5f)
@@ -198,7 +199,7 @@ enum class HeroClass(private val title: String) {
     EXILE("exile") {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_EXILE
         override fun spritesheet(): String = Assets.EXILE
-        override fun perks(): List<String> = (1..5).map { Messages.get(HeroClass::class.java, "exile_perk$it") }
+        override fun perks(): List<String> = (1..3).map { Messages.get(HeroClass::class.java, "exile_perk$it") }
         override fun initialPerks(): List<Perk> = listOf(LowHealthRegeneration(), Discount().apply { level = -1 }, PolearmMaster())
 
         override fun initHeroStatus(hero: Hero) {
@@ -242,7 +243,7 @@ enum class HeroClass(private val title: String) {
 
     fun title(): String = Messages.get(HeroClass::class.java, title)
 
-    fun description(): String = M.L(HeroClass::class.java, "$title-desc")
+    fun desc(): String = M.L(HeroClass::class.java, "${title}_desc")
 
     abstract fun masteryBadge(): Badges.Badge
     abstract fun spritesheet(): String

@@ -111,8 +111,7 @@ public class TitleScene extends PixelScene {
                 new DashboardItem(Messages.get(this, "play"), 0) {
                     @Override
                     protected void onClick() {
-                        // InputDialog.INSTANCE.GetString("input string", "unnamed");
-                        DarkestPixelDungeon.switchNoFade(StartScene.class);
+                        DarkestPixelDungeon.switchNoFade(SlotSelectScene.class);
                     }
                 },
                 new DashboardItem(Messages.get(this, "rankings"), 2) {

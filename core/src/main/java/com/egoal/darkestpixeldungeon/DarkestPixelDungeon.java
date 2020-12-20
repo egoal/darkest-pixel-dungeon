@@ -402,6 +402,10 @@ public class DarkestPixelDungeon extends Game {
     return Preferences.INSTANCE.getInt(Preferences.KEY_VERSION, 0);
   }
 
+  public static void lastHeroName(String name) { Preferences.INSTANCE.put(Preferences.KEY_HERO_NAME, name); }
+
+  public static String lastHeroName(){ return Preferences.INSTANCE.getString(Preferences.KEY_HERO_NAME, "无名"); }
+
   /*
    * <--- Preferences
    */

@@ -65,6 +65,8 @@ class Hero : Char() {
         camp = Camp.HERO
     }
 
+    var userName = M.L(this, "username")
+
     // properties
     var heroClass = HeroClass.ROGUE
     var subClass = HeroSubClass.NONE
@@ -1278,6 +1280,9 @@ class Hero : Char() {
         fun Preview(info: GamesInProgress.Info, bundle: Bundle) {
             info.level = bundle.getInt(LEVEL)
 
+            info.name = bundle.getString(USER_NAME)
+            if(info.name.isEmpty()) info.name = M.L(Hero::class.java, "username")
+
             val chastr = bundle.getString(CHALLENGE)
             if (chastr.isNotEmpty()) info.challenge = Challenge.valueOf(chastr)
         }
@@ -1336,11 +1341,14 @@ class Hero : Char() {
         private const val CHALLENGE = "challenge"
         private const val PERK_GAIN = "perk_gain"
         private const val SPAWNED_PERKS = "spawned-perks"
+        private const val USER_NAME = "username"
     }
 
     // store
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
+
+        bundle.put(USER_NAME, userName)
 
         heroClass.storeInBundle(bundle)
         subClass.storeInBundle(bundle)
@@ -1371,6 +1379,8 @@ class Hero : Char() {
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
+
+        userName = bundle.getString(USER_NAME)
 
         heroClass = HeroClass.RestoreFromBundle(bundle)
         subClass = HeroSubClass.RestoreFromBundle(bundle)
