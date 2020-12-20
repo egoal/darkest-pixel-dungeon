@@ -143,9 +143,7 @@ class RankingsScene : PixelScene() {
             else position.text(" ")
             position.measure()
 
-            desc.text(Messages.titleCase(rec.desc()))
-
-            //desc.measure();
+            desc.text("${rec.userName} (${rec.desc()})")
             val odd = pos % 2
 
             if (rec.win) {
@@ -190,7 +188,7 @@ class RankingsScene : PixelScene() {
             position = BitmapText(pixelFont).apply { alpha(0.8f) }
             add(position)
 
-            desc = renderMultiline(7)
+            desc = renderMultiline(6)
             add(desc)
 
             depth = BitmapText(pixelFont).apply { alpha(0.8f) }

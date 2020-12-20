@@ -20,10 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.scenes
 
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
-import com.egoal.darkestpixeldungeon.Statistics
+import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.items.artifacts.HomurasShield
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -161,7 +158,7 @@ class InterlevelScene : PixelScene() {
     @Throws(IOException::class)
     private fun descend() {
         Actor.fixTime()
-        if (Dungeon.hero == null) {
+        if (Dungeon.isHeroNull) {
             // start a new game
             Dungeon.init()
             if (noStory) {
@@ -179,7 +176,7 @@ class InterlevelScene : PixelScene() {
             level = Dungeon.newLevel()
         } else {
             Dungeon.depth++
-            level = Dungeon.loadLevel(Dungeon.hero.heroClass)
+            level = Dungeon.loadLevel()
         }
         Dungeon.switchLevel(level, level.entrance)
     }
@@ -195,7 +192,7 @@ class InterlevelScene : PixelScene() {
             level = Dungeon.newLevel()
         } else {
             Dungeon.depth++
-            level = Dungeon.loadLevel(Dungeon.hero.heroClass)
+            level = Dungeon.loadLevel()
         }
         Dungeon.switchLevel(level, if (fallIntoPit)
             level.pitCell()
@@ -211,7 +208,7 @@ class InterlevelScene : PixelScene() {
 
         Dungeon.saveAll()
         Dungeon.depth--
-        val level = Dungeon.loadLevel(Dungeon.hero.heroClass)
+        val level = Dungeon.loadLevel()
         Dungeon.switchLevel(level, level.exit)
     }
 
@@ -223,7 +220,7 @@ class InterlevelScene : PixelScene() {
 
         Dungeon.saveAll()
         Dungeon.depth = returnDepth
-        val level = Dungeon.loadLevel(Dungeon.hero.heroClass)
+        val level = Dungeon.loadLevel()
         Dungeon.switchLevel(level, returnPos)
     }
 
@@ -234,14 +231,13 @@ class InterlevelScene : PixelScene() {
         GameLog.wipe()
 
         // init level
-        Dungeon.loadGame(StartScene.CurrentClass)
+        Dungeon.loadGame()
 
         if (Dungeon.depth == -1) {
             Dungeon.depth = Statistics.DeepestFloor
-            Dungeon.switchLevel(Dungeon.loadLevel(StartScene.CurrentClass), -1)
+            Dungeon.switchLevel(Dungeon.loadLevel(), -1)
         } else {
-            Dungeon.switchLevel(Dungeon.loadLevel(StartScene.CurrentClass), Dungeon
-                    .hero.pos)
+            Dungeon.switchLevel(Dungeon.loadLevel(), Dungeon.hero.pos)
         }
     }
 
@@ -251,8 +247,8 @@ class InterlevelScene : PixelScene() {
 
         GameLog.wipe()
 
-        Dungeon.loadBackupGame(StartScene.CurrentClass)
-        val level = Dungeon.loadBackupLevel(StartScene.CurrentClass)
+        Dungeon.loadBackupGame()
+        val level = Dungeon.loadBackupLevel()
         //todo: remove shield only if reflux with shield
         val shield = Dungeon.hero.belongings.getItem(HomurasShield::class.java)
         if (shield != null) {

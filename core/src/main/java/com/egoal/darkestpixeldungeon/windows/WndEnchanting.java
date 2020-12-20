@@ -96,12 +96,12 @@ public class WndEnchanting extends Window {
     // when close, take back the items not used
     if (btnItemSrc_ != null && btnItemSrc_.item != null) {
       if (!btnItemSrc_.item.collect())
-        Dungeon.level.drop(btnItemSrc_.item, Dungeon.hero.getPos());
+        Dungeon.INSTANCE.getLevel().drop(btnItemSrc_.item, Dungeon.INSTANCE.getHero().getPos());
     }
 
     if (btnItemTgt_ != null && btnItemTgt_.item != null) {
       if (!btnItemTgt_.item.collect())
-        Dungeon.level.drop(btnItemTgt_.item, Dungeon.hero.getPos());
+        Dungeon.INSTANCE.getLevel().drop(btnItemTgt_.item, Dungeon.INSTANCE.getHero().getPos());
     }
 
     super.destroy();
@@ -114,19 +114,19 @@ public class WndEnchanting extends Window {
         if (btnPressed_.item != null) {
           // give back
           if (!btnPressed_.item.collect()) {
-            Dungeon.level.drop(btnPressed_.item, Dungeon.hero.getPos());
+            Dungeon.INSTANCE.getLevel().drop(btnPressed_.item, Dungeon.INSTANCE.getHero().getPos());
           }
         }
 
         // take from the backpack
         // the equipped item showed be take off, in case lack of room space
-        if (item instanceof EquipableItem && item.isEquipped(Dungeon.hero)) {
+        if (item instanceof EquipableItem && item.isEquipped(Dungeon.INSTANCE.getHero())) {
           GameScene.show(new WndMessage(Messages.get(WndEnchanting.class,
                   "first_unequip")));
           return;
         }
 
-        btnPressed_.item(item.detach(Dungeon.hero.getBelongings().getBackpack()));
+        btnPressed_.item(item.detach(Dungeon.INSTANCE.getHero().getBelongings().getBackpack()));
 
         if (btnItemSrc_.item != null && btnItemTgt_.item != null) {
           String result = EnchantingStation.INSTANCE.CanTransform(

@@ -160,7 +160,7 @@ open class Item : Bundlable {
         }
 
         if (items.size < container.size) {
-            if (Dungeon.hero?.isAlive == true) {
+            if (!Dungeon.isHeroNull && Dungeon.hero.isAlive) {
                 Badges.validateItemLevelAquired(this)
             }
             items.add(this)
@@ -363,7 +363,7 @@ open class Item : Bundlable {
         cursed = bundle.getBoolean(CURSED)
 
         //only want to populate slot on first load.
-        if (Dungeon.hero == null) {
+        if (Dungeon.isHeroNull) {
             if (bundle.contains(QUICKSLOT))
                 Dungeon.quickslot.setSlot(bundle.getInt(QUICKSLOT), this)
         }

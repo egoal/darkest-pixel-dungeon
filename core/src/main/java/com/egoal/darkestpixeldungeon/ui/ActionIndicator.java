@@ -64,7 +64,7 @@ public class ActionIndicator extends Tag {
   public void update() {
     super.update();
 
-    if (!Dungeon.hero.getReady()) {
+    if (!Dungeon.INSTANCE.getHero().getReady()) {
       if (icon != null) icon.alpha(0.5f);
     } else {
       if (icon != null) icon.alpha(1f);
@@ -81,7 +81,7 @@ public class ActionIndicator extends Tag {
 
   @Override
   protected void onClick() {
-    if (action != null && Dungeon.hero.getReady())
+    if (action != null && Dungeon.INSTANCE.getHero().getReady())
       action.doAction();
   }
 

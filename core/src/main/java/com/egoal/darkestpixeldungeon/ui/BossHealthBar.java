@@ -87,7 +87,7 @@ public class BossHealthBar extends Component {
   public void update() {
     super.update();
     if (boss != null) {
-      if (!boss.isAlive() || !Dungeon.level.getMobs().contains(boss)) {
+      if (!boss.isAlive() || !Dungeon.INSTANCE.getLevel().getMobs().contains(boss)) {
         boss = null;
         visible = active = false;
       } else {

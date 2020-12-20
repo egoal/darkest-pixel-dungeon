@@ -41,9 +41,9 @@ public class Surprise extends Image {
   public void reset(int p) {
     revive();
 
-    x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap
+    x = (p % Dungeon.INSTANCE.getLevel().width()) * DungeonTilemap.SIZE + (DungeonTilemap
             .SIZE - width) / 2;
-    y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap
+    y = (p / Dungeon.INSTANCE.getLevel().width()) * DungeonTilemap.SIZE + (DungeonTilemap
             .SIZE - height) / 2;
 
     time = TIME_TO_FADE;
@@ -80,7 +80,7 @@ public class Surprise extends Image {
   }
 
   public static void hit(int pos, float angle) {
-    Group parent = Dungeon.hero.getSprite().parent;
+    Group parent = Dungeon.INSTANCE.getHero().getSprite().parent;
     Wound w = (Wound) parent.recycle(Wound.class);
     parent.bringToFront(w);
     w.reset(pos);

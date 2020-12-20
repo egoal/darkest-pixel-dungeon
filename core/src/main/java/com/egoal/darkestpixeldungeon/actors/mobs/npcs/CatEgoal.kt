@@ -58,8 +58,9 @@ class CatEgoal : NPC.Unbreakable() {
 
         val g = Gift().apply {
             identify()
-            setItems(OrchidRoot(),
-                    if (praised) Generator.SCROLL.generate() else Generator.POTION.generate(),
+            setItems(
+                    // OrchidRoot(),
+                    // if (praised) Generator.SCROLL.generate() else Generator.POTION.generate(),
                     GoldenClaw(),
                     SkeletonKey(Dungeon.depth))
         }

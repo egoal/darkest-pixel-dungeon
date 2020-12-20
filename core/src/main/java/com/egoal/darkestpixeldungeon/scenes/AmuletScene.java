@@ -61,8 +61,8 @@ public class AmuletScene extends PixelScene {
     RedButton btnExit = new RedButton(Messages.get(this, "exit")) {
       @Override
       protected void onClick() {
-        Dungeon.win(Amulet.class);
-        Dungeon.deleteGame(Dungeon.hero.getHeroClass(), true, true);
+        Dungeon.INSTANCE.win(Amulet.class);
+        Dungeon.INSTANCE.deleteGame(true, true);
         Game.switchScene(RankingsScene.class);
       }
     };

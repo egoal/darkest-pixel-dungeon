@@ -153,11 +153,11 @@ public class GameScene extends PixelScene {
 
   @Override
   public void create() {
-    Music.INSTANCE.play(Dungeon.level.trackMusic(), true);
+    Music.INSTANCE.play(Dungeon.INSTANCE.getLevel().trackMusic(), true);
 
     Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
 
-    DarkestPixelDungeon.lastClass(Dungeon.hero.getHeroClass().ordinal());
+    DarkestPixelDungeon.lastClass(Dungeon.INSTANCE.getHero().getHeroClass().ordinal());
 
     super.create();
     Camera.main.zoom(GameMath.INSTANCE.gate(minZoom, defaultZoom +
@@ -170,9 +170,9 @@ public class GameScene extends PixelScene {
     add(terrain);
 
     water = new SkinnedBlock(
-            Dungeon.level.width() * DungeonTilemap.SIZE,
-            Dungeon.level.height() * DungeonTilemap.SIZE,
-            Dungeon.level.waterTex()) {
+            Dungeon.INSTANCE.getLevel().width() * DungeonTilemap.SIZE,
+            Dungeon.INSTANCE.getLevel().height() * DungeonTilemap.SIZE,
+            Dungeon.INSTANCE.getLevel().waterTex()) {
 
       @Override
       protected NoosaScript script() {
@@ -198,35 +198,35 @@ public class GameScene extends PixelScene {
     customTiles = new Group();
     terrain.add(customTiles);
 
-    for (CustomTileVisual visual : Dungeon.level.getCustomTiles()) {
+    for (CustomTileVisual visual : Dungeon.INSTANCE.getLevel().getCustomTiles()) {
       addCustomTile(visual.create());
     }
 
-    levelVisuals = Dungeon.level.addVisuals();
+    levelVisuals = Dungeon.INSTANCE.getLevel().addVisuals();
     add(levelVisuals);
 
     traps = new Group();
     add(traps);
 
-    int size = Dungeon.level.getTraps().size();
+    int size = Dungeon.INSTANCE.getLevel().getTraps().size();
     for (int i = 0; i < size; i++) {
-      addTrapSprite(Dungeon.level.getTraps().valueAt(i));
+      addTrapSprite(Dungeon.INSTANCE.getLevel().getTraps().valueAt(i));
     }
 
     plants = new Group();
     add(plants);
 
-    size = Dungeon.level.getPlants().size();
+    size = Dungeon.INSTANCE.getLevel().getPlants().size();
     for (int i = 0; i < size; i++) {
-      addPlantSprite(Dungeon.level.getPlants().valueAt(i));
+      addPlantSprite(Dungeon.INSTANCE.getLevel().getPlants().valueAt(i));
     }
 
     heaps = new Group();
     add(heaps);
 
-    size = Dungeon.level.getHeaps().size();
+    size = Dungeon.INSTANCE.getLevel().getHeaps().size();
     for (int i = 0; i < size; i++) {
-      addHeapSprite(Dungeon.level.getHeaps().valueAt(i));
+      addHeapSprite(Dungeon.INSTANCE.getLevel().getHeaps().valueAt(i));
     }
 
     emitters = new Group();
@@ -236,10 +236,10 @@ public class GameScene extends PixelScene {
     mobs = new Group();
     add(mobs);
 
-    for (Mob mob : Dungeon.level.getMobs()) {
+    for (Mob mob : Dungeon.INSTANCE.getLevel().getMobs()) {
       addMobSprite(mob);
       if (Statistics.INSTANCE.getAmuletObtained()) {
-        mob.beckon(Dungeon.hero.getPos());
+        mob.beckon(Dungeon.INSTANCE.getHero().getPos());
       }
     }
 
@@ -249,12 +249,12 @@ public class GameScene extends PixelScene {
     gases = new Group();
     add(gases);
 
-    for (Blob blob : Dungeon.level.getBlobs().values()) {
+    for (Blob blob : Dungeon.INSTANCE.getLevel().getBlobs().values()) {
       blob.setEmitter(null);
       addBlobSprite(blob);
     }
 
-    fog = new FogOfWar(Dungeon.level.width(), Dungeon.level.height());
+    fog = new FogOfWar(Dungeon.INSTANCE.getLevel().width(), Dungeon.INSTANCE.getLevel().height());
     add(fog);
 
     spells = new Group();
@@ -275,7 +275,7 @@ public class GameScene extends PixelScene {
 //    heroDoll.addComponencts();
 
     hero = new HeroSprite();
-    hero.place(Dungeon.hero.getPos());
+    hero.place(Dungeon.INSTANCE.getHero().getPos());
     hero.updateArmor();
     mobs.add(hero);
 
@@ -324,18 +324,18 @@ public class GameScene extends PixelScene {
 
     switch (InterlevelScene.Companion.getMode()) {
       case RESURRECT:
-        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.level
+        ScrollOfTeleportation.Companion.appear(Dungeon.INSTANCE.getHero(), Dungeon.INSTANCE.getLevel()
                 .getEntrance());
         new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
         break;
       case RETURN:
-        ScrollOfTeleportation.Companion.appear(Dungeon.hero, Dungeon.hero.getPos());
+        ScrollOfTeleportation.Companion.appear(Dungeon.INSTANCE.getHero(), Dungeon.INSTANCE.getHero().getPos());
         break;
       case FALL:
         Chasm.INSTANCE.HeroLand();
         break;
       case DESCEND:
-        switch (Dungeon.depth) {
+        switch (Dungeon.INSTANCE.getDepth()) {
           case 1:
             WndStory.showChapter(WndStory.ID_SEWERS);
             break;
@@ -352,43 +352,43 @@ public class GameScene extends PixelScene {
             WndStory.showChapter(WndStory.ID_HALLS);
             break;
         }
-        if (Dungeon.hero.isAlive() && Dungeon.depth != 22) {
+        if (Dungeon.INSTANCE.getHero().isAlive() && Dungeon.INSTANCE.getDepth() != 22) {
           Badges.INSTANCE.validateNoKilling();
         }
         break;
       default:
     }
 
-    ArrayList<Item> dropped = Dungeon.droppedItems.get(Dungeon.depth);
+    ArrayList<Item> dropped = Dungeon.INSTANCE.getDroppedItems().get(Dungeon.INSTANCE.getDepth());
     if (dropped != null) {
       for (Item item : dropped) {
-        int pos = Dungeon.level.randomRespawnCell();
+        int pos = Dungeon.INSTANCE.getLevel().randomRespawnCell();
         if (item instanceof Potion) {
           ((Potion) item).shatter(pos);
         } else if (item instanceof Plant.Seed) {
-          Dungeon.level.plant((Plant.Seed) item, pos);
+          Dungeon.INSTANCE.getLevel().plant((Plant.Seed) item, pos);
         } else if (item instanceof Honeypot) {
-          Dungeon.level.drop(((Honeypot) item).shatter(null, pos), pos);
+          Dungeon.INSTANCE.getLevel().drop(((Honeypot) item).shatter(null, pos), pos);
         } else {
-          Dungeon.level.drop(item, pos);
+          Dungeon.INSTANCE.getLevel().drop(item, pos);
         }
       }
-      Dungeon.droppedItems.remove(Dungeon.depth);
+      Dungeon.INSTANCE.getDroppedItems().remove(Dungeon.INSTANCE.getDepth());
     }
 
-    Dungeon.hero.next();
+    Dungeon.INSTANCE.getHero().next();
 
     Camera.main.target = hero;
 
     if (InterlevelScene.Companion.getMode() != InterlevelScene.Mode.NONE) {
-      if (Dungeon.depth < Statistics.INSTANCE.getDeepestFloor()) {
-        GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth);
+      if (Dungeon.INSTANCE.getDepth() < Statistics.INSTANCE.getDeepestFloor()) {
+        GLog.h(Messages.get(this, "welcome_back"), Dungeon.INSTANCE.getDepth());
       } else {
-        GLog.h(Messages.get(this, "welcome"), Dungeon.depth);
+        GLog.h(Messages.get(this, "welcome"), Dungeon.INSTANCE.getDepth());
         Sample.INSTANCE.play(Assets.SND_DESCEND);
       }
 
-      switch (Dungeon.level.getFeeling()) {
+      switch (Dungeon.INSTANCE.getLevel().getFeeling()) {
         case CHASM:
           GLog.w(Messages.get(this, "chasm"));
           break;
@@ -404,9 +404,9 @@ public class GameScene extends PixelScene {
         default:
       }
 
-      if (Dungeon.level instanceof RegularLevel &&
-              Dungeon.hero.getHeroPerk().has(LevelPerception.class) &&
-              ((RegularLevel) Dungeon.level).secretDoors() > 0)
+      if (Dungeon.INSTANCE.getLevel() instanceof RegularLevel &&
+              Dungeon.INSTANCE.getHero().getHeroPerk().has(LevelPerception.class) &&
+              ((RegularLevel) Dungeon.INSTANCE.getLevel()).secretDoors() > 0)
         GLog.n(Messages.get(this, "secrets"));
 
       InterlevelScene.Companion.setMode(InterlevelScene.Mode.NONE);
@@ -428,7 +428,8 @@ public class GameScene extends PixelScene {
   @Override
   public synchronized void pause() {
     try {
-      Dungeon.saveAll();
+      Dungeon.INSTANCE.saveAll(false);
+
       Badges.INSTANCE.saveGlobal();
     } catch (IOException e) {
       DarkestPixelDungeon.reportException(e);
@@ -439,7 +440,7 @@ public class GameScene extends PixelScene {
 
   @Override
   public synchronized void update() {
-    if (Dungeon.hero == null || scene == null) {
+    if (Dungeon.INSTANCE.getHero() == null || scene == null) {
       return;
     }
 
@@ -447,7 +448,7 @@ public class GameScene extends PixelScene {
 
     if (!freezeEmitters) water.offset(0, -5 * Game.elapsed);
 
-    if (!Actor.Companion.processing() && (t == null || !t.isAlive()) && Dungeon.hero
+    if (!Actor.Companion.processing() && (t == null || !t.isAlive()) && Dungeon.INSTANCE.getHero()
             .isAlive()) {
       t = new Thread() {
         @Override
@@ -460,7 +461,7 @@ public class GameScene extends PixelScene {
       t.start();
     }
 
-    if (Dungeon.hero.getReady() && Dungeon.hero.getParalysed() == 0) {
+    if (Dungeon.INSTANCE.getHero().getReady() && Dungeon.INSTANCE.getHero().getParalysed() == 0) {
       log.newLine();
     }
 
@@ -484,7 +485,7 @@ public class GameScene extends PixelScene {
       if (tagAppearing) layoutTags();
     }
 
-    cellSelector.enable(Dungeon.hero.getReady());
+    cellSelector.enable(Dungeon.INSTANCE.getHero().getReady());
   }
 
   private boolean tagAttack = false;
@@ -542,7 +543,7 @@ public class GameScene extends PixelScene {
 
   @Override
   protected void onMenuPressed() {
-    if (Dungeon.hero.getReady()) {
+    if (Dungeon.INSTANCE.getHero().getReady()) {
       selectItem(null, WndBag.Mode.ALL, null);
     }
   }
@@ -586,7 +587,7 @@ public class GameScene extends PixelScene {
 
   private void addMobSprite(Mob mob) {
     CharSprite sprite = mob.sprite();
-    sprite.visible = Dungeon.visible[mob.getPos()];
+    sprite.visible = Dungeon.INSTANCE.getVisible()[mob.getPos()];
     mobs.add(sprite);
     sprite.link(mob);
   }
@@ -653,13 +654,13 @@ public class GameScene extends PixelScene {
   }
 
   public static void add(Mob mob) {
-    Dungeon.level.getMobs().add(mob);
+    Dungeon.INSTANCE.getLevel().getMobs().add(mob);
     Actor.Companion.add(mob);
     scene.addMobSprite(mob);
   }
 
   public static void add(Mob mob, float delay) {
-    Dungeon.level.getMobs().add(mob);
+    Dungeon.INSTANCE.getLevel().getMobs().add(mob);
     Actor.Companion.addDelayed(mob, delay);
     scene.addMobSprite(mob);
   }
@@ -727,7 +728,7 @@ public class GameScene extends PixelScene {
 
   public static void resetMap() {
     if (scene != null) {
-      scene.tiles.map(Dungeon.level.getMap(), Dungeon.level.width());
+      scene.tiles.map(Dungeon.INSTANCE.getLevel().getMap(), Dungeon.INSTANCE.getLevel().width());
     }
     updateFog();
   }
@@ -769,9 +770,9 @@ public class GameScene extends PixelScene {
 
   public static void afterObserve() {
     if (scene != null) {
-      for (Mob mob : Dungeon.level.getMobs()) {
+      for (Mob mob : Dungeon.INSTANCE.getLevel().getMobs()) {
         if(mob.getHasSprite())
-          mob.getSprite().visible = Dungeon.visible[mob.getPos()];
+          mob.getSprite().visible = Dungeon.INSTANCE.getVisible()[mob.getPos()];
       }
     }
   }
@@ -822,7 +823,7 @@ public class GameScene extends PixelScene {
   }
 
   public static void bossSlain() {
-    if (Dungeon.hero.isAlive()) {
+    if (Dungeon.INSTANCE.getHero().isAlive()) {
       Banner bossSlain = new Banner(BannerSprites.get(BannerSprites.Type
               .BOSS_SLAIN));
       bossSlain.show(0xFFFFFF, 0.3f, 5f);
@@ -879,7 +880,7 @@ public class GameScene extends PixelScene {
   public static WndBag selectItem(WndBag.Listener listener, String title,
                                   WndBag.Filter filter) {
     cancelCellSelector();
-    WndBag wnd = new WndBag(Dungeon.hero.getBelongings().getBackpack(), listener,
+    WndBag wnd = new WndBag(Dungeon.INSTANCE.getHero().getBelongings().getBackpack(), listener,
             title, filter);
     scene.addToFront(wnd);
 
@@ -887,10 +888,10 @@ public class GameScene extends PixelScene {
   }
 
   static boolean cancel() {
-    if (Dungeon.hero.getCurAction() != null || Dungeon.hero.getResting()) {
+    if (Dungeon.INSTANCE.getHero().getCurAction() != null || Dungeon.INSTANCE.getHero().getResting()) {
 
-      Dungeon.hero.setCurAction(null);
-      Dungeon.hero.setResting(false);
+      Dungeon.INSTANCE.getHero().setCurAction(null);
+      Dungeon.INSTANCE.getHero().setResting(false);
       return true;
 
     } else {
@@ -910,8 +911,8 @@ public class GameScene extends PixelScene {
       return;
     }
 
-    if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level
-            .getVisited()[cell] && !Dungeon.level.getMapped()[cell])) {
+    if (cell < 0 || cell > Dungeon.INSTANCE.getLevel().length() || (!Dungeon.INSTANCE.getLevel()
+            .getVisited()[cell] && !Dungeon.INSTANCE.getLevel().getMapped()[cell])) {
       GameScene.show(new WndMessage(Messages.get(GameScene.class,
               "dont_know")));
       return;
@@ -920,11 +921,11 @@ public class GameScene extends PixelScene {
     ArrayList<String> names = new ArrayList<>();
     final ArrayList<Object> objects = new ArrayList<>();
 
-    if (cell == Dungeon.hero.getPos()) {
-      objects.add(Dungeon.hero);
-      names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
+    if (cell == Dungeon.INSTANCE.getHero().getPos()) {
+      objects.add(Dungeon.INSTANCE.getHero());
+      names.add(Dungeon.INSTANCE.getHero().className().toUpperCase(Locale.ENGLISH));
     } else {
-      if (Dungeon.visible[cell]) {
+      if (Dungeon.INSTANCE.getVisible()[cell]) {
         Mob mob = (Mob) Actor.Companion.findChar(cell);
         if (mob != null) {
           objects.add(mob);
@@ -933,19 +934,19 @@ public class GameScene extends PixelScene {
       }
     }
 
-    Heap heap = Dungeon.level.getHeaps().get(cell);
+    Heap heap = Dungeon.INSTANCE.getLevel().getHeaps().get(cell);
     if (heap != null && heap.getSeen()) {
       objects.add(heap);
       names.add(Messages.titleCase(heap.toString()));
     }
 
-    Plant plant = Dungeon.level.getPlants().get(cell);
+    Plant plant = Dungeon.INSTANCE.getLevel().getPlants().get(cell);
     if (plant != null) {
       objects.add(plant);
       names.add(Messages.titleCase(plant.getPlantName()));
     }
 
-    Trap trap = Dungeon.level.getTraps().get(cell);
+    Trap trap = Dungeon.INSTANCE.getLevel().getTraps().get(cell);
     if (trap != null && trap.getVisible()) {
       objects.add(trap);
       names.add(Messages.titleCase(trap.getName()));
@@ -970,7 +971,7 @@ public class GameScene extends PixelScene {
   }
 
   public static void examineObject(Object o) {
-    if (o == Dungeon.hero) {
+    if (o == Dungeon.INSTANCE.getHero()) {
       GameScene.show(new WndHero());
     } else if (o instanceof Mob) {
       GameScene.show(new WndInfoMob((Mob) o));
@@ -992,8 +993,8 @@ public class GameScene extends PixelScene {
           CellSelector.Listener() {
             @Override
             public void onSelect(Integer cell) {
-              if (Dungeon.hero.handle(cell)) {
-                Dungeon.hero.next();
+              if (Dungeon.INSTANCE.getHero().handle(cell)) {
+                Dungeon.INSTANCE.getHero().next();
               }
             }
 

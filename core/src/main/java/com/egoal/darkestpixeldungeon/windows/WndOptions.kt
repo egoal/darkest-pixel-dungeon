@@ -112,6 +112,7 @@ open class WndOptions : Window {
                 }
             })
         }
+
         fun Show(icon: Image, title: String, message: String, vararg options: String, onSelected: (Int) -> Unit) {
             GameScene.show(object : WndOptions(icon, title, message, *options) {
                 override fun onSelect(index: Int) {
@@ -125,9 +126,18 @@ open class WndOptions : Window {
                 if (it == 0) onConfirmed()
             }
         }
+
         fun Confirm(icon: Image, title: String, message: String, onConfirmed: () -> Unit) {
             Show(icon, title, message, M.L(WndOptions::class.java, "yes"), M.L(WndOptions::class.java, "no")) {
                 if (it == 0) onConfirmed()
+            }
+        }
+
+        fun CreateConfirm(icon: Image, title: String, message: String, onConfirmed: () -> Unit): WndOptions {
+            return object : WndOptions(icon, title, message, M.L(WndOptions::class.java, "yes"), M.L(WndOptions::class.java, "no")) {
+                override fun onSelect(index: Int) {
+                    if (index == 0) onConfirmed()
+                }
             }
         }
     }

@@ -61,7 +61,7 @@ public class ScorpioSprite extends MobSprite {
 
   @Override
   public void attack(int cell) {
-    if (!Dungeon.level.adjacent(cell, getCh().getPos())) {
+    if (!Dungeon.INSTANCE.getLevel().adjacent(cell, getCh().getPos())) {
 
       cellToAttack = cell;
       turnTo(getCh().getPos(), cell);

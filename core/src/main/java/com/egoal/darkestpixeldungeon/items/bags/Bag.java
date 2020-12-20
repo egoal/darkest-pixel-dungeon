@@ -90,7 +90,7 @@ public class Bag extends Item implements Iterable<Item> {
   public void onDetach() {
     this.owner = null;
     for (Item item : items)
-      Dungeon.quickslot.clearItem(item);
+      Dungeon.INSTANCE.getQuickslot().clearItem(item);
     updateQuickslot();
   }
 

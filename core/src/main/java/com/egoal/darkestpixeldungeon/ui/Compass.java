@@ -52,7 +52,7 @@ public class Compass extends Image {
     super.update();
 
     if (!visible) {
-      visible = Dungeon.level.getVisited()[cell] || Dungeon.level.getMapped()[cell];
+      visible = Dungeon.INSTANCE.getLevel().getVisited()[cell] || Dungeon.INSTANCE.getLevel().getMapped()[cell];
     }
 
     if (visible) {

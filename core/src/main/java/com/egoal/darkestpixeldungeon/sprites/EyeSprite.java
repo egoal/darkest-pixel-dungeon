@@ -103,7 +103,7 @@ public class EyeSprite extends MobSprite {
     super.onComplete(anim);
 
     if (anim == getZap()) {
-      if (Dungeon.visible[getCh().getPos()] || Dungeon.visible[zapPos]) {
+      if (Dungeon.INSTANCE.getVisible()[getCh().getPos()] || Dungeon.INSTANCE.getVisible()[zapPos]) {
         parent.add(new Beam.DeathRay(center(), DungeonTilemap
                 .tileCenterToWorld(zapPos)));
       }

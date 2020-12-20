@@ -37,9 +37,9 @@ public class DungeonTilemap extends Tilemap {
 
   public DungeonTilemap() {
     super(
-            Dungeon.level.tilesTex(),
-            new TextureFilm(Dungeon.level.tilesTex(), SIZE, SIZE));
-    map(Dungeon.level.getMap(), Dungeon.level.width());
+            Dungeon.INSTANCE.getLevel().tilesTex(),
+            new TextureFilm(Dungeon.INSTANCE.getLevel().tilesTex(), SIZE, SIZE));
+    map(Dungeon.INSTANCE.getLevel().getMap(), Dungeon.INSTANCE.getLevel().width());
 
     instance = this;
   }
@@ -50,10 +50,10 @@ public class DungeonTilemap extends Tilemap {
             invScale(SIZE).
             floor();
     return p.x >= 0
-            && p.x < Dungeon.level.width()
+            && p.x < Dungeon.INSTANCE.getLevel().width()
             && p.y >= 0
-            && p.y < Dungeon.level.height() ?
-            p.x + p.y * Dungeon.level.width()
+            && p.y < Dungeon.INSTANCE.getLevel().height() ?
+            p.x + p.y * Dungeon.INSTANCE.getLevel().width()
             : -1;
   }
 
@@ -83,14 +83,14 @@ public class DungeonTilemap extends Tilemap {
   }
 
   public static PointF tileToWorld(int pos) {
-    return new PointF(pos % Dungeon.level.width(), pos / Dungeon.level.width
+    return new PointF(pos % Dungeon.INSTANCE.getLevel().width(), pos / Dungeon.INSTANCE.getLevel().width
             ()).scale(SIZE);
   }
 
   public static PointF tileCenterToWorld(int pos) {
     return new PointF(
-            (pos % Dungeon.level.width() + 0.5f) * SIZE,
-            (pos / Dungeon.level.width() + 0.5f) * SIZE);
+            (pos % Dungeon.INSTANCE.getLevel().width() + 0.5f) * SIZE,
+            (pos / Dungeon.INSTANCE.getLevel().width() + 0.5f) * SIZE);
   }
 
   public static Image tile(int index) {
@@ -106,6 +106,6 @@ public class DungeonTilemap extends Tilemap {
 
   @Override
   protected boolean needsRender(int pos) {
-    return (Level.Companion.getDiscoverable()[pos] || Dungeon.level.getMap()[pos] == Terrain.CHASM) && Dungeon.level.getMap()[pos] != Terrain.WATER;
+    return (Level.Companion.getDiscoverable()[pos] || Dungeon.INSTANCE.getLevel().getMap()[pos] == Terrain.CHASM) && Dungeon.INSTANCE.getLevel().getMap()[pos] != Terrain.WATER;
   }
 }

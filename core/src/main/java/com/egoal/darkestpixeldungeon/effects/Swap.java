@@ -47,7 +47,7 @@ public class Swap extends Actor {
     this.ch1 = ch1;
     this.ch2 = ch2;
 
-    delay = Dungeon.level.distance(ch1.getPos(), ch2.getPos()) * 0.1f;
+    delay = Dungeon.INSTANCE.getLevel().distance(ch1.getPos(), ch2.getPos()) * 0.1f;
 
     eff1 = new Effect(ch1.getSprite(), ch1.getPos(), ch2.getPos());
     eff2 = new Effect(ch2.getSprite(), ch2.getPos(), ch1.getPos());
@@ -77,21 +77,21 @@ public class Swap extends Actor {
 
       if (!ch1.getFlying()) {
         if (ch1 instanceof Mob) {
-          Dungeon.level.mobPress((Mob) ch1);
+          Dungeon.INSTANCE.getLevel().mobPress((Mob) ch1);
         } else {
-          Dungeon.level.press(ch1.getPos(), ch1);
+          Dungeon.INSTANCE.getLevel().press(ch1.getPos(), ch1);
         }
       }
       if (!ch2.getFlying()) {
         if (ch2 instanceof Mob) {
-          Dungeon.level.mobPress((Mob) ch2);
+          Dungeon.INSTANCE.getLevel().mobPress((Mob) ch2);
         } else {
-          Dungeon.level.press(ch2.getPos(), ch2);
+          Dungeon.INSTANCE.getLevel().press(ch2.getPos(), ch2);
         }
       }
 
-      if (ch1 == Dungeon.hero || ch2 == Dungeon.hero) {
-        Dungeon.observe();
+      if (ch1 == Dungeon.INSTANCE.getHero() || ch2 == Dungeon.INSTANCE.getHero()) {
+        Dungeon.INSTANCE.observe();
         GameScene.updateFog();
       }
     }

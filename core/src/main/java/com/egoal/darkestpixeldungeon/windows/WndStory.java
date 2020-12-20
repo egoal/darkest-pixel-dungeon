@@ -96,7 +96,7 @@ public class WndStory extends Window {
 
   public static void showChapter(int id) {
 
-    if (Dungeon.chapters.contains(id)) {
+    if (Dungeon.INSTANCE.getChapters().contains(id)) {
       return;
     }
 
@@ -109,7 +109,7 @@ public class WndStory extends Window {
 
       Game.scene().add(wnd);
 
-      Dungeon.chapters.add(id);
+      Dungeon.INSTANCE.getChapters().add(id);
     }
   }
 }

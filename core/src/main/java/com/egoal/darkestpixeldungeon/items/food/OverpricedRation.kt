@@ -23,7 +23,7 @@ package com.egoal.darkestpixeldungeon.items.food
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
-class OverpricedRation : Food(Hunger.STARVING - Hunger.HUNGRY, 1) {
+class OverpricedRation : Food(200f, 1) {
     init {
         image = ItemSpriteSheet.OVERPRICED
     }

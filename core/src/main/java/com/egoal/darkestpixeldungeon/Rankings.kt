@@ -36,13 +36,14 @@ object Rankings {
     var totalNumber = 0
     var wonNumber = 0
 
-    fun Submit(win: Boolean, cause: Class<*>) {
+    fun Submit(win: Boolean, cause: Class<*>?) {
         Load()
 
         // make new record
         val rec = Record().apply {
             this.cause = cause
             this.win = win
+            userName = Dungeon.hero.userName
             heroClass = Dungeon.hero.heroClass
             armorTier = Dungeon.hero.tier()
             heroLevel = Dungeon.hero.lvl
@@ -116,8 +117,8 @@ object Rankings {
     fun LoadGameData(rec: Record) {
         val data = rec.gameData
 
-        Dungeon.hero = null
-        Dungeon.level = null
+        Dungeon.nullHero()
+        Dungeon.nullLevel()
         Generator.reset()
         Dungeon.quickslot.reset()
         QuickSlotButton.reset()
@@ -182,6 +183,7 @@ object Rankings {
     class Record : Bundlable {
         var cause: Class<*>? = null
         var win: Boolean = false
+        var userName: String = "无名"
         lateinit var heroClass: HeroClass
         var armorTier = 0
         var heroLevel = 0

@@ -49,7 +49,7 @@ public final class ShadowCaster {
 
     BArray.setFalse(fieldOfView);
 
-    fieldOfView[y * Dungeon.level.width() + x] = true;
+    fieldOfView[y * Dungeon.INSTANCE.getLevel().width() + x] = true;
 
     boolean[] losBlocking = Level.Companion.getLosBlocking();
     Obstacles obs = new Obstacles();
@@ -91,14 +91,13 @@ public final class ShadowCaster {
         int x = cx + q * m1 + p * m3;
         int y = cy + p * m2 + q * m4;
 
-        if (y >= 0 && y < Dungeon.level.height() && x >= 0 && x < Dungeon
-                .level.width()) {
+        if (y >= 0 && y < Dungeon.INSTANCE.getLevel().height() && x >= 0 && x < Dungeon.INSTANCE.getLevel().width()) {
 
           float a0 = (float) q / p;
           float a1 = a0 - dq2;
           float a2 = a0 + dq2;
 
-          int pos = y * Dungeon.level.width() + x;
+          int pos = y * Dungeon.INSTANCE.getLevel().width() + x;
 
           if (obs.isBlocked(a0) && obs.isBlocked(a1) && obs.isBlocked(a2)) {
 
@@ -171,7 +170,7 @@ public final class ShadowCaster {
     BArray.setFalse(fieldOfView);
 
     //set source cell to true
-    fieldOfView[y * Dungeon.level.width() + x] = true;
+    fieldOfView[y * Dungeon.INSTANCE.getLevel().width() + x] = true;
 
     boolean[] losBlocking = Level.Companion.getLosBlocking();
 
@@ -223,17 +222,17 @@ public final class ShadowCaster {
               (int) Math.ceil((row + 0.5) * rSlope - 0.499));
 
       //coordinates of source
-      int cell = x + y * Dungeon.level.width();
+      int cell = x + y * Dungeon.INSTANCE.getLevel().width();
 
       //plus coordinates of current cell (including mirroring in x, y, and x=y)
-      if (mXY) cell += mX * start * Dungeon.level.width() + mY * row;
-      else cell += mX * start + mY * row * Dungeon.level.width();
+      if (mXY) cell += mX * start * Dungeon.INSTANCE.getLevel().width() + mY * row;
+      else cell += mX * start + mY * row * Dungeon.INSTANCE.getLevel().width();
 
-      if (cell < 0 || cell >= Dungeon.level.length()) return;
+      if (cell < 0 || cell >= Dungeon.INSTANCE.getLevel().length()) return;
 
       //for each column in this row, which
       for (col = start; col <= end; col++) {
-        if (cell < 0 || cell >= Dungeon.level.length()) continue;
+        if (cell < 0 || cell >= Dungeon.INSTANCE.getLevel().length()) continue;
         
         if (row <= viewDistance || Level.Companion.getLighted()[cell])
           fov[cell] = true;
@@ -266,7 +265,7 @@ public final class ShadowCaster {
         }
 
         if (!mXY) cell += mX;
-        else cell += mX * Dungeon.level.width();
+        else cell += mX * Dungeon.INSTANCE.getLevel().width();
       }
 
       //if the row ends in a blocking cell, this scan is finished.

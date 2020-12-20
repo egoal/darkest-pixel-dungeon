@@ -41,7 +41,7 @@ public class WndInfoCell extends Window {
 
     super();
 
-    int tile = Dungeon.level.getMap()[cell];
+    int tile = Dungeon.INSTANCE.getLevel().getMap()[cell];
     if (Level.Companion.getWater()[cell]) {
       tile = Terrain.WATER;
     } else if (Level.Companion.getPit()[cell]) {
@@ -49,9 +49,9 @@ public class WndInfoCell extends Window {
     }
 
     CustomTileVisual vis = null;
-    int x = cell % Dungeon.level.width();
-    int y = cell / Dungeon.level.width();
-    for (CustomTileVisual i : Dungeon.level.getCustomTiles()) {
+    int x = cell % Dungeon.INSTANCE.getLevel().width();
+    int y = cell / Dungeon.INSTANCE.getLevel().width();
+    for (CustomTileVisual i : Dungeon.INSTANCE.getLevel().getCustomTiles()) {
       if ((x >= i.tileX && x < i.tileX + i.tileW) &&
               (y >= i.tileY && y < i.tileY + i.tileH)) {
         if (i.desc() != null) {
@@ -72,14 +72,14 @@ public class WndInfoCell extends Window {
     } else {
 
       if (tile == Terrain.WATER) {
-        Image water = new Image(Dungeon.level.waterTex());
+        Image water = new Image(Dungeon.INSTANCE.getLevel().waterTex());
         water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
         titlebar.icon(water);
       } else {
         titlebar.icon(DungeonTilemap.tile(tile));
       }
-      titlebar.label(Dungeon.level.tileName(tile));
-      desc += Dungeon.level.tileDesc(tile);
+      titlebar.label(Dungeon.INSTANCE.getLevel().tileName(tile));
+      desc += Dungeon.INSTANCE.getLevel().tileDesc(tile);
 
     }
     titlebar.setRect(0, 0, WIDTH, 0);
@@ -88,7 +88,7 @@ public class WndInfoCell extends Window {
     RenderedTextMultiline info = PixelScene.renderMultiline(6);
     add(info);
 
-    for (Blob blob : Dungeon.level.getBlobs().values()) {
+    for (Blob blob : Dungeon.INSTANCE.getLevel().getBlobs().values()) {
       if (blob.getCur()[cell] > 0 && blob.tileDesc() != null) {
         if (desc.length() > 0) {
           desc += "\n\n";

@@ -17,6 +17,7 @@ import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.MageArmor
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
@@ -1055,7 +1056,7 @@ class Hero : Char() {
 
         if (ankh == null) ReallyDie(src)
         else {
-            Dungeon.deleteGame(Dungeon.hero.heroClass, false, true)
+            Dungeon.deleteGame(false, true)
             GameScene.show(WndResurrect(ankh, src))
         }
     }
@@ -1283,6 +1284,13 @@ class Hero : Char() {
             info.name = bundle.getString(USER_NAME)
             if(info.name.isEmpty()) info.name = M.L(Hero::class.java, "username")
 
+            info.heroClass = HeroClass.RestoreFromBundle(bundle)
+            info.subClass = HeroSubClass.RestoreFromBundle(bundle)
+
+            // info.armorTier =
+            val armor = bundle.get("armor") as Armor?
+            info.armorTier = armor?.tier ?: 0
+
             val chastr = bundle.getString(CHALLENGE)
             if (chastr.isNotEmpty()) info.challenge = Challenge.valueOf(chastr)
         }
@@ -1324,7 +1332,7 @@ class Hero : Char() {
 
             if (src is Doom) src.onDeath()
 
-            Dungeon.deleteGame(Dungeon.hero.heroClass, true, true)
+            Dungeon.deleteGame(true, true)
         }
 
         //

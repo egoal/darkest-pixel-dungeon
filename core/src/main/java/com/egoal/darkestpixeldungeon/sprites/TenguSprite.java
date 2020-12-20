@@ -76,7 +76,7 @@ public class TenguSprite extends MobSprite {
 
   @Override
   public void attack(int cell) {
-    if (!Dungeon.level.adjacent(cell, getCh().getPos())) {
+    if (!Dungeon.INSTANCE.getLevel().adjacent(cell, getCh().getPos())) {
 
       final Char enemy = Actor.Companion.findChar(cell);
 

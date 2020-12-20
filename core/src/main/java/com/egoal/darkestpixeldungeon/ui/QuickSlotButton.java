@@ -89,7 +89,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
           Item item = select(slotNum);
           if (item.getUsesTargeting())
             useTargeting();
-          item.execute(Dungeon.hero);
+          item.execute(Dungeon.INSTANCE.getHero());
         }
       }
 
@@ -144,13 +144,13 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
   }
 
   private static Item select(int slotNum) {
-    return Dungeon.quickslot.getItem(slotNum);
+    return Dungeon.INSTANCE.getQuickslot().getItem(slotNum);
   }
 
   @Override
   public void onSelect(Item item) {
     if (item != null) {
-      Dungeon.quickslot.setSlot(slotNum, item);
+      Dungeon.INSTANCE.getQuickslot().setSlot(slotNum, item);
       refresh();
     }
   }
@@ -170,7 +170,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
   }
 
   private void enableSlot() {
-    slot.enable(Dungeon.quickslot.isNonePlaceholder(slotNum));
+    slot.enable(Dungeon.INSTANCE.getQuickslot().isNonePlaceholder(slotNum));
   }
 
   private void useTargeting() {
@@ -178,7 +178,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
     if (lastTarget != null &&
             Actor.Companion.chars().contains(lastTarget) &&
             lastTarget.isAlive() &&
-            Dungeon.visible[lastTarget.getPos()]) {
+            Dungeon.INSTANCE.getVisible()[lastTarget.getPos()]) {
 
       targeting = true;
       lastTarget.getSprite().parent.add(crossM);
@@ -206,17 +206,16 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
   public static int autoAim(Char target, Item item) {
 
     //first try to directly targetpos
-    if (item.throwPos(Dungeon.hero, target.getPos()) == target.getPos()) {
+    if (item.throwPos(Dungeon.INSTANCE.getHero(), target.getPos()) == target.getPos()) {
       return target.getPos();
     }
 
     //Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim 
     // basically.
-    PathFinder.buildDistanceMap(target.getPos(), BArray.not(new boolean[Dungeon
-            .level.length()], null), 2);
+    PathFinder.buildDistanceMap(target.getPos(), BArray.not(new boolean[Dungeon.INSTANCE.getLevel().length()], null), 2);
     for (int i = 0; i < PathFinder.distance.length; i++) {
       if (PathFinder.distance[i] < Integer.MAX_VALUE
-              && item.throwPos(Dungeon.hero, i) == target.getPos())
+              && item.throwPos(Dungeon.INSTANCE.getHero(), i) == target.getPos())
         return i;
     }
 
@@ -233,7 +232,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
   }
 
   public static void target(Char target) {
-    if (target != Dungeon.hero) {
+    if (target != Dungeon.INSTANCE.getHero()) {
       lastTarget = target;
 
       HealthIndicator.instance.target(target);

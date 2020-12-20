@@ -52,7 +52,7 @@ class HeroCreateScene : PixelScene() {
 
                 DarkestPixelDungeon.lastHeroName(UserName)
 
-                Dungeon.hero = null
+                Dungeon.nullHero()
                 InterlevelScene.mode = InterlevelScene.Mode.DESCEND
                 Generator.reset()
 

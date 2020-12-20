@@ -66,7 +66,7 @@ public class Ballistica {
   
   private void build(int from, int to, boolean stopTarget, boolean stopChars,
                      boolean stopTerrain) {
-    int w = Dungeon.level.width();
+    int w = Dungeon.INSTANCE.getLevel().width();
 
     int x0 = from % w;
     int x1 = to % w;
@@ -106,7 +106,7 @@ public class Ballistica {
     int cell = from;
 
     int err = dA / 2;
-    while (Dungeon.level.insideMap(cell)) {
+    while (Dungeon.INSTANCE.getLevel().insideMap(cell)) {
 
       //if we're in a wall, collide with the previous cell along the path.
       if (stopTerrain && cell != sourcePos && !Level.Companion.getPassable()[cell] && !Level.Companion.getAvoid()[cell]) {

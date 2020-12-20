@@ -96,7 +96,7 @@ public class StatusPane extends Component {
     add(new TouchArea(0, 1, 31, 31) {
       @Override
       protected void onClick(Touch touch) {
-        Image sprite = Dungeon.hero.getSprite();
+        Image sprite = Dungeon.INSTANCE.getHero().getSprite();
         if (!sprite.isVisible()) {
           Camera.main.focusOn(sprite);
         }
@@ -111,13 +111,13 @@ public class StatusPane extends Component {
     btnMenu = new MenuButton();
     add(btnMenu);
 
-    portrait = HeroSprite.Companion.Portrait(Dungeon.hero.getHeroClass(), lastTier);
+    portrait = HeroSprite.Companion.Portrait(Dungeon.INSTANCE.getHero().getHeroClass(), lastTier);
     add(portrait);
 
-    int compassTarget = Dungeon.level.getExit();
-    if (Dungeon.hero != null) {
-      if (Dungeon.hero.getBelongings().getItem(Amulet.class) != null)
-        compassTarget = Dungeon.level.getEntrance();
+    int compassTarget = Dungeon.INSTANCE.getLevel().getExit();
+    if (Dungeon.INSTANCE.getHero() != null) {
+      if (Dungeon.INSTANCE.getHero().getBelongings().getItem(Amulet.class) != null)
+        compassTarget = Dungeon.INSTANCE.getLevel().getEntrance();
     }
 
     compass = new Compass(compassTarget);
@@ -154,7 +154,7 @@ public class StatusPane extends Component {
     level.hardlight(0xFFEBA4);
     add(level);
 
-    depth = new BitmapText(Integer.toString(Dungeon.depth), PixelScene
+    depth = new BitmapText(Integer.toString(Dungeon.INSTANCE.getDepth()), PixelScene
             .pixelFont);
     depth.hardlight(0xCACFC2);
     depth.measure();
@@ -180,7 +180,7 @@ public class StatusPane extends Component {
     perkSelector = new PerkSelectIndicator();
     add(perkSelector);
 
-    buffs = new BuffIndicator(Dungeon.hero);
+    buffs = new BuffIndicator(Dungeon.INSTANCE.getHero());
     add(buffs);
 
     add(pickedUp = new Toolbar.PickedUpItem());
@@ -243,14 +243,14 @@ public class StatusPane extends Component {
       compass.update();
     }
 
-    float health = Dungeon.hero.getHP();
-    float shield = Dungeon.hero.getSHLD();
-    float max = Dungeon.hero.getHT();
+    float health = Dungeon.INSTANCE.getHero().getHP();
+    float shield = Dungeon.INSTANCE.getHero().getSHLD();
+    float max = Dungeon.INSTANCE.getHero().getHT();
 
-    Pressure p = Dungeon.hero.pressure;
+    Pressure p = Dungeon.INSTANCE.getHero().pressure;
 
     // the portrait effect
-    if (!Dungeon.hero.isAlive()) {
+    if (!Dungeon.INSTANCE.getHero().isAlive()) {
       portrait.tint(0x000000, 0.5f);
     } else if ((health / max) < 0.3f) {
       warning += Game.elapsed * 5f * (0.4f - (health / max));
@@ -273,10 +273,10 @@ public class StatusPane extends Component {
 
     // bars
     hp.scale.x = Math.max(0, (health - shield) / max);
-    if (Dungeon.hero.getSHLD() > 0)
+    if (Dungeon.INSTANCE.getHero().getSHLD() > 0)
       hpstr.text(String.format("%d+%d/%d",
-              Dungeon.hero.getHP(), Dungeon.hero.getSHLD(), Dungeon.hero.getHT()));
-    else hpstr.text(String.format("%d/%d", Dungeon.hero.getHP(), Dungeon.hero.getHT()));
+              Dungeon.INSTANCE.getHero().getHP(), Dungeon.INSTANCE.getHero().getSHLD(), Dungeon.INSTANCE.getHero().getHT()));
+    else hpstr.text(String.format("%d/%d", Dungeon.INSTANCE.getHero().getHP(), Dungeon.INSTANCE.getHero().getHT()));
     hpstr.measure();
     hpstr.x = hp.x + 24f - hpstr.width() / 2f;
 
@@ -285,10 +285,10 @@ public class StatusPane extends Component {
 
     san.scale.x = Math.max(0, p.getPressure() / Pressure.MAX_PRESSURE);
 
-    exp.scale.x = (width / exp.width) * Dungeon.hero.getExp() / Dungeon.hero
+    exp.scale.x = (width / exp.width) * Dungeon.INSTANCE.getHero().getExp() / Dungeon.INSTANCE.getHero()
             .maxExp();
 
-    if (Dungeon.hero.getLvl() != lastLvl) {
+    if (Dungeon.INSTANCE.getHero().getLvl() != lastLvl) {
 
       if (lastLvl != -1) {
         Emitter emitter = (Emitter) recycle(Emitter.class);
@@ -297,7 +297,7 @@ public class StatusPane extends Component {
         emitter.burst(Speck.factory(Speck.STAR), 12);
       }
 
-      lastLvl = Dungeon.hero.getLvl();
+      lastLvl = Dungeon.INSTANCE.getHero().getLvl();
       level.text(Integer.toString(lastLvl));
       level.measure();
       level.x = 27.5f - level.width() / 2f;
@@ -305,10 +305,10 @@ public class StatusPane extends Component {
       PixelScene.align(level);
     }
 
-    int tier = Dungeon.hero.tier();
+    int tier = Dungeon.INSTANCE.getHero().tier();
     if (tier != lastTier) {
       lastTier = tier;
-      portrait.copy(HeroSprite.Companion.Portrait(Dungeon.hero.getHeroClass(), tier));
+      portrait.copy(HeroSprite.Companion.Portrait(Dungeon.INSTANCE.getHero().getHeroClass(), tier));
     }
   }
 
@@ -374,19 +374,19 @@ public class StatusPane extends Component {
       boolean blackKey = false;
       boolean specialKey = false;
       int ironKeys = 0;
-      for (int i = 0; i <= Math.min(Dungeon.depth, 25); i++) {
-        if (Dungeon.hero.getBelongings().getIronKeys()[i] > 0 || Dungeon.hero
+      for (int i = 0; i <= Math.min(Dungeon.INSTANCE.getDepth(), 25); i++) {
+        if (Dungeon.INSTANCE.getHero().getBelongings().getIronKeys()[i] > 0 || Dungeon.INSTANCE.getHero()
                 .getBelongings().getSpecialKeys()[i] > 0) {
           foundKeys = true;
 
-          if (i < Dungeon.depth) {
+          if (i < Dungeon.INSTANCE.getDepth()) {
             blackKey = true;
 
           } else {
-            if (Dungeon.hero.getBelongings().getSpecialKeys()[i] > 0) {
+            if (Dungeon.INSTANCE.getHero().getBelongings().getSpecialKeys()[i] > 0) {
               specialKey = true;
             }
-            ironKeys = Dungeon.hero.getBelongings().getIronKeys()[i];
+            ironKeys = Dungeon.INSTANCE.getHero().getBelongings().getIronKeys()[i];
           }
         }
       }

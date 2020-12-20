@@ -153,7 +153,7 @@ public class WndBag extends WndTabbed {
 
     resize(slotsWidth, slotsHeight + TITLE_HEIGHT);
 
-    Belongings stuff = Dungeon.hero.getBelongings();
+    Belongings stuff = Dungeon.INSTANCE.getHero().getBelongings();
     Bag[] bags = {
             stuff.getBackpack(),
             stuff.getItem(SeedPouch.class),
@@ -175,16 +175,16 @@ public class WndBag extends WndTabbed {
   public static WndBag lastBag(Listener listener, Mode mode, String title) {
 
     if (mode == lastMode && lastBag != null &&
-            Dungeon.hero.getBelongings().getBackpack().contains(lastBag)) {
+            Dungeon.INSTANCE.getHero().getBelongings().getBackpack().contains(lastBag)) {
       return new WndBag(lastBag, listener, mode, title);
     } else {
-      return new WndBag(Dungeon.hero.getBelongings().getBackpack(), listener, mode, title);
+      return new WndBag(Dungeon.INSTANCE.getHero().getBelongings().getBackpack(), listener, mode, title);
     }
   }
 
   public static WndBag getBag(Class<? extends Bag> bagClass, Listener
           listener, Mode mode, String title) {
-    Bag bag = Dungeon.hero.getBelongings().getItem(bagClass);
+    Bag bag = Dungeon.INSTANCE.getHero().getBelongings().getItem(bagClass);
     return bag != null ?
             new WndBag(bag, listener, mode, title) :
             lastBag(listener, mode, title);
@@ -193,7 +193,7 @@ public class WndBag extends WndTabbed {
   protected void placeItems(Bag container) {
 
     // Equipped items
-    Belongings stuff = Dungeon.hero.getBelongings();
+    Belongings stuff = Dungeon.INSTANCE.getHero().getBelongings();
     placeItem(stuff.getWeapon() != null ? stuff.getWeapon() : new Placeholder
             (ItemSpriteSheet.WEAPON_HOLDER));
     placeItem(stuff.getArmor() != null ? stuff.getArmor() : new Placeholder
@@ -207,7 +207,7 @@ public class WndBag extends WndTabbed {
     placeItem(stuff.getMisc3() != null ? stuff.getMisc3() : new Placeholder
             (ItemSpriteSheet.RING_HOLDER));
 
-    boolean backpack = (container == Dungeon.hero.getBelongings().getBackpack());
+    boolean backpack = (container == Dungeon.INSTANCE.getHero().getBelongings().getBackpack());
     if (!backpack && DarkestPixelDungeon.landscape()) {
       count = nCols;
       col = 0;
@@ -238,7 +238,7 @@ public class WndBag extends WndTabbed {
 
       row = nRows - 1;
       col = nCols - 1;
-      placeItem(new Gold(Dungeon.gold));
+      placeItem(new Gold(Dungeon.INSTANCE.getGold()));
     }
   }
 
@@ -397,7 +397,7 @@ public class WndBag extends WndTabbed {
       super.item(item);
       if (item != null) {
 
-        bg.texture(TextureCache.createSolid(item.isEquipped(Dungeon.hero) ?
+        bg.texture(TextureCache.createSolid(item.isEquipped(Dungeon.INSTANCE.getHero()) ?
                 EQUIPPED : NORMAL));
         if (item.getCursed() && item.getCursedKnown()) {
           bg.ra = +0.3f;
@@ -450,7 +450,7 @@ public class WndBag extends WndTabbed {
     @Override
     protected void onClick() {
       // todo: refactor this, the gold can just be a normal item actually
-      if (!(item instanceof Gold) && !lastBag.contains(item) && !item.isEquipped(Dungeon.hero)) {
+      if (!(item instanceof Gold) && !lastBag.contains(item) && !item.isEquipped(Dungeon.INSTANCE.getHero())) {
 
         hide();
 
@@ -470,7 +470,7 @@ public class WndBag extends WndTabbed {
     protected boolean onLongClick() {
       if (listener == null && item.getDefaultAction() != null) {
         hide();
-        Dungeon.quickslot.setSlot(0, item);
+        Dungeon.INSTANCE.getQuickslot().setSlot(0, item);
         QuickSlotButton.refresh();
         return true;
       } else {
@@ -491,7 +491,7 @@ public class WndBag extends WndTabbed {
   public static boolean FilterByMode(Item item, Mode mode){
       switch (mode){
           case FOR_SALE:
-              return item.price()>0 && !(item.isEquipped(Dungeon.hero) && item.getCursed());
+              return item.price()>0 && !(item.isEquipped(Dungeon.INSTANCE.getHero()) && item.getCursed());
           case UPGRADEABLE:
               return item.isUpgradable();
           case UNIDENTIFED:

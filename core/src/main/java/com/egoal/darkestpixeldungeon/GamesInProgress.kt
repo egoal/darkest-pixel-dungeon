@@ -20,12 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon
 
-import android.os.Build
-import android.util.Log
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.watabou.noosa.Game
-import com.watabou.utils.Bundle
 
 import java.io.IOException
 import java.util.HashMap
@@ -35,12 +32,17 @@ object GamesInProgress {
 
     private val progresses = arrayOfNulls<Info?>(MAX_SLOT)
 
-    fun gameFile(slot: Int) = "slot$slot.dat"
-    fun depthFile(slot: Int, depth: Int) = "slot$slot-depth$depth.dat"
-    fun backupGameFile(slot: Int) = "backup_slot$slot.dat"
-    fun backupDepthFile(slot: Int) = "backup_level_slot$slot.dat"
+    private fun gameFile(slot: Int) = "slot$slot.dat"
+    private fun depthFile(slot: Int, depth: Int) = "slot$slot-depth$depth.dat"
+    private fun backupGameFile(slot: Int) = "backup_slot$slot.dat"
+    private fun backupDepthFile(slot: Int) = "backup_level_slot$slot.dat"
 
+    // current
     var curSlot: Int = 0
+    val curGameFile get() = gameFile(curSlot)
+    fun curDepthFile(depth: Int) = depthFile(curSlot, depth)
+    val curBackupGameFile get() = backupGameFile(curSlot)
+    val curBackupDepthFile get() = backupDepthFile(curSlot)
 
     fun reloadAll(): Array<Info?> {
         for (i in 0 until MAX_SLOT) {
@@ -68,19 +70,28 @@ object GamesInProgress {
         return info
     }
 
-    fun get(slot: Int) = progresses[slot]
+    operator fun get(slot: Int) = progresses[slot]
 
-    fun add() {}
+    operator fun set(slot: Int, info: Info?) {
+        progresses[slot] = info
+    }
 
     fun delete(slot: Int, deleteLevels: Boolean, deleteBackup: Boolean) {
+        progresses[slot] = null
+
         Game.instance.deleteFile(gameFile(slot))
 
         if (deleteLevels) {
             var depth = 0
-            while (Game.instance.deleteFile(depthFile(slot, depth))) ++depth
+            while (Game.instance.deleteFile(depthFile(slot, depth))) {
+                depth++
+            }
         }
 
-        if (deleteBackup) Game.instance.deleteFile(backupGameFile(slot))
+        if (deleteBackup) {
+            Game.instance.deleteFile(backupGameFile(slot))
+            Game.instance.deleteFile(backupDepthFile(slot))
+        }
     }
 
     // old
@@ -112,7 +123,7 @@ object GamesInProgress {
         }
     }
 
-    operator fun set(cl: HeroClass, depth: Int, level: Int, challenge: Challenge?) {
+    fun set(cl: HeroClass, depth: Int, level: Int, challenge: Challenge?) {
         val info = Info()
         info.depth = depth
         info.level = level

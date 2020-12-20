@@ -3,7 +3,9 @@ package com.egoal.darkestpixeldungeon.items.unclassified
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.Humanity
+import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
+import com.egoal.darkestpixeldungeon.items.food.OverpricedRation
 import com.egoal.darkestpixeldungeon.items.potions.ReagentOfHealing
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Random
@@ -24,6 +26,14 @@ enum class Prize {
         override fun title(): String = item.name()
         override fun collect(hero: Hero) {
             item.collect()
+        }
+    },
+
+    LITTLE_FOOD {
+        override fun title(): String = M.L(Prize::class.java, "little_food")
+        override fun collect(hero: Hero) {
+            val food = if (Random.Int(3) != 0) OverpricedRation() else MysteryMeat().quantity(2)
+            food.collect()
         }
     },
 

@@ -38,8 +38,8 @@ public class Ripple extends Image {
   public void reset(int p) {
     revive();
 
-    x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE;
-    y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE;
+    x = (p % Dungeon.INSTANCE.getLevel().width()) * DungeonTilemap.SIZE;
+    y = (p / Dungeon.INSTANCE.getLevel().width()) * DungeonTilemap.SIZE;
 
     origin.set(width / 2, height / 2);
     scale.set(0);

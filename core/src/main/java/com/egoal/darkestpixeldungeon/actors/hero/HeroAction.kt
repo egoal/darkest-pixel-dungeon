@@ -249,7 +249,7 @@ abstract class HeroAction(var dst: Int = 0) {
                     } else {
                         // end game
                         Dungeon.win(Amulet::class.java)
-                        Dungeon.deleteGame(hero.heroClass, true, true)
+                        Dungeon.deleteGame(true, true)
                         Game.switchScene(SurfaceScene::class.java)
                     }
                 } else if (Dungeon.depth == 1 && hero.belongings.getItem(Amulet::class.java) == null) {

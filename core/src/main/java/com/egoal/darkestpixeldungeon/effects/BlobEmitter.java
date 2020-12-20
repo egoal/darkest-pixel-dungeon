@@ -54,8 +54,8 @@ public class BlobEmitter extends Emitter {
     int cell;
     for (int i = blob.getArea().left; i < blob.getArea().right; i++) {
       for (int j = blob.getArea().top; j < blob.getArea().bottom; j++) {
-        cell = i + j * Dungeon.level.width();
-        if (map[cell] > 0 && Dungeon.visible[cell]) {
+        cell = i + j * Dungeon.INSTANCE.getLevel().width();
+        if (map[cell] > 0 && Dungeon.INSTANCE.getVisible()[cell]) {
           float x = (i + Random.Float()) * size;
           float y = (j + Random.Float()) * size;
           factory.emit(this, index, x, y);

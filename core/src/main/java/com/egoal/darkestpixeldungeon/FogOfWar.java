@@ -126,7 +126,7 @@ public class FogOfWar extends Image {
       int cell = (pWidth - 1) * i + updating.left;
       fog.pixels.position((width2) * i + updating.left);
       for (int j = updating.left; j < updating.right; j++) {
-        if (cell < pWidth || cell >= Dungeon.level.length() || j == 0 || j ==
+        if (cell < pWidth || cell >= Dungeon.INSTANCE.getLevel().length() || j == 0 || j ==
                 pWidth - 1) {
           fog.pixels.put(INVISIBLE[brightness]);
         } else if (visible[cell] && visible[cell - (pWidth - 1)] &&
@@ -232,7 +232,7 @@ public class FogOfWar extends Image {
   public void draw() {
 
     if (!updated.isEmpty()) {
-      updateTexture(Dungeon.visible, Dungeon.level.getVisited(), Dungeon.level.getMapped());
+      updateTexture(Dungeon.INSTANCE.getVisible(), Dungeon.INSTANCE.getLevel().getVisited(), Dungeon.INSTANCE.getLevel().getMapped());
       updating.setEmpty();
     }
 

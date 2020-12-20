@@ -118,7 +118,7 @@ abstract class Actor : Bundlable {
         }
 
         fun fixTime() {
-            if (Dungeon.hero != null && all.contains(Dungeon.hero)) Statistics.Duration += now
+            if (!Dungeon.isHeroNull && all.contains(Dungeon.hero)) Statistics.Duration += now
 
             var min = Float.MAX_VALUE
             for (a in all) {

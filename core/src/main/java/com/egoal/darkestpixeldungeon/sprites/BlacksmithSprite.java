@@ -76,7 +76,7 @@ public class BlacksmithSprite extends MobSprite {
 
     if (visible && emitter != null && anim == getIdle()) {
       emitter.burst(Speck.factory(Speck.FORGE), 3);
-      float volume = 0.2f / (Dungeon.level.distance(getCh().getPos(), Dungeon.hero.getPos()));
+      float volume = 0.2f / (Dungeon.INSTANCE.getLevel().distance(getCh().getPos(), Dungeon.INSTANCE.getHero().getPos()));
       Sample.INSTANCE.play(Assets.SND_EVOKE, volume, volume, 0.8f);
     }
   }

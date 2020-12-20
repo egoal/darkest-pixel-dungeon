@@ -125,13 +125,13 @@ public class ItemSprite extends MovieClip {
     final int csize = DungeonTilemap.SIZE;
 
     return new PointF(
-            cell % Dungeon.level.width() * csize + (csize - SIZE) * 0.5f,
-            cell / Dungeon.level.width() * csize + (csize - SIZE) * 0.5f
+            cell % Dungeon.INSTANCE.getLevel().width() * csize + (csize - SIZE) * 0.5f,
+            cell / Dungeon.INSTANCE.getLevel().width() * csize + (csize - SIZE) * 0.5f
     );
   }
 
   public void place(int p) {
-    if (Dungeon.level != null)
+    if (Dungeon.INSTANCE.getLevel() != null)
       point(worldToCamera(p));
   }
 
@@ -226,7 +226,7 @@ public class ItemSprite extends MovieClip {
         if (water) {
           GameScene.ripple(heap.getPos());
         } else {
-          int cell = Dungeon.level.getMap()[heap.getPos()];
+          int cell = Dungeon.INSTANCE.getLevel().getMap()[heap.getPos()];
           water = (cell == Terrain.WELL || cell == Terrain.ALCHEMY);
         }
 

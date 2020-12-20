@@ -166,7 +166,7 @@ class StartScene : PixelScene() {
     }
 
     private fun startNewGame() {
-        Dungeon.hero = null
+        Dungeon.nullHero()
         InterlevelScene.mode = InterlevelScene.Mode.DESCEND
         Generator.reset()
 

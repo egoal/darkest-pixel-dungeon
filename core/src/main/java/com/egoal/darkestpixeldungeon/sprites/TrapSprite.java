@@ -78,8 +78,8 @@ public class TrapSprite extends Image {
     alpha(1f);
 
     pos = trap.getPos();
-    x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE;
-    y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE;
+    x = (pos % Dungeon.INSTANCE.getLevel().width()) * DungeonTilemap.SIZE;
+    y = (pos / Dungeon.INSTANCE.getLevel().width()) * DungeonTilemap.SIZE;
 
   }
 

@@ -151,8 +151,11 @@ object Statistics {
             }
 
             // night control
-            if (newState == State.Day && (Dungeon.hero?.buff(MoonNight::class.java) != null || Dungeon.depth > 20))
-                newState = State.Night
+            if (newState == State.Day) {
+                if (Dungeon.depth > 20 ||
+                        (!Dungeon.isHeroNull && Dungeon.hero.buff(MoonNight::class.java) != null))
+                    newState = State.Night
+            }
 
             if (newState != state) {
                 // state changed.

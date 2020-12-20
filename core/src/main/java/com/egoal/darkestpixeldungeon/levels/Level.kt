@@ -79,6 +79,8 @@ import java.util.ArrayList
 import java.util.Arrays
 import java.util.HashMap
 import java.util.HashSet
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 abstract class Level : Bundlable {
@@ -393,7 +395,7 @@ abstract class Level : Bundlable {
     open fun seal() {
         if (!locked) {
             locked = true
-            Buff.affect(Dungeon.hero, LockedFloor::class.java)
+            Buff.affect(Dungeon.hero!!, LockedFloor::class.java)
         }
     }
 
@@ -682,8 +684,7 @@ abstract class Level : Bundlable {
             var n: Int
             do {
                 n = cell + PathFinder.NEIGHBOURS8[Random.Int(8)]
-            } while (map[n] != Terrain.EMPTY_SP) //fixme: as they must put on
-            // empty_sp tiles!!!
+            } while (map[n] != Terrain.EMPTY_SP) //fixme: as they must put on empty_sp tiles!!!
             cell = n
         }
 
@@ -693,7 +694,7 @@ abstract class Level : Bundlable {
             heap = Heap()
             heap.seen = Dungeon.visible[cell]
             heap.pos = cell
-            if (map[cell] == Terrain.CHASM || Dungeon.level != null && pit[cell]) {
+            if (map[cell] == Terrain.CHASM || !Dungeon.isLevelNull && pit[cell]) {
                 Dungeon.dropToChasm(item)
                 GameScene.discard(heap)
             } else {
@@ -711,7 +712,7 @@ abstract class Level : Bundlable {
         }
         heap.drop(item)
 
-        if (Dungeon.level != null) {
+        if (!Dungeon.isLevelNull) {
             press(cell, null)
         }
 
@@ -747,7 +748,7 @@ abstract class Level : Bundlable {
         val existingTrap = traps.get(pos)
         if (existingTrap != null) {
             traps.remove(pos)
-            if (existingTrap.sprite != null) existingTrap.sprite.kill()
+            if (existingTrap.hasSprite) existingTrap.sprite.kill()
         }
         trap.set(pos)
         traps.put(pos, trap)
@@ -861,16 +862,16 @@ abstract class Level : Bundlable {
         //Currently only the hero can get mind vision
         if (c.isAlive && c === Dungeon.hero) {
             for (b in c.buffs(MindVision::class.java)) {
-                sense = Math.max((b as MindVision).distance, sense)
+                sense = max(b.distance, sense)
             }
         }
 
         if (!sighted || sense > 1) {
 
-            val ax = Math.max(0, cx - sense)
-            val bx = Math.min(cx + sense, width() - 1)
-            val ay = Math.max(0, cy - sense)
-            val by = Math.min(cy + sense, height() - 1)
+            val ax = max(0, cx - sense)
+            val bx = min(cx + sense, width() - 1)
+            val ay = max(0, cy - sense)
+            val by = min(cy + sense, height() - 1)
 
             val len = bx - ax + 1
             var pos = ax + ay * width()

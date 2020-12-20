@@ -149,13 +149,13 @@ public class WndRanking extends WndTabbed {
     public StatsTab() {
       super();
 
-      String heroClass = Dungeon.hero.className();
+      String heroClass = Dungeon.INSTANCE.getHero().className();
 
       IconTitle title = new IconTitle();
-      title.icon(HeroSprite.Companion.avatar(Dungeon.hero.getHeroClass(), Dungeon.hero
+      title.icon(HeroSprite.Companion.avatar(Dungeon.INSTANCE.getHero().getHeroClass(), Dungeon.INSTANCE.getHero()
               .tier
                       ()));
-      title.label(Messages.get(this, "title", Dungeon.hero.getLvl(), heroClass)
+      title.label(Messages.get(this, "title", Dungeon.INSTANCE.getHero().getLvl(), heroClass)
               .toUpperCase(Locale.ENGLISH));
       title.color(Window.SHPX_COLOR);
       title.setRect(0, 0, WIDTH, 0);
@@ -166,9 +166,9 @@ public class WndRanking extends WndTabbed {
       pos += GAP + GAP;
 
       pos = statSlot(this, Messages.get(this, "str"), Integer.toString
-              (Dungeon.hero.getSTR()), pos);
+              (Dungeon.INSTANCE.getHero().getSTR()), pos);
       pos = statSlot(this, Messages.get(this, "health"), Integer.toString
-              (Dungeon.hero.getHT()), pos);
+              (Dungeon.INSTANCE.getHero().getHT()), pos);
 
       pos += GAP;
 
@@ -218,7 +218,7 @@ public class WndRanking extends WndTabbed {
       super();
 
       int i = 0;
-      for (final Perk perk : Dungeon.hero.getHeroPerk().getPerks()) {
+      for (final Perk perk : Dungeon.INSTANCE.getHero().getHeroPerk().getPerks()) {
         float x = i % 4 * 23f;
         float y = i / 4 * 23f;
 
@@ -243,7 +243,7 @@ public class WndRanking extends WndTabbed {
     public ItemsTab() {
       super();
 
-      Belongings stuff = Dungeon.hero.getBelongings();
+      Belongings stuff = Dungeon.INSTANCE.getHero().getBelongings();
       if (stuff.getWeapon() != null) {
         addItem(stuff.getWeapon());
       }
@@ -267,8 +267,8 @@ public class WndRanking extends WndTabbed {
       for (int i = 0; i < QuickSlot.SIZE; i++) {
         float posx = i % 4 * (22 + 1);
         float posy = i / 4 * (22 + 1) + 22 * 6 + 6;
-        if (Dungeon.quickslot.getItem(i) != null) {
-          QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot
+        if (Dungeon.INSTANCE.getQuickslot().getItem(i) != null) {
+          QuickSlotButton slot = new QuickSlotButton(Dungeon.INSTANCE.getQuickslot()
                   .getItem(i));
 
           slot.setRect(posx, posy, 22, 22);
@@ -301,9 +301,9 @@ public class WndRanking extends WndTabbed {
 
       camera = WndRanking.this.camera;
 
-      if (Dungeon.hero.getChallenge() != null) {
+      if (Dungeon.INSTANCE.getHero().getChallenge() != null) {
         //todo: redesign & use icon
-        Challenge challenge = Dungeon.hero.getChallenge();
+        Challenge challenge = Dungeon.INSTANCE.getHero().getChallenge();
         RenderedText title = PixelScene.renderText(challenge.title(), 6);
         title.x = 2f;
         title.y = 2f;

@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.scenes
 import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.ui.*
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.*
 import com.watabou.noosa.ui.Button
 
@@ -79,7 +80,7 @@ class SlotSelectScene : PixelScene() {
 
         fun set(slot: Int) {
             this.slot = slot
-            val info = GamesInProgress.get(slot)
+            val info = GamesInProgress[slot]
             empty = info == null
             if (empty) {
                 name.text(M.L(SlotSelectScene::class.java, "empty_slot"))
@@ -174,11 +175,23 @@ class SlotSelectScene : PixelScene() {
                 DarkestPixelDungeon.switchScene(HeroCreateScene::class.java)
             } else {
                 GamesInProgress.curSlot = slot
-                Dungeon.hero = null
+                Dungeon.nullHero()
                 ActionIndicator.action = null
                 InterlevelScene.mode = InterlevelScene.Mode.CONTINUE
                 DarkestPixelDungeon.switchScene(InterlevelScene::class.java)
             }
+        }
+
+        override fun onLongClick(): Boolean {
+            val wnd = WndOptions.CreateConfirm(Icons.WARNING.get(),
+                    M.L(SlotSelectScene::class.java, "delete_title"),
+                    M.L(SlotSelectScene::class.java, "delete_message")) {
+                GamesInProgress.delete(slot, true, true)
+                set(slot)
+            }
+            Game.scene().addToFront(wnd)
+
+            return true
         }
     }
 }
