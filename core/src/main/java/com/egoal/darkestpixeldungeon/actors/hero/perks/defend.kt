@@ -73,7 +73,7 @@ class EvasionTenacity : Perk(3) {
 
     fun procEvasionDamage(dmg: Damage) {
         val hero = dmg.to as Hero
-        if (hero.SHLD < hero.HT) hero.SHLD += level * 2
+        if (hero.SHLD < hero.HT) hero.SHLD += level * 2 + 1
     }
 }
 

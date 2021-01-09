@@ -121,13 +121,17 @@ open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
         }
 
         fun maxShield(): Int {
-            val am = armor!!
-            var value = 3 + am.tier + am.level()
-            // extra shield if enchanted, this would speed up the charging, too
-            // that's why i think it's powerful enough, at least for now
-            if (am.checkSeal()?.enchanted == true) value += 1 + am.level()
+            if (armor == null) return 0
+            else {
+                val am = armor!!
+                var value = 3 + am.tier + am.level()
 
-            return value
+                // extra shield if enchanted, this would speed up the charging, too
+                // that's why i think it's powerful enough, at least for now
+                if (am.checkSeal()?.enchanted == true) value += 1 + am.level()
+
+                return value
+            }
         }
     }
 

@@ -22,6 +22,7 @@ import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
 import com.egoal.darkestpixeldungeon.items.food.OverpricedRation
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.StrawHat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
@@ -126,7 +127,8 @@ class MerchantDigger : RectDigger() {
                 itemsToSpawn.add(Torch())
             }
         }
-        itemsToSpawn.add(Generator.HELMET.generate().apply { cursed = false })
+        val helmet = Generator.HELMET.generate().apply { cursed = false }
+        if(helmet !is StrawHat) itemsToSpawn.add(helmet)
         itemsToSpawn.add(Torch().quantity(if (Random.Int(5) == 0) 2 else 1))
 
         if (Random.Float() < (Dungeon.depth / 5) * 0.2f)

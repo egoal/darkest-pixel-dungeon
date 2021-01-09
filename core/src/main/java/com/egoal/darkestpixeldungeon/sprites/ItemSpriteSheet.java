@@ -298,6 +298,7 @@ public class ItemSpriteSheet {
     public static final int POTION_SILVER = POTIONS + 10;
     public static final int POTION_IVORY = POTIONS + 11;
     public static final int POTION_DARK_GREEN = POTIONS + 12;
+    public static final int POTION_STEEL_BLUE = POTIONS + 13;
 
     private static final int SEEDS = xy(1, 22);  //16 slots
     public static final int SEED_ROTBERRY = SEEDS + 0;
@@ -312,6 +313,7 @@ public class ItemSpriteSheet {
     public static final int SEED_EARTHROOT = SEEDS + 9;
     public static final int SEED_FADELEAF = SEEDS + 10;
     public static final int SEED_BLANDFRUIT = SEEDS + 11;
+    public static final int SEED_CORRODE_CYAN = SEEDS + 12;
 
     public static final int BOOKS = xy(1, 23);
     public static final int DPD_BOOKS = BOOKS + 0;
@@ -353,6 +355,7 @@ public class ItemSpriteSheet {
     public static final int HOLSTER = BAGS + 3;
     public static final int VIAL = BAGS + 4;
     public static final int GOURD = BAGS + 5;
+    public static final int PURSE = BAGS+ 6;
 
     //64 free slots
 

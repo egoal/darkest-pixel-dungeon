@@ -124,8 +124,8 @@ class WndHero : WndTabbed() {
 //            else
 //                title.label((hero.givenName() + "\n" + Messages.get(this, "title",
 //                        hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH))
-            title.color(Window.SHPX_COLOR)
-            title.setRect(0f, 0f, WIDTH / 2f, 0f)
+            // title.color(Window.SHPX_COLOR)
+            title.setRect(0f, 0f, WIDTH.toFloat(), 0f)
             add(title)
 
             pos = title.bottom() + 2 * GAP5
@@ -134,6 +134,7 @@ class WndHero : WndTabbed() {
             val classNameText = PixelScene.renderText(className, 8)
             classNameText.x = 0f
             classNameText.y = pos
+            classNameText.hardlight(Window.DPD_COLOR)
             add(classNameText)
 
             if (hero.lvl >= 12 && hero.subClass == HeroSubClass.NONE) {
@@ -143,7 +144,7 @@ class WndHero : WndTabbed() {
                         WndMasterSubclass.Show(hero)
                     }
                 }
-                btn.setRect(classNameText.x + classNameText.width() + GAP5, classNameText.y, 40f, classNameText.height())
+                btn.setRect(WIDTH / 2f + GAP5, classNameText.y, 40f, classNameText.height())
                 add(btn)
             } else {
                 hero.challenge?.let {

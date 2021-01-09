@@ -112,7 +112,9 @@ class Penetration : Buff(), ActionIndicator.Action {
 
                 val throwdis = WandOfBlastWave.calcThrowDistance(enemy, knock_shot, 1)
 
-                val dst = if (throwdis == 0) route.path[route.dist - 1] else enemy.pos
+                val dst = if (throwdis == 0)
+                    if (route.dist > 0) route.path[route.dist - 1] else hero.pos
+                else enemy.pos
 
                 Actor.addDelayed(Pushing(hero, hero.pos, dst, Callback {
                     // knock back

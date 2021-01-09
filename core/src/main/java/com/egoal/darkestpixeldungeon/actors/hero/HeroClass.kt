@@ -8,9 +8,7 @@ import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.food.Food
-import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
 import com.egoal.darkestpixeldungeon.items.food.Wine
-import com.egoal.darkestpixeldungeon.items.helmets.Mantilla
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
@@ -20,6 +18,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.plants.CorrodeCyan
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
@@ -274,8 +273,7 @@ enum class HeroClass(private val title: String) {
 
         for (p in initialPerks()) hero.heroPerk.add(p)
 
-        // WandOfAbel().identify().collect()
-//        TomeOfPerk().quantity(99).collect()
+        // PotionOfMagicalFog().quantity(10).identify().collect()
     }
 
     // called when hero level up

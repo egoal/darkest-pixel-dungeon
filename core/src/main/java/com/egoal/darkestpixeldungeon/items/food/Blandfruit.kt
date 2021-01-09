@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.*
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
@@ -60,6 +61,10 @@ class Blandfruit : Food(Hunger.STARVING / 2, 6) {
                     GLog.i(Messages.get(this, "para_msg"))
                     Buff.affect(hero, EarthImbue::class.java, EarthImbue.DURATION)
                 }
+                is PotionOfMagicalFog -> {
+                    GLog.i(M.L(this, "fog_msg"))
+                    Buff.affect(hero, FogImbue::class.java).set(FogImbue.DURATION)
+                }
                 else -> potionAttrib!!.apply(hero)
             }
         }
@@ -90,7 +95,8 @@ class Blandfruit : Food(Hunger.STARVING / 2, 6) {
             is PotionOfLevitation -> Pair("stormfruit", 0x1C3A57)
             is PotionOfPurity -> Pair("dreamfruit", 0x8E2975)
             is PotionOfExperience -> Pair("starfruit", 0xA79400)
-            is PotionOfPhysique-> Pair("mightfruit", 0x101010)
+            is PotionOfPhysique -> Pair("mightfruit", 0x101010)
+            is PotionOfMagicalFog -> Pair("magicfruit", 0x66f0ff)
             else -> throw RuntimeException("never be here")
         }
         name = Messages.get(this, pr.first)
@@ -107,7 +113,8 @@ class Blandfruit : Food(Hunger.STARVING / 2, 6) {
                 potionAttrib is PotionOfParalyticGas ||
                 potionAttrib is PotionOfFrost ||
                 potionAttrib is PotionOfLevitation ||
-                potionAttrib is PotionOfPurity) {
+                potionAttrib is PotionOfPurity ||
+                potionAttrib is PotionOfMagicalFog) {
             potionAttrib!!.cast(user, dst)
             detach(user.belongings.backpack)
         } else {

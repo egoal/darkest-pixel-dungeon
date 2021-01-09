@@ -47,7 +47,8 @@ enum class Prize {
     SOME_GOLD {
         override fun title(): String = M.L(Prize::class.java, "some_gold")
         override fun collect(hero: Hero) {
-            Gold(Random.NormalIntRange(50, 120)).collect()
+            val num = Random.NormalIntRange(50, 120)
+            Gold.Purse().apply { number = num }.collect()
         }
     },
 
@@ -61,7 +62,9 @@ enum class Prize {
         override fun collect(hero: Hero) {
             val p = Random.Float()
             when {
-                p < 0.05 -> Humanity().collect()
+                p < 0.08 -> {
+                    Random.oneOf(Humanity(), Torch()).collect()
+                }
                 p < 0.1 -> {
                     // got nothing
                 }

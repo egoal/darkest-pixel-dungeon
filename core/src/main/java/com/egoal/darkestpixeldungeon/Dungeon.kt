@@ -58,7 +58,7 @@ import java.util.HashSet
 object Dungeon {
 
     var initialDepth_ = -1
-    const val VERSION_STRING = "0.6.0-0"
+    const val VERSION_STRING = "0.6.0-0.2.1"
 
     lateinit var hero: Hero
     lateinit var level: Level
@@ -731,6 +731,8 @@ object Dungeon {
             GameScene.updateFog()
         else
             GameScene.updateFog(ax, ay, len, by - ay)
+
+        for(mob in hero.mindVisionEnemies) GameScene.updateFog(mob.pos, 2)
 
         GameScene.afterObserve()
     }

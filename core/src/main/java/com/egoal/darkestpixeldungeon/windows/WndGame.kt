@@ -23,10 +23,7 @@ package com.egoal.darkestpixeldungeon.windows
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.scenes.InterlevelScene
-import com.egoal.darkestpixeldungeon.scenes.RankingsScene
-import com.egoal.darkestpixeldungeon.scenes.TitleScene
+import com.egoal.darkestpixeldungeon.scenes.*
 import com.egoal.darkestpixeldungeon.ui.Icons
 import com.egoal.darkestpixeldungeon.ui.RedButton
 import com.egoal.darkestpixeldungeon.ui.Window
@@ -50,12 +47,13 @@ class WndGame : Window() {
             val btnStart: RedButton = object : RedButton(M.L(WndGame::class.java, "start")) {
                 override fun onClick() {
                     Dungeon.nullHero()
-                    InterlevelScene.mode = InterlevelScene.Mode.DESCEND
-                    InterlevelScene.noStory = true
-                    Game.switchScene(InterlevelScene::class.java)
+                    // InterlevelScene.mode = InterlevelScene.Mode.DESCEND
+                    // InterlevelScene.noStory = true
+                    // Game.switchScene(InterlevelScene::class.java)
+                    DarkestPixelDungeon.switchScene(HeroCreateScene::class.java)
                 }
             }
-            btnStart.icon(Icons[Dungeon.hero.heroClass])
+            // btnStart.icon(Icons[Dungeon.hero.heroClass])
             addButton(btnStart)
 
             addButton(object : RedButton(M.L(WndGame::class.java, "rankings")) {

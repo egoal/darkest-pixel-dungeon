@@ -31,15 +31,19 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.effects.Enchanting
+import com.egoal.darkestpixeldungeon.items.EquipableItem
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon
+import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.noosa.audio.Sample
 
 import java.util.ArrayList
+import javax.microedition.khronos.opengles.GL
 
 class Stylus : Item() {
 
     private val itemSelector = WndBag.Listener { item ->
         if (item != null) {
-            this@Stylus.inscribe(item as Armor)
+            this@Stylus.inscribe(item as EquipableItem)
         }
     }
 
@@ -58,8 +62,7 @@ class Stylus : Item() {
 
         if (action == AC_INSCRIBE) {
             curUser = hero
-            GameScene.selectItem(itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"))
-
+            GameScene.selectItem(itemSelector, WndBag.Mode.ENCHANTABLE, Messages.get(this, "prompt"))
         }
     }
 
@@ -68,28 +71,29 @@ class Stylus : Item() {
     override val isIdentified: Boolean
         get() = true
 
-    private fun inscribe(armor: Armor) {
-        if (!armor.isIdentified) {
-            GLog.w(Messages.get(this, "identify"))
-            return
-        } else if (armor.cursed || armor.hasCurseGlyph()) {
-            GLog.w(Messages.get(this, "cursed"))
-            return
+    private fun inscribe(item: EquipableItem) {
+        if (!item.isIdentified) {
+            GLog.w(M.L(this, "identify"))
+        } else if (item.cursed ||
+                (item is Armor && item.hasCurseGlyph()) ||
+                (item is Weapon && item.hasCurseInscription())) {
+            GLog.w(M.L(this, "cursed"))
+        } else {
+            detach(curUser.belongings.backpack)
+
+            if (item is Armor) item.inscribe()
+            else if (item is Weapon) item.inscribe()
+
+            curUser.sprite.operate(curUser.pos)
+            curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10)
+            Enchanting.show(curUser, item)
+
+            curUser.spend(TIME_TO_INSCRIBE)
+            curUser.busy()
+
+            Sample.INSTANCE.play(Assets.SND_BURNING)
+            GLog.w(M.L(this, "inscribed", item.name()))
         }
-
-        detach(Item.curUser.belongings.backpack)
-
-        GLog.w(Messages.get(this, "inscribed"))
-
-        armor.inscribe()
-
-        Item.curUser.sprite.operate(Item.curUser.pos)
-        Item.curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10)
-        Enchanting.show(curUser, armor)
-        Sample.INSTANCE.play(Assets.SND_BURNING)
-
-        Item.curUser.spend(TIME_TO_INSCRIBE)
-        Item.curUser.busy()
     }
 
     override fun price(): Int = 30 * quantity

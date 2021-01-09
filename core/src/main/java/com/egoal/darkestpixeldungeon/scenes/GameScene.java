@@ -106,6 +106,7 @@ import com.watabou.utils.GameMath;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.function.DoubleUnaryOperator;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -440,7 +441,7 @@ public class GameScene extends PixelScene {
 
   @Override
   public synchronized void update() {
-    if (Dungeon.INSTANCE.getHero() == null || scene == null) {
+    if (Dungeon.INSTANCE.isHeroNull() || scene == null) {
       return;
     }
 
@@ -760,6 +761,11 @@ public class GameScene extends PixelScene {
   public static void updateFog() {
     if (scene != null)
       scene.fog.updateFog();
+  }
+
+  public static void updateFog(int cell, int radius) {
+    if (scene != null)
+      scene.fog.updateFog(cell, radius);
   }
 
   public static void updateFog(int x, int y, int w, int h) {

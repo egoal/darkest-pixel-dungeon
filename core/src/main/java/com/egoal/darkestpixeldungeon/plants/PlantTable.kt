@@ -12,6 +12,7 @@ object PlantTable {
         rows = listOf(
                 Row(BlandfruitBush::class.java, BlandfruitBush.Seed::class.java, PotionOfPhysique::class.java),
                 Row(Blindweed::class.java, Blindweed.Seed::class.java, PotionOfInvisibility::class.java),
+                Row(CorrodeCyan::class.java, CorrodeCyan.Seed::class.java, PotionOfMagicalFog::class.java),
                 Row(Dreamfoil::class.java, Dreamfoil.Seed::class.java, PotionOfPurity::class.java),
                 Row(Earthroot::class.java, Earthroot.Seed::class.java, PotionOfParalyticGas::class.java),
                 Row(Fadeleaf::class.java, Fadeleaf.Seed::class.java, PotionOfMindVision::class.java),

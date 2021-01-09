@@ -29,7 +29,6 @@ import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.watabou.utils.Bundle
 
 class ToxicImbue : Buff() {
-
     protected var left: Float = 0.toFloat()
 
     override fun storeInBundle(bundle: Bundle) {
@@ -77,9 +76,8 @@ class ToxicImbue : Buff() {
     }
 
     companion object {
+        const val DURATION = 30f
 
-        val DURATION = 30f
-
-        private val LEFT = "left"
+        private const val LEFT = "left"
     }
 }

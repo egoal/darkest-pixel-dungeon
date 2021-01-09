@@ -66,6 +66,7 @@ public class Speck extends Image {
 
   public static final int DPD_HIGHLY_TOXIC = 115;
   public static final int DPD_FOG = 116;
+  public static final int WHITE_FOG = 117;
 
   private static final int SIZE = 7;
 
@@ -116,6 +117,7 @@ public class Speck extends Image {
       case STENCH:
       case CONFUSION:
       case DUST:
+      case WHITE_FOG:
         frame(film.get(STEAM));
         break;
       default:
@@ -340,6 +342,13 @@ public class Speck extends Image {
         angle = Random.Float(360);
         lifespan = Random.Float(1f, 3f);
         break;
+
+      case WHITE_FOG:
+        hardlight(0x9cf5ff);
+        angularSpeed = 45;
+        angle = Random.Float(360);
+        lifespan = Random.Float(1f, 3f);
+        break;
     }
 
 
@@ -441,6 +450,7 @@ public class Speck extends Image {
         case PARALYSIS:
         case CONFUSION:
         case DUST:
+        case WHITE_FOG:
           am = (float) Math.sqrt((p < 0.5f ? p : 1 - p) * 0.5f);
           scale.set(1 + p);
           break;

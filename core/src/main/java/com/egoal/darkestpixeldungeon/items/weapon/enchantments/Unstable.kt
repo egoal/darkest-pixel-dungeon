@@ -43,8 +43,9 @@ class Unstable : Enchantment() {
         private val WHITE = ItemSprite.Glowing(0xFFFFFF)
 
         private val enchantments = arrayOf<Class<out Enchantment>>(
-                Blazing::class.java, Chilling::class.java, Shocking::class.java,
-                Venomous::class.java, Bashing::class.java
+                Bashing::class.java, Blazing::class.java, Blinding::class.java,
+                Chilling::class.java, Shocking::class.java, Sophisticated::class.java,
+                Venomous::class.java
         )
     }
 }

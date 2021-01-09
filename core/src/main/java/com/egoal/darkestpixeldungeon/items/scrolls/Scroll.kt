@@ -136,10 +136,12 @@ abstract class Scroll : Item() {
 
         const val TIME_TO_READ = 1f
 
-        private val scrolls = arrayOf(ScrollOfIdentify::class.java, ScrollOfMagicMapping::class.java, ScrollOfRecharging::class.java,
+        private val scrolls = arrayOf(
+                ScrollOfIdentify::class.java, ScrollOfMagicMapping::class.java, ScrollOfRecharging::class.java,
                 ScrollOfRemoveCurse::class.java, ScrollOfTeleportation::class.java, ScrollOfUpgrade::class.java,
                 ScrollOfRage::class.java, ScrollOfTerror::class.java, ScrollOfLullaby::class.java,
-                ScrollOfEnchanting::class.java, ScrollOfPsionicBlast::class.java, ScrollOfMirrorImage::class.java,
+                // ScrollOfEnchanting::class.java,
+                ScrollOfPsionicBlast::class.java, ScrollOfMirrorImage::class.java,
                 ScrollOfCurse::class.java, ScrollOfLight::class.java)
 
         private val runes = hashMapOf<String, Int>(
@@ -155,7 +157,7 @@ abstract class Scroll : Item() {
                 "BERKANAN" to ItemSpriteSheet.SCROLL_BERKANAN,
                 "ODAL" to ItemSpriteSheet.SCROLL_ODAL,
                 "TIWAZ" to ItemSpriteSheet.SCROLL_TIWAZ,
-                "QI" to ItemSpriteSheet.SCROLL_QI,
+                // "QI" to ItemSpriteSheet.SCROLL_QI,
                 "LINGEL" to ItemSpriteSheet.SCROLL_LINGEL
         )
 

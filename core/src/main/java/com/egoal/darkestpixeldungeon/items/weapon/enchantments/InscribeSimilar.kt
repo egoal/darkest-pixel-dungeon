@@ -29,11 +29,3 @@ class StunningEcht : InscribeSimliar(Stunning::class.java) {
         private val YELLOW = ItemSprite.Glowing(0xCCAA44)
     }
 }
-
-class DazzlingEcht : InscribeSimliar(Dazzling::class.java) {
-    override fun glowing(): ItemSprite.Glowing = YELLOW
-
-    companion object {
-        private val YELLOW = ItemSprite.Glowing(0xFFFF00)
-    }
-}

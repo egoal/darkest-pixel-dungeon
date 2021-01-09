@@ -500,7 +500,7 @@ public class WndBag extends WndTabbed {
               return (item instanceof EquipableItem || item instanceof Wand) &&
                       (!item.isIdentified() || item.getCursed());
           case QUICKSLOT:
-              return item.getDefaultAction() !=null;
+              return item.getDefaultAction().length()>0;
           case WEAPON:
           case SMEARABLE:
               return item instanceof MeleeWeapon || item instanceof Boomerang;

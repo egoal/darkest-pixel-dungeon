@@ -21,9 +21,9 @@ class SorceressWand : MeleeWeapon() {
         enchant(Unstable::class.java, 30f)
     }
 
+    // 2~7
     override fun min(lvl: Int): Int = super.min(lvl) + 1
 
-    // 1~7
     override fun max(lvl: Int): Int = 4 * tier + 3 + lvl * (tier + 1)
 
     override fun STRReq(lvl: Int): Int = super.STRReq(lvl) - 1

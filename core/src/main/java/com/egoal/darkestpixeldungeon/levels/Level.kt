@@ -900,7 +900,7 @@ abstract class Level : Bundlable {
                     for (mob in mobs) {
                         if (mob.isLiving && distance(mob.pos, c.pos) <= perk.range()) {
                             if (!fieldOfView[mob.pos]) Dungeon.hero.mindVisionEnemies.add(mob)
-                            for (i in PathFinder.NEIGHBOURS8) fieldOfView[mob.pos + i] = true
+                            for (i in PathFinder.NEIGHBOURS9) fieldOfView[mob.pos + i] = true
                         }
                     }
                 }

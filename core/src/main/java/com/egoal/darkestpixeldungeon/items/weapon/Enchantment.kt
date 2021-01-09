@@ -48,13 +48,18 @@ abstract class Enchantment : Bundlable {
         private const val LEFT = "left"
 
         private val potionEnchantments = mapOf<Class<out Potion>, Class<out Enchantment>>(
+                PotionOfExperience::class.java to Sophisticated::class.java,
                 PotionOfFrost::class.java to Chilling::class.java,
                 PotionOfHealing::class.java to Healing::class.java,
-                PotionOfInvisibility::class.java to DazzlingEcht::class.java,
+                PotionOfInvisibility::class.java to Blinding::class.java,
                 PotionOfLevitation::class.java to Shocking::class.java,
                 PotionOfLiquidFlame::class.java to Blazing::class.java,
+                PotionOfMagicalFog::class.java to Magical::class.java,
                 PotionOfMight::class.java to Bashing::class.java,
+                PotionOfMindVision::class.java to Tracking::class.java,
                 PotionOfParalyticGas::class.java to StunningEcht::class.java,
+                PotionOfPhysique::class.java to Unstable::class.java, //
+                PotionOfPurity::class.java to Unstable::class.java, //
                 PotionOfStrength::class.java to Bashing::class.java,
                 PotionOfToxicGas::class.java to Venomous::class.java
         )

@@ -10,7 +10,7 @@ class TempPathLight(val path: ArrayList<Int>) : FlavourBuff() {
 
     private lateinit var lum: Luminary
     override fun onAdd() {
-        if (Dungeon.level != null) {
+        if (!Dungeon.isLevelNull) {
             lum = Light()
             Dungeon.level.addLuminary(lum)
             Dungeon.observe()

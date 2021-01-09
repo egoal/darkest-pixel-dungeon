@@ -190,7 +190,7 @@ class Pressure : Buff(), Hero.Doom {
         private const val PRESSURE = "pressure"
         private const val COLLAPSE_DURATION = "collapse_duration"
 
-        fun HeroPressure() = if (Dungeon.hero != null && Dungeon.hero.isAlive)
+        fun HeroPressure() = if (!Dungeon.isHeroNull && Dungeon.hero.isAlive)
             Dungeon.hero.buff(Pressure::class.java)!!.pressure else 0f
     }
 

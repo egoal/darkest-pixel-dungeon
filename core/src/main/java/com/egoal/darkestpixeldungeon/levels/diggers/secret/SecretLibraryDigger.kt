@@ -60,8 +60,14 @@ class SecretLibraryDigger : RoundDigger() {
                 ScrollOfIdentify::class.java, ScrollOfTeleportation::class.java, ScrollOfRemoveCurse::class.java,
                 ScrollOfUpgrade::class.java, ScrollOfRecharging::class.java, ScrollOfMagicMapping::class.java,
                 ScrollOfRage::class.java, ScrollOfTerror::class.java, ScrollOfLullaby::class.java,
-                ScrollOfEnchanting::class.java, ScrollOfPsionicBlast::class.java, ScrollOfMirrorImage::class.java,
+                // ScrollOfEnchanting::class.java,
+                ScrollOfPsionicBlast::class.java, ScrollOfMirrorImage::class.java,
                 ScrollOfCurse::class.java, ScrollOfLight::class.java)
-        val scrollChances = floatArrayOf(1f, 1f, 3f, 0f, 1f, 3f, 1f, 1f, 2f, 2f, 4f, 1f, 1f, 2f)
+        val scrollChances = floatArrayOf(
+                1f, 1f, 3f,
+                0f, 1f, 3f,
+                1f, 1f, 2f,
+                // 2f,
+                4f, 1f, 1f, 2f)
     }
 }

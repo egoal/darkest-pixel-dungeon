@@ -294,6 +294,7 @@ class Hero : Char() {
     fun live() {
         Buff.affect(this, Regeneration::class.java)
         Buff.affect(this, Hunger::class.java)
+        Buff.affect(this, Protected::class.java)
         pressure = Buff.affect(this, Pressure::class.java)
         challenge?.live(this)
     }
@@ -557,7 +558,7 @@ class Hero : Char() {
         if (rangedWeapon != null && subClass == HeroSubClass.SNIPER)
         // sniper perk
         // Buff.prolong(this, SnipersMark::class.java, attackDelay() * 1.1f).`objectid` = (dmg.to as Char).id()
-            Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 1.5f).observer = id()
+            Buff.prolong(dmg.to as Char, ViewMark::class.java, attackDelay() * 2f).observer = id()
         else {
             // exile perk
             if (isUsingPolearm())

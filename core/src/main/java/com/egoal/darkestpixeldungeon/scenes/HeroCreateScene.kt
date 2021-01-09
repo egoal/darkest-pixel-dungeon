@@ -119,7 +119,7 @@ class HeroCreateScene : PixelScene() {
             }
 
             btnName = object : InputButton(DarkestPixelDungeon.lastHeroName(), 8) {
-                override fun isValid(text: String): Boolean = text.length in 0..20
+                override fun isValid(text: String): Boolean = text.length in 0..20 && !text.toLowerCase().contains("egoal") //todo:
             }
             btnName.setRect(LBL_WDITH + WND_MARGIN * 2, pos, BTN_WIDTH, BTN_HEIGHT)
             add(btnName)
@@ -179,7 +179,8 @@ class HeroCreateScene : PixelScene() {
 
             var h = max(tabDesc.y, tabPerk.y)
 
-            if (Badges.isUnlocked(heroClass().masteryBadge())) {
+            //todo: may lock this
+            if (true || Badges.isUnlocked(heroClass().masteryBadge())) {
                 tabMastery = MasteryTab(pos, heroClass())
                 add(tabMastery)
 
@@ -212,13 +213,15 @@ class HeroCreateScene : PixelScene() {
             }
 
             resize(WND_WIDTH.toInt(), (h + WND_MARGIN).toInt())
+
+            select(1)
+            select(0)
         }
 
         open fun startNewGame() {}
 
         // settings
         inner class ClassButton(var heroClass: HeroClass = HeroClass.WARRIOR) : RedButton(heroClass.title(), 8) {
-
             override fun onClick() {
                 val title = M.L(HeroCreateScene::class.java, "select_class")
                 val message = ""

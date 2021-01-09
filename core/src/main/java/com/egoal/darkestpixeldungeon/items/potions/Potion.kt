@@ -141,7 +141,8 @@ open class Potion : Item() {
                 // warning on bad potions
                 if (this is PotionOfLiquidFlame ||
                         this is PotionOfToxicGas ||
-                        this is PotionOfParalyticGas) {
+                        this is PotionOfParalyticGas ||
+                        this is PotionOfMagicalFog) {
                     WndOptions.Confirm(M.L(Potion::class.java, "harmful"), M.L(Potion::class.java, "sure_drink")) {
                         drink(hero)
                     }
@@ -294,7 +295,7 @@ open class Potion : Item() {
                 PotionOfLiquidFlame::class.java, PotionOfStrength::class.java, PotionOfParalyticGas::class.java,
                 PotionOfLevitation::class.java, PotionOfMindVision::class.java, PotionOfPurity::class.java,
                 PotionOfInvisibility::class.java, PotionOfMight::class.java, PotionOfFrost::class.java,
-                PotionOfPhysique::class.java)
+                PotionOfPhysique::class.java, PotionOfMagicalFog::class.java)
 
         private val colors = object : HashMap<String, Int>() {
             init {
@@ -311,6 +312,7 @@ open class Potion : Item() {
                 put("silver", ItemSpriteSheet.POTION_SILVER)
                 put("ivory", ItemSpriteSheet.POTION_IVORY)
                 put("darkgreen", ItemSpriteSheet.POTION_DARK_GREEN)
+                put("steelblue", ItemSpriteSheet.POTION_STEEL_BLUE)
             }
         }
 

@@ -116,7 +116,7 @@ class SacrificialFire : Blob() {
                         GLog.w(Messages.get(SacrificialFire::class.java, "reward"))
                         GameScene.effect(Flare(7, 32f).color(0x66ffff, true).show(
                                 ch.sprite.parent, DungeonTilemap.tileCenterToWorld(fire.pos), 2f))
-                        Dungeon.level.drop(Prize(), fire.pos).sprite.drop()
+                        Dungeon.level.drop(Prize(), ch.pos).sprite.drop()
                         return true
                     }
                 } else {

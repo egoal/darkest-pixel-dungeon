@@ -30,7 +30,6 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
 class Firebloom : Plant(0) {
-
     override fun activate() {
 
         GameScene.add(Blob.seed(pos, 2, Fire::class.java))
@@ -42,8 +41,6 @@ class Firebloom : Plant(0) {
     class Seed : Plant.Seed() {
         init {
             image = ItemSpriteSheet.SEED_FIREBLOOM
-
-
         }
     }
 }

@@ -58,6 +58,9 @@ public class FogOfWar extends Image {
           0xFF000000,
           0xFF000000, 0xFF000000};
 
+  private int mapWidth;
+  private int mapHeight;
+
   private int pWidth;
   private int pHeight;
 
@@ -70,6 +73,9 @@ public class FogOfWar extends Image {
   public FogOfWar(int mapWidth, int mapHeight) {
 
     super();
+
+    this.mapWidth = mapWidth;
+    this.mapHeight = mapHeight;
 
     pWidth = mapWidth + 1;
     pHeight = mapHeight + 1;
@@ -100,7 +106,21 @@ public class FogOfWar extends Image {
   }
 
   public synchronized void updateFog() {
-    updated.set(0, 0, pWidth, pWidth);
+    updated.set(0, 0, pWidth, pHeight);
+  }
+
+  public synchronized void updateFog( int cell, int radius ){
+    Rect update = new Rect(
+            (cell % mapWidth) - radius,
+            (cell / mapWidth) - radius,
+            (cell % mapWidth) - radius + 1 + 2*radius,
+            (cell / mapWidth) - radius + 1 + 2*radius);
+    update.left = Math.max(0, update.left);
+    update.top = Math.max(0, update.top);
+    update.right = Math.min(mapWidth, update.right);
+    update.bottom = Math.min(mapHeight, update.bottom);
+    if (update.isEmpty()) return;
+    updateFogArea(update.left, update.top, update.width(), update.height());
   }
 
   public synchronized void updateFogArea(int x, int y, int w, int h) {

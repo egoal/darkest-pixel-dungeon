@@ -156,7 +156,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                 GLog.w(Messages.get(this, "refine_failed"))
                 null
             }
-            Random.Int(8) == 0 -> PotionOfToxicGas()
+            Random.Int(10) == 0 -> PotionOfToxicGas()
             else -> AlchemyPot.combinePotion(listOf(s1, s2))
         }
         ++refined
@@ -174,7 +174,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
             curUser.belongings.weapon?.let {
                 if (it is Weapon) {
                     if (it.STRReq() < curUser.STR() && !it.cursed) {
-                        val i = Random.Int(4)
+                        val i = Random.Int(10)
                         val echt = when {
                             (i == 0 && it.enchantment !is Venomous) -> Venomous::class.java
                             (i == 1 && it.enchantment !is Unstable) -> Unstable::class.java

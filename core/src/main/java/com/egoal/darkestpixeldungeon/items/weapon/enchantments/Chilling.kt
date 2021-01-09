@@ -44,7 +44,6 @@ class Chilling : Enchantment() {
         if (Random.Int(level + 5) >= 4) {
             Buff.prolong(defender, Chill::class.java, Random.Float(2f, 3f))
             Splash.at(defender.sprite.center(), -0x4d2901, 5)
-
         }
 
         return damage.addElement(Damage.Element.ICE)

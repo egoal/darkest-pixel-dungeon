@@ -42,7 +42,7 @@ class Light : Buff() {
     }
 
     override fun onAdd() {
-        if (Dungeon.level != null) {
+        if (!Dungeon.isLevelNull) {
             luminary = TorchLight(target.pos, target.id())
             Dungeon.level.addLuminary(luminary)
             Dungeon.level.updateLightMap()

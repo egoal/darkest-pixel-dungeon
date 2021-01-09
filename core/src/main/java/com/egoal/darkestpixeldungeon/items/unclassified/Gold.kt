@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -123,5 +124,40 @@ class Gold(value: Int = 1) : Item() {
     companion object {
         private const val VALUE = "value"
         private const val AC_CAST = "cast"
+    }
+
+    class Purse : Item() {
+        init {
+            image = ItemSpriteSheet.PURSE
+        }
+
+        var number = 1
+
+        override val isUpgradable: Boolean
+            get() = false
+        override val isIdentified: Boolean
+            get() = true
+
+        override fun actions(hero: Hero): ArrayList<String> = arrayListOf("open")
+
+        override fun execute(hero: Hero, action: String) {
+            super.execute(hero, action)
+            if (action == "open") {
+                detach(hero.belongings.backpack)
+
+                hero.sprite.operate(hero.pos)
+                Gold().quantity(number).doPickUp(hero)
+            }
+        }
+
+        override fun storeInBundle(bundle: Bundle) {
+            super.storeInBundle(bundle)
+            bundle.put("num", number)
+        }
+
+        override fun restoreFromBundle(bundle: Bundle) {
+            super.restoreFromBundle(bundle)
+            number = bundle.getInt("num")
+        }
     }
 }

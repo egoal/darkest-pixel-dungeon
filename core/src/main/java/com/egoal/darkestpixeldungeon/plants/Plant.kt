@@ -53,7 +53,7 @@ abstract class Plant(val image: Int) : Bundlable {
                 if (item is MeleeWeapon) {
                     item.enchant(Enchantment.ForPotion(
                             PlantTable.row { it.plant == this@Plant.javaClass }.potion), 10f)
-                    GLog.w(M.L(Potion::class.java, "enchanted", item.name(), item.enchantment!!.name()))
+                    // GLog.w(M.L(Potion::class.java, "enchanted", item.name(), item.enchantment!!.name()))
                 }
             }
 
@@ -172,6 +172,5 @@ abstract class Plant(val image: Int) : Bundlable {
         private const val AC_PLANT = "PLANT"
         private const val AC_SMEAR = "SMEAR"
         private const val TIME_TO_PLANT = 1f
-        private const val TIME_TO_SMEAR = 1f
     }
 }

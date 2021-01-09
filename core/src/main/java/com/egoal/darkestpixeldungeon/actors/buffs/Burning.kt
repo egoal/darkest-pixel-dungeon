@@ -198,10 +198,10 @@ class Burning : Buff(), Hero.Doom {
 
     companion object {
 
-        private val DURATION = 8f
+        private const val DURATION = 8f
 
-        private val LEFT = "left"
-        private val BURNED = "burned"
+        private const val LEFT = "left"
+        private const val BURNED = "burned"
 
         fun duration(ch: Char): Float {
             val r = ch.buff(Resistance::class.java)

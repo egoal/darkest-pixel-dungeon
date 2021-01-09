@@ -445,7 +445,7 @@ object Badges {
     fun validateAllPotionsIdentified() {
         if (Dungeon.IsChallenged()) return
 
-        if (Dungeon.hero != null && Dungeon.hero.isAlive &&
+        if (!Dungeon.isHeroNull && Dungeon.hero.isAlive &&
                 !local.contains(Badge.ALL_POTIONS_IDENTIFIED) && Potion
                         .allKnown()) {
 
@@ -460,7 +460,7 @@ object Badges {
     fun validateAllScrollsIdentified() {
         if (Dungeon.IsChallenged()) return
 
-        if (Dungeon.hero != null && Dungeon.hero.isAlive &&
+        if (!Dungeon.isHeroNull && Dungeon.hero.isAlive &&
                 !local.contains(Badge.ALL_SCROLLS_IDENTIFIED) && Scroll.allKnown()) {
 
             val badge = Badge.ALL_SCROLLS_IDENTIFIED
@@ -474,7 +474,7 @@ object Badges {
     fun validateAllRingsIdentified() {
         if (Dungeon.IsChallenged()) return
 
-        if (Dungeon.hero != null && Dungeon.hero.isAlive &&
+        if (!Dungeon.isHeroNull && Dungeon.hero.isAlive &&
                 !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Ring.allKnown()) {
 
             val badge = Badge.ALL_RINGS_IDENTIFIED

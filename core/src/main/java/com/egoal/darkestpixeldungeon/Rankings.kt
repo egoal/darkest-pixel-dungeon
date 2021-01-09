@@ -179,6 +179,7 @@ object Rankings {
     private const val REC_DEPTH = "depth"
     private const val REC_DATA = "gameData"
     private const val REC_ID = "gameID"
+    private const val REC_USER_NAME = "username";
 
     class Record : Bundlable {
         var cause: Class<*>? = null
@@ -205,6 +206,7 @@ object Rankings {
             bundle.put(REC_CAUSE, cause)
 
             bundle.put(REC_WIN, win)
+            bundle.put(REC_USER_NAME, userName)
             bundle.put(REC_SCORE, score)
             heroClass.storeInBundle(bundle)
             bundle.put(REC_TIER, armorTier)
@@ -219,6 +221,8 @@ object Rankings {
             cause = bundle.getClass(REC_CAUSE)
 
             win = bundle.getBoolean(REC_WIN)
+            userName = bundle.getString(REC_USER_NAME)
+            if(userName.isEmpty()) userName = "无名"
             score = bundle.getInt(REC_SCORE)
             heroClass = HeroClass.RestoreFromBundle(bundle)
             armorTier = bundle.getInt(REC_TIER)

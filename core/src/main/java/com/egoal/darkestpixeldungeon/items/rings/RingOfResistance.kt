@@ -44,7 +44,7 @@ class RingOfResistance : Ring() {
     }
 
     override fun upgrade(): Item {
-        if (Dungeon.hero != null && isEquipped(Dungeon.hero!!)) {
+        if (!Dungeon.isHeroNull && isEquipped(Dungeon.hero!!)) {
             detach(Dungeon.hero!!)
             super.upgrade()
             attach(Dungeon.hero!!)

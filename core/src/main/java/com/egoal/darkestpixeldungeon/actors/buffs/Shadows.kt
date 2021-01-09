@@ -51,7 +51,7 @@ class Shadows : Invisibility() {
     override fun attachTo(target: Char): Boolean {
         if (super.attachTo(target)) {
             Sample.INSTANCE.play(Assets.SND_MELD)
-            if (Dungeon.level != null)
+            if (!Dungeon.isLevelNull)
                 Dungeon.observe()
             return true
         } else {
