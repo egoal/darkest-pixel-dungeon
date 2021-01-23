@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure;
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass;
 import com.egoal.darkestpixeldungeon.effects.Speck;
 import com.egoal.darkestpixeldungeon.items.unclassified.Amulet;
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.DollSprite;
@@ -80,6 +81,7 @@ public class StatusPane extends Component {
 
   private ClockIndicator clock;
   private PerkSelectIndicator perkSelector;
+  private TorchIndicator torchIndicator;
 
   private JournalButton btnJournal;
   private MenuButton btnMenu;
@@ -180,6 +182,9 @@ public class StatusPane extends Component {
     perkSelector = new PerkSelectIndicator();
     add(perkSelector);
 
+    torchIndicator = new TorchIndicator();
+    add(torchIndicator);
+
     buffs = new BuffIndicator(Dungeon.INSTANCE.getHero());
     add(buffs);
 
@@ -224,7 +229,9 @@ public class StatusPane extends Component {
 
     clock.setPos(width - clock.width(), danger.bottom() + 4);
 
-    perkSelector.setPos(0, version.y + version.height + 4);
+    torchIndicator.setPos(0, version.y + version.height + 4);
+
+    perkSelector.setPos(0, torchIndicator.bottom()+ 4);
 
     buffs.setPos(34, 12);
 
@@ -238,7 +245,7 @@ public class StatusPane extends Component {
     super.update();
 
     if (needsCompassUpdate) {
-      needsCompassUpdate = true;
+      needsCompassUpdate = false;
       compass.visible = false;
       compass.update();
     }
@@ -313,7 +320,10 @@ public class StatusPane extends Component {
   }
 
   public void pickup(Item item) {
-    pickedUp.reset(item,
+    if(item instanceof Torch)
+        pickedUp.reset(item, torchIndicator.centerX(), torchIndicator.centerY(), true);
+    else
+        pickedUp.reset(item,
             btnJournal.icon.x + btnJournal.icon.width() / 2f,
             btnJournal.icon.y + btnJournal.icon.height() / 2f,
             true);

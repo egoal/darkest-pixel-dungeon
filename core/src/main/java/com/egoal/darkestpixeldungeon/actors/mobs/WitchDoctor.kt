@@ -113,8 +113,7 @@ class WitchDoctor : Mob() {
     override fun createLoot(): Item? {
         val p = Random.Float()
         return when {
-            p < 0.075f -> ReagentOfHealing()
-            p < 0.1f -> PotionOfHealing().identify()
+            p < 0.08f -> ReagentOfHealing()
             p < 0.2f -> Generator.POTION.generate()
             else -> null
         }

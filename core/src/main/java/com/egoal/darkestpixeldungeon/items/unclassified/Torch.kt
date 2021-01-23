@@ -20,12 +20,16 @@
  */
 package com.egoal.darkestpixeldungeon.items.unclassified
 
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Light
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.watabou.noosa.audio.Sample
 
 import java.util.ArrayList
 
@@ -38,24 +42,35 @@ class Torch : Item() {
         defaultAction = AC_LIGHT
     }
 
-    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_LIGHT) }
+    // override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_LIGHT) }
 
-    override fun execute(hero: Hero, action: String) {
-        super.execute(hero, action)
+//    override fun execute(hero: Hero, action: String) {
+//        super.execute(hero, action)
+//
+//        if (action == AC_LIGHT) {
+//
+//            hero.spend(TIME_TO_LIGHT)
+//            hero.busy()
+//
+//            hero.sprite.operate(hero.pos)
+//
+//            detach(hero.belongings.backpack)
+//            Buff.affect(hero, Light::class.java).duration = Light.DURATION
+//
+//            val emitter = hero.sprite.centerEmitter()
+//            emitter.start(FlameParticle.FACTORY, 0.2f, 3)
+//        }
+//    }
 
-        if (action == AC_LIGHT) {
+    override fun doPickUp(hero: Hero): Boolean {
+        Dungeon.torch += quantity
 
-            hero.spend(TIME_TO_LIGHT)
-            hero.busy()
+        // GameScene.pickUp(this)
+        GameScene.pickUpJournal(this) //todo:
+        hero.spendAndNext(TIME_TO_PICK_UP)
+        Sample.INSTANCE.play(Assets.SND_ITEM)
 
-            hero.sprite.operate(hero.pos)
-
-            detach(hero.belongings.backpack)
-            Buff.affect(hero, Light::class.java).duration = Light.DURATION
-
-            val emitter = hero.sprite.centerEmitter()
-            emitter.start(FlameParticle.FACTORY, 0.2f, 3)
-        }
+        return true
     }
 
     override val isUpgradable: Boolean
@@ -67,8 +82,6 @@ class Torch : Item() {
 
     companion object {
         private const val AC_LIGHT = "LIGHT"
-
-        private const val TIME_TO_LIGHT = .5f
     }
 
 }

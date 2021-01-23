@@ -33,7 +33,7 @@ import com.watabou.utils.Bundle
 import kotlin.math.max
 import kotlin.math.min
 
-class Light : Buff() {
+open class Light : Buff() {
     var duration = 0f
     lateinit var luminary: Luminary
 

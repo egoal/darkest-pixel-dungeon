@@ -23,12 +23,14 @@ package com.egoal.darkestpixeldungeon.items.rings
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
+import com.watabou.utils.Bundle
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.round
 
 class RingOfHealth : Ring() {
-    private fun ratio() = 1.25f.pow(level() * 0.3f)
+    private var dhp = 0
+    private fun ratio() = 1.25f.pow(level() * 0.3f) - 1f
 
     override fun doEquip(hero: Hero): Boolean {
         return if (super.doEquip(hero)) {
@@ -45,23 +47,35 @@ class RingOfHealth : Ring() {
     }
 
     override fun upgrade(): Item {
-        if (!Dungeon.isHeroNull && isEquipped(Dungeon.hero!!)) {
-            detach(Dungeon.hero!!)
+        if (!Dungeon.isHeroNull && isEquipped(Dungeon.hero)) {
+            detach(Dungeon.hero)
             super.upgrade()
-            attach(Dungeon.hero!!)
+            attach(Dungeon.hero)
         } else super.upgrade()
 
         return this
     }
 
-    private fun detach(hero: Hero) {
-        hero.HT = round(hero.HT / ratio()).toInt()
-        hero.HP = max(1, round(hero.HP / ratio()).toInt())
+    private fun detach(hero: Hero) { modHT(hero, -dhp) }
+
+    private fun attach(hero: Hero) { modHT(hero, round(hero.HT * ratio()).toInt()) }
+
+    private fun modHT(hero: Hero, dht: Int) {
+        dhp += dht
+
+        val r = hero.HP.toFloat() / hero.HT
+        hero.HT += dht
+        hero.HP = max(1, round(hero.HT * r).toInt())
     }
 
-    private fun attach(hero: Hero) {
-        hero.HT = round(hero.HT * ratio()).toInt()
-        hero.HP = max(1, round(hero.HP * ratio()).toInt())
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put("DHP", dhp)
+    }
+
+    override fun restoreFromBundle(bundle: Bundle) {
+        super.restoreFromBundle(bundle)
+        dhp = bundle.getInt("DHP")
     }
 
     override fun buff(): RingBuff = Health()

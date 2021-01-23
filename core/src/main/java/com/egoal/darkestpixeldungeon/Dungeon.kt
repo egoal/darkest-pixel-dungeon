@@ -58,7 +58,7 @@ import java.util.HashSet
 object Dungeon {
 
     var initialDepth_ = -1
-    const val VERSION_STRING = "0.6.0-0.2.1"
+    const val VERSION_STRING = "0.6.0-1"
 
     lateinit var hero: Hero
     lateinit var level: Level
@@ -67,6 +67,7 @@ object Dungeon {
 
     var depth: Int = 0
     var gold: Int = 0
+    var torch: Float = 0f
 
     lateinit var chapters: HashSet<Int>
 
@@ -123,6 +124,7 @@ object Dungeon {
     private val HERO = "hero"
     private val GOLD = "gold"
     private val DEPTH = "depth"
+    private val TORCH = "torch"
     private val DROPPED = "dropped%d"
     private val LEVEL = "level"
     private val LIMDROPS = "limiteddrops"
@@ -208,6 +210,7 @@ object Dungeon {
 
         depth = initialDepth_
         gold = 0
+        torch = 0f
 
         droppedItems = SparseArray()
 
@@ -461,6 +464,7 @@ object Dungeon {
             bundle.put(HERO, hero)
             bundle.put(GOLD, gold)
             bundle.put(DEPTH, depth)
+            bundle.put(TORCH, torch)
 
             for (d in droppedItems.keyArray()) {
                 bundle.put(Messages.format(DROPPED, d), droppedItems.get(d))
@@ -626,6 +630,7 @@ object Dungeon {
 
         gold = bundle.getInt(GOLD)
         depth = bundle.getInt(DEPTH)
+        torch = bundle.getFloat(TORCH)
 
         Statistics.restoreFromBundle(bundle)
         Journal.restoreFromBundle(bundle)

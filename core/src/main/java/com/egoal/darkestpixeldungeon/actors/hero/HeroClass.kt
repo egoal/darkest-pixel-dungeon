@@ -264,7 +264,8 @@ enum class HeroClass(private val title: String) {
         hero.belongings.armor = ClothArmor().identify() as Armor
 
         Food().collect()
-        Torch().identify().collect()
+        // Torch().identify().collect()
+        Dungeon.torch += 1f
 
         ScrollOfIdentify().setKnown()
 

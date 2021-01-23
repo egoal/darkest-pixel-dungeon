@@ -46,7 +46,7 @@ class Imp : NPC.Unbreakable() {
     init {
         spriteClass = ImpSprite::class.java
 
-        properties.add(Char.Property.IMMOVABLE)
+        properties.add(Property.IMMOVABLE)
     }
 
     override fun act(): Boolean {
@@ -64,25 +64,18 @@ class Imp : NPC.Unbreakable() {
     override fun reset(): Boolean = true
 
     override fun interact(): Boolean {
-
         sprite.turnTo(pos, Dungeon.hero.pos)
         if (Quest.given) {
 
             val tokens = Dungeon.hero.belongings.getItem(DwarfToken::class.java)
-            if (tokens != null && (tokens.quantity() >= 5 || !Quest.alternative && tokens.quantity() >= 5)) {
+            if (tokens != null && tokens.quantity() >= 8) {
                 GameScene.show(WndImp(this, tokens))
             } else {
-                tell(if (Quest.alternative)
-                    M.L(this, "monks_2", Dungeon.hero.givenName())
-                else
-                    M.L(this, "golems_2", Dungeon.hero.givenName()))
+                tell(M.L(this, "quest_2", Dungeon.hero.givenName()))
             }
 
         } else {
-            tell(if (Quest.alternative)
-                M.L(this, "monks_1")
-            else
-                M.L(this, "golems_1"))
+            tell(M.L(this, "quest_1"))
             Quest.given = true
             Quest.isCompleted = false
 
@@ -100,8 +93,6 @@ class Imp : NPC.Unbreakable() {
     }
 
     object Quest {
-        var alternative: Boolean = false
-
         var spawned: Boolean = false
         var given: Boolean = false
         var isCompleted: Boolean = false
@@ -110,7 +101,6 @@ class Imp : NPC.Unbreakable() {
 
         private const val NODE = "demon"
 
-        private const val ALTERNATIVE = "alternative"
         private const val SPAWNED = "spawned"
         private const val GIVEN = "given"
         private const val COMPLETED = "completed"
@@ -128,8 +118,6 @@ class Imp : NPC.Unbreakable() {
             node.put(SPAWNED, spawned)
 
             if (spawned) {
-                node.put(ALTERNATIVE, alternative)
-
                 node.put(GIVEN, given)
                 node.put(COMPLETED, isCompleted)
                 node.put(REWARD, reward)
@@ -163,8 +151,6 @@ class Imp : NPC.Unbreakable() {
                 level.mobs.add(npc)
 
                 spawned = true
-                alternative = Random.Int(2) == 0
-
                 given = false
 
                 do {
@@ -176,11 +162,9 @@ class Imp : NPC.Unbreakable() {
         }
 
         fun process(mob: Mob) {
-            if (spawned && given && !isCompleted) {
-                if (alternative && mob is Monk || !alternative && mob is Golem) {
-
+            if (!isCompleted) {
+                if ((spawned && given) || Random.Float() < 0.3f)
                     Dungeon.level.drop(DwarfToken(), mob.pos).sprite.drop()
-                }
             }
         }
 

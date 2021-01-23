@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.unclassified
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.Humanity
@@ -62,8 +63,11 @@ enum class Prize {
         override fun collect(hero: Hero) {
             val p = Random.Float()
             when {
+                p < 0.04 -> {
+                    Dungeon.torch += 1
+                }
                 p < 0.08 -> {
-                    Random.oneOf(Humanity(), Torch()).collect()
+                    Humanity().collect()
                 }
                 p < 0.1 -> {
                     // got nothing

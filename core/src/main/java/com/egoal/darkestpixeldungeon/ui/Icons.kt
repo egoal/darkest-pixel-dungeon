@@ -67,6 +67,7 @@ enum class Icons {
     PERK,
 
     ARROW_RIGHT,
+    TORCH,
 
     LIX;
 
@@ -97,7 +98,7 @@ enum class Icons {
                 ROGUE -> icon.frame(icon.texture.uvRect(32, 29, 48, 45))
                 HUNTRESS -> icon.frame(icon.texture.uvRect(48, 29, 64, 45))
                 SORCERESS -> icon.frame(icon.texture.uvRect(64, 29, 80, 45))
-                EXILE-> icon.frame(icon.texture.uvRect(0, 66, 16, 82))
+                EXILE -> icon.frame(icon.texture.uvRect(0, 66, 16, 82))
 
                 CLOSE -> icon.frame(icon.texture.uvRect(0, 45, 13, 58))
                 DEPTH -> icon.frame(icon.texture.uvRect(46, 12, 54, 20))
@@ -121,6 +122,7 @@ enum class Icons {
                 ARROW_RIGHT -> icon.frame(icon.texture.uvRect(109, 47, 116, 59))
 
                 PERK -> icon.frame(icon.texture.uvRect(0, 57, 8, 65))
+                TORCH -> icon.frame(icon.texture.uvRect(16, 64, 32, 80))
             }
 
             return icon
@@ -132,7 +134,7 @@ enum class Icons {
             HeroClass.ROGUE -> get(ROGUE)
             HeroClass.HUNTRESS -> get(HUNTRESS)
             HeroClass.SORCERESS -> get(SORCERESS)
-            HeroClass.EXILE-> get(EXILE)
+            HeroClass.EXILE -> get(EXILE)
         }
     }
 }

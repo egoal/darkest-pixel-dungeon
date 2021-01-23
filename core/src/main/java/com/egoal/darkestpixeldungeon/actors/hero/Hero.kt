@@ -178,7 +178,10 @@ class Hero : Char() {
         if (buff(Berserk::class.java)?.berserking() == true) return 0f
 
         var reg = regeneration
-        // reg += heroPerk.get(LowHealthRegeneration::class.java)?.extraRegeneration(this) ?: 0f
+
+        val glp = belongings.armor?.glyph
+        if (glp is Healing)
+            regeneration += glp.speed(belongings.armor!!)
 
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
@@ -1283,7 +1286,7 @@ class Hero : Char() {
             info.level = bundle.getInt(LEVEL)
 
             info.name = bundle.getString(USER_NAME)
-            if(info.name.isEmpty()) info.name = M.L(Hero::class.java, "username")
+            if (info.name.isEmpty()) info.name = M.L(Hero::class.java, "username")
 
             info.heroClass = HeroClass.RestoreFromBundle(bundle)
             info.subClass = HeroSubClass.RestoreFromBundle(bundle)
