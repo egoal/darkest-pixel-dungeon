@@ -104,7 +104,7 @@ class Tengu : Mob() {
                 if (level.isLighted) level.turnLights(false)
                 Buff.prolong(Dungeon.hero, Blindness::class.java, 2f)
 
-                Dungeon.hero.buff(Light::class.java)?.detach()
+                // Dungeon.hero.buff(Light::class.java)?.detach()
 
                 jumpAway(pos)
 

@@ -179,7 +179,7 @@ object Rankings {
     private const val REC_DEPTH = "depth"
     private const val REC_DATA = "gameData"
     private const val REC_ID = "gameID"
-    private const val REC_USER_NAME = "username";
+    private const val REC_USER_NAME = "username"
 
     class Record : Bundlable {
         var cause: Class<*>? = null

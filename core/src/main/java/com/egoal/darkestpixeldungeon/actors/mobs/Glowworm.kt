@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Poison
 import com.egoal.darkestpixeldungeon.actors.buffs.Venom
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.potions.Potion
+import com.egoal.darkestpixeldungeon.items.unclassified.PoisonPowder
 import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
@@ -39,6 +40,9 @@ class Glowworm(private var level: Int = 1) : Mob() {
 
         setLevel(level)
         Buff.affect(this, Light::class.java).prolong(Float.MAX_VALUE) // for a whole light...
+
+        loot = PoisonPowder()
+        lootChance = 0.2f
     }
 
     fun setLevel(lvl: Int) {

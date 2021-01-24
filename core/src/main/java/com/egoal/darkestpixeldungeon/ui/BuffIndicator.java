@@ -108,6 +108,7 @@ public class BuffIndicator extends Component {
   public static final int DECAYED = CORRUPT;
   public static final int FAST_RECOVERY = 63;
   public static final int RELIEVE = 64;
+  public static final int ELEMENT_BROKEN = 65;
 
   public static final int SIZE = 7;
 

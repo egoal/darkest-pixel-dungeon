@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.effects.Speck
 
 import com.egoal.darkestpixeldungeon.items.Generator

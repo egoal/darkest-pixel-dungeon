@@ -76,8 +76,7 @@ public class Speck extends Image {
 
   private static TextureFilm film;
 
-  private static SparseArray<Emitter.Factory> factories = new 
-          SparseArray<Emitter.Factory>();
+  private static SparseArray<TheFactory> factories = new SparseArray<TheFactory>();
 
   public Speck() {
     super();
@@ -323,7 +322,7 @@ public class Speck extends Image {
         break;
 
       case COIN:
-        speed.polar(-PointF.PI * Random.Float(0.3f, 0.7f), Random.Float(48, 
+        speed.polar(-PointF.PI * Random.Float(0.3f, 0.7f), Random.Float(48,
                 96));
         acc.y = 256;
         lifespan = -speed.y / acc.y * 2;
@@ -476,29 +475,55 @@ public class Speck extends Image {
     }
   }
 
+  private static class TheFactory extends Emitter.Factory{
+    private boolean lightMode;
+    private int color = -1;
+    private int type;
+
+    TheFactory(int type, boolean lightmode){
+      super();
+      lightMode = lightmode;
+      this.type = type;
+    }
+
+    @Override
+    public void emit(Emitter emitter, int index, float x, float y) {
+        Speck p = (Speck) emitter.recycle(Speck.class);
+        p.reset(index, x, y, type);
+        if(color > 0)
+            p.hardlight(color);
+    }
+
+    @Override
+    public boolean lightMode() { return lightMode; }
+
+    public TheFactory color(int color){ this.color = color; return this; }
+  }
+
   public static Emitter.Factory factory(final int type) {
     return factory(type, false);
   }
 
   public static Emitter.Factory factory(final int type, final boolean lightMode) {
-
-    Emitter.Factory factory = factories.get(type);
+    TheFactory factory = factories.get(type);
 
     if (factory == null) {
-      factory = new Emitter.Factory() {
-        @Override
-        public void emit(Emitter emitter, int index, float x, float y) {
-          Speck p = (Speck) emitter.recycle(Speck.class);
-          p.reset(index, x, y, type);
-        }
-
-        @Override
-        public boolean lightMode() {
-          return lightMode;
-        }
-      };
-      factories.put(type, factory);
+        factory = new TheFactory(type, lightMode);
+        factories.put(type, factory);
     }
+    factory.color(-1);
+
+    return factory;
+  }
+
+  public static Emitter.Factory factory(final int type, final int color){
+    TheFactory factory = factories.get(type);
+
+    if (factory == null) {
+        factory = new TheFactory(type, false);
+        factories.put(type, factory);
+    }
+    factory.color(color);
 
     return factory;
   }

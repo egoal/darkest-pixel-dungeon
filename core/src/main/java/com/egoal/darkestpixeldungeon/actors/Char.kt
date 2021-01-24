@@ -53,6 +53,9 @@ import java.util.HashSet
 import kotlin.math.*
 
 abstract class Char : Actor() {
+    interface IIncomingDamageProc { abstract fun procIncommingDamage(damage: Damage) }
+
+    //
     enum class Camp {
         HERO, NEUTRAL, ENEMY
     }
@@ -197,8 +200,7 @@ abstract class Char : Actor() {
         if (!isAlive || dmg.value < 0 || (dmg.type == Damage.Type.MENTAL && this !is Hero))
             return 0
 
-        // vulnerable
-        buff(Vulnerable::class.java)?.procDamage(dmg)
+        buffs.filterIsInstance<IIncomingDamageProc>().forEach { it.procIncommingDamage(dmg) }
 
         // buffs shall remove when take damage
         buff(Frost::class.java)?.let { Buff.detach(this, Frost::class.java) }
@@ -364,7 +366,7 @@ abstract class Char : Actor() {
     fun buffs(): HashSet<Buff> = HashSet(buffs)
 
     @Synchronized
-    fun <T : Buff> buffs(c: Class<T>): HashSet<T> = buffs.filter { c.isInstance(it) }.map { it as T }.toHashSet()
+    fun <T : Buff> buffs(c: Class<T>): HashSet<T> = buffs.filterIsInstance(c).toHashSet()
 
     @Synchronized
     fun <T : Buff> buff(c: Class<T>): T? = buffs.find { c.isInstance(it) } as T?

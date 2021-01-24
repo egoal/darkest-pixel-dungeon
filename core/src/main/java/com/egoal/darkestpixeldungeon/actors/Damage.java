@@ -1,8 +1,8 @@
 package com.egoal.darkestpixeldungeon.actors;
 
 import com.egoal.darkestpixeldungeon.messages.M;
+import com.egoal.darkestpixeldungeon.messages.Messages;
 
-import java.util.HashMap;
 
 /**
  * Created by 93942 on 4/30/2018.
@@ -39,20 +39,13 @@ public class Damage {
       return a;
     }
 
-    public static int String2Element(String string){
-      return names.get(string);
+    public static final String[] names;
+    static {
+      names = new String[ELEMENT_COUNT];
+      for(int i=0; i<ELEMENT_COUNT; ++i) names[i] = M.INSTANCE.L(Damage.class, "ele"+i);
     }
 
-    private static final HashMap<String, Integer> names = new HashMap<>();
-    static {
-      names.put("NONE", NONE);
-      names.put("FIRE", FIRE);
-      names.put("POISON", POISON);
-      names.put("ICE", ICE);
-      names.put("LIGHT", LIGHT);
-      names.put("SHADOW", SHADOW);
-      names.put("HOLY", HOLY);
-    }
+
   }
 
   public static class Feature {

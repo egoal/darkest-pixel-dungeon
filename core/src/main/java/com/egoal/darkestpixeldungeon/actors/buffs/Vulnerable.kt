@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.buffs
 
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
@@ -10,8 +11,8 @@ import kotlin.math.round
  * Created by 93942 on 8/3/2018.
  */
 
-// check in Char::takeDamage
-open class Vulnerable(var ratio: Float = 1f, var dmgType: Damage.Type = Damage.Type.NORMAL) : FlavourBuff() {
+
+class Vulnerable(var ratio: Float = 1f, var dmgType: Damage.Type = Damage.Type.NORMAL) : FlavourBuff(), Char.IIncomingDamageProc {
     init {
         type = buffType.NEGATIVE
     }
@@ -22,8 +23,8 @@ open class Vulnerable(var ratio: Float = 1f, var dmgType: Damage.Type = Damage.T
 
     override fun desc(): String = M.L(this, if (ratio < 1f) "desc_1" else "desc_0", dmgType.toString(), ratio, dispTurns())
 
-    open fun procDamage(dmg: Damage) {
-        if (dmg.type == dmgType) dmg.value = round(dmg.value * ratio).toInt()
+    override fun procIncommingDamage(damage: Damage) {
+        if (damage.type == dmgType) damage.value = round(damage.value * ratio).toInt()
     }
 
     override fun storeInBundle(bundle: Bundle) {

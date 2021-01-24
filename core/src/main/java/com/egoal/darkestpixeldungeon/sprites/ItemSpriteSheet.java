@@ -84,6 +84,8 @@ public class ItemSpriteSheet {
     public static final int FISH_BONE = SINGLE_USE + 22;
     public static final int TOME_BLUE = SINGLE_USE + 23;
     public static final int TOME_YELLOW = SINGLE_USE + 24;
+    public static final int FIRE_BUTTERFLY = SINGLE_USE + 25;
+    public static final int POISON_POWDER = SINGLE_USE + 26;
 
     private static final int WEP_TIER1 = xy(1, 5);   //16 slots
     public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;

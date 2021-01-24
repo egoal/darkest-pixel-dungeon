@@ -190,7 +190,7 @@ open class ItemSlot() : Button() {
         if (weapon.inscription != null && (weapon.cursedKnown || !weapon.inscription!!.curse)) {
             val icon = weapon.inscription!!.icon
             if (icon >= 0) {
-                bottomRightIcon = consumeIcon(2 + icon / 18, icon % 18)
+                bottomRightIcon = consumeIcon(3 + icon / 18, icon % 18)
                 add(bottomRightIcon!!)
             }
         }
