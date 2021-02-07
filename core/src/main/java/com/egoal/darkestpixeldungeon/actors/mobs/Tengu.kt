@@ -40,6 +40,13 @@ class Tengu : Mob() {
         HUNTING = Hunting()
     }
 
+    enum class AttackAction {
+        NORMAL, JUMP_AWAY, JUMP_PHANHOM_ATTACK,
+    }
+
+    private var nextAction = AttackAction.NORMAL
+    //^^^ this is a very stupid compatible fix, but works for now.
+
     override fun viewDistance(): Int = 6
 
     private var attackStage = 0
@@ -62,23 +69,29 @@ class Tengu : Mob() {
     }
 
     override fun doAttack(enemy: Char): Boolean {
-        if (phantoms.isNotEmpty()) {
-            // if hero is not adjacent to self or any of phantoms, don't attack
-            val shouldFollow = !Dungeon.level.adjacent(enemy.pos, pos) ||
-                    phantoms.any { !Dungeon.level.adjacent(enemy.pos, it.pos) }
+        when (nextAction) {
+            AttackAction.NORMAL -> {
+                if (phantoms.isNotEmpty()) {
+                    // if hero is not adjacent to self or any of phantoms, don't attack
+                    val shouldFollow = !Dungeon.level.adjacent(enemy.pos, pos) ||
+                            phantoms.any { !Dungeon.level.adjacent(enemy.pos, it.pos) }
 
-            if (shouldFollow) {
-                clearPhantoms()
-                jumpPhantomAttack(enemy.pos)
+                    if (shouldFollow) {
+                        clearPhantoms()
+                        jumpPhantomAttack(enemy.pos)
 
-                return true
+                        return true
+                    }
+                }
+
+                if (Dungeon.hero === enemy) Dungeon.hero.resting = false
+
+                sprite.attack(enemy.pos)
+                spend(attackDelay())
             }
+            AttackAction.JUMP_AWAY -> jumpAway(pos)
+            AttackAction.JUMP_PHANHOM_ATTACK -> jumpPhantomAttack(enemy.pos)
         }
-
-        if (Dungeon.hero === enemy) Dungeon.hero.resting = false
-
-        sprite.attack(enemy.pos)
-        spend(attackDelay())
 
         return true
     }
@@ -104,36 +117,33 @@ class Tengu : Mob() {
                 if (level.isLighted) level.turnLights(false)
                 Buff.prolong(Dungeon.hero, Blindness::class.java, 2f)
 
-                // Dungeon.hero.buff(Light::class.java)?.detach()
-
-                jumpAway(pos)
-
                 Dungeon.observe()
                 GameScene.flash(0x444444)
                 Sample.INSTANCE.play(Assets.SND_BLAST)
 
                 yell(M.L(this, "interesting"))
 
+                nextAction = AttackAction.JUMP_AWAY
                 attackStage = 1
             } else {
                 // jump away when hard attack from face
-                if (bracketExceed || (value > 10 &&
+                if (bracketExceed || (value > 15 &&
                                 dmg.from is Char && Dungeon.level.adjacent((dmg.from as Char).pos, pos)))
-                    jumpAway(pos)
+                    nextAction = AttackAction.JUMP_AWAY
             }
         } else if (attackStage == 1) {
             if (phantoms.isNotEmpty()) {
                 // destroy phantoms, jump away
                 clearPhantoms()
-                jumpAway(pos)
+                nextAction = AttackAction.JUMP_AWAY
             } else {
                 // attack from face, or ranged but bracket exceed
                 // phantom strike
                 if (dmg.from is Char) {
                     val c = dmg.from as Char
-                    if (Dungeon.level.adjacent(c.pos, pos) && Random.Int(5) == 0) jumpAway(pos)
-                    else jumpPhantomAttack(c.pos)
-                } else if (bracketExceed) jumpAway(pos)
+                    if (Dungeon.level.adjacent(c.pos, pos) && Random.Int(5) == 0) nextAction = AttackAction.JUMP_AWAY
+                    else nextAction = AttackAction.JUMP_PHANHOM_ATTACK
+                } else if (bracketExceed) nextAction = AttackAction.JUMP_AWAY
             }
         }
 
@@ -208,6 +218,8 @@ class Tengu : Mob() {
 
             spend(Random.Float(0.01f, 0.05f))
         }
+
+        nextAction = AttackAction.NORMAL
     }
 
     private fun jumpAway(curpos: Int) {
@@ -238,6 +250,8 @@ class Tengu : Mob() {
 
         Sample.INSTANCE.play(Assets.SND_PUFF)
         spend(1 / speed())
+
+        nextAction = AttackAction.NORMAL
     }
 
     override fun storeInBundle(bundle: Bundle) {
@@ -259,7 +273,7 @@ class Tengu : Mob() {
             enemySeen = enemyInFOV
 
 
-            if (enemyInFOV && !isCharmedBy(enemy!!) && canAttack(enemy!!)) return doAttack(enemy!!)
+            if (enemyInFOV && !isCharmedBy(enemy!!) && buff(Disarm::class.java) == null && canAttack(enemy!!)) return doAttack(enemy!!)
             else {
                 if (enemyInFOV) target = enemy!!.pos
                 else {
@@ -267,7 +281,7 @@ class Tengu : Mob() {
                     target = enemy!!.pos
                 }
 
-                spend(Actor.TICK)
+                spend(TICK)
                 return true
             }
         }

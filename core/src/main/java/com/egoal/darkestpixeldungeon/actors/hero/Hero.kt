@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.SacrificialFire
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
+import com.egoal.darkestpixeldungeon.actors.mobs.DarkSpirit
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC
@@ -1311,6 +1312,7 @@ class Hero : Char() {
             }
 
             Bones.leave()
+            DarkSpirit.Leave()
 
             Dungeon.observe()
 

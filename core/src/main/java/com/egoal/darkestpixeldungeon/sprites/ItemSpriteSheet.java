@@ -188,7 +188,7 @@ public class ItemSpriteSheet {
     public static final int RIDER_MASK = HELMET + 15;
     public static final int HELMET_GUARD = HELMET + 16;
     public static final int STRAW_HAT = HELMET + 17;
-    public  static  final int MANTILLA = HELMET+18;
+    public static final int MANTILLA = HELMET + 18;
 
     //16 free slots
 
@@ -268,6 +268,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_SHIELD = ARTIFACTS + 42;
     public static final int DARGONS_SQUAMA = ARTIFACTS + 43;
     public static final int GODESS_RADIANCE = ARTIFACTS + 44;
+    public static final int RANGERS_HOOK = ARTIFACTS + 45;
 
     //32 free slots
     private static final int SCROLLS = xy(1, 20);  //16 slots
@@ -339,7 +340,7 @@ public class ItemSpriteSheet {
     public static final int STEWED = FOOD + 12;
     public static final int SKEWER = FOOD + 13;
     public static final int GLAND = FOOD + 14;
-    public static final int ROOT = FOOD+15;
+    public static final int ROOT = FOOD + 15;
 
     private static final int QUEST = xy(1, 26);  //32 slots
     public static final int SKULL = QUEST + 0;
@@ -357,7 +358,7 @@ public class ItemSpriteSheet {
     public static final int HOLSTER = BAGS + 3;
     public static final int VIAL = BAGS + 4;
     public static final int GOURD = BAGS + 5;
-    public static final int PURSE = BAGS+ 6;
+    public static final int PURSE = BAGS + 6;
 
     //64 free slots
 

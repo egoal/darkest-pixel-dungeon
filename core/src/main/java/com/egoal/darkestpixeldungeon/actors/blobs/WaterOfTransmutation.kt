@@ -61,6 +61,7 @@ class WaterOfTransmutation : WellWater() {
         val lvl = weap.level()
         if (lvl > 0) n.upgrade(lvl) else if (lvl < 0) n.degrade(-lvl)
 
+        n.inscription = weap.inscription
         n.enchantment = weap.enchantment
         n.levelKnown = weap.levelKnown
         n.cursedKnown = weap.cursedKnown

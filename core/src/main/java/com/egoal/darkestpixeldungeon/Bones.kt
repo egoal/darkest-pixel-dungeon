@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Perk
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
@@ -18,6 +19,7 @@ object Bones {
 
     private const val LEVEL = "level"
     private const val ITEM = "item"
+    private const val PERK = "perk"
 
     private var depth = -1
     private var item: Item? = null

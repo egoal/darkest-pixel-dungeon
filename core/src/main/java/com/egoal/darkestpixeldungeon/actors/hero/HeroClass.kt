@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.unclassified.*
@@ -145,6 +146,12 @@ enum class HeroClass(private val title: String) {
 
             hero.belongings.weapon = Knuckles().identify() as Weapon
 
+//            val rh = RangersHook()
+//            hero.belongings.misc1 = rh
+//            rh.identify()
+//            rh.activate(hero)
+//            Dungeon.quickslot.setSlot(0, rh)
+
             val b = Boomerang()
             b.identify().collect()
             Dungeon.quickslot.setSlot(0, b)
@@ -275,8 +282,9 @@ enum class HeroClass(private val title: String) {
         for (p in initialPerks()) hero.heroPerk.add(p)
 
         // PotionOfMagicalFog().quantity(10).identify().collect()
-        FireButterfly().quantity(10).collect()
-        PoisonPowder().quantity(10).collect()
+        // FireButterfly().quantity(10).collect()
+        // PoisonPowder().quantity(10).collect()
+        // initDebug(hero)
     }
 
     // called when hero level up
@@ -334,8 +342,7 @@ enum class HeroClass(private val title: String) {
 
         PotionOfHealing().quantity(99).identify().collect()
         PotionOfLiquidFlame().quantity(99).identify().collect()
-
-        Torch().quantity(99).identify().collect()
+        PotionOfMagicalFog().quantity(99).identify().collect()
 
         PlateArmor().identify().upgrade(6).collect()
         Claymore().identify().upgrade(6).collect()

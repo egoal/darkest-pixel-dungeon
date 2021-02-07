@@ -6,8 +6,11 @@ import com.egoal.darkestpixeldungeon.ui.*
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.*
 import com.watabou.noosa.ui.Button
+import kotlin.math.sin
 
 class SlotSelectScene : PixelScene() {
+    private lateinit var tip: RenderedText
+
     override fun create() {
         super.create()
 
@@ -40,6 +43,12 @@ class SlotSelectScene : PixelScene() {
             yPrg += SLOT_HEIGHT + SLOT_GAP
         }
 
+        tip = renderText(M.L(this, "info_delete"), 6)
+        // tip.me
+        tip.x = (w - tip.width()) / 2f
+        tip.y = h-30f
+        add(tip)
+
         GamesInProgress.curSlot = 0
 
         fadeIn()
@@ -47,6 +56,13 @@ class SlotSelectScene : PixelScene() {
 
     override fun onBackPressed() {
         DarkestPixelDungeon.switchNoFade(TitleScene::class.java)
+    }
+
+    override fun update() {
+        super.update()
+
+        // todo: refactor this
+        tip.alpha(sin(Game.timeTotal * 2f) * .4f + .6f)
     }
 
     companion object {

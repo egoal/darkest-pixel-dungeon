@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
+import com.egoal.darkestpixeldungeon.actors.mobs.DarkSpirit
 import com.egoal.darkestpixeldungeon.actors.mobs.RotLasher
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
@@ -259,6 +260,16 @@ abstract class RegularLevel : Level() {
 
             if (++index >= normalSpaces.size)
                 index = 0
+        }
+
+        DarkSpirit.Gen()?.let {
+            for (i in 1..3) {
+                it.pos = randomRespawnCell()
+                if (it.pos >= 0) {
+                    mobs.add(it)
+                    break
+                }
+            }
         }
     }
 

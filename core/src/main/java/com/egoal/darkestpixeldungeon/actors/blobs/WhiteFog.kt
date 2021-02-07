@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
+import com.watabou.utils.Random
 
 class WhiteFog : Blob() {
     override fun evolve() {
@@ -49,7 +50,7 @@ class WhiteFog : Blob() {
 
         override fun act(): Boolean {
             if (target.isAlive) {
-                val dmg = Damage(damage, this, target).type(Damage.Type.MAGICAL)
+                val dmg = Damage(Random.Int(1, damage), this, target).type(Damage.Type.MAGICAL)
                 target.takeDamage(dmg)
 
                 spend(TICK)

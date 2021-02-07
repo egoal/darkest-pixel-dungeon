@@ -133,6 +133,7 @@ class VillageLevel : RegularLevel() {
 //        }
 //        (putMobAt(UndeadShopkeeper::class.java, 15, 27) as UndeadShopkeeper).initSellItems()
 //        putMobAt(Yvette::class.java, 15, 27)
+//        putMobAt(DarkSpirit::class.java, 15, 27)
     }
 
     override fun onSwitchedIn() {
