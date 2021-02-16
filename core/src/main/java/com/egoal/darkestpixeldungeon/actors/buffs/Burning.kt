@@ -77,7 +77,7 @@ class Burning : Buff(), Hero.Doom {
             //maximum damage scales from 6 to 2 depending on remaining hp.
             val maxDmg = 3 + Math.round(4 * target.HP / target.HT.toFloat())
             val damage = Random.Int(1, maxDmg)
-            Buff.Companion.detach(target, Chill::class.java)
+            Buff.detach(target, Chill::class.java)
 
             if (target is Hero) {
 
@@ -150,8 +150,8 @@ class Burning : Buff(), Hero.Doom {
             GameScene.add(Blob.seed(target.pos, 4, Fire::class.java))
         }
 
-        spend(Actor.TICK)
-        left -= Actor.TICK
+        spend(TICK)
+        left -= TICK
 
         if (left <= 0 || Level.water[target.pos] && !target.flying) {
 

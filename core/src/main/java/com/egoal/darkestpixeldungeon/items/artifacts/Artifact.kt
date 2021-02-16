@@ -20,12 +20,14 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts
 
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.KindofMisc
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.items.Catalog
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -89,6 +91,14 @@ abstract class Artifact : KindofMisc() {
         } else {
             return false
         }
+    }
+
+    override fun identify(): Item {
+        if (!Dungeon.isHeroNull && Dungeon.hero.isAlive) Catalog.ARTIFACT.see(javaClass)
+
+        Badges.validateAllArtifactsIdentified()
+
+        return super.identify()
     }
 
     override fun visiblyUpgraded(): Int {

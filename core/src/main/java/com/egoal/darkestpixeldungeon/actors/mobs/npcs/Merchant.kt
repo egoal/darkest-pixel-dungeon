@@ -14,6 +14,7 @@ import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
+import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -38,7 +39,7 @@ open class Merchant : NPC() {
         properties.add(Property.IMMOVABLE)
     }
 
-    private val items = ArrayList<Item>()
+    protected val items = ArrayList<Item>()
 
     override fun act(): Boolean {
         throwItem()
@@ -112,7 +113,7 @@ open class Merchant : NPC() {
         }
     }
 
-    private fun removeItemFromSell(item: Item) = items.remove(item)
+    protected fun removeItemFromSell(item: Item) = items.remove(item)
 
     fun shuffleItems() {
         items.shuffle()
@@ -161,8 +162,8 @@ open class Merchant : NPC() {
     }
 
     // windows
-    inner class WndShop : Window() {
-        private val goodsButtons = ArrayList<GoodsButton>()
+    open inner class WndShop : Window() {
+        protected val goodsButtons = ArrayList<GoodsButton>()
 
         init {
             val it = IconTitle(sprite(), name)
@@ -201,13 +202,13 @@ open class Merchant : NPC() {
             return top + rows * (btnHeight + SLOT_MARGIN)
         }
 
-        private fun updateButtons() {
+        protected fun updateButtons() {
             for (btn in goodsButtons) {
                 btn.redPrice(buyPrice(btn.item()) > Dungeon.gold)
             }
         }
 
-        private fun onWantBuy(item: Item, itemIndex: Int) {
+        protected open fun onWantBuy(item: Item, itemIndex: Int) {
             val price = buyPrice(item)
             val actions = ArrayList<String>()
             if (price <= Dungeon.gold) actions.add(M.L(Merchant::class.java, "buy"))
@@ -218,9 +219,7 @@ open class Merchant : NPC() {
             val wnd = object : WndOptions(ItemSprite(item), item.name(), item.info(), *actions.toTypedArray()) {
                 override fun onSelect(index: Int) {
                     // todo: use action name instead
-                    val buying = price <= Dungeon.gold && index == 0
-
-                    if (buying) {
+                    if (price <= Dungeon.gold && index == 0) {
                         // buy
                         val hero = Dungeon.hero
                         Dungeon.gold -= price

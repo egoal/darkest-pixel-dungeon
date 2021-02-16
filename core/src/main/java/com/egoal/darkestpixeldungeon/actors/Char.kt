@@ -53,7 +53,9 @@ import java.util.HashSet
 import kotlin.math.*
 
 abstract class Char : Actor() {
-    interface IIncomingDamageProc { abstract fun procIncommingDamage(damage: Damage) }
+    interface IIncomingDamageProc {
+        abstract fun procIncommingDamage(damage: Damage)
+    }
 
     //
     enum class Camp {
@@ -223,10 +225,7 @@ abstract class Char : Actor() {
             }
         }
 
-        buff(Doom::class.java)?.let { dmg.value *= 2 }
-
         // deal with types
-        //todo: the damage number can have different colour refer to the attached elements
         when (dmg.type) {
             Damage.Type.NORMAL ->
                 // physical

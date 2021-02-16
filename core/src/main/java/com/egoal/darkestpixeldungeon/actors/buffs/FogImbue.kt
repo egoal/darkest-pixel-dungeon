@@ -45,7 +45,7 @@ class FogImbue : Buff() {
     override fun desc(): String = M.L(this, "desc", dispTurns(left))
 
     init {
-        immunities.add(WhiteFog::class.java)
+        immunities.add(WhiteFog.White::class.java)
     }
 
     companion object {

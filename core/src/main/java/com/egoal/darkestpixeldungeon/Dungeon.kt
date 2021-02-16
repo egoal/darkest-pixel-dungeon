@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.MindVision
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
+import com.egoal.darkestpixeldungeon.items.Catalog
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
@@ -58,7 +59,7 @@ import java.util.HashSet
 object Dungeon {
 
     var initialDepth_ = -1
-    const val VERSION_STRING = "0.6.0-1.2"
+    const val VERSION_STRING = "0.6.0-1.3"
 
     lateinit var hero: Hero
     lateinit var level: Level
@@ -231,14 +232,15 @@ object Dungeon {
         Yvette.Quest.Reset()
 
         Badges.reset()
+        Catalog.Load()
 
         // hero init
         hero = Hero()
-        hero!!.live()
+        hero.live()
 
-        hero!!.userName = HeroCreateScene.UserName
-        HeroCreateScene.CurrentClass.initHero(hero!!)
-        HeroCreateScene.BornPrize.collect(hero!!)
+        hero.userName = HeroCreateScene.UserName
+        HeroCreateScene.CurrentClass.initHero(hero)
+        HeroCreateScene.BornPrize.collect(hero)
     }
 
     fun IsChallenged(): Boolean = ::hero.isInitialized && hero.challenge != null
@@ -504,6 +506,8 @@ object Dungeon {
             Scroll.save(bundle)
             Potion.save(bundle)
             Ring.save(bundle)
+
+            Catalog.Save()
 
             Actor.storeNextID(bundle)
 

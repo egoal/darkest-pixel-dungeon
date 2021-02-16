@@ -983,7 +983,7 @@ class Hero : Char() {
 
     internal fun updateAwareness() {
         val w = heroPerk.get(Keen::class.java)?.baseAwareness() ?: 0.9f
-        awareness = (1.0 - Math.pow(w.toDouble(), (1 + Math.min(lvl, 9)).toDouble() * 0.5)).toFloat()
+        awareness = 1f - w.pow((1 + min(lvl, 9)) / 2f)
     }
 
     override fun add(buff: Buff) {

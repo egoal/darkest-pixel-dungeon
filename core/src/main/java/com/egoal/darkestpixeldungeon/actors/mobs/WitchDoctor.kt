@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.potions.ReagentOfHealing
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
@@ -113,7 +114,8 @@ class WitchDoctor : Mob() {
     override fun createLoot(): Item? {
         val p = Random.Float()
         return when {
-            p < 0.08f -> ReagentOfHealing()
+            p < 0.05f -> ReagentOfHealing()
+            p < 0.1f -> CeremonialDagger()
             p < 0.2f -> Generator.POTION.generate()
             else -> null
         }

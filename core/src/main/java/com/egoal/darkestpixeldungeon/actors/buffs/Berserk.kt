@@ -66,13 +66,15 @@ class Berserk : Buff() {
 
     override fun act(): Boolean {
         if (berserking()) {
-            if (target.HP <= 0) {
-                target.SHLD -= min(target.SHLD, 2)
-                if (target.SHLD == 0) {
+            target.SHLD -= min(target.SHLD, 1)
+            if (target.SHLD == 0) {
+                if (target.HP <= 0) {
                     target.die(this)
-                    if (!target.isAlive) Dungeon.fail(this.javaClass)
+                    if (!target.isAlive) Dungeon.fail(javaClass)
                 }
-            } else {
+            }
+
+            if (target.HP >= 5) {
                 state = State.EXHAUSTED
                 exhaustion = EXHAUSTION_START
                 levelRecovery = LEVEL_RECOVER_START
@@ -105,17 +107,15 @@ class Berserk : Buff() {
     fun berserking(): Boolean {
         if (target.HP == 0 && state == State.NORMAL) {
 
-            val shield = target.buff(WarriorShield::class.java)
-            if (shield != null) {
-                state = State.BERSERK
-                BuffIndicator.refreshHero()
-                target.SHLD = shield.maxShield() * 5
+            val shld = target.buff(WarriorShield::class.java)?.maxShield() ?: 3
 
-                SpellSprite.show(target, SpellSprite.BERSERK)
-                Sample.INSTANCE.play(Assets.SND_CHALLENGE)
-                GameScene.flash(0xFF0000)
-            }
+            state = State.BERSERK
+            BuffIndicator.refreshHero()
+            target.SHLD = shld * 5
 
+            SpellSprite.show(target, SpellSprite.BERSERK)
+            Sample.INSTANCE.play(Assets.SND_CHALLENGE)
+            GameScene.flash(0xFF0000)
         }
 
         return state == State.BERSERK

@@ -46,6 +46,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.buffs.MindVision
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Ease
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.particles.FlowParticle
@@ -60,6 +61,7 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
 import com.egoal.darkestpixeldungeon.items.rings.Ring
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
@@ -774,9 +776,10 @@ abstract class Level : Bundlable {
 
     // hero press
     open fun press(cell: Int, ch: Char?) {
+        val isHero = ch === Dungeon.hero
 
         if (ch != null && pit[cell] && !ch.flying) {
-            if (ch === Dungeon.hero) Chasm.HeroFall(cell)
+            if (isHero) Chasm.HeroFall(cell)
             else if (ch is Mob) Chasm.MobFall(ch)
 
             return
@@ -784,18 +787,23 @@ abstract class Level : Bundlable {
 
         var trap: Trap? = null
         when (map[cell]) {
-
             Terrain.SECRET_TRAP -> {
-                GLog.i(Messages.get(Level::class.java, "hidden_plate"))
-                trap = traps.get(cell)
+                if (isHero && Dungeon.hero.heroPerk.has(Ease::class.java) && Random.Int(2) == 0) {
+                    GLog.i(Messages.get(Level::class.java, "reveal_plate"))
+
+                    GameScene.discoverTile(cell, map[cell])
+                    discover(cell)
+                    ScrollOfMagicMapping.discover(cell)
+                } else {
+                    GLog.i(Messages.get(Level::class.java, "hidden_plate"))
+                    trap = traps.get(cell)
+                }
             }
             Terrain.TRAP -> trap = traps.get(cell)
 
             Terrain.HIGH_GRASS, Terrain.HIGH_GRASS_COLLECTED -> HighGrass.Trample(this, cell, ch)
 
             Terrain.WELL -> WellWater.AffectCell(cell)
-
-            // Terrain.ALCHEMY -> if (ch == null) { Alchemy.transmute(cell) }
 
             Terrain.DOOR -> Door.Enter(cell, ch)
         }

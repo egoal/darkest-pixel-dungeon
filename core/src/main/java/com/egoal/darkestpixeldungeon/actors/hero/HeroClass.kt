@@ -281,9 +281,6 @@ enum class HeroClass(private val title: String) {
 
         for (p in initialPerks()) hero.heroPerk.add(p)
 
-        // PotionOfMagicalFog().quantity(10).identify().collect()
-        // FireButterfly().quantity(10).collect()
-        // PoisonPowder().quantity(10).collect()
         // initDebug(hero)
     }
 

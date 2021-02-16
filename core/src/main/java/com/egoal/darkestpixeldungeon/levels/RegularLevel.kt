@@ -8,6 +8,8 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.DarkSpirit
 import com.egoal.darkestpixeldungeon.actors.mobs.RotLasher
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.BarterMan
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Merchant
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
 
@@ -207,28 +209,24 @@ abstract class RegularLevel : Level() {
     }
 
     protected fun createSellers() {
+        val spawnSeller = { seller: Merchant ->
+            seller.initSellItems()
+            val s = randomSpace(DigResult.Type.Normal)
+            do {
+                seller.pos = pointToCell(s!!.rect.random())
+            } while (findMobAt(seller.pos) != null || !passable[seller.pos])
+            mobs.add(seller)
+        }
+
         if (Dungeon.depth in 1 until 20) {
             val psProb = if (Dungeon.shopOnLevel()) .1f else .2f
-            if (Random.Float() < psProb) {
-                val ps = PotionSeller.Random()
-                ps.initSellItems()
-                val s = randomSpace(DigResult.Type.Normal)
-                do {
-                    ps.pos = pointToCell(s!!.rect.random())
-                } while (findMobAt(ps.pos) != null || !Level.passable[ps.pos])
-                mobs.add(ps)
-            }
+            if (Random.Float() < psProb) spawnSeller(PotionSeller.Random())
 
             val ssProb = if (Dungeon.shopOnLevel()) .08f else .18f
-            if (Random.Float() < ssProb) {
-                val ss = ScrollSeller()
-                ss.initSellItems()
-                val s = randomSpace(DigResult.Type.Normal)
-                do {
-                    ss.pos = pointToCell(s!!.rect.random())
-                } while (findMobAt(ss.pos) != null || !Level.passable[ss.pos])
-                mobs.add(ss)
-            }
+            if (Random.Float() < ssProb) spawnSeller(ScrollSeller())
+
+            val bmProb = if (Dungeon.shopOnLevel()) .05f else .1f
+            if (Random.Float() < bmProb) spawnSeller(BarterMan())
         }
     }
 
@@ -498,7 +496,7 @@ abstract class RegularLevel : Level() {
         private val SPACES = "spaces"
 
         val SpecialDiggers: Map<Class<out Digger>, Float> = mapOf(
-                ArmoryDigger::class.java to 0.6f,
+                ArmoryDigger::class.java to 0.5f,
                 GardenDigger::class.java to 1f,
                 LaboratoryDigger::class.java to 1f,
                 LibraryDigger::class.java to 1f,

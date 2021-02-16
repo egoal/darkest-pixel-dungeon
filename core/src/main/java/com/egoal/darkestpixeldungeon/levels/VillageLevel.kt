@@ -1,27 +1,11 @@
 package com.egoal.darkestpixeldungeon.levels
 
-import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
-import com.egoal.darkestpixeldungeon.actors.buffs.Dementage
 import com.egoal.darkestpixeldungeon.actors.mobs.*
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
-import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor
-import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
-import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
-import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
-import com.egoal.darkestpixeldungeon.items.unclassified.Gold
-import com.egoal.darkestpixeldungeon.items.unclassified.MendingRune
-import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleGloves
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
-import com.egoal.darkestpixeldungeon.levels.traps.PrizeTrap
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -134,6 +118,7 @@ class VillageLevel : RegularLevel() {
 //        (putMobAt(UndeadShopkeeper::class.java, 15, 27) as UndeadShopkeeper).initSellItems()
 //        putMobAt(Yvette::class.java, 15, 27)
 //        putMobAt(DarkSpirit::class.java, 15, 27)
+        // (putMobAt(BarterMan::class.java, 15, 27) as BarterMan).initSellItems()
     }
 
     override fun onSwitchedIn() {

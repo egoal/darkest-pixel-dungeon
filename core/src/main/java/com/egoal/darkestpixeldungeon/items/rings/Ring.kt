@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.items.Catalog
 import com.egoal.darkestpixeldungeon.items.ItemStatusHandler
 import com.egoal.darkestpixeldungeon.items.KindofMisc
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -75,6 +76,7 @@ open abstract class Ring : KindofMisc() {
 
     protected fun setKnown() {
         if (!isKnown) handler.know(this)
+        if (!Dungeon.isHeroNull && Dungeon.hero.isAlive) Catalog.Ring.see(javaClass)
 
         Badges.validateAllRingsIdentified()
     }
@@ -219,8 +221,6 @@ open abstract class Ring : KindofMisc() {
         fun restore(bundle: Bundle) {
             handler = ItemStatusHandler(rings, gems, bundle)
         }
-
-        fun allKnown(): Boolean = handler.known().size == rings.size
 
         fun getBonus(target: Char, type: Class<out RingBuff>): Int = target.buffs(type).sumBy { it.level() }
     }

@@ -38,10 +38,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PointF
 import com.watabou.utils.Random
-import kotlin.math.PI
-import kotlin.math.max
-import kotlin.math.pow
-import kotlin.math.round
+import kotlin.math.*
 
 // for wands that directly damage a targetpos
 // wands with AOE effects count here (e.g. fireblast), but wands with indrect
@@ -154,6 +151,8 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
     }
 
     protected open fun onHit(damage: Damage) {
+        if (damage.isFeatured(Damage.Feature.CRITICAL))
+            curUser.recoverSanity(Random.IntRange(1, 4))
         if (isMissile) curUser.heroPerk.get(WandPiercing::class.java)?.onHit(damage.to as Char)
     }
 

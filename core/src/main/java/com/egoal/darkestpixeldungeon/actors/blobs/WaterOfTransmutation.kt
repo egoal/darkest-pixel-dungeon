@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.actors.blobs
 import com.egoal.darkestpixeldungeon.Journal
 import com.egoal.darkestpixeldungeon.effects.BlobEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.Catalog
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
@@ -35,7 +36,11 @@ class WaterOfTransmutation : WellWater() {
             else -> null
         }
 
-        if (new != null) Journal.remove(Journal.Feature.WELL_OF_TRANSMUTATION)
+        if (new != null) {
+            Journal.remove(Journal.Feature.WELL_OF_TRANSMUTATION)
+            if (new.isIdentified) Catalog.SetSeen(new.javaClass)
+        }
+
         return new
     }
 

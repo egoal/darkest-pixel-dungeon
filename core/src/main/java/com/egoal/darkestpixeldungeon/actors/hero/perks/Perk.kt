@@ -148,7 +148,8 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 QuickLearner() to 1f,
 //                LevelPerception() to 1f
                 Maniac() to 1f,
-                PolearmMaster() to 0.8f
+                PolearmMaster() to 0.8f,
+                Ease() to 1f
         )
     }
 }

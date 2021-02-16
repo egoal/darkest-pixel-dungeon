@@ -34,6 +34,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.actors.mobs.Acidic
 import com.egoal.darkestpixeldungeon.actors.mobs.Bandit
 import com.egoal.darkestpixeldungeon.actors.mobs.Senior
+import com.egoal.darkestpixeldungeon.items.Catalog
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
@@ -81,6 +82,7 @@ object Badges {
         ALL_POTIONS_IDENTIFIED(16),
         ALL_SCROLLS_IDENTIFIED(17),
         ALL_RINGS_IDENTIFIED(18),
+        ALL_ARTIFACTS_IDENTIFIED(70),
         // ALL_WANDS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
         BAG_BOUGHT_SEED_POUCH,
@@ -475,9 +477,22 @@ object Badges {
         if (Dungeon.IsChallenged()) return
 
         if (!Dungeon.isHeroNull && Dungeon.hero.isAlive &&
-                !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Ring.allKnown()) {
+                !local.contains(Badge.ALL_RINGS_IDENTIFIED) && Catalog.Ring.allSeen()) {
 
             val badge = Badge.ALL_RINGS_IDENTIFIED
+            local.add(badge)
+            displayBadge(badge)
+
+            validateAllItemsIdentified()
+        }
+    }
+
+    fun validateAllArtifactsIdentified() {
+        if (Dungeon.IsChallenged()) return
+
+        if (!Dungeon.isHeroNull && Dungeon.hero.isAlive &&
+                !local.contains(Badge.ALL_ARTIFACTS_IDENTIFIED) && Catalog.ARTIFACT.allSeen()) {
+            val badge = Badge.ALL_ARTIFACTS_IDENTIFIED
             local.add(badge)
             displayBadge(badge)
 
@@ -541,7 +556,8 @@ object Badges {
         if (!global!!.contains(Badge.ALL_ITEMS_IDENTIFIED) &&
                 global!!.contains(Badge.ALL_POTIONS_IDENTIFIED) &&
                 global!!.contains(Badge.ALL_SCROLLS_IDENTIFIED) &&
-                global!!.contains(Badge.ALL_RINGS_IDENTIFIED)) {
+                global!!.contains(Badge.ALL_RINGS_IDENTIFIED) &&
+                global.contains(Badge.ALL_ARTIFACTS_IDENTIFIED)) {
             //global.contains( Badge.ALL_WANDS_IDENTIFIED )) {
 
             val badge = Badge.ALL_ITEMS_IDENTIFIED
@@ -641,7 +657,7 @@ object Badges {
                     HeroClass.ROGUE -> badge = Badge.BOSS_SLAIN_1_ROGUE
                     HeroClass.HUNTRESS -> badge = Badge.BOSS_SLAIN_1_HUNTRESS
                     HeroClass.SORCERESS -> badge = Badge.BOSS_SLAIN_1_SORCERESS
-                    HeroClass.EXILE-> badge= Badge.BOSS_SLAIN_1_EXILE
+                    HeroClass.EXILE -> badge = Badge.BOSS_SLAIN_1_EXILE
                 }
                 local.add(badge)
                 if (!global!!.contains(badge)) {
@@ -675,8 +691,8 @@ object Badges {
                     HeroSubClass.WARDEN -> badge = Badge.BOSS_SLAIN_3_WARDEN
                     HeroSubClass.STARGAZER -> badge = Badge.BOSS_SLAIN_3_STARGAZER
                     HeroSubClass.WITCH -> badge = Badge.BOSS_SLAIN_3_WITCH
-                    HeroSubClass.LANCER-> badge= Badge.BOSS_SLAIN_3_LANCE
-                    HeroSubClass.WINEBIBBER-> Badge.BOSS_SLAIN_3_WINEBIBBER
+                    HeroSubClass.LANCER -> badge = Badge.BOSS_SLAIN_3_LANCE
+                    HeroSubClass.WINEBIBBER -> Badge.BOSS_SLAIN_3_WINEBIBBER
                     else -> return
                 }
                 local.add(badge)

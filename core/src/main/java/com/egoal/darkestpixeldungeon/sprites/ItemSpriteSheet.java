@@ -108,6 +108,7 @@ public class ItemSpriteSheet {
 
     public static final int RANGER_BOW = WEP_TIER2 + 8;
     public static final int TULWAR = WEP_TIER2 + 9;
+    public static final int CEREMONIAL_SWORD = WEP_TIER2 + 10;
 
     private static final int WEP_TIER3 = xy(1, 7);   //16 slots
     public static final int SWORD = WEP_TIER3 + 0;
@@ -258,17 +259,19 @@ public class ItemSpriteSheet {
     public static final int HANDLE_OF_ABYSS = ARTIFACTS + 32;
     public static final int CLOAK_OF_SHEEP = ARTIFACTS + 33;
     public static final int HEART_OF_SATAN = ARTIFACTS + 34;
-    public static final int ARTIFACT_EYEBALL = ARTIFACTS + 35;
-    public static final int EYEBALL_PAIR = ARTIFACTS + 36;
-    public static final int RIEMANNIAN_SHIELD = ARTIFACTS + 37;
-    public static final int GOLD_PLATE_STATUE = ARTIFACTS + 38;
-    public static final int EXTRACTION_FLASK_ENHANCED = ARTIFACTS + 39;
-    public static final int ARTIFACT_CLOAK_ENHANCED = ARTIFACTS + 40;
-    public static final int CRACKED_COIN = ARTIFACTS + 41;
-    public static final int ARTIFACT_SHIELD = ARTIFACTS + 42;
-    public static final int DARGONS_SQUAMA = ARTIFACTS + 43;
-    public static final int GODESS_RADIANCE = ARTIFACTS + 44;
-    public static final int RANGERS_HOOK = ARTIFACTS + 45;
+    public static final int HEART_OF_SATAN_1 = ARTIFACTS + 35;
+    public static final int HEART_OF_SATAN_2 = ARTIFACTS + 36;
+    public static final int ARTIFACT_EYEBALL = ARTIFACTS + 37;
+    public static final int EYEBALL_PAIR = ARTIFACTS + 38;
+    public static final int RIEMANNIAN_SHIELD = ARTIFACTS + 39;
+    public static final int GOLD_PLATE_STATUE = ARTIFACTS + 40;
+    public static final int EXTRACTION_FLASK_ENHANCED = ARTIFACTS + 41;
+    public static final int ARTIFACT_CLOAK_ENHANCED = ARTIFACTS + 42;
+    public static final int CRACKED_COIN = ARTIFACTS + 43;
+    public static final int ARTIFACT_SHIELD = ARTIFACTS + 44;
+    public static final int DARGONS_SQUAMA = ARTIFACTS + 45;
+    public static final int GODESS_RADIANCE = ARTIFACTS + 46;
+    public static final int RANGERS_HOOK = ARTIFACTS + 47;
 
     //32 free slots
     private static final int SCROLLS = xy(1, 20);  //16 slots

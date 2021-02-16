@@ -63,6 +63,7 @@ object PerkImageSheet {
     const val PREHEATED_ZAP = 56
     const val MANA_DRINE = 57
     const val BLUR = 58
+    const val EASE = 59
 
     private const val NEGATIVE = 64
     const val APPETITE_RAVENOUS = NEGATIVE + 0

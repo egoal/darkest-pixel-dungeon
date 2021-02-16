@@ -66,7 +66,8 @@ class Statuary : NPC.Unbreakable() {
             else -> Type.MONSTER
         }
 
-        spawnChance[idx] /= 3f
+        spawnChance[idx] = 0f
+        if (spawnChance.sum() < 0.01f) spawnChance.fill(1f)
     }
 
     override fun sprite(): CharSprite = Sprite().apply { setType(type) }
@@ -77,7 +78,7 @@ class Statuary : NPC.Unbreakable() {
         if (!isActive) return false
 
         Journal.add(name)
-        
+
         WndOptions.Show(sprite(), name, description(), M.L(this, "agree_${type.title}"), M.L(this, "disagree_${type.title}")) {
             Dungeon.hero.spend(1f)
 
@@ -309,13 +310,13 @@ class Statuary : NPC.Unbreakable() {
         private const val ACTIVE = "active"
         private const val GOLD = "gold"
 
-        private val spawnChance = floatArrayOf(100f, 100f, 100f)
+        private val spawnChance = floatArrayOf(1f, 1f, 1f)
 
         private const val NODE = "statuary"
         private const val SPAWN_CHANCE = "spawnchance"
 
         fun Reset() {
-            spawnChance.fill(100f)
+            spawnChance.fill(1f)
         }
 
         fun Save(bundle: Bundle) {

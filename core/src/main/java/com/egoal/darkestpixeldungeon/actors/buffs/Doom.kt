@@ -1,13 +1,17 @@
 package com.egoal.darkestpixeldungeon.actors.buffs
 
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 
-class Doom : Buff() {
+class Doom : Buff(), Char.IIncomingDamageProc {
     init {
         type = buffType.NEGATIVE
     }
+
+    override fun procIncommingDamage(damage: Damage) { damage.value *= 2 }
 
     override fun fx(on: Boolean) {
         if (on) target.sprite.add(CharSprite.State.DARKENED)

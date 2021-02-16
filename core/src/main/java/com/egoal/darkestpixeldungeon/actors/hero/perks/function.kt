@@ -68,6 +68,10 @@ class Drunkard : Perk() {
     override fun canBeGain(hero: Hero): Boolean = hero.heroClass != HeroClass.EXILE
 }
 
+class Ease : Perk() {
+    override fun image(): Int = PerkImageSheet.EASE
+}
+
 class EfficientPotionOfHealing : Perk() {
     override fun image(): Int = PerkImageSheet.POTION_EFF_HEALING
 }

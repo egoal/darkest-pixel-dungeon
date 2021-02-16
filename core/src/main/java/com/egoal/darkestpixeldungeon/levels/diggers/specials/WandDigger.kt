@@ -22,6 +22,8 @@ class WandDigger : RectDigger() {
     }
 
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
+        if (rect.width >= 5 && rect.height >= 5 && rect.area >= 30) return digCentered(level, wall, rect)
+
         Fill(level, rect, Terrain.EMPTY_SP)
         val lastRowTile = Terrain.STATUE
         val plat = rect.center
@@ -61,4 +63,19 @@ class WandDigger : RectDigger() {
         return DigResult(rect, DigResult.Type.Locked)
     }
 
+
+    private fun digCentered(level: Level, wall: Wall, rect: Rect): DigResult {
+        Fill(level, rect, Terrain.EMPTY)
+        val cen = rect.center
+        val ceni = level.pointToCell(cen)
+        for (i in PathFinder.NEIGHBOURS9) Set(level, i + ceni, Terrain.EMPTY_SP)
+
+        val door = overlappedWall(wall, rect).random()
+        Set(level, door, Terrain.DOOR)
+
+        guard.pos = ceni
+        level.mobs.add(guard)
+
+        return DigResult(rect, Wall.ArroundBut(rect, wall.direction.opposite), DigResult.Type.Special)
+    }
 }

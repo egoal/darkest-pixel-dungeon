@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Earthroot
@@ -71,7 +72,12 @@ class HeartOfSatan : Artifact() {
         } else upgrade()
     }
 
-    // no sprite update~
+    override fun upgrade(): Item {
+        if (level() >= 9) image = ItemSpriteSheet.HEART_OF_SATAN_2
+        else if (level() >= 2) image = ItemSpriteSheet.HEART_OF_SATAN_1
+
+        return super.upgrade()
+    }
 
     override fun passiveBuff(): ArtifactBuff = Regeneration()
 

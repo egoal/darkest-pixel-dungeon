@@ -20,11 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs
 
-import com.egoal.darkestpixeldungeon.actors.blobs.ConfusionGas
-import com.egoal.darkestpixeldungeon.actors.blobs.ParalyticGas
-import com.egoal.darkestpixeldungeon.actors.blobs.StenchGas
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
-import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas
+import com.egoal.darkestpixeldungeon.actors.blobs.*
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 
@@ -34,9 +31,7 @@ class GasesImmunity : FlavourBuff() {
         return BuffIndicator.IMMUNITY
     }
 
-    override fun toString(): String {
-        return Messages.get(this, "name")
-    }
+    override fun toString(): String = M.L(this, "name")
 
     init {
         immunities.add(ParalyticGas::class.java)
@@ -44,14 +39,12 @@ class GasesImmunity : FlavourBuff() {
         immunities.add(ConfusionGas::class.java)
         immunities.add(StenchGas::class.java)
         immunities.add(VenomGas::class.java)
+        immunities.add(WhiteFog.White::class.java)
     }
 
-    override fun desc(): String {
-        return Messages.get(this, "desc", dispTurns())
-    }
+    override fun desc(): String = M.L(this, "desc", dispTurns())
 
     companion object {
-
-        val DURATION = 15f
+        const val DURATION = 15f
     }
 }
