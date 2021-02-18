@@ -166,6 +166,9 @@ object Badges {
         GRIM_WEAPON(29),
         PIRANHAS(30),
         NIGHT_HUNTER(58),
+        HIGH_DAMAGE_1(72),
+        HIGH_DAMAGE_2(73),
+        HIGH_DAMAGE_3(74),
         PERK_GAIN_1(64),
         PERK_GAIN_2(65),
         PERK_GAIN_3(66),
@@ -891,6 +894,26 @@ object Badges {
         displayBadge(badge)
     }
 
+    fun validateHighDamage(value: Int) {
+        if (Dungeon.IsChallenged()) return
+
+        var badge: Badge? = null
+        if (!local.contains(Badge.HIGH_DAMAGE_1) && value >= 100) {
+            badge = Badge.HIGH_DAMAGE_1
+            local.add(Badge.HIGH_DAMAGE_1)
+        }
+        if (!local.contains(Badge.HIGH_DAMAGE_2) && value >= 200) {
+            badge = Badge.HIGH_DAMAGE_2
+            local.add(Badge.HIGH_DAMAGE_2)
+        }
+        if (!local.contains(Badge.HIGH_DAMAGE_3) && value >= 400) {
+            badge = Badge.HIGH_DAMAGE_3
+            local.add(Badge.HIGH_DAMAGE_3)
+        }
+
+        displayBadge(badge)
+    }
+
     fun validateGainPerk() {
         if (Dungeon.IsChallenged()) return
 
@@ -1008,6 +1031,7 @@ object Badges {
         keep(badges, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge
                 .GAMES_PLAYED_3, Badge.GAMES_PLAYED_4)
         keep(badges, Badge.PERK_GAIN_1, Badge.PERK_GAIN_2, Badge.PERK_GAIN_3)
+        keep(badges, Badge.HIGH_DAMAGE_1, Badge.HIGH_DAMAGE_2, Badge.HIGH_DAMAGE_3)
 
         return badges
     }
@@ -1063,6 +1087,7 @@ object Badges {
         leaveBest(filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge
                 .GAMES_PLAYED_3, Badge.GAMES_PLAYED_4)
         leaveBest(filtered, Badge.PERK_GAIN_1, Badge.PERK_GAIN_2, Badge.PERK_GAIN_3)
+        leaveBest(filtered, Badge.HIGH_DAMAGE_1, Badge.HIGH_DAMAGE_2, Badge.HIGH_DAMAGE_3)
 
         return filtered.sorted()
     }

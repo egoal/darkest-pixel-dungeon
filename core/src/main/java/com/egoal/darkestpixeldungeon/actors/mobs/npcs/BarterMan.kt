@@ -43,7 +43,7 @@ class BarterMan : Merchant() {
         repeat(nw) { addItemToSell(Generator.WEAPON.generate()) }
         repeat(na) { addItemToSell(Generator.ARMOR.generate()) }
 
-        for (item in items) item.level(0)
+        // for (item in items) item.level(0)
     }
 
     class Sprite : SimpleMobSprite(Assets.BARTER_MAN)
@@ -68,7 +68,7 @@ class BarterMan : Merchant() {
                     updateButtons()
                 }
             }, M.L(BarterMan::class.java, "prompt_select"), {
-                it.isIdentified && !it.cursed && when (item) {
+                it.cursedKnown && !it.cursed && when (item) {
                     is Potion -> it is Potion
                     is Scroll -> it is Scroll
                     is MeleeWeapon -> it is MeleeWeapon && item.tier == it.tier

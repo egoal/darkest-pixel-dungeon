@@ -88,7 +88,7 @@ object PropertyConfiger {
             val EXP: Int = 0, val maxLvl: Int = 0,
             val lootChance: Float = 0f, val loot: String = "",
             val minDamage: Int = 0, val maxDamage: Int = 0, val typeDamage: Damage.Type = Damage.Type.NORMAL,
-            val criticalChance: Float = 0f, val criticalRatio: Float = 1.25f,
+            val criticalChance: Float = 0f, val criticalRatio: Float = 1f,
             val minDefend: Int = 0, val maxDefend: Int = 0,
             val magicalResistance: Float = 0f) {
         val elementalResistances = FloatArray(Damage.Element.ELEMENT_COUNT) { 0f }

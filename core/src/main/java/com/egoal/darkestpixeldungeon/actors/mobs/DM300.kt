@@ -56,6 +56,7 @@ import java.util.HashSet
 
 class DM300 : Mob() {
     private var overloaded = false
+    val isOverloaded: Boolean get() = overloaded
     private val cross: Image = Icons.TARGET.get()
     //todo: overhaul this, but i may not.
     private var onBumped: (() -> Unit)? = null
@@ -291,12 +292,12 @@ class DM300 : Mob() {
         overloaded = true
 
         // remove ice resistance, immune fire damage
-        addResistances(Damage.Element.ICE, -0.5f)
+        addResistances(Damage.Element.ICE, 0f)
         addResistances(Damage.Element.FIRE, 0.5f)
-        // addResistances(Damage.Element.FIRE, 100f, 1f);
 
         sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "overload"))
         sprite.emitter().burst(Speck.factory(Speck.WOOL), 5)
+        sprite.tint(1f, 0f, 0f, 0.2f)
 
         GLog.w(Messages.get(this, "overload_warning"))
         spend(1f)
@@ -314,6 +315,10 @@ class DM300 : Mob() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         overloaded = bundle.getBoolean(OVERLOADED)
+        if (overloaded) {
+            addResistances(Damage.Element.ICE, 0f)
+            addResistances(Damage.Element.FIRE, 0.5f)
+        }
         bumpcell = bundle.getInt(BUMP_CELL)
         bumpcd = bundle.getInt(BUMP_CD)
 

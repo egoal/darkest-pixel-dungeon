@@ -28,7 +28,7 @@ class MaskOfMadness : Helmet() {
     }
 
     override fun procTakenDamage(dmg: Damage) {
-        val ratio = if (dmg.type == Damage.Type.MENTAL) 1.75f
+        val ratio = if (dmg.type == Damage.Type.MENTAL) 1.5f
         else 1.8f - 1.5f / (Math.exp((level() / 3f).toDouble()).toFloat() + 1f) + 0.05f * level()
 
         dmg.value = (dmg.value * ratio).toInt()

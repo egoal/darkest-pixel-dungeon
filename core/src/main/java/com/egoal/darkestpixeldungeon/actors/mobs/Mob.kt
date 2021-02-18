@@ -53,6 +53,7 @@ import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 
 import java.util.HashSet
+import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -406,7 +407,7 @@ abstract class Mob : Char() {
             var dex = super.dexRoll(damage)
             val penalty = Ring.getBonus(attacker, RingOfAccuracy.Accuracy::class.java)
             if (penalty != 0 && attacker === Dungeon.hero) dex *= 0.75f.pow(penalty)
-             dex
+            dex
 
         } else 0f
     }

@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
@@ -567,8 +568,10 @@ abstract class Char : Actor() {
             attacker.buff(FireImbue::class.java)?.proc(defender)
             attacker.buff(EarthImbue::class.java)?.proc(defender)
 
-            if (attackerIsHero)
+            if (attackerIsHero) {
+                Badges.validateHighDamage(value)
                 Statistics.HighestDamage = max(Statistics.HighestDamage, value)
+            }
 
             // efx
             if (dmg.isFeatured(Damage.Feature.CRITICAL)) {

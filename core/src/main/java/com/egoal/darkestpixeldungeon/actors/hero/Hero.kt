@@ -92,6 +92,7 @@ class Hero : Char() {
             perkGained_ = value
             Badges.validateGainPerk()
         }
+    var pohDrunk = 0
 
     // behaviour
     var ready = false
@@ -1356,6 +1357,7 @@ class Hero : Char() {
         private const val PERK_GAIN = "perk_gain"
         private const val SPAWNED_PERKS = "spawned-perks"
         private const val USER_NAME = "username"
+        private const val POH_DRUNK = "poh_drunk"
     }
 
     // store
@@ -1385,6 +1387,7 @@ class Hero : Char() {
         bundle.put(RESERVED_PERKS, reservedPerks)
         if (spawnedPerks.isNotEmpty()) bundle.put(SPAWNED_PERKS, spawnedPerks)
         bundle.put(PERK_GAIN, perkGained_)
+        bundle.put(POH_DRUNK, pohDrunk)
 
         if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
 
@@ -1418,6 +1421,7 @@ class Hero : Char() {
         reservedPerks = bundle.getInt(RESERVED_PERKS)
 
         perkGained_ = bundle.getInt(PERK_GAIN)
+        pohDrunk = bundle.getInt(POH_DRUNK)
         spawnedPerks.clear()
         if (bundle.contains(SPAWNED_PERKS))
             for (p in bundle.getCollection(SPAWNED_PERKS)) if (p is Perk) spawnedPerks.add(p)

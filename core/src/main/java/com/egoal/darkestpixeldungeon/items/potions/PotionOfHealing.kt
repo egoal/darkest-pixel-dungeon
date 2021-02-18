@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.perks.EfficientPotionOfHealing
+import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
@@ -61,6 +62,7 @@ class PotionOfHealing : Potion() {
             hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4)
 
             setKnown()
+            drunk(hero)
         } else
             doDrink(hero)
     }
@@ -87,6 +89,7 @@ class PotionOfHealing : Potion() {
 
     private fun doDrink(hero: Hero) {
         setKnown()
+        drunk(hero)
 
         val value = recoverValue(hero)
         // directly recover some health, since buff is act later than chars
@@ -103,9 +106,30 @@ class PotionOfHealing : Potion() {
         hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 4)
     }
 
-    private fun recoverValue(hero: Hero): Int =
-            if (hero.heroPerk.has(EfficientPotionOfHealing::class.java)) hero.HT * 2
-            else max(hero.HT, hero.HT / 3 + 60)
+    private fun recoverValue(hero: Hero): Int {
+        val healinglvl = hero.heroPerk.get(EfficientPotionOfHealing::class.java)?.level ?: 0
+
+        // 1.25, 2, 3
+        return when (healinglvl) {
+            1 -> hero.HT * 5 / 4
+            2 -> hero.HT * 2
+            3 -> hero.HT * 3
+            else -> max(hero.HT, hero.HT / 3 + 50) // 75
+        }
+    }
+
+    private fun drunk(hero: Hero) {
+        hero.pohDrunk += 1
+        if (hero.pohDrunk == 4 || hero.pohDrunk == 9 || hero.pohDrunk == 15) {
+            val p = EfficientPotionOfHealing()
+            if (p.isAcquireAllowed(hero)) {
+                hero.heroPerk.add(p)
+                PerkGain.Show(hero, p)
+
+                GLog.p(M.L(this, "perk_gain"))
+            }
+        }
+    }
 
     override fun price(): Int =
             if (isKnown) (30 * quantity * (if (reinforced) 1.5f else 1f)).toInt()

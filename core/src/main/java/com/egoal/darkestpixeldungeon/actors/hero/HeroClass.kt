@@ -327,6 +327,9 @@ enum class HeroClass(private val title: String) {
 
         hero.heroPerk.add(IntendedTransportation())
 
+        Dungeon.quickslot.setSlot(6, FlyCutter().apply {
+            quantity(99).identify().collect()
+        })
         Dungeon.quickslot.setSlot(5, ScrollOfMagicMapping().apply {
             quantity(99).identify().collect()
         })

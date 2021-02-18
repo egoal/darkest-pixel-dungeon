@@ -152,10 +152,10 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         // more likely to be toxic gas
         val potion: Potion? = when {
             s1 is Sorrowmoss.Seed || s2 is Sorrowmoss.Seed -> PotionOfToxicGas()
-            Random.Int(20) == 0 -> {
-                GLog.w(Messages.get(this, "refine_failed"))
-                null
-            }
+//            Random.Int(20) == 0 -> {
+//                GLog.w(Messages.get(this, "refine_failed"))
+//                null
+//            }
             Random.Int(10) == 0 -> PotionOfToxicGas()
             else -> AlchemyPot.combinePotion(listOf(s1, s2))
         }
@@ -173,7 +173,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
 
             curUser.belongings.weapon?.let {
                 if (it is Weapon) {
-                    if (it.STRReq() < curUser.STR() && !it.cursed) {
+                    if (it.STRReq() <= curUser.STR() && !it.cursed) {
                         val i = Random.Int(10)
                         val echt = when {
                             (i == 0 && it.enchantment !is Venomous) -> Venomous::class.java

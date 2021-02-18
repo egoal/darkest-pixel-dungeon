@@ -272,8 +272,14 @@ class Tengu : Mob() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
             enemySeen = enemyInFOV
 
+            // jump away does not need to see the enemy.
+            if (nextAction == AttackAction.JUMP_AWAY) {
+                jumpAway(pos)
+                return true
+            }
 
-            if (enemyInFOV && !isCharmedBy(enemy!!) && buff(Disarm::class.java) == null && canAttack(enemy!!)) return doAttack(enemy!!)
+            if (enemyInFOV && !isCharmedBy(enemy!!) && buff(Disarm::class.java) == null && canAttack(enemy!!))
+                return doAttack(enemy!!)
             else {
                 if (enemyInFOV) target = enemy!!.pos
                 else {

@@ -72,7 +72,7 @@ class Ease : Perk() {
     override fun image(): Int = PerkImageSheet.EASE
 }
 
-class EfficientPotionOfHealing : Perk() {
+class EfficientPotionOfHealing : Perk(3) {
     override fun image(): Int = PerkImageSheet.POTION_EFF_HEALING
 }
 

@@ -125,7 +125,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 EfficientSearch() to 1f,
                 ExtraStrengthPower() to 1f,
                 FastRegeneration() to 1f,
-                EfficientPotionOfHealing() to 1.25f,
+                EfficientPotionOfHealing() to 0.25f,
                 PressureIsPower() to 1f,
                 PressureRelieve() to 1f,
                 WandCharger() to 1f,

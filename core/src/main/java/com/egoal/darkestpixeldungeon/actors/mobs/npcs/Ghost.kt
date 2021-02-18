@@ -95,7 +95,9 @@ class Ghost : NPC.Unbreakable() {
                         3 -> M.L(this, "crab")
                         else -> throw RuntimeException("cannot be here")
                     } + M.L(this, "give_item")
-                    WndDialogue.Show(this, content, M.L(this, "weapon"), M.L(this, "armor")) {
+                    WndDialogue.Show(this, content,
+                            M.L(this, "weapon", Quest.weapon!!.name()),
+                            M.L(this, "armor", Quest.armor!!.name())) {
                         val reward = (if (it == 0) Quest.weapon else Quest.armor)!!
 
                         if (reward.doPickUp(Dungeon.hero)) GLog.i(M.L(Dungeon.hero, "you_now_have", reward.name()))

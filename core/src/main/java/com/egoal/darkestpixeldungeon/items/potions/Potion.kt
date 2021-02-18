@@ -91,7 +91,7 @@ open class Potion : Item() {
 
     override fun desc(): String {
         var desc = super.desc()
-        if (isKnown) desc += "\n\n" + M.L(Potion::class.java, "smear_desc")
+        if (isKnown) desc += "\n\n" + M.L(Potion::class.java, "smear_desc", M.L(Enchantment.ForPotion(javaClass), "name"))
         if (reinforced) desc += "\n\n" + Messages.get(this, "reinforced_desc")
         return desc
     }

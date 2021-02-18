@@ -70,8 +70,8 @@ class DragonsSquama : Artifact() {
     private fun superNova(hero: Hero) {
         charge = 0
         exp += 1
-        val requireExp = (6f * sqrt(level().toFloat())).toInt() + 3 * level() + 1
-        if (exp > requireExp && level() < levelCap) {
+        val requireExp = 2 + level()// (6f * sqrt(level().toFloat())).toInt() + 3 * level() + 1
+        if (exp >= requireExp && level() < levelCap) {
             exp -= requireExp
             upgrade()
             GLog.p(M.L(this, "levelup"))
@@ -129,6 +129,16 @@ class DragonsSquama : Artifact() {
                 charge = min(chargeCap, charge + (4 - level() / 5) + if (isCrit) 1 else 0)
                 updateQuickslot()
             }
+        }
+
+        override fun act(): Boolean {
+            if (charge < chargeCap) {
+                charge = min(chargeCap, charge + 1)
+                updateQuickslot()
+            }
+
+            spend(2f)
+            return true
         }
     }
 

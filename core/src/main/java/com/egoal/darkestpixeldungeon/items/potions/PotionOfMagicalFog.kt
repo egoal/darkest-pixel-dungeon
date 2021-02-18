@@ -39,7 +39,7 @@ class PotionOfMagicalFog : Potion() {
                 }
             }
         }
-        GameScene.add(Blob.seed(cell, 500, WhiteFog::class.java))
+        GameScene.add(Blob.seed(cell, 350, WhiteFog::class.java))
     }
 
     override fun price(): Int {
