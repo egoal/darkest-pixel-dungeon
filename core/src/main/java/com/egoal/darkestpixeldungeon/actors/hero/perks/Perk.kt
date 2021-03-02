@@ -2,6 +2,8 @@ package com.egoal.darkestpixeldungeon.actors.hero.perks
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.KRandom
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Relieve
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Bundlable
@@ -64,6 +66,11 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
         // in case run out of perks
         class LuckFromAuthor : Perk(1000) {
             override fun image(): Int = PerkImageSheet.LUCK_FROM_ME
+
+            override fun onGain() {
+                super.onGain()
+                Buff.affect(Dungeon.hero, Relieve::class.java).prolong(100f) // 100* 0.3f
+            }
         }
 
         fun RandomPositive(hero: Hero): Perk = KRandom.Chances(positives.filter {

@@ -35,13 +35,9 @@ class Chilling : Enchantment() {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         use(weapon)
 
-        val defender = damage.to as Char
-        // lvl 0 - 20%
-        // lvl 1 - 33%
-        // lvl 2 - 43%
-        val level = Math.max(0, weapon.level())
+        if (Random.Float() < 0.35f) {
+            val defender = damage.to as Char
 
-        if (Random.Int(level + 5) >= 4) {
             Buff.prolong(defender, Chill::class.java, Random.Float(2f, 3f))
             Splash.at(defender.sprite.center(), -0x4d2901, 5)
         }

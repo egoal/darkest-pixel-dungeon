@@ -84,7 +84,7 @@ class HeroCreateScene : PixelScene() {
         // state
         var UserName: String = DarkestPixelDungeon.lastHeroName()
         var CurrentClass = HeroClass.WARRIOR
-        var BornPrize = Prize.NOTHING
+        var BornPrize = Prize.WHATEVER
     }
 
     override fun onBackPressed() {
@@ -221,7 +221,7 @@ class HeroCreateScene : PixelScene() {
         open fun startNewGame() {}
 
         // settings
-        inner class ClassButton(var heroClass: HeroClass = HeroClass.WARRIOR) : RedButton(heroClass.title(), 8) {
+        inner class ClassButton(var heroClass: HeroClass = CurrentClass) : RedButton(heroClass.title(), 8) {
             override fun onClick() {
                 val title = M.L(HeroCreateScene::class.java, "select_class")
                 val message = ""

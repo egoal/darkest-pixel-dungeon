@@ -22,6 +22,7 @@ enum class Catalog(private val items: HashMap<Class<*>, Boolean>) {
     )),
 
     ARTIFACT(hashMapOf(
+            Astrolabe::class.java to false,
             CapeOfThorns::class.java to false,
             ChaliceOfBlood::class.java to false,
             CloakOfShadows::class.java to false,
@@ -44,7 +45,8 @@ enum class Catalog(private val items: HashMap<Class<*>, Boolean>) {
             EyeballOfTheElder.Right::class.java to false,
             EyeballOfTheElder.Left::class.java to false,
             DragonsSquama::class.java to false,
-            GoddessRadiance::class.java to false
+            GoddessRadiance::class.java to false,
+            UrnOfShadow::class.java to false
     )),
 
     ;

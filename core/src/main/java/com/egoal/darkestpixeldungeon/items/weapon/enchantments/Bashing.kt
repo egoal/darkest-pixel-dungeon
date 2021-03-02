@@ -11,7 +11,7 @@ class Bashing : Enchantment() {
         use(weapon)
 
         damage.value += Random.Int(1, damage.value)
-        if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < (0.1f + 0.05f * weapon.level()))
+        if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < 0.3f)
             damage.addFeature(Damage.Feature.CRITICAL)
 
         return damage

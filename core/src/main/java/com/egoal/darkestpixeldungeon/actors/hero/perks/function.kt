@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
@@ -136,10 +137,14 @@ class GoodAppetite : Perk() {
                 Buff.affect(hero, Recharging::class.java, 4f)
                 ScrollOfRecharging.charge(hero)
             }
+            HeroClass.SORCERESS -> {
+                hero.buff(Hunger::class.java)!!.satisfy(food.enery * 0.25f)
+            }
         }
     }
 
-    override fun canBeGain(hero: Hero): Boolean = hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE)
+    override fun canBeGain(hero: Hero): Boolean =
+            hero.heroClass in listOf(HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.SORCERESS)
 }
 
 class GreedyMidas : Perk() {

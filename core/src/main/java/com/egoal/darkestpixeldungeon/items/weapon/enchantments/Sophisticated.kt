@@ -11,9 +11,11 @@ class Sophisticated : Enchantment() {
         use(weapon, 0.5f)
 
         // 20%
-        if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < 0.2f) {
-            damage.value *= 2
-            damage.addFeature(Damage.Feature.CRITICAL)
+        if (!damage.isFeatured(Damage.Feature.CRITICAL)) {
+            if (Random.Float() < 0.20f) {
+                damage.value *= 2
+                damage.addFeature(Damage.Feature.CRITICAL)
+            } else damage.value += damage.value / 8
         }
 
         return damage

@@ -35,22 +35,15 @@ class Blazing : Enchantment() {
         use(weapon)
 
         val defender = damage.to as Char
-        // lvl 0 - 33%
-        // lvl 1 - 50%
-        // lvl 2 - 60%
-        val level = Math.max(0, weapon.level())
 
-        if (Random.Int(level + 3) >= 2) {
-            if (Random.Int(2) == 0) {
-                Buff.affect(defender, Burning::class.java).reignite(defender)
-            }
-            // defender.damage( Random.Int( 1, level + 2 ), this );
-            defender.takeDamage(Damage(Random.Int(1, level + 2),
-                    this, defender).type(Damage.Type.MAGICAL).addElement(Damage
-                    .Element.FIRE))
 
-            defender.sprite.emitter().burst(FlameParticle.FACTORY, level + 1)
-        }
+        defender.takeDamage(Damage(Random.Int(1, damage.value/10), this, defender)
+                .type(Damage.Type.MAGICAL)
+                .addElement(Damage.Element.FIRE))
+
+        defender.sprite.emitter().burst(FlameParticle.FACTORY, 3)
+
+        if (Random.Float() < 0.3f) Buff.affect(defender, Burning::class.java).reignite(defender)
 
         return damage.addElement(Damage.Element.FIRE)
     }

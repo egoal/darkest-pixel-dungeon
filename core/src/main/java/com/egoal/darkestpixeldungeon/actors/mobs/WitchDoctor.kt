@@ -64,7 +64,7 @@ class WitchDoctor : Mob() {
 
                 val enemyIsDecayed = enemy.buff(Decayed::class.java) != null
 
-                if (decayCD <= 0f && !enemyIsDecayed) {
+                if (!enemyIsDecayed && decayCD <= 0f && Dungeon.level.distance(pos, enemy.pos) <= 4) {
                     sprite.zap(enemy.pos, Callback {
                         decayCD = DECAY_CD
                         Buff.prolong(enemy, Decayed::class.java, 15f)
@@ -167,8 +167,8 @@ class WitchDoctor : Mob() {
     }
 
     companion object {
-        private const val DECAY_CD = 18f
-        private const val HEAL_CD = 4f
+        private const val DECAY_CD = 20f
+        private const val HEAL_CD = 3f
 
         private const val TIME_TO_DECAY = 1f
         private const val TIME_TO_HEAL = 1f

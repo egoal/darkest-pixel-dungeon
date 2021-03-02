@@ -170,7 +170,20 @@ class PrisonBossLevel : Level() {
             enteredMainHall = true
 
             seal()
-            set(hallEntrance(), Terrain.LOCKED_DOOR)
+
+            val he = hallEntrance()
+            findMobAt(he)?.let {
+                // then check the left pos
+                if (findMobAt(he - 1) == null) {
+                    // just move there,
+                    // todo: use Pushing
+                    it.pos = he - 1
+                    it.sprite.move(it.pos, he - 1)
+                } else {
+                    it.die(null) // sorry, buddy.
+                }
+            }
+            set(he, Terrain.LOCKED_DOOR)
             GameScene.updateMap(cell)
             Dungeon.observe()
 

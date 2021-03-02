@@ -76,7 +76,7 @@ class WandCharger : Perk(3) {
     fun factor(): Float = 2f - 0.8f.pow(level)
 }
 
-class WandPerception : Perk(2) {
+class WandPerception : Perk(1) {
     override fun image(): Int = PerkImageSheet.WAND_PERCEPTION
 
     fun onWandUsed(wand: Wand) {

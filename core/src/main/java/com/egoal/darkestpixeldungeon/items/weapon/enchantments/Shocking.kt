@@ -45,14 +45,9 @@ class Shocking : Enchantment() {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         use(weapon)
 
-        val defender = damage.to as Char
-        val attacker = damage.from as Char
-        // lvl 0 - 33%
-        // lvl 1 - 50%
-        // lvl 2 - 60%
-        val level = Math.max(0, weapon.level())
-
-        if (Random.Int(level + 3) >= 2) {
+        if (Random.Float() < 0.35f) {
+            val defender = damage.to as Char
+            val attacker = damage.from as Char
 
             affected.clear()
             affected.add(attacker)

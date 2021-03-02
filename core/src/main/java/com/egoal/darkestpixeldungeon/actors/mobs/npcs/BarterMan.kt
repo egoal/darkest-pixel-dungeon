@@ -35,13 +35,20 @@ class BarterMan : Merchant() {
     override fun initSellItems() {
         val np = Random.IntRange(1, 3)
         val ns = Random.IntRange(1, 3)
-        val nw = Random.NormalIntRange(2, 6)
-        val na = Random.IntRange(1, 2)
+        var nw = Random.NormalIntRange(2, 5)
+        // val na = Random.IntRange(1, 2)
 
         repeat(np) { addItemToSell(Generator.POTION.generate()) }
         repeat(ns) { addItemToSell(Generator.SCROLL.generate()) }
-        repeat(nw) { addItemToSell(Generator.WEAPON.generate()) }
-        repeat(na) { addItemToSell(Generator.ARMOR.generate()) }
+        while (nw > 0) {
+            val w = Generator.WEAPON.generate()
+            if(w is MeleeWeapon) {
+                addItemToSell(w)
+                nw--
+            }
+        }
+
+        // repeat(na) { addItemToSell(Generator.ARMOR.generate()) }
 
         // for (item in items) item.level(0)
     }

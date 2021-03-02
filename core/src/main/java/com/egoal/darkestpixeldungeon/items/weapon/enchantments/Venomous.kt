@@ -37,16 +37,10 @@ class Venomous : Enchantment() {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         use(weapon)
 
-        val defender = damage.to as Char
-        val attacker = damage.from as Char
-        // lvl 0 - 33%
-        // lvl 1 - 50%
-        // lvl 2 - 60%
-        val level = Math.max(0, weapon.level())
+        if (Random.Float() < 0.5f) {
+            val defender = damage.to as Char
 
-        if (Random.Int(level + 3) >= 2) {
-
-            Buff.affect(defender, Poison::class.java).extend(Poison.durationFactor(defender) * (level / 2 + 1))
+            Buff.affect(defender, Poison::class.java).extend(Poison.durationFactor(defender) * 2)
             CellEmitter.center(defender.pos).burst(PoisonParticle.SPLASH, 5)
         }
 

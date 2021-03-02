@@ -238,7 +238,7 @@ abstract class RegularLevel : Level() {
             val mob = Bestiary.mob(Dungeon.depth).apply {
                 pos = pointToCell(space.rect.random())
             }
-            if (passable[mob.pos] && distance(entrance, mob.pos) > 4 && findMobAt(mob.pos) == null) {
+            if (passable[mob.pos] && distance(entrance, mob.pos) > 6 && findMobAt(mob.pos) == null) {
                 mobs.add(mob)
                 1
             } else 0
@@ -390,7 +390,7 @@ abstract class RegularLevel : Level() {
     }
 
     // traps
-    protected fun nTraps() = Random.NormalIntRange(1, 3 + Dungeon.depth / 2)
+    protected open fun nTraps() = Random.NormalIntRange(1 + Dungeon.depth / 3, 3 + Dungeon.depth / 2)
 
     protected open fun trapClasses(): Array<Class<out Trap>> = arrayOf(WornTrap::class.java)
 
@@ -401,13 +401,13 @@ abstract class RegularLevel : Level() {
         val trapClasses = trapClasses()
 
         val validCells = (1 until length).filter { map[it] == Terrain.EMPTY && findMobAt(it) == null }.shuffled()
-        var traps = min(nTraps(), (validCells.size * 0.15).toInt())
+        val traps = min(nTraps(), (validCells.size * 0.15).toInt())
 
         // todo:
         // bonus from wealth
         var nPrize = 1
-        val bonus = min(10, Dungeon.hero.wealthBonus())
-        while (Random.Float() < .2f + bonus * 0.05f) if (++nPrize >= 5) break;
+        val bonus = Dungeon.hero.wealthBonus()
+        while (Random.Float() < .2f + bonus * 0.05f) if (++nPrize >= 5) break
 
         val trapsToSpawn = List(min(traps + nPrize, validCells.size)) {
             if (it < traps)

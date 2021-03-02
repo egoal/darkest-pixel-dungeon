@@ -275,7 +275,9 @@ class Statuary : NPC.Unbreakable() {
 
             item.cursedKnown = true
             if (item.isUpgradable) {
+                val cursed = item.cursed
                 item.upgrade(if (Random.Int(5) == 1) 2 else 1)
+                item.cursed = cursed
             }
 
             Dungeon.level.drop(item, hero.pos).sprite.drop()

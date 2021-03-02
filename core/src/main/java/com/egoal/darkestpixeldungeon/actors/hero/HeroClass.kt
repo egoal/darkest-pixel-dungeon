@@ -168,7 +168,7 @@ enum class HeroClass(private val title: String) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_SORCERESS
         override fun spritesheet(): String = Assets.DPD_SORCERESS
         override fun perks(): List<String> = (1..4).map { Messages.get(HeroClass::class.java, "sorceress_perk$it") }
-        override fun initialPerks(): List<Perk> = listOf(Discount(), Optimistic())
+        override fun initialPerks(): List<Perk> = listOf(GoodAppetite(), Discount(), Optimistic())
 
         override fun onHeroUpgraded(hero: Hero) {
             hero.HT -= 1

@@ -157,19 +157,29 @@ class WndCatalogs : WndTabbed() {
         private lateinit var line: ColorBlock
 
         init {
-            val notRandom = item is Ring || item is Artifact
-            identified = if (notRandom) Catalog.IsSeen(cl) else item.isIdentified
+            var icon = ItemSpriteSheet.SOMETHING
+            var name = ""
 
-            if (identified) {
-                sprite.view(item.image(), null)
-                label.text(Messages.titleCase(item.name()))
+            if (item.isIdentified) {
+                icon = item.image()
+                name = item.trueName()
             } else {
-                sprite.view(ItemSpriteSheet.SOMETHING, null)
-                if (notRandom) {
-                    label.text(M.L(WndCatalogs::class.java, "unknown"))
-                    label.hardlight(0xcccccc)
-                } else label.text(item.trueName())
+                if (Catalog.IsSeen(cl)) {
+                    name = item.trueName()
+                    icon = if (item is Ring) ItemSpriteSheet.RING_HOLDER else item.image()
+                } else if (item is Potion || item is Scroll)
+                    name = item.trueName()
             }
+
+            identified = if (item is Artifact) Catalog.IsSeen(cl) else item.isIdentified
+
+
+            sprite.view(icon, null)
+            if (name.isEmpty()) {
+                name = M.L(WndCatalogs::class.java, "unknown")
+                label.text(name)
+                label.hardlight(0xcccccc)
+            } else label.text(name)
         }
 
         override fun createChildren() {

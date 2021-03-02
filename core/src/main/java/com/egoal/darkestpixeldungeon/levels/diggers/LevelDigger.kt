@@ -172,7 +172,7 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
         // expand
         val maxCrossLen = 5
         val left = max(1, center.x1 - maxCrossLen)
-        val right = min(center.x2 + + maxCrossLen, level.width() - 2)
+        val right = min(center.x2 + maxCrossLen, level.width() - 2)
         val top = max(1, center.y1 - maxCrossLen)
         val bottom = min(center.y2 + maxCrossLen, level.height() - 2)
 
@@ -204,7 +204,7 @@ class LevelDigger(val level: Level, private val minLoops: Int = 2) {
         spaces.add(Space(Rect(center.x2 + 1, right, center.y1, center.y2), DigResult.Type.Normal))
         spaces.add(Space(Rect(center.x1, center.x2, top, center.y1 - 1), DigResult.Type.Normal))
         spaces.add(Space(Rect(center.x1, center.x2, center.y2 + 1, bottom), DigResult.Type.Normal))
-        spaces.add(Space(center, DigResult.Type.Normal))
+        spaces.add(Space(center, DigResult.Type.Special))
     }
 
     private fun canDigAt(rect: Rect): Boolean {

@@ -94,7 +94,8 @@ class CityBossLevel : Level() {
                 boss.sprite.parent.add(AlphaTweener(boss.sprite, 1f, 1f))
             }
 
-            set(arenaDoor, Terrain.LOCKED_DOOR)
+            // set(arenaDoor, Terrain.LOCKED_DOOR)
+            set(arenaDoor, Terrain.WALL_DECO)
             GameScene.updateMap(arenaDoor)
             Dungeon.observe()
 
@@ -180,7 +181,7 @@ class CityBossLevel : Level() {
             buildFlagMaps()
             Dungeon.observe() // actually, no need
         }
-        
+
         return activated
     }
 

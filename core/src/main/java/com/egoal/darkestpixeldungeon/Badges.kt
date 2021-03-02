@@ -898,15 +898,15 @@ object Badges {
         if (Dungeon.IsChallenged()) return
 
         var badge: Badge? = null
-        if (!local.contains(Badge.HIGH_DAMAGE_1) && value >= 100) {
+        if (!local.contains(Badge.HIGH_DAMAGE_1) && value >= 80) {
             badge = Badge.HIGH_DAMAGE_1
             local.add(Badge.HIGH_DAMAGE_1)
         }
-        if (!local.contains(Badge.HIGH_DAMAGE_2) && value >= 200) {
+        if (!local.contains(Badge.HIGH_DAMAGE_2) && value >= 160) {
             badge = Badge.HIGH_DAMAGE_2
             local.add(Badge.HIGH_DAMAGE_2)
         }
-        if (!local.contains(Badge.HIGH_DAMAGE_3) && value >= 400) {
+        if (!local.contains(Badge.HIGH_DAMAGE_3) && value >= 500) {
             badge = Badge.HIGH_DAMAGE_3
             local.add(Badge.HIGH_DAMAGE_3)
         }

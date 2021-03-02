@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -13,6 +14,7 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.watabou.noosa.Tilemap
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -182,8 +184,10 @@ class TimekeepersHourglass : Artifact() {
                         if (Dungeon.visible[ch.pos]) {
                             // effects
                             if (dmg.from is Char) {
-                                (dmg.from as Char?)?.let {
-                                    ch.sprite.bloodBurstA(it.sprite.center(), dmg.value)
+                                // from may be Char.Nobody
+                                val src = dmg.from as Char
+                                if (src.pos > 0) {
+                                    ch.sprite.bloodBurstA(DungeonTilemap.tileCenterToWorld(src.pos), dmg.value)
                                     Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(.8f, 1.25f))
                                 }
                             }

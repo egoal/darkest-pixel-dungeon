@@ -20,8 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.sprites;
 
-import com.egoal.darkestpixeldungeon.items.Generator;
-
 public class ItemSpriteSheet {
 
     private static final int WIDTH = 16;

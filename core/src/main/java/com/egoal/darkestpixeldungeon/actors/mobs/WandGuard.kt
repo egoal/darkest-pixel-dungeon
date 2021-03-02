@@ -45,7 +45,7 @@ class WandGuard : Mob() {
     }
 
     private var wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {
-        level(Random.IntRange(Dungeon.depth / 4, Dungeon.depth / 3))
+        level(Random.IntRange(Dungeon.depth / 5, Dungeon.depth / 3))
     }
 
     override fun viewDistance(): Int = 6
@@ -87,14 +87,7 @@ class WandGuard : Mob() {
     override fun giveDamage(enemy: Char): Damage = Damage(damageRoll(), this, enemy).type(Damage.Type.MAGICAL)
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply {
-        value -= Random.NormalIntRange(value / 4, value / 2)
-    }
-
-    // resist magical damage
-    override fun resistDamage(dmg: Damage): Damage {
-        if (dmg.type == Damage.Type.MAGICAL) dmg.value /= 4
-
-        return super.resistDamage(dmg)
+        value -= Random.NormalIntRange(0, value / 2)
     }
 
     override fun add(buff: Buff) {}

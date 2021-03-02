@@ -48,7 +48,7 @@ open class Statue : Mob() {
         state = PASSIVE
 
         addResistances(Damage.Element.all(), 0.15f)
-        magicalResistance = 0.2f
+        magicalResistance = -0.2f
     }
 
     init {

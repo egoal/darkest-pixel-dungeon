@@ -17,12 +17,8 @@ class Blinding : Enchantment() {
         use(weapon)
 
         val defender = damage.to as Char
-        // lvl 0 - 20%
-        // lvl 1 - 33%
-        // lvl 2 - 43%
-        val level = max(0, weapon.level())
 
-        if (Random.Int(level + 5) >= 4) {
+        if (Random.Float() < 0.35) {
             Buff.prolong(defender, Blindness::class.java, Random.Float(2f, 3f))
             if (defender is Mob) {
                 if (defender.state == defender.HUNTING) defender.state = defender.WANDERING

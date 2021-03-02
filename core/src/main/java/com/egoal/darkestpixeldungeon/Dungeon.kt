@@ -59,7 +59,7 @@ import java.util.HashSet
 object Dungeon {
 
     var initialDepth_ = -1
-    const val VERSION_STRING = "0.6.0-pre"
+    const val VERSION_STRING = "0.6.0-pre.1"
 
     lateinit var hero: Hero
     lateinit var level: Level
@@ -639,6 +639,8 @@ object Dungeon {
         Statistics.restoreFromBundle(bundle)
         Journal.restoreFromBundle(bundle)
         Generator.restoreFromBundle(bundle)
+
+        Catalog.Load()
 
         droppedItems = SparseArray()
         for (i in 2..Statistics.DeepestFloor + 1) {

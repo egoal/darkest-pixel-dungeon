@@ -73,8 +73,7 @@ public class WndInfoItem extends Window {
       color = ItemSlot.DEGRADED;
     }
 
-    fillFields(item.image(), item.glowing(), color, item.toString(), item
-            .info());
+    fillFields(item.image(), item.glowing(), color, item.toString(), item.info());
   }
 
   private void fillFields(int image, ItemSprite.Glowing glowing, int 
