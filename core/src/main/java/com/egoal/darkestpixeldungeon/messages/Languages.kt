@@ -34,7 +34,9 @@ enum class Languages(val nativeName: String,
     CHINESE_TR("繁体中文", Locale.TRADITIONAL_CHINESE, Status.INCOMPLETE, arrayOf<String>("Egoal"), arrayOf<String>("那些回忆")),
 
     CHINESE("中文", Locale.CHINESE, Status.REVIEWED, arrayOf<String>("Jinkeloid(zdx00793)"),
-            arrayOf<String>("931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "Hmdzl001", "Tempest102"));
+            arrayOf<String>("931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "Hmdzl001", "Tempest102")),
+    RUSSIAN("русский", Locale("ru"), Status.INCOMPLETE, arrayOf<String>("John Deeper"), arrayOf<String>()),
+    ;
 
     enum class Status {
         //below 60% complete languages are not added.
@@ -46,7 +48,7 @@ enum class Languages(val nativeName: String,
     val code: String get() = locale.toString()
 
     companion object {
-        private val DEFAULT = CHINESE
+        private val DEFAULT = ENGLISH
 
         fun matchLocale(locale: Locale): Languages = values().find { it.locale == locale } ?: DEFAULT
 
