@@ -218,7 +218,7 @@ abstract class RegularLevel : Level() {
             mobs.add(seller)
         }
 
-        if (Dungeon.depth in 1 until 20) {
+        if (Dungeon.depth in 3 until 20) {
             val psProb = if (Dungeon.shopOnLevel()) .1f else .2f
             if (Random.Float() < psProb) spawnSeller(PotionSeller.Random())
 

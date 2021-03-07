@@ -221,17 +221,17 @@ class HeroCreateScene : PixelScene() {
         open fun startNewGame() {}
 
         // settings
-        inner class ClassButton(var heroClass: HeroClass = CurrentClass) : RedButton(heroClass.title(), 8) {
+        inner class ClassButton(var heroClass: HeroClass = CurrentClass) : RedButton(M.T(heroClass.title()), 8) {
             override fun onClick() {
                 val title = M.L(HeroCreateScene::class.java, "select_class")
                 val message = ""
                 val classes = HeroClass.values()
 
-                Game.scene().add(object : WndOptions(title, message, *classes.map { it.title() }.toTypedArray()) {
+                Game.scene().add(object : WndOptions(title, message, *classes.map { M.T(it.title()) }.toTypedArray()) {
                     override fun onSelect(index: Int) {
                         if (heroClass != classes[index]) {
                             heroClass = classes[index]
-                            text(heroClass.title())
+                            text(M.T(heroClass.title()))
 
                             onHeroClassChanged()
                         }

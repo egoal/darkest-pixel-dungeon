@@ -158,7 +158,7 @@ class DarkSpirit : Mob() {
         private var armor: Armor? = null
 
         fun Leave() {
-            if (Dungeon.depth < 5 || abs(Dungeon.depth - Dungeon.hero.lvl) > 5) return
+            if (Dungeon.depth <= 5 || Dungeon.bossLevel() || abs(Dungeon.depth - Dungeon.hero.lvl) > 5) return
 
             // those who won, die far above their max depth, or who are challenged drop no bones.
             if (Statistics.AmuletObtained || (Statistics.DeepestFloor - 5) >= depth || Dungeon.IsChallenged())
@@ -184,11 +184,13 @@ class DarkSpirit : Mob() {
         }
 
         fun Gen(): DarkSpirit? {
-            if (depth < 0 || !Load()) return null
+            if (depth < 0) { // not loaded
+                if (!Load()) return null
+
+                Game.instance.deleteFile(DS_FILE)
+            }
 
             if (depth != Dungeon.depth || Dungeon.IsChallenged()) return null
-
-            Game.instance.deleteFile(DS_FILE)
 
             return DarkSpirit()
         }
