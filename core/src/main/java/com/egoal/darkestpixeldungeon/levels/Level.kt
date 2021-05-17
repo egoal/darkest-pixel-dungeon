@@ -980,6 +980,8 @@ abstract class Level : Bundlable {
             val prop = 0.3f - Dungeon.depth / 5 * 0.025f
             var cnt = 0
             while (Random.Float() < prop && cnt++ < 5) items.add(Torch())
+            if (cnt == 0 && Dungeon.torch < 1f) // u should give us at least one.
+                items.add(Torch())
         }
 
         // dagger

@@ -104,7 +104,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 GoodAppetite() to 1f,
                 StrongConstitution() to 1f,
                 Keen() to 1f,
-                WandPerception() to 1f,
+                WandPerception() to 0f,
                 NightVision() to 0.75f,
                 Telepath() to 1f,
                 Fearless() to 1f,

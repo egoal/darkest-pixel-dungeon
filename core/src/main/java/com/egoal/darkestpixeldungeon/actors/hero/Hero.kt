@@ -276,8 +276,11 @@ class Hero : Char() {
         }.shuffled()
 
         for (i in 0 until min(avals.size, followers.size)) {
-            followers[i].pos = avals[i]
-            level.mobs.add(followers[i] as Mob)
+            val m = followers[i] as Mob
+            m.pos = avals[i]
+            m.resetTarget()
+
+            level.mobs.add(m)
         }
         followers.clear()
     }

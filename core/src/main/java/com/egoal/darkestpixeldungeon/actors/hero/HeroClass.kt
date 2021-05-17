@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
+import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
@@ -20,6 +21,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.CorrodeCyan
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.min
@@ -98,6 +100,19 @@ enum class HeroClass(private val title: String) {
             hero.addResistances(Damage.Element.POISON, -0.2f)
             hero.addResistances(Damage.Element.LIGHT, -0.1f)
             hero.addResistances(Damage.Element.SHADOW, 0.1f)
+        }
+
+        override fun upgradeHero(hero: Hero) {
+            super.upgradeHero(hero)
+            if (hero.lvl == 12) {
+                val p = WandPerception()
+                if(p.isAcquireAllowed(hero)){
+                    hero.heroPerk.add(p)
+                    PerkGain.Show(hero, p)
+
+                    GLog.p(M.L(p, "gain_level_2"))
+                }
+            }
         }
     },
 
@@ -285,7 +300,7 @@ enum class HeroClass(private val title: String) {
     }
 
     // called when hero level up
-    fun upgradeHero(hero: Hero) {
+    open fun upgradeHero(hero: Hero) {
         val ht = hero.HT
         val hp = hero.HP
 

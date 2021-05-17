@@ -116,7 +116,10 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
                     PI.toFloat() / 3f, particleColor(), Random.NormalIntRange(12, 20))
         }
 
-        if (!enemy.isAlive) onKilled(damage)
+        if (!enemy.isAlive){
+            hero.onKillChar(enemy)
+            onKilled(damage)
+        }
 
         return true
     }

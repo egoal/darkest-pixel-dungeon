@@ -270,6 +270,10 @@ abstract class Mob : Char() {
         }
     }
 
+    fun resetTarget() {
+        target = -1
+    }
+
     protected open fun canAttack(enemy: Char): Boolean = Dungeon.level.adjacent(pos, enemy.pos)
 
     protected open fun getCloser(target: Int): Boolean {
