@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Belongings
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.potions.Potion
 
 class ScrollHolder : Bag() {
     init {
@@ -32,7 +33,7 @@ class ScrollHolder : Bag() {
         size = Belongings.BACKPACK_SIZE
     }
 
-    override fun grab(item: Item): Boolean =  item is Scroll
+    override fun canHold(item: Item): Boolean = item is Scroll && super.canHold(item)
 
     override fun price(): Int = 40
 }

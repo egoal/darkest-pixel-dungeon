@@ -94,6 +94,7 @@ public class ItemSpriteSheet {
     public static final int MAGES_STAFF = WEP_TIER1 + 5;
     public static final int DPD_SORCERESS_WAND = WEP_TIER1 + 6;
     public static final int SHORTSPEAR = WEP_TIER1 + 7;
+    public static final int BLOCK_DAGGER = WEP_TIER1 + 8;
 
     private static final int WEP_TIER2 = xy(1, 6);   //16 slots
     public static final int SHORTSWORD = WEP_TIER2 + 0;
@@ -119,6 +120,7 @@ public class ItemSpriteSheet {
     public static final int DAGGER_AXE = WEP_TIER3 + 7;
     public static final int CANDLESTICK = WEP_TIER3 + 8;
     public static final int INVISIBLE_BLADE = WEP_TIER3 + 9;
+    public static final int BOETHIAHS_BLADE = WEP_TIER3 + 10;
 
     private static final int WEP_TIER4 = xy(1, 8);   //16 slots
     public static final int LONGSWORD = WEP_TIER4 + 0;
@@ -246,7 +248,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_ROSE2 = ARTIFACTS + 21;
     public static final int ARTIFACT_ROSE3 = ARTIFACTS + 22;
     public static final int EXTRACTION_FLASK = ARTIFACTS + 23;
-    public static final int URN_OF_SHADOW = ARTIFACTS + 24;
+
     public static final int DEMONIC_SKULL = ARTIFACTS + 25;
     public static final int UNHOLY_BLOOD = ARTIFACTS + 26;
     public static final int MASK_OF_MADNESS = ARTIFACTS + 27;
@@ -362,6 +364,10 @@ public class ItemSpriteSheet {
     public static final int PURSE = BAGS + 6;
     public static final int SKILL_TREE = BAGS + 7;
 
-    //64 free slots
+    private static final int SKILLS = xy(1, 30);
+    public static final int STRENGTH_OFFERING = SKILLS + 0;
+    public static final int URN_OF_SHADOW = SKILLS + 1;
+
+    //32 free slots
 
 }

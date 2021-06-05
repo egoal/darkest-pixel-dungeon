@@ -27,7 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
-class Dagger : MeleeWeapon() {
+open class Dagger : MeleeWeapon() {
 
     init {
         image = ItemSpriteSheet.DAGGER

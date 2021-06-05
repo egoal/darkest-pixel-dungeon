@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.helmets.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
+import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
@@ -44,7 +45,6 @@ import com.egoal.darkestpixeldungeon.sprites.HeroSprite
 import com.egoal.darkestpixeldungeon.ui.*
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.windows.WndGainNewPerk
 import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
 import com.egoal.darkestpixeldungeon.windows.WndResurrect
 import com.watabou.noosa.Camera
@@ -80,6 +80,7 @@ class Hero : Char() {
     var exp = 0
     var criticalChance = 0f
     var regeneration = 0.1f
+    var arcaneFactor = 1f
 
     var reservedPerks = 0
     val spawnedPerks = ArrayList<Perk>()
@@ -192,6 +193,10 @@ class Hero : Char() {
                 reg += HT.toFloat() * 0.003f * 1.18f.pow(it.itemLevel())
         }
 
+        if (belongings.weapon is BoethiahsBlade) {
+            reg -= (HT + belongings.weapon!!.level() * 5) * 0.005f
+        }
+
         // ring
         val health = Ring.getBonus(this, RingOfHealth.Health::class.java)
         if (health < 0) reg += 0.05f * health
@@ -203,21 +208,22 @@ class Hero : Char() {
                 reg += if (it.cursed) -0.1f else (0.05f + reg * 0.2f)
         }
 
-        if (hlvl >= Hunger.HUNGRY) reg *= 0.5f
+        if (hlvl >= Hunger.HUNGRY && reg > 0f) reg *= 0.5f
 
         return reg
     }
 
     //todo: refactor helmet immersion
     fun arcaneFactor(): Float {
-        var factor = heroPerk.get(WandArcane::class.java)?.factor() ?: 1f
+        var factor = arcaneFactor * (heroPerk.get(WandArcane::class.java)?.factor() ?: 1f)
         if (belongings.helmet is HoodApprentice) factor *= 1.15f
 
         return factor
     }
 
     fun wandChargeFactor(): Float {
-        var factor = pressure.chargeFactor()
+        var factor = if (subClass == HeroSubClass.ARCHMAGE) 2f else 1f
+        factor *= pressure.chargeFactor()
 
         factor *= heroPerk.get(WandCharger::class.java)?.factor() ?: 1f
         belongings.helmet?.let {
@@ -1026,7 +1032,10 @@ class Hero : Char() {
     }
 
     override fun recoverHP(dhp: Int, src: Any?) {
-        super.recoverHP(dhp, src)
+        if (dhp > 0 && belongings.weapon is BoethiahsBlade) {
+            super.recoverHP(dhp / 2, src)
+        } else
+            super.recoverHP(dhp, src)
 
         if (!isAlive) Dungeon.fail(src?.javaClass)
     }
@@ -1364,6 +1373,7 @@ class Hero : Char() {
         private const val SPAWNED_PERKS = "spawned-perks"
         private const val USER_NAME = "username"
         private const val POH_DRUNK = "poh_drunk"
+        private const val ARCANE_FACTOR = "arcane_factor"
     }
 
     // store
@@ -1394,6 +1404,8 @@ class Hero : Char() {
         if (spawnedPerks.isNotEmpty()) bundle.put(SPAWNED_PERKS, spawnedPerks)
         bundle.put(PERK_GAIN, perkGained_)
         bundle.put(POH_DRUNK, pohDrunk)
+
+        bundle.put(ARCANE_FACTOR, arcaneFactor)
 
         if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
 
@@ -1427,6 +1439,9 @@ class Hero : Char() {
 
         perkGained_ = bundle.getInt(PERK_GAIN)
         pohDrunk = bundle.getInt(POH_DRUNK)
+        arcaneFactor = bundle.getFloat(ARCANE_FACTOR)
+        if (arcaneFactor < 0.1f) arcaneFactor = 1f // compatible
+
         spawnedPerks.clear()
         if (bundle.contains(SPAWNED_PERKS))
             for (p in bundle.getCollection(SPAWNED_PERKS)) if (p is Perk) spawnedPerks.add(p)

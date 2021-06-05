@@ -16,12 +16,13 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood
 import com.egoal.darkestpixeldungeon.items.artifacts.GoddessRadiance
-import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.UnholyBlood
 import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Holy
 import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BoethiahsBlade
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
@@ -121,7 +122,8 @@ class Statuary : NPC.Unbreakable() {
 
                         GLog.h(M.L(this, "infuse"))
                     }
-                } else if (dice == 1) {
+                } else if (!Dungeon.limitedDrops.goddessRadiance.dropped() && dice == 1) {
+                    Dungeon.limitedDrops.goddessRadiance.drop()
                     val gr = GoddessRadiance().identify()
                     if (!gr.collect()) Dungeon.level.drop(gr, hero.pos).sprite.drop()
 
@@ -246,8 +248,16 @@ class Statuary : NPC.Unbreakable() {
                 if (Random.Float() < p) {
                     val dice = Random.Float()
                     val item = when {
+                        !Dungeon.limitedDrops.boethiahsBlade.dropped() && dice < 0.1f -> {
+                            Dungeon.limitedDrops.boethiahsBlade.drop()
+                            GLog.n(M.L(Statuary::class.java, "give_blade"))
+                            gold += 500 // disable
+                            GameScene.flash(0x5a7878)
+                            Sample.INSTANCE.play(Assets.SND_BLAST)
+                            BoethiahsBlade().identify()
+                        }
                         dice < 0.3f -> Generator.WEAPON.generate()
-                        dice < 0.5f -> Generator.ARMOR.generate()
+                        dice < 0.55f -> Generator.ARMOR.generate()
                         else -> Generator.generate()
                     }
                     Dungeon.level.drop(item, hero.pos).sprite.drop()

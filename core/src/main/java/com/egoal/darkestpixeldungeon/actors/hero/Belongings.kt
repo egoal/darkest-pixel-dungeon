@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.items.keys.Key
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
+import com.egoal.darkestpixeldungeon.items.bags.Backpack
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
 import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.messages.M
@@ -35,12 +36,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
 class Belongings(private val owner: Hero) : MutableIterable<Item> {
-    val backpack: Bag = object : Bag() {
-        init {
-            name = M.L(Bag::class.java, "name")
-            size = BACKPACK_SIZE
-        }
-    }
+    val backpack = Backpack()
 
     var weapon: KindOfWeapon? = null
     var armor: Armor? = null

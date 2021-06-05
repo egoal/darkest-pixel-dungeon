@@ -68,7 +68,7 @@ class DisintegrationTrap : Trap() {
                     GLog.n(Messages.get(this, "ondeath"))
                 } else {
                     var item = hero.belongings.randomUnequipped()
-                    var bag = hero.belongings.backpack
+                    var bag: Bag = hero.belongings.backpack
                     //bags do not protect against this trap
                     if (item is Bag) {
                         bag = item

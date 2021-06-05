@@ -95,14 +95,15 @@ object Generator {
 
         object MELEE : ItemGenerator() {
             object T1 : BalancedClassMapGenerator(hashMapOf(
-                    WornShortsword::class to 1f,
+                    WornShortsword::class to 0.5f,
                     Knuckles::class to 1f,
-                    Dagger::class to 1f,
+                    Dagger::class to 0.5f,
                     MagesStaff::class to 0f,
                     SorceressWand::class to 0f,
                     BattleGloves::class to 1f,
-                    RedHandleDagger::class to 0.1f,
-                    ShortSpear::class to 1f
+                    RedHandleDagger::class to 0.5f,
+                    ShortSpear::class to 1f,
+                    ParryingDagger::class to 0.5f
             ))
 
             object T2 : BalancedClassMapGenerator(hashMapOf(
@@ -126,7 +127,8 @@ object Generator {
                     Whip::class to 4f,
                     CrystalsSwords::class to 4f,
                     DaggerAxe::class to 5f,
-                    InvisibleBlade::class to 5f
+                    InvisibleBlade::class to 5f,
+                    BoethiahsBlade::class to 0f // by statuary
             ))
 
             object T4 : BalancedClassMapGenerator(hashMapOf(

@@ -33,13 +33,13 @@ class WandHolster : Bag() {
         size = Belongings.BACKPACK_SIZE
     }
 
-    override fun grab(item: Item): Boolean = item is Wand
+    override fun canHold(item: Item): Boolean = item is Wand && super.canHold(item)
 
     override fun collect(container: Bag): Boolean {
         if (super.collect(container)) {
             if (owner != null) {
                 for (item in items) {
-                    (item as Wand).charge(owner, HOLSTER_SCALE_FACTOR)
+                    (item as Wand).charge(owner!!, HOLSTER_SCALE_FACTOR)
                 }
             }
             return true

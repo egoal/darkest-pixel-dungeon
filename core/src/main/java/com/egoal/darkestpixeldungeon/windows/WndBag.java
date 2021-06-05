@@ -24,6 +24,7 @@ import android.graphics.RectF;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Hero;
+import com.egoal.darkestpixeldungeon.items.bags.SkillTree;
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.unclassified.FishBone;
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
@@ -159,7 +160,8 @@ public class WndBag extends WndTabbed {
             stuff.getItem(SeedPouch.class),
             stuff.getItem(ScrollHolder.class),
             stuff.getItem(PotionBandolier.class),
-            stuff.getItem(WandHolster.class)};
+            stuff.getItem(WandHolster.class),
+            stuff.getItem(SkillTree.class)};
 
     for (Bag b : bags) {
       if (b != null) {
@@ -217,16 +219,19 @@ public class WndBag extends WndTabbed {
     // Items in the bag
     // todo: fix the size bug because of golden-claw
       Item goldClaw = null;
-    for (Item item : container.items) {
+    for (Item item : container.getItems()) {
       if(item instanceof GoldenClaw){
           goldClaw = item;
           continue;
       }
+
+      if(item instanceof Bag) continue; // ignore bag.
+
       placeItem(item);
     }
 
     // Free Space
-    while (count - (backpack ? 6 : nCols) < (backpack? container.size-1: container.size)) {
+    while (count - (backpack ? 6 : nCols) < (backpack? container.getSize() -1: container.getSize())) {
       placeItem(null);
     }
 
@@ -329,7 +334,9 @@ public class WndBag extends WndTabbed {
         return Icons.Companion.get(Icons.WAND_HOLSTER);
       } else if (bag instanceof PotionBandolier) {
         return Icons.Companion.get(Icons.POTION_BANDOLIER);
-      } else {
+      } else if(bag instanceof SkillTree) {
+        return Icons.Companion.get(Icons.SKILL_TREE);
+      }else {
         return Icons.Companion.get(Icons.BACKPACK);
       }
     }

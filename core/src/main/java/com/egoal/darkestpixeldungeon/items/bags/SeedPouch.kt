@@ -33,7 +33,7 @@ class SeedPouch : Bag() {
         size = Belongings.BACKPACK_SIZE
     }
 
-    override fun grab(item: Item): Boolean = item is Plant.Seed
+    override fun canHold(item: Item): Boolean = item is Plant.Seed && super.canHold(item)
 
     override fun price(): Int = 30
 }

@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.items.artifacts
+package com.egoal.darkestpixeldungeon.items.special
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
@@ -25,27 +26,26 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.IconTitle
 import com.egoal.darkestpixeldungeon.windows.WndTitledMessage
 import com.watabou.noosa.audio.Sample
-import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.lang.RuntimeException
 import java.util.ArrayList
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.round
 
-class UrnOfShadow : Artifact() {
+class UrnOfShadow : Item() {
     init {
         image = ItemSpriteSheet.URN_OF_SHADOW
         unique = true
         defaultAction = AC_CONSUME
-
-        levelCap = 10
     }
 
     var volume: Int = 0
 
     private val isFull: Boolean get() = volume == MAX_VOLUME
+
+    override val isIdentified: Boolean
+        get() = true
 
     override val isUpgradable: Boolean
         get() = false
@@ -62,8 +62,7 @@ class UrnOfShadow : Artifact() {
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)
         if (action == AC_CONSUME) {
-            if (!isEquipped(hero)) GLog.i(M.L(Artifact::class.java, "need_to_equip"))
-            else GameScene.show(WndUrnOfShadow())
+            GameScene.show(WndUrnOfShadow())
         }
     }
 
@@ -240,8 +239,6 @@ class UrnOfShadow : Artifact() {
         override fun prompt(): String = M.L(UrnOfShadow::class.java, "prompt")
     }
 
-    override fun passiveBuff(): ArtifactBuff = Urn()
-
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(VOLUME, volume)
@@ -251,8 +248,6 @@ class UrnOfShadow : Artifact() {
         super.restoreFromBundle(bundle)
         volume = bundle.getInt(VOLUME)
     }
-
-    inner class Urn : ArtifactBuff()
 
     companion object {
         private const val MAX_VOLUME = 10

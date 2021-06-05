@@ -32,7 +32,7 @@ class PotionBandolier : Bag() {
         size = Belongings.BACKPACK_SIZE
     }
 
-    override fun grab(item: Item): Boolean = item is Potion
+    override fun canHold(item: Item): Boolean = item is Potion && super.canHold(item)
 
     override fun price(): Int = 40
 }

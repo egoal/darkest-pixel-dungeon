@@ -169,6 +169,7 @@ object Dungeon {
         goddessRadiance,
         demonicSkull,
         handOfElder,
+        boethiahsBlade,
 
         ceremonialDaggerUsed,
         ceremonialDagger,

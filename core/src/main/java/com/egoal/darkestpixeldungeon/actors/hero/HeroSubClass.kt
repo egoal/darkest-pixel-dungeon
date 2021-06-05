@@ -31,9 +31,8 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PolearmMaster
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe
-import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
 import com.egoal.darkestpixeldungeon.messages.M
@@ -50,6 +49,7 @@ enum class HeroSubClass(private val title: String) {
 
     WARLOCK("warlock"),
     BATTLEMAGE("battlemage"),
+    ARCHMAGE("archmage"),
 
     ASSASSIN("assassin"),
     FREERUNNER("freerunner"),

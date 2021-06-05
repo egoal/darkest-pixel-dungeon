@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.weapon.melee
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.watabou.utils.Random
 
 class Quarterstaff : MeleeWeapon() {
     init {
@@ -36,7 +37,7 @@ class Quarterstaff : MeleeWeapon() {
 
     override fun defendDamage(dmg: Damage): Damage {
         if (dmg.type == Damage.Type.NORMAL)
-            dmg.value -= 2
+            dmg.value -= 2 + Random.Int(level())
 
         return dmg
     }

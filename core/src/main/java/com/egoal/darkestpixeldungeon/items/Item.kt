@@ -144,7 +144,7 @@ open class Item : Bundlable {
             return true
 
         for (item in items) {
-            if (item is Bag && item.grab(this)) {
+            if (item is Bag && item.canHold(this)) {
                 return collect(item)
             }
         }
@@ -159,24 +159,22 @@ open class Item : Bundlable {
             }
         }
 
-        if (items.size < container.size) {
-            if (!Dungeon.isHeroNull && Dungeon.hero.isAlive) {
-                Badges.validateItemLevelAquired(this)
-            }
-            items.add(this)
-
-            if (stackable || this is Boomerang)
-                Dungeon.quickslot.replaceSimilar(this)
-
-            updateQuickslot()
-            Collections.sort(items, itemComparator)
-            return true
-
-        } else {
+        if (!container.canHold(this)) {
             GLog.n(Messages.get(Item::class.java, "pack_full", name()))
             return false
-
         }
+
+        if (!Dungeon.isHeroNull && Dungeon.hero.isAlive) {
+            Badges.validateItemLevelAquired(this)
+        }
+        items.add(this)
+
+        if (stackable || this is Boomerang)
+            Dungeon.quickslot.replaceSimilar(this)
+
+        updateQuickslot()
+        Collections.sort(items, itemComparator)
+        return true
     }
 
     fun collect(): Boolean {

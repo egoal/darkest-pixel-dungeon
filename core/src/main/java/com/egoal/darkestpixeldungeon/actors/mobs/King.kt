@@ -29,11 +29,12 @@ import com.watabou.utils.Random
 import java.util.*
 import kotlin.math.min
 
-class King() : Mob() {
+class King : Mob() {
     init {
         spriteClass = KingSprite::class.java
 
         PropertyConfiger.set(this, "King")
+        if (!Revivable) criticalChance += 0.15f
     }
 
     private var anger = 0f
@@ -45,11 +46,13 @@ class King() : Mob() {
         Dungeon.hero.buff(LockedFloor::class.java)?.addTime(dmg.value.toFloat())
 
         val p = HP / HT.toFloat()
-        val ratio = when {
+        var ratio = when {
             p > 0.5f -> 1f
             p > 0.1f -> 1.5f
             else -> 2f
         }
+        if (Revivable) ratio *= 0.75f
+
         anger = min(120f, anger + value.toFloat() * ratio)
 
         return value
@@ -161,8 +164,9 @@ class King() : Mob() {
     override fun notice() {
         super.notice()
         BossHealthBar.assignBoss(this)
-        if (Dungeon.visible[pos]) say(M.L(this, "notice"))
-        else yell(M.L(this, "notice"))
+        val k = if (Revivable) "notice" else "notice2"
+        if (Dungeon.visible[pos]) say(M.L(this, k))
+        else yell(M.L(this, k))
     }
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
@@ -200,7 +204,7 @@ class King() : Mob() {
         override fun die(cause: Any?) {
             super.die(cause)
 
-            val head = MobSpawner(Undead::class.java, Random.Int(15, 30))
+            val head = MobSpawner(Undead::class.java, Random.Int(10, 20))
             head.pos = pos
             GameScene.add(head)
 

@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.items
 
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.rings.*
+import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
 import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import java.io.IOException
@@ -45,9 +46,8 @@ enum class Catalog(private val items: HashMap<Class<*>, Boolean>) {
             EyeballOfTheElder.Right::class.java to false,
             EyeballOfTheElder.Left::class.java to false,
             DragonsSquama::class.java to false,
-            GoddessRadiance::class.java to false,
-            UrnOfShadow::class.java to false
-    )),
+            GoddessRadiance::class.java to false
+            )),
 
     ;
 
@@ -113,7 +113,7 @@ enum class Catalog(private val items: HashMap<Class<*>, Boolean>) {
 
                 if (bundle.contains(CATELOG)) {
                     val items = bundle.getClassArray(CATELOG)
-                    for (item in items) SetSeen(item)
+                    for (item in items) if (item != null) SetSeen(item)
                 }
 
                 changed = false

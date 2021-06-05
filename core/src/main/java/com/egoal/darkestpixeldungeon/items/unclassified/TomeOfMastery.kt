@@ -26,7 +26,6 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
@@ -34,13 +33,16 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe
-import com.egoal.darkestpixeldungeon.items.artifacts.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.windows.WndChooseWay
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
+import com.egoal.darkestpixeldungeon.items.books.Book
+import com.egoal.darkestpixeldungeon.items.special.StrengthOffering
+import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.audio.Sample
 
 import java.util.ArrayList
@@ -59,19 +61,21 @@ class TomeOfMastery : Item() {
         super.execute(hero, action)
 
         if (action == AC_READ) {
+            if (hero.heroClass.subClasses.isEmpty()) {
+                GLog.w(M.L(Book::class.java, "cannot_understand"))
+                return
+            }
 
             curUser = hero
 
-            val twoWay = when (hero.heroClass) {
-                HeroClass.WARRIOR -> Pair(HeroSubClass.GLADIATOR, HeroSubClass.BERSERKER)
-                HeroClass.MAGE -> Pair(HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK)
-                HeroClass.ROGUE -> Pair(HeroSubClass.FREERUNNER, HeroSubClass.ASSASSIN)
-                HeroClass.HUNTRESS -> Pair(HeroSubClass.SNIPER, HeroSubClass.WARDEN)
-                HeroClass.SORCERESS -> Pair(HeroSubClass.STARGAZER, HeroSubClass.WITCH)
-                HeroClass.EXILE -> Pair(HeroSubClass.LANCER, HeroSubClass.WINEBIBBER)
-            }
+            val heroClass = hero.heroClass
+            var message = heroClass.subClasses[0].desc()
+            for (i in 1 until heroClass.subClasses.size)
+                message += "\n\n" + heroClass.subClasses[i].desc()
 
-            GameScene.show(WndChooseWay(this, twoWay.first, twoWay.second))
+            WndOptions.Show(ItemSprite(this), name(), message, *heroClass.subClasses.map { it.title() }.toTypedArray()) {
+                choose(heroClass.subClasses[it])
+            }
         }
     }
 
@@ -111,8 +115,13 @@ class TomeOfMastery : Item() {
             HeroSubClass.ASSASSIN -> curUser.heroPerk.add(Assassin())
             HeroSubClass.WARLOCK -> {
                 val uos = UrnOfShadow().identify()
-                if (uos.doPickUp(curUser)) GLog.w(Messages.get(curUser, "you_now_have", uos.name()))
-                else Dungeon.level.drop(uos, curUser.pos).sprite.drop()
+                uos.collect()
+                GLog.w(Messages.get(curUser, "you_now_have", uos.name()))
+            }
+            HeroSubClass.ARCHMAGE -> {
+                val so = StrengthOffering().identify()
+                so.collect()
+                GLog.w(Messages.get(curUser, "you_now_have", so.name()))
             }
             HeroSubClass.WITCH -> {
                 curUser.belongings.getItem(ExtractionFlask::class.java)?.reinforce()

@@ -104,9 +104,9 @@ abstract class Wand(val isMissile: Boolean) : Item() {
         if (super.collect(container)) {
             if (container.owner != null) {
                 if (container is WandHolster)
-                    charge(container.owner, WandHolster.HOLSTER_SCALE_FACTOR)
+                    charge(container.owner!!, WandHolster.HOLSTER_SCALE_FACTOR)
                 else
-                    charge(container.owner)
+                    charge(container.owner!!)
             }
             return true
         } else {

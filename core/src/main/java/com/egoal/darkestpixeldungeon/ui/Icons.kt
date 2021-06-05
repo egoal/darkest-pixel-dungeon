@@ -54,6 +54,7 @@ enum class Icons {
     SCROLL_HOLDER,
     POTION_BANDOLIER,
     WAND_HOLSTER,
+    SKILL_TREE,
     CHECKED,
     UNCHECKED,
     EXIT,
@@ -110,6 +111,8 @@ enum class Icons {
                 SEED_POUCH -> icon.frame(icon.texture.uvRect(78, 0, 88, 10))
                 WAND_HOLSTER -> icon.frame(icon.texture.uvRect(88, 0, 98, 10))
                 POTION_BANDOLIER -> icon.frame(icon.texture.uvRect(98, 0, 108, 10))
+                SKILL_TREE-> icon.frame(icon.texture.uvRect(32, 64, 42, 74))
+
                 CHECKED -> icon.frame(icon.texture.uvRect(54, 12, 66, 24))
                 UNCHECKED -> icon.frame(icon.texture.uvRect(66, 12, 78, 24))
                 EXIT -> icon.frame(icon.texture.uvRect(108, 0, 124, 16))

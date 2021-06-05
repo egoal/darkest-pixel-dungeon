@@ -393,20 +393,18 @@ class HeroCreateScene : PixelScene() {
             fun refresh(heroClass: HeroClass) {
                 y = initY
 
-                val message = when (heroClass) {
-                    HeroClass.WARRIOR -> HeroSubClass.GLADIATOR.desc() + "\n\n" + HeroSubClass.BERSERKER.desc()
-                    HeroClass.MAGE -> HeroSubClass.BATTLEMAGE.desc() + "\n\n" + HeroSubClass.WARLOCK.desc()
-                    HeroClass.ROGUE -> HeroSubClass.FREERUNNER.desc() + "\n\n" + HeroSubClass.ASSASSIN.desc()
-                    HeroClass.HUNTRESS -> HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc()
-                    HeroClass.SORCERESS -> HeroSubClass.STARGAZER.desc() + "\n\n" + HeroSubClass.WITCH.desc()
-                    HeroClass.EXILE -> HeroSubClass.LANCER.desc() + "\n\n" + HeroSubClass.WINEBIBBER.desc()
+                if (heroClass.subClasses.isNotEmpty()) {
+                    var message = heroClass.subClasses[0].desc()
+
+                    for (i in 1 until heroClass.subClasses.size)
+                        message += "\n\n" + heroClass.subClasses[i].desc()
+
+                    text.text(message, (WND_WIDTH - WND_MARGIN * 2).toInt())
+                    text.setPos(WND_MARGIN, y)
+                    add(text)
+
+                    y = text.bottom() + WND_MARGIN
                 }
-
-                text.text(message, (WND_WIDTH - WND_MARGIN * 2).toInt())
-                text.setPos(WND_MARGIN, y)
-                add(text)
-
-                y = text.bottom() + WND_MARGIN
             }
         }
     }
