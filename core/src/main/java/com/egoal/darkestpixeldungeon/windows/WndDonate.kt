@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.windows
 
 import android.content.Intent
 import android.net.Uri
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.CatEgoal
 import com.egoal.darkestpixeldungeon.messages.M
@@ -46,6 +47,16 @@ class WndDonate : Window() {
         button2.setRect(MARGIN, top, innerWidth.toFloat(), BTN_HEIGHT)
         add(button2)
         top = button2.bottom() + MARGIN
+
+        val button3 = object : WndDialogue.OptionButton(M.L(WndDonate::class.java, "pitful")) {
+            override fun onClick() {
+                Badges.validateSupporter()
+                hide()
+            }
+        }
+        button3.setRect(MARGIN, top, innerWidth.toFloat(), BTN_HEIGHT)
+        add(button3)
+        top = button3.bottom() + MARGIN
 
         resize(width, top.toInt())
     }

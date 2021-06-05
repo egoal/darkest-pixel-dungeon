@@ -384,19 +384,17 @@ open class Armor(var tier: Int) : EquipableItem() {
 
         companion object {
             private val glyphs = arrayOf(
-                    Obfuscation::class.java, Swiftness::class.java, Stone::class.java, Potential::class.java,
-                    Brimstone::class.java, Viscosity::class.java, Repulsion::class.java, Camouflage::class.java, Flow::class.java,
-                    Affection::class.java, AntiMagic::class.java, Thorns::class.java, Tough::class.java)
-            private val chances = floatArrayOf(
-                    10f, 10f, 10f, 10f,
-                    5f, 5f, 5f, 5f, 5f,
-                    3f, 3f, 3f, 3f)
+                    arrayOf(Obfuscation::class.java, Swiftness::class.java, Stone::class.java, Potential::class.java),
+                    arrayOf(Brimstone::class.java, Viscosity::class.java, Repulsion::class.java, Camouflage::class.java, Flow::class.java, Clarifying::class.java),
+                    arrayOf(Affection::class.java, AntiMagic::class.java, Thorns::class.java, Tough::class.java)
+            )
+            private val chances = floatArrayOf(55f, 30f, 15f)
 
             private val curses = arrayOf(
                     AntiEntropy::class.java, Corrosion::class.java, Displacement::class.java, Entanglement::class.java,
                     Metabolism::class.java, Multiplicity::class.java, Stench::class.java)
 
-            fun random(): Glyph = glyphs[Random.chances(chances)].newInstance()
+            fun random(): Glyph = glyphs[Random.chances(chances)].random().newInstance()
 
             fun randomCurse(): Glyph = Random.oneOf(*curses).newInstance()
         }

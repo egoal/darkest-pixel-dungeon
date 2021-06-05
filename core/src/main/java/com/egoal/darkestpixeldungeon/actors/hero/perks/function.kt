@@ -168,7 +168,7 @@ class IntendedTransportation : Perk() {
 class Keen : Perk(3) {
     override fun image(): Int = PerkImageSheet.KEEN
 
-    fun baseAwareness(): Float = 0.95f - 0.1f * level
+    fun baseAwareness(): Float = 0.1f + 0.1f * level
 }
 
 class Knowledgeable : Perk(3) {

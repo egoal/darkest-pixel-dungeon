@@ -360,6 +360,7 @@ public class ItemSpriteSheet {
     public static final int VIAL = BAGS + 4;
     public static final int GOURD = BAGS + 5;
     public static final int PURSE = BAGS + 6;
+    public static final int SKILL_TREE = BAGS + 7;
 
     //64 free slots
 

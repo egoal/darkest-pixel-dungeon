@@ -76,7 +76,6 @@ class Hero : Char() {
 
     var STR = STARTING_STR
     var weakened = false
-    var awareness = 0.1f
     var lvl = 1
     var exp = 0
     var criticalChance = 0f
@@ -985,9 +984,11 @@ class Hero : Char() {
         }
     }
 
-    internal fun updateAwareness() {
-        val w = heroPerk.get(Keen::class.java)?.baseAwareness() ?: 0.9f
-        awareness = 1f - w.pow((1 + min(lvl, 9)) / 2f)
+    private fun awareness(): Float {
+        var w = heroPerk.get(Keen::class.java)?.baseAwareness() ?: 0.1f
+        if (buff(TalismanOfForesight.Foresight::class.java) != null) w += 0.1f
+
+        return w
     }
 
     override fun add(buff: Buff) {
@@ -1100,7 +1101,9 @@ class Hero : Char() {
     fun search(intentional: Boolean): Boolean {
         var smthFound = false
 
-        var level = if (intentional) 2 * awareness - awareness * awareness else awareness
+        val w = awareness() // todo: cache awareness
+
+        var level = if (intentional) 2 * w - w * w else w
 
         val distance = if (heroPerk.has(EfficientSearch::class.java)) 2 else 1
 
@@ -1410,7 +1413,6 @@ class Hero : Char() {
         defSkill = bundle.getFloat(DEFENSE)
 
         STR = bundle.getInt(STRENGTH)
-        updateAwareness()
 
         lvl = bundle.getInt(LEVEL)
         exp = bundle.getInt(EXPERIENCE)

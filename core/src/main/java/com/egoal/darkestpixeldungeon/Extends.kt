@@ -29,8 +29,10 @@ object KRandom {
             key
         }
     }
+
+    fun Percent(p: Int) = Random.Int(100) <= p
 }
 
-object KGameMath{
+object KGameMath {
 
 }

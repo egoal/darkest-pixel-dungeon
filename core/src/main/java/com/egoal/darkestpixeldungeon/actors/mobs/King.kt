@@ -29,7 +29,7 @@ import com.watabou.utils.Random
 import java.util.*
 import kotlin.math.min
 
-class King : Mob() {
+class King() : Mob() {
     init {
         spriteClass = KingSprite::class.java
 
@@ -113,28 +113,49 @@ class King : Mob() {
     }
 
     override fun die(cause: Any?) {
-        GameScene.bossSlain()
+        if (Revivable) {
+            Revivable = false
 
-        val avals = PathFinder.NEIGHBOURS8.map { it + pos }.filter {
-            (Level.passable[it] || Level.avoid[it])
+            // summon
+            Dungeon.level.mobs.filterIsInstance<MobSpawner>().forEach { it.rise() }
+
+            super.die(cause)
+
+            val head = MobSpawner(King::class.java, 5)
+            head.pos = pos
+            GameScene.add(head)
+            head.sprite.tint(0x111100)
+
+            if (Dungeon.visible[pos]) Sample.INSTANCE.play(Assets.SND_BONES)
+
+            yell(M.L(this, "immortal", Dungeon.hero.givenName()))
+        } else {
+            Revivable = true
+
+            // win the level
+            GameScene.bossSlain()
+
+            val avals = PathFinder.NEIGHBOURS8.map { it + pos }.filter {
+                (Level.passable[it] || Level.avoid[it])
+            }
+
+            for (item in listOf(SkeletonKey(Dungeon.depth), ArmorKit(), CrownOfDwarf(), TomeOfUpgrade())) {
+                val cell = if (avals.isEmpty()) pos else avals.random()
+                Dungeon.level.drop(item, cell).sprite.drop(pos)
+            }
+
+            // remove undead
+            Dungeon.level.mobs.filter { it is Undead }.forEach { (it as Undead).realDie() }
+            Dungeon.level.mobs.filter { it is MobSpawner }.forEach { (it as MobSpawner).die(null) } // fixme: do not kill hero's ally
+
+            super.die(cause)
+
+            Badges.validateBossSlain()
+
+            Dungeon.hero.belongings.getItem(LloydsBeacon::class.java)?.upgrade()
+
+            yell(M.L(this, "defeated"))
         }
-
-        for (item in listOf(SkeletonKey(Dungeon.depth), ArmorKit(), CrownOfDwarf(), TomeOfUpgrade())) {
-            val cell = if (avals.isEmpty()) pos else avals.random()
-            Dungeon.level.drop(item, cell).sprite.drop(pos)
-        }
-
-        // remove undead
-        Dungeon.level.mobs.filter { it is Undead }.forEach { (it as Undead).realDie() }
-        Dungeon.level.mobs.filter { it is MobSpawner }.forEach { (it as MobSpawner).die(null) } // fixme: do not kill hero's ally
-
-        super.die(cause)
-
-        Badges.validateBossSlain()
-
-        Dungeon.hero.belongings.getItem(LloydsBeacon::class.java)?.upgrade()
-
-        yell(M.L(this, "defeated", Dungeon.hero.givenName()))
     }
 
     override fun notice() {
@@ -149,11 +170,14 @@ class King : Mob() {
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(ANGER, anger)
+        bundle.put(REVIVABLE, Revivable)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         anger = bundle.getFloat(ANGER)
+        if (bundle.contains(REVIVABLE))
+            Revivable = bundle.getBoolean(REVIVABLE)
     }
 
     class Undead : Mob() {
@@ -202,6 +226,10 @@ class King : Mob() {
         )
 
         private const val ANGER = "anger"
+        private const val REVIVABLE = "revivable"
+
+        //todo: this is fragile
+        private var Revivable: Boolean = true
     }
 
 }

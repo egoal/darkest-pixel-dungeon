@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
+import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
@@ -258,8 +259,6 @@ enum class HeroClass(private val title: String) {
         initHeroClass(hero)
 
         if (DarkestPixelDungeon.debug()) initDebug(hero)
-
-        hero.updateAwareness()
     }
 
     fun title(): String = Messages.get(HeroClass::class.java, title)
@@ -296,7 +295,7 @@ enum class HeroClass(private val title: String) {
 
         for (p in initialPerks()) hero.heroPerk.add(p)
 
-        // initDebug(hero)
+        SkillTree().identify().collect()
     }
 
     // called when hero level up
@@ -314,8 +313,6 @@ enum class HeroClass(private val title: String) {
 
             criticalChance += 0.4f / 100f
             regeneration += 0.03f
-
-            if (lvl < 10) updateAwareness()
 
             recoverSanity(min(Random.NormalIntRange(1, lvl * 3 / 4).toFloat(),
                     buff(Pressure::class.java)!!.pressure * 0.3f))

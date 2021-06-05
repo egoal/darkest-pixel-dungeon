@@ -866,9 +866,9 @@ object Badges {
     }
 
     fun validateSupporter() {
-        if (Dungeon.IsChallenged()) return
+        // if (Dungeon.IsChallenged()) return
 
-        global!!.add(Badge.SUPPORTER)
+        global.add(Badge.SUPPORTER)
         saveNeeded = true
 
         PixelScene.showBadge(Badge.SUPPORTER)
