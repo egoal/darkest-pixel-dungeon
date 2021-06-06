@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Circulation
 import com.egoal.darkestpixeldungeon.actors.buffs.Penetration
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
@@ -31,7 +32,9 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PolearmMaster
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe
+import com.egoal.darkestpixeldungeon.items.special.StrengthOffering
 import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
@@ -95,8 +98,14 @@ enum class HeroSubClass(private val title: String) {
                 ASSASSIN -> hero.heroPerk.add(Assassin())
                 WARLOCK -> {
                     val uos = UrnOfShadow().identify()
-                    if (uos.doPickUp(hero)) GLog.w(Messages.get(hero, "you_now_have", uos.name()))
-                    else Dungeon.level.drop(uos, hero.pos).sprite.drop()
+                    uos.collect()
+                    GLog.w(Messages.get(hero, "you_now_have", uos.name()))
+                }
+                BATTLEMAGE -> Buff.affect(hero, Circulation::class.java)
+                ARCHMAGE -> {
+                    val so = StrengthOffering().identify()
+                    so.collect()
+                    GLog.w(Messages.get(hero, "you_now_have", so.name()))
                 }
                 WITCH -> {
                     hero.belongings.getItem(ExtractionFlask::class.java)?.reinforce()

@@ -17,6 +17,8 @@ class DriedLeg : MeleeWeapon() {
         //also cannot surprise attack, see Hero.canSurpriseAttack
     }
 
+    override fun canSurpriseAttack(): Boolean = false
+
     override fun proc(dmg: Damage): Damage {
         if (Random.Float() < 0.12f) Buff.prolong(dmg.to as Char, Paralysis::class.java, DLY + 0.1f * level())
 

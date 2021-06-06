@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Circulation
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
@@ -100,42 +101,7 @@ class TomeOfMastery : Item() {
             sprite.operate(pos)
         }
 
-        Sample.INSTANCE.play(Assets.SND_MASTERY)
-        SpellSprite.show(curUser, SpellSprite.MASTERY)
-        curUser.sprite.emitter().burst(Speck.factory(Speck.MASTERY), 12)
-
-        GLog.w(Messages.get(this, "way", way.title()))
-
-        // on choose
-        when (way) {
-            HeroSubClass.BERSERKER -> {
-                Buff.affect(curUser, Berserk::class.java)
-                curUser.heroPerk.add(Fearless())
-            }
-            HeroSubClass.ASSASSIN -> curUser.heroPerk.add(Assassin())
-            HeroSubClass.WARLOCK -> {
-                val uos = UrnOfShadow().identify()
-                uos.collect()
-                GLog.w(Messages.get(curUser, "you_now_have", uos.name()))
-            }
-            HeroSubClass.ARCHMAGE -> {
-                val so = StrengthOffering().identify()
-                so.collect()
-                GLog.w(Messages.get(curUser, "you_now_have", so.name()))
-            }
-            HeroSubClass.WITCH -> {
-                curUser.belongings.getItem(ExtractionFlask::class.java)?.reinforce()
-                //^ may lose perk
-            }
-            HeroSubClass.STARGAZER -> {
-                curUser.heroPerk.add(Optimistic())
-
-                val a = Astrolabe().identify()
-                if (a.doPickUp(curUser)) GLog.w(Messages.get(curUser, "you_now_have", a.name()))
-                else Dungeon.level.drop(a, curUser.pos).sprite.drop()
-            }
-        }
-
+        HeroSubClass.Choose(curUser, way)
     }
 
     companion object {

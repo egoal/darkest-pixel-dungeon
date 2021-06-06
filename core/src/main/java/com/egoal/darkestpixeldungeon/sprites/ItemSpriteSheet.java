@@ -131,6 +131,8 @@ public class ItemSpriteSheet {
     public static final int SPIKE_SHIELD = WEP_TIER4 + 5;
     public static final int PITCHFORK = WEP_TIER4 + 6;
     public static final int HALBERD = WEP_TIER4 + 7;
+    public static final int SCYTHE = WEP_TIER4 + 8;
+    // 9, 10
 
     private static final int WEP_TIER5 = xy(1, 9);   //16 slots
     public static final int Claymore = WEP_TIER5 + 0;

@@ -343,7 +343,7 @@ class Hero : Char() {
 
     fun evasionProbability(): Float {
         val level = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
-        var e = 1f - 0.01f * level;
+        var e = 1f - 0.01f * level
 
         // GameMath.ProbabilityPlus()
         heroPerk.get(ExtraEvasion::class.java)?.let {
@@ -364,6 +364,8 @@ class Hero : Char() {
     }
 
     override fun dexRoll(damage: Damage): Float {
+        if (buff(Shield.Companion.ShieldsUp::class.java) != null && Random.Float() < 0.5f) return 0f
+
         // evasion
         if (Random.Float() < evasionProbability()) return 1000f
 
@@ -375,6 +377,9 @@ class Hero : Char() {
         if (paralysed > 0) factor *= 0.5f
 
         if (heroClass == HeroClass.SORCERESS) factor *= 0.8f
+        else if (subClass == HeroSubClass.BATTLEMAGE) {
+            factor *= buff(Circulation::class.java)!!.evasionFactor()
+        }
 
         factor *= pressure.evasionFactor()
 
@@ -395,9 +400,7 @@ class Hero : Char() {
         if (belongings.weapon == null || belongings.weapon !is Weapon) return true
         if (STR() < (belongings.weapon as Weapon).STRReq()) return false
 
-        if (rangedWeapon == null &&
-                (belongings.weapon is Flail || belongings.weapon is Lance ||
-                        belongings.weapon is DriedLeg))
+        if (rangedWeapon == null && !(belongings.weapon!!.canSurpriseAttack()))
             return false
 
         return true
@@ -578,6 +581,9 @@ class Hero : Char() {
                 heroPerk.get(PolearmMaster::class.java)?.proc(dmg, belongings.weapon as MeleeWeapon)
 
             if (subClass == HeroSubClass.WINEBIBBER) buff(Drunk::class.java)?.attackProc(dmg)
+            else if (subClass == HeroSubClass.BATTLEMAGE && wep != null) {
+                buff(Circulation::class.java)!!.weaponProc(wep, dmg)
+            }
         }
 
         // critical damage
@@ -1232,6 +1238,12 @@ class Hero : Char() {
         GLog.i(Messages.capitalize(Messages.get(Char::class.java, "defeat", ch.name)))
     }
 
+    fun doOperation(dt: Float, action: () -> Unit) {
+        action()
+        sprite.operate(pos)
+        spend(dt)
+        busy()
+    }
 
     // animation callbacks
     override fun onMotionComplete() {

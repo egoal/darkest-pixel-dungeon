@@ -19,6 +19,8 @@ class Lance : MeleeWeapon() {
         // cannot surprise attack, see Hero::canSurpriseAttack
     }
 
+    override fun canSurpriseAttack(): Boolean = false
+
     // extra 5 base damage
     override fun max(lvl: Int): Int = 5 * (tier + 2) + lvl * (tier + 1)
 

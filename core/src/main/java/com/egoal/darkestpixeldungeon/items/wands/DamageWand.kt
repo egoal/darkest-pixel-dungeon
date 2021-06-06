@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.effects.Splash
 import com.egoal.darkestpixeldungeon.items.rings.Ring
@@ -116,7 +117,7 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
                     PI.toFloat() / 3f, particleColor(), Random.NormalIntRange(12, 20))
         }
 
-        if (!enemy.isAlive){
+        if (!enemy.isAlive) {
             hero.onKillChar(enemy)
             onKilled(damage)
         }
@@ -154,6 +155,9 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
     }
 
     protected open fun onHit(damage: Damage) {
+        val hero = curUser
+        if (hero.subClass == HeroSubClass.BATTLEMAGE) hero.buff(Circulation::class.java)!!.wandProc(this, damage)
+
         if (damage.isFeatured(Damage.Feature.CRITICAL))
             curUser.recoverSanity(Random.IntRange(1, 4))
         if (isMissile) curUser.heroPerk.get(WandPiercing::class.java)?.onHit(damage.to as Char)

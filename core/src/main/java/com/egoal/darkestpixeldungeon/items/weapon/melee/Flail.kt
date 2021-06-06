@@ -31,6 +31,8 @@ class Flail : MeleeWeapon() {
         //also cannot surprise attack, see Hero.canSurpriseAttack
     }
 
+    override fun canSurpriseAttack(): Boolean = false
+
     override fun min(lvl: Int): Int {
         return tier +  //base unchanged
                 lvl * 2  //+2 per level, up from +1

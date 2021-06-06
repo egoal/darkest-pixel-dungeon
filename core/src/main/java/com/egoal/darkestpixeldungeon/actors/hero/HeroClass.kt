@@ -303,9 +303,12 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
 //        BoethiahsBlade().identify().collect()
-//        TomeOfMastery().identify().collect()
-
 //        initDebug(hero)
+//        Scythe().collect()
+//        ScrollOfIdentify().collect()
+//        ScrollOfCurse().collect()
+//        SpikeShield().identify().collect()
+//        PotionOfExperience().quantity(99).identify().collect()
     }
 
     // called when hero level up

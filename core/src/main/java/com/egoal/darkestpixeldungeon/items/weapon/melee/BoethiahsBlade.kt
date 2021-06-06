@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
+import com.watabou.utils.Random
 import kotlin.math.max
 import kotlin.math.min
 
@@ -27,7 +28,11 @@ class BoethiahsBlade : MeleeWeapon() {
             dmg.value += (2 + level()) * tier
 
         val defender = dmg.to as Char
-        defender.HT = max(1, defender.HT - (level() + 1))
+        val dht = if (cursed) {
+            level() * 3 / 2 + 1
+        } else level() + 1
+
+        defender.HT = max(1, defender.HT - dht)
         defender.HP = min(defender.HP, defender.HT)
 
         return super.proc(dmg)
