@@ -21,7 +21,7 @@ class Circulation : Buff() {
         set(value) {
             last_ = value
             BuffIndicator.refreshHero()
-            duration = 5 + amount * 5
+            duration = 10 + amount * 5
         }
 
     fun wandProc(wand: Wand, damage: Damage) {

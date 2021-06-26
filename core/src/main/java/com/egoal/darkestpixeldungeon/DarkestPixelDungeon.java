@@ -357,7 +357,15 @@ public class DarkestPixelDungeon extends Game {
   }
 
   public static int quickSlots() {
-    return Preferences.INSTANCE.getInt(Preferences.KEY_QUICKSLOTS, 6, 0, 8);
+    return Preferences.INSTANCE.getInt(Preferences.KEY_QUICKSLOTS, 5, 0, 8);
+  }
+
+  public static void moreQuickSlots(boolean value){
+    Preferences.INSTANCE.put(Preferences.KEY_MORE_SLOTS, value);
+  }
+
+  public static boolean moreQuickSlots(){
+    return Preferences.INSTANCE.getBoolean(Preferences.KEY_MORE_SLOTS, false);
   }
 
   public static void flipToolbar(boolean value) {

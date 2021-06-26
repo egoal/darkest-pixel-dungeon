@@ -171,8 +171,9 @@ object Generator {
         object MISSSILE : BalancedClassMapGenerator(hashMapOf(
                 // 1
                 Boomerang::class to 0f,
-                Dart::class to 12f,
+                Dart::class to 8f,
                 SmokeSparks::class to 6f,
+                Salt::class to 4f,
                 // 2
                 Shuriken::class to 10f,
                 SwallowDart::class to 10f,
@@ -182,6 +183,7 @@ object Generator {
                 // 3
                 FlyCutter::class to 8f,
                 SeventhDart::class to 8f,
+                RefinedSalt::class to 6f,
                 // 4
                 Javelin::class to 6f,
                 // 5

@@ -130,7 +130,7 @@ object Bones {
             fin.close()
 
             depth = bundle.getInt(LEVEL)
-            item = bundle.get(ITEM) as Item
+            item = bundle.get(ITEM) as Item?
 
             return true
         } catch (e: IOException) {

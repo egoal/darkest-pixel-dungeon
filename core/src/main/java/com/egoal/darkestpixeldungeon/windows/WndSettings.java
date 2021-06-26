@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.windows;
 
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.messages.M;
 import com.egoal.darkestpixeldungeon.ui.OptionSlider;
 import com.egoal.darkestpixeldungeon.ui.RedButton;
 import com.egoal.darkestpixeldungeon.Assets;
@@ -315,6 +316,18 @@ public class WndSettings extends WndTabbed {
       slots.setRect(0, btm + GAP_TINY, WIDTH, SLIDER_HEIGHT);
       add(slots);
 
+      CheckBox chkMoreSlots = new CheckBox(M.INSTANCE.L(this, "more_slots")){
+        @Override
+        protected void onClick() {
+          super.onClick();
+          DarkestPixelDungeon.moreQuickSlots(checked());
+          Toolbar.updateLayout();
+        }
+      };
+      chkMoreSlots.setRect(0, slots.bottom()+ GAP_SML, WIDTH, BTN_HEIGHT);
+      chkMoreSlots.checked(DarkestPixelDungeon.moreQuickSlots());
+      add(chkMoreSlots);
+
       CheckBox chkFont = new CheckBox(Messages.get(this, "smooth_font")) {
         @Override
         protected void onClick() {
@@ -334,7 +347,7 @@ public class WndSettings extends WndTabbed {
           });
         }
       };
-      chkFont.setRect(0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+      chkFont.setRect(0, chkMoreSlots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
       chkFont.checked(!DarkestPixelDungeon.classicFont());
       add(chkFont);
 

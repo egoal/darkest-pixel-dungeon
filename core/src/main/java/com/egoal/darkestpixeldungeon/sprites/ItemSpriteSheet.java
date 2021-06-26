@@ -158,6 +158,8 @@ public class ItemSpriteSheet {
     public static final int DART_SEVENTH = MISSILE_WEP + 11;
     public static final int CEREMONIAL_DAGGER = MISSILE_WEP + 12;
     public static final int MAGIC_DART = MISSILE_WEP + 13;
+    public static final int SALT = MISSILE_WEP + 14;
+    public static final int SALT_2 = MISSILE_WEP+ 15;
 
     private static final int ARMOR = xy(1, 11);  //16 slots
     public static final int ARMOR_CLOTH = ARMOR + 0;
@@ -254,9 +256,7 @@ public class ItemSpriteSheet {
     public static final int DEMONIC_SKULL = ARTIFACTS + 25;
     public static final int UNHOLY_BLOOD = ARTIFACTS + 26;
     public static final int MASK_OF_MADNESS = ARTIFACTS + 27;
-    public static final int ASTROLABE = ARTIFACTS + 28;
-    public static final int ASTROLABE_1 = ARTIFACTS + 29;
-    public static final int ASTROLABE_2 = ARTIFACTS + 30;
+
     public static final int BONE_HAND = ARTIFACTS + 31;
     public static final int HANDLE_OF_ABYSS = ARTIFACTS + 32;
     public static final int CLOAK_OF_SHEEP = ARTIFACTS + 33;
@@ -366,9 +366,14 @@ public class ItemSpriteSheet {
     public static final int PURSE = BAGS + 6;
     public static final int SKILL_TREE = BAGS + 7;
 
-    private static final int SKILLS = xy(1, 30);
-    public static final int STRENGTH_OFFERING = SKILLS + 0;
-    public static final int URN_OF_SHADOW = SKILLS + 1;
+    private static final int SPECIALS = xy(1, 30);
+    public static final int STRENGTH_OFFERING = SPECIALS + 0;
+    public static final int URN_OF_SHADOW = SPECIALS + 1;
+    public static final int ASTROLABE = SPECIALS + 2;
+    public static final int ASTROLABE_1 = ASTROLABE + 1;
+    public static final int ASTROLABE_2 = ASTROLABE + 2;
+    public static final int PENETRATION = SPECIALS + 5;
+    public static final int PENETRATION_RDY = PENETRATION + 1;
 
     //32 free slots
 

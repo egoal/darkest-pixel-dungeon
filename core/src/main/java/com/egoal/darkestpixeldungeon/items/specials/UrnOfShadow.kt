@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.items.special
+package com.egoal.darkestpixeldungeon.items.specials
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
@@ -13,7 +13,6 @@ import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
@@ -33,11 +32,9 @@ import java.util.ArrayList
 import kotlin.math.max
 import kotlin.math.min
 
-class UrnOfShadow : Item() {
+class UrnOfShadow : Special() {
     init {
         image = ItemSpriteSheet.URN_OF_SHADOW
-        unique = true
-        defaultAction = AC_CONSUME
     }
 
     var volume: Int = 0
@@ -55,36 +52,35 @@ class UrnOfShadow : Item() {
         return super.upgrade()
     }
 
-    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply {
-        if (isEquipped(hero) && volume > 0) add(AC_CONSUME)
-    }
-
-    override fun execute(hero: Hero, action: String) {
-        super.execute(hero, action)
-        if (action == AC_CONSUME) {
-            GameScene.show(WndUrnOfShadow())
-        }
+    override fun use(hero: Hero) {
+        GameScene.show(WndUrnOfShadow())
     }
 
     fun collectSoul(mob: Mob) {
-        Item.curUser = Dungeon.hero
-        if (!isEquipped(Item.curUser)) return
+        curUser = Dungeon.hero
 
-        if (Dungeon.level.distance(Item.curUser.pos, mob.pos) > COLLECT_RANGE) return
+        if (Dungeon.level.distance(curUser.pos, mob.pos) > COLLECT_RANGE) return
 
-        if (mob.camp != Char.Camp.ENEMY ||
-                mob.properties().contains(Char.Property.UNDEAD) ||
-                mob.properties().contains(Char.Property.PHANTOM)) return
+        if (mob.camp != Char.Camp.ENEMY) return
 
-        if (isFull) {
-            GLog.w(M.L(this, "full"))
-        } else {
-            volume += 1
+        val properties = mob.properties()
+
+        val cnt = when {
+            properties.contains(Char.Property.UNDEAD) || properties.contains(Char.Property.PHANTOM) -> 0
+            properties.contains(Char.Property.MINIBOSS) || properties.contains(Char.Property.BOSS) -> 5
+            mob.maxLvl >= (curUser.lvl + 3) -> 2
+            else -> 1
+        }
+
+        if (cnt > 0) {
+            volume = min(MAX_VOLUME, volume + cnt)
             updateQuickslot()
 
             GLog.i(M.L(this, "collected", mob.name))
-            CellEmitter.get(Item.curUser.pos).burst(ShadowParticle.CURSE, 5)
+            CellEmitter.get(curUser.pos).burst(ShadowParticle.CURSE, 5)
             Sample.INSTANCE.play(Assets.SND_BURNING)
+
+            if (isFull) GLog.w(M.L(this, "full"))
         }
     }
 
@@ -121,7 +117,7 @@ class UrnOfShadow : Item() {
 
     private fun castSoulSiphon() {
         caster.onChar = { ch: Char ->
-            if (ch === Item.curUser) GLog.w(M.L(UrnOfShadow::class.java, "not_yourself"))
+            if (ch === curUser) GLog.w(M.L(UrnOfShadow::class.java, "not_yourself"))
             else {
                 volume -= 2
                 Item.curUser.sprite.zap(ch.pos)
@@ -253,7 +249,6 @@ class UrnOfShadow : Item() {
         private const val MAX_VOLUME = 10
         private const val COLLECT_RANGE = 6f
 
-        private const val AC_CONSUME = "CONSUME"
         private const val VOLUME = "volume"
 
         ///

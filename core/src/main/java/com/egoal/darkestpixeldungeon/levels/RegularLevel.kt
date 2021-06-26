@@ -275,14 +275,13 @@ abstract class RegularLevel : Level() {
         var nItems = 3
 
         // bonus from wealth
-        while (Random.Float() < .25f + Dungeon.hero.wealthBonus() * 0.05f)
+        while (nItems <= 6 && Random.Float() < .25f + Dungeon.hero.wealthBonus() * 0.05f)
             ++nItems
 
         for (i in 1..nItems) {
-            val heap = when (Random.Int(20)) {
+            val heap = when (Random.Int(10)) {
                 0 -> Heap.Type.SKELETON
-                in 1..4 -> Heap.Type.CHEST
-                4 -> if (Dungeon.depth > 1) Heap.Type.MIMIC else Heap.Type.CHEST
+                in 1..4 -> if (Dungeon.depth > 1 && Random.Float() < 0.25f) Heap.Type.MIMIC else Heap.Type.CHEST
                 else -> Heap.Type.HEAP
             }
 

@@ -8,8 +8,5 @@ class Backpack : Bag() {
         size = Belongings.BACKPACK_SIZE
     }
 
-    override fun canHold(item: Item): Boolean {
-        val cnt = items.count { it !is Bag } // ignore bag.
-        return cnt < size
-    }
+    override fun canHold(item: Item): Boolean = (item is Bag) || items.count { it !is Bag } < size //ignore bag
 }

@@ -1,4 +1,4 @@
-package com.egoal.darkestpixeldungeon.items.artifacts
+package com.egoal.darkestpixeldungeon.items.specials
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
@@ -22,6 +22,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle
 import com.egoal.darkestpixeldungeon.effects.particles.ShaftParticle
 import com.egoal.darkestpixeldungeon.effects.particles.SmokeParticle
+import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
@@ -48,7 +49,8 @@ import kotlin.math.max
  * Created by 93942 on 7/29/2018.
  */
 
-class Astrolabe : Artifact() {
+class Astrolabe : Special() {
+    private var cooldown = 0
     private var blockNextNegative = false
     private var nextNegativeIsImprison = false
 
@@ -57,34 +59,15 @@ class Astrolabe : Artifact() {
 
     init {
         image = ItemSpriteSheet.ASTROLABE
-        unique = true
-        bones = false
-        defaultAction = AC_INVOKE
-
-        exp = 0
-        levelCap = 10
-        cooldown = 0
     }
 
-    override fun actions(hero: Hero): ArrayList<String> {
-        val actions = super.actions(hero)
-        if (isEquipped(hero))
-            actions.add(AC_INVOKE)
-
-        return actions
+    override fun use(hero: Hero) {
+        GameScene.show(WndInvoke())
     }
 
-    override fun execute(hero: Hero, action: String) {
-        super.execute(hero, action)
-        if (action == AC_INVOKE) {
-            if (!isEquipped(hero))
-                GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
-            else {
-                GameScene.show(WndInvoke(this))
-
-                updateQuickslot()
-            }
-        }
+    override fun tick() {
+        if (cooldown > 0) cooldown -= 1
+        updateQuickslot()
     }
 
     private fun updateSprite() {
@@ -196,23 +179,10 @@ class Astrolabe : Artifact() {
 
     override fun price(): Int = 0
 
-    override fun passiveBuff() = AstrolabeRecharge()
-
-    inner class AstrolabeRecharge : Artifact.ArtifactBuff() {
-        override fun act(): Boolean {
-            if (cooldown > 0)
-                --cooldown
-
-            updateQuickslot()
-            spend(TICK)
-            return true
-        }
-    }
-
     // todo: refactor this
-    class WndInvoke(val astrolabe_: Astrolabe) : Window() {
+    inner class WndInvoke : Window() {
         init {
-            val ic = IconTitle(ItemSprite(astrolabe_.image(), null), M.L(Astrolabe::class.java, "select_invoker"))
+            val ic = IconTitle(ItemSprite(image(), null), M.L(Astrolabe::class.java, "select_invoker"))
             ic.setRect(0f, 0f, WIDTH, 0f)
             add(ic)
 
@@ -221,13 +191,13 @@ class Astrolabe : Artifact() {
             var index = 0
             pos = addInvoker(pos, WIDTH.toInt(), Messages.get(Astrolabe::class.java, "ac_invoke"), "", 0xFFFFFF, index++)
 
-            if (astrolabe_.cachedInvoker_1 != null)
-                pos = addInvoker(pos, WIDTH.toInt(), astrolabe_.cachedInvoker_1!!.status(),
-                        astrolabe_.cachedInvoker_1!!.desc(), astrolabe_.cachedInvoker_1!!.color(), index++)
+            if (cachedInvoker_1 != null)
+                pos = addInvoker(pos, WIDTH.toInt(), cachedInvoker_1!!.status(),
+                        cachedInvoker_1!!.desc(), cachedInvoker_1!!.color(), index++)
 
-            if (astrolabe_.cachedInvoker_2 != null)
-                pos = addInvoker(pos, WIDTH.toInt(), astrolabe_.cachedInvoker_2!!.status(),
-                        astrolabe_.cachedInvoker_2!!.desc(), astrolabe_.cachedInvoker_2!!.color(), index++)
+            if (cachedInvoker_2 != null)
+                pos = addInvoker(pos, WIDTH.toInt(), cachedInvoker_2!!.status(),
+                        cachedInvoker_2!!.desc(), cachedInvoker_2!!.color(), index++)
 
             resize(WIDTH.toInt(), pos.toInt())
         }
@@ -263,22 +233,44 @@ class Astrolabe : Artifact() {
 
         private fun onSelect(index: Int) {
             when (index) {
-                1 -> astrolabe_.invoke(1)
-                2 -> astrolabe_.invoke(2)
-                else -> astrolabe_.invokeMagic()
+                1 -> invoke(1)
+                2 -> invoke(2)
+                else -> invokeMagic()
             }
 
-            astrolabe_.updateSprite()
-            astrolabe_.updateQuickslot()
+            updateSprite()
+            updateQuickslot()
         }
+    }
 
-        companion object {
-            private const val WIDTH = 120f
-            private const val MARGIN = 2f
-            private const val BTN_HEIGHT = 20f
+    companion object {
+        // window
+        private const val WIDTH = 120f
+        private const val MARGIN = 2f
+        private const val BTN_HEIGHT = 20f
 
-            private const val WIDTH_HELP_BUTTON = 15f
-        }
+        private const val WIDTH_HELP_BUTTON = 15f
+
+        //
+        private const val TIME_TO_INVOKE = 1f
+        private const val NORMAL_COOLDOWN = 20
+
+        private val positiveInvokers = arrayOf(
+                foresight::class.java, purgation::class.java, life_link::class.java, extremely_lucky::class.java,
+                pardon::class.java, faith::class.java, overload::class.java, guide::class.java,
+                prophesy::class.java, sun_strike::class.java)
+        private val positiveProbs = floatArrayOf(10f, 10f, 10f, 5f,
+                10f, 5f, 10f, 10f,
+                10f, 5f)
+        private val negativeInvokers = arrayOf(punish::class.java, vain::class.java, feedback::class.java, imprison::class.java)
+        private val negativeProbs = floatArrayOf(10f, 10f, 10f, 10f)
+
+        private const val COOLDOWN = "cooldown"
+        private const val BLOCK_NEXT_NEGATIVE = "block_next_negative"
+        private const val NEXT_IS_IMPRISON = "next_negative_is_imprison"
+
+        private const val CACHED_INVOKER_1 = "cached_invoker_1"
+        private const val CACHED_INVOKER_2 = "cached_invoker_2"
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -489,11 +481,11 @@ class Astrolabe : Artifact() {
                     user_.busy()
                     user_.sprite.operate(user_!!.pos)
                 } else
-                    GLog.w(M.L(Astrolabe.Invoker::class.java, "not_select_target"))
+                    GLog.w(M.L(Invoker::class.java, "not_select_target"))
             }
         }
 
-        override fun prompt(): String = M.L(Astrolabe.Invoker::class.java, "prompt")
+        override fun prompt(): String = M.L(Invoker::class.java, "prompt")
 
         class buff : FlavourBuff() {
             var targetpos = 0
@@ -620,29 +612,5 @@ class Astrolabe : Artifact() {
             Buff.prolong(user, Roots::class.java, 3f)
             a.cooldown += NORMAL_COOLDOWN
         }
-    }
-
-    companion object {
-        private const val TIME_TO_INVOKE = 1f
-        private const val NORMAL_COOLDOWN = 20
-
-        private const val AC_INVOKE = "INVOKE"
-
-        private val positiveInvokers = arrayOf(
-                foresight::class.java, purgation::class.java, life_link::class.java, extremely_lucky::class.java,
-                pardon::class.java, faith::class.java, overload::class.java, guide::class.java,
-                prophesy::class.java, sun_strike::class.java)
-        private val positiveProbs = floatArrayOf(10f, 10f, 10f, 5f,
-                10f, 5f, 10f, 10f,
-                10f, 5f)
-        private val negativeInvokers = arrayOf(punish::class.java, vain::class.java, feedback::class.java, imprison::class.java)
-        private val negativeProbs = floatArrayOf(10f, 10f, 10f, 10f)
-
-        private const val COOLDOWN = "cooldown"
-        private const val BLOCK_NEXT_NEGATIVE = "block_next_negative"
-        private const val NEXT_IS_IMPRISON = "next_negative_is_imprison"
-
-        private const val CACHED_INVOKER_1 = "cached_invoker_1"
-        private const val CACHED_INVOKER_2 = "cached_invoker_2"
     }
 }

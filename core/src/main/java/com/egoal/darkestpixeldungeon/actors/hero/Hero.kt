@@ -22,10 +22,12 @@ import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.MageArmor
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
+import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.helmets.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
-import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.specials.Penetration
+import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
@@ -309,6 +311,8 @@ class Hero : Char() {
         Buff.affect(this, Hunger::class.java)
         Buff.affect(this, Protected::class.java)
         pressure = Buff.affect(this, Pressure::class.java)
+        if (buff(SkillTree.Updater::class.java) == null)
+            belongings.getItem(SkillTree::class.java)!!.Updater().attachTo(this)
         challenge?.live(this)
     }
 
@@ -1188,7 +1192,7 @@ class Hero : Char() {
     fun onMobDied(mob: Mob) {
         if (mob.properties().contains(Property.PHANTOM)) return
 
-        belongings.getItem(UrnOfShadow::class.java)?.collectSoul(mob)
+        belongings.getSpecial(UrnOfShadow::class.java)?.collectSoul(mob)
 
         buff(VampiricBite::class.java)?.onEnemySlayed(mob)
 
@@ -1259,9 +1263,9 @@ class Hero : Char() {
         if (subClass == HeroSubClass.GLADIATOR) {
             if (hit) Buff.affect(this, Combo::class.java).hit(enemy!!)
             else buff(Combo::class.java)?.miss()
-        } else if (subClass == HeroSubClass.LANCER) {
-            if (hit) Buff.affect(this, Penetration::class.java).hit()
         }
+
+        if (hit) belongings.getSpecial(Penetration::class.java)?.hit(this)
 
         curAction = null
 

@@ -2,7 +2,7 @@ package com.egoal.darkestpixeldungeon.items
 
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.rings.*
-import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.specials.Astrolabe
 import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import java.io.IOException

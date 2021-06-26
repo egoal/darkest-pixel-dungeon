@@ -50,6 +50,7 @@ class WndDonate : Window() {
 
         val button3 = object : WndDialogue.OptionButton(M.L(WndDonate::class.java, "pitful")) {
             override fun onClick() {
+                Badges.loadGlobal()
                 Badges.validateSupporter()
                 hide()
             }

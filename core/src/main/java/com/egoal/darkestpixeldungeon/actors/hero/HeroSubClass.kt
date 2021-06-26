@@ -25,17 +25,16 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Circulation
-import com.egoal.darkestpixeldungeon.actors.buffs.Penetration
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PolearmMaster
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.artifacts.Astrolabe
-import com.egoal.darkestpixeldungeon.items.special.StrengthOffering
-import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.specials.Astrolabe
+import com.egoal.darkestpixeldungeon.items.specials.Penetration
+import com.egoal.darkestpixeldungeon.items.specials.StrengthOffering
+import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
 import com.egoal.darkestpixeldungeon.messages.M
@@ -120,7 +119,9 @@ enum class HeroSubClass(private val title: String) {
                 }
                 LANCER -> {
                     hero.heroPerk.add(PolearmMaster())
-                    Buff.affect(hero, Penetration::class.java)
+                    val p = Penetration().identify()
+                    p.collect()
+                    GLog.w(Messages.get(hero, "you_now_have", p.name()))
                 }
             }
         }

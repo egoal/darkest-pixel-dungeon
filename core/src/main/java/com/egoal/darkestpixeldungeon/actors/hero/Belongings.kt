@@ -29,7 +29,9 @@ import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
 import com.egoal.darkestpixeldungeon.items.bags.Backpack
+import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
+import com.egoal.darkestpixeldungeon.items.specials.Special
 import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Bundle
@@ -93,6 +95,12 @@ class Belongings(private val owner: Hero) : MutableIterable<Item> {
     }
 
     fun <T : Item> getItem(itemClass: Class<T>): T? = this.find { itemClass.isInstance(it) } as T?
+
+    private var skillTree: SkillTree? = null
+    fun <T : Special> getSpecial(specialClass: Class<T>): T? {
+        if (skillTree == null) skillTree = getItem(SkillTree::class.java)
+        return skillTree!!.find { specialClass.isInstance(it) } as T?
+    }
 
     fun identify() {
         for (item in this) item.identify()

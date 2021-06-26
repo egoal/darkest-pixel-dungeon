@@ -16,7 +16,7 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood
 import com.egoal.darkestpixeldungeon.items.artifacts.GoddessRadiance
-import com.egoal.darkestpixeldungeon.items.special.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.UnholyBlood
 import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon

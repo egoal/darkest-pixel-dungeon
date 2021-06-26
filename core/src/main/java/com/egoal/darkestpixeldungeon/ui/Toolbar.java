@@ -36,8 +36,11 @@ import com.egoal.darkestpixeldungeon.messages.Messages;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
+
+import java.util.NavigableMap;
 
 public class Toolbar extends Component {
 
@@ -45,6 +48,7 @@ public class Toolbar extends Component {
   private Tool btnSearch;
   private Tool btnInventory;
   private QuickslotTool[] btnQuick;
+  private Tool btnSwitchSlots;
 
   private PickedUpItem pickedUp;
 
@@ -54,6 +58,10 @@ public class Toolbar extends Component {
   private static Toolbar instance;
 
   private static final int NUM_QUICK_SLOTS = 8;
+  private static final int TAB_QUICK_SLOTS = 2;
+  private static final int TOTAL_SLOTS_COUNT = NUM_QUICK_SLOTS* TAB_QUICK_SLOTS;
+
+  private int currentQuickSlotTab = 0;
 
   public enum Mode {
     SPLIT,
@@ -107,11 +115,19 @@ public class Toolbar extends Component {
       }
     });
 
-    btnQuick = new QuickslotTool[NUM_QUICK_SLOTS];
-    for (int i = 0; i < NUM_QUICK_SLOTS; ++i) {
-      add(btnQuick[NUM_QUICK_SLOTS - 1 - i] = new QuickslotTool(64, 0, 22,
-              24, NUM_QUICK_SLOTS - 1 - i));
-    }
+    btnSwitchSlots = new Tool(125, 0, 15, 24){
+      @Override
+      protected void onClick() {
+        Sample.INSTANCE.play(Assets.SND_CLICK);
+        currentQuickSlotTab = (currentQuickSlotTab+ 1)% TAB_QUICK_SLOTS;
+        updateLayout();
+      }
+    };
+    add(btnSwitchSlots);
+
+    btnQuick = new QuickslotTool[TOTAL_SLOTS_COUNT];
+    for(int i=TOTAL_SLOTS_COUNT-1; i>=0; --i)
+      add(btnQuick[i]= new QuickslotTool(64, 0, 22, 24, i));
 
     add(btnInventory = new Tool(0, 0, 24, 26) {
       private GoldIndicator gold;
@@ -153,96 +169,73 @@ public class Toolbar extends Component {
   @Override
   protected void layout() {
     // the ys for slots: extra slots is put outside the screen
-    int[] visible = new int[NUM_QUICK_SLOTS];
-    int slots = DarkestPixelDungeon.quickSlots();
-    for (int i = 0; i < NUM_QUICK_SLOTS; ++i)
-      visible[i] = (int) (slots > i ? y + 2 : y + 26);
+    int visibleY = (int)y + 2;
+    int invisibleY = (int)y + 26;
 
-    for (int i = 0; i < NUM_QUICK_SLOTS; ++i) {
-      btnQuick[i].border(0, 0);
-      btnQuick[i].frame(88, 0, 18, 24);
-      if (i == slots - 1) {
-        btnQuick[i].border(0, 0);
-        btnQuick[i].frame(86, 0, 20, 24);
+    int slots = DarkestPixelDungeon.quickSlots();
+    boolean moreSlots = DarkestPixelDungeon.moreQuickSlots();
+
+    for(int t=0; t< TAB_QUICK_SLOTS; ++t) {
+      for (int i = 0; i < NUM_QUICK_SLOTS; ++i) {
+        QuickslotTool slot = btnQuick[t* NUM_QUICK_SLOTS + i];
+        slot.border(0, 0);
+        slot.frame(88, 0, 18, 24);
+        if(i== slots-1 && !moreSlots){
+          slot.border(0, 0);
+          slot.frame(86, 0, 20, 24);
+        }
       }
     }
+
+    if(moreSlots){
+      btnSwitchSlots.frame(125+ 15* currentQuickSlotTab, 0, 15, 24);
+    }
+
+    // Mode.valueOf(DarkestPixelDungeon.toolbarMode())
+    // todo: many enable mode angin, i mean, someday...
+    // split mode
+
+
 
     float right = width;
-    switch (Mode.valueOf(DarkestPixelDungeon.toolbarMode())) {
-      case SPLIT:
-        // if more than 3 quick buttons is used, move up
-        if (!DarkestPixelDungeon.landscape() && slots > 3) {
-          // 4 lines, text height is 6
-          btnSearch.setPos(x, y - btnQuick[0].height() - 6 * 5);
-          btnWait.setPos(x, btnSearch.top() - btnSearch.height());
-        } else {
-          btnWait.setPos(x, y + 2);
-          btnSearch.setPos(btnWait.right(), btnWait.top());
+
+    if (!DarkestPixelDungeon.landscape() && slots > 3) {
+      // if more than 3 quick buttons is used, move up
+      // 4 lines, text height is 6
+      btnSearch.setPos(x, y - btnQuick[0].height() - 6 * 5);
+      btnWait.setPos(x, btnSearch.top() - btnSearch.height());
+    } else {
+      // left bottom corner
+      btnWait.setPos(x, y + 2);
+      btnSearch.setPos(btnWait.right(), btnWait.top());
+    }
+
+    // bottom right
+    btnInventory.setPos(right - btnInventory.width(), y);
+
+    // layout the quick slots
+    float switchRight = 0f;
+
+    for(int t=0; t<TAB_QUICK_SLOTS; ++t){
+      boolean isCurrent = t== currentQuickSlotTab;
+      int index = t* NUM_QUICK_SLOTS;
+
+      if(!isCurrent){
+        for(int i=0; i<NUM_QUICK_SLOTS; ++i) {
+          btnQuick[index+ i].setPos(0f, invisibleY);
         }
-
-        // bottom right
-        btnInventory.setPos(right - btnInventory.width(), y);
-
-        // layout the quick slots
-//        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(),
-//                visible[0]);
-//        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(),
-//                visible[1]);
-//        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(),
-//                visible[2]);
-//        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(),
-//                visible[3]);
-//        btnQuick[4].setPos(btnQuick[3].left() - btnQuick[4].width(),
-//                visible[4]);
-//        btnQuick[5].setPos(btnQuick[4].left() - btnQuick[5].width(),
-//                visible[5]);
+      }else{
         float left = btnInventory.left();
-        for (int i = 0; i < NUM_QUICK_SLOTS; ++i) {
-          btnQuick[i].setPos(left- btnQuick[i].width(), visible[i]);
-          left = btnQuick[i].left();
+        for(int i=0; i<NUM_QUICK_SLOTS; ++i){
+          QuickslotTool slot = btnQuick[index+ i];
+          slot.setPos(left- slot.width(), i< slots? visibleY: invisibleY);
+          left = slot.left();
+
+          if((i+1)== slots) switchRight= left;
         }
-
-        break;
-
-      //! blew 2 mode is disabled ever since, 
-      case CENTER:
-        float toolbarWidth = btnWait.width() + btnSearch.width() +
-                btnInventory.width();
-        for (Button slot : btnQuick) {
-          if (slot.visible) toolbarWidth += slot.width();
-        }
-        right = (width + toolbarWidth) / 2;
-
-      case GROUP:
-        btnWait.setPos(right - btnWait.width(), y);
-        btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
-        btnInventory.setPos(btnSearch.left() - btnInventory.width(), y);
-
-        btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(),
-                visible[0]);
-        btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(),
-                visible[1]);
-        btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(),
-                visible[2]);
-        btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(),
-                visible[3]);
-        break;
-    }
-    right = width;
-
-    // this is also disabled
-    if (DarkestPixelDungeon.flipToolbar()) {
-
-      btnWait.setPos((right - btnWait.right()), y);
-      btnSearch.setPos((right - btnSearch.right()), y);
-      btnInventory.setPos((right - btnInventory.right()), y);
-
-      for (int i = 0; i <= 3; i++) {
-        btnQuick[i].setPos(right - btnQuick[i].right(), visible[i]);
       }
-
     }
-
+    btnSwitchSlots.setPos(switchRight- btnSwitchSlots.width(), moreSlots? visibleY: invisibleY);
   }
 
   public static void updateLayout() {

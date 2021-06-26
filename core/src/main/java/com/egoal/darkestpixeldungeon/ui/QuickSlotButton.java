@@ -35,7 +35,7 @@ import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
-  private static final int NUM_BUTTONS = 8;
+  private static final int NUM_BUTTONS = 8* 2;
 
   private static QuickSlotButton[] instance = new QuickSlotButton[NUM_BUTTONS];
   private int slotNum;

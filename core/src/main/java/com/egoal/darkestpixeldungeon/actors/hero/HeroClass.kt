@@ -14,6 +14,9 @@ import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
+import com.egoal.darkestpixeldungeon.items.specials.Astrolabe
+import com.egoal.darkestpixeldungeon.items.specials.Penetration
+import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
@@ -213,7 +216,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
             flask.identify().collect()
             Dungeon.quickslot.setSlot(0, flask)
 
-            val darts = Dart(6)
+            val darts = Salt(6)
             darts.identify().collect()
             Dungeon.quickslot.setSlot(1, darts)
 
@@ -302,13 +305,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
         SkillTree().identify().collect()
 
-//        BoethiahsBlade().identify().collect()
-//        initDebug(hero)
-//        Scythe().collect()
-//        ScrollOfIdentify().collect()
-//        ScrollOfCurse().collect()
-//        SpikeShield().identify().collect()
-//        PotionOfExperience().quantity(99).identify().collect()
+//        Penetration().collect()
+//        Astrolabe().collect()
+//        UrnOfShadow().collect()
     }
 
     // called when hero level up

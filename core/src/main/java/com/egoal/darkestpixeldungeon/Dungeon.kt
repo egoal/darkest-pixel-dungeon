@@ -59,7 +59,7 @@ import java.util.HashSet
 object Dungeon {
 
     var initialDepth_ = -1
-    const val VERSION_STRING = "0.6.1-0.1"
+    const val VERSION_STRING = "0.6.1-0.2"
 
     lateinit var hero: Hero
     lateinit var level: Level
@@ -237,11 +237,11 @@ object Dungeon {
 
         // hero init
         hero = Hero()
-        hero.live()
-
         hero.userName = HeroCreateScene.UserName
         HeroCreateScene.CurrentClass.initHero(hero)
         HeroCreateScene.BornPrize.collect(hero)
+
+        hero.live()
     }
 
     fun IsChallenged(): Boolean = ::hero.isInitialized && hero.challenge != null

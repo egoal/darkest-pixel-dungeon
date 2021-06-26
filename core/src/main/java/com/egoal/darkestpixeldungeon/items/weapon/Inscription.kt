@@ -29,17 +29,13 @@ abstract class Inscription(val icon: Int = -1, val curse: Boolean = false) : Bun
         private const val ROW_OFFSET = 18 // image.
 
         // list
-        private val positives = arrayOf<Class<out Inscription>>(
-                Dazzling::class.java, Eldritch::class.java, Grim::class.java,
-                Holy::class.java, Lucky::class.java, Projecting::class.java,
-                Storming::class.java, Stunning::class.java, Suppress::class.java,
-                Vampiric::class.java, Vorpal::class.java)
-        private val chances = floatArrayOf(
-                10f, 10f, 4f,
-                0f, 10f, 10f,
-                10f, 4f, 10f,
-                4f, 10f
+        private val inscriptions = arrayOf(
+                arrayOf(Dazzling::class.java, Eldritch::class.java, Lucky::class.java, Projecting::class.java,
+                        Storming::class.java, Heavy::class.java, Suppress::class.java, Vorpal::class.java),
+                arrayOf(Grim::class.java, Stunning::class.java, Vampiric::class.java),
+                arrayOf(Holy::class.java)
         )
+        private val chances = floatArrayOf(70f, 30f, 0f)
 
         private val negatives = arrayOf<Class<out Inscription>>(
                 Annoying::class.java, Arrogant::class.java, Bloodthirsty::class.java,
@@ -48,7 +44,7 @@ abstract class Inscription(val icon: Int = -1, val curse: Boolean = false) : Bun
         )
 
 
-        fun randomPositive(): Inscription = positives[Random.chances(chances)].newInstance()
+        fun randomPositive(): Inscription = inscriptions[Random.chances(chances)].random().newInstance()
 
         fun randomNegative(): Inscription = Random.oneOf(*negatives).newInstance()
     }
