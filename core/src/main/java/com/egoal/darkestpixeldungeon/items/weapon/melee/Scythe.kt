@@ -44,6 +44,7 @@ class Scythe : MeleeWeapon() {
                 RCH = 1
             }
             1 -> {
+                DLY = 1f
                 RCH = 2
             }
             2 -> {

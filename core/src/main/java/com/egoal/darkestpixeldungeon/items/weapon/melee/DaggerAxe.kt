@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
+import kotlin.math.pow
 
 class DaggerAxe : MeleeWeapon() {
     init {
@@ -23,7 +24,7 @@ class DaggerAxe : MeleeWeapon() {
 
     override fun proc(dmg: Damage): Damage {
         // chance to knock back
-        val chance = 0.1f + 0.25 * (1f - Math.pow(.7, level() / 3.0).toFloat())
+        val chance = 0.15f + 0.2 * (1f - .7f.pow(level() / 2f))
         if (dmg.to is Char && Random.Float() < chance) {
             val tgt = dmg.to as Char
             val opposite = tgt.pos + (tgt.pos - (dmg.from as Char).pos)
@@ -36,6 +37,6 @@ class DaggerAxe : MeleeWeapon() {
     }
 
     override fun accuracyFactor(hero: Hero, target: Char): Float =
-            if (Dungeon.level.adjacent(hero.pos, target.pos)) 0.4f
+            if (Dungeon.level.adjacent(hero.pos, target.pos)) 0.5f
             else 1f
 }

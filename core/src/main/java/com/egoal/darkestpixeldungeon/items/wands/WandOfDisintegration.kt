@@ -52,7 +52,7 @@ class WandOfDisintegration : DamageWand(isMissile = false) {
     override fun max(lvl: Int): Int = 9 + lvl * 9 / 2
 
     override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).addFeature(Damage.Feature.PURE)
+        return super.giveDamage(enemy).addFeature(Damage.Feature.PURE or Damage.Feature.ACCURATE)
     }
 
     override fun onZap(beam: Ballistica) {

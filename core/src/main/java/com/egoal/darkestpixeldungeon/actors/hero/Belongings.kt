@@ -20,20 +20,19 @@
  */
 package com.egoal.darkestpixeldungeon.actors.hero
 
-import com.egoal.darkestpixeldungeon.items.KindofMisc
-import com.egoal.darkestpixeldungeon.items.armor.Armor
-import com.egoal.darkestpixeldungeon.items.bags.Bag
-import com.egoal.darkestpixeldungeon.items.helmets.Helmet
-import com.egoal.darkestpixeldungeon.items.keys.Key
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
+import com.egoal.darkestpixeldungeon.items.KindofMisc
+import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.bags.Backpack
+import com.egoal.darkestpixeldungeon.items.bags.Bag
 import com.egoal.darkestpixeldungeon.items.bags.SkillTree
+import com.egoal.darkestpixeldungeon.items.helmets.Helmet
+import com.egoal.darkestpixeldungeon.items.keys.Key
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
 import com.egoal.darkestpixeldungeon.items.specials.Special
 import com.egoal.darkestpixeldungeon.items.wands.Wand
-import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
@@ -155,7 +154,7 @@ class Belongings(private val owner: Hero) : MutableIterable<Item> {
             } else if (item.unique) {
                 item.detachAll(backpack)
                 //you keep the bag itself, not its contents.
-                if (item is Bag) item.clear()
+                if (item is Bag && item !is SkillTree) item.clear()
                 item.collect()
             } else if (!item.isEquipped(owner)) {
                 item.detachAll(backpack)

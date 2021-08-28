@@ -164,7 +164,7 @@ class King : Mob() {
     override fun notice() {
         super.notice()
         BossHealthBar.assignBoss(this)
-        val k = if (Revivable) "notice" else "notice2"
+        val k = if (Revivable) "notice" else "notice_2"
         if (Dungeon.visible[pos]) say(M.L(this, k))
         else yell(M.L(this, k))
     }
