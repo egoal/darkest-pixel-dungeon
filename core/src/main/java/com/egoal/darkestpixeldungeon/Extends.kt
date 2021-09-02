@@ -31,6 +31,22 @@ object KRandom {
     }
 
     fun Percent(p: Int) = Random.Int(100) <= p
+
+    fun <T> nOf(seq: List<T>, count: Int): List<T> {
+        check(count > 0)
+        if (seq.count() <= count) return seq
+
+        val selected = ArrayList<T>()
+        for (pr in seq.withIndex()) {
+            val p = (count - selected.count()).toFloat() / (seq.count() - pr.index).toFloat()
+            if (Random.Float() < p) {
+                selected.add(pr.value)
+                if (selected.count() >= count) break
+            }
+        }
+
+        return selected
+    }
 }
 
 object KGameMath {

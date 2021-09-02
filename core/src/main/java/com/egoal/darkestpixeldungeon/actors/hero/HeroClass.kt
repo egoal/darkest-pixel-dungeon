@@ -157,7 +157,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         }
     },
 
-    HUNTRESS("huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN) {
+    HUNTRESS("huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN, HeroSubClass.MOONRIDER) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_HUNTRESS
         override fun spritesheet(): String = Assets.HUNTRESS
         override fun perks(): List<String> = (1..4).map { Messages.get(HeroClass::class.java, "huntress_perk$it") }
@@ -306,7 +306,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
 //        Penetration().collect()
-//        Astrolabe().collect()
+        Astrolabe().collect()
 //        UrnOfShadow().collect()
     }
 

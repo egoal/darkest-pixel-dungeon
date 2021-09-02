@@ -20,25 +20,19 @@
  */
 package com.egoal.darkestpixeldungeon.items.armor
 
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.items.armor.curses.Multiplicity
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.effects.Speck
-import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.armor.curses.AntiEntropy
-import com.egoal.darkestpixeldungeon.items.armor.curses.Corrosion
-import com.egoal.darkestpixeldungeon.items.armor.curses.Displacement
-import com.egoal.darkestpixeldungeon.items.armor.curses.Metabolism
-import com.egoal.darkestpixeldungeon.items.armor.curses.Stench
-import com.egoal.darkestpixeldungeon.items.armor.curses.Entanglement
+import com.egoal.darkestpixeldungeon.items.armor.curses.*
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.*
+import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
@@ -48,8 +42,7 @@ import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.round
@@ -385,7 +378,9 @@ open class Armor(var tier: Int) : EquipableItem() {
         companion object {
             private val glyphs = arrayOf(
                     arrayOf(Obfuscation::class.java, Swiftness::class.java, Stone::class.java, Potential::class.java),
-                    arrayOf(Brimstone::class.java, Viscosity::class.java, Repulsion::class.java, Camouflage::class.java, Flow::class.java, Clarifying::class.java),
+                    arrayOf(Brimstone::class.java, Viscosity::class.java, Repulsion::class.java,
+                            Camouflage::class.java, Flow::class.java, Clarifying::class.java,
+                            ChuNeng::class.java),
                     arrayOf(Affection::class.java, AntiMagic::class.java, Thorns::class.java, Tough::class.java)
             )
             private val chances = floatArrayOf(55f, 30f, 15f)

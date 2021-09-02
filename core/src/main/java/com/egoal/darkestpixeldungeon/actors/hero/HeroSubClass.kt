@@ -58,6 +58,7 @@ enum class HeroSubClass(private val title: String) {
 
     SNIPER("sniper"),
     WARDEN("warden"),
+    MOONRIDER("moonrider"),
 
     STARGAZER("stargazer"),
     WITCH("witch"),

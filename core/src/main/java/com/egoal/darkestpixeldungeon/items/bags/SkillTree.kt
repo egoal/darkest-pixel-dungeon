@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.bags
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings
 import com.egoal.darkestpixeldungeon.items.Item
@@ -17,13 +18,19 @@ class SkillTree : Bag() {
 
     override fun price(): Int = 0
 
-    inner class Updater : Buff() {
+    class Updater : Buff() {
+        lateinit var skills: SkillTree
+
         init {
             actPriority = -1 // before hero.
         }
 
         override fun act(): Boolean {
-            items.forEach { (it as Special).tick() }
+            if (!::skills.isInitialized)
+                skills = Dungeon.hero.belongings.getItem(SkillTree::class.java)!!
+
+            for (i in skills.items) (i as Special).tick()
+
             spend(1f)
             return true
         }

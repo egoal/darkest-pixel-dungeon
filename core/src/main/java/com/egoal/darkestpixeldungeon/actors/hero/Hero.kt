@@ -44,7 +44,10 @@ import com.egoal.darkestpixeldungeon.plants.Sungrass
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
-import com.egoal.darkestpixeldungeon.ui.*
+import com.egoal.darkestpixeldungeon.ui.AttackIndicator
+import com.egoal.darkestpixeldungeon.ui.BuffIndicator
+import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
+import com.egoal.darkestpixeldungeon.ui.StatusPane
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndMasterSubclass
@@ -662,7 +665,7 @@ class Hero : Char() {
                 value += Random.Float(1f, 7f)
                 maySay(0.2f, HeroLines.WHAT)
             }
-            if (dmg.isFeatured(Damage.Feature.CRITICAL)) {
+            if (dmg.isFeatured(Damage.Feature.CRITICAL) && dmgToken > 0) {
                 value += Random.Float(2f, 8f)
                 maySay(0.2f, HeroLines.DAMN)
             }

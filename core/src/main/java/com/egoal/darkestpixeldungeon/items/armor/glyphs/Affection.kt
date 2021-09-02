@@ -55,7 +55,6 @@ class Affection : Armor.Glyph() {
     }
 
     companion object {
-
         private val PINK = ItemSprite.Glowing(0xFF4488)
     }
 }

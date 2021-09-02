@@ -22,6 +22,7 @@ object HeroLines {
     const val MY_RETRIBUTION = "my_retribution"
     const val SAVED_ME = "saved_me"
     const val NOT_NOW = "not_now"
+    const val I_CANT = "icant"
 
     fun Line(tag: String, vararg args: Any): String = M.L(Hero::class.java, "line_$tag", args)
 
