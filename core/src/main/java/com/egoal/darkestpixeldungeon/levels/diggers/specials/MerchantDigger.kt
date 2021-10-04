@@ -2,14 +2,10 @@ package com.egoal.darkestpixeldungeon.levels.diggers.specials
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.MerchantImp
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Merchant
-import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
-import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.MerchantImp
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
-import com.egoal.darkestpixeldungeon.items.unclassified.Torch
-import com.egoal.darkestpixeldungeon.items.unclassified.Weightstone
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.LeatherArmor
 import com.egoal.darkestpixeldungeon.items.armor.MailArmor
 import com.egoal.darkestpixeldungeon.items.armor.ScaleArmor
@@ -18,22 +14,18 @@ import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster
-import com.egoal.darkestpixeldungeon.items.food.BrownAle
-import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
-import com.egoal.darkestpixeldungeon.items.food.OverpricedRation
-import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.food.*
 import com.egoal.darkestpixeldungeon.items.helmets.StrawHat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
+import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
+import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch
+import com.egoal.darkestpixeldungeon.items.unclassified.Weightstone
 import com.egoal.darkestpixeldungeon.items.wands.Wand
-import com.egoal.darkestpixeldungeon.items.weapon.melee.BattleAxe
-import com.egoal.darkestpixeldungeon.items.weapon.melee.HandAxe
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Longsword
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Mace
-import com.egoal.darkestpixeldungeon.items.weapon.melee.ShortSword
-import com.egoal.darkestpixeldungeon.items.weapon.melee.Sword
+import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.levels.LastShopLevel
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -46,8 +38,7 @@ import com.egoal.darkestpixeldungeon.plants.Plant
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by 93942 on 2018/12/8.
@@ -128,7 +119,7 @@ class MerchantDigger : RectDigger() {
             }
         }
         val helmet = Generator.HELMET.generate().apply { cursed = false }
-        if(helmet !is StrawHat) itemsToSpawn.add(helmet)
+        if (helmet !is StrawHat) itemsToSpawn.add(helmet)
         itemsToSpawn.add(Torch().quantity(if (Random.Int(5) == 0) 2 else 1))
 
         if (Random.Float() < (Dungeon.depth / 5) * 0.2f)
@@ -139,7 +130,13 @@ class MerchantDigger : RectDigger() {
         itemsToSpawn.add(OverpricedRation())
         itemsToSpawn.add(OverpricedRation())
         repeat(2) {
-            itemsToSpawn.add(if (Random.Float() < 0.4f) Wine() else BrownAle())
+            val p = Random.Float()
+            val wine = when {
+                p < 0.4f -> Wine()
+                p < 0.7f -> BrownAle()
+                else -> RiceWine()
+            }
+            itemsToSpawn.add(wine)
         }
         itemsToSpawn.add(OrchidRoot())
 

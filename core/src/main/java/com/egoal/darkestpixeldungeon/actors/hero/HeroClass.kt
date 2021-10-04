@@ -306,7 +306,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
 //        Penetration().collect()
-        Astrolabe().collect()
+//        Astrolabe().collect()
 //        UrnOfShadow().collect()
     }
 

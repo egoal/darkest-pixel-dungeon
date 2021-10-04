@@ -27,14 +27,14 @@ import kotlin.math.round
 
 class BrewEnhancedPotion : Perk() {
     override fun image(): Int = PerkImageSheet.BREW_ENHANCED
-    private var nextProb = 0.3f
+    private var nextProb = 0.333f
 
     fun affectPotion(p: Potion) {
         if (p.canBeReinforced()) {
             if (com.watabou.utils.Random.Float() < nextProb) {
                 p.reinforce()
-                nextProb = 0.3f
-            } else nextProb += 0.1f
+                nextProb = 0.333f
+            } else nextProb += 0.333f
         }
     }
 

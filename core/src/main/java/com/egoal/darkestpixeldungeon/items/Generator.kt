@@ -115,7 +115,8 @@ object Generator {
                     Sickle::class to 5f,
                     DriedLeg::class to 5f,
                     Tulwar::class to 4f,
-                    CeremonialSword::class to 4f
+                    CeremonialSword::class to 4f,
+                    ButchersKnife::class to 5f
             ))
 
             object T3 : BalancedClassMapGenerator(hashMapOf(

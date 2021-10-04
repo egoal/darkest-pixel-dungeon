@@ -25,22 +25,17 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.BrewEnhancedPotion
-import com.egoal.darkestpixeldungeon.items.food.Blandfruit
-import com.egoal.darkestpixeldungeon.windows.WndAlchemy
-
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
-import com.egoal.darkestpixeldungeon.items.food.SkewerMeat
-import com.egoal.darkestpixeldungeon.items.food.StewedMeat
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.food.*
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.unclassified.FishBone
-import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndAlchemy
 import com.watabou.utils.Random
 
 object AlchemyPot {
@@ -71,6 +66,7 @@ object AlchemyPot {
                 return Pair(false, null)
             }
             1 -> {
+                if (items[0].javaClass == Food::class.java) return Pair(true, RiceWine())
                 if (items[0] is MysteryMeat) return Pair(true, StewedMeat.Cook(items[0] as MysteryMeat))
                 else Pair(false, null)
             }

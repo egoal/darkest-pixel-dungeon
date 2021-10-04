@@ -20,40 +20,31 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.Statistics
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Disarm
-import com.egoal.darkestpixeldungeon.actors.buffs.Rage
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
-import com.egoal.darkestpixeldungeon.effects.Wound
-import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.levels.Level
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.buffs.Amok
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
-import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
-import com.egoal.darkestpixeldungeon.actors.buffs.SoulMark
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
 import com.egoal.darkestpixeldungeon.effects.Surprise
+import com.egoal.darkestpixeldungeon.effects.Wound
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy
+import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
-
-import java.util.HashSet
-import kotlin.math.max
+import java.util.*
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -63,7 +54,8 @@ abstract class Mob : Char() {
     var WANDERING: AiState = Wandering()
     var FLEEING: AiState = Fleeing()
     var PASSIVE: AiState = Passive()
-    var FOLLOW_HERO: AiState = FollowHero()
+    private var FOLLOW_HERO: AiState = FollowHero()
+    private var following: Boolean = false
 
     var state = SLEEPING
 
@@ -114,6 +106,7 @@ abstract class Mob : Char() {
 
         bundle.put(SEEN, enemySeen)
         bundle.put(TARGET, target)
+        bundle.put(FOLLOWING, following)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -131,6 +124,7 @@ abstract class Mob : Char() {
 
         enemySeen = bundle.getBoolean(SEEN)
         target = bundle.getInt(TARGET)
+        following = bundle.getBoolean(FOLLOWING)
     }
 
     open fun sprite(): CharSprite = spriteClass.newInstance()
@@ -268,6 +262,16 @@ abstract class Mob : Char() {
             sprite.showStatus(CharSprite.NEGATIVE, M.L(this, "rage"))
             state = HUNTING
         }
+    }
+
+    fun followHero() {
+        following = true
+        state = FOLLOW_HERO
+    }
+
+    fun unfollowHero() {
+        following = false
+        state = WANDERING
     }
 
     fun resetTarget() {
@@ -662,8 +666,11 @@ abstract class Mob : Char() {
                 } else {
 
                     spend(Actor.TICK)
-                    state = WANDERING
-                    target = Dungeon.level.randomDestination()
+                    if (following) state = FOLLOW_HERO
+                    else {
+                        state = WANDERING
+                        target = Dungeon.level.randomDestination()
+                    }
                     return true
                 }
             }
@@ -754,6 +761,7 @@ abstract class Mob : Char() {
         private const val STATE = "state"
         private const val SEEN = "seen"
         private const val TARGET = "targetpos"
+        private const val FOLLOWING = "following"
 
         private const val AI_SLEEPING = "SLEEPING"
         private const val AI_WANDERING = "WANDERING"

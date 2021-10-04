@@ -186,8 +186,8 @@ abstract class HeroAction(var dst: Int = 0) {
                             mob.swapPosition(hero)
                             hero.spendAndNext(1f / hero.speed())
                         }
-                        1 -> if (mob.state != mob.FOLLOW_HERO) mob.state = mob.FOLLOW_HERO
-                        else -> if (mob.state == mob.FOLLOW_HERO) mob.state = mob.WANDERING
+                        1 -> mob.focusingHero()
+                        else -> mob.unfollowHero()
                     }
                 }
             }

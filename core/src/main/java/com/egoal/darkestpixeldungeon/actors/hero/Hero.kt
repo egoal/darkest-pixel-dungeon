@@ -315,7 +315,7 @@ class Hero : Char() {
         Buff.affect(this, Protected::class.java)
         pressure = Buff.affect(this, Pressure::class.java)
         if (buff(SkillTree.Updater::class.java) == null)
-            belongings.getItem(SkillTree::class.java)!!.Updater().attachTo(this)
+            SkillTree.Updater().attachTo(this)
         challenge?.live(this)
     }
 

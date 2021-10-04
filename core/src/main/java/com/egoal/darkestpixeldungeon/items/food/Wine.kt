@@ -1,10 +1,8 @@
 package com.egoal.darkestpixeldungeon.items.food
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
-import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
+import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
@@ -12,13 +10,11 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.Drunkard
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.min
 
 /**
@@ -71,11 +67,15 @@ open class Wine(val gourdValue: Int = 5) : Item() {
                 // hero.takeDamage(Damage(hero.HP / 4, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE))
             }
 
+            onDrunk(hero)
+
             hero.sprite.operate(hero.pos)
             GLog.i(Messages.get(this, "drunk"))
             Sample.INSTANCE.play(Assets.SND_DRINK)
         }
     }
+
+    protected open fun onDrunk(hero: Hero) {}
 
     protected open fun recoverValue(hero: Hero): Float = min(Random.Float(15f, hero.pressure.pressure * 0.4f), 30f)
 
@@ -90,4 +90,18 @@ class BrownAle : Wine(3) {
     override fun recoverValue(hero: Hero): Float = min(Random.Float(10f, hero.pressure.pressure * 0.3f), 22.5f)
 
     override fun price(): Int = 15 * quantity()
+}
+
+class RiceWine : Wine(3) {
+    init {
+        image = ItemSpriteSheet.NULLWARN
+    }
+
+    override fun recoverValue(hero: Hero): Float = min(Random.Float(10f, hero.pressure.pressure * 0.25f), 20f)
+
+    override fun onDrunk(hero: Hero) {
+        hero.buff(Hunger::class.java)!!.satisfy(Hunger.STARVING - Hunger.HUNGRY)
+    }
+
+    override fun price(): Int = 20 * quantity()
 }

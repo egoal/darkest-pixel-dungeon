@@ -377,10 +377,11 @@ open class Armor(var tier: Int) : EquipableItem() {
 
         companion object {
             private val glyphs = arrayOf(
-                    arrayOf(Obfuscation::class.java, Swiftness::class.java, Stone::class.java, Potential::class.java),
+                    arrayOf(Obfuscation::class.java, Swiftness::class.java, Stone::class.java, Potential::class.java,
+                            Healing::class.java),
                     arrayOf(Brimstone::class.java, Viscosity::class.java, Repulsion::class.java,
                             Camouflage::class.java, Flow::class.java, Clarifying::class.java,
-                            ChuNeng::class.java),
+                            ChuNeng::class.java, Peaceful::class.java),
                     arrayOf(Affection::class.java, AntiMagic::class.java, Thorns::class.java, Tough::class.java)
             )
             private val chances = floatArrayOf(55f, 30f, 15f)

@@ -108,6 +108,7 @@ public class ItemSpriteSheet {
     public static final int RANGER_BOW = WEP_TIER2 + 8;
     public static final int TULWAR = WEP_TIER2 + 9;
     public static final int CEREMONIAL_SWORD = WEP_TIER2 + 10;
+    public static final int BUTCHERS_KNIFE = WEP_TIER2 + 11;
 
     private static final int WEP_TIER3 = xy(1, 7);   //16 slots
     public static final int SWORD = WEP_TIER3 + 0;
@@ -159,7 +160,7 @@ public class ItemSpriteSheet {
     public static final int CEREMONIAL_DAGGER = MISSILE_WEP + 12;
     public static final int MAGIC_DART = MISSILE_WEP + 13;
     public static final int SALT = MISSILE_WEP + 14;
-    public static final int SALT_2 = MISSILE_WEP+ 15;
+    public static final int SALT_2 = MISSILE_WEP + 15;
 
     private static final int ARMOR = xy(1, 11);  //16 slots
     public static final int ARMOR_CLOTH = ARMOR + 0;
@@ -346,6 +347,7 @@ public class ItemSpriteSheet {
     public static final int SKEWER = FOOD + 13;
     public static final int GLAND = FOOD + 14;
     public static final int ROOT = FOOD + 15;
+    public static final int RICE_WINE = FOOD+ 16;
 
     private static final int QUEST = xy(1, 26);  //32 slots
     public static final int SKULL = QUEST + 0;
