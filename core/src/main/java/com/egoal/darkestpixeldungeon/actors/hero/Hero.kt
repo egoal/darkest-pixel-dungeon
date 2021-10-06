@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.items.helmets.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.egoal.darkestpixeldungeon.items.specials.Penetration
+import com.egoal.darkestpixeldungeon.items.specials.Shadowmoon
 import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune
@@ -324,6 +325,8 @@ class Hero : Char() {
     fun shoot(enemy: Char, weapon: MissileWeapon): Boolean {
         rangedWeapon = weapon
         val res = attack(enemy)
+        if(res && subClass== HeroSubClass.MOONRIDER)
+            belongings.getSpecial(Shadowmoon::class.java)!!.hit()
 
         Invisibility.dispel()
         rangedWeapon = null
@@ -364,6 +367,9 @@ class Hero : Char() {
         }
         if (buff(CloakOfShadows.cloakRecharge::class.java)?.enhanced() == true)
             e *= 1f - 0.2f
+
+        if (subClass == HeroSubClass.MOONRIDER)
+            e *= 1f - belongings.getSpecial(Shadowmoon::class.java)!!.evasionProb()
 
         e *= 0.975f.pow(level)
 
@@ -481,15 +487,16 @@ class Hero : Char() {
             belongings.weapon?.defendDamage(dmg)
 
             var dr = 0
-            belongings.armor?.let {
-                dr = Random.NormalIntRange(it.DRMin(), it.DRMax())
+            if (belongings.armor != null && buff(ArmorExpose::class.java) == null)
+                belongings.armor?.let {
+                    dr = Random.NormalIntRange(it.DRMin(), it.DRMax())
 
-                val estr = belongings.armor!!.STRReq() - STR()
-                if (estr > 0) {
-                    // heavy
-                    dr = max(dr - 2 * estr, 0)
+                    val estr = belongings.armor!!.STRReq() - STR()
+                    if (estr > 0) {
+                        // heavy
+                        dr = max(dr - 2 * estr, 0)
+                    }
                 }
-            }
 
             // barkskin
             buff(Barkskin::class.java)?.let { dr += Random.NormalIntRange(0, it.level()) }
@@ -610,7 +617,8 @@ class Hero : Char() {
         buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
         buff(Sungrass.Health::class.java)?.absorb(dmg.value)
 
-        belongings.armor?.proc(dmg)
+        if (belongings.armor != null && buff(ArmorExpose::class.java) == null)
+            belongings.armor!!.proc(dmg)
 
         return dmg
     }
@@ -1102,8 +1110,10 @@ class Hero : Char() {
 
     fun rest(full: Boolean) {
         spendAndNext(TIME_TO_REST)
-        if (!full)
+        if (!full) {
             sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"))
+            if (subClass == HeroSubClass.MOONRIDER) belongings.getSpecial(Shadowmoon::class.java)!!.rest()
+        }
 
         resting = full
     }
@@ -1268,7 +1278,11 @@ class Hero : Char() {
             else buff(Combo::class.java)?.miss()
         }
 
-        if (hit) belongings.getSpecial(Penetration::class.java)?.hit(this)
+        if (hit) {
+            belongings.getSpecial(Penetration::class.java)?.hit(this)
+            if (belongings.armor?.glyph is Peaceful)
+                (belongings.armor?.glyph as Peaceful).broken(this)
+        }
 
         curAction = null
 

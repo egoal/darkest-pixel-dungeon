@@ -122,6 +122,7 @@ public class ItemSpriteSheet {
     public static final int CANDLESTICK = WEP_TIER3 + 8;
     public static final int INVISIBLE_BLADE = WEP_TIER3 + 9;
     public static final int BOETHIAHS_BLADE = WEP_TIER3 + 10;
+    public static final int FLAG = WEP_TIER3 + 11;
 
     private static final int WEP_TIER4 = xy(1, 8);   //16 slots
     public static final int LONGSWORD = WEP_TIER4 + 0;
@@ -330,7 +331,7 @@ public class ItemSpriteSheet {
 
     //16 free slots
 
-    private static final int FOOD = xy(1, 25);  //16 slots
+    private static final int FOOD = xy(1, 25);  //32m slots
     public static final int MEAT = FOOD + 0;
     public static final int STEAK = FOOD + 1;
     public static final int OVERPRICED = FOOD + 2;
@@ -347,9 +348,9 @@ public class ItemSpriteSheet {
     public static final int SKEWER = FOOD + 13;
     public static final int GLAND = FOOD + 14;
     public static final int ROOT = FOOD + 15;
-    public static final int RICE_WINE = FOOD+ 16;
+    public static final int RICE_WINE = FOOD + 16;
 
-    private static final int QUEST = xy(1, 26);  //32 slots
+    private static final int QUEST = xy(1, 27);  //16 slots
     public static final int SKULL = QUEST + 0;
     public static final int DUST = QUEST + 1;
     public static final int CANDLE = QUEST + 2;
@@ -376,6 +377,8 @@ public class ItemSpriteSheet {
     public static final int ASTROLABE_2 = ASTROLABE + 2;
     public static final int PENETRATION = SPECIALS + 5;
     public static final int PENETRATION_RDY = PENETRATION + 1;
+    public static final int SHADOWMOON = SPECIALS+ 7;
+    public static final int SHADOWMOON_RDY = SHADOWMOON+ 1;
 
     //32 free slots
 

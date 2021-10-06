@@ -94,7 +94,7 @@ class BrownAle : Wine(3) {
 
 class RiceWine : Wine(3) {
     init {
-        image = ItemSpriteSheet.NULLWARN
+        image = ItemSpriteSheet.RICE_WINE
     }
 
     override fun recoverValue(hero: Hero): Float = min(Random.Float(10f, hero.pressure.pressure * 0.25f), 20f)

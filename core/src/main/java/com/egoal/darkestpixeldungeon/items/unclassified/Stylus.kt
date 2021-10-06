@@ -32,6 +32,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.effects.Enchanting
 import com.egoal.darkestpixeldungeon.items.EquipableItem
+import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.noosa.audio.Sample
@@ -43,7 +44,7 @@ class Stylus : Item() {
 
     private val itemSelector = WndBag.Listener { item ->
         if (item != null) {
-            this@Stylus.inscribe(item as EquipableItem)
+            this@Stylus.inscribe(item)
         }
     }
 
@@ -71,7 +72,7 @@ class Stylus : Item() {
     override val isIdentified: Boolean
         get() = true
 
-    private fun inscribe(item: EquipableItem) {
+    private fun inscribe(item: Item) {
         if (!item.isIdentified) {
             GLog.w(M.L(this, "identify"))
         } else if (item.cursed ||
@@ -81,8 +82,11 @@ class Stylus : Item() {
         } else {
             detach(curUser.belongings.backpack)
 
-            if (item is Armor) item.inscribe()
-            else if (item is Weapon) item.inscribe()
+            when (item) {
+                is Armor -> inscribeArmor(item)
+                is Weapon -> inscribeWeapon(item)
+                is Wand -> inscribeWand(item)
+            }
 
             curUser.sprite.operate(curUser.pos)
             curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10)
@@ -94,6 +98,19 @@ class Stylus : Item() {
             Sample.INSTANCE.play(Assets.SND_BURNING)
             GLog.w(M.L(this, "inscribed", item.name()))
         }
+    }
+
+    private fun inscribeArmor(armor: Armor) {
+        armor.inscribe()
+    }
+
+    private fun inscribeWeapon(weapon: Weapon) {
+        weapon.inscribe()
+    }
+
+    private fun inscribeWand(wand: Wand) {
+        if (wand.isInscribed) GLog.w(M.L(Wand::class.java, "inscribed"))
+        else wand.inscribe()
     }
 
     override fun price(): Int = 30 * quantity

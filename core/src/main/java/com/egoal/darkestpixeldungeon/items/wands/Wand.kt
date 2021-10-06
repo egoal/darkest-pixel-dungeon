@@ -42,9 +42,11 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
@@ -65,6 +67,8 @@ abstract class Wand(val isMissile: Boolean) : Item() {
     private var curChargeKnown = false
 
     private var usagesToKnow = USAGES_TO_KNOW
+
+    protected var overloads = 0
 
     protected var collisionProperties = Ballistica.MAGIC_BOLT
 
@@ -154,6 +158,9 @@ abstract class Wand(val isMissile: Boolean) : Item() {
         if (cursed && cursedKnown)
             desc += "\n\n" + Messages.get(Wand::class.java, "cursed")
 
+        if (overloads > 0)
+            desc += "\n\n" + M.L(Wand::class.java, "overloaded")
+
         return desc
     }
 
@@ -163,6 +170,18 @@ abstract class Wand(val isMissile: Boolean) : Item() {
             if (levelKnown)
                 if (curChargeKnown) "$curCharges/$maxCharges" else "?/$maxCharges"
             else null
+
+    val isInscribed: Boolean get() = overloads > 0
+
+    fun inscribe() {
+        overloads += 10
+        if (!Dungeon.isHeroNull && Dungeon.hero.subClass == HeroSubClass.ARCHMAGE) overloads += 10
+
+        upgrade()
+        GLog.p(M.L(this, "overload", name()))
+    }
+
+    override fun glowing(): ItemSprite.Glowing? = if (overloads > 0) GLOWING else null
 
     override fun upgrade(): Item {
         super.upgrade()
@@ -221,6 +240,15 @@ abstract class Wand(val isMissile: Boolean) : Item() {
             updateQuickslot()
         }
 
+        if (overloads > 0) {
+            overloads--
+            if (overloads == 0) {
+                degrade()
+                if (level() >= 6 && Random.Int(6) < (level() - 5)) degrade()
+                GLog.w(M.L(this, "overload_end", name()))
+            }
+        }
+
         val zapTime = if (curUser.heroPerk.has(QuickZap::class.java)) 0.45f else TIME_TO_ZAP
         curUser.spendAndNext(zapTime)
     }
@@ -267,6 +295,7 @@ abstract class Wand(val isMissile: Boolean) : Item() {
         bundle.put(CUR_CHARGES, curCharges)
         bundle.put(CUR_CHARGE_KNOWN, curChargeKnown)
         bundle.put(PARTIALCHARGE, partialCharge)
+        bundle.put(OVERLOADS, overloads)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -278,6 +307,7 @@ abstract class Wand(val isMissile: Boolean) : Item() {
         curCharges = bundle.getInt(CUR_CHARGES)
         curChargeKnown = bundle.getBoolean(CUR_CHARGE_KNOWN)
         partialCharge = bundle.getFloat(PARTIALCHARGE)
+        overloads = bundle.getInt(OVERLOADS)
     }
 
     inner class Charger : Buff() {
@@ -349,6 +379,7 @@ abstract class Wand(val isMissile: Boolean) : Item() {
         private const val CUR_CHARGES = "curCharges"
         private const val CUR_CHARGE_KNOWN = "curChargeKnown"
         private const val PARTIALCHARGE = "partialCharge"
+        private const val OVERLOADS = "overloads"
 
         protected var zapper: CellSelector.Listener = object : CellSelector.Listener {
 
@@ -396,7 +427,7 @@ abstract class Wand(val isMissile: Boolean) : Item() {
                             curWand.wandUsed()
                         })
                     }
-                    
+
                     if (!curUser.heroPerk.has(StealthCaster::class.java))
                         Invisibility.dispel()
                 }
@@ -404,5 +435,7 @@ abstract class Wand(val isMissile: Boolean) : Item() {
 
             override fun prompt(): String = M.L(Wand::class.java, "prompt")
         }
+
+        private val GLOWING = ItemSprite.Glowing(0x9b13ff)
     }
 }

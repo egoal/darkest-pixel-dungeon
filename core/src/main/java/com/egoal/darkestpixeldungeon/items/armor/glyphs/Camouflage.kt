@@ -84,8 +84,8 @@ class Camouflage : Armor.Glyph() {
 
         companion object {
 
-            private val POS = "pos"
-            private val LEFT = "left"
+            private const val POS = "pos"
+            private const val LEFT = "left"
         }
     }
 

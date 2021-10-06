@@ -251,6 +251,8 @@ public class Assets {
     public static final String SND_RELOAD = SOUNDS + "snd_reload.ogg";
     public static final String SND_HOWL = SOUNDS + "snd_howl.ogg";
     public static final String SND_BLOCK = SOUNDS + "snd_block.ogg";
+    public static final String SND_MOONLIGHT = SOUNDS + "snd_moonlight.ogg";
+    public static final String SND_HIT2 = SOUNDS + "snd_hit2.ogg";
 
     // spd legacy=================================================================
     public static final String WEAK_FLOOR = "custom_tiles/weak_floor.png";

@@ -129,7 +129,8 @@ object Generator {
                     CrystalsSwords::class to 4f,
                     DaggerAxe::class to 5f,
                     InvisibleBlade::class to 5f,
-                    BoethiahsBlade::class to 0f // by statuary
+                    BoethiahsBlade::class to 0f, // by statuary
+                    Flag::class to 3f
             ))
 
             object T4 : BalancedClassMapGenerator(hashMapOf(

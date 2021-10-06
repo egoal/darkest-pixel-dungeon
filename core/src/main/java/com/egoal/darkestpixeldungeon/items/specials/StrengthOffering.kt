@@ -12,6 +12,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import java.util.ArrayList
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 class StrengthOffering : Special() {
@@ -33,6 +34,8 @@ class StrengthOffering : Special() {
             sprite.operate(pos)
 
             STR -= 1
+            HT = max(1, HT - 5)
+            HP = min(HT, HP)
             arcaneFactor += af()
 
             spend(1f)
@@ -44,9 +47,9 @@ class StrengthOffering : Special() {
         times++
     }
 
-    private fun af() = max(0.01f, 0.05f - times / 5 * 0.01f)
+    private fun af() = 0.05f // max(0.01f, 0.05f - times / 5 * 0.01f)
 
-    override fun desc(): String = M.L(this, "desc", (af() * 100f).roundToInt(), times)
+    override fun desc(): String = M.L(this, "desc", (af() * 100f).roundToInt())
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

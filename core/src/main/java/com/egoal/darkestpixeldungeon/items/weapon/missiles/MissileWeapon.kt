@@ -47,7 +47,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
 
     override fun max(lvl: Int): Int = 4 + tier * 2
 
-    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { remove(EquipableItem.AC_EQUIP) }
+    override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { remove(AC_EQUIP) }
 
     override fun throwPos(user: Hero, dst: Int): Int {
         if (isInscribed(Projecting::class.java) &&

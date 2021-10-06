@@ -31,10 +31,8 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PolearmMaster
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
-import com.egoal.darkestpixeldungeon.items.specials.Astrolabe
-import com.egoal.darkestpixeldungeon.items.specials.Penetration
-import com.egoal.darkestpixeldungeon.items.specials.StrengthOffering
-import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.specials.*
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
 import com.egoal.darkestpixeldungeon.messages.M
@@ -95,7 +93,7 @@ enum class HeroSubClass(private val title: String) {
                     Buff.affect(hero, Berserk::class.java)
                     hero.heroPerk.add(Fearless())
                 }
-                ASSASSIN -> hero.heroPerk.add(Assassin())
+
                 WARLOCK -> {
                     val uos = UrnOfShadow().identify()
                     uos.collect()
@@ -107,24 +105,32 @@ enum class HeroSubClass(private val title: String) {
                     so.collect()
                     GLog.w(Messages.get(hero, "you_now_have", so.name()))
                 }
+
+                ASSASSIN -> hero.heroPerk.add(Assassin())
+
+                MOONRIDER -> {
+                    addItem(hero, Shadowmoon())
+                }
+
                 WITCH -> {
                     hero.belongings.getItem(ExtractionFlask::class.java)?.reinforce()
                     //^ may lose perk
                 }
                 STARGAZER -> {
                     hero.heroPerk.add(Optimistic())
-
-                    val a = Astrolabe().identify()
-                    if (a.doPickUp(hero)) GLog.w(Messages.get(hero, "you_now_have", a.name()))
-                    else Dungeon.level.drop(a, hero.pos).sprite.drop()
+                    addItem(hero, Astrolabe())
                 }
+
                 LANCER -> {
                     hero.heroPerk.add(PolearmMaster())
-                    val p = Penetration().identify()
-                    p.collect()
-                    GLog.w(Messages.get(hero, "you_now_have", p.name()))
+                    addItem(hero, Penetration())
                 }
             }
+        }
+
+        private fun addItem(hero: Hero, item: Item) {
+            item.identify().collect()
+            GLog.w(M.L(hero, "you_now_have", item.name()))
         }
     }
 

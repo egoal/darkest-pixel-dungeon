@@ -257,7 +257,7 @@ abstract class Char : Actor() {
 
                 var color = 0x8c8c8c // gray
                 if (dmg.type == Damage.Type.MAGICAL) color = 0x3b94ff // blue for magical damage.
-                if (HP < HT / 4) color = CharSprite.NEGATIVE
+//                if (HP < HT / 4) color = CharSprite.NEGATIVE
 
                 sprite.showStatus(color, number)
             }
@@ -546,7 +546,11 @@ abstract class Char : Actor() {
             if (visibleFight && !TimekeepersHourglass.IsTimeStopped()) {
                 if (dmg.type == Damage.Type.NORMAL && dmg.isFeatured(Damage.Feature.CRITICAL) && dmg.value > 0)
                     Sample.INSTANCE.play(Assets.SND_CRITICAL, 1f, 1f, 1f)
-                else Sample.INSTANCE.play(Assets.SND_HIT, 1f, 1f, Random.Float(0.8f, 1.25f))
+                else {
+                    val snd = Assets.SND_HIT // if (Random.Float() < 0.7f) Assets.SND_HIT else Assets.SND_HIT2
+                    val rate = Random.Float(0.8f, 1.25f)
+                    Sample.INSTANCE.play(snd, 1f, 1f, rate)
+                }
             }
 
             if (!defender.isAlive) return // already died in procs

@@ -6,6 +6,8 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraStrengthPower
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
@@ -22,6 +24,8 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
+import com.watabou.utils.Random
+import java.util.ArrayList
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -59,6 +63,29 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
         super.upgrade(enchant)
         updateQuickslot()
         return this
+    }
+
+    override fun actions(hero: Hero): ArrayList<String> {
+        val actions = super.actions(hero)
+        if (hero.subClass == HeroSubClass.MOONRIDER) actions.add(if (isEquipped(hero)) AC_UNEQUIP else AC_EQUIP)
+        return actions
+    }
+
+    override fun giveDamage(hero: Hero, target: Char): Damage {
+        val dmg = super.giveDamage(hero, target)
+        // affect by ExtraStrengthPower
+        if (isEquipped(hero)) {
+            val exStr = hero.STR() - STRReq()
+            if (exStr > 0)
+                hero.heroPerk.get(ExtraStrengthPower::class.java)?.affectDamage(dmg, exStr)
+        }
+        return dmg
+    }
+
+    override fun defendDamage(dmg: Damage): Damage {
+        super.defendDamage(dmg)
+        dmg.value -= Random.IntRange(1, level())
+        return dmg
     }
 
     override fun proc(dmg: Damage): Damage {
@@ -160,6 +187,10 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
             Imbue.NONE -> ""
         }
         if (enchanted) info += M.L(this, "enhanced_desc")
+
+        if (!Dungeon.isHeroNull && isEquipped(Dungeon.hero)) {
+            info += "\n" + M.L(this, "equipped_desc")
+        }
 
         return info
     }

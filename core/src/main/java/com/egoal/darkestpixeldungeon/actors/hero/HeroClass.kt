@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.items.armor.*
+import com.egoal.darkestpixeldungeon.items.armor.glyphs.Peaceful
 import com.egoal.darkestpixeldungeon.items.artifacts.*
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.SkillTree
@@ -16,6 +17,7 @@ import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.items.specials.Astrolabe
 import com.egoal.darkestpixeldungeon.items.specials.Penetration
+import com.egoal.darkestpixeldungeon.items.specials.Shadowmoon
 import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.*
@@ -308,6 +310,18 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //        Penetration().collect()
 //        Astrolabe().collect()
 //        UrnOfShadow().collect()
+//        Flag().identify().collect()
+//        Stylus().quantity(10).collect()
+//        repeat(9) {
+//            WandOfMagicMissile().upgrade(6).identify().collect()
+//        }
+//        LeatherArmor().inscribe(Peaceful()).identify().collect()
+//        Shadowmoon().collect()
+//
+//        PotionOfExperience().reinforce().quantity(30).identify().collect()
+//        GreatBlueprint().identify().collect()
+//
+//        hero.STR += 2
     }
 
     // called when hero level up
