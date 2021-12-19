@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
+import com.egoal.darkestpixeldungeon.items.helmets.CollarOfSlave
 import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
@@ -296,6 +297,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
         Food().collect()
         // Torch().identify().collect()
+        CollarOfSlave().random().collect()
         Dungeon.torch += 1f
 
         ScrollOfIdentify().setKnown()

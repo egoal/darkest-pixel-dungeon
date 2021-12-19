@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.DarkSpirit
 import com.egoal.darkestpixeldungeon.actors.mobs.RotLasher
+import com.egoal.darkestpixeldungeon.actors.mobs.WandGuard
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.BarterMan
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Merchant
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller
@@ -103,8 +104,10 @@ abstract class RegularLevel : Level() {
 
         // specials
         val probs = HashMap<Class<out Digger>, Float>(SpecialDiggers)
-        if (Dungeon.depth == 1)
+        if (Dungeon.depth == 1) {
             probs.remove(AltarDigger::class.java)
+            probs.remove(WandDigger::class.java)
+        }
 
         if (pitRoomNeeded) {
             // todo: this is fragile

@@ -120,7 +120,7 @@ class GoddessRadiance : Artifact() {
 
     inner class Recharge : ArtifactBuff() {
         fun viewAmend() = if (level() == levelCap) 1 else 0
-        fun evadeRatio() = 0.45f - 0.4f * 0.9f.pow(level()) // +6 ~= level 2 optimistic perk
+        fun evadeRatio() = 0.4f - 0.4f * 0.9f.pow(level()) // +6 ~= level 2 optimistic perk
 
         override fun act(): Boolean {
             // recharge

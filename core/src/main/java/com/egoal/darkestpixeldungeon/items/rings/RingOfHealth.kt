@@ -22,13 +22,14 @@ package com.egoal.darkestpixeldungeon.items.rings
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.IHeroUpgradeListener
 import com.egoal.darkestpixeldungeon.items.Item
 import com.watabou.utils.Bundle
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.round
 
-class RingOfHealth : Ring() {
+class RingOfHealth : Ring(), IHeroUpgradeListener {
     private var dhp = 0
     private fun ratio() = 1.25f.pow(level() * 0.3f) - 1f
 
@@ -56,9 +57,13 @@ class RingOfHealth : Ring() {
         return this
     }
 
-    private fun detach(hero: Hero) { modHT(hero, -dhp) }
+    private fun detach(hero: Hero) {
+        modHT(hero, -dhp)
+    }
 
-    private fun attach(hero: Hero) { modHT(hero, round(hero.HT * ratio()).toInt()) }
+    private fun attach(hero: Hero) {
+        modHT(hero, round(hero.HT * ratio()).toInt())
+    }
 
     private fun modHT(hero: Hero, dht: Int) {
         dhp += dht
@@ -81,5 +86,12 @@ class RingOfHealth : Ring() {
     override fun buff(): RingBuff = Health()
 
     inner class Health : Ring.RingBuff()
+
+    override fun onHeroUpgraded(hero: Hero) {
+        if (isEquipped(hero)) {
+            detach(hero)
+            attach(hero)
+        }
+    }
 }
 

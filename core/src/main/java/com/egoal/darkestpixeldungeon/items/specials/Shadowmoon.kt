@@ -28,6 +28,8 @@ class Shadowmoon : Special() {
 
     init {
         image = ItemSpriteSheet.SHADOWMOON
+
+        usesTargeting = true
     }
 
     private val isNight get() = Statistics.Clock.state != Statistics.ClockTime.State.Day
@@ -52,7 +54,7 @@ class Shadowmoon : Special() {
         override fun onSelect(cell: Int?) {
             if (cell == null || !Dungeon.visible[cell]) return
             val enemy = Actor.findChar(cell)
-            if (enemy == null || curUser.isCharmedBy(enemy))
+            if (enemy == null)
                 GLog.w(M.L(Shadowmoon::class.java, "bad_target"))
             else
                 moonlight(enemy)
@@ -83,7 +85,7 @@ class Shadowmoon : Special() {
 
         val dmg = hero.giveDamage(enemy).type(Damage.Type.MAGICAL)
         enemy.takeDamage(enemy.defendDamage(dmg))
-        if (enemy.isAlive && isNight) Buff.prolong(enemy, Paralysis::class.java, 1f)
+        if (enemy.isAlive && isNight) Buff.prolong(enemy, Paralysis::class.java, 1.1f)
 
         curUser.sprite.parent.add(Beam.LightRay(
                 DungeonTilemap.tileCenterToWorld(enemy.pos - Dungeon.level.width()),
@@ -145,7 +147,7 @@ class Shadowmoon : Special() {
 
 
     companion object {
-        private const val HIT_TIMES = 6
+        private const val HIT_TIMES = 5
         private const val POS = "pos"
         private const val REST_STR = "rest"
         private const val HIT_STR = "hits"

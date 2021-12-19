@@ -6,12 +6,17 @@ import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PressureIsPower
-import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.items.artifacts.GoddessRadiance
+import com.egoal.darkestpixeldungeon.items.helmets.Mantilla
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
+import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import kotlin.math.exp
 import kotlin.math.min
@@ -68,8 +73,23 @@ class Pressure : Buff(), Hero.Doom {
     override fun desc(): String = Messages.get(this, "desc_intro_" + level.title) + Messages.get(this, "desc")
 
     // pressure
+    private fun ignoreChance(): Float {
+        val hero = target as Hero
+
+        val p1 = hero.heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f
+        val p2 = hero.buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f
+        val p3 = if (hero.belongings.helmet is Mantilla && !hero.belongings.helmet!!.cursed) 0.1f else 0f
+
+        return GameMath.ProbabilityPlus(p1, p2, p3)
+    }
+
     fun upPressure(p: Float): Float {
         val r = min(p, LVL_NERVOUS - pressure)
+        if (r >= 1f && Random.Float()< ignoreChance()) {
+            target.sprite.showStatus(CharSprite.DEFAULT, M.L(Hero::class.java, "mental_resist"))
+            return 0f
+        }
+
         pressure += r
         updateLevel()
         return r

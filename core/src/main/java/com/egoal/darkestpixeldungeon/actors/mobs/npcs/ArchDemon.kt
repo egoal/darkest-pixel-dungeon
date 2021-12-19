@@ -62,25 +62,25 @@ class ArchDemon : NPC.Unbreakable() {
         dealt()
         hero.heroPerk.downgrade(perk)
 
-        WndDialogue.Show(this, M.L(this, "other_deal"), M.L(this, "price_ht", 10), M.L(this, "price_ht", 20), M.L(this, "price_ht", 30), M.L(this, "price_none")) {
+        WndDialogue.Show(this, M.L(this, "other_deal"), M.L(this, "price_ht", 7), M.L(this, "price_ht", 14), M.L(this, "price_ht", 21), M.L(this, "price_none")) {
             if (it == 3) return@Show
 
             //todo: if the hero is too weak, the demon shall refuse it
             when (it) {
                 0 -> {
-                    removeHT(hero, 0.1f)
+                    removeHT(hero, 0.07f)
                     if (Random.Float() < 0.5f) {
                         giveRandomPerk(hero)
                         say(M.L(ArchDemon::class.java, "deal"))
                     } else say(M.L(ArchDemon::class.java, "deal_failed"))
                 }
                 1 -> {
-                    removeHT(hero, 0.2f)
+                    removeHT(hero, 0.14f)
                     giveRandomPerk(hero)
                     say(M.L(ArchDemon::class.java, "deal"))
                 }
                 2 -> {
-                    removeHT(hero, 0.3f)
+                    removeHT(hero, 0.21f)
                     hero.reservedPerks++
                     say(M.L(ArchDemon::class.java, "deal"))
                 }
@@ -110,7 +110,7 @@ class ArchDemon : NPC.Unbreakable() {
                         for (i in 0 until Damage.Element.ELEMENT_COUNT) hero.elementalResistance[i] -= 0.05f
                     }
                     GLog.n(M.L(this, "resistance"))
-                } else removeHT(hero, Random.Float(0.15f, 0.25f))
+                } else removeHT(hero, Random.Float(0.12f, 0.25f))
             } else {
                 var thePerk: Perk
                 do {

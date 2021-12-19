@@ -21,10 +21,11 @@
 package com.egoal.darkestpixeldungeon.actors.buffs
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.watabou.utils.Bundle
@@ -37,7 +38,16 @@ class SoulMark : FlavourBuff() {
 
     var level = 1
 
-    fun affectHero(hero: Hero, value: Int) {
+    fun onDamageToken(who: Char, damage: Damage) {
+        if (damage.from !== Dungeon.hero && damage.from is Char) {
+            val attacker = damage.from as Char
+            attacker.recoverHP(damage.value / 2)
+        }
+
+        affectHero(Dungeon.hero, min(damage.value, who.HP))
+    }
+
+    private fun affectHero(hero: Hero, value: Int) {
         hero.buff(Hunger::class.java)!!.satisfy(value * (0.4f + 0.1f * level))
         val dhp = min(hero.HT - hero.HP, (value * (0.25f + 0.05 * level)).toInt())
         if (dhp > 0) {

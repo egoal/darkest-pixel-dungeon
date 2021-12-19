@@ -531,6 +531,7 @@ public class WndBag extends WndTabbed {
                 return item instanceof Ring;
             case ALCHEMY:
                 return item instanceof Plant.Seed || item instanceof MysteryMeat || item instanceof FishBone ||
+                        item.getClass()== Food.class ||
                         // item instanceof Honeypot.ShatteredPot ||
                         (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib() == null);
 //          case SMEARABLE:

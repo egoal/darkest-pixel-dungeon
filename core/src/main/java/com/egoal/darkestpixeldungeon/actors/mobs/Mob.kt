@@ -439,8 +439,7 @@ abstract class Mob : Char() {
         }
 
         // process buff: soul mark
-        val sm = buff(SoulMark::class.java)
-        sm?.affectHero(Dungeon.hero, Math.min(dmg.value, HP))
+        buff(SoulMark::class.java)?.onDamageToken(this, dmg)
 
         return dmg
     }

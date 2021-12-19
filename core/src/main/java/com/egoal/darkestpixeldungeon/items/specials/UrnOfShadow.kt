@@ -119,7 +119,7 @@ class UrnOfShadow : Special() {
         caster.onChar = { ch: Char ->
             if (ch === curUser) GLog.w(M.L(UrnOfShadow::class.java, "not_yourself"))
             else {
-                volume -= 2
+                consume(2)
                 Item.curUser.sprite.zap(ch.pos)
                 Item.curUser.spend(1f)
                 Item.curUser.busy()
@@ -150,7 +150,7 @@ class UrnOfShadow : Special() {
         caster.onChar = { ch: Char ->
             if (ch === Item.curUser) GLog.w(M.L(UrnOfShadow::class.java, "not_yourself"))
             else {
-                volume -= 3
+                consume(3)
                 Item.curUser.sprite.zap(ch.pos)
                 Item.curUser.spend(1f)
                 Item.curUser.busy()
@@ -173,7 +173,7 @@ class UrnOfShadow : Special() {
         caster.onChar = { ch: Char ->
             if (ch === Item.curUser) GLog.w(M.L(UrnOfShadow::class.java, "not_yourself"))
             else {
-                volume -= 5
+                consume(5)
                 Item.curUser.sprite.zap(ch.pos)
                 Item.curUser.spend(1f)
                 Item.curUser.busy()
@@ -199,7 +199,7 @@ class UrnOfShadow : Special() {
                             ch.immunizedBuffs().contains(Dementage::class.java)))
                 GLog.w(M.L(UrnOfShadow::class.java, "no_soul"))
             else {
-                volume -= 10
+                consume(10)
                 Item.curUser.sprite.zap(ch.pos)
                 Item.curUser.spend(1f)
                 Item.curUser.busy()

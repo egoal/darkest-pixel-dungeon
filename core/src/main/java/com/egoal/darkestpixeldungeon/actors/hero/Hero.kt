@@ -62,6 +62,10 @@ import com.watabou.utils.Random
 import java.util.*
 import kotlin.math.*
 
+interface IHeroUpgradeListener {
+    fun onHeroUpgraded(hero: Hero): Unit
+}
+
 class Hero : Char() {
     init {
         actPriority = 0
@@ -189,7 +193,7 @@ class Hero : Char() {
 
         val glp = belongings.armor?.glyph
         if (glp is Healing)
-            regeneration += glp.speed(belongings.armor!!)
+            reg += glp.speed(belongings.armor!!)
 
         // heart
         buff(HeartOfSatan.Regeneration::class.java)?.let {
@@ -325,7 +329,7 @@ class Hero : Char() {
     fun shoot(enemy: Char, weapon: MissileWeapon): Boolean {
         rangedWeapon = weapon
         val res = attack(enemy)
-        if(res && subClass== HeroSubClass.MOONRIDER)
+        if (res && subClass == HeroSubClass.MOONRIDER)
             belongings.getSpecial(Shadowmoon::class.java)!!.hit()
 
         Invisibility.dispel()
@@ -700,7 +704,7 @@ class Hero : Char() {
 
         var value = dmg.value.toFloat()
 
-        if (heroClass == HeroClass.EXILE) {
+        if (heroClass == HeroClass.EXILE || belongings.helmet is CollarOfSlave) {
             var v = 1f
             if (subClass == HeroSubClass.WINEBIBBER && buff(Drunk::class.java) == null) {
                 v += 1.5f
@@ -710,24 +714,26 @@ class Hero : Char() {
             value += Random.Float(0f, v)
         }
 
-        var chance = GameMath.ProbabilityPlus(
-                heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
-                buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f)
+//        var chance = GameMath.ProbabilityPlus(
+//                heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
+//                buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f)
+//
+//        if (belongings.helmet is Mantilla && !belongings.helmet!!.cursed)
+//            chance = GameMath.ProbabilityPlus(chance, 0.1f)
 
-        if (belongings.helmet is Mantilla && !belongings.helmet!!.cursed)
-            chance = GameMath.ProbabilityPlus(chance, 0.1f)
+//        if (Random.Float() < chance) {
+//            value = 0f
+//            sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
+//        } else {
 
-        if (Random.Float() < chance) {
-            value = 0f
-            sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
-        } else {
-            if (heroClass == HeroClass.EXILE && Random.Int(10) == 0 && buff(Drunk::class.java) == null)
-                sayShort("grim_${Random.Int(3)}") //todo: this is fragile
-        }
+//        }
 
         // keep in mind that SAN is pressure, it increases
         val rv = pressure.upPressure(value).toInt()
         val WARNING = 0x0A0A0A
+
+        if (rv > 0 && heroClass == HeroClass.EXILE && Random.Int(10) == 0 && buff(Drunk::class.java) == null)
+            sayShort("grim_${Random.Int(3)}") //todo: this is fragile
 
         if (rv > 0 && buff(Ignorant::class.java) == null)
             sprite.showStatus(WARNING, rv.toString())
@@ -1008,6 +1014,8 @@ class Hero : Char() {
             if (pressure.level > Pressure.Level.NORMAL) sayShort(HeroLines.USELESS)
 
             Badges.validateLevelReached()
+
+            belongings.filterIsInstance<IHeroUpgradeListener>().forEach { it.onHeroUpgraded(this) }
         }
     }
 
@@ -1048,6 +1056,9 @@ class Hero : Char() {
 
         if (belongings.armor?.hasGlyph(Obfuscation::class.java) == true)
             stealth += belongings.armor!!.level()
+
+        if (belongings.helmet is CollarOfSlave)
+            stealth += (belongings.helmet as CollarOfSlave).stealth()
 
         return stealth
     }

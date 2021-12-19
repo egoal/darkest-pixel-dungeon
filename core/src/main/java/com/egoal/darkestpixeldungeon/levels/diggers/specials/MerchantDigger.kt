@@ -20,10 +20,7 @@ import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
-import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
-import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
-import com.egoal.darkestpixeldungeon.items.unclassified.Torch
-import com.egoal.darkestpixeldungeon.items.unclassified.Weightstone
+import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
@@ -80,7 +77,7 @@ class MerchantDigger : RectDigger() {
         // potion of healing and scroll of remove curse is preferred if identified
         run {
             val s = ScrollOfRemoveCurse()
-            if (s.isKnown && Random.Float() < .5f)
+            if ((s.isKnown || Dungeon.depth >= 10) && Random.Float() < .5f)
                 itemsToSpawn.add(s)
             else
                 itemsToSpawn.add(Generator.SCROLL.generate())
@@ -103,6 +100,7 @@ class MerchantDigger : RectDigger() {
             }
 
             11 -> {
+                itemsToSpawn.add(MoonStone())
                 itemsToSpawn.add((if (Random.Int(2) == 0) Sword().identify() else Mace()).identify())
                 itemsToSpawn.add(if (Random.Int(2) == 0) CurareDart().quantity(Random.NormalIntRange(2, 5))
                 else Shuriken().quantity(Random.NormalIntRange(3, 6)))
@@ -111,6 +109,7 @@ class MerchantDigger : RectDigger() {
             }
 
             16 -> {
+                itemsToSpawn.add(MoonStone())
                 itemsToSpawn.add((if (Random.Int(2) == 0) Longsword().identify() else BattleAxe()).identify())
                 itemsToSpawn.add(if (Random.Int(2) == 0) Shuriken().quantity(Random.NormalIntRange(4, 7))
                 else Javelin().quantity(Random.NormalIntRange(3, 6)))

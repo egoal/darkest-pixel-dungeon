@@ -177,7 +177,7 @@ class LowWeightDexterous : Perk(1) {
 class Optimistic : Perk(2) {
     override fun image(): Int = PerkImageSheet.OPTIMISTIC
 
-    fun resistChance(): Float = 0.05f + 0.1f * level // 0.15-> 0.25
+    fun resistChance(): Float = 0.1f * level // 0.1-> 0.2
 
     override fun canBeGain(hero: Hero): Boolean = hero.heroClass != HeroClass.SORCERESS
 }

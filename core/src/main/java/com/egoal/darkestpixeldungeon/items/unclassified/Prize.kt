@@ -15,23 +15,18 @@ import com.watabou.utils.Random
 
 enum class Prize {
     REAGENT_OF_HEALING {
-        private val item = ReagentOfHealing()
-        override fun title(): String = item.name()
         override fun collect(hero: Hero) {
-            item.collect()
+            ReagentOfHealing().collect()
         }
     },
 
     ORCHID_ROOT {
-        private val item = OrchidRoot()
-        override fun title(): String = item.name()
         override fun collect(hero: Hero) {
-            item.collect()
+            OrchidRoot().collect()
         }
     },
 
     LITTLE_FOOD {
-        override fun title(): String = M.L(Prize::class.java, "little_food")
         override fun collect(hero: Hero) {
             val food = if (Random.Int(3) != 0) OverpricedRation() else MysteryMeat().quantity(2)
             food.collect()
@@ -39,14 +34,12 @@ enum class Prize {
     },
 
     SOME_SEED {
-        override fun title(): String = M.L(Prize::class.java, "some_seed")
         override fun collect(hero: Hero) {
             repeat(3) { Generator.SEED.generate().collect() }
         }
     },
 
     SOME_GOLD {
-        override fun title(): String = M.L(Prize::class.java, "some_gold")
         override fun collect(hero: Hero) {
             val num = Random.NormalIntRange(50, 120)
             Gold.Purse().apply { number = num }.collect()
@@ -54,12 +47,10 @@ enum class Prize {
     },
 
     NOTHING {
-        override fun title(): String = M.L(Prize::class.java, "nothing")
         override fun collect(hero: Hero) {}
     },
 
     WHATEVER {
-        override fun title(): String = M.L(Prize::class.java, "whatever")
         override fun collect(hero: Hero) {
             val p = Random.Float()
             when {
@@ -82,6 +73,6 @@ enum class Prize {
     }
     ;
 
-    abstract fun title(): String
+    fun title(): String = M.L(Prize::class.java, toString().toLowerCase())
     abstract fun collect(hero: Hero)
 }

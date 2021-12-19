@@ -411,7 +411,8 @@ object Generator {
             MaskOfLider::class to 0.1f,
             GuardHelmet::class to 0.1f,
             StrawHat::class to 0.1f,
-            Mantilla::class to 1f
+            Mantilla::class to 1f,
+            CollarOfSlave::class to 1f
     ))
 
     object BOOK : BalancedClassMapGenerator(hashMapOf(

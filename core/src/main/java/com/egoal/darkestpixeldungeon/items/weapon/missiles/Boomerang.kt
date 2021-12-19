@@ -11,23 +11,20 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraStrengthPower
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
+import com.egoal.darkestpixeldungeon.items.specials.Shadowmoon
 import com.egoal.darkestpixeldungeon.items.unclassified.GreatBlueprint
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.sprites.MissileSprite
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
-import com.egoal.darkestpixeldungeon.utils.BArray
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.ArrayList
-import kotlin.math.max
-import kotlin.math.sqrt
+import java.util.*
 
 open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
     private var ejection = 0
@@ -89,16 +86,21 @@ open class Boomerang : MissileWeapon(1), GreatBlueprint.Enchantable {
     }
 
     override fun proc(dmg: Damage): Damage {
-        if (dmg.from is Hero && (dmg.from as Hero).rangedWeapon === this) {
-            if (ejection > 0) {
-                val ch = findCharToEject(dmg.to as Char)
-                if (ch != null) {
-                    ejection--
-                    eject((dmg.to as Char).pos, ch, dmg.from as Hero)
+        if (dmg.from is Hero) {
+            val hero = dmg.from as Hero
+            if (hero.rangedWeapon === this) {
+                if (ejection > 0) {
+                    val ch = findCharToEject(dmg.to as Char)
+                    if (ch != null) {
+                        ejection--
+                        eject((dmg.to as Char).pos, ch, dmg.from as Hero)
+                    } else
+                        circleBack((dmg.to as Char).pos, dmg.from as Hero)
                 } else
                     circleBack((dmg.to as Char).pos, dmg.from as Hero)
-            } else
-                circleBack((dmg.to as Char).pos, dmg.from as Hero)
+            } else if (hero.subClass == HeroSubClass.MOONRIDER)
+                hero.belongings.getSpecial(Shadowmoon::class.java)!!.hit()
+
         }
         return super.proc(dmg)
     }
