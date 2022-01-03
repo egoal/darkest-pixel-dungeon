@@ -16,12 +16,12 @@ import com.egoal.darkestpixeldungeon.items.helmets.*
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
+import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
 import com.egoal.darkestpixeldungeon.plants.*
-import com.egoal.darkestpixeldungeon.items.unclassified.*
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
@@ -204,23 +204,23 @@ object Generator {
     }
 
     object POTION : BalancedClassMapGenerator(hashMapOf(
-            PotionOfHealing::class to 20f,
-            PotionOfExperience::class to 4f,
+            PotionOfHealing::class to 15f,
             PotionOfToxicGas::class to 15f,
-            PotionOfParalyticGas::class to 10f,
             PotionOfLiquidFlame::class to 15f,
+            PotionOfMindVision::class to 15f,
+            PotionOfPurity::class to 15f,
+            PotionOfFrost::class to 10f,
+            PotionOfParalyticGas::class to 10f,
             PotionOfLevitation::class to 10f,
-            PotionOfStrength::class to 0f,
-            PotionOfMindVision::class to 18f,
-            PotionOfPhysique::class to 4f,
-            PotionOfPurity::class to 12f,
             PotionOfInvisibility::class to 10f,
+            PotionOfPhysique::class to 4f,
+            PotionOfExperience::class to 4f,
             PotionOfMight::class to 0f,
-            PotionOfFrost::class to 10f
+            PotionOfStrength::class to 0f
     ))
 
     object SCROLL : BalancedClassMapGenerator(hashMapOf(
-            ScrollOfIdentify::class to 30f,
+            ScrollOfIdentify::class to 25f,
             ScrollOfTeleportation::class to 10f,
             ScrollOfRemoveCurse::class to 20f,
             ScrollOfUpgrade::class to 0f,

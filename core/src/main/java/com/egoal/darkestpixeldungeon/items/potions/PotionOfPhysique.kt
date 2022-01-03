@@ -22,7 +22,7 @@ class PotionOfPhysique : Potion() {
     override fun apply(hero: Hero) {
         setKnown()
         val value = Random.NormalIntRange(5, 10)
-        if (reinforced) hero.regeneration += Random.IntRange(10, 20)* 0.1f
+        if (reinforced) hero.regeneration += Random.IntRange(10, 20)* 0.01f
 
         hero.HT += value
         hero.HP += value

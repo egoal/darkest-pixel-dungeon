@@ -123,7 +123,8 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
 
     override fun accuracyFactor(hero: Hero, target: Char): Float {
         var f = super.accuracyFactor(hero, target)
-        if (Dungeon.level.adjacent(hero.pos, target.pos))
+        //fixme:
+        if (this !is Boomerang && Dungeon.level.adjacent(hero.pos, target.pos))
             f *= 0.4f
         if (hero.subClass == HeroSubClass.SNIPER)
             f *= 1.25f
