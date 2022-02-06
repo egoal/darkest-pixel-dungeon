@@ -185,6 +185,7 @@ public class SurfaceScene extends PixelScene {
     Badges.INSTANCE.validateHappyEnd();
     Badges.INSTANCE.validateNeverGainPerk();
     Badges.INSTANCE.validateNoPerk();
+    Badges.INSTANCE.validateNeverDrinking();
 
     fadeIn();
   }

@@ -39,7 +39,7 @@ class MoonStone : Item() {
         get() = false
     override val isIdentified: Boolean
         get() = true
-    override fun price(): Int = 40 * quantity
+    override fun price(): Int = 10 * quantity
 
     companion object {
         private const val AC_USE = "use"

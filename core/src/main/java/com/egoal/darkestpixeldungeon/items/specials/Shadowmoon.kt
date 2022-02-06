@@ -21,6 +21,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.Random
 
 class Shadowmoon : Special() {
     private var rest = 0
@@ -84,8 +85,12 @@ class Shadowmoon : Special() {
         val hero = curUser
 
         val dmg = hero.giveDamage(enemy).type(Damage.Type.MAGICAL)
+        if (!dmg.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < 0.3f) {
+            dmg.value = dmg.value * 3 / 2
+            dmg.addFeature(Damage.Feature.CRITICAL)
+        }
         enemy.takeDamage(enemy.defendDamage(dmg))
-        if (enemy.isAlive && isNight) Buff.prolong(enemy, Paralysis::class.java, 1.1f)
+        if (enemy.isAlive && isNight) Buff.prolong(enemy, Paralysis::class.java, 1.5f)
 
         curUser.sprite.parent.add(Beam.LightRay(
                 DungeonTilemap.tileCenterToWorld(enemy.pos - Dungeon.level.width()),

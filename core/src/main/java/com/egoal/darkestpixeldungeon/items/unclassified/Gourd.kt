@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.items.unclassified
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
 import com.egoal.darkestpixeldungeon.actors.buffs.Tipsy
@@ -51,6 +52,7 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
             if (volume == 0) hero.say(M.L(this, "empty"))
             else {
                 drink(hero)
+                Statistics.WineDrunk++
             }
         } else if (action == AC_IRRIGATE) {
             if (volume >= CAPACITY) GLog.i(M.L(this, "full"))

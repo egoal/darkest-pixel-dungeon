@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.hero
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Circulation
@@ -113,7 +112,7 @@ enum class HeroSubClass(private val title: String) {
 
                 MOONRIDER -> {
                     add_perk(NightVision())
-                    addItem(hero, Shadowmoon())
+                    addSpecial(hero, Shadowmoon())
                 }
 
                 WITCH -> {
@@ -122,19 +121,19 @@ enum class HeroSubClass(private val title: String) {
                 }
                 STARGAZER -> {
                     add_perk(Optimistic())
-                    addItem(hero, Astrolabe())
+                    addSpecial(hero, Astrolabe())
                 }
 
                 LANCER -> {
                     add_perk(PolearmMaster())
-                    addItem(hero, Penetration())
+                    addSpecial(hero, Penetration())
                 }
             }
         }
 
-        private fun addItem(hero: Hero, item: Item) {
+        private fun addSpecial(hero: Hero, item: Special) {
             item.identify().collect()
-            GLog.w(M.L(hero, "you_now_have", item.name()))
+            GLog.p(M.L(hero, "new_special", item.name()))
         }
     }
 

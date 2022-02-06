@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.BoethiahsBlade
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
@@ -247,8 +248,9 @@ class Statuary : NPC.Unbreakable() {
                 val p = (gold - 100) * .6f / 400f + .3f // 100: 0.3 -> 500: 0.9
                 if (Random.Float() < p) {
                     val dice = Random.Float()
+                    val hasSpace = hero.belongings.backpack.canHold(Plant.Seed()) // dummy check
                     val item = when {
-                        !Dungeon.limitedDrops.boethiahsBlade.dropped() && dice < 0.1f -> {
+                        hasSpace && !Dungeon.limitedDrops.boethiahsBlade.dropped() && dice < 0.1f -> {
                             Dungeon.limitedDrops.boethiahsBlade.drop()
                             GLog.n(M.L(Statuary::class.java, "give_blade"))
                             gold += 500 // disable
@@ -260,7 +262,9 @@ class Statuary : NPC.Unbreakable() {
                         dice < 0.55f -> Generator.ARMOR.generate()
                         else -> Generator.generate()
                     }
-                    Dungeon.level.drop(item, hero.pos).sprite.drop()
+
+                    if (item is BoethiahsBlade) item.collect(hero.belongings.backpack)
+                    else Dungeon.level.drop(item, hero.pos).sprite.drop()
                 }
             }
 

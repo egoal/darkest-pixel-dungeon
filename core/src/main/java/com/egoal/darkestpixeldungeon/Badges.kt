@@ -131,6 +131,7 @@ object Badges {
         FOOD_EATEN_2(45),
         FOOD_EATEN_3(46),
         FOOD_EATEN_4(47),
+        NO_DRINKING(71),
         MASTERY_WARRIOR,
         MASTERY_MAGE,
         MASTERY_ROGUE,
@@ -944,6 +945,12 @@ object Badges {
         if (Dungeon.IsChallenged()) return
 
         if (Dungeon.hero.perkGained == 0) displayBadge(Badge.PERK_NONE)
+    }
+
+    fun validateNeverDrinking() {
+        if (Dungeon.IsChallenged()) return
+
+        if (Statistics.WineDrunk == 0) displayBadge(Badge.NO_DRINKING)
     }
 
     fun validateSuicide() {

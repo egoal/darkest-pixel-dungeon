@@ -32,6 +32,7 @@ object Statistics {
     var DeepestFloor: Int = 0
     var EnemiesSlain: Int = 0
     var FoodEaten: Int = 0
+    var WineDrunk: Int = 0
     var HighestDamage: Int = 0
     var PotionsCooked: Int = 0
     var PiranhasKilled: Int = 0
@@ -55,6 +56,7 @@ object Statistics {
     private const val DEEPEST = "maxDepth"
     private const val SLAIN = "enemiesSlain"
     private const val FOOD = "foodEaten"
+    private const val WINE = "wineDrunk"
     private const val HIGHEST_DAMAGE = "highest-damage"
     private const val ALCHEMY = "potionsCooked"
     private const val PIRANHAS = "priranhas"
@@ -89,6 +91,7 @@ object Statistics {
         bundle.put(DEEPEST, DeepestFloor)
         bundle.put(SLAIN, EnemiesSlain)
         bundle.put(FOOD, FoodEaten)
+        bundle.put(WINE, WineDrunk)
         bundle.put(HIGHEST_DAMAGE, HighestDamage)
         bundle.put(ALCHEMY, PotionsCooked)
         bundle.put(PIRANHAS, PiranhasKilled)
@@ -104,6 +107,7 @@ object Statistics {
         DeepestFloor = bundle.getInt(DEEPEST)
         EnemiesSlain = bundle.getInt(SLAIN)
         FoodEaten = bundle.getInt(FOOD)
+        WineDrunk = bundle.getInt(WINE)
         HighestDamage = bundle.getInt(HIGHEST_DAMAGE)
         PotionsCooked = bundle.getInt(ALCHEMY)
         PiranhasKilled = bundle.getInt(PIRANHAS)

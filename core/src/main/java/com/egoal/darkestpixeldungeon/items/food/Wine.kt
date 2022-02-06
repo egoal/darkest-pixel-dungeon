@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.items.food
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
@@ -50,6 +51,7 @@ open class Wine(val gourdValue: Int = 5) : Item() {
             }
 
             detach(hero.belongings.backpack)
+            Statistics.WineDrunk++
             hero.spend(TIME_TO_DRINK)
             hero.busy()
 
