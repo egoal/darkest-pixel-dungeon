@@ -20,17 +20,17 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.sprites.ScorpioSprite
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.sprites.ScorpioSprite
 import com.watabou.utils.Random
 
 open class Scorpio : Mob() {
@@ -51,7 +51,7 @@ open class Scorpio : Mob() {
     }
 
     override fun attackProc(dmg: Damage): Damage {
-        if (Random.Int(3) == 0)
+        if (Random.Int(3) == 0 && (dmg.to as Char).buff(Cripple::class.java) == null)
             Buff.prolong(dmg.to as Char, Cripple::class.java, Cripple.DURATION)
 
         return dmg

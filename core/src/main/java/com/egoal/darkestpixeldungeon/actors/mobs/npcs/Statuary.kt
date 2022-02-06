@@ -112,7 +112,7 @@ class Statuary : NPC.Unbreakable() {
                 GLog.h(M.L(this, "holy"))
 
                 // shield if recover too less
-                if (rp < 15f) hero.SHLD += Random.Int(15, hero.HT / 3)
+                if (rp < 15f) hero.SHLD += Random.Int(25, hero.HT)
 
                 // enchant
                 if (dice == 8 || dice == 9) {

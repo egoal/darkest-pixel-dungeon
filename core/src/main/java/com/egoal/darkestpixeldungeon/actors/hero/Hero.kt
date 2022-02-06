@@ -12,10 +12,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.DarkSpirit
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.NPC
-import com.egoal.darkestpixeldungeon.effects.CellEmitter
-import com.egoal.darkestpixeldungeon.effects.CheckedCell
-import com.egoal.darkestpixeldungeon.effects.Flare
-import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.effects.*
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.Armor
@@ -148,13 +145,12 @@ class Hero : Char() {
 
     override fun viewDistance(): Int {
         var vd = super.viewDistance()
-        if (heroPerk.has(NightVision::class.java) &&
-                (Statistics.Clock.state == Statistics.ClockTime.State.Night ||
-                        Statistics.Clock.state == Statistics.ClockTime.State.MidNight))
-            vd += 1
+
+        if(Statistics.Clock.state!= Statistics.ClockTime.State.Day)
+            vd += heroPerk.get(NightVision::class.java)?.level ?: 0
+
         vd += belongings.helmet?.viewAmend() ?: 0
         vd += buff(GoddessRadiance.Recharge::class.java)?.viewAmend() ?: 0
-
 
         return GameMath.clamp(vd, 1, 9)
     }
@@ -967,8 +963,6 @@ class Hero : Char() {
 
     fun maxExp(): Int = 4 + lvl * 6
 
-    //2, 6, 10... gain a perk
-    private fun shouldGainPerk() = if (challenge == Challenge.Gifted) (lvl - 2) % 3 == 0 else (lvl - 2) % 4 == 0
 
     fun earnExp(gained: Int) {
         exp += gained
@@ -987,10 +981,21 @@ class Hero : Char() {
                 upgraded = true
                 heroClass.upgradeHero(this)
 
-                if (shouldGainPerk()) {
-                    interrupt()
-                    reservedPerks += 1
-                    GLog.p(M.L(this, "perk_gain"))
+                // perk
+                if (challenge == Challenge.Gifted) {
+                    // 2, 4, 6, 8, 10...
+                    if (lvl % 2 == 0) {
+                        val perk = Perk.RandomPositive(this)
+                        heroPerk.add(perk)
+                        PerkGain.Show(this, perk)
+                    }
+                } else {
+                    //2, 6, 10... gain a perk
+                    if ((lvl - 2) % 4 == 0) {
+                        interrupt()
+                        reservedPerks += 1
+                        GLog.p(M.L(this, "perk_gain"))
+                    }
                 }
 
                 if (lvl == 12 && Dungeon.hero.subClass == HeroSubClass.NONE) {
@@ -1059,6 +1064,8 @@ class Hero : Char() {
 
         if (belongings.helmet is CollarOfSlave)
             stealth += (belongings.helmet as CollarOfSlave).stealth()
+
+        if (heroPerk.has(BaredStealth::class.java)) stealth += 3
 
         return stealth
     }

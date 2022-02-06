@@ -25,10 +25,8 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Circulation
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Fearless
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
-import com.egoal.darkestpixeldungeon.actors.hero.perks.PolearmMaster
+import com.egoal.darkestpixeldungeon.actors.hero.perks.*
+import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
@@ -87,11 +85,16 @@ enum class HeroSubClass(private val title: String) {
 
             GLog.w(M.L(TomeOfMastery::class.java, "way", way.title()))
 
+            val add_perk = {perk: Perk->
+                hero.heroPerk.add(perk)
+                PerkGain.Show(hero, perk)
+            }
+
             // on choose
             when (way) {
                 BERSERKER -> {
                     Buff.affect(hero, Berserk::class.java)
-                    hero.heroPerk.add(Fearless())
+                    add_perk(Fearless())
                 }
 
                 WARLOCK -> {
@@ -106,9 +109,10 @@ enum class HeroSubClass(private val title: String) {
                     GLog.w(Messages.get(hero, "you_now_have", so.name()))
                 }
 
-                ASSASSIN -> hero.heroPerk.add(Assassin())
+                ASSASSIN -> add_perk(Assassin())
 
                 MOONRIDER -> {
+                    add_perk(NightVision())
                     addItem(hero, Shadowmoon())
                 }
 
@@ -117,12 +121,12 @@ enum class HeroSubClass(private val title: String) {
                     //^ may lose perk
                 }
                 STARGAZER -> {
-                    hero.heroPerk.add(Optimistic())
+                    add_perk(Optimistic())
                     addItem(hero, Astrolabe())
                 }
 
                 LANCER -> {
-                    hero.heroPerk.add(PolearmMaster())
+                    add_perk(PolearmMaster())
                     addItem(hero, Penetration())
                 }
             }

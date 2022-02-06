@@ -89,7 +89,7 @@ class Guard : Mob() {
                 return false
             } else {
                 val newPosFinal = newPos
-                yell(Messages.get(this, "scorpion"))
+                say(Messages.get(this, "scorpion"))
                 sprite.parent.add(Chains(pos, enemy!!.pos, Callback {
                     Actor.addDelayed(Pushing(enemy, enemy!!.pos, newPosFinal, Callback {
                         enemy!!.pos = newPosFinal

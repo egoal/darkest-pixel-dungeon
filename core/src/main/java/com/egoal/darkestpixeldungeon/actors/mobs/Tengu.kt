@@ -8,14 +8,13 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.*
-import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
 import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone
-import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
+import com.egoal.darkestpixeldungeon.items.weapon.melee.TengusKatana
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.PrisonBossLevel
 import com.egoal.darkestpixeldungeon.levels.Terrain
@@ -30,7 +29,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.HashSet
+import java.util.*
 
 class Tengu : Mob() {
     init {
@@ -163,6 +162,7 @@ class Tengu : Mob() {
             val cell = if (avals.isEmpty()) pos else avals.random()
             Dungeon.level.drop(item, cell).sprite.drop(pos)
         }
+        if (Random.Int(3) == 0) Dungeon.level.drop(TengusKatana().identify(), pos).sprite.drop()
 
         GameScene.bossSlain()
         super.die(cause)

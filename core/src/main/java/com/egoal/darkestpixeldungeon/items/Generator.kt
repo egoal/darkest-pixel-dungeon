@@ -142,7 +142,8 @@ object Generator {
                     SpikeShield::class to 5f,
                     Pitchfork::class to 5f,
                     Halberd::class to 4f,
-                    Scythe::class to 4f
+                    Scythe::class to 4f,
+                    Kusarigama::class to 5f
             ))
 
             object T5 : BalancedClassMapGenerator(hashMapOf(

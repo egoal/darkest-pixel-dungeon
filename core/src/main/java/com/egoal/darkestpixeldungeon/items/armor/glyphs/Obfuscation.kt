@@ -26,22 +26,14 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
 class Obfuscation : Armor.Glyph() {
+    //no proc effect, see hero.stealth for effect.
+    override fun proc(armor: Armor, damage: Damage): Damage = damage
 
-    override fun proc(armor: Armor, damage: Damage): Damage {
-        //no proc effect, see hero.stealth for effect.
-        return damage
-    }
+    override fun tierDRAdjust(): Int = -1
 
-    override fun tierDRAdjust(): Int {
-        return -1
-    }
-
-    override fun glowing(): ItemSprite.Glowing {
-        return GREY
-    }
+    override fun glowing(): ItemSprite.Glowing= GREY
 
     companion object {
-
         private val GREY = ItemSprite.Glowing(0x888888)
     }
 

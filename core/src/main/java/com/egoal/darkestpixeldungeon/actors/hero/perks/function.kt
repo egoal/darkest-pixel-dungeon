@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Generator
@@ -193,8 +194,12 @@ class LevelPerception : Perk() {
     override fun image(): Int = PerkImageSheet.LEVEL_PERCEPTION
 }
 
-class NightVision : Perk() {
+class NightVision : Perk(2) {
     override fun image(): Int = PerkImageSheet.NIGHT_VISION
+
+    override fun canBeGain(hero: Hero): Boolean {
+        return hero.subClass == HeroSubClass.MOONRIDER || !hero.heroPerk.has(NightVision::class.java)
+    }
 }
 
 class QuickLearner : Perk(3) {

@@ -43,6 +43,10 @@ class BaredSwiftness : Perk() {
     private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
 }
 
+class BaredStealth: Perk(){
+    override fun image(): Int = PerkImageSheet.BARED_STEALTH
+}
+
 class ExplodeBrokenShot : Perk() {
     override fun image(): Int = PerkImageSheet.SHOT_EXPLODE
 }

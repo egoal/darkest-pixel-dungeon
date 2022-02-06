@@ -33,13 +33,7 @@ import com.egoal.darkestpixeldungeon.messages.M
 
 enum class Challenge {
     LowPressure,
-    Gifted {
-        override fun affect(hero: Hero) {
-            val perk = ExtraPerkChoice()
-            hero.heroPerk.add(perk)
-            PerkGain.Show(hero, perk)
-        }
-    },
+    Gifted,
     //    BruteCourage,
     Immortality {
         override fun live(hero: Hero) {

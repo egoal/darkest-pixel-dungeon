@@ -297,7 +297,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
         Food().collect()
         // Torch().identify().collect()
-        CollarOfSlave().random().collect()
+//        CollarOfSlave().random().collect()
         Dungeon.torch += 1f
 
         ScrollOfIdentify().setKnown()
@@ -308,6 +308,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         for (p in initialPerks()) hero.heroPerk.add(p)
 
         SkillTree().identify().collect()
+
+//        hero.STR = 14
+//        TengusKatana().identify().collect()
 
 //        Penetration().collect()
 //        Astrolabe().collect()
