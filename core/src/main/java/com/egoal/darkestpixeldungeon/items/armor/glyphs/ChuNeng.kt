@@ -28,15 +28,17 @@ class ChuNeng : Armor.Glyph() {
             if (acc >= req) {
                 acc -= req
                 Sample.INSTANCE.play(Assets.SND_BLAST)
-                CellEmitter.center(attacker.pos).burst(BlastParticle.FACTORY, 10 + armor.level())
+                CellEmitter.center(defender.pos).burst(BlastParticle.FACTORY, 10 + armor.level())
 
-                for (i in PathFinder.NEIGHBOURS8) {
-                    val mob = Dungeon.level.findMobAt((attacker.pos + i))
-                    if (mob?.camp == Char.Camp.ENEMY) {
-                        mob.takeDamage(mob.defendDamage(Damage(1, damage.to, damage.from).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE)))
-                        Buff.prolong(mob, Shock::class.java, 2f + armor.level() * 0.5f)
-                    }
-                }
+                PathFinder.NEIGHBOURS8
+                        .map { Dungeon.level.findMobAt(defender.pos + it) }
+                        .filter {
+                            it != null && it.camp != Char.Camp.NEUTRAL && it.camp != defender.camp
+                        }.forEach {
+                            it!!.takeDamage(it.defendDamage(Damage(1, defender, attacker)
+                                    .type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE)))
+                            Buff.prolong(it, Shock::class.java, 2f + armor.level() * 0.5f)
+                        }
             }
         }
 

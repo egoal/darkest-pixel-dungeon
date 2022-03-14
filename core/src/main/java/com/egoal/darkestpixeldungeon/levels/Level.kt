@@ -1036,13 +1036,9 @@ abstract class Level : Bundlable {
         return Point(cell % width(), cell / width())
     }
 
-    fun pointToCell(p: Point): Int {
-        return p.x + p.y * width()
-    }
+    fun pointToCell(p: Point): Int= p.x + p.y * width()
 
-    fun xy2cell(x: Int, y: Int): Int {
-        return x + y * width()
-    }
+    fun xy2cell(x: Int, y: Int): Int=  x + y * width()
 
     open fun tileName(tile: Int): String {
 

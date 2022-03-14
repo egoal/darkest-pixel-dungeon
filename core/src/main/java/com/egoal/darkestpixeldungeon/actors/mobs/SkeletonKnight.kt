@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
@@ -14,6 +15,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.SkeletonKnightSprite
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
+import java.util.HashSet
 
 /**
  * Created by 93942 on 5/13/2018.
@@ -85,6 +87,8 @@ class SkeletonKnight : Mob() {
         combocd = bundle.getInt(COOLDOWN_COMBO)
     }
 
+    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUS
+
     companion object {
 
         private const val COUNTER = .175f
@@ -93,5 +97,7 @@ class SkeletonKnight : Mob() {
         private const val COMBO_COOLDOWN = 2
 
         private const val COOLDOWN_COMBO = "cooldown_combo"
+
+        private val IMMUS = hashSetOf<Class<*>>(Bleeding::class.java)
     }
 }

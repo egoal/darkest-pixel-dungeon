@@ -2,16 +2,15 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.perks.IntendedTransportation
 import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.Wound
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.books.textbook.YvettesDiary
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
@@ -24,12 +23,10 @@ import com.egoal.darkestpixeldungeon.items.weapon.melee.MagicBow
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.windows.WndDialogue
-import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.egoal.darkestpixeldungeon.windows.WndQuest
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
@@ -178,7 +175,16 @@ class Yvette : NPC() {
                 } else {
                     Quest.Completed = true
                     Dungeon.hero.recoverSanity(Random.Float(4f, 10f))
-                    Dungeon.level.drop(MagicBow().identify(), pos).sprite.drop()
+                    val bow = MagicBow().apply {
+                        identify()
+                        val p = Random.Float()
+                        when {
+                            p < 0.5f -> upgrade()
+                            p < 0.75f -> upgrade(2)
+                            p < 0.8f -> upgrade(3)
+                        }
+                    }
+                    Dungeon.level.drop(bow, pos).sprite.drop()
 
                     this@Yvette.destroy()
                     (sprite as Sprite).leave()

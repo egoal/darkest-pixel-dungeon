@@ -91,7 +91,7 @@ public class StatusPane extends Component {
   @Override
   protected void createChildren() {
 
-    bg = new NinePatch(Assets.DPD_STATUS, 0, 0, 128, 32, 85, 0, 45, 0);
+    bg = new NinePatch(Assets.DPD_STATUS, 0, 0, 176, 32, 85, 0, 58, 0);
     add(bg);
 
     // hero portrait touch area
@@ -217,7 +217,7 @@ public class StatusPane extends Component {
 
     bossHP.setPos(6 + (width - bossHP.width()) / 2, 20);
 
-    depth.x = width - 35.5f - depth.width() / 2f;
+    depth.x = width - 50.5f - depth.width() / 2f;
     depth.y = 8f - depth.baseLine() / 2f;
     PixelScene.align(depth);
 

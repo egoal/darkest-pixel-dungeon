@@ -4,7 +4,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
 class Kusarigama : MeleeWeapon() {
     init {
-        image = ItemSpriteSheet.WHIP
+        image = ItemSpriteSheet.KUSARIGAMA
 
         tier = 4
         RCH = 3

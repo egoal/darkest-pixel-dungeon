@@ -171,8 +171,8 @@ open class Armor(var tier: Int) : EquipableItem() {
     fun DRMin(lvl: Int = level()): Int = if (glyph is Stone) 2 + 2 * lvl else lvl
 
     // base: 5, 6, 7, 8, 9, 10
-    // scaling: 2, 2, 2.5, 2.5, 3, 3, 3.5
-    open fun MRES(lvl: Int = level()): Float = ((4f + tier) + (2f + (tier - 1) / 2 * 0.5f) * lvl) / 100f
+    // scaling: 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5
+    open fun MRES(lvl: Int = level()): Float = ((4f + tier) + (2f + (tier - 1) * 0.25f) * lvl) / 100f
 
     override fun upgrade(): Item = upgrade(false)
 

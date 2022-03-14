@@ -24,6 +24,7 @@ import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp
@@ -50,6 +51,6 @@ class Golem : Mob() {
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
 
     companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java, Sleep::class.java)
+        private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java)
     }
 }

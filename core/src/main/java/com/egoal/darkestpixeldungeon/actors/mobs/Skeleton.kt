@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
@@ -36,6 +37,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import java.util.HashSet
 
 class Skeleton : Mob() {
     init {
@@ -84,5 +86,11 @@ class Skeleton : Mob() {
 
             loot
         }
+    }
+
+    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUS
+
+    companion object{
+        private val IMMUS = hashSetOf<Class<*>>(Bleeding::class.java)
     }
 }
