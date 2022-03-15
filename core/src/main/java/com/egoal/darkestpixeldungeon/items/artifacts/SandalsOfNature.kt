@@ -27,6 +27,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Roots
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.EarthParticle
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Earthroot
 import com.egoal.darkestpixeldungeon.plants.Plant
@@ -34,17 +36,12 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
-import com.egoal.darkestpixeldungeon.items.Item
 import com.watabou.noosa.Camera
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
-
-import java.util.ArrayList
-import java.util.Collections
+import java.util.*
 
 class SandalsOfNature : Artifact() {
-    private var mode: WndBag.Mode = WndBag.Mode.SEED
-
     var seeds = ArrayList<Class<*>>()
 
     private var itemSelector: WndBag.Listener = WndBag.Listener { item ->
@@ -97,9 +94,9 @@ class SandalsOfNature : Artifact() {
         super.execute(hero, action)
 
         if (action == AC_FEED) {
-
-            GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"))
-
+            GameScene.selectItem(itemSelector, M.L(this, "prompt"), WndBag.Filter {
+                it is Plant.Seed && !seeds.contains(it.javaClass)
+            })
         } else if (action == AC_ROOT && level() > 0) {
 
             if (!isEquipped(hero))

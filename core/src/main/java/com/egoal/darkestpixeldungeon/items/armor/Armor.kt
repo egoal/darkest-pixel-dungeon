@@ -125,7 +125,7 @@ open class Armor(var tier: Int) : EquipableItem() {
 
     override fun activate(ch: Char) {
         if (seal != null) Buff.affect(ch, BrokenSeal.WarriorShield::class.java).setArmor(this)
-        if(glyph is Peaceful) Buff.affect(ch, Peaceful.PeaceReg::class.java)
+        if (glyph is Peaceful) Buff.affect(ch, Peaceful.PeaceReg::class.java)
     }
 
     fun affixSeal(seal: BrokenSeal) {
@@ -165,14 +165,16 @@ open class Armor(var tier: Int) : EquipableItem() {
         if (glyph != null) effectiveTier += glyph!!.tierDRAdjust()
         effectiveTier = max(0, effectiveTier)
 
-        return max(DRMin(lvl), effectiveTier * (2 + lvl))
+        val dr = round(lvl * lvl * 0.05f * (1 + effectiveTier) + lvl * 0.8f * effectiveTier + 2f * effectiveTier).toInt()
+
+        return max(DRMin(lvl), dr)
     }
 
     fun DRMin(lvl: Int = level()): Int = if (glyph is Stone) 2 + 2 * lvl else lvl
 
-    // base: 5, 6, 7, 8, 9, 10
-    // scaling: 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5
-    open fun MRES(lvl: Int = level()): Float = ((4f + tier) + (2f + (tier - 1) * 0.25f) * lvl) / 100f
+    // base: 5, 6, 7, 8, 9
+    // scaling: 2, 2.5, 3, 3.5, 4
+    open fun MRES(lvl: Int = level()): Float = ((4f + tier) + (2f + (tier - 1) * 0.5f) * lvl) / 100f
 
     override fun upgrade(): Item = upgrade(false)
 

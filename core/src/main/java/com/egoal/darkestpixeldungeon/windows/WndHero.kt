@@ -179,7 +179,7 @@ class WndHero : WndTabbed() {
 
             pos += GAP5.toFloat()
 
-            statSlot(Messages.get(this, "time"), Statistics.Clock.timestr)
+//            statSlot(Messages.get(this, "time"), Statistics.Clock.timestr)
             statSlot(Messages.get(this, "gold"), Statistics.GoldCollected)
             statSlot(Messages.get(this, "depth"), Statistics.DeepestFloor)
 

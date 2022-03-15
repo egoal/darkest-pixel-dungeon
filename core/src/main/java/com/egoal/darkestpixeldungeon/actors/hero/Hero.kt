@@ -146,7 +146,7 @@ class Hero : Char() {
     override fun viewDistance(): Int {
         var vd = super.viewDistance()
 
-        if(Statistics.Clock.state!= Statistics.ClockTime.State.Day)
+        if (Statistics.Clock.state != Statistics.ClockTime.State.Day)
             vd += heroPerk.get(NightVision::class.java)?.level ?: 0
 
         vd += belongings.helmet?.viewAmend() ?: 0
@@ -678,7 +678,7 @@ class Hero : Char() {
                 maySay(0.2f, HeroLines.DAMN)
             }
 
-            if (!heroPerk.has(Fearless::class.java) && HP < HT / 4 && dmg.from is Mob && dmgToken > 0) {
+            if (dmgToken > 0 && HP < HT / 4 && dmg.from is Mob && !heroPerk.has(Fearless::class.java)) {
                 value += Random.Float(1f, 5f)
                 maySay(0.4f, HeroLines.I_MAY_DIE)
                 maySay(0.3f, HeroLines.MY_WEAPON_IS_BAD)

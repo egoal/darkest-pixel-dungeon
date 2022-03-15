@@ -35,8 +35,9 @@ class BrewEnhancedPotion : Perk() {
             if (com.watabou.utils.Random.Float() < nextProb) {
                 p.reinforce()
                 nextProb = 0.333f
-            } else nextProb += 0.333f
+            }
         }
+        nextProb += 0.333f
     }
 
     override fun storeInBundle(bundle: Bundle) {

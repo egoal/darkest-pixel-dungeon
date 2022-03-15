@@ -36,16 +36,19 @@ class Vampiric : Inscription(9) {
         val defender = damage.to as Char
         val attacker = damage.from as Char
 
-        val level = max(0, weapon.level())
+        if(defender.properties().contains(Char.Property.UNDEAD) ||
+                defender.properties().contains(Char.Property.MACHINE)) {
+            val level = max(0, weapon.level())
 
-        // lvl 0 - 20% -> .25
-        // lvl 1 - 21.5% -> .268
-        // lvl 2 - 23% -> .286
-        val maxValue = round(damage.value * ((level + 10) / (level + 40).toFloat())).toInt()
-        val effValue = min(Random.IntRange(0, maxValue), attacker.HT - attacker.HP)
+            // lvl 0 - 20% -> .25
+            // lvl 1 - 21.5% -> .268
+            // lvl 2 - 23% -> .286
+            val maxValue = round(damage.value * ((level + 10) / (level + 40).toFloat())).toInt()
+            val effValue = min(Random.IntRange(0, maxValue), attacker.HT - attacker.HP)
 
-        if (effValue > 0)
-            attacker.recoverHP(effValue, this)
+            if (effValue > 0)
+                attacker.recoverHP(effValue, this)
+        }
 
         return damage
     }
