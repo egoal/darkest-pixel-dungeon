@@ -7,6 +7,7 @@ import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import java.io.IOException
 
+//todo:
 enum class Catalog(private val items: HashMap<Class<*>, Boolean>) {
     Ring(hashMapOf(
             RingOfArcane::class.java to false,
@@ -23,7 +24,7 @@ enum class Catalog(private val items: HashMap<Class<*>, Boolean>) {
     )),
 
     ARTIFACT(hashMapOf(
-            Astrolabe::class.java to false,
+//            Astrolabe::class.java to false,
             CapeOfThorns::class.java to false,
             ChaliceOfBlood::class.java to false,
             CloakOfShadows::class.java to false,

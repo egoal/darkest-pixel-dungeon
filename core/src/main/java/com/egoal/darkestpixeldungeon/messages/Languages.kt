@@ -48,7 +48,7 @@ enum class Languages(val nativeName: String,
     val code: String get() = locale.toString()
 
     companion object {
-        private val DEFAULT = CHINESE
+        private val DEFAULT = ENGLISH // CHINESE
 
         fun matchLocale(locale: Locale): Languages = values().find { it.locale == locale } ?: DEFAULT
 

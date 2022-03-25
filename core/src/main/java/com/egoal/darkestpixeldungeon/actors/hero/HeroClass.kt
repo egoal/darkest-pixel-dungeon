@@ -176,7 +176,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //            rh.identify()
 //            rh.activate(hero)
 //            Dungeon.quickslot.setSlot(0, rh)
-
+;
             val b = Boomerang()
             b.identify().collect()
             Dungeon.quickslot.setSlot(0, b)
@@ -309,24 +309,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
         SkillTree().identify().collect()
 
-//        hero.STR = 14
-//        TengusKatana().identify().collect()
-
-//        Penetration().collect()
-//        Astrolabe().collect()
-//        UrnOfShadow().collect()
-//        Flag().identify().collect()
-//        Stylus().quantity(10).collect()
-//        repeat(9) {
-//            WandOfMagicMissile().upgrade(6).identify().collect()
-//        }
-//        LeatherArmor().inscribe(Peaceful()).identify().collect()
-//        Shadowmoon().collect()
-//
-//        PotionOfExperience().reinforce().quantity(30).identify().collect()
-//        GreatBlueprint().identify().collect()
-//
-//        hero.STR += 2
+//        ChaliceOfBlood().collect()
     }
 
     // called when hero level up
