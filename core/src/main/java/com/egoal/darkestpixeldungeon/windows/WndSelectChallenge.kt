@@ -35,6 +35,7 @@ open class WndSelectChallenge : Window() {
             }
         }.apply {
             setRect(MARGIN, y, (WIDTH - MARGIN * 2f), BTN_HEIGHT)
+            if (Challenge.IsChallengePassed(challenge)) textColor(TITLE_COLOR)
         }
         add(btn)
 

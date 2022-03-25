@@ -31,6 +31,7 @@ class Monument : NPC.Unbreakable() {
                     if (hero.challenge != null) return
 
                     activated = true
+                    (sprite as Sprite).activate()
                     challenge.affect(hero)
                     hero.challenge = challenge
                     hide()

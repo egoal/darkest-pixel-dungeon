@@ -378,10 +378,10 @@ public class ItemSpriteSheet {
     public static final int ASTROLABE = SPECIALS + 2;
     public static final int ASTROLABE_1 = ASTROLABE + 1;
     public static final int ASTROLABE_2 = ASTROLABE + 2;
-    public static final int PENETRATION = SPECIALS + 5;
-    public static final int PENETRATION_RDY = PENETRATION + 1;
-    public static final int SHADOWMOON = SPECIALS+ 7;
-    public static final int SHADOWMOON_RDY = SHADOWMOON+ 1;
+    public static final int PENETRATION_RDY = SPECIALS + 5;
+    public static final int PENETRATION = PENETRATION_RDY + 1;
+    public static final int SHADOWMOON_RDY = SPECIALS+ 7;
+    public static final int SHADOWMOON = SHADOWMOON_RDY+ 1;
 
     //32 free slots
 

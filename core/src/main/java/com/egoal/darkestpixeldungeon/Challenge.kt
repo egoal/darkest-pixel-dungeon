@@ -23,17 +23,19 @@ package com.egoal.darkestpixeldungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.VampiricBite
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraPerkChoice
-import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster
 import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw
 import com.egoal.darkestpixeldungeon.messages.M
+import com.watabou.noosa.Game
+import com.watabou.utils.Bundle
+import java.io.IOException
 
 enum class Challenge {
     LowPressure,
     Gifted,
+
     //    BruteCourage,
     Immortality {
         override fun live(hero: Hero) {
@@ -72,4 +74,40 @@ enum class Challenge {
 
     // each time the hero rise,
     open fun live(hero: Hero) {}
+
+    companion object {
+        private const val CHALLENGE_FILE = "challenge.dat"
+        private const val CHALLENGE = "challenge"
+
+        private val challengePassed = hashSetOf<Challenge>()
+
+        fun IsChallengePassed(ch: Challenge) = challengePassed.contains(ch)
+
+        fun PassChallenge(ch: Challenge) {
+            if (challengePassed.add(ch)) Save()
+        }
+
+        private fun Save() {
+            val bundle = Bundle()
+            bundle.put(CHALLENGE, challengePassed.map { it.toString() }.toTypedArray())
+
+            val fout = Game.instance.openFileOutput(CHALLENGE_FILE, Game.MODE_PRIVATE)
+            Bundle.write(bundle, fout)
+            fout.close()
+        }
+
+        fun Load() {
+            try {
+                val fin = Game.instance.openFileInput(CHALLENGE_FILE)
+                val bundle = Bundle.read(fin)
+                fin.close()
+
+                if (bundle.contains(CHALLENGE)) {
+                    challengePassed.clear()
+                    challengePassed.addAll(bundle.getStringArray(CHALLENGE).map { valueOf(it) })
+                }
+            } catch (e: IOException) {
+            }
+        }
+    }
 }

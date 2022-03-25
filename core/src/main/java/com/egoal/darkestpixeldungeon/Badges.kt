@@ -22,35 +22,25 @@ package com.egoal.darkestpixeldungeon
 
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
-import com.egoal.darkestpixeldungeon.actors.mobs.Albino
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob
-import com.egoal.darkestpixeldungeon.actors.mobs.QuickFiringGun
-import com.egoal.darkestpixeldungeon.actors.mobs.Shielded
-import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
-import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
-import com.egoal.darkestpixeldungeon.scenes.PixelScene
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.actors.mobs.Acidic
-import com.egoal.darkestpixeldungeon.actors.mobs.Bandit
-import com.egoal.darkestpixeldungeon.actors.mobs.Senior
+import com.egoal.darkestpixeldungeon.actors.mobs.*
 import com.egoal.darkestpixeldungeon.items.Catalog
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.artifacts.Artifact
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
+import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster
 import com.egoal.darkestpixeldungeon.items.potions.Potion
-import com.egoal.darkestpixeldungeon.items.rings.Ring
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.PixelScene
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Game
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
-
 import java.io.IOException
-import java.util.ArrayList
-import java.util.Collections
-import java.util.HashSet
+import java.util.*
 
 // import kotlin.collections.HashSet
 
@@ -83,6 +73,7 @@ object Badges {
         ALL_SCROLLS_IDENTIFIED(17),
         ALL_RINGS_IDENTIFIED(18),
         ALL_ARTIFACTS_IDENTIFIED(70),
+
         // ALL_WANDS_IDENTIFIED(19),
         ALL_ITEMS_IDENTIFIED(35, true),
         BAG_BOUGHT_SEED_POUCH,
@@ -121,6 +112,7 @@ object Badges {
         BOSS_SLAIN_3_LANCE,
         BOSS_SLAIN_3_WINEBIBBER,
         BOSS_SLAIN_3_ALL_SUBCLASSES(33, true),
+
         //        RING_OF_HAGGLER(20),
 //        RING_OF_THORNS(21),
         STRENGTH_ATTAINED_1(40),
@@ -967,8 +959,10 @@ object Badges {
 
     fun validateChampion() {
 //        if (Dungeon.IsChallenged()) return
-        if (Dungeon.hero.challenge != null && Dungeon.hero.challenge != Challenge.LowPressure)
-            displayBadge(Badge.CHAMPION)
+        if (Dungeon.hero.challenge != null) {
+            if (Dungeon.hero.challenge != Challenge.LowPressure) displayBadge(Badge.CHAMPION)
+            Challenge.PassChallenge(Dungeon.hero.challenge!!)
+        }
     }
 
     private fun displayBadge(badge: Badge?) {

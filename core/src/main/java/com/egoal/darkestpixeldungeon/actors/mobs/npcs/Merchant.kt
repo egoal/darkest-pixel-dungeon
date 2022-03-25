@@ -11,11 +11,8 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Discount
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
-import com.egoal.darkestpixeldungeon.items.EquipableItem
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
-import com.egoal.darkestpixeldungeon.items.potions.Potion
-import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
@@ -26,10 +23,8 @@ import com.egoal.darkestpixeldungeon.ui.Window
 import com.egoal.darkestpixeldungeon.windows.*
 import com.watabou.noosa.BitmapText
 import com.watabou.noosa.ColorBlock
-import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
-import kotlin.collections.ArrayList
 import kotlin.math.min
 
 open class Merchant : NPC() {

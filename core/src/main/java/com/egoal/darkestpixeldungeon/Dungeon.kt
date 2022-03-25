@@ -234,6 +234,7 @@ object Dungeon {
 
         Badges.reset()
         Catalog.Load()
+        Challenge.Load()
 
         // hero init
         hero = Hero()

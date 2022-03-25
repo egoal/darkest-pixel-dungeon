@@ -21,18 +21,19 @@
 package com.egoal.darkestpixeldungeon.items.potions
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.effects.Speck
-import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.EfficientPotionOfHealing
 import com.egoal.darkestpixeldungeon.effects.PerkGain
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.PathFinder
 import kotlin.math.max
 import kotlin.math.min
 
@@ -115,6 +116,14 @@ class PotionOfHealing : Potion() {
             2 -> hero.HT * 2
             3 -> hero.HT * 3
             else -> max(hero.HT, hero.HT / 3 + 50) // 75
+        }
+    }
+
+    override fun shatter(cell: Int) {
+        super.shatter(cell)
+
+        PathFinder.NEIGHBOURS9.map { Actor.findChar(cell + it) }.filterNotNull().forEach {
+            it.recoverHP(recoverValue(Dungeon.hero))
         }
     }
 
