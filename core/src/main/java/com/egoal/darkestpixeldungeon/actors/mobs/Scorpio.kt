@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CrippleAttackAbility
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
@@ -39,6 +40,8 @@ open class Scorpio : Mob() {
 
         spriteClass = ScorpioSprite::class.java
         loot = PotionOfHealing()
+
+        abilities.add(CrippleAttackAbility())
     }
 
     override fun viewDistance(): Int = 6
@@ -48,13 +51,6 @@ open class Scorpio : Mob() {
     override fun canAttack(enemy: Char): Boolean {
         val attack = Ballistica(pos, enemy.pos, Ballistica.PROJECTILE)
         return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos
-    }
-
-    override fun attackProc(dmg: Damage): Damage {
-        if (Random.Int(3) == 0 && (dmg.to as Char).buff(Cripple::class.java) == null)
-            Buff.prolong(dmg.to as Char, Cripple::class.java, Cripple.DURATION)
-
-        return dmg
     }
 
     override fun getCloser(target: Int): Boolean {

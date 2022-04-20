@@ -6,8 +6,10 @@ import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.KnockBackAttackAbility
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.Item
@@ -33,6 +35,9 @@ open class Ballista : Mob() {
         PropertyConfiger.set(this, "Ballista")
 
         spriteClass = Sprite::class.java
+
+        immunities.addAll(listOf(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java))
+        abilities.add(KnockBackAttackAbility())
     }
 
     override fun viewDistance(): Int = 6
@@ -59,25 +64,6 @@ open class Ballista : Mob() {
                 if (enemy != null) attack(enemy!!)
             })
         }
-    }
-
-    override fun attackProc(dmg: Damage): Damage {
-        // chance to knock back
-        val chance = when (Dungeon.level.distance((dmg.from as Char).pos, (dmg.to as Char).pos)) {
-            0, 1 -> 0.4f
-            in 2..5 -> 0.25f
-            else -> 0f
-        }
-
-        if (dmg.to is Char && Random.Float() < chance) {
-            val tgt = dmg.to as Char
-            val opposite = tgt.pos + (tgt.pos - pos)
-            val shot = Ballistica(tgt.pos, opposite, Ballistica.MAGIC_BOLT)
-
-            WandOfBlastWave.throwChar(tgt, shot, 1)
-        }
-
-        return super.attackProc(dmg)
     }
 
     override fun getCloser(target: Int): Boolean {
@@ -114,12 +100,8 @@ open class Ballista : Mob() {
         ammo = bundle.getInt(AMMO)
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     companion object {
         private const val AMMO = "ammo"
-
-        val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java, Sleep::class.java)
 
         class Sprite : MobSprite() {
             init {

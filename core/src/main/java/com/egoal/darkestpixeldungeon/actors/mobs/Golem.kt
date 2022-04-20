@@ -38,6 +38,7 @@ class Golem : Mob() {
         PropertyConfiger.set(this, "Golem")
 
         spriteClass = GolemSprite::class.java
+        immunities.addAll(listOf(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java))
     }
 
     override fun attackDelay(): Float = 1.5f
@@ -46,11 +47,5 @@ class Golem : Mob() {
         Imp.Quest.process(this)
 
         super.die(cause)
-    }
-
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
-    companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java)
     }
 }

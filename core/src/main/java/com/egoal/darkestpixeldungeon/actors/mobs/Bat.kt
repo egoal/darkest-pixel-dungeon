@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.sprites.BatSprite
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.Statistics
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.VampireAttackAbility
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
@@ -41,6 +42,8 @@ class Bat : Mob() {
 
         baseSpeed = 2f
         flying = true
+
+        abilities.add(VampireAttackAbility())
     }
 
     override fun viewDistance(): Int = seeDistance()
@@ -55,19 +58,6 @@ class Bat : Mob() {
 
             dmg
         }
-    }
-
-    override fun attackProc(damage: Damage): Damage {
-        if (damage.type != Damage.Type.MENTAL) {
-            val reg = Math.min(damage.value, HT - HP) / 3
-
-            if (reg > 0) {
-                HP += reg
-                sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)
-            }
-        }
-
-        return damage
     }
 
     override fun die(cause: Any?) {

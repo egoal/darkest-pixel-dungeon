@@ -43,6 +43,7 @@ open class Brute : Mob() {
         spriteClass = BruteSprite::class.java
 
         loot = Gold::class.java
+        immunities.add(Terror::class.java)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -74,11 +75,7 @@ open class Brute : Mob() {
         return value
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     companion object {
         private const val TIME_TO_ENRAGE = 1f
-
-        private val IMMUNITIES = hashSetOf<Class<*>>(Terror::class.java)
     }
 }

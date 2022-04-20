@@ -34,6 +34,7 @@ import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.SuccubusSprite
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CharmAttackAbility
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
@@ -50,24 +51,14 @@ class Succubus : Mob() {
         spriteClass = SuccubusSprite::class.java
 
         loot = ScrollOfLullaby()
+
+        abilities.add(CharmAttackAbility())
+        immunities.add(Sleep::class.java)
     }
 
     override fun viewDistance(): Int = 6
 
     override fun giveDamage(target: Char): Damage = super.giveDamage(target).addElement(Damage.Element.ICE)
-
-    override fun attackProc(damage: Damage): Damage {
-        val enemy = damage.to as Char
-
-        if (Random.Int(3) == 0) {
-            Charm.Attacher(id(), Random.IntRange(3, 7)).attachTo(enemy)
-
-            enemy.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 5)
-            Sample.INSTANCE.play(Assets.SND_CHARMS)
-        }
-
-        return damage
-    }
 
     override fun getCloser(target: Int): Boolean {
         if (Level.fieldOfView[target] && Dungeon.level.distance(pos, target) > 2
@@ -115,12 +106,7 @@ class Succubus : Mob() {
         delay = BLINK_DELAY
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     companion object {
-
         private const val BLINK_DELAY = 5
-
-        private val IMMUNITIES = hashSetOf<Class<*>>(Sleep::class.java)
     }
 }

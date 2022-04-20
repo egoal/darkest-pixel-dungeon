@@ -47,6 +47,8 @@ open class Monk : Mob() {
 
         PropertyConfiger.set(this, "Monk")
         loot = Food()
+
+        immunities.addAll(listOf(Amok::class.java, Terror::class.java))
     }
 
     override fun giveDamage(target: Char): Damage {
@@ -89,8 +91,6 @@ open class Monk : Mob() {
         return damage
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(DISARMHITS, hitsToDisarm)
@@ -102,9 +102,6 @@ open class Monk : Mob() {
     }
 
     companion object {
-
-        private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Terror::class.java)
-
         private const val DISARMHITS = "hitsToDisarm"
     }
 }

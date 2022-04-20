@@ -20,25 +20,18 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Charm
-import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
-import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
-import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable
-import com.egoal.darkestpixeldungeon.effects.CellEmitter
-import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.GooWarn
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
-import com.egoal.darkestpixeldungeon.actors.buffs.Ooze
+import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -55,8 +48,6 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-import java.util.HashSet
-
 class Goo : Mob() {
     private var pumpedUp = 0
 
@@ -66,6 +57,8 @@ class Goo : Mob() {
         PropertyConfiger.set(this, "Goo")
 
         loot = LloydsBeacon().identify()
+
+        immunities.addAll(listOf(Terror::class.java, Corruption::class.java, Charm::class.java, MagicalSleep::class.java))
     }
 
     override fun giveDamage(enemy: Char): Damage {
@@ -271,11 +264,7 @@ class Goo : Mob() {
 
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     companion object {
         private const val PUMPEDUP = "pumpedup"
-
-        private val IMMUNITIES = hashSetOf<Class<*>>(Terror::class.java, Corruption::class.java, Charm::class.java, MagicalSleep::class.java)
     }
 }

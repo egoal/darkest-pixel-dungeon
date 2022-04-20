@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttackAbility
 import com.egoal.darkestpixeldungeon.sprites.AlbinoSprite
 import com.watabou.utils.Random
 
@@ -34,18 +35,12 @@ class Albino : Rat() {
 
         HT = 15
         HP = HT
+
+        abilities.add(BleedingAttackAbility())
     }
 
     override fun die(cause: Any?) {
         super.die(cause)
         Badges.validateRare(this)
-    }
-
-    override fun attackProc(dmg: Damage): Damage {
-        if (Random.Int(2) == 0) {
-            Buff.affect(dmg.to as Char, Bleeding::class.java).set(dmg.value)
-        }
-
-        return dmg
     }
 }

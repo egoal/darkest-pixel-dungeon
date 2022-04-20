@@ -6,7 +6,9 @@ import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.MentalExplodeDyingAbility
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -26,6 +28,9 @@ class AshesSkull : Mob() {
 
         spriteClass = Sprite::class.java
         flying = true
+
+        abilities.add(MentalExplodeDyingAbility())
+        immunities.addAll(listOf(Fire::class.java, Bleeding::class.java))
     }
 
     private var jumpcd = 0
@@ -85,22 +90,6 @@ class AshesSkull : Mob() {
         return true
     }
 
-    override fun die(cause: Any?) {
-        super.die(cause)
-
-        val dis = Dungeon.level.distance(pos, Dungeon.hero.pos)
-        if (Dungeon.hero.isAlive && dis <= 2) {
-            if (Random.Int(4) == 0) Dungeon.hero.sayShort(HeroLines.BAD_NOISE)
-
-            val dmg = Damage(Random.NormalIntRange(2, 8), this, Dungeon.hero).type(Damage.Type.MENTAL)
-            Dungeon.hero.takeDamage(dmg)
-        }
-
-        if (dis < 4) Sample.INSTANCE.play(Assets.SND_HOWL, 1.2f, 1.2f, 1f)
-    }
-
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(COOLDOWN_JUMP_STR, jumpcd)
@@ -148,8 +137,6 @@ class AshesSkull : Mob() {
     }
 
     companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(Fire::class.java)
-
         private const val COOLDOWN_JUMP = 4
         private const val COOLDOWN_JUMP_STR = "jumpcd"
     }

@@ -29,6 +29,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BurningAttackAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefendAbility
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.Potion
@@ -53,31 +55,12 @@ open class Elemental : Mob() {
         spriteClass = ElementalSprite::class.java
 
         flying = true
+
+        abilities.add(BurningAttackAbility())
+        abilities.add(EnchantDefendAbility(0.333f, Blazing::class.java, 8f))
     }
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.FIRE)
-
-    override fun attackProc(dmg: Damage): Damage {
-        val enemy = dmg.to as Char
-        if (Random.Int(2) == 0)
-            Buff.affect(enemy, Burning::class.java).reignite(enemy)
-
-        return dmg
-    }
-
-    override fun defenseProc(dmg: Damage): Damage {
-        if (dmg.from is Hero) {
-            val hero = dmg.from as Hero
-            if (Dungeon.level.adjacent(hero.pos, pos) && Random.Int(3) == 0) {
-                val weapon = hero.belongings.weapon
-                if (weapon is MeleeWeapon && weapon.enchantment == null) {
-                    weapon.enchant(Blazing::class.java, 8f)
-                }
-            }
-        }
-
-        return super.defenseProc(dmg)
-    }
 
     override fun add(buff: Buff) {
         if (buff is Burning) {

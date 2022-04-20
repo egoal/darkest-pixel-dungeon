@@ -21,18 +21,11 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Ooze
-import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
-import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.StenchGas
-import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.OozeAttackAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefendAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
 import com.egoal.darkestpixeldungeon.sprites.FetidRatSprite
-import com.watabou.utils.Random
-
-import java.util.HashSet
 
 class FetidRat : Rat() {
 
@@ -41,32 +34,14 @@ class FetidRat : Rat() {
         spriteClass = FetidRatSprite::class.java
 
         state = WANDERING
-    }
 
-    override fun attackProc(dmg: Damage): Damage {
-        if (Random.Int(3) == 0) {
-            Buff.affect(dmg.to as Char, Ooze::class.java)
-        }
-
-        return dmg
-    }
-
-    override fun defenseProc(dmg: Damage): Damage {
-
-        GameScene.add(Blob.seed(pos, 20, StenchGas::class.java))
-
-        return super.defenseProc(dmg)
+        abilities.add(OozeAttackAbility())
+        abilities.add(ReleaseGasDefendAbility(StenchGas::class.java))
     }
 
     override fun die(cause: Any?) {
         super.die(cause)
 
         Ghost.Quest.process()
-    }
-
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
-    companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(StenchGas::class.java)
     }
 }

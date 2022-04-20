@@ -34,11 +34,11 @@ object Bestiary {
 
     }
 
-    fun mob(depth: Int): Mob = mobClass(depth).newInstance()
+    fun mob(depth: Int): Mob = mobClass(depth).newInstance().apply { random() }
 
     fun mutable(depth: Int): Mob? {
         //todo: rework this.
-        if (depth <= 20 && Statistics.Clock.state != Statistics.ClockTime.State.Day && Random.Int(12) == 0) {
+        if (depth <= 20 && Statistics.Clock.state != Statistics.ClockTime.State.Day && Random.Int(15) == 0) {
             return Glowworm(depth)
         }
 
@@ -56,7 +56,7 @@ object Bestiary {
             }
         }
 
-        return cl.newInstance()
+        return cl.newInstance().apply { random() }
     }
 
     private fun mobClass(depth: Int): Class<out Mob> {

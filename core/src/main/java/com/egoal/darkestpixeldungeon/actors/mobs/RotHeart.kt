@@ -27,6 +27,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
+import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefendAbility
 import com.egoal.darkestpixeldungeon.plants.Rotberry
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.RotHeartSprite
@@ -42,6 +44,9 @@ class RotHeart : Mob() {
         spriteClass = RotHeartSprite::class.java
 
         state = PASSIVE
+
+        immunities.addAll(listOf(Terror::class.java, Bleeding::class.java))
+        abilities.add(ReleaseGasDefendAbility(ToxicGas::class.java))
     }
 
     override fun takeDamage(dmg: Damage): Int {
@@ -54,12 +59,6 @@ class RotHeart : Mob() {
             return super.takeDamage(dmg)
         }
 
-    }
-
-    override fun defenseProc(damage: Damage): Damage {
-        GameScene.add(Blob.seed(pos, 20, ToxicGas::class.java))
-
-        return super.defenseProc(damage)
     }
 
     override fun beckon(cell: Int) {
@@ -77,11 +76,4 @@ class RotHeart : Mob() {
         super.die(cause)
         Dungeon.level.drop(Rotberry.Seed(), pos).sprite.drop()
     }
-
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
-    companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(ToxicGas::class.java, Terror::class.java)
-    }
-
 }

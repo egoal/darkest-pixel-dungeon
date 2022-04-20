@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Assassin
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
 import com.egoal.darkestpixeldungeon.effects.Surprise
 import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.items.Generator
@@ -45,6 +46,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -83,11 +85,18 @@ abstract class Mob : Char() {
     var criticalChance = 0f
     var criticalRatio = 1.25f // it's not the ratio matters, critical itself however
 
+    var abilities = ArrayList<Ability>()
+
     init {
         name = M.L(this, "name")
         actPriority = 2 //hero gets priority over mobs.
 
         camp = Camp.ENEMY
+    }
+
+    // create random mob
+    open fun random() {
+        for (a in abilities) a.onReady(this)
     }
 
     override fun storeInBundle(bundle: Bundle) {
@@ -157,7 +166,15 @@ abstract class Mob : Char() {
             damage.value = round(damage.value * criticalRatio).toInt()
             damage.addFeature(Damage.Feature.CRITICAL)
         }
+
+        for (a in abilities) a.procGivenDamage(this, damage)
+
         return damage
+    }
+
+    override fun attackProc(dmg: Damage): Damage {
+        for (a in abilities) a.onAttack(this, dmg)
+        return super.attackProc(dmg)
     }
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(minDefense, maxDefense) }
@@ -441,6 +458,8 @@ abstract class Mob : Char() {
         // process buff: soul mark
         buff(SoulMark::class.java)?.onDamageToken(this, dmg)
 
+        for (a in abilities) a.onDefend(this, dmg)
+
         return dmg
     }
 
@@ -508,19 +527,19 @@ abstract class Mob : Char() {
     }
 
     override fun die(cause: Any?) {
-        super.die(cause)
+        var justDie = true
+        for (a in abilities) justDie = a.onDying(this) && justDie
 
-        var lootChance = this.lootChance
-        lootChance *= Math.pow(1.15, Dungeon.hero.wealthBonus().toDouble()).toFloat()
+        if (justDie) {
+            val chance = lootChance * 1.15f.pow(Dungeon.hero.wealthBonus())
+            if (Random.Float() < chance && Dungeon.hero.lvl <= maxLvl + 2) {
+                createLoot()?.let { Dungeon.level.drop(it, pos).sprite.drop() }
+            }
 
-        if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
-            val loot = createLoot()
-            if (loot != null)
-                Dungeon.level.drop(loot, pos).sprite.drop()
-        }
+            if (Dungeon.hero.isAlive && !Dungeon.visible[pos])
+                GLog.i(M.L(this, "died"))
 
-        if (Dungeon.hero.isAlive && !Dungeon.visible[pos]) {
-            GLog.i(Messages.get(this, "died"))
+            super.die(cause)
         }
     }
 

@@ -56,6 +56,7 @@ class Eye : Mob() {
         HUNTING = Hunting()
 
         loot = Dewdrop()
+        immunities.add(Terror::class.java)
     }
 
     override fun viewDistance(): Int = 6
@@ -180,10 +181,6 @@ class Eye : Mob() {
         beamCharged = bundle.getBoolean(BEAM_CHARGED)
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> {
-        return IMMUNITIES
-    }
-
     private inner class Hunting : Mob.Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
             var enemyInFOV = enemyInFOV
@@ -195,11 +192,8 @@ class Eye : Mob() {
     }
 
     companion object {
-
         private const val BEAM_TARGET = "beamTarget"
         private const val BEAM_COOLDOWN = "beamCooldown"
         private const val BEAM_CHARGED = "beamCharged"
-
-        private val IMMUNITIES = hashSetOf<Class<*>>(Terror::class.java)
     }
 }

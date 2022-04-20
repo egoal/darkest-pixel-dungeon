@@ -27,6 +27,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ExplodeDyingAbility
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
@@ -45,30 +46,9 @@ class Skeleton : Mob() {
 
         spriteClass = SkeletonSprite::class.java
         loot = Generator.WEAPON.generate()
-    }
 
-
-    override fun die(cause: Any?) {
-        super.die(cause)
-
-        var heroKilled = false
-        for (i in PathFinder.NEIGHBOURS8) {
-            Actor.findChar(i + pos)?.let {
-                if (it.isAlive) {
-                    val dmg = Damage(Random.NormalIntRange(4, 10), this@Skeleton, it).addElement(Damage.Element.FIRE)
-                    it.takeDamage(it.defendDamage(dmg))
-                    if (it === Dungeon.hero && !it.isAlive)
-                        heroKilled = true
-                }
-            }
-        }
-
-        if (Dungeon.visible[pos]) Sample.INSTANCE.play(Assets.SND_BONES)
-
-        if (heroKilled) {
-            Dungeon.fail(javaClass)
-            GLog.n(Messages.get(this, "explo_kill"))
-        }
+        immunities.addAll(listOf(Bleeding::class.java))
+        abilities.add(ExplodeDyingAbility())
     }
 
     override fun createLoot(): Item? {
@@ -86,11 +66,5 @@ class Skeleton : Mob() {
 
             loot
         }
-    }
-
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUS
-
-    companion object{
-        private val IMMUS = hashSetOf<Class<*>>(Bleeding::class.java)
     }
 }

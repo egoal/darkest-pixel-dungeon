@@ -23,20 +23,19 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.blobs.Web
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.actors.blobs.Web
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Poison
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots
+import com.egoal.darkestpixeldungeon.actors.buffs.Terror
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.PoisonAttackAbility
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.unclassified.SpiderGland
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.SpinnerSprite
 import com.watabou.utils.Random
-
-import java.util.HashSet
 
 class Spinner : Mob() {
 
@@ -47,6 +46,9 @@ class Spinner : Mob() {
         loot = MysteryMeat()
 
         FLEEING = Fleeing()
+
+        immunities.add(Roots::class.java)
+        abilities.add(PoisonAttackAbility())
     }
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.POISON)
@@ -63,11 +65,7 @@ class Spinner : Mob() {
 
     override fun attackProc(dmg: Damage): Damage {
         val enemy = dmg.to as Char
-        if (Random.Int(2) == 0) {
-            Buff.affect(enemy, Poison::class.java).set(Random.Int(7, 9) * Poison
-                    .durationFactor(enemy))
-            state = FLEEING
-        }
+        if (enemy.buff(Poison::class.java) != null) state = FLEEING
 
         return dmg
     }
@@ -87,8 +85,6 @@ class Spinner : Mob() {
         return super.createLoot()
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     private inner class Fleeing : Mob.Fleeing() {
         override fun nowhereToRun() {
             if (buff(Terror::class.java) == null) {
@@ -97,9 +93,5 @@ class Spinner : Mob() {
                 super.nowhereToRun()
             }
         }
-    }
-
-    companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(Roots::class.java)
     }
 }

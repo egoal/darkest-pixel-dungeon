@@ -25,26 +25,26 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
+import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
+import com.egoal.darkestpixeldungeon.items.books.TomeOfRetrain
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.DM300Sprite
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
-import com.egoal.darkestpixeldungeon.actors.buffs.*
-import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
-import com.egoal.darkestpixeldungeon.items.books.TomeOfRetrain
-import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.ui.BossHealthBar
 import com.egoal.darkestpixeldungeon.ui.Icons
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Sample
@@ -52,12 +52,11 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-import java.util.HashSet
-
 class DM300 : Mob() {
     private var overloaded = false
     val isOverloaded: Boolean get() = overloaded
     private val cross: Image = Icons.TARGET.get()
+
     //todo: overhaul this, but i may not.
     private var onBumped: (() -> Unit)? = null
 
@@ -69,6 +68,9 @@ class DM300 : Mob() {
 
         PropertyConfiger.set(this, "DM300")
         loot = TomeOfRetrain()
+
+        immunities.addAll(listOf(ToxicGas::class.java, Terror::class.java,
+                Corruption::class.java, Charm::class.java, MagicalSleep::class.java, Cripple::class.java))
     }
 
     override fun viewDistance(): Int = 6
@@ -303,8 +305,6 @@ class DM300 : Mob() {
         spend(1f)
     }
 
-    override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
-
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(OVERLOADED, overloaded)
@@ -326,9 +326,6 @@ class DM300 : Mob() {
     }
 
     companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(ToxicGas::class.java, Terror::class.java,
-                Corruption::class.java, Charm::class.java, MagicalSleep::class.java, Cripple::class.java)
-
         private const val OVERLOADED = "overloaded"
         private const val BUMP_CELL = "bumpcell"
         private const val BUMP_CD = "bumpcd"

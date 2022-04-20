@@ -90,6 +90,8 @@ abstract class Char : Actor() {
     var magicalResistance = 0f
     var elementalResistance = FloatArray(Damage.Element.ELEMENT_COUNT)
 
+    val immunities = hashSetOf<Class<*>>()
+
     private val buffs = HashSet<Buff>()
 
     var camp: Camp = Camp.NEUTRAL
@@ -449,7 +451,7 @@ abstract class Char : Actor() {
         next()
     }
 
-    open fun immunizedBuffs(): HashSet<Class<*>> = EMPTY
+    fun immunizedBuffs(): HashSet<Class<*>> = immunities
 
     fun properties(): HashSet<Property> = properties
 
@@ -472,8 +474,6 @@ abstract class Char : Actor() {
         private const val TAG_HT = "HT"
         private const val TAG_SHLD = "SHLD"
         private const val BUFFS = "buffs"
-
-        private val EMPTY = HashSet<Class<*>>()
 
         // split the whole attack process
         // hit check, but considered the visibility
