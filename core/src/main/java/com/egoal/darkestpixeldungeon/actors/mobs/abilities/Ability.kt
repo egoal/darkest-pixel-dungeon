@@ -9,6 +9,9 @@ import com.watabou.utils.Bundle
 open class Ability : Bundlable {
     fun prefix(): String = M.L(this, "prefix")
 
+    // call only once, when the mob was created.
+    open fun onInitialize(belonger: Mob) {}
+
     /**
      * call: 1. after initialization, 2. each time restored
      */

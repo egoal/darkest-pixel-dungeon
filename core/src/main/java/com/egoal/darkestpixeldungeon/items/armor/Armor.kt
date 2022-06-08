@@ -384,7 +384,7 @@ open class Armor(var tier: Int) : EquipableItem() {
                             Healing::class.java),
                     arrayOf(Brimstone::class.java, Viscosity::class.java, Repulsion::class.java,
                             Camouflage::class.java, Flow::class.java, Clarifying::class.java,
-                            ChuNeng::class.java, Peaceful::class.java),
+                            ChuNeng::class.java, Peaceful::class.java, Protection::class.java),
                     arrayOf(Affection::class.java, AntiMagic::class.java, Thorns::class.java, Tough::class.java)
             )
             private val chances = floatArrayOf(55f, 30f, 15f)

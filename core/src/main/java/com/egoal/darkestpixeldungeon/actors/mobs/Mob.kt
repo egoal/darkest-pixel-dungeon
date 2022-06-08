@@ -101,7 +101,10 @@ abstract class Mob : Char() {
 
             name = eas[0].prefix() + name
         }
-        abilities.forEach { it.onReady(this) }
+        abilities.forEach {
+            it.onInitialize(this)
+            it.onReady(this)
+        }
     }
 
     /**

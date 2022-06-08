@@ -98,21 +98,11 @@ open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
 
     class WarriorShield : Buff() {
         private var armor: Armor? = null
-        private var partialShield: Float = 0f
 
         override fun act(): Boolean {
             if (armor == null)
                 detach()
-            else if (armor!!.isEquipped(target as Hero)) {
-                if (target.SHLD < maxShield()) {
-                    partialShield += (1 / (35 * Math.pow(0.885, (maxShield() - target.SHLD - 1).toDouble()))).toFloat()
-                }
-            }
-            while (partialShield >= 1) {
-                target.SHLD++
-                partialShield--
-            }
-            spend(Actor.TICK)
+            spend(TICK)
             return true
         }
 
@@ -126,9 +116,7 @@ open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
                 val am = armor!!
                 var value = 3 + am.tier + am.level()
 
-                // extra shield if enchanted, this would speed up the charging, too
-                // that's why i think it's powerful enough, at least for now
-                if (am.checkSeal()?.enchanted == true) value += 1 + am.level()
+                if (am.checkSeal()?.enchanted == true) value += 2 + am.level()
 
                 return value
             }

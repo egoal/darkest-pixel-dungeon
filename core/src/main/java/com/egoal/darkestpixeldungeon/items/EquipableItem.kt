@@ -109,6 +109,9 @@ abstract class EquipableItem : Item() {
         return doUnequip(hero, collect, true)
     }
 
+    /**
+     * calle: 1. each time restored, 2. resurrect, 3. equipped
+     */
     open fun activate(ch: Char) {}
 
     companion object {

@@ -6,7 +6,9 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.actors.mobs.MobSpawner
 import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
@@ -49,6 +51,20 @@ class MentalExplodeDyingAbility : Ability() {
         }
 
         if (dis < 4) Sample.INSTANCE.play(Assets.SND_HOWL, 1.2f, 1.2f, 1f)
+
+        return super.onDying(belonger)
+    }
+}
+
+class RespawnDyingAbility(var mobclass: Class<out Mob>? = null) : Ability() {
+    var respawnDelay = Random.Int(5, 10)
+
+    override fun onDying(belonger: Mob): Boolean {
+        val head = MobSpawner(mobclass, respawnDelay)
+        head.pos = belonger.pos
+        GameScene.add(head)
+
+        if (Dungeon.visible[belonger.pos]) Sample.INSTANCE.play(Assets.SND_BONES)
 
         return super.onDying(belonger)
     }

@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDyingAbility
 import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
 import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
@@ -189,6 +190,10 @@ class King : Mob() {
             PropertyConfiger.set(this, "King.Undead")
             spriteClass = UndeadSprite::class.java
             state = WANDERING
+
+            abilities.add(RespawnDyingAbility(Undead::class.java).apply {
+                respawnDelay = Random.Int(10, 20)
+            })
         }
 
         override fun attackProc(dmg: Damage): Damage {
@@ -199,16 +204,6 @@ class King : Mob() {
         override fun takeDamage(dmg: Damage): Int {
             if (dmg.from is ToxicGas) (dmg.from as ToxicGas).clear(pos)
             return super.takeDamage(dmg)
-        }
-
-        override fun die(cause: Any?) {
-            super.die(cause)
-
-            val head = MobSpawner(Undead::class.java, Random.Int(10, 20))
-            head.pos = pos
-            GameScene.add(head)
-
-            if (Dungeon.visible[pos]) Sample.INSTANCE.play(Assets.SND_BONES)
         }
 
         fun realDie() {

@@ -27,17 +27,11 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
 // see Hero::magicalResistance
 class AntiMagic : Armor.Glyph() {
-    override fun proc(armor: Armor, damage: Damage): Damage {
-//        if (damage.type == Damage.Type.MAGICAL)
-//            damage.value = damage.value * 3 / 4
-
-        return damage
-    }
+    override fun proc(armor: Armor, damage: Damage): Damage = damage
 
     override fun glowing(): ItemSprite.Glowing = TEAL
 
     companion object {
-
         private val TEAL = ItemSprite.Glowing(0x88EEFF)
     }
 }

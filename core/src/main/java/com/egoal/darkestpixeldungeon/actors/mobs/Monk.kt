@@ -29,6 +29,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Amok
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp
 import com.egoal.darkestpixeldungeon.items.food.Food
+import com.egoal.darkestpixeldungeon.items.weapon.melee.BoethiahsBlade
 import com.egoal.darkestpixeldungeon.items.weapon.melee.Knuckles
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -72,9 +73,9 @@ open class Monk : Mob() {
             val weapon = hero.belongings.weapon
 
             if (weapon != null && weapon !is Knuckles && !weapon.cursed) {
-                if (hitsToDisarm == 0) hitsToDisarm = Random.NormalIntRange(3, 7)
+                if (hitsToDisarm <= 0) hitsToDisarm = Random.NormalIntRange(3, 7)
 
-                if (--hitsToDisarm == 0) {
+                if (--hitsToDisarm == 0 && hero.belongings.weapon !is BoethiahsBlade) {
                     hero.belongings.weapon = null
                     Dungeon.quickslot.clearItem(weapon)
                     weapon.updateQuickslot()

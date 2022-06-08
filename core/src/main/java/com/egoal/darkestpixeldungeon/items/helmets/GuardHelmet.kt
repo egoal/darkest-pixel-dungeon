@@ -36,15 +36,18 @@ class GuardHelmet : Helmet() {
     }
 
     private fun detach(hero: Hero) {
-        val sign = if (cursed) -1f else 1f
-        hero.magicalResistance -= 0.09f * sign
-        for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] -= 0.06f * sign
+        if (cursed) {
+            hero.magicalResistance += 0.09f
+            for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] += 0.06f
+        } else hero.MSHLD -= SHLD
     }
 
     private fun attach(hero: Hero) {
-        val sign = if (cursed) -1f else 1f
-        hero.magicalResistance += 0.09f * sign
-        for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] += 0.06f * sign
+        if (cursed) {
+            hero.magicalResistance += -0.09f
+            for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] += -0.06f
+        } else
+            hero.MSHLD += SHLD
     }
 
     override fun desc(): String {
@@ -56,5 +59,9 @@ class GuardHelmet : Helmet() {
         }
 
         return desc
+    }
+
+    companion object {
+        private const val SHLD = 5
     }
 }

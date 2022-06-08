@@ -89,6 +89,8 @@ class Hero : Char() {
     var regeneration = 0.1f
     var arcaneFactor = 1f
 
+    var MSHLD : Int = 0
+
     var reservedPerks = 0
     val spawnedPerks = ArrayList<Perk>()
 

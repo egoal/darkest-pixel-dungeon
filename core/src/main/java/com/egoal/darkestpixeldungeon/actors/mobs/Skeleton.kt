@@ -20,25 +20,19 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.actors.Damage
-
-import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ExplodeDyingAbility
-import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.MentalExplodeDyingAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDyingAbility
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.SkeletonSprite
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.watabou.noosa.audio.Sample
-import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.HashSet
 
 class Skeleton : Mob() {
     init {
@@ -49,6 +43,12 @@ class Skeleton : Mob() {
 
         immunities.addAll(listOf(Bleeding::class.java))
         abilities.add(ExplodeDyingAbility())
+    }
+
+    override fun randomAbilities(): List<Ability> = when (Random.Int(10)) {
+        0 -> listOf(RespawnDyingAbility())
+        1 -> listOf(MentalExplodeDyingAbility())
+        else -> listOf()
     }
 
     override fun createLoot(): Item? {
