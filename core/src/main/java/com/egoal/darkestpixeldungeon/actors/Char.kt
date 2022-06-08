@@ -451,7 +451,7 @@ abstract class Char : Actor() {
         next()
     }
 
-    fun immunizedBuffs(): HashSet<Class<*>> = immunities
+    open fun immunizedBuffs(): HashSet<Class<*>> = immunities
 
     fun properties(): HashSet<Property> = properties
 

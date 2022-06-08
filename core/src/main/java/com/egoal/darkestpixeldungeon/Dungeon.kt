@@ -58,8 +58,8 @@ import java.util.HashSet
 
 object Dungeon {
 
-    var initialDepth_ = -1
-    const val VERSION_STRING = ""
+    var initialDepth_ = 0
+    const val VERSION_STRING = "0.7.0-0"
 
     lateinit var hero: Hero
     lateinit var level: Level
@@ -292,8 +292,8 @@ object Dungeon {
 
         Actor.clear()
 
-        level!!.reset()
-        switchLevel(level!!, level!!.entrance)
+        level.reset()
+        switchLevel(level, level.entrance)
     }
 
     fun shopOnLevel(): Boolean = depth in listOf(6, 11, 16)

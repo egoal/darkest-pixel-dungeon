@@ -21,8 +21,8 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CrippleAttackAbility
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.sprites.GnollSprite
 import com.watabou.utils.Random
@@ -33,5 +33,10 @@ open class Gnoll : Mob() {
 
         PropertyConfiger.set(this, "Gnoll")
         loot = Gold::class.java
+    }
+
+    override fun randomAbilities(): List<Ability> = when (Random.Int(10)) {
+        0 -> listOf(CrippleAttackAbility())
+        else -> listOf()
     }
 }

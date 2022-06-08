@@ -34,7 +34,9 @@ public class Effects {
     DEATH_RAY,
     THICK_DEATH_RAY,
     LIGHT_RAY,
-    HEALTH_RAY
+    HEALTH_RAY,
+
+    HALO
   }
 
   ;
@@ -68,6 +70,9 @@ public class Effects {
         break;
       case THICK_DEATH_RAY:
         icon.frame(icon.texture.uvRect(16, 37, 32, 48));
+        break;
+      case HALO:
+        icon.frame(icon.texture.uvRect(0, 29, 16, 37));
         break;
     }
     return icon;

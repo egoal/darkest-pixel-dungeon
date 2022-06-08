@@ -36,7 +36,7 @@ class FetidRat : Rat() {
         state = WANDERING
 
         abilities.add(OozeAttackAbility())
-        abilities.add(ReleaseGasDefendAbility(StenchGas::class.java))
+        abilities.add(ReleaseGasDefendAbility().apply { gas = StenchGas::class.java })
     }
 
     override fun die(cause: Any?) {

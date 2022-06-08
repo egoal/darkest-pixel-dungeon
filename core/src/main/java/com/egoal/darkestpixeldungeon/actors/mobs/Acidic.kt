@@ -23,20 +23,15 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.FeedbackDefendAbility
 import com.egoal.darkestpixeldungeon.sprites.AcidicSprite
 import com.watabou.utils.Random
 
 class Acidic : Scorpio() {
     init {
         spriteClass = AcidicSprite::class.java
-    }
 
-    override fun defenseProc(dmg: Damage): Damage {
-        val feadback = Random.IntRange(0, dmg.value)
-        if (feadback > 0)
-            (dmg.from as Char).takeDamage(Damage(feadback, this, dmg.from))
-
-        return super.defenseProc(dmg)
+        abilities.add(FeedbackDefendAbility())
     }
 
     override fun die(cause: Any?) {

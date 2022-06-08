@@ -68,8 +68,7 @@ class Swarm : Mob() {
     override fun giveDamage(target: Char): Damage {
         return if (Random.Int(3) == 0)
             Damage(Random.IntRange(1, 2), this, target).type(Damage.Type.MENTAL)
-        else
-            Damage(Random.NormalIntRange(1, 5), this, target)
+        else super.giveDamage(target)
     }
 
     override fun defenseProc(damage: Damage): Damage {

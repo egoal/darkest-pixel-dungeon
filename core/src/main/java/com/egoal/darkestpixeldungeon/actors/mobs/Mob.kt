@@ -46,7 +46,6 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -85,7 +84,7 @@ abstract class Mob : Char() {
     var criticalChance = 0f
     var criticalRatio = 1.25f // it's not the ratio matters, critical itself however
 
-    var abilities = ArrayList<Ability>()
+    var abilities: ArrayList<Ability> = arrayListOf()
 
     init {
         name = M.L(this, "name")
@@ -94,10 +93,21 @@ abstract class Mob : Char() {
         camp = Camp.ENEMY
     }
 
-    // create random mob
-    open fun random() {
-        for (a in abilities) a.onReady(this)
+    fun initialize() {
+        val eas = randomAbilities()
+        if (eas.isNotEmpty()) {
+            abilities.addAll(eas)
+            properties.add(Property.MINIBOSS)
+
+            name = eas[0].prefix() + name
+        }
+        abilities.forEach { it.onReady(this) }
     }
+
+    /**
+     * return random abilities
+     */
+    protected open fun randomAbilities(): List<Ability> = listOf()
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
@@ -116,6 +126,8 @@ abstract class Mob : Char() {
         bundle.put(SEEN, enemySeen)
         bundle.put(TARGET, target)
         bundle.put(FOLLOWING, following)
+        bundle.put(ABILITIES, abilities)
+        bundle.put("miniboss", properties.contains(Property.MINIBOSS))
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -134,6 +146,10 @@ abstract class Mob : Char() {
         enemySeen = bundle.getBoolean(SEEN)
         target = bundle.getInt(TARGET)
         following = bundle.getBoolean(FOLLOWING)
+        abilities.clear()
+        abilities.addAll(bundle.getCollection(ABILITIES).map { it as Ability })
+        abilities.forEach { it.onReady(this) }
+        if (bundle.getBoolean("miniboss")) properties.add(Property.MINIBOSS)
     }
 
     open fun sprite(): CharSprite = spriteClass.newInstance()
@@ -390,6 +406,8 @@ abstract class Mob : Char() {
         super.updateSpriteState()
         if (Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze::class.java) != null)
             sprite.add(CharSprite.State.PARALYSED)
+
+        if (properties.contains(Property.MINIBOSS)) sprite.add(CharSprite.State.HALO)
     }
 
     override fun move(step: Int) {
@@ -780,6 +798,7 @@ abstract class Mob : Char() {
         private const val SEEN = "seen"
         private const val TARGET = "targetpos"
         private const val FOLLOWING = "following"
+        private const val ABILITIES = "abilities"
 
         private const val AI_SLEEPING = "SLEEPING"
         private const val AI_WANDERING = "WANDERING"

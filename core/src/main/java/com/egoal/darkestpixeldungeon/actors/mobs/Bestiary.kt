@@ -34,7 +34,7 @@ object Bestiary {
 
     }
 
-    fun mob(depth: Int): Mob = mobClass(depth).newInstance().apply { random() }
+    fun mob(depth: Int): Mob = mobClass(depth).newInstance().apply { initialize() }
 
     fun mutable(depth: Int): Mob? {
         //todo: rework this.
@@ -56,7 +56,7 @@ object Bestiary {
             }
         }
 
-        return cl.newInstance().apply { random() }
+        return cl.newInstance().apply { initialize() }
     }
 
     private fun mobClass(depth: Int): Class<out Mob> {

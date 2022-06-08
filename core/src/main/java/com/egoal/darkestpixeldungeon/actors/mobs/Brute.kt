@@ -29,53 +29,19 @@ import com.egoal.darkestpixeldungeon.sprites.BruteSprite
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnrageDefendAbility
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
-import java.util.HashSet
-
 open class Brute : Mob() {
-    private var enraged = false
-
     init {
         PropertyConfiger.set(this, "Brute")
         spriteClass = BruteSprite::class.java
 
         loot = Gold::class.java
         immunities.add(Terror::class.java)
-    }
 
-    override fun restoreFromBundle(bundle: Bundle) {
-        super.restoreFromBundle(bundle)
-        enraged = HP < HT / 4
-    }
-
-    override fun giveDamage(enemy: Char): Damage {
-        val damage = super.giveDamage(enemy)
-        if (!damage.isFeatured(Damage.Feature.CRITICAL) && enraged) {
-            damage.value = (damage.value * Random.Float(1.25f, 1.75f)).toInt()
-            damage.addFeature(Damage.Feature.CRITICAL)
-        }
-        return damage
-    }
-
-    override fun takeDamage(dmg: Damage): Int {
-        val value = super.takeDamage(dmg)
-
-        if (isAlive && !enraged && HP < HT / 3) {
-            enraged = true
-            if (Dungeon.visible[pos]) {
-                GLog.w(Messages.get(this, "enraged_text"))
-                sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"))
-            }
-            spend(TIME_TO_ENRAGE)
-        }
-
-        return value
-    }
-
-    companion object {
-        private const val TIME_TO_ENRAGE = 1f
+        abilities.add(EnrageDefendAbility())
     }
 }

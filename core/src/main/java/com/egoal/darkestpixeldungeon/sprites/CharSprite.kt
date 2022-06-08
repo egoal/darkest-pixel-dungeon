@@ -20,29 +20,17 @@
  */
 package com.egoal.darkestpixeldungeon.sprites
 
-import android.util.Log
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.effects.BlurSprite
-import com.egoal.darkestpixeldungeon.effects.BubbleText
-import com.egoal.darkestpixeldungeon.effects.CriticalShock
-import com.egoal.darkestpixeldungeon.effects.FloatingText
-import com.egoal.darkestpixeldungeon.effects.TorchHalo
+import com.egoal.darkestpixeldungeon.effects.*
 import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle
+import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
+import com.egoal.darkestpixeldungeon.effects.particles.SnowParticle
 import com.egoal.darkestpixeldungeon.effects.particles.SoulFlameParticle
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfInvisibility
 import com.egoal.darkestpixeldungeon.levels.Level
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.effects.DarkBlock
-import com.egoal.darkestpixeldungeon.effects.EmoIcon
-import com.egoal.darkestpixeldungeon.effects.IceBlock
-import com.egoal.darkestpixeldungeon.effects.Speck
-import com.egoal.darkestpixeldungeon.effects.Splash
-import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
-import com.egoal.darkestpixeldungeon.effects.particles.SnowParticle
-import com.egoal.darkestpixeldungeon.items.unclassified.Torch
-import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
@@ -80,7 +68,8 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
 
     protected var iceBlock: IceBlock? = null
     protected var darkBlock: DarkBlock? = null
-    protected var halo: TorchHalo? = null
+    protected var torchHalo: TorchHalo? = null
+    protected var halo: EliteHalo? = null
 
     protected var emo: EmoIcon? = null
 
@@ -103,7 +92,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
 
     enum class State {
         BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN,
-        ILLUMINATED, CHILLED, DARKENED, MARKED, SOUL_BURNING,
+        ILLUMINATED, CHILLED, DARKENED, MARKED, SOUL_BURNING, HALO
     }
 
     init {
@@ -301,8 +290,8 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 paused = true
             }
             State.ILLUMINATED -> {
-                halo = TorchHalo(this)
-                GameScene.effect(halo!!)
+                torchHalo = TorchHalo(this)
+                GameScene.effect(torchHalo!!)
             }
             State.CHILLED -> {
                 chilled = emitter()
@@ -318,6 +307,10 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 soulburning_!!.pour(SoulFlameParticle.FACTORY, 0.06f)
                 if (visible)
                     Sample.INSTANCE.play(Assets.SND_BURNING)
+            }
+            State.HALO -> {
+                halo = EliteHalo(this)
+                GameScene.effect(halo!!)
             }
         }
     }
@@ -341,8 +334,8 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 }
                 paused = false
             }
-            State.ILLUMINATED -> if (halo != null) {
-                halo!!.putOut()
+            State.ILLUMINATED -> if (torchHalo != null) {
+                torchHalo!!.putOut()
             }
             State.CHILLED -> if (chilled != null) {
                 chilled!!.on = false
@@ -359,6 +352,10 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
             State.SOUL_BURNING -> if (soulburning_ != null) {
                 soulburning_!!.on = false
                 soulburning_ = null
+            }
+            State.HALO -> {
+                halo?.killAndErase()
+                halo = null
             }
         }
     }
@@ -430,6 +427,8 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
 
         emo?.killAndErase()
         emo = null
+
+        halo?.killAndErase()
     }
 
     override fun onComplete(tweener: Tweener) {
