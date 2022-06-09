@@ -5,29 +5,29 @@ android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
 
-    task ndkBuild(type: Exec) {
-        description "builds JNI libs from source. " +
-                "This requires the Android NDK and is optional as precompiled libs are provided."
-
-        workingDir = "./src/main"
-        def ndkDir = android.ndkDirectory
-
-        //Need to start cmd first on windows systems, otherwise these are the same
-        if (System.properties["os.name"].toLowerCase().contains("windows")) {
-            commandLine "cmd", "/c", "$ndkDir${File.separator}ndk-build " +
-                    "NDK_APPLICATION_MK=./jniSources/Application.mk " +
-                    "NDK_LIBS_OUT=./jniLibs"
-        } else {
-            commandLine "$ndkDir${File.separator}ndk-build " +
-                    "NDK_APPLICATION_MK=./jniSources/Application.mk " +
-                    "NDK_LIBS_OUT=./jniLibs"
-        }
-
-    }
+//    task ndkBuild(type: Exec) {
+//        description "builds JNI libs from source. " +
+//                "This requires the Android NDK and is optional as precompiled libs are provided."
+//
+//        workingDir = "./src/main"
+//        def ndkDir = android.ndkDirectory
+//
+//        //Need to start cmd first on windows systems, otherwise these are the same
+//        if (System.properties["os.name"].toLowerCase().contains("windows")) {
+//            commandLine "cmd", "/c", "$ndkDir${File.separator}ndk-build " +
+//                    "NDK_APPLICATION_MK=./jniSources/Application.mk " +
+//                    "NDK_LIBS_OUT=./jniLibs"
+//        } else {
+//            commandLine "$ndkDir${File.separator}ndk-build " +
+//                    "NDK_APPLICATION_MK=./jniSources/Application.mk " +
+//                    "NDK_LIBS_OUT=./jniLibs"
+//        }
+//
+//    }
 
 }
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 repositories {
     mavenCentral()

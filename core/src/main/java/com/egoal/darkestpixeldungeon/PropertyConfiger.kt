@@ -80,6 +80,8 @@ object PropertyConfiger {
         for (p in mp.properties) mob.properties().add(p)
 
         mob.HP = mob.HT
+
+
     }
 
     data class MobProperty(
