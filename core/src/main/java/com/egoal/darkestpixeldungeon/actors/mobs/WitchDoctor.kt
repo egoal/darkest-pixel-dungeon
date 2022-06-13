@@ -52,7 +52,7 @@ class WitchDoctor : Mob() {
                 val allyToHeal = Dungeon.level.mobs.filter {
                     it !== this@WitchDoctor && it.camp == camp &&
                             Level.fieldOfView[it.pos] && (it.HP.toFloat() / it.HT) < 0.75f
-                }.minBy { it.HP.toFloat() / it.HT }
+                }.minByOrNull { it.HP.toFloat() / it.HT }
                 if (allyToHeal != null) {
                     heal(allyToHeal)
                     return false

@@ -173,12 +173,12 @@ class Combo : Buff(), ActionIndicator.Action {
                 FinisherType.CLOBBER -> dmg.value = (dmg.value * 0.6f).toInt()
                 FinisherType.CLEAVE -> dmg.value = (dmg.value * 1.5f).toInt()
                 FinisherType.SLAM -> dmg.value = (max(dmg.value, target.giveDamage(enemy).value) * 1.6f).toInt()
-                FinisherType.CRUSH -> dmg.value = (max(dmg.value, (1..4).map { target.giveDamage(enemy).value }.max()!!) * 2.5f).toInt()
+                FinisherType.CRUSH -> dmg.value = (max(dmg.value, (1..4).map { target.giveDamage(enemy).value }.maxOrNull()!!) * 2.5f).toInt()
                 FinisherType.FURY -> dmg.value = (dmg.value * 0.6f).toInt()
             }
             dmg.addFeature(Damage.Feature.CRITICAL)
 
-            // Char::attack
+            // Char::attac
             if (!dmg.isFeatured(Damage.Feature.PURE))
                 enemy.defendDamage(dmg)
             target.attackProc(dmg)

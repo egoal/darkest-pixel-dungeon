@@ -88,7 +88,7 @@ class DragonsSquama : Artifact() {
             dis < Int.MAX_VALUE
         }
 
-        val last = affectedCells.maxBy { PathFinder.distance[it] }
+        val last = affectedCells.maxByOrNull { PathFinder.distance[it] }
 
         for (cell in affectedCells) {
             if (cell != last) MagicMissile.fire(hero.sprite.parent, hero.pos, cell, null)

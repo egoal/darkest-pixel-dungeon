@@ -190,7 +190,7 @@ abstract class RegularLevel : Level() {
             return null
         }
 
-        val tpl = (1..10).mapNotNull { trySetStairs() }.maxBy { it.first }
+        val tpl = (1..10).mapNotNull { trySetStairs() }.maxByOrNull { it.first }
 
         if (tpl == null) return false
 

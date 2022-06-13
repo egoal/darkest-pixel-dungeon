@@ -29,7 +29,7 @@ class Blur : Perk() {
 
         fun onEvade() {
             if (Dungeon.hero.buff(Tenacity::class.java) != null) return
-            val i = moments.withIndex().minBy { it.value }!!.index
+            val i = moments.withIndex().minByOrNull { it.value }!!.index
             moments[i] = 5f
 
             if (moments.all { it > 0f }) {

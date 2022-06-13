@@ -24,6 +24,7 @@ import android.opengl.GLES20;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
+import com.egoal.darkestpixeldungeon.Database;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.TopExceptionHandler;
 import com.egoal.darkestpixeldungeon.effects.BannerSprites;
@@ -54,6 +55,8 @@ public class TitleScene extends PixelScene {
     public void create() {
 
         super.create();
+
+        Database.INSTANCE.Test();
 
         Music.INSTANCE.play(Assets.TRACK_MAIN_THEME, true);
         Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);

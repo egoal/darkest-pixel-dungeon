@@ -82,7 +82,7 @@ class SewerBossLevel : SewerLevel() {
     override fun createMobs() {
         val mob = Bestiary.mob(Dungeon.depth).apply {
             pos = (1..20).map { pointToCell(randomSpace(DigResult.Type.Normal)!!.rect.random()) }
-                    .filter { passable[it] }.maxBy { distance(entrance, it) }!!
+                    .filter { passable[it] }.maxByOrNull { distance(entrance, it) }!!
         }
 
         mobs.add(mob)

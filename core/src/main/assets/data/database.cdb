@@ -1,0 +1,1439 @@
+{
+	"sheets": [
+		{
+			"name": "Mobs",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "Class"
+				},
+				{
+					"typeStr": "3",
+					"name": "MaxHealth"
+				},
+				{
+					"typeStr": "3",
+					"name": "AttackSkill",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "DefendSkill",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "EXP",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "MaxLevel",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "LootChance",
+					"display": 1
+				},
+				{
+					"typeStr": "8",
+					"name": "Loot"
+				},
+				{
+					"typeStr": "3",
+					"name": "MinDamage",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "MaxDamage",
+					"display": null
+				},
+				{
+					"typeStr": "5:Normal,Magical,Mental",
+					"name": "TypeDamage",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "CritChance",
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "CritRatio",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "MinDefend",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "MaxDefend",
+					"display": null
+				},
+				{
+					"typeStr": "8",
+					"name": "Resistance",
+					"display": 1
+				},
+				{
+					"typeStr": "10:BOSS,MINIBOSS,UNDEAD,DEMONIC,MACHINE,IMMOVABLE,PHANTOM",
+					"name": "Properties",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"Class": "Rat",
+					"AttackSkill": 8,
+					"DefendSkill": 2,
+					"MaxHealth": 8,
+					"EXP": 1,
+					"MaxLevel": 5,
+					"LootChance": 0,
+					"MinDamage": 2,
+					"MaxDamage": 4,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 1,
+					"Resistance": [
+						{
+							"Magic": -0.3,
+							"Fire": 0,
+							"Poison": 0.1,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 0,
+					"Loot": []
+				},
+				{
+					"Class": "Slug",
+					"MaxHealth": 6,
+					"AttackSkill": 8,
+					"DefendSkill": 2,
+					"EXP": 1,
+					"MaxLevel": 5,
+					"MinDamage": 1,
+					"MaxDamage": 4,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 1,
+					"Resistance": [
+						{
+							"Magic": -0.5,
+							"Fire": 0,
+							"Poison": 0.75,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 0,
+					"Loot": [],
+					"LootChance": 0
+				},
+				{
+					"Class": "Gnoll",
+					"MaxHealth": 12,
+					"AttackSkill": 10,
+					"DefendSkill": 4,
+					"EXP": 2,
+					"MaxLevel": 8,
+					"MinDamage": 1,
+					"MaxDamage": 6,
+					"TypeDamage": 0,
+					"CritChance": 0.09,
+					"CritRatio": 1.25,
+					"MinDefend": 0,
+					"MaxDefend": 2,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 0,
+					"LootChance": 0.3,
+					"Loot": [
+						{
+							"Name": "Gold",
+							"Chance": 1
+						}
+					]
+				},
+				{
+					"Class": "Crab",
+					"MaxHealth": 16,
+					"AttackSkill": 12,
+					"DefendSkill": 5,
+					"EXP": 4,
+					"MaxLevel": 9,
+					"MinDamage": 1,
+					"MaxDamage": 8,
+					"TypeDamage": 0,
+					"CritChance": 0.05,
+					"CritRatio": 1.25,
+					"MinDefend": 0,
+					"MaxDefend": 3,
+					"Resistance": [
+						{
+							"Magic": -0.2,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0.1,
+							"Light": -0.2,
+							"Shadow": -0.25,
+							"Holy": 0
+						}
+					],
+					"Properties": 0,
+					"LootChance": 0.1667,
+					"Loot": [
+						{
+							"Name": "MysteryMeat",
+							"Chance": 1
+						}
+					]
+				},
+				{
+					"Class": "FetidRat",
+					"MaxHealth": 20,
+					"AttackSkill": 12,
+					"DefendSkill": 6,
+					"EXP": 5,
+					"MaxLevel": 8,
+					"MinDamage": 1,
+					"MaxDamage": 5,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 1,
+					"MaxDefend": 3,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": -0.3,
+							"Poison": 0.25,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0.2,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 10,
+					"Loot": [],
+					"LootChance": 0
+				},
+				{
+					"Class": "GnollTrickster",
+					"MaxHealth": 20,
+					"AttackSkill": 16,
+					"DefendSkill": 6,
+					"EXP": 5,
+					"MaxLevel": 8,
+					"MinDamage": 1,
+					"MaxDamage": 5,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 2,
+					"Resistance": [
+						{
+							"Magic": 0.2,
+							"Fire": 0,
+							"Poison": 0.25,
+							"Ice": -0.2,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 2,
+					"LootChance": 1,
+					"Loot": [
+						{
+							"Name": "CurareDart",
+							"Chance": 1
+						}
+					]
+				},
+				{
+					"Class": "GreatCrab",
+					"MaxHealth": 25,
+					"AttackSkill": 12,
+					"DefendSkill": 0,
+					"EXP": 6,
+					"MaxLevel": 9,
+					"MinDamage": 1,
+					"MaxDamage": 8,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 4,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0.25,
+							"Poison": 0,
+							"Ice": -0.25,
+							"Light": -0.2,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 2,
+					"LootChance": 0.1667,
+					"Loot": [
+						{
+							"Name": "MysteryMeat",
+							"Chance": 1
+						}
+					]
+				},
+				{
+					"Class": "Goo",
+					"MaxHealth": 100,
+					"AttackSkill": 10,
+					"DefendSkill": 8,
+					"EXP": 10,
+					"MaxLevel": 25,
+					"MinDamage": 1,
+					"MaxDamage": 10,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 2,
+					"Resistance": [
+						{
+							"Magic": 0.25,
+							"Fire": -0.25,
+							"Poison": 0.2,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0.25,
+							"Holy": -0.3
+						}
+					],
+					"Properties": 9,
+					"LootChance": 0.3333,
+					"Loot": [
+						{
+							"Name": "LloydsBeacon",
+							"Chance": 1
+						}
+					]
+				},
+				{
+					"Class": "Swarm",
+					"MaxHealth": 50,
+					"AttackSkill": 10,
+					"DefendSkill": 5,
+					"EXP": 4,
+					"MaxLevel": 9,
+					"MinDamage": 1,
+					"MaxDamage": 5,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": -0.3,
+							"Poison": 0,
+							"Ice": 0.2,
+							"Light": 0,
+							"Shadow": -0.35,
+							"Holy": 0
+						}
+					],
+					"Properties": 0,
+					"Loot": [
+						{
+							"Name": "PotionOfHealing",
+							"Chance": 1
+						}
+					],
+					"LootChance": 0.16667
+				},
+				{
+					"Class": "Skeleton",
+					"MaxHealth": 50,
+					"AttackSkill": 12,
+					"DefendSkill": 9,
+					"EXP": 5,
+					"MaxLevel": 10,
+					"LootChance": 0.175,
+					"Loot": [
+						{
+							"Name": "HandOfTheElder",
+							"Chance": 0.04
+						},
+						{
+							"Name": "WEAPON",
+							"Chance": 0.96
+						}
+					],
+					"MinDamage": 2,
+					"MaxDamage": 10,
+					"TypeDamage": 0,
+					"CritChance": 0.05,
+					"CritRatio": 0,
+					"MinDefend": 1,
+					"MaxDefend": 2,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": -0.3,
+							"Poison": 0,
+							"Ice": 0,
+							"Light": 0.3,
+							"Shadow": 0.1,
+							"Holy": -0.3
+						}
+					],
+					"Properties": 4
+				},
+				{
+					"Class": "Thief",
+					"MaxHealth": 20,
+					"AttackSkill": 12,
+					"DefendSkill": 9,
+					"EXP": 5,
+					"MaxLevel": 10,
+					"LootChance": 0.1,
+					"Loot": [
+						{
+							"Name": "MasterThievesArmband",
+							"Chance": 0.1
+						},
+						{
+							"Name": "RedHandleDagger",
+							"Chance": 0.2
+						},
+						{
+							"Name": "Gold",
+							"Chance": 0.7
+						}
+					],
+					"MinDamage": 1,
+					"MaxDamage": 8,
+					"TypeDamage": 0,
+					"CritChance": 0.1,
+					"CritRatio": 1.5,
+					"MinDefend": 0,
+					"MaxDefend": 3,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0.2,
+							"Ice": -0.2,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "Shaman",
+					"MaxHealth": 18,
+					"AttackSkill": 11,
+					"DefendSkill": 8,
+					"EXP": 6,
+					"MaxLevel": 14,
+					"LootChance": 0.25,
+					"Loot": [
+						{
+							"Name": "SCROLL",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 2,
+					"MaxDamage": 8,
+					"TypeDamage": 1,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 4,
+					"Resistance": [
+						{
+							"Magic": 0.15,
+							"Fire": 0.1,
+							"Poison": -0.2,
+							"Ice": 0.2,
+							"Light": 0.3,
+							"Shadow": -0.3,
+							"Holy": 0
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "Guard",
+					"MaxHealth": 50,
+					"AttackSkill": 14,
+					"DefendSkill": 10,
+					"EXP": 6,
+					"MaxLevel": 14,
+					"LootChance": 0.25,
+					"Loot": [
+						{
+							"Name": "ARMOR",
+							"Chance": 0.6
+						},
+						{
+							"Name": "PotionOfHealing",
+							"Chance": 0.3
+						},
+						{
+							"Name": "GuardHelmet",
+							"Chance": 0.1
+						}
+					],
+					"MinDamage": 4,
+					"MaxDamage": 12,
+					"TypeDamage": 0,
+					"CritChance": 0.05,
+					"CritRatio": 1.25,
+					"MinDefend": 0,
+					"MaxDefend": 6,
+					"Resistance": [
+						{
+							"Magic": -0.2,
+							"Fire": 0.05,
+							"Poison": 0.05,
+							"Ice": 0.05,
+							"Light": 0.05,
+							"Shadow": 0.05,
+							"Holy": -0.1
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "RotHeart",
+					"MaxHealth": 80,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 4,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 5,
+					"Resistance": [
+						{
+							"Magic": 0.5,
+							"Fire": -1,
+							"Poison": 0.5,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 34
+				},
+				{
+					"Class": "NewbornElemental",
+					"MaxHealth": 65,
+					"AttackSkill": 25,
+					"DefendSkill": 12,
+					"EXP": 7,
+					"MaxLevel": 20,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 16,
+					"MaxDamage": 26,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 5,
+					"Resistance": [
+						{
+							"Magic": 0.2,
+							"Fire": 0.5,
+							"Poison": 0,
+							"Ice": -1,
+							"Light": 0,
+							"Shadow": 0.25,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 10
+				},
+				{
+					"Class": "WitchDoctor",
+					"MaxHealth": 35,
+					"AttackSkill": 10,
+					"DefendSkill": 6,
+					"EXP": 6,
+					"MaxLevel": 15,
+					"LootChance": 0.1,
+					"Loot": [
+						{
+							"Name": "ReagentOfHealing",
+							"Chance": 0.05
+						},
+						{
+							"Name": "CeremonialDagger",
+							"Chance": 0.1
+						},
+						{
+							"Name": "POTION",
+							"Chance": 0.2
+						}
+					],
+					"MinDamage": 2,
+					"MaxDamage": 8,
+					"TypeDamage": 1,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 5,
+					"Resistance": [
+						{
+							"Magic": 0.25,
+							"Fire": -0.2,
+							"Poison": -0.3,
+							"Ice": 0.2,
+							"Light": 0.3,
+							"Shadow": 0.3,
+							"Holy": -0.35
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "Tengu",
+					"MaxHealth": 150,
+					"AttackSkill": 20,
+					"DefendSkill": 15,
+					"EXP": 20,
+					"MaxLevel": 25,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 6,
+					"MaxDamage": 16,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 1,
+					"MaxDefend": 5,
+					"Resistance": [
+						{
+							"Magic": 0.25,
+							"Fire": 0,
+							"Poison": 0.2,
+							"Ice": 0,
+							"Light": 0.25,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 1
+				},
+				{
+					"Class": "SkeletonKnight",
+					"MaxHealth": 50,
+					"AttackSkill": 20,
+					"DefendSkill": 0,
+					"EXP": 8,
+					"MaxLevel": 16,
+					"LootChance": 0.1,
+					"Loot": [
+						{
+							"Name": "HandOfTheElder",
+							"Chance": 0.1
+						},
+						{
+							"Name": "Wine",
+							"Chance": 0.9
+						}
+					],
+					"MinDamage": 6,
+					"MaxDamage": 18,
+					"TypeDamage": 0,
+					"CritChance": 0.1,
+					"CritRatio": 1.25,
+					"MinDefend": 1,
+					"MaxDefend": 6,
+					"Resistance": [
+						{
+							"Magic": -0.2,
+							"Fire": -0.3,
+							"Poison": 0.5,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0.25,
+							"Holy": -0.3
+						}
+					],
+					"Properties": 4
+				},
+				{
+					"Class": "AshesSkull",
+					"MaxHealth": 20,
+					"AttackSkill": 1000,
+					"DefendSkill": 10,
+					"EXP": 6,
+					"MaxLevel": 15,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 4,
+					"MaxDamage": 12,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0.3,
+							"Fire": 0.3,
+							"Poison": 0,
+							"Ice": -0.2,
+							"Light": 0,
+							"Shadow": -0.4,
+							"Holy": -0.3
+						}
+					],
+					"Properties": 4
+				},
+				{
+					"Class": "Bat",
+					"MaxHealth": 30,
+					"AttackSkill": 16,
+					"DefendSkill": 15,
+					"EXP": 7,
+					"MaxLevel": 16,
+					"LootChance": 0.15,
+					"Loot": [
+						{
+							"Name": "PotionOfHealing",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 5,
+					"MaxDamage": 15,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 5,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": -0.15,
+							"Poison": -0.25,
+							"Ice": 0.3,
+							"Light": 0,
+							"Shadow": 0.2,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "Brute",
+					"MaxHealth": 55,
+					"AttackSkill": 18,
+					"DefendSkill": 15,
+					"EXP": 8,
+					"MaxLevel": 15,
+					"LootChance": 0.2,
+					"Loot": [
+						{
+							"Name": "Gold",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 8,
+					"MaxDamage": 24,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 8,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0.25,
+							"Poison": -0.15,
+							"Ice": 0,
+							"Light": -0.2,
+							"Shadow": -0.4,
+							"Holy": 0
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "Spinner",
+					"MaxHealth": 50,
+					"AttackSkill": 20,
+					"DefendSkill": 14,
+					"EXP": 9,
+					"MaxLevel": 16,
+					"LootChance": 0.125,
+					"Loot": [
+						{
+							"Name": "MysteryMeat",
+							"Chance": 0.7
+						},
+						{
+							"Name": "SpiderGland",
+							"Chance": 0.3
+						}
+					],
+					"MinDamage": 10,
+					"MaxDamage": 25,
+					"TypeDamage": 0,
+					"CritChance": 0.1,
+					"CritRatio": 1.25,
+					"MinDefend": 0,
+					"MaxDefend": 6,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": -0.2,
+							"Poison": 0.25,
+							"Ice": -0.2,
+							"Light": 0,
+							"Shadow": 0.5,
+							"Holy": 0
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "DM300",
+					"MaxHealth": 200,
+					"AttackSkill": 28,
+					"DefendSkill": 18,
+					"EXP": 30,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 20,
+					"MaxDamage": 25,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 4,
+					"MaxDefend": 10,
+					"Resistance": [
+						{
+							"Magic": 0.35,
+							"Fire": 0,
+							"Poison": 0.3,
+							"Ice": -0.2,
+							"Light": -0.2,
+							"Shadow": 0.3,
+							"Holy": 0
+						}
+					],
+					"Properties": 17
+				},
+				{
+					"Class": "Elemental",
+					"MaxHealth": 60,
+					"AttackSkill": 25,
+					"DefendSkill": 20,
+					"EXP": 9,
+					"MaxLevel": 20,
+					"LootChance": 0.1,
+					"Loot": [
+						{
+							"Name": "PotionOfLiquidFlame",
+							"Chance": 0.5
+						},
+						{
+							"Name": "FireButterfly",
+							"Chance": 0.5
+						}
+					],
+					"MinDamage": 14,
+					"MaxDamage": 22,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 2,
+					"MaxDefend": 6,
+					"Resistance": [
+						{
+							"Magic": 0.2,
+							"Fire": 0.5,
+							"Poison": 0,
+							"Ice": -1,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "Ballista",
+					"MaxHealth": 65,
+					"AttackSkill": 30,
+					"DefendSkill": 18,
+					"EXP": 12,
+					"MaxLevel": 21,
+					"LootChance": 0.3,
+					"Loot": [
+						{
+							"Name": "Javelin",
+							"Chance": 0.25
+						},
+						{
+							"Name": "MISSSILE",
+							"Chance": 0.25
+						},
+						{
+							"Name": "Gold",
+							"Chance": 0.5
+						}
+					],
+					"MinDamage": 16,
+					"MaxDamage": 30,
+					"TypeDamage": 0,
+					"CritChance": 0.075,
+					"CritRatio": 1.25,
+					"MinDefend": 0,
+					"MaxDefend": 10,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0.1,
+							"Light": -0.2,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 16
+				},
+				{
+					"Class": "QuickFiringGun",
+					"MaxHealth": 65,
+					"AttackSkill": 30,
+					"DefendSkill": 18,
+					"EXP": 15,
+					"MaxLevel": 22,
+					"LootChance": 0.3,
+					"Loot": [
+						{
+							"Name": "Javelin",
+							"Chance": 0.5
+						},
+						{
+							"Name": "Gold",
+							"Chance": 0.5
+						}
+					],
+					"MinDamage": 6,
+					"MaxDamage": 12,
+					"TypeDamage": 0,
+					"CritChance": 0.075,
+					"CritRatio": 1.5,
+					"MinDefend": 0,
+					"MaxDefend": 10,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0.1,
+							"Light": -0.2,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 16
+				},
+				{
+					"Class": "Warlock",
+					"MaxHealth": 70,
+					"AttackSkill": 25,
+					"DefendSkill": 20,
+					"EXP": 10,
+					"MaxLevel": 21,
+					"LootChance": 0.5,
+					"Loot": [
+						{
+							"Name": "POTION",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 12,
+					"MaxDamage": 18,
+					"TypeDamage": 1,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 1,
+					"MaxDefend": 8,
+					"Resistance": [
+						{
+							"Magic": 0.15,
+							"Fire": 0,
+							"Poison": -0.2,
+							"Ice": -0.4,
+							"Light": 0,
+							"Shadow": 0.2,
+							"Holy": -0.1
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "Monk",
+					"MaxHealth": 70,
+					"AttackSkill": 30,
+					"DefendSkill": 30,
+					"EXP": 11,
+					"MaxLevel": 21,
+					"LootChance": 0.064,
+					"Loot": [
+						{
+							"Name": "Food",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 12,
+					"MaxDamage": 25,
+					"TypeDamage": 0,
+					"CritChance": 0.05,
+					"CritRatio": 1.2,
+					"MinDefend": 0,
+					"MaxDefend": 2,
+					"Resistance": [
+						{
+							"Magic": -0.2,
+							"Fire": 0.2,
+							"Poison": 0.2,
+							"Ice": 0.2,
+							"Light": 0.2,
+							"Shadow": -0.5,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "Golem",
+					"MaxHealth": 85,
+					"AttackSkill": 28,
+					"DefendSkill": 18,
+					"EXP": 12,
+					"MaxLevel": 22,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 25,
+					"MaxDamage": 40,
+					"TypeDamage": 0,
+					"CritChance": 0.05,
+					"CritRatio": 0,
+					"MinDefend": 2,
+					"MaxDefend": 12,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0.2,
+							"Light": -0.2,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 16
+				},
+				{
+					"Class": "King",
+					"MaxHealth": 300,
+					"AttackSkill": 32,
+					"DefendSkill": 25,
+					"EXP": 40,
+					"MaxLevel": 30,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 25,
+					"MaxDamage": 40,
+					"TypeDamage": 0,
+					"CritChance": 0.1,
+					"CritRatio": 1.25,
+					"MinDefend": 0,
+					"MaxDefend": 14,
+					"Resistance": [
+						{
+							"Magic": 0.2,
+							"Fire": 0.15,
+							"Poison": 0.15,
+							"Ice": -0.15,
+							"Light": 0,
+							"Shadow": -0.2,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 5
+				},
+				{
+					"Class": "King_Undead",
+					"MaxHealth": 25,
+					"AttackSkill": 16,
+					"DefendSkill": 15,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 12,
+					"MaxDamage": 22,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 5,
+					"Resistance": [
+						{
+							"Magic": -0.15,
+							"Fire": -0.3,
+							"Poison": 0,
+							"Ice": 0,
+							"Light": 0.15,
+							"Shadow": -0.15,
+							"Holy": -0.4
+						}
+					],
+					"Properties": 68
+				},
+				{
+					"Class": "Succubus",
+					"MaxHealth": 80,
+					"AttackSkill": 40,
+					"DefendSkill": 25,
+					"EXP": 12,
+					"MaxLevel": 25,
+					"LootChance": 0.05,
+					"Loot": [
+						{
+							"Name": "ScrollOfLullaby",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 20,
+					"MaxDamage": 26,
+					"TypeDamage": 0,
+					"CritChance": 0.1,
+					"CritRatio": 1.5,
+					"MinDefend": 0,
+					"MaxDefend": 10,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": -0.2,
+							"Ice": -0.2,
+							"Light": -0.2,
+							"Shadow": 0.2,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "Eye",
+					"MaxHealth": 100,
+					"AttackSkill": 30,
+					"DefendSkill": 20,
+					"EXP": 13,
+					"MaxLevel": 26,
+					"LootChance": 0.5,
+					"Loot": [
+						{
+							"Name": "Dewdrop",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 15,
+					"MaxDamage": 25,
+					"TypeDamage": 1,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 10,
+					"Resistance": [
+						{
+							"Magic": 0.15,
+							"Fire": 0.35,
+							"Poison": 0,
+							"Ice": 0,
+							"Light": -0.3,
+							"Shadow": 0,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "Scorpio",
+					"MaxHealth": 90,
+					"AttackSkill": 36,
+					"DefendSkill": 24,
+					"EXP": 14,
+					"MaxLevel": 26,
+					"LootChance": 0.2,
+					"Loot": [
+						{
+							"Name": "PotionOfHealing",
+							"Chance": 0.7
+						},
+						{
+							"Name": "MysteryMeat",
+							"Chance": 0.3
+						}
+					],
+					"MinDamage": 26,
+					"MaxDamage": 36,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 16,
+					"Resistance": [
+						{
+							"Magic": -0.25,
+							"Fire": 0.2,
+							"Poison": 0.2,
+							"Ice": -0.25,
+							"Light": 0.4,
+							"Shadow": -0.4,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "Yog",
+					"MaxHealth": 350,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 50,
+					"MaxLevel": 30,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0.25,
+							"Fire": 0,
+							"Poison": -0.1,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": -0.3,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 41
+				},
+				{
+					"Class": "Yog_RottingFist",
+					"MaxHealth": 300,
+					"AttackSkill": 36,
+					"DefendSkill": 25,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 20,
+					"MaxDamage": 50,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 15,
+					"Resistance": [
+						{
+							"Magic": 0.2,
+							"Fire": 0,
+							"Poison": 0.2,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": -0.3,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 9
+				},
+				{
+					"Class": "Yog_BurningFist",
+					"MaxHealth": 200,
+					"AttackSkill": 36,
+					"DefendSkill": 25,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 22,
+					"MaxDamage": 30,
+					"TypeDamage": 1,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 15,
+					"Resistance": [
+						{
+							"Magic": 0.2,
+							"Fire": 0,
+							"Poison": 0.2,
+							"Ice": -0.5,
+							"Light": 0,
+							"Shadow": 0.2,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 9
+				},
+				{
+					"Class": "Yog_Larva",
+					"MaxHealth": 30,
+					"AttackSkill": 30,
+					"DefendSkill": 20,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 22,
+					"MaxDamage": 30,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 8,
+					"Resistance": [
+						{
+							"Magic": -0.15,
+							"Fire": -0.5,
+							"Poison": 0.5,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0.2,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 8
+				}
+			],
+			"separators": [
+				8,
+				17,
+				23,
+				31
+			],
+			"props": {}
+		},
+		{
+			"name": "Mobs@Loot",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "Name"
+				},
+				{
+					"typeStr": "4",
+					"name": "Chance",
+					"display": 1
+				}
+			]
+		},
+		{
+			"name": "Mobs@Resistance",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "4",
+					"name": "Magic",
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "Fire",
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "Poison",
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "Ice",
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "Light",
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "Shadow",
+					"display": 1
+				},
+				{
+					"typeStr": "4",
+					"name": "Holy",
+					"display": 1
+				}
+			]
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

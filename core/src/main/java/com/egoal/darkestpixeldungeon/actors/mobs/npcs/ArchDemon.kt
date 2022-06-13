@@ -103,7 +103,7 @@ class ArchDemon : NPC.Unbreakable() {
                     hero.regeneration -= min(hero.regeneration * 0.5f, 0.5f)
                     GLog.n(M.L(ArchDemon::class.java, "regeneration"))
                 } else if (Random.Float() < 0.3f) {
-                    val index = (0 until Damage.Element.ELEMENT_COUNT).maxBy { i -> hero.elementalResistance[i] }!!
+                    val index = (0 until Damage.Element.ELEMENT_COUNT).maxByOrNull { i -> hero.elementalResistance[i] }!!
                     if (hero.elementalResistance[index] > 0f) {
                         hero.elementalResistance[index] -= 0.3f
                     } else {

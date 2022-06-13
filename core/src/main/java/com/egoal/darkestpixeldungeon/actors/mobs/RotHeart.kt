@@ -20,21 +20,15 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.PropertyConfiger
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
+import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefendAbility
 import com.egoal.darkestpixeldungeon.plants.Rotberry
-import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.RotHeartSprite
-import com.watabou.utils.Random
-
-import java.util.HashSet
 
 class RotHeart : Mob() {
 
@@ -46,7 +40,7 @@ class RotHeart : Mob() {
         state = PASSIVE
 
         immunities.addAll(listOf(Terror::class.java, Bleeding::class.java))
-        abilities.add(ReleaseGasDefendAbility(ToxicGas::class.java))
+        abilities.add(ReleaseGasDefendAbility().apply { gas = ToxicGas::class.java })
     }
 
     override fun takeDamage(dmg: Damage): Int {

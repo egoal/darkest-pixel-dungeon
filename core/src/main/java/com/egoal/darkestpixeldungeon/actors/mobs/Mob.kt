@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Actor
@@ -64,25 +65,37 @@ abstract class Mob : Char() {
 
     protected var target = -1
 
-    var EXP = 1
-    var maxLvl = Hero.MAX_LEVEL
-
     protected var enemy: Char? = null
     protected var enemySeen: Boolean = false
     protected var alerted = false
 
     protected var loot: Any? = null
-    var lootChance = 0f
 
     var isLiving = true // is living things?
 
-    var minDamage = 0
-    var maxDamage = 0
-    var typeDamage: Damage.Type = Damage.Type.NORMAL
-    var minDefense = 0
-    var maxDefense = 0
-    var criticalChance = 0f
-    var criticalRatio = 1.25f // it's not the ratio matters, critical itself however
+    private var _config: Database.MobsLine
+
+    var Config: Database.MobsLine
+        get() = _config
+        protected set(value) {
+            _config = value
+
+            HT = _config.MaxHealth
+            atkSkill = _config.AttackSkill
+            defSkill = _config.DefendSkill
+
+            magicalResistance = _config.Resistance[0].Magic
+            elementalResistance[0] = _config.Resistance[0].Fire
+            elementalResistance[1] = _config.Resistance[0].Poison
+            elementalResistance[2] = _config.Resistance[0].Ice
+            elementalResistance[3] = _config.Resistance[0].Light
+            elementalResistance[4] = _config.Resistance[0].Shadow
+            elementalResistance[5] = _config.Resistance[0].Holy
+
+            properties.addAll(_config.MobProperties)
+
+            //todo: loot
+        }
 
     var abilities: ArrayList<Ability> = arrayListOf()
 
@@ -91,6 +104,8 @@ abstract class Mob : Char() {
         actPriority = 2 //hero gets priority over mobs.
 
         camp = Camp.ENEMY
+
+        _config = Database.ConfigOfMob("Rat")
     }
 
     fun initialize() {
@@ -180,9 +195,9 @@ abstract class Mob : Char() {
 
     override fun giveDamage(enemy: Char): Damage {
         // default normal damage
-        val damage = Damage(Random.NormalIntRange(minDamage, maxDamage), this, enemy).type(typeDamage)
-        if (Random.Float() < criticalChance) {
-            damage.value = round(damage.value * criticalRatio).toInt()
+        val damage = Damage(Random.NormalIntRange(Config.MinDamage, Config.MaxDamage), this, enemy).type(Config.DamageType)
+        if (Random.Float() < Config.CritChance) {
+            damage.value = round(damage.value * Config.CritRatio).toInt()
             damage.addFeature(Damage.Feature.CRITICAL)
         }
 
@@ -196,7 +211,7 @@ abstract class Mob : Char() {
         return super.attackProc(dmg)
     }
 
-    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(minDefense, maxDefense) }
+    override fun defendDamage(dmg: Damage): Damage = dmg.apply { value -= Random.NormalIntRange(Config.MinDefend, Config.MaxDefend) }
 
     protected open fun chooseEnemy(): Char? {
         val terror = buff(Terror::class.java)
@@ -543,8 +558,8 @@ abstract class Mob : Char() {
     }
 
     fun exp(): Int {
-        val dlvl = Dungeon.hero.lvl - maxLvl
-        return if (dlvl < 0) EXP else EXP / (2 + dlvl)
+        val dlvl = Dungeon.hero.lvl - Config.MaxLevel
+        return if (dlvl < 0) Config.EXP else Config.EXP / (2 + dlvl)
     }
 
     override fun die(cause: Any?) {
@@ -552,8 +567,8 @@ abstract class Mob : Char() {
         for (a in abilities) justDie = a.onDying(this) && justDie
 
         if (justDie) {
-            val chance = lootChance * 1.15f.pow(Dungeon.hero.wealthBonus())
-            if (Random.Float() < chance && Dungeon.hero.lvl <= maxLvl + 2) {
+            val chance = Config.LootChance * 1.15f.pow(Dungeon.hero.wealthBonus())
+            if (Random.Float() < chance && Dungeon.hero.lvl <= Config.MaxLevel + 2) {
                 createLoot()?.let { Dungeon.level.drop(it, pos).sprite.drop() }
             }
 
