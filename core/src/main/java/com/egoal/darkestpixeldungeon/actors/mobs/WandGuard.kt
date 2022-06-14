@@ -14,10 +14,8 @@ import com.egoal.darkestpixeldungeon.items.wands.*
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.watabou.noosa.MovieClip
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
@@ -27,21 +25,9 @@ class WandGuard : Mob() {
     init {
         spriteClass = Sprite::class.java
 
-        EXP = 0
-
-        lootChance = 1f // see createLoot 
-
-        HT = (Dungeon.depth / 5 + 1) * 10
-        HP = HT
+        Config = Config.copy(MaxHealth = (Dungeon.depth / 5 + 1) * 10)
 
         state = WANDERING
-        defSkill = 0f // cannot dodge
-
-        addResistances(Damage.Element.all(), 0.1f)
-        magicalResistance = 1f
-
-        properties.add(Property.IMMOVABLE)
-        properties.add(Property.MACHINE)
     }
 
     private var wand: DamageWand = Random.chances(WAND_PROBS).newInstance().apply {
@@ -59,14 +45,14 @@ class WandGuard : Mob() {
 
         wand.execute(Dungeon.hero, "") //patch: assign curUser
 
-        if(enemy is Hero) enemy.busy()
+        if (enemy is Hero) enemy.busy()
         wand.fx(shot, Callback {
             // hit hero 
             val dmg = giveDamage(enemy)
             // enemy.defendDamage(dmg)
             enemy.takeDamage(dmg)
 
-            if(enemy is Hero) enemy.ready()
+            if (enemy is Hero) enemy.ready()
 
             if (!enemy.isAlive) {
                 Dungeon.fail(dmg.from.javaClass)

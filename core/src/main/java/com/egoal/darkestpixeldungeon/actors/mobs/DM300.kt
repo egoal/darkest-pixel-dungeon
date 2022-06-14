@@ -66,9 +66,6 @@ class DM300 : Mob() {
     init {
         spriteClass = DM300Sprite::class.java
 
-        PropertyConfiger.set(this, "DM300")
-        loot = TomeOfRetrain()
-
         immunities.addAll(listOf(ToxicGas::class.java, Terror::class.java,
                 Corruption::class.java, Charm::class.java, MagicalSleep::class.java, Cripple::class.java))
     }

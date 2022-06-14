@@ -1,7 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
@@ -13,8 +12,6 @@ import kotlin.math.max
 class Slug : Mob() {
     init {
         spriteClass = SlugSprite::class.java
-
-        PropertyConfiger.set(this, "Slug")
     }
 
     override fun giveDamage(enemy: Char): Damage {

@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
@@ -33,8 +32,6 @@ import com.egoal.darkestpixeldungeon.sprites.RotHeartSprite
 class RotHeart : Mob() {
 
     init {
-        PropertyConfiger.set(this, "RotHeart")
-
         spriteClass = RotHeartSprite::class.java
 
         state = PASSIVE

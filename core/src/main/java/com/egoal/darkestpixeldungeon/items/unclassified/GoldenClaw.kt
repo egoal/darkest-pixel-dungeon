@@ -188,7 +188,7 @@ open class GoldenClaw : Item() {
             cooldown += gold * 4 / 5
             updateQuickslot()
 
-            val exp = max(1, mob.EXP / 2) // extra exp
+            val exp = max(1, mob.Config.EXP / 2) // extra exp
             Dungeon.hero.earnExp(exp)
 
             Dungeon.hero.sprite.showStatus(CharSprite.NEUTRAL, "+$gold")

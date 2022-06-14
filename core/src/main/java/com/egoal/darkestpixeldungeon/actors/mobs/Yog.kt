@@ -20,16 +20,14 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
-import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
-import com.egoal.darkestpixeldungeon.actors.buffs.MagicalSleep
-import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.effects.Pushing
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
@@ -37,35 +35,18 @@ import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.actors.buffs.Amok
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Burning
-import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
-import com.egoal.darkestpixeldungeon.actors.buffs.Ooze
-import com.egoal.darkestpixeldungeon.actors.buffs.Poison
-import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
-import com.egoal.darkestpixeldungeon.actors.buffs.Vertigo
-import com.egoal.darkestpixeldungeon.sprites.BurningFistSprite
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
-import com.egoal.darkestpixeldungeon.sprites.LarvaSprite
-import com.egoal.darkestpixeldungeon.sprites.RottingFistSprite
-import com.egoal.darkestpixeldungeon.sprites.YogSprite
+import com.egoal.darkestpixeldungeon.sprites.*
 import com.egoal.darkestpixeldungeon.ui.BossHealthBar
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-
-import java.util.ArrayList
-import java.util.HashSet
+import java.util.*
 import kotlin.math.min
 
 class Yog : Mob() {
 
     init {
-        PropertyConfiger.set(this, "Yog")
-
         spriteClass = YogSprite::class.java
 
         state = PASSIVE
@@ -173,7 +154,7 @@ class Yog : Mob() {
 
     class RottingFist : Mob() {
         init {
-            PropertyConfiger.set(this, "Yog.RottingFist")
+            Config = Database.ConfigOfMob("Yog_RottingFist")!!
 
             spriteClass = RottingFistSprite::class.java
 
@@ -242,7 +223,7 @@ class Yog : Mob() {
     class BurningFist : Mob() {
 
         init {
-            PropertyConfiger.set(this, "Yog.BurningFist")
+            Config = Database.ConfigOfMob("Yog_BurningFist")!!
 
             spriteClass = BurningFistSprite::class.java
             state = WANDERING
@@ -323,7 +304,7 @@ class Yog : Mob() {
 
     class Larva : Mob() {
         init {
-            PropertyConfiger.set(this, "Yog.Larva")
+            Config = Database.ConfigOfMob("Yog_Larva")!!
 
             spriteClass = LarvaSprite::class.java
             state = HUNTING

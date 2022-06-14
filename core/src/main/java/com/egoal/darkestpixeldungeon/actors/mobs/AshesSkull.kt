@@ -1,8 +1,8 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
@@ -24,8 +24,6 @@ import java.util.HashSet
 
 class AshesSkull : Mob() {
     init {
-        PropertyConfiger.set(this, "AshesSkull")
-
         spriteClass = Sprite::class.java
         flying = true
 

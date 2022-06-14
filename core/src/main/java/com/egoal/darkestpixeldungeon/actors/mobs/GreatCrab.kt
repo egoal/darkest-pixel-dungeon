@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
@@ -36,8 +35,6 @@ class GreatCrab : Crab() {
     private var moving = 0
 
     init {
-        PropertyConfiger.set(this, "GreatCrab")
-
         spriteClass = GreatCrabSprite::class.java
 
         baseSpeed = 1f

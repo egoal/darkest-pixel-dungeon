@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
@@ -34,13 +35,15 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
         camp = if (friendly) Camp.HERO else Camp.ENEMY
 
+        Config = Database.DummyMobConfig
+        addResistances(Damage.Element.LIGHT, 0.5f)
+        addResistances(Damage.Element.SHADOW, 1.25f)
+
         if (friendly)
             initLevelStatus(level)
         else
             imitateHeroStatus()
 
-        addResistances(Damage.Element.LIGHT, 0.5f)
-        addResistances(Damage.Element.SHADOW, 1.25f)
     }
 
     private var timeLeft = 0f
@@ -133,7 +136,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     override fun attackProc(dmg: Damage): Damage {
         if (camp == Camp.HERO && dmg.to is Mob) {
             (dmg.to as Mob).let {
-                earnExp(it.EXP.toFloat() * (dmg.value.toFloat() / it.HT.toFloat()))
+                earnExp(it.Config.EXP.toFloat() * (dmg.value.toFloat() / it.HT.toFloat()))
             }
         }
 

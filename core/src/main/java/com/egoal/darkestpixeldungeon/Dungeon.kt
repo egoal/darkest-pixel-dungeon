@@ -151,15 +151,14 @@ object Dungeon {
         archDemons,
         magicWells,
 
-        //all unlimited health potion sources (except guards, which are at the
-        // bottom.
-        swarmHP,
-        guardHP,
-        batHP,
-        warlockHP,
-        scorpioHP,
+        //all unlimited health potion sources (except guards, which are at the bottom.
+//        swarmHP,
+//        guardHP,
+//        batHP,
+//        warlockHP,
+//        scorpioHP,
         cookingHP,
-        madManHumanity,
+//        madManHumanity,
         //blandfruit, which can technically be an unlimited health potion source
         blandfruitSeed,
 

@@ -20,34 +20,30 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.buffs.*
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.weapon.melee.RedHandleDagger
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ThiefSprite
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-
-import java.util.HashSet
+import java.util.*
 
 open class Thief : Mob() {
     var item: Item? = null
 
     init {
-        PropertyConfiger.set(this, "Thief")
-
         spriteClass = ThiefSprite::class.java
 
         FLEEING = Fleeing()
@@ -79,12 +75,11 @@ open class Thief : Mob() {
         }
     }
 
-    override fun createLoot(): Item =
+    override fun createLoot(): Item? =
             if (!Dungeon.limitedDrops.armband.dropped() && Random.Float() < 0.1f) {
                 Dungeon.limitedDrops.armband.drop()
                 MasterThievesArmband().identify()
-            } else if (Random.Float() < 0.3f) RedHandleDagger().random()
-            else Gold(Random.NormalIntRange(80, 200))
+            } else super.createLoot()
 
     override fun attackProc(dmg: Damage): Damage {
         if (!isAlive) return dmg
@@ -92,7 +87,7 @@ open class Thief : Mob() {
         if (item == null && enemy is Hero && steal(enemy)) {
             enemy.takeDamage(Damage(Random.IntRange(1, 5), this, enemy).type(Damage.Type.MENTAL))
             state = FLEEING
-        } else if(Random.Int(4)==0){
+        } else if (Random.Int(4) == 0) {
             Buff.prolong(enemy, Cripple::class.java, 1.5f)
         }
 

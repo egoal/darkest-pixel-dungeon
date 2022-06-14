@@ -1,7 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
@@ -15,7 +14,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.SkeletonKnightSprite
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-import java.util.HashSet
+import java.util.*
 
 /**
  * Created by 93942 on 5/13/2018.
@@ -26,9 +25,6 @@ class SkeletonKnight : Mob() {
 
     init {
         spriteClass = SkeletonKnightSprite::class.java
-
-        PropertyConfiger.set(this, "SkeletonKnight")
-        loot = if (Random.Float() < 0.5f) Wine() else BrownAle()
     }
 
     override fun act(): Boolean {

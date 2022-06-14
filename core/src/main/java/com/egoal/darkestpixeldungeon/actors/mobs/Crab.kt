@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.FeedbackDefendAbility
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.KnockBackAttackAbility
@@ -30,10 +29,7 @@ import com.watabou.utils.Random
 
 open class Crab : Mob() {
     init {
-        PropertyConfiger.set(this, "Crab")
-
         spriteClass = CrabSprite::class.java
-        loot = MysteryMeat()
         baseSpeed = 2f
     }
 

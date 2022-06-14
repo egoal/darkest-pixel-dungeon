@@ -26,13 +26,6 @@ import com.watabou.utils.Random
 class DevilGhost : Wraith() {
     init {
         spriteClass = DevilGhostSprite::class.java
-
-        HT = 4
-        HP = HT
-        EXP = 1
-
-        loot = DemonicSkull()
-        lootChance = 1f
     }
 
     override fun giveDamage(target: Char): Damage {
@@ -52,14 +45,13 @@ class DevilGhost : Wraith() {
 
     override fun adjustStats(level: Int) {
         this.level = level
-        defSkill = 20f + level * 2f
         enemySeen = true
     }
 
     override fun createLoot(): Item? = if (!Dungeon.limitedDrops.demonicSkull.dropped()) {
         Dungeon.limitedDrops.demonicSkull.drop()
-        super.createLoot()
-    } else Gold(Random.NormalIntRange(80, 150))
+        DemonicSkull()
+    } else super.createLoot()
 
     override fun add(buff: Buff) {
         //in other words, can't be directly affected by buffs/debuffs.

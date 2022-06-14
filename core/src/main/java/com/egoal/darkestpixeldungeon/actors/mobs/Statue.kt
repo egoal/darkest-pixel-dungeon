@@ -20,6 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Database
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Journal
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -27,15 +29,13 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Dementage
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric
-import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.sprites.StatueSprite
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.SpikeShield
+import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.sprites.StatueSprite
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-
-import java.util.HashSet
+import java.util.*
 
 open class Statue : Mob() {
 
@@ -44,14 +44,13 @@ open class Statue : Mob() {
     init {
         spriteClass = StatueSprite::class.java
 
-        EXP = 0
         state = PASSIVE
 
-        addResistances(Damage.Element.all(), 0.15f)
-        magicalResistance = -0.2f
-    }
-
-    init {
+        Config = Database.ConfigOfMob("Statue")!!.copy(
+                MaxHealth = 15 + Dungeon.depth * 5,
+                DefendSkill = 4f + Dungeon.depth,
+                AttackSkill = 9f + Dungeon.depth
+        )
 
         do {
             weapon = Generator.WEAPON.generate() as Weapon
@@ -59,11 +58,6 @@ open class Statue : Mob() {
 
         weapon.identify()
         weapon.inscribe()
-
-        HT = 15 + Dungeon.depth * 5
-        HP = HT
-        defSkill = 4f + Dungeon.depth
-        atkSkill = 9f + Dungeon.depth
     }
 
     override fun storeInBundle(bundle: Bundle) {

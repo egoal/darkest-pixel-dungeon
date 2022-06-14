@@ -2,8 +2,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
@@ -34,8 +34,7 @@ class King : Mob() {
     init {
         spriteClass = KingSprite::class.java
 
-        PropertyConfiger.set(this, "King")
-        if (!Revivable) criticalChance += 0.15f
+        Config = Database.ConfigOfMob(if (Revivable) "King" else "King_Revived")!!
     }
 
     private var anger = 0f
@@ -187,7 +186,7 @@ class King : Mob() {
 
     class Undead : Mob() {
         init {
-            PropertyConfiger.set(this, "King.Undead")
+            Config = Database.ConfigOfMob("King_Undead")!!
             spriteClass = UndeadSprite::class.java
             state = WANDERING
 

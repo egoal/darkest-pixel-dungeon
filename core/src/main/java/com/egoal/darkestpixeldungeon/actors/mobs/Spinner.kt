@@ -20,12 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Web
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
@@ -40,10 +38,7 @@ import com.watabou.utils.Random
 class Spinner : Mob() {
 
     init {
-        PropertyConfiger.set(this, "Spinner")
-
         spriteClass = SpinnerSprite::class.java
-        loot = MysteryMeat()
 
         FLEEING = Fleeing()
 
@@ -75,14 +70,6 @@ class Spinner : Mob() {
             GameScene.add(Blob.seed(pos, Random.Int(5, 7), Web::class.java))
         }
         super.move(step)
-    }
-
-    override fun createLoot(): Item? {
-        if (Random.Float() < 0.3f) {
-            val q = if (Random.Float() < 0.3f) 2 else 1
-            return SpiderGland().quantity(q).identify()
-        }
-        return super.createLoot()
     }
 
     private inner class Fleeing : Mob.Fleeing() {

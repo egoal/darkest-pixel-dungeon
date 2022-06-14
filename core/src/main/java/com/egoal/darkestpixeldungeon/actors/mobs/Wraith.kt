@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
@@ -45,18 +46,15 @@ open class Wraith : Mob() {
     init {
         spriteClass = WraithSprite::class.java
 
-        HT = 1
-        HP = HT
-        EXP = 0
-
-        flying = true
-
+        Config = Database.DummyMobConfig.copy(
+                MaxHealth = 1,
+                DefendSkill = 1000f,
+        )
         properties.add(Property.UNDEAD)
-
-        defSkill = 1000f
-
         addResistances(Damage.Element.SHADOW, 0.25f)
         addResistances(Damage.Element.HOLY, -0.5f)
+
+        flying = true
     }
 
     override fun storeInBundle(bundle: Bundle) {

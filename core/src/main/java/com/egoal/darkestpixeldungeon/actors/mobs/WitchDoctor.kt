@@ -2,13 +2,11 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Decayed
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.potions.ReagentOfHealing
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -24,10 +22,7 @@ class WitchDoctor : Mob() {
     init {
         spriteClass = Sprite::class.java
 
-        PropertyConfiger.set(this, "WitchDoctor")
         HUNTING = HuntingAI()
-
-        loot = Generator.POTION // see creatLoot
     }
 
     private var decayCD = 0f
@@ -108,16 +103,6 @@ class WitchDoctor : Mob() {
                 spend(TIME_TO_HEAL)
                 next()
             })
-        }
-    }
-
-    override fun createLoot(): Item? {
-        val p = Random.Float()
-        return when {
-            p < 0.05f -> ReagentOfHealing()
-            p < 0.1f -> CeremonialDagger()
-            p < 0.2f -> Generator.POTION.generate()
-            else -> null
         }
     }
 

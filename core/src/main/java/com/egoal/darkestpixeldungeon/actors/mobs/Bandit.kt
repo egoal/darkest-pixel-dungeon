@@ -33,9 +33,6 @@ import com.watabou.utils.Random
 class Bandit : Thief() {
     init {
         spriteClass = BanditSprite::class.java
-
-        //1 in 30 chance to be a crazy bandit, equates to overall 1/90 chance.
-        lootChance = 0.5f
     }
 
     override fun steal(hero: Hero): Boolean {

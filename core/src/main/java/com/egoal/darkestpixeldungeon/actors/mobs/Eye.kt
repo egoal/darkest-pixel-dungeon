@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -29,7 +28,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.TempPathLight
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle
-import com.egoal.darkestpixeldungeon.items.unclassified.Dewdrop
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -40,8 +38,6 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
-import java.util.HashSet
-
 class Eye : Mob() {
     private var beam: Ballistica? = null
     private var beamTarget = -1
@@ -49,13 +45,10 @@ class Eye : Mob() {
     var beamCharged: Boolean = false
 
     init {
-        PropertyConfiger.set(this, "Eye")
-
         spriteClass = EyeSprite::class.java
         flying = true
         HUNTING = Hunting()
 
-        loot = Dewdrop()
         immunities.add(Terror::class.java)
     }
 
@@ -183,11 +176,8 @@ class Eye : Mob() {
 
     private inner class Hunting : Mob.Hunting() {
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
-            var enemyInFOV = enemyInFOV
             //always attack if the beam is charged, no exceptions
-            if (beamCharged && enemy != null)
-                enemyInFOV = true
-            return super.act(enemyInFOV, justAlerted)
+            return super.act(enemyInFOV || (beamCharged && enemy != null), justAlerted)
         }
     }
 

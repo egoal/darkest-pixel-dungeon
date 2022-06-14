@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -30,39 +29,20 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
 import com.egoal.darkestpixeldungeon.effects.Pushing
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Door
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.SwarmSprite
-import com.egoal.darkestpixeldungeon.items.Item
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-import java.util.ArrayList
-
 class Swarm : Mob() {
-
-    private var generation = 0
-
     init {
-        PropertyConfiger.set(this, "Swarm")
-
         spriteClass = SwarmSprite::class.java
-        loot = PotionOfHealing()
-    }
-
-    override fun storeInBundle(bundle: Bundle) {
-        super.storeInBundle(bundle)
-        bundle.put(GENERATION, generation)
-    }
-
-    override fun restoreFromBundle(bundle: Bundle) {
-        super.restoreFromBundle(bundle)
-        generation = bundle.getInt(GENERATION)
-        if (generation > 0) EXP = 0
     }
 
     override fun giveDamage(target: Char): Damage {
@@ -76,7 +56,7 @@ class Swarm : Mob() {
             val passable = Level.passable
 
             val candidates = PathFinder.NEIGHBOURS4.map { it + pos }.filter { passable[it] && Actor.findChar(it) == null }
-            if(candidates.isNotEmpty()) {
+            if (candidates.isNotEmpty()) {
                 val clone = split()
                 clone.HP = (HP - damage.value) / 2
                 clone.pos = Random.element(candidates)!!
@@ -98,8 +78,6 @@ class Swarm : Mob() {
 
     private fun split(): Swarm {
         val clone = Swarm()
-        clone.generation = generation + 1
-        clone.EXP = 0
         if (buff(Burning::class.java) != null) {
             Buff.affect(clone, Burning::class.java).reignite(clone)
         }
@@ -112,14 +90,7 @@ class Swarm : Mob() {
         return clone
     }
 
-    override fun die(cause: Any?) {
-        //sets drop chance
-        lootChance = 1f / ((6 + 2 * Dungeon.limitedDrops.swarmHP.count) * (generation + 1))
-        super.die(cause)
-    }
-
     override fun createLoot(): Item? {
-        Dungeon.limitedDrops.swarmHP.count++
         return super.createLoot()!!.identify() // identify poh
     }
 

@@ -2,8 +2,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -33,8 +33,6 @@ import java.util.*
 
 class Tengu : Mob() {
     init {
-        PropertyConfiger.set(this, "Tengu")
-
         spriteClass = TenguSprite::class.java
         HUNTING = Hunting()
     }
@@ -297,15 +295,9 @@ class Tengu : Mob() {
 
     class Phantom : Mob() {
         init {
+            Config = Database.ConfigOfMob("Tengu_Phantom")!!
+
             spriteClass = TenguSprite.Phantom::class.java
-
-            HT = 1
-            HP = HT
-            EXP = 0
-            maxLvl = 1
-
-            atkSkill = 20f
-            defSkill = 10f
 
             name = M.L(Tengu::class.java, "name")
         }

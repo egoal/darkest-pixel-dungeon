@@ -2,7 +2,6 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok
@@ -32,8 +31,6 @@ open class Ballista : Mob() {
     private var ammo: Int = ammoCapacity()
 
     init {
-        PropertyConfiger.set(this, "Ballista")
-
         spriteClass = Sprite::class.java
 
         immunities.addAll(listOf(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java))
@@ -82,12 +79,6 @@ open class Ballista : Mob() {
             sprite.showStatus(0xffffff, Messages.get(this, "loaded"))
             Sample.INSTANCE.play(Assets.SND_RELOAD)
         }
-    }
-
-    override fun createLoot(): Item = when (Random.Int(4)) {
-        0 -> Javelin(Random.IntRange(1, 3))
-        1 -> Generator.WEAPON.MISSSILE.generate()
-        else -> Gold().random()
     }
 
     override fun storeInBundle(bundle: Bundle) {

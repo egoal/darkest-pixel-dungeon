@@ -34,23 +34,14 @@ class MadMan : Mob(), Callback {
         HT = 10 + 2 * Dungeon.depth
         HP = HT
         defSkill = 5f + Dungeon.depth
-        atkSkill = 10f + Dungeon.depth
 
-        EXP = min(3 + Dungeon.depth / 2, 12)
-        maxLvl = Dungeon.depth + 3
-
-        loot = Humanity()
-        lootChance = 0.25f // default chance, check create loot
-
-        addResistances(Damage.Element.SHADOW, 0.5f)
-        addResistances(Damage.Element.HOLY, -0.5f)
-        magicalResistance = 0.35f
+        Config = Config.copy(EXP = min(3 + Dungeon.depth / 2, 12), MaxLevel = Dungeon.depth + 3)
     }
 
     override fun giveDamage(enemy: Char): Damage {
         if (enemy is Hero) {
             //fixme: bad design
-            val lvl = (maxLvl - 3) / 5
+            val lvl = (Config.MaxLevel - 3) / 5
             val dis = Dungeon.level.distance(pos, enemy.pos)
             val value = max(1, Random.IntRange(2, 5) + lvl - dis)
             return Damage(value, this, enemy).type(Damage.Type.MENTAL)
@@ -114,14 +105,6 @@ class MadMan : Mob(), Callback {
 
     override fun call() {
         next()
-    }
-
-    override fun createLoot(): Item? {
-        if (Random.Float() < 0.15f) return RaggedArmor().identify()
-
-        Dungeon.limitedDrops.madManHumanity.drop()
-        lootChance = 2f / (8 + Dungeon.limitedDrops.madManHumanity.count)
-        return super.createLoot()
     }
 
     // sprite

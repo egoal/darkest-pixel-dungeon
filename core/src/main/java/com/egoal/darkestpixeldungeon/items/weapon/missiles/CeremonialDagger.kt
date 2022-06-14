@@ -31,7 +31,7 @@ class CeremonialDagger(number: Int = 1) : MissileWeapon(2) {
     override fun max(lvl: Int): Int = 4 + tier * 3
 
     override fun random(): Item = this.apply {
-        quantity = if (Random.Float() < 0.25f) 2 else 1
+        quantity = if (Random.Float() < 0.2f) 2 else 1
     }
 
     override fun actions(hero: Hero): ArrayList<String> = super.actions(hero).apply { add(AC_USE) }

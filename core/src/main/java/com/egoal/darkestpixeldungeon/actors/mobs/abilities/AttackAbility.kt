@@ -86,3 +86,12 @@ class KnockBackAttackAbility : Ability() {
         }
     }
 }
+
+class CritAttackAbility : Ability() {
+    override fun onAttack(belonger: Mob, damage: Damage) {
+        if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < .1f)
+            damage.value = (damage.value * 1.5f).toInt()
+
+        super.onAttack(belonger, damage)
+    }
+}

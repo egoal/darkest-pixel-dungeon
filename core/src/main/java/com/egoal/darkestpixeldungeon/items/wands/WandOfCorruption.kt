@@ -66,7 +66,7 @@ class WandOfCorruption : DamageWand.NoDamage(true) {
                 mob is Wraith -> 0.5f + Dungeon.depth / 8f
                 mob is Yog.Larva || mob is King.Undead -> 1f + 30f
                 mob is Swarm -> 1f + 3f
-                else -> 1f + mob.EXP
+                else -> 1f + mob.Config.EXP
             }
 
             //100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1

@@ -88,6 +88,35 @@
 			],
 			"lines": [
 				{
+					"Class": "DUMMY",
+					"MaxHealth": 1,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 0
+				},
+				{
 					"Class": "Rat",
 					"AttackSkill": 8,
 					"DefendSkill": 2,
@@ -349,7 +378,7 @@
 					"MaxHealth": 50,
 					"AttackSkill": 10,
 					"DefendSkill": 5,
-					"EXP": 4,
+					"EXP": 1,
 					"MaxLevel": 9,
 					"MinDamage": 1,
 					"MaxDamage": 5,
@@ -376,7 +405,7 @@
 							"Chance": 1
 						}
 					],
-					"LootChance": 0.16667
+					"LootChance": 0.08
 				},
 				{
 					"Class": "Skeleton",
@@ -387,10 +416,6 @@
 					"MaxLevel": 10,
 					"LootChance": 0.175,
 					"Loot": [
-						{
-							"Name": "HandOfTheElder",
-							"Chance": 0.04
-						},
 						{
 							"Name": "WEAPON",
 							"Chance": 0.96
@@ -426,10 +451,6 @@
 					"LootChance": 0.1,
 					"Loot": [
 						{
-							"Name": "MasterThievesArmband",
-							"Chance": 0.1
-						},
-						{
 							"Name": "RedHandleDagger",
 							"Chance": 0.2
 						},
@@ -442,6 +463,44 @@
 					"MaxDamage": 8,
 					"TypeDamage": 0,
 					"CritChance": 0.1,
+					"CritRatio": 1.5,
+					"MinDefend": 0,
+					"MaxDefend": 3,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0.2,
+							"Ice": -0.2,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "Bandit",
+					"MaxHealth": 20,
+					"AttackSkill": 12,
+					"DefendSkill": 10,
+					"EXP": 6,
+					"MaxLevel": 12,
+					"LootChance": 0.5,
+					"Loot": [
+						{
+							"Name": "RedHandleDagger",
+							"Chance": 0.2
+						},
+						{
+							"Name": "Gold",
+							"Chance": 0.7
+						}
+					],
+					"MinDamage": 1,
+					"MaxDamage": 8,
+					"TypeDamage": 0,
+					"CritChance": 0.15,
 					"CritRatio": 1.5,
 					"MinDefend": 0,
 					"MaxDefend": 3,
@@ -644,7 +703,36 @@
 					"LootChance": 0,
 					"Loot": [],
 					"MinDamage": 6,
-					"MaxDamage": 16,
+					"MaxDamage": 18,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 2,
+					"MaxDefend": 6,
+					"Resistance": [
+						{
+							"Magic": 0.25,
+							"Fire": 0,
+							"Poison": 0.2,
+							"Ice": 0,
+							"Light": 0.25,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 1
+				},
+				{
+					"Class": "Tengu_Phantom",
+					"MaxHealth": 1,
+					"AttackSkill": 20,
+					"DefendSkill": 10,
+					"EXP": 0,
+					"MaxLevel": 1,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 4,
+					"MaxDamage": 12,
 					"TypeDamage": 0,
 					"CritChance": 0,
 					"CritRatio": 0,
@@ -661,7 +749,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 1
+					"Properties": 64
 				},
 				{
 					"Class": "SkeletonKnight",
@@ -673,12 +761,12 @@
 					"LootChance": 0.1,
 					"Loot": [
 						{
-							"Name": "HandOfTheElder",
-							"Chance": 0.1
+							"Name": "BrownAle",
+							"Chance": 0.5
 						},
 						{
 							"Name": "Wine",
-							"Chance": 0.9
+							"Chance": 0.5
 						}
 					],
 					"MinDamage": 6,
@@ -737,7 +825,7 @@
 					"DefendSkill": 15,
 					"EXP": 7,
 					"MaxLevel": 16,
-					"LootChance": 0.15,
+					"LootChance": 0.1,
 					"Loot": [
 						{
 							"Name": "PotionOfHealing",
@@ -843,8 +931,13 @@
 					"DefendSkill": 18,
 					"EXP": 30,
 					"MaxLevel": 0,
-					"LootChance": 0,
-					"Loot": [],
+					"LootChance": 1,
+					"Loot": [
+						{
+							"Name": "TomeOfRetrain",
+							"Chance": 1
+						}
+					],
 					"MinDamage": 20,
 					"MaxDamage": 25,
 					"TypeDamage": 0,
@@ -876,11 +969,11 @@
 					"Loot": [
 						{
 							"Name": "PotionOfLiquidFlame",
-							"Chance": 0.5
+							"Chance": 0.4
 						},
 						{
 							"Name": "FireButterfly",
-							"Chance": 0.5
+							"Chance": 0.6
 						}
 					],
 					"MinDamage": 14,
@@ -990,7 +1083,7 @@
 					"DefendSkill": 20,
 					"EXP": 10,
 					"MaxLevel": 21,
-					"LootChance": 0.5,
+					"LootChance": 0.4,
 					"Loot": [
 						{
 							"Name": "POTION",
@@ -1024,10 +1117,10 @@
 					"DefendSkill": 30,
 					"EXP": 11,
 					"MaxLevel": 21,
-					"LootChance": 0.064,
+					"LootChance": 0.08,
 					"Loot": [
 						{
-							"Name": "Food",
+							"Name": "FOOD",
 							"Chance": 1
 						}
 					],
@@ -1085,11 +1178,11 @@
 					"MaxHealth": 300,
 					"AttackSkill": 32,
 					"DefendSkill": 25,
-					"EXP": 40,
+					"EXP": 30,
 					"MaxLevel": 30,
 					"LootChance": 0,
 					"Loot": [],
-					"MinDamage": 25,
+					"MinDamage": 20,
 					"MaxDamage": 40,
 					"TypeDamage": 0,
 					"CritChance": 0.1,
@@ -1105,6 +1198,35 @@
 							"Light": 0,
 							"Shadow": -0.2,
 							"Holy": -0.2
+						}
+					],
+					"Properties": 5
+				},
+				{
+					"Class": "King_Revived",
+					"MaxHealth": 250,
+					"AttackSkill": 40,
+					"DefendSkill": 20,
+					"EXP": 40,
+					"MaxLevel": 30,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 30,
+					"MaxDamage": 40,
+					"TypeDamage": 0,
+					"CritChance": 0.25,
+					"CritRatio": 1.5,
+					"MinDefend": 2,
+					"MaxDefend": 10,
+					"Resistance": [
+						{
+							"Magic": -0.2,
+							"Fire": 0.15,
+							"Poison": 0.15,
+							"Ice": -0.2,
+							"Light": -0.25,
+							"Shadow": 0.2,
+							"Holy": -0.25
 						}
 					],
 					"Properties": 5
@@ -1359,13 +1481,327 @@
 						}
 					],
 					"Properties": 8
+				},
+				{
+					"Class": "Bee",
+					"MaxHealth": 1,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0.3333,
+							"Fire": 0,
+							"Poison": 0.2,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "DarkSpirit",
+					"MaxHealth": 1,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 30,
+					"LootChance": 1,
+					"Loot": [],
+					"MinDamage": 1,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0.1,
+					"CritRatio": 1.5,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": -0.25,
+							"Fire": 0.1,
+							"Poison": 0.1,
+							"Ice": 0.1,
+							"Light": 0.1,
+							"Shadow": 0.1,
+							"Holy": -0.25
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "DevilGhost",
+					"MaxHealth": 4,
+					"AttackSkill": 1000,
+					"DefendSkill": 20,
+					"EXP": 2,
+					"MaxLevel": 30,
+					"LootChance": 1,
+					"Loot": [
+						{
+							"Name": "Gold",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 8
+				},
+				{
+					"Class": "Glowworm",
+					"MaxHealth": 1,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0.2,
+					"Loot": [
+						{
+							"Name": "PoisonPowder",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0.2,
+							"Poison": 0.5,
+							"Ice": -0.2,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "MadMan",
+					"MaxHealth": 1,
+					"AttackSkill": 1000,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0.2,
+					"Loot": [
+						{
+							"Name": "Humanity",
+							"Chance": 0.85
+						},
+						{
+							"Name": "RaggedArmor",
+							"Chance": 0.15
+						}
+					],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 2,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0.35,
+							"Fire": 0,
+							"Poison": 0,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0.5,
+							"Holy": -0.5
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "RotLasher",
+					"MaxHealth": 1,
+					"AttackSkill": 1,
+					"DefendSkill": 0,
+					"EXP": 1,
+					"MaxLevel": 30,
+					"LootChance": 1,
+					"Loot": [
+						{
+							"Name": "SEED",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": -2,
+							"Poison": 0.5,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 32
+				},
+				{
+					"Class": "Statue",
+					"MaxHealth": 1,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 1,
+					"LootChance": 1,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": -0.2,
+							"Fire": 0.15,
+							"Poison": 0.15,
+							"Ice": 0.15,
+							"Light": 0.15,
+							"Shadow": 0.15,
+							"Holy": 0
+						}
+					],
+					"Properties": 0
+				},
+				{
+					"Class": "WandGuard",
+					"MaxHealth": 1,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 1,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [
+						{
+							"Magic": 1,
+							"Fire": 0.1,
+							"Poison": 0.1,
+							"Ice": 0.1,
+							"Light": 0.1,
+							"Shadow": 0.1,
+							"Holy": 0
+						}
+					],
+					"Properties": 48
+				},
+				{
+					"Class": "",
+					"MaxHealth": 0,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [],
+					"Properties": 0
+				},
+				{
+					"Class": "",
+					"MaxHealth": 0,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [],
+					"Properties": 0
+				},
+				{
+					"Class": "",
+					"MaxHealth": 0,
+					"AttackSkill": 0,
+					"DefendSkill": 0,
+					"EXP": 0,
+					"MaxLevel": 0,
+					"LootChance": 0,
+					"Loot": [],
+					"MinDamage": 0,
+					"MaxDamage": 0,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"Resistance": [],
+					"Properties": 0
 				}
 			],
 			"separators": [
-				8,
-				17,
-				23,
-				31
+				9,
+				19,
+				24,
+				33,
+				42
 			],
 			"props": {}
 		},

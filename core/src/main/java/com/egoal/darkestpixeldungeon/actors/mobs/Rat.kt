@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttackAbility
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.PoisonAttackAbility
@@ -30,8 +29,6 @@ import com.watabou.utils.Random
 open class Rat : Mob() {
     init {
         spriteClass = RatSprite::class.java
-
-        PropertyConfiger.set(this, "Rat")
     }
 
     override fun randomAbilities(): List<Ability> =

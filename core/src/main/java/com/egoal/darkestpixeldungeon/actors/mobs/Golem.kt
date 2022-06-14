@@ -20,23 +20,15 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp
 import com.egoal.darkestpixeldungeon.sprites.GolemSprite
-import com.watabou.utils.Random
-
-import java.util.HashSet
 
 class Golem : Mob() {
     init {
-        PropertyConfiger.set(this, "Golem")
-
         spriteClass = GolemSprite::class.java
         immunities.addAll(listOf(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java))
     }

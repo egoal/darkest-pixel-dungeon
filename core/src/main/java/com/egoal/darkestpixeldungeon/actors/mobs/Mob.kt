@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import android.util.Log
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
@@ -69,11 +70,9 @@ abstract class Mob : Char() {
     protected var enemySeen: Boolean = false
     protected var alerted = false
 
-    protected var loot: Any? = null
-
     var isLiving = true // is living things?
 
-    private var _config: Database.MobsLine
+    private lateinit var _config: Database.MobsLine
 
     var Config: Database.MobsLine
         get() = _config
@@ -81,6 +80,7 @@ abstract class Mob : Char() {
             _config = value
 
             HT = _config.MaxHealth
+            HP = HT
             atkSkill = _config.AttackSkill
             defSkill = _config.DefendSkill
 
@@ -92,9 +92,8 @@ abstract class Mob : Char() {
             elementalResistance[4] = _config.Resistance[0].Shadow
             elementalResistance[5] = _config.Resistance[0].Holy
 
+            properties.clear()
             properties.addAll(_config.MobProperties)
-
-            //todo: loot
         }
 
     var abilities: ArrayList<Ability> = arrayListOf()
@@ -105,7 +104,10 @@ abstract class Mob : Char() {
 
         camp = Camp.ENEMY
 
-        _config = Database.ConfigOfMob("Rat")
+        // by default, just class name.
+        val con = Database.ConfigOfMob(javaClass.simpleName)
+        if (con != null) Config = con
+        else Log.w("dpd", "missing mob config of ${javaClass.simpleName}.")
     }
 
     fun initialize() {
@@ -567,8 +569,8 @@ abstract class Mob : Char() {
         for (a in abilities) justDie = a.onDying(this) && justDie
 
         if (justDie) {
-            val chance = Config.LootChance * 1.15f.pow(Dungeon.hero.wealthBonus())
-            if (Random.Float() < chance && Dungeon.hero.lvl <= Config.MaxLevel + 2) {
+            if (Dungeon.hero.lvl <= Config.MaxLevel + 2 &&
+                    Random.Float() < Config.LootChance * 1.15f.pow(Dungeon.hero.wealthBonus())) {
                 createLoot()?.let { Dungeon.level.drop(it, pos).sprite.drop() }
             }
 
@@ -580,19 +582,34 @@ abstract class Mob : Char() {
     }
 
     protected open fun createLoot(): Item? {
-        var item: Item? = null
-        if (loot is Generator.ItemGenerator) {
-            item = (loot as Generator.ItemGenerator).generate()
-        } else if (loot is Class<*>) {
-            try {
-                item = (loot as Class<out Item>).newInstance().random()
-            } catch (ignored: Exception) {
+        val total = Config.Loot.sumOf { it.Chance.toDouble() }.toFloat()
+        if (total <= 0f) return null
+
+        var p = Random.Float(total)
+        for (l in Config.Loot) {
+            p -= l.Chance
+            if (p <= 0f) return GenerateItemFromString(l.Name)
+        }
+
+        TODO()
+    }
+
+    protected fun GenerateItemFromString(name: String): Item? {
+        try {
+            //todo: someday i'll get rid of this
+            if (name.all { it.isUpperCase() }) {
+                // should be a generator
+                val gen = Class.forName("com.egoal.darkestpixeldungeon.items.Generator.$name").kotlin.objectInstance as Generator.ItemGenerator?
+                return gen?.generate()
             }
 
-        } else {
-            item = loot as Item?
+            // normal item instance
+            val item = Class.forName("com.egoal.darkestpixeldungeon.items.$name").newInstance() as Item?
+            return item?.random()
+        } catch (e: java.lang.Exception) {
+            Log.w("dpd", "failed to create item for $name: " + e.message)
         }
-        return item
+        return null
     }
 
     open fun reset(): Boolean {

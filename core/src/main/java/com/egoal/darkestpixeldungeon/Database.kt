@@ -11,7 +11,9 @@ import kotlinx.serialization.json.*
 object Database {
     private const val DATA_FILE = "data/database.cdb"
 
-    val _mobLines: List<MobsLine>
+    private val _mobLines: List<MobsLine>
+
+    val DummyMobConfig: MobsLine by lazy { ConfigOfMob("DUMMY")!! }
 
     init {
         val br = Game.instance.assets.open(DATA_FILE).bufferedReader().readText()
@@ -60,7 +62,7 @@ object Database {
         }
     }
 
-    fun ConfigOfMob(key: String) = _mobLines.find { it.Class == key }!!
+    fun ConfigOfMob(key: String) = _mobLines.find { it.Class == key }
 
     private val _proparr = arrayOf(Char.Property.BOSS, Char.Property.MINIBOSS, Char.Property.UNDEAD,
             Char.Property.DEMONIC, Char.Property.IMMOVABLE, Char.Property.PHANTOM)

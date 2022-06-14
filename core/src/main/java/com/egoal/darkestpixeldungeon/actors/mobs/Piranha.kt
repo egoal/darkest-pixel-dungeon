@@ -21,25 +21,20 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas
-import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Burning
-import com.egoal.darkestpixeldungeon.actors.buffs.Frost
-import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
-import com.egoal.darkestpixeldungeon.actors.buffs.Roots
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.unclassified.FishBone
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.sprites.PiranhaSprite
 import com.watabou.utils.Random
-
-import java.util.HashSet
+import java.util.*
 
 class Piranha : Mob() {
     init {
@@ -47,16 +42,12 @@ class Piranha : Mob() {
 
         baseSpeed = 2f
 
-        EXP = 0
+        Config = Database.DummyMobConfig.copy(
+                MaxHealth = 10 + Dungeon.depth * 5,
+                DefendSkill = 10f + Dungeon.depth * 2,
+                AttackSkill = 20f + Dungeon.depth * 2)
 
         addResistances(Damage.Element.LIGHT, -0.5f)
-    }
-
-    init {
-        HT = 10 + Dungeon.depth * 5
-        HP = HT
-        defSkill = 10f + Dungeon.depth * 2
-        atkSkill = 20f + Dungeon.depth * 2
     }
 
     override fun act(): Boolean {

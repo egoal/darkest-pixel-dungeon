@@ -68,11 +68,7 @@ class GuardianTrap : Trap() {
         init {
             spriteClass = GuardianSprite::class.java
 
-            EXP = 0
             state = WANDERING
-        }
-
-        init {
 
             weapon.inscribe(null)
             weapon.degrade(weapon.level())

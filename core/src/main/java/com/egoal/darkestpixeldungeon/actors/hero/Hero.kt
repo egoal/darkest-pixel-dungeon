@@ -1246,7 +1246,7 @@ class Hero : Char() {
 
         // may recover sanity
         if (ch.properties().contains(Property.BOSS)) recoverSanity(Random.Float(8f, 15f))
-        else if (ch is Mob && ch.maxLvl + 2 >= lvl) {
+        else if (ch is Mob && ch.Config.MaxLevel + 2 >= lvl) {
             val x = pressure.pressure / Pressure.MAX_PRESSURE
             val px = if (x < 0.5f) 0.1f else (0.5f - 0.4f / (1f + exp(10f * (x - 0.5f)) / 10f))
             val y = 1f - HP.toFloat() / HT.toFloat()

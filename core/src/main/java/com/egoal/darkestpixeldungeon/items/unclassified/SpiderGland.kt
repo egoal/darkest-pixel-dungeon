@@ -26,6 +26,10 @@ class SpiderGland : Item() {
     override val isIdentified: Boolean
         get() = true
 
+    override fun random(): Item = this.apply {
+        quantity = if (Random.Float() < .3f) 2 else 1
+    }
+
     override fun onThrow(cell: Int) {
         if (Level.pit[cell]) super.onThrow(cell)
         else {

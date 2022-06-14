@@ -22,11 +22,9 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.actors.Damage
-
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Rage
 import com.egoal.darkestpixeldungeon.effects.particles.SparkParticle
@@ -34,7 +32,6 @@ import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ShamanSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
@@ -42,17 +39,13 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
-import kotlin.math.round
 
 class Shaman : Mob(), Callback {
 
     init {
         spriteClass = ShamanSprite::class.java
 
-        PropertyConfiger.set(this, "Shaman")
         HUNTING = HuntingAI()
-
-        loot = Generator.SCROLL
     }
 
     private var buffcd = 0f //todo: rework skilled ai

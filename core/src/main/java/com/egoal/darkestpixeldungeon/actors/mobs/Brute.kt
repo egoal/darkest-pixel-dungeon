@@ -20,26 +20,15 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnrageDefendAbility
 import com.egoal.darkestpixeldungeon.items.unclassified.Gold
 import com.egoal.darkestpixeldungeon.sprites.BruteSprite
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnrageDefendAbility
-import com.egoal.darkestpixeldungeon.messages.Messages
-import com.watabou.utils.Bundle
-import com.watabou.utils.Random
 
 open class Brute : Mob() {
     init {
-        PropertyConfiger.set(this, "Brute")
         spriteClass = BruteSprite::class.java
 
-        loot = Gold::class.java
         immunities.add(Terror::class.java)
 
         abilities.add(EnrageDefendAbility())

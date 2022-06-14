@@ -43,12 +43,8 @@ class Bee : Mob() {
     init {
         spriteClass = BeeSprite::class.java
 
-        EXP = 0
-
         flying = true
         state = WANDERING
-
-        addResistances(Damage.Element.POISON, 0.2f)
     }
 
     override fun viewDistance(): Int = 4

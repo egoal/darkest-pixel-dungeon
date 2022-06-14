@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
@@ -43,13 +42,9 @@ class GnollTrickster : Gnoll() {
     private var combo = 0
 
     init {
-        PropertyConfiger.set(this, "GnollTrickster")
-
         spriteClass = GnollTricksterSprite::class.java
 
         state = WANDERING
-
-        loot = CurareDart().random()
     }
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addFeature(Damage.Feature.RANGED)

@@ -23,22 +23,15 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.sprites.BatSprite
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.VampireAttackAbility
-import com.egoal.darkestpixeldungeon.effects.Speck
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.watabou.utils.Random
 
 class Bat : Mob() {
 
     init {
-        PropertyConfiger.set(this, "Bat")
-
         spriteClass = BatSprite::class.java
-        loot = PotionOfHealing()
 
         baseSpeed = 2f
         flying = true
@@ -48,27 +41,15 @@ class Bat : Mob() {
 
     override fun viewDistance(): Int = seeDistance()
 
-    override fun giveDamage(target: Char): Damage {
+    override fun giveDamage(enemy: Char): Damage {
         return if (Random.Int(4) == 0)
-            Damage(Random.NormalIntRange(1, 5), this, target).type(Damage.Type.MENTAL)
+            Damage(Random.NormalIntRange(1, 5), this, enemy).type(Damage.Type.MENTAL)
         else {
-            val dmg = super.giveDamage(target).addElement(Damage.Element.SHADOW)
+            val dmg = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
             if (Statistics.Clock.state != Statistics.ClockTime.State.Day)
                 dmg.value += dmg.value / 4
 
             dmg
         }
     }
-
-    override fun die(cause: Any?) {
-        //sets drop chance
-        lootChance = 1f / (8 + Dungeon.limitedDrops.batHP.count)
-        super.die(cause)
-    }
-
-    override fun createLoot(): Item? {
-        Dungeon.limitedDrops.batHP.count++
-        return super.createLoot()
-    }
-
 }

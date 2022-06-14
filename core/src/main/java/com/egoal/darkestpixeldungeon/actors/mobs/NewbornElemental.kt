@@ -21,7 +21,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost
@@ -31,8 +30,6 @@ import com.egoal.darkestpixeldungeon.sprites.NewbornElementalSprite
 class NewbornElemental : Elemental() {
 
     init {
-        PropertyConfiger.set(this, "NewbornElemental")
-
         spriteClass = NewbornElementalSprite::class.java
         HP = HT / 2
     }

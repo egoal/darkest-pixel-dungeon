@@ -20,38 +20,28 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BurningAttackAbility
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefendAbility
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfLiquidFlame
 import com.egoal.darkestpixeldungeon.items.unclassified.FireButterfly
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
-import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.levels.Level
-import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.ElementalSprite
-import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Random
-
-import java.util.HashSet
+import java.util.*
 
 open class Elemental : Mob() {
 
     init {
-        PropertyConfiger.set(this, "Elemental")
         spriteClass = ElementalSprite::class.java
 
         flying = true
@@ -78,10 +68,6 @@ open class Elemental : Mob() {
         } else {
             super.add(buff)
         }
-    }
-
-    override fun createLoot(): Item? {
-        return if (Random.Float() < 0.4f) PotionOfLiquidFlame() else FireButterfly()
     }
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES

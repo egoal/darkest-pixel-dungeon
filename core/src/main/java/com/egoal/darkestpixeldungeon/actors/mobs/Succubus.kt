@@ -20,37 +20,26 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Charm
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
-import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CharmAttackAbility
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.SuccubusSprite
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CharmAttackAbility
-import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-
-import java.util.ArrayList
-import java.util.HashSet
+import java.util.*
 
 class Succubus : Mob() {
     private var delay = 0
 
     init {
-        PropertyConfiger.set(this, "Succubus")
-
         spriteClass = SuccubusSprite::class.java
-
-        loot = ScrollOfLullaby()
 
         abilities.add(CharmAttackAbility())
         immunities.add(Sleep::class.java)

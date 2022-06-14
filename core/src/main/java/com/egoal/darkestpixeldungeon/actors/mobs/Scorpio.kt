@@ -21,11 +21,8 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CrippleAttackAbility
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
@@ -36,10 +33,7 @@ import com.watabou.utils.Random
 
 open class Scorpio : Mob() {
     init {
-        PropertyConfiger.set(this, "Scorpio")
-
         spriteClass = ScorpioSprite::class.java
-        loot = PotionOfHealing()
 
         abilities.add(CrippleAttackAbility())
     }
@@ -60,16 +54,4 @@ open class Scorpio : Mob() {
             super.getCloser(target)
         }
     }
-
-    override fun createLoot(): Item? {
-        //5/count+5 total chance of getting healing, failing the 2nd roll drops
-        // mystery meat instead.
-        if (Random.Int(5 + Dungeon.limitedDrops.scorpioHP.count) <= 4) {
-            Dungeon.limitedDrops.scorpioHP.count++
-            return loot as Item?
-        } else {
-            return MysteryMeat()
-        }
-    }
-
 }

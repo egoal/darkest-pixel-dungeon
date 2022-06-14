@@ -21,13 +21,11 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ExplodeDyingAbility
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.MentalExplodeDyingAbility
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDyingAbility
-import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
@@ -36,10 +34,7 @@ import com.watabou.utils.Random
 
 class Skeleton : Mob() {
     init {
-        PropertyConfiger.set(this, "Skeleton")
-
         spriteClass = SkeletonSprite::class.java
-        loot = Generator.WEAPON.generate()
 
         immunities.addAll(listOf(Bleeding::class.java))
         abilities.add(ExplodeDyingAbility())
@@ -55,16 +50,8 @@ class Skeleton : Mob() {
         return if (!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float() < 0.04f) {
             Dungeon.limitedDrops.handOfElder.drop()
             HandOfTheElder().random()
-        } else {
-            var loot: Item
-            do {
-                loot = Generator.WEAPON.generate()
-                //50% chance of re-rolling tier 4 or 5 items
-            } while (loot is MeleeWeapon && loot.tier >= 4 &&
-                    Random.Int(2) == 0)
-            loot.level(0)
-
-            loot
+        } else super.createLoot().apply {
+            if (this is MeleeWeapon && tier >= 4 && Random.Int(2) == 0) level(0)
         }
     }
 }

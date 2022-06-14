@@ -21,32 +21,25 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Weakness
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
-import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.WarlockSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
 
 class Warlock : Mob(), Callback {
 
     init {
-        PropertyConfiger.set(this, "Warlock")
-
         spriteClass = WarlockSprite::class.java
-
-        loot = Generator.POTION
     }
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
@@ -92,22 +85,6 @@ class Warlock : Mob(), Callback {
 
     override fun call() {
         next()
-    }
-
-    public override fun createLoot(): Item? {
-        val loot = super.createLoot()
-
-        if (loot is PotionOfHealing) {
-
-            //count/10 chance of not dropping potion
-            if (Random.Int(10) - Dungeon.limitedDrops.warlockHP.count < 0) {
-                return null
-            } else
-                Dungeon.limitedDrops.warlockHP.count++
-
-        }
-
-        return loot
     }
 
     companion object {

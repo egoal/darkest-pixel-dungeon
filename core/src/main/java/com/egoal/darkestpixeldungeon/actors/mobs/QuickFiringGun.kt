@@ -2,15 +2,12 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 
 class QuickFiringGun : Ballista() {
     init {
-        PropertyConfiger.set(this, "QuickFiringGun")
-
         spriteClass = Sprite::class.java
     }
 
@@ -22,7 +19,7 @@ class QuickFiringGun : Ballista() {
         super.die(cause)
         Badges.validateRare(this)
     }
-    
+
     companion object {
         class Sprite : MobSprite() {
             init {

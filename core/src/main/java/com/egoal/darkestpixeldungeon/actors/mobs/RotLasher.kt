@@ -18,22 +18,8 @@ class RotLasher : Mob() {
     init {
         spriteClass = RotLasherSprite::class.java
 
-        HP = 1
-        HT = 1
-
-        defSkill = 0f
-        EXP = 1
-
-        loot = Generator.SEED
-        lootChance = 1f
-
         WANDERING = Waiting()
         state = WANDERING
-
-        properties.add(Property.IMMOVABLE)
-
-        addResistances(Damage.Element.POISON, 0.5f)
-        addResistances(Damage.Element.FIRE, -2f)
     }
 
     private var level = 1
@@ -41,13 +27,14 @@ class RotLasher : Mob() {
     fun setLevel(level: Int) {
         this.level = level
 
-        HT = 5 * level
-        HP = HT
-        EXP = level / 3 + 1
-        maxLvl = level + 2
+        Config = Config.copy(
+                MaxHealth = 5 * level,
+                EXP = level / 3 + 1,
+                MaxLevel = level + 2,
+                AttackSkill = 10f + level,
+                DefendSkill = 3f + level
+        )
 
-        atkSkill = 10f + level
-        defSkill = 3f + level
         enemySeen = true
     }
 

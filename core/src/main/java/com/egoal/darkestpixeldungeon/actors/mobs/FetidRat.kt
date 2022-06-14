@@ -20,7 +20,6 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.blobs.StenchGas
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.OozeAttackAbility
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefendAbility
@@ -30,7 +29,6 @@ import com.egoal.darkestpixeldungeon.sprites.FetidRatSprite
 class FetidRat : Rat() {
 
     init {
-        PropertyConfiger.set(this, "FetidRat")
         spriteClass = FetidRatSprite::class.java
 
         state = WANDERING

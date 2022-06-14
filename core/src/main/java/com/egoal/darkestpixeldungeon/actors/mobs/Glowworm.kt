@@ -10,14 +10,10 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Light
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
-import com.egoal.darkestpixeldungeon.actors.buffs.Venom
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.unclassified.PoisonPowder
-import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
@@ -26,7 +22,7 @@ import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.HashSet
+import java.util.*
 
 class Glowworm(private var level: Int = 1) : Mob() {
     init {
@@ -34,27 +30,19 @@ class Glowworm(private var level: Int = 1) : Mob() {
 
         flying = true
 
-        addResistances(Damage.Element.FIRE, 0.2f)
-        addResistances(Damage.Element.POISON, 0.5f)
-        addResistances(Damage.Element.ICE, -0.2f)
-
         setLevel(level)
         Buff.affect(this, Light::class.java).prolong(Float.MAX_VALUE) // for a whole light...
-
-        loot = PoisonPowder()
-        lootChance = 0.2f
     }
 
     fun setLevel(lvl: Int) {
         level = lvl
 
-        HT = 5 * level
-        HP = HT
-        EXP = level / 3 + 1
-        maxLvl = level + 2
-
-        defSkill = 3f + level
-        atkSkill = 10f + level
+        Config = Config.copy(
+                MaxHealth = 5 * level,
+                EXP = level / 3 + 1,
+                MaxLevel = level + 2,
+                DefendSkill = 3f + level,
+                AttackSkill = 10f + level)
     }
 
     override fun giveDamage(enemy: Char): Damage =

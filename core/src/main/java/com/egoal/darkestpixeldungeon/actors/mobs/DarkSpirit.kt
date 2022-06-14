@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.*
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Mending
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
@@ -21,7 +22,6 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import java.io.IOException
 import kotlin.math.abs
-import kotlin.math.max
 import kotlin.math.min
 
 class DarkSpirit : Mob() {
@@ -35,17 +35,6 @@ class DarkSpirit : Mob() {
         name = userName
 
         potions = Random.IntRange(2, 3)
-
-        magicalResistance = -0.25f + (armor?.MRES() ?: 0f)
-        elementalResistance.fill(0.1f)
-
-        criticalChance = 0.1f
-        minDamage = 1
-        maxDamage = max(10, depth + (level - depth) * 2)
-        criticalRatio = 1.5f
-
-        minDefense = armor?.DRMin() ?: 0
-        maxDefense = armor?.DRMax() ?: 0
 
         atkSkill = 10f + level
         defSkill = 5f + level
@@ -72,6 +61,15 @@ class DarkSpirit : Mob() {
         }
 
         return super.act()
+    }
+
+    override fun defendDamage(dmg: Damage): Damage {
+        if (armor != null) {
+            armor!!.glyph?.proc(armor!!, dmg)
+            dmg.value -= Random.IntRange(armor!!.DRMin(), armor!!.DRMax())
+        }
+
+        return super.defendDamage(dmg)
     }
 
     override fun createLoot(): Item? {

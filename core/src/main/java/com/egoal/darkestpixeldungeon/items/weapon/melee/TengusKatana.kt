@@ -29,7 +29,7 @@ class TengusKatana : MeleeWeapon() {
     override fun proc(dmg: Damage): Damage {
         val attacker = dmg.from as Char
         val defender = dmg.to as Char
-        if (attacker is Hero && defender is Mob && defender.maxLvl <= attacker.lvl + 5 &&
+        if (attacker is Hero && defender is Mob && defender.Config.MaxLevel <= attacker.lvl + 5 &&
                 !defender.properties().contains(Char.Property.BOSS) && defender.surprisedBy(attacker)) {
             // 10% -> 50%
             val p = (1f + level()) / (10f + 2 * level())

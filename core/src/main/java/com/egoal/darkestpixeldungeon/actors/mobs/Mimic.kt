@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
@@ -26,8 +27,6 @@ import kotlin.math.max
 class Mimic : Mob() {
     init {
         spriteClass = MimicSprite::class.java
-
-        properties.add(Property.DEMONIC)
     }
 
     private var level = 0
@@ -50,11 +49,9 @@ class Mimic : Mob() {
     fun adjustStatus(level: Int) {
         this.level = level
 
-        HT = (1 + level) * 6
-        HP = HT
-        EXP = 2 + 2 * (level - 1) / 5
-        atkSkill = 9f + level
-        defSkill = atkSkill / 2f
+        Config = Database.DummyMobConfig.copy(MaxHealth = (1 + level) * 6, EXP = 2 + 2 * (level - 1) / 5,
+                AttackSkill = 9f + level, DefendSkill = atkSkill / 2f)
+        properties.add(Property.DEMONIC)
 
         enemySeen = true
     }

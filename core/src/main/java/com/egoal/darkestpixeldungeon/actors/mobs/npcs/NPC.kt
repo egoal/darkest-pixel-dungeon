@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.Dungeon
@@ -38,9 +39,9 @@ import java.util.HashSet
 
 abstract class NPC : Mob() {
     init {
-        HT = 1
-        HP = HT
-        EXP = 0
+        Config = Database.DummyMobConfig.copy(
+                MaxHealth = 1, EXP = 0,
+        )
 
         camp = Camp.NEUTRAL
         state = PASSIVE

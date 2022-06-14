@@ -21,18 +21,14 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.effects.Chains
 import com.egoal.darkestpixeldungeon.effects.Pushing
-import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.Armor
-import com.egoal.darkestpixeldungeon.items.helmets.GuardHelmet
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -48,10 +44,7 @@ class Guard : Mob() {
     private var chainsUsed = false
 
     init {
-        PropertyConfiger.set(this, "Guard")
-
         spriteClass = GuardSprite::class.java
-        loot = null    //see createloot.
 
         SHLD = HT / 2
     }
@@ -110,29 +103,9 @@ class Guard : Mob() {
         return true
     }
 
-    override fun createLoot(): Item? {
-        val p = Random.Float()
-        return when {
-            p < 0.5f -> {
-                var loot: Armor
-                do {
-                    loot = Generator.ARMOR.generate() as Armor
-                    //50% chance of re-rolling tier 4 or 5 items
-                } while (loot.tier >= 4 && Random.Int(2) == 0)
-                loot.level(0)
-
-                loot
-            }
-            p < 0.85f -> {
-                // try drop a health potion, with prob: .75, .66, .6, ...
-                if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 6) {
-                    Dungeon.limitedDrops.guardHP.drop()
-                    PotionOfHealing()
-                }
-                null
-            }
-            else -> GuardHelmet().random()
-        }
+    override fun createLoot(): Item? = super.createLoot()?.apply {
+        if (this is Armor && tier >= 4 && Random.Int(2) == 0) level(0)
+        // avoid high level high tier armor drop.
     }
 
     override fun storeInBundle(bundle: Bundle) {

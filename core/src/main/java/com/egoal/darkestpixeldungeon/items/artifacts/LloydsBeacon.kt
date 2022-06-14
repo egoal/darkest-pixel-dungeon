@@ -24,12 +24,13 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.GhostHero
+import com.egoal.darkestpixeldungeon.effects.MagicMissile
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -40,15 +41,11 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.effects.MagicMissile
-import com.egoal.darkestpixeldungeon.items.Item
 import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
-import com.watabou.utils.Callback
 import com.watabou.utils.PathFinder
-
-import java.util.ArrayList
+import java.util.*
 
 class LloydsBeacon : Artifact() {
 
@@ -137,6 +134,8 @@ class LloydsBeacon : Artifact() {
         defaultAction = AC_ZAP
         usesTargeting = true
     }
+
+    override fun random(): Item = this // never cursed
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)

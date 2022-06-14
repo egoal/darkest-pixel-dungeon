@@ -20,11 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.PropertyConfiger
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Amok
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Imp
@@ -38,16 +37,11 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
-import java.util.HashSet
-
 open class Monk : Mob() {
     private var hitsToDisarm = 0
 
     init {
         spriteClass = MonkSprite::class.java
-
-        PropertyConfiger.set(this, "Monk")
-        loot = Food()
 
         immunities.addAll(listOf(Amok::class.java, Terror::class.java))
     }
