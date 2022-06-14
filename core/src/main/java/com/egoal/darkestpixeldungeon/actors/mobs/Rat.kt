@@ -20,21 +20,14 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttackAbility
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.PoisonAttackAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttack
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.PoisonAttack
 import com.egoal.darkestpixeldungeon.sprites.RatSprite
-import com.watabou.utils.Random
 
 open class Rat : Mob() {
     init {
         spriteClass = RatSprite::class.java
     }
 
-    override fun randomAbilities(): List<Ability> =
-            when (Random.Int(10)) {
-                0 -> listOf(BleedingAttackAbility())
-                1 -> listOf(PoisonAttackAbility())
-                else -> listOf()
-            }
+    override fun availableAbilities() = listOf(BleedingAttack(), PoisonAttack())
 }

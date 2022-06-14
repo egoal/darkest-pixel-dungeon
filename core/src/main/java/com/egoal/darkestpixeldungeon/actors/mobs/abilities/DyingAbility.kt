@@ -14,7 +14,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
-class ExplodeDyingAbility : Ability() {
+class ExplodeDying : Ability() {
     override fun onDying(belonger: Mob): Boolean {
         val heroWasAlive = Dungeon.hero.isAlive
 
@@ -40,7 +40,7 @@ class ExplodeDyingAbility : Ability() {
     }
 }
 
-class MentalExplodeDyingAbility : Ability() {
+class MentalExplodeDying : Ability() {
     override fun onDying(belonger: Mob): Boolean {
         val dis = Dungeon.level.distance(belonger.pos, Dungeon.hero.pos)
         if (Dungeon.hero.isAlive && dis <= 2) {
@@ -56,11 +56,11 @@ class MentalExplodeDyingAbility : Ability() {
     }
 }
 
-class RespawnDyingAbility(var mobclass: Class<out Mob>? = null) : Ability() {
+class RespawnDying(var mobclass: Class<out Mob>? = null) : Ability() {
     var respawnDelay = Random.Int(5, 10)
 
     override fun onDying(belonger: Mob): Boolean {
-        val head = MobSpawner(mobclass, respawnDelay)
+        val head = MobSpawner(mobclass ?: belonger.javaClass, respawnDelay)
         head.pos = belonger.pos
         GameScene.add(head)
 

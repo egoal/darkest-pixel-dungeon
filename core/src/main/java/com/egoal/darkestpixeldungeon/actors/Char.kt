@@ -462,7 +462,8 @@ abstract class Char : Actor() {
         DEMONIC,
         MACHINE,
         IMMOVABLE,
-        PHANTOM
+        PHANTOM,
+        ELITE,
     }
 
     // used on damage attacker, avoid null usage...

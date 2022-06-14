@@ -21,17 +21,14 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.FeedbackDefendAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.FeedbackDefend
 import com.egoal.darkestpixeldungeon.sprites.AcidicSprite
-import com.watabou.utils.Random
 
 class Acidic : Scorpio() {
     init {
         spriteClass = AcidicSprite::class.java
 
-        abilities.add(FeedbackDefendAbility())
+        abilities.add(FeedbackDefend())
     }
 
     override fun die(cause: Any?) {

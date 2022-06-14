@@ -21,8 +21,8 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.actors.blobs.StenchGas
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.OozeAttackAbility
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefendAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.OozeAttack
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefend
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
 import com.egoal.darkestpixeldungeon.sprites.FetidRatSprite
 
@@ -33,8 +33,8 @@ class FetidRat : Rat() {
 
         state = WANDERING
 
-        abilities.add(OozeAttackAbility())
-        abilities.add(ReleaseGasDefendAbility().apply { gas = StenchGas::class.java })
+        abilities.add(OozeAttack())
+        abilities.add(ReleaseGasDefend().apply { gas = StenchGas::class.java })
     }
 
     override fun die(cause: Any?) {

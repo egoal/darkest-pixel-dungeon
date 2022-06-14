@@ -67,8 +67,9 @@ class UrnOfShadow : Special() {
 
         val cnt = when {
             properties.contains(Char.Property.UNDEAD) || properties.contains(Char.Property.PHANTOM) -> 0
+            properties.contains(Char.Property.ELITE) -> 3
             properties.contains(Char.Property.MINIBOSS) || properties.contains(Char.Property.BOSS) -> 5
-            mob.Config.MaxLevel >= (curUser.lvl + 3) -> 2
+//            mob.Config.MaxLevel >= (curUser.lvl + 3) -> 2
             else -> 1
         }
 

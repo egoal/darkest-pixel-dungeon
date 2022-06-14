@@ -8,7 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.*
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDyingAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDying
 import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
 import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
@@ -190,7 +190,7 @@ class King : Mob() {
             spriteClass = UndeadSprite::class.java
             state = WANDERING
 
-            abilities.add(RespawnDyingAbility(Undead::class.java).apply {
+            abilities.add(RespawnDying(Undead::class.java).apply {
                 respawnDelay = Random.Int(10, 20)
             })
         }

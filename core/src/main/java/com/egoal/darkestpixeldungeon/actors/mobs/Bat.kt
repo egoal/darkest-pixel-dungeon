@@ -24,8 +24,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.sprites.BatSprite
 import com.egoal.darkestpixeldungeon.Statistics
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.VampireAttackAbility
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.VampireAttack
 import com.watabou.utils.Random
 
 class Bat : Mob() {
@@ -36,7 +35,7 @@ class Bat : Mob() {
         baseSpeed = 2f
         flying = true
 
-        abilities.add(VampireAttackAbility())
+        abilities.add(VampireAttack())
     }
 
     override fun viewDistance(): Int = seeDistance()

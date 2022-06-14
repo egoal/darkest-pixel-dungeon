@@ -21,8 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnrageDefendAbility
-import com.egoal.darkestpixeldungeon.items.unclassified.Gold
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnrageDefend
 import com.egoal.darkestpixeldungeon.sprites.BruteSprite
 
 open class Brute : Mob() {
@@ -31,6 +30,6 @@ open class Brute : Mob() {
 
         immunities.add(Terror::class.java)
 
-        abilities.add(EnrageDefendAbility())
+        abilities.add(EnrageDefend())
     }
 }

@@ -23,19 +23,15 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CrippleAttackAbility
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CrippleAttack
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.ScorpioSprite
-import com.watabou.utils.Random
 
 open class Scorpio : Mob() {
     init {
         spriteClass = ScorpioSprite::class.java
 
-        abilities.add(CrippleAttackAbility())
+        abilities.add(CrippleAttack())
     }
 
     override fun viewDistance(): Int = 6

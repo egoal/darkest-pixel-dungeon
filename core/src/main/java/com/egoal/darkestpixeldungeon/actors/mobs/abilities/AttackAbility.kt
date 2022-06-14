@@ -13,26 +13,26 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 import kotlin.math.min
 
-class BleedingAttackAbility : Ability() {
+class BleedingAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         if (Random.Int(2) == 0) Buff.affect(damage.to as Char, Bleeding::class.java).set(damage.value)
     }
 }
 
-class BurningAttackAbility : Ability() {
+class BurningAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
         if (Random.Int(2) == 0) Buff.affect(enemy, Burning::class.java).reignite(enemy)
     }
 }
 
-class OozeAttackAbility : Ability() {
+class OozeAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         if (Random.Int(3) == 0) Buff.affect(damage.to as Char, Ooze::class.java)
     }
 }
 
-class PoisonAttackAbility : Ability() {
+class PoisonAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
         if (Random.Int(2) == 0) Buff.affect(enemy, Poison::class.java)
@@ -40,7 +40,7 @@ class PoisonAttackAbility : Ability() {
     }
 }
 
-class CharmAttackAbility : Ability() {
+class CharmAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
         if (Random.Int(3) == 0) {
@@ -52,14 +52,14 @@ class CharmAttackAbility : Ability() {
     }
 }
 
-class CrippleAttackAbility : Ability() {
+class CrippleAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
         if (Random.Int(3) == 0 && enemy.buff(Cripple::class.java) == null) Buff.prolong(enemy, Cripple::class.java, 6f)
     }
 }
 
-class VampireAttackAbility : Ability() {
+class VampireAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         if (damage.type != Damage.Type.MENTAL) {
             val reg = min(damage.value, belonger.HT - belonger.HP) / 3
@@ -71,7 +71,7 @@ class VampireAttackAbility : Ability() {
     }
 }
 
-class KnockBackAttackAbility : Ability() {
+class KnockBackAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val target = damage.to as Char
         val chance = when (Dungeon.level.distance(belonger.pos, target.pos)) {
@@ -87,7 +87,7 @@ class KnockBackAttackAbility : Ability() {
     }
 }
 
-class CritAttackAbility : Ability() {
+class CritAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         if (!damage.isFeatured(Damage.Feature.CRITICAL) && Random.Float() < .1f)
             damage.value = (damage.value * 1.5f).toInt()

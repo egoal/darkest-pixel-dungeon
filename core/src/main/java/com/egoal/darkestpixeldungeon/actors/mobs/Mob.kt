@@ -48,6 +48,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import java.util.*
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -81,6 +82,7 @@ abstract class Mob : Char() {
 
             HT = _config.MaxHealth
             HP = HT
+            SHLD = _config.Shield
             atkSkill = _config.AttackSkill
             defSkill = _config.DefendSkill
 
@@ -97,6 +99,7 @@ abstract class Mob : Char() {
         }
 
     var abilities: ArrayList<Ability> = arrayListOf()
+    private var cntAbilities_ = 0 // number of inherent abilities
 
     init {
         name = M.L(this, "name")
@@ -111,23 +114,33 @@ abstract class Mob : Char() {
     }
 
     fun initialize() {
-        val eas = randomAbilities()
-        if (eas.isNotEmpty()) {
-            abilities.addAll(eas)
-            properties.add(Property.MINIBOSS)
+        cntAbilities_ = abilities.size
 
-            name = eas[0].prefix() + name
+        abilities.addAll(randomAbilities())
+        if (cntAbilities_ < abilities.size) {
+            //with extra ability, becomes an elite
+            properties.add(Property.ELITE)
+            name = abilities[cntAbilities_].prefix() + name
         }
-        abilities.forEach {
-            it.onInitialize(this)
-            it.onReady(this)
-        }
+
+        abilities.forEach { it.onInitialize(this) }
+        abilities.forEach { it.onReady(this) }
     }
 
     /**
-     * return random abilities
+     * extra random abilities
      */
-    protected open fun randomAbilities(): List<Ability> = listOf()
+    protected fun randomAbilities(): List<Ability> {
+        //5% chance to lift as elite
+        //todo:
+        if (Random.Float() > .05f) return listOf()
+
+        val cans = availableAbilities().shuffled()
+        val cnt = Random.chances(floatArrayOf(.7f, .2f, .1f))
+        return cans.subList(0, min(cnt, cans.size))
+    }
+
+    protected open fun availableAbilities(): List<Ability> = listOf()
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
@@ -147,7 +160,7 @@ abstract class Mob : Char() {
         bundle.put(TARGET, target)
         bundle.put(FOLLOWING, following)
         bundle.put(ABILITIES, abilities)
-        bundle.put("miniboss", properties.contains(Property.MINIBOSS))
+        bundle.put("cnt-abilities", cntAbilities_)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -169,7 +182,12 @@ abstract class Mob : Char() {
         abilities.clear()
         abilities.addAll(bundle.getCollection(ABILITIES).map { it as Ability })
         abilities.forEach { it.onReady(this) }
-        if (bundle.getBoolean("miniboss")) properties.add(Property.MINIBOSS)
+
+        cntAbilities_ = bundle.getInt("cnt-abilities")
+        if (cntAbilities_ < abilities.size) {
+            properties.add(Property.MINIBOSS)
+            name = abilities[cntAbilities_].prefix()
+        }
     }
 
     open fun sprite(): CharSprite = spriteClass.newInstance()
@@ -604,10 +622,11 @@ abstract class Mob : Char() {
             }
 
             // normal item instance
-            val item = Class.forName("com.egoal.darkestpixeldungeon.items.$name").newInstance() as Item?
-            return item?.random()
+            val item = FindItemClassByName(name)?.newInstance()?.random()
+            if (item == null) Log.w("dpd", "failed to create item for $name.")
+            return item
         } catch (e: java.lang.Exception) {
-            Log.w("dpd", "failed to create item for $name: " + e.message)
+            Log.w("dpd", "failed to create item for $name: " + e.toString())
         }
         return null
     }
@@ -841,6 +860,38 @@ abstract class Mob : Char() {
         private const val AI_FLEEING = "FLEEING"
         private const val AI_PASSIVE = "PASSIVE"
         private const val AI_FOLLOW_HERO = "FOLLOW_HERO"
+
+        //todo: use packages
+        private val itempacks = listOf(
+                "com.egoal.darkestpixeldungeon.items.",
+                "com.egoal.darkestpixeldungeon.items.armor.",
+                "com.egoal.darkestpixeldungeon.items.artifacts.",
+                "com.egoal.darkestpixeldungeon.items.bags.",
+                "com.egoal.darkestpixeldungeon.items.books.",
+                "com.egoal.darkestpixeldungeon.items.food.",
+                "com.egoal.darkestpixeldungeon.items.helmets.",
+                "com.egoal.darkestpixeldungeon.items.keys.",
+                "com.egoal.darkestpixeldungeon.items.potions.",
+                "com.egoal.darkestpixeldungeon.items.quest.",
+                "com.egoal.darkestpixeldungeon.items.rings.",
+                "com.egoal.darkestpixeldungeon.items.scrolls.",
+                "com.egoal.darkestpixeldungeon.items.specials.",
+                "com.egoal.darkestpixeldungeon.items.unclassified.",
+                "com.egoal.darkestpixeldungeon.items.wands.",
+                "com.egoal.darkestpixeldungeon.items.weapon.",
+                "com.egoal.darkestpixeldungeon.items.weapon.melee.",
+                "com.egoal.darkestpixeldungeon.items.weapon.missiles.",
+        )
+
+        private fun FindItemClassByName(name: String): Class<out Item>? {
+            return itempacks.firstNotNullOfOrNull {
+                try {
+                    Class.forName(it + name) as Class<out Item>
+                } catch (e: ClassNotFoundException) {
+                    null
+                }
+            }
+        }
     }
 }
 

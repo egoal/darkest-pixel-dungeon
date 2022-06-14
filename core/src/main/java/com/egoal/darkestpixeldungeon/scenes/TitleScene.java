@@ -56,8 +56,6 @@ public class TitleScene extends PixelScene {
 
         super.create();
 
-        Database.INSTANCE.Test();
-
         Music.INSTANCE.play(Assets.TRACK_MAIN_THEME, true);
         Music.INSTANCE.volume(DarkestPixelDungeon.musicVol() / 10f);
 

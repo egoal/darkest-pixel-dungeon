@@ -23,9 +23,9 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ExplodeDyingAbility
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.MentalExplodeDyingAbility
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDyingAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ExplodeDying
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.MentalExplodeDying
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDying
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.artifacts.HandOfTheElder
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
@@ -37,14 +37,10 @@ class Skeleton : Mob() {
         spriteClass = SkeletonSprite::class.java
 
         immunities.addAll(listOf(Bleeding::class.java))
-        abilities.add(ExplodeDyingAbility())
+        abilities.add(ExplodeDying())
     }
 
-    override fun randomAbilities(): List<Ability> = when (Random.Int(10)) {
-        0 -> listOf(RespawnDyingAbility())
-        1 -> listOf(MentalExplodeDyingAbility())
-        else -> listOf()
-    }
+    override fun availableAbilities() = listOf(RespawnDying(), MentalExplodeDying())
 
     override fun createLoot(): Item? {
         return if (!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float() < 0.04f) {

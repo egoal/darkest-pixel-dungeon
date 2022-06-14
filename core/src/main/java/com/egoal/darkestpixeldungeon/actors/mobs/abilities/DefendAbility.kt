@@ -15,7 +15,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
-class EnchantDefendAbility(private val prob: Float, private val enchantClass: Class<out Enchantment>, private val duration: Float) : Ability() {
+class EnchantDefend(private val prob: Float, private val enchantClass: Class<out Enchantment>, private val duration: Float) : Ability() {
     override fun onDefend(belonger: Mob, damage: Damage) {
         if (damage.from is Hero) {
             val hero = damage.from as Hero
@@ -27,7 +27,7 @@ class EnchantDefendAbility(private val prob: Float, private val enchantClass: Cl
     }
 }
 
-class ReleaseGasDefendAbility : Ability() {
+class ReleaseGasDefend : Ability() {
     lateinit var gas: Class<out Blob>
 
     override fun onReady(belonger: Mob) {
@@ -47,7 +47,7 @@ class ReleaseGasDefendAbility : Ability() {
     }
 }
 
-class EnrageDefendAbility : Ability() {
+class EnrageDefend : Ability() {
     private var actived = false
 
     override fun procGivenDamage(belonger: Mob, damage: Damage) {
@@ -81,7 +81,7 @@ class EnrageDefendAbility : Ability() {
     }
 }
 
-class FeedbackDefendAbility : Ability() {
+class FeedbackDefend : Ability() {
     override fun onDefend(belonger: Mob, damage: Damage) {
         val feedback = Random.NormalIntRange(0, damage.value)
         if (feedback > 0) (damage.from as Char).takeDamage(Damage(feedback, belonger, damage.from))

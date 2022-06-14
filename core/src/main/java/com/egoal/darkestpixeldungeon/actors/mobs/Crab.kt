@@ -20,12 +20,9 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.Ability
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.FeedbackDefendAbility
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.KnockBackAttackAbility
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.FeedbackDefend
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.KnockBackAttack
 import com.egoal.darkestpixeldungeon.sprites.CrabSprite
-import com.watabou.utils.Random
 
 open class Crab : Mob() {
     init {
@@ -33,9 +30,6 @@ open class Crab : Mob() {
         baseSpeed = 2f
     }
 
-    override fun randomAbilities(): List<Ability> = when (Random.Int(10)) {
-        0 -> listOf(FeedbackDefendAbility())
-        1 -> listOf(KnockBackAttackAbility())
-        else -> listOf()
-    }
+    override fun availableAbilities() = listOf(FeedbackDefend(), KnockBackAttack())
 }
+

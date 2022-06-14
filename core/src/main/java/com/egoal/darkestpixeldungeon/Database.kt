@@ -13,6 +13,9 @@ object Database {
 
     private val _mobLines: List<MobsLine>
 
+    /**
+     * empty config, usually use with ::copy()
+     */
     val DummyMobConfig: MobsLine by lazy { ConfigOfMob("DUMMY")!! }
 
     init {
@@ -25,10 +28,6 @@ object Database {
         Log.d("dpd", "database file loaded: ${_mobLines.size} mobs loaded.")
     }
 
-    fun Test() {
-        Log.d("dpd", "do")
-    }
-
     @Serializable
     data class ResistanceLine(val Magic: Float, val Fire: Float, val Poison: Float, val Ice: Float, val Light: Float, val Shadow: Float, val Holy: Float)
 
@@ -36,11 +35,10 @@ object Database {
     data class LootLine(val Name: String, val Chance: Float)
 
     /**
-     * TypeDamage: Normal, Magical, Mental
-     * Properties: BOSS, MINIBOSS, UNDEAD, DEMONIC, MACHINE, IMMOVABLE, PHANTOM
+     * TypeDamage: 0-Normal, 1-Magical, 2-Mental
      */
     @Serializable
-    data class MobsLine(val Class: String, val MaxHealth: Int, val AttackSkill: Float, val DefendSkill: Float,
+    data class MobsLine(val Class: String, val MaxHealth: Int, val Shield: Int, val AttackSkill: Float, val DefendSkill: Float,
                         val EXP: Int, val MaxLevel: Int, val MinDamage: Int, val MaxDamage: Int, val TypeDamage: Int,
                         val CritChance: Float, val CritRatio: Float, val MinDefend: Int, val MaxDefend: Int,
                         val Resistance: List<ResistanceLine>, val Properties: Int,
@@ -64,6 +62,7 @@ object Database {
 
     fun ConfigOfMob(key: String) = _mobLines.find { it.Class == key }
 
-    private val _proparr = arrayOf(Char.Property.BOSS, Char.Property.MINIBOSS, Char.Property.UNDEAD,
-            Char.Property.DEMONIC, Char.Property.IMMOVABLE, Char.Property.PHANTOM)
+    private val _proparr = Char.Property.values()
+//            arrayOf(Char.Property.BOSS, Char.Property.MINIBOSS, Char.Property.UNDEAD,
+//            Char.Property.DEMONIC, Char.Property.IMMOVABLE, Char.Property.PHANTOM)
 }

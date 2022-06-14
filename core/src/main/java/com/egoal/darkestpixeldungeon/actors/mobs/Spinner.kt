@@ -27,10 +27,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Web
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
 import com.egoal.darkestpixeldungeon.actors.buffs.Roots
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.PoisonAttackAbility
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
-import com.egoal.darkestpixeldungeon.items.unclassified.SpiderGland
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.PoisonAttack
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.SpinnerSprite
 import com.watabou.utils.Random
@@ -43,7 +40,7 @@ class Spinner : Mob() {
         FLEEING = Fleeing()
 
         immunities.add(Roots::class.java)
-        abilities.add(PoisonAttackAbility())
+        abilities.add(PoisonAttack())
     }
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.POISON)

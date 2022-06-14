@@ -25,8 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CharmAttackAbility
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CharmAttack
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
@@ -41,7 +40,7 @@ class Succubus : Mob() {
     init {
         spriteClass = SuccubusSprite::class.java
 
-        abilities.add(CharmAttackAbility())
+        abilities.add(CharmAttack())
         immunities.add(Sleep::class.java)
     }
 

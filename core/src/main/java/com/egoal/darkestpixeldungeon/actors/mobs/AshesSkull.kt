@@ -1,33 +1,30 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.MentalExplodeDyingAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.MentalExplodeDying
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
-import java.util.HashSet
 
 class AshesSkull : Mob() {
     init {
         spriteClass = Sprite::class.java
         flying = true
 
-        abilities.add(MentalExplodeDyingAbility())
+        abilities.add(MentalExplodeDying())
         immunities.addAll(listOf(Fire::class.java, Bleeding::class.java))
     }
 

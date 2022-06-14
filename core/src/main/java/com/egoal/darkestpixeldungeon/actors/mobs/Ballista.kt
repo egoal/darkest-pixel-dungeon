@@ -8,14 +8,9 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Amok
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Sleep
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.KnockBackAttackAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.KnockBackAttack
 import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
-import com.egoal.darkestpixeldungeon.items.unclassified.Gold
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.Javelin
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.MissileSprite
@@ -24,8 +19,6 @@ import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
-import com.watabou.utils.Random
-import java.util.HashSet
 
 open class Ballista : Mob() {
     private var ammo: Int = ammoCapacity()
@@ -34,7 +27,7 @@ open class Ballista : Mob() {
         spriteClass = Sprite::class.java
 
         immunities.addAll(listOf(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java))
-        abilities.add(KnockBackAttackAbility())
+        abilities.add(KnockBackAttack())
     }
 
     override fun viewDistance(): Int = 6

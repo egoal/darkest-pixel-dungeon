@@ -21,13 +21,8 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttackAbility
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttack
 import com.egoal.darkestpixeldungeon.sprites.AlbinoSprite
-import com.watabou.utils.Random
 
 class Albino : Rat() {
     init {
@@ -36,7 +31,7 @@ class Albino : Rat() {
         HT = 15
         HP = HT
 
-        abilities.add(BleedingAttackAbility())
+        abilities.add(BleedingAttack())
     }
 
     override fun die(cause: Any?) {
