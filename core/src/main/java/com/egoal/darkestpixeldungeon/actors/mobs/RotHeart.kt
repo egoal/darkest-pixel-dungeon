@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefend
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefend_Toxic
 import com.egoal.darkestpixeldungeon.plants.Rotberry
 import com.egoal.darkestpixeldungeon.sprites.RotHeartSprite
 
@@ -37,7 +38,7 @@ class RotHeart : Mob() {
         state = PASSIVE
 
         immunities.addAll(listOf(Terror::class.java, Bleeding::class.java))
-        abilities.add(ReleaseGasDefend().apply { gas = ToxicGas::class.java })
+        abilities.add(ReleaseGasDefend_Toxic())
     }
 
     override fun takeDamage(dmg: Damage): Int {

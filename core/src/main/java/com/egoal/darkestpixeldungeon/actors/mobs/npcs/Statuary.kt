@@ -56,8 +56,8 @@ class Statuary : NPC.Unbreakable() {
 
     init {
         spriteClass = Sprite::class.java
-        isLiving = false
         properties.add(Property.IMMOVABLE)
+        properties.add(Property.STATIC)
     }
 
     fun random() {

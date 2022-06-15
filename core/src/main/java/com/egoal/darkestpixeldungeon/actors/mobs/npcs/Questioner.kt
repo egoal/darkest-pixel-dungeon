@@ -37,8 +37,8 @@ class Questioner : NPC.Unbreakable() {
 
     init {
         spriteClass = Sprite::class.java
-        isLiving = false
         properties.add(Property.IMMOVABLE)
+        properties.add(Property.STATIC)
     }
 
     fun hold(rect: Rect): Questioner {

@@ -36,7 +36,6 @@ import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Door
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.SwarmSprite
-import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 
@@ -90,8 +89,8 @@ class Swarm : Mob() {
         return clone
     }
 
-    override fun createLoot(): Item? {
-        return super.createLoot()!!.identify() // identify poh
+    override fun createLoot(): Item? = super.createLoot()?.apply {
+        if (this is PotionOfHealing) identify() // identify poh
     }
 
     companion object {

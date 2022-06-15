@@ -34,6 +34,9 @@ object Database {
     @Serializable
     data class LootLine(val Name: String, val Chance: Float)
 
+    @Serializable
+    data class AbilityLine(val Name: String, val Chance: Float)
+
     /**
      * TypeDamage: 0-Normal, 1-Magical, 2-Mental
      */
@@ -42,7 +45,7 @@ object Database {
                         val EXP: Int, val MaxLevel: Int, val MinDamage: Int, val MaxDamage: Int, val TypeDamage: Int,
                         val CritChance: Float, val CritRatio: Float, val MinDefend: Int, val MaxDefend: Int,
                         val Resistance: List<ResistanceLine>, val Properties: Int,
-                        val LootChance: Float, val Loot: List<LootLine>) {
+                        val LootChance: Float, val Loot: List<LootLine>, val Ability: List<AbilityLine>) {
         val DamageType: Damage.Type by lazy {
             when (TypeDamage) {
                 0 -> Damage.Type.NORMAL

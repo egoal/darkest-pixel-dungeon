@@ -28,6 +28,4 @@ open class Rat : Mob() {
     init {
         spriteClass = RatSprite::class.java
     }
-
-    override fun availableAbilities() = listOf(BleedingAttack(), PoisonAttack())
 }

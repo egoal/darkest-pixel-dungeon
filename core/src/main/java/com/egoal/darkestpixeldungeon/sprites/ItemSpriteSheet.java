@@ -109,6 +109,7 @@ public class ItemSpriteSheet {
     public static final int TULWAR = WEP_TIER2 + 9;
     public static final int CEREMONIAL_SWORD = WEP_TIER2 + 10;
     public static final int BUTCHERS_KNIFE = WEP_TIER2 + 11;
+    public static final int SHORT_STICKS = WEP_TIER2 + 12;
 
     private static final int WEP_TIER3 = xy(1, 7);   //16 slots
     public static final int SWORD = WEP_TIER3 + 0;

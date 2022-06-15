@@ -4,9 +4,14 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
+import com.egoal.darkestpixeldungeon.actors.blobs.WhiteFog
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.MobSpawner
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -65,6 +70,32 @@ class RespawnDying(var mobclass: Class<out Mob>? = null) : Ability() {
         GameScene.add(head)
 
         if (Dungeon.visible[belonger.pos]) Sample.INSTANCE.play(Assets.SND_BONES)
+
+        return super.onDying(belonger)
+    }
+}
+
+open class ReleaseGasDying(private val gas: Class<out Blob>) : Ability() {
+    override fun onDying(belonger: Mob): Boolean {
+        GameScene.add(Blob.seed(belonger.pos, 200, gas))
+        return super.onDying(belonger)
+    }
+}
+
+class ReleaseGasDying_Toxic : ReleaseGasDying(ToxicGas::class.java)
+
+class ReleaseGasDying_WhiteFog : ReleaseGasDying(WhiteFog::class.java)
+
+class RageDying : Ability() {
+    override fun onDying(belonger: Mob): Boolean {
+        Dungeon.level.mobs
+                .filter { Dungeon.level.distance(belonger.pos, it.pos) <= 16 }
+                .forEach { it.beckon(belonger.pos) }
+
+        if (Dungeon.visible[belonger.pos])
+            CellEmitter.center(belonger.pos).start(Speck.factory(Speck.SCREAM), .3f, 3)
+
+        Sample.INSTANCE.play(Assets.SND_ALERT)
 
         return super.onDying(belonger)
     }

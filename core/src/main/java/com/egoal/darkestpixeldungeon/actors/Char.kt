@@ -464,6 +464,7 @@ abstract class Char : Actor() {
         IMMOVABLE,
         PHANTOM,
         ELITE,
+        STATIC,
     }
 
     // used on damage attacker, avoid null usage...

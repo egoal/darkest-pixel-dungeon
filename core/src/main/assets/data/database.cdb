@@ -36,15 +36,6 @@
 					"display": null
 				},
 				{
-					"typeStr": "4",
-					"name": "LootChance",
-					"display": 1
-				},
-				{
-					"typeStr": "8",
-					"name": "Loot"
-				},
-				{
 					"typeStr": "3",
 					"name": "MinDamage",
 					"display": null
@@ -80,14 +71,26 @@
 					"display": null
 				},
 				{
+					"typeStr": "4",
+					"name": "LootChance",
+					"display": 1
+				},
+				{
+					"typeStr": "8",
+					"name": "Loot"
+				},
+				{
 					"typeStr": "8",
 					"name": "Resistance",
 					"display": 1
 				},
 				{
-					"typeStr": "10:BOSS,MINIBOSS,UNDEAD,DEMONIC,MACHINE,IMMOVABLE,PHANTOM",
-					"name": "Properties",
-					"display": null
+					"typeStr": "10:BOSS,MINIBOSS,UNDEAD,DEMONIC,MACHINE,IMMOVABLE,PHANTOM,ELITE,STATIC",
+					"name": "Properties"
+				},
+				{
+					"typeStr": "8",
+					"name": "Ability"
 				}
 			],
 			"lines": [
@@ -119,7 +122,8 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Rat",
@@ -149,7 +153,21 @@
 					],
 					"Properties": 0,
 					"Loot": [],
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "BleedingAttack",
+							"Chance": 0.6667
+						},
+						{
+							"Name": "PoisonAttack",
+							"Chance": 0.3333
+						},
+						{
+							"Name": "VampireAttack",
+							"Chance": 0.3333
+						}
+					]
 				},
 				{
 					"Class": "Slug",
@@ -179,7 +197,8 @@
 					"Properties": 0,
 					"Loot": [],
 					"LootChance": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Gnoll",
@@ -214,7 +233,21 @@
 							"Chance": 1
 						}
 					],
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "CrippleAttack",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraHealth",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 1
+						}
+					]
 				},
 				{
 					"Class": "Crab",
@@ -249,7 +282,17 @@
 							"Chance": 1
 						}
 					],
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "FeedbackDefend",
+							"Chance": 0.5
+						},
+						{
+							"Name": "KnockBackAttack",
+							"Chance": 0.5
+						}
+					]
 				},
 				{
 					"Class": "FetidRat",
@@ -279,7 +322,8 @@
 					"Properties": 10,
 					"Loot": [],
 					"LootChance": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "GnollTrickster",
@@ -314,7 +358,8 @@
 							"Chance": 1
 						}
 					],
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "GreatCrab",
@@ -349,7 +394,8 @@
 							"Chance": 1
 						}
 					],
-					"Shield": 10
+					"Shield": 10,
+					"Ability": []
 				},
 				{
 					"Class": "Goo",
@@ -384,7 +430,8 @@
 							"Chance": 1
 						}
 					],
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Swarm",
@@ -419,7 +466,8 @@
 						}
 					],
 					"LootChance": 0.08,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Skeleton",
@@ -454,7 +502,17 @@
 						}
 					],
 					"Properties": 4,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "RespawnDying",
+							"Chance": 1
+						},
+						{
+							"Name": "MentalExplodeDying",
+							"Chance": 0.5
+						}
+					]
 				},
 				{
 					"Class": "Thief",
@@ -493,7 +551,21 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "ExtraHealth",
+							"Chance": 1
+						},
+						{
+							"Name": "CritAttack",
+							"Chance": 1
+						},
+						{
+							"Name": "RageDying",
+							"Chance": 0.2
+						}
+					]
 				},
 				{
 					"Class": "Bandit",
@@ -532,7 +604,8 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Shaman",
@@ -567,7 +640,21 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "ParalysisAttack",
+							"Chance": 1
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 2
+						},
+						{
+							"Name": "RespawnDying",
+							"Chance": 0.5
+						}
+					]
 				},
 				{
 					"Class": "Guard",
@@ -610,7 +697,33 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 15
+					"Shield": 15,
+					"Ability": [
+						{
+							"Name": "RespawnDying",
+							"Chance": 1
+						},
+						{
+							"Name": "ExtraHealth",
+							"Chance": 2
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 2
+						},
+						{
+							"Name": "KnockBackAttack",
+							"Chance": 1
+						},
+						{
+							"Name": "EnrageDefend",
+							"Chance": 1
+						},
+						{
+							"Name": "AntiMagicDefend",
+							"Chance": 0.5
+						}
+					]
 				},
 				{
 					"Class": "RotHeart",
@@ -640,7 +753,8 @@
 						}
 					],
 					"Properties": 34,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "NewbornElemental",
@@ -670,7 +784,8 @@
 						}
 					],
 					"Properties": 10,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "WitchDoctor",
@@ -713,7 +828,25 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "CharmAttack",
+							"Chance": 1
+						},
+						{
+							"Name": "ReleaseGasDefend_Toxic",
+							"Chance": 1
+						},
+						{
+							"Name": "PoisonAttack",
+							"Chance": 0.5
+						},
+						{
+							"Name": "OozeAttack",
+							"Chance": 0.5
+						}
+					]
 				},
 				{
 					"Class": "Tengu",
@@ -743,7 +876,8 @@
 						}
 					],
 					"Properties": 1,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Tengu_Phantom",
@@ -773,7 +907,8 @@
 						}
 					],
 					"Properties": 64,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "SkeletonKnight",
@@ -812,7 +947,33 @@
 						}
 					],
 					"Properties": 4,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "RespawnDying",
+							"Chance": 1
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 1
+						},
+						{
+							"Name": "CritAttack",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ParalysisAttack",
+							"Chance": 0.5
+						},
+						{
+							"Name": "FeedbackDefend",
+							"Chance": 0.5
+						},
+						{
+							"Name": "AntiMagicDefend",
+							"Chance": 0.5
+						}
+					]
 				},
 				{
 					"Class": "AshesSkull",
@@ -842,7 +1003,8 @@
 						}
 					],
 					"Properties": 4,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Bat",
@@ -877,7 +1039,25 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "BindnessAttack",
+							"Chance": 1
+						},
+						{
+							"Name": "CritAttack",
+							"Chance": 0.8
+						},
+						{
+							"Name": "EnrageDefend",
+							"Chance": 0.3
+						},
+						{
+							"Name": "RageDying",
+							"Chance": 0.5
+						}
+					]
 				},
 				{
 					"Class": "Brute",
@@ -912,7 +1092,29 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 25
+					"Shield": 25,
+					"Ability": [
+						{
+							"Name": "ExtraHealth",
+							"Chance": 1
+						},
+						{
+							"Name": "CrippleAttack",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 1
+						},
+						{
+							"Name": "BleedingAttack",
+							"Chance": 0.3
+						},
+						{
+							"Name": "ParalysisAttack",
+							"Chance": 0.1
+						}
+					]
 				},
 				{
 					"Class": "Spinner",
@@ -951,7 +1153,17 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "ReleaseGasDefend_Toxic",
+							"Chance": 1
+						},
+						{
+							"Name": "ParalysisAttack",
+							"Chance": 0.01
+						}
+					]
 				},
 				{
 					"Class": "DM300",
@@ -986,7 +1198,8 @@
 						}
 					],
 					"Properties": 17,
-					"Shield": 50
+					"Shield": 50,
+					"Ability": []
 				},
 				{
 					"Class": "Elemental",
@@ -1025,7 +1238,8 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Ballista",
@@ -1068,7 +1282,8 @@
 						}
 					],
 					"Properties": 16,
-					"Shield": 20
+					"Shield": 20,
+					"Ability": []
 				},
 				{
 					"Class": "QuickFiringGun",
@@ -1107,7 +1322,8 @@
 						}
 					],
 					"Properties": 16,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Warlock",
@@ -1142,7 +1358,25 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "ReleaseGasDefend_Toxic",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 0.1
+						},
+						{
+							"Name": "ReleaseGasDying_WhiteFog",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ReleaseGasDying_Toxic",
+							"Chance": 0.4
+						}
+					]
 				},
 				{
 					"Class": "Monk",
@@ -1177,7 +1411,33 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "ExtraShield",
+							"Chance": 0.3
+						},
+						{
+							"Name": "ExtraHealth",
+							"Chance": 0.3
+						},
+						{
+							"Name": "VampireAttack",
+							"Chance": 0.1
+						},
+						{
+							"Name": "FeedbackDefend",
+							"Chance": 0.1
+						},
+						{
+							"Name": "AntiMagicDefend",
+							"Chance": 0.1
+						},
+						{
+							"Name": "RespawnDying",
+							"Chance": 0.05
+						}
+					]
 				},
 				{
 					"Class": "Golem",
@@ -1207,7 +1467,29 @@
 						}
 					],
 					"Properties": 16,
-					"Shield": 30
+					"Shield": 30,
+					"Ability": [
+						{
+							"Name": "ExtraShield",
+							"Chance": 1
+						},
+						{
+							"Name": "FeedbackDefend",
+							"Chance": 0.3
+						},
+						{
+							"Name": "CrippleAttack",
+							"Chance": 0.8
+						},
+						{
+							"Name": "ReleaseGasDying_WhiteFog",
+							"Chance": 1
+						},
+						{
+							"Name": "RageDying",
+							"Chance": 1
+						}
+					]
 				},
 				{
 					"Class": "King",
@@ -1237,7 +1519,8 @@
 						}
 					],
 					"Properties": 5,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "King_Revived",
@@ -1267,7 +1550,8 @@
 						}
 					],
 					"Properties": 5,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "King_Undead",
@@ -1297,7 +1581,8 @@
 						}
 					],
 					"Properties": 68,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Succubus",
@@ -1332,7 +1617,21 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "ParalysisAttack",
+							"Chance": 0.5
+						},
+						{
+							"Name": "VampireAttack",
+							"Chance": 1
+						},
+						{
+							"Name": "BindnessAttack",
+							"Chance": 1
+						}
+					]
 				},
 				{
 					"Class": "Eye",
@@ -1367,7 +1666,8 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Scorpio",
@@ -1406,7 +1706,44 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
+				},
+				{
+					"Class": "Acidic",
+					"MaxHealth": 90,
+					"Shield": 0,
+					"AttackSkill": 36,
+					"DefendSkill": 24,
+					"EXP": 14,
+					"MaxLevel": 26,
+					"MinDamage": 26,
+					"MaxDamage": 36,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"LootChance": 0.5,
+					"Loot": [
+						{
+							"Name": "PotionOfHealing",
+							"Chance": 1
+						}
+					],
+					"Resistance": [
+						{
+							"Magic": -0.25,
+							"Fire": -0.2,
+							"Poison": 0.2,
+							"Ice": -0.25,
+							"Light": 0.4,
+							"Shadow": -0.4,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 136,
+					"Ability": []
 				},
 				{
 					"Class": "Yog",
@@ -1436,7 +1773,8 @@
 						}
 					],
 					"Properties": 41,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Yog_RottingFist",
@@ -1466,7 +1804,8 @@
 						}
 					],
 					"Properties": 9,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Yog_BurningFist",
@@ -1496,7 +1835,8 @@
 						}
 					],
 					"Properties": 9,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Yog_Larva",
@@ -1526,7 +1866,8 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Bee",
@@ -1556,7 +1897,8 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "DarkSpirit",
@@ -1586,7 +1928,8 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "DevilGhost",
@@ -1621,7 +1964,8 @@
 						}
 					],
 					"Properties": 8,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Glowworm",
@@ -1656,7 +2000,8 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "MadMan",
@@ -1695,7 +2040,8 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "RotLasher",
@@ -1729,8 +2075,9 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 32,
-					"Shield": 0
+					"Properties": 288,
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "Statue",
@@ -1760,7 +2107,8 @@
 						}
 					],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "WandGuard",
@@ -1790,7 +2138,8 @@
 						}
 					],
 					"Properties": 48,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "",
@@ -1810,7 +2159,8 @@
 					"MaxDefend": 0,
 					"Resistance": [],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "",
@@ -1830,7 +2180,8 @@
 					"MaxDefend": 0,
 					"Resistance": [],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				},
 				{
 					"Class": "",
@@ -1850,7 +2201,8 @@
 					"MaxDefend": 0,
 					"Resistance": [],
 					"Properties": 0,
-					"Shield": 0
+					"Shield": 0,
+					"Ability": []
 				}
 			],
 			"separators": [
@@ -1858,7 +2210,7 @@
 				20,
 				26,
 				35,
-				42
+				43
 			],
 			"props": {}
 		},
@@ -1922,6 +2274,26 @@
 				{
 					"typeStr": "4",
 					"name": "Holy",
+					"display": 1
+				}
+			]
+		},
+		{
+			"name": "Mobs@Ability",
+			"props": {
+				"hide": true
+			},
+			"separators": [],
+			"lines": [],
+			"columns": [
+				{
+					"typeStr": "1",
+					"name": "Name",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "Chance",
 					"display": 1
 				}
 			]

@@ -30,6 +30,4 @@ open class Gnoll : Mob() {
     init {
         spriteClass = GnollSprite::class.java
     }
-
-    override fun availableAbilities() = listOf(CrippleAttack(), ExtraHealth())
 }

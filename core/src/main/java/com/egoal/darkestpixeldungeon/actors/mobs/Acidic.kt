@@ -21,6 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.FeedbackDefend
 import com.egoal.darkestpixeldungeon.sprites.AcidicSprite
 
@@ -28,6 +29,7 @@ class Acidic : Scorpio() {
     init {
         spriteClass = AcidicSprite::class.java
 
+        Config = Database.ConfigOfMob("Scorpio")!!
         abilities.add(FeedbackDefend())
     }
 

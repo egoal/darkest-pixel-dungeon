@@ -19,6 +19,12 @@ class BleedingAttack : Ability() {
     }
 }
 
+class BindnessAttack : Ability() {
+    override fun onAttack(belonger: Mob, damage: Damage) {
+        if (Random.Int(3) == 0) Buff.prolong(damage.to as Char, Blindness::class.java, Random.Float(2f, 5f))
+    }
+}
+
 class BurningAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
@@ -56,6 +62,13 @@ class CrippleAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
         if (Random.Int(3) == 0 && enemy.buff(Cripple::class.java) == null) Buff.prolong(enemy, Cripple::class.java, 6f)
+    }
+}
+
+class ParalysisAttack : Ability() {
+    override fun onAttack(belonger: Mob, damage: Damage) {
+        val enemy = damage.to as Char
+        if (Random.Int(3) == 0 && enemy.buff(Paralysis::class.java) == null) Buff.prolong(enemy, Paralysis::class.java, 1f)
     }
 }
 

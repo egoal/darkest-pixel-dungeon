@@ -4,6 +4,8 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
+import com.egoal.darkestpixeldungeon.actors.blobs.StenchGas
+import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
@@ -27,9 +29,7 @@ class EnchantDefend(private val prob: Float, private val enchantClass: Class<out
     }
 }
 
-class ReleaseGasDefend : Ability() {
-    lateinit var gas: Class<out Blob>
-
+open class ReleaseGasDefend(private val gas: Class<out Blob>) : Ability() {
     override fun onReady(belonger: Mob) {
         belonger.immunities.add(gas)
     }
@@ -37,15 +37,11 @@ class ReleaseGasDefend : Ability() {
     override fun onDefend(belonger: Mob, damage: Damage) {
         GameScene.add(Blob.seed(belonger.pos, 20, gas))
     }
-
-    override fun storeInBundle(bundle: Bundle) {
-        bundle.put("gas", gas)
-    }
-
-    override fun restoreFromBundle(bundle: Bundle) {
-        gas = bundle.getClass("gas") as Class<out Blob>
-    }
 }
+
+class ReleaseGasDefend_Toxic : ReleaseGasDefend(ToxicGas::class.java)
+
+class ReleaseGasDefend_StenchGas : ReleaseGasDefend(StenchGas::class.java)
 
 class EnrageDefend : Ability() {
     private var actived = false
@@ -85,5 +81,11 @@ class FeedbackDefend : Ability() {
     override fun onDefend(belonger: Mob, damage: Damage) {
         val feedback = Random.NormalIntRange(0, damage.value)
         if (feedback > 0) (damage.from as Char).takeDamage(Damage(feedback, belonger, damage.from))
+    }
+}
+
+class AntiMagicDefend : Ability() {
+    override fun onDefend(belonger: Mob, damage: Damage) {
+        if (damage.type == Damage.Type.MAGICAL) damage.value /= 2
     }
 }

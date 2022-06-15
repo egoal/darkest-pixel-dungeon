@@ -40,8 +40,6 @@ class Skeleton : Mob() {
         abilities.add(ExplodeDying())
     }
 
-    override fun availableAbilities() = listOf(RespawnDying(), MentalExplodeDying())
-
     override fun createLoot(): Item? {
         return if (!Dungeon.limitedDrops.handOfElder.dropped() && Random.Float() < 0.04f) {
             Dungeon.limitedDrops.handOfElder.drop()

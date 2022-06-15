@@ -48,6 +48,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
@@ -71,7 +72,7 @@ abstract class Mob : Char() {
     protected var enemySeen: Boolean = false
     protected var alerted = false
 
-    var isLiving = true // is living things?
+    val isLiving get() = !properties.contains(Property.STATIC)
 
     private lateinit var _config: Database.MobsLine
 
@@ -116,11 +117,16 @@ abstract class Mob : Char() {
     fun initialize() {
         cntAbilities_ = abilities.size
 
-        abilities.addAll(randomAbilities())
-        if (cntAbilities_ < abilities.size) {
-            //with extra ability, becomes an elite
-            properties.add(Property.ELITE)
-            name = abilities[cntAbilities_].prefix() + name
+        if (Random.Float() < .1f) {
+            //5% chance to lift as elite
+            val cnt = Random.chances(floatArrayOf(.6f, .3f, .1f))
+
+            abilities.addAll(randomAbilities(cnt))
+            if (cntAbilities_ < abilities.size) {
+                //with extra ability, becomes an elite
+                properties.add(Property.ELITE)
+                name = abilities[cntAbilities_].prefix() + name
+            }
         }
 
         abilities.forEach { it.onInitialize(this) }
@@ -128,19 +134,27 @@ abstract class Mob : Char() {
     }
 
     /**
-     * extra random abilities
+     * extra {atMost} random abilities
      */
-    protected fun randomAbilities(): List<Ability> {
-        //5% chance to lift as elite
-        //todo:
-        if (Random.Float() > .05f) return listOf()
+    protected open fun randomAbilities(atMost: Int): List<Ability> {
+        val cnt = min(atMost, Config.Ability.size)
 
-        val cans = availableAbilities().shuffled()
-        val cnt = Random.chances(floatArrayOf(.7f, .2f, .1f))
-        return cans.subList(0, min(cnt, cans.size))
+        val map = HashMap<String, Float>()
+        for (al in Config.Ability) map[al.Name] = al.Chance
+
+        return List(cnt) {
+            val key = Random.chances(map)
+            map[key] = 0f
+            key
+        }.mapNotNull {
+            try {
+                Class.forName("com.egoal.darkestpixeldungeon.actors.mobs.abilities.$it").newInstance() as Ability
+            } catch (e: ClassNotFoundException) {
+                Log.d("dpd", "missing ability: $it.")
+                null
+            }
+        }
     }
-
-    protected open fun availableAbilities(): List<Ability> = listOf()
 
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
@@ -579,7 +593,9 @@ abstract class Mob : Char() {
 
     fun exp(): Int {
         val dlvl = Dungeon.hero.lvl - Config.MaxLevel
-        return if (dlvl < 0) Config.EXP else Config.EXP / (2 + dlvl)
+        var exp = if (dlvl < 0) Config.EXP else Config.EXP / (2 + dlvl)
+        if (properties.contains(Property.ELITE)) exp = exp * 3 / 2
+        return exp
     }
 
     override fun die(cause: Any?) {
@@ -587,9 +603,12 @@ abstract class Mob : Char() {
         for (a in abilities) justDie = a.onDying(this) && justDie
 
         if (justDie) {
-            if (Dungeon.hero.lvl <= Config.MaxLevel + 2 &&
-                    Random.Float() < Config.LootChance * 1.15f.pow(Dungeon.hero.wealthBonus())) {
-                createLoot()?.let { Dungeon.level.drop(it, pos).sprite.drop() }
+            if (Dungeon.hero.lvl <= Config.MaxLevel + 2) {
+                val chance = Config.LootChance * 1.15f.pow(Dungeon.hero.wealthBonus()) *
+                        (if (properties.contains(Property.ELITE)) 2f else 1f)
+                if (Random.Float() < chance) {
+                    createLoot()?.let { Dungeon.level.drop(it, pos).sprite.drop() }
+                }
             }
 
             if (Dungeon.hero.isAlive && !Dungeon.visible[pos])
@@ -861,7 +880,7 @@ abstract class Mob : Char() {
         private const val AI_PASSIVE = "PASSIVE"
         private const val AI_FOLLOW_HERO = "FOLLOW_HERO"
 
-        //todo: use packages
+        //todo: use package list reflection
         private val itempacks = listOf(
                 "com.egoal.darkestpixeldungeon.items.",
                 "com.egoal.darkestpixeldungeon.items.armor.",

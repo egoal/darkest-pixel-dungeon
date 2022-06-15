@@ -37,7 +37,7 @@ class MobSpawner(mob: Class<out Mob>? = null, left: Int = 5) : NPC.Unbreakable()
     }
 
     fun rise() {
-        val mob = mobClass.newInstance()
+        val mob = mobClass.newInstance().initialize()
         mob.pos = pos
         GameScene.add(mob)
         die(null)

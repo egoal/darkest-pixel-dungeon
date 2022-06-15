@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw
+import com.egoal.darkestpixeldungeon.items.weapon.melee.ShortSticks
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CatLixSprite
@@ -59,6 +60,7 @@ class CatEgoal : NPC.Unbreakable() {
         val g = Gift().apply {
             identify()
             setItems(
+                    ShortSticks().identify(),
                     // OrchidRoot(),
                     // if (praised) Generator.SCROLL.generate() else Generator.POTION.generate(),
                     GoldenClaw(),

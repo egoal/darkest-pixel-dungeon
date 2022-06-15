@@ -29,7 +29,5 @@ open class Crab : Mob() {
         spriteClass = CrabSprite::class.java
         baseSpeed = 2f
     }
-
-    override fun availableAbilities() = listOf(FeedbackDefend(), KnockBackAttack())
 }
 
