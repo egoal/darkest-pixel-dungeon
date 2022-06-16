@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.StenchGas
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
+import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
@@ -87,5 +88,21 @@ class FeedbackDefend : Ability() {
 class AntiMagicDefend : Ability() {
     override fun onDefend(belonger: Mob, damage: Damage) {
         if (damage.type == Damage.Type.MAGICAL) damage.value /= 2
+    }
+}
+
+class CounterDefend : Ability() {
+    override fun onDefend(belonger: Mob, damage: Damage) {
+        val enemy = damage.to as Char?
+        if (enemy == null) return
+        if (damage.type == Damage.Type.NORMAL &&
+                !damage.isFeatured(Damage.Feature.ACCURATE or Damage.Feature.RANGED) &&
+                Dungeon.level.adjacent(belonger.pos, enemy.pos) &&
+                belonger.buff(Paralysis::class.java) == null && Random.Float() < .175f) {
+            damage.value = 0
+            enemy.takeDamage(enemy.defendDamage(belonger.giveDamage(enemy)))
+
+            belonger.sprite.showStatus(CharSprite.WARNING, M.L(this, "counter"))
+        }
     }
 }

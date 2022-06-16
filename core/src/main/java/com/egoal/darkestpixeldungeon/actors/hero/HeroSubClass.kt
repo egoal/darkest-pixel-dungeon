@@ -28,7 +28,6 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.effects.PerkGain
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.specials.*
 import com.egoal.darkestpixeldungeon.items.unclassified.ExtractionFlask
 import com.egoal.darkestpixeldungeon.items.unclassified.TomeOfMastery
@@ -84,7 +83,7 @@ enum class HeroSubClass(private val title: String) {
 
             GLog.w(M.L(TomeOfMastery::class.java, "way", way.title()))
 
-            val add_perk = {perk: Perk->
+            val add_perk = { perk: Perk ->
                 hero.heroPerk.add(perk)
                 PerkGain.Show(hero, perk)
             }
@@ -94,6 +93,9 @@ enum class HeroSubClass(private val title: String) {
                 BERSERKER -> {
                     Buff.affect(hero, Berserk::class.java)
                     add_perk(Fearless())
+                    val b = com.egoal.darkestpixeldungeon.items.specials.Berserk().identify()
+                    b.collect()
+                    GLog.w(M.L(hero, "you_now_have", b.name()))
                 }
 
                 WARLOCK -> {

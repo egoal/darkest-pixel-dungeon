@@ -1,6 +1,10 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.*
+import android.util.Log
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Mending
@@ -173,22 +177,23 @@ class DarkSpirit : Mob() {
                 return
             }
 
-            perk = perks.random()
+            //todo: avoid negative perk...
+            perk = perks.random().javaClass.newInstance()
             userName = hero.userName
             level = hero.lvl
             armor = hero.belongings.armor
 
             save()
+
+            depth = -1 // not loaded..
         }
 
         fun Gen(): DarkSpirit? {
-            if (depth < 0) { // not loaded
-                if (!Load()) return null
-
-                Game.instance.deleteFile(DS_FILE)
-            }
-
+            if (depth < 0 && !Load()) return null
             if (depth != Dungeon.depth || Dungeon.IsChallenged()) return null
+
+            Game.instance.deleteFile(DS_FILE)
+            depth = -1
 
             return DarkSpirit()
         }

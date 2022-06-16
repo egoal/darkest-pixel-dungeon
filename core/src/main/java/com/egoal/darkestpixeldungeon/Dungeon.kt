@@ -58,7 +58,7 @@ import java.util.HashSet
 
 object Dungeon {
 
-    var initialDepth_ = 0
+    var initialDepth_ = 1
     const val VERSION_STRING = "0.7.0-0"
 
     lateinit var hero: Hero

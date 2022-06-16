@@ -246,6 +246,10 @@
 						{
 							"Name": "ExtraShield",
 							"Chance": 1
+						},
+						{
+							"Name": "CounterDefend",
+							"Chance": 0.2
 						}
 					]
 				},
@@ -509,7 +513,19 @@
 							"Chance": 1
 						},
 						{
+							"Name": "CounterDefend",
+							"Chance": 0.1
+						},
+						{
 							"Name": "MentalExplodeDying",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 0.5
+						},
+						{
+							"Name": "AntiMagicDefend",
 							"Chance": 0.5
 						}
 					]
@@ -1093,6 +1109,63 @@
 					],
 					"Properties": 0,
 					"Shield": 25,
+					"Ability": [
+						{
+							"Name": "ExtraHealth",
+							"Chance": 1
+						},
+						{
+							"Name": "CrippleAttack",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 1
+						},
+						{
+							"Name": "BleedingAttack",
+							"Chance": 0.3
+						},
+						{
+							"Name": "ParalysisAttack",
+							"Chance": 0.1
+						}
+					]
+				},
+				{
+					"Class": "Shielded",
+					"MaxHealth": 40,
+					"AttackSkill": 18,
+					"DefendSkill": 20,
+					"EXP": 8,
+					"MaxLevel": 15,
+					"LootChance": 0.2,
+					"Loot": [
+						{
+							"Name": "Gold",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 8,
+					"MaxDamage": 24,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 2,
+					"MaxDefend": 12,
+					"Resistance": [
+						{
+							"Magic": 0,
+							"Fire": 0.25,
+							"Poison": -0.15,
+							"Ice": 0,
+							"Light": -0.2,
+							"Shadow": -0.4,
+							"Holy": 0
+						}
+					],
+					"Properties": 0,
+					"Shield": 40,
 					"Ability": [
 						{
 							"Name": "ExtraHealth",
@@ -1908,7 +1981,12 @@
 					"EXP": 0,
 					"MaxLevel": 30,
 					"LootChance": 1,
-					"Loot": [],
+					"Loot": [
+						{
+							"Name": "Gold",
+							"Chance": 1
+						}
+					],
 					"MinDamage": 1,
 					"MaxDamage": 0,
 					"TypeDamage": 0,

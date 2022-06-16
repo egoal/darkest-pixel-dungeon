@@ -28,13 +28,6 @@ import com.watabou.utils.Random
 class Shielded : Brute() {
     init {
         spriteClass = ShieldedSprite::class.java
-
-        defSkill = 20f
-    }
-
-    override fun defendDamage(dmg: Damage): Damage {
-        dmg.value -= Random.NormalIntRange(0, 12)
-        return dmg
     }
 
     override fun die(cause: Any?) {

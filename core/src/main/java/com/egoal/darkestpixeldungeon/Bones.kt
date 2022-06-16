@@ -19,7 +19,6 @@ object Bones {
 
     private const val LEVEL = "level"
     private const val ITEM = "item"
-    private const val PERK = "perk"
 
     private var depth = -1
     private var item: Item? = null

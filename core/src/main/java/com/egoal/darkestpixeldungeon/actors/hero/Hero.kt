@@ -89,7 +89,7 @@ class Hero : Char() {
     var regeneration = 0.1f
     var arcaneFactor = 1f
 
-    var MSHLD : Int = 0
+    var MSHLD: Int = 0
 
     var reservedPerks = 0
     val spawnedPerks = ArrayList<Perk>()
@@ -576,7 +576,8 @@ class Hero : Char() {
             speed *= 0.25f + 0.75f * 0.8f.pow(Ring.getBonus(this, RingOfFuror.Furor::class.java))
         }
 
-        speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
+        if (subClass == HeroSubClass.GLADIATOR) speed *= belongings.getSpecial(com.egoal.darkestpixeldungeon.items.specials.Combo::class.java)!!.AttackSpeedFactor
+//        speed *= buff(Combo::class.java)?.speedFactor() ?: 1f
         speed *= heroPerk.get(BaredAngry::class.java)?.speedFactor(this) ?: 1f
         speed *= heroPerk.get(Maniac::class.java)?.speedFactor(this) ?: 1f
 
@@ -1294,8 +1295,9 @@ class Hero : Char() {
         val hit = attack(enemy!!)
 
         if (subClass == HeroSubClass.GLADIATOR) {
-            if (hit) Buff.affect(this, Combo::class.java).hit(enemy!!)
-            else buff(Combo::class.java)?.miss()
+            belongings.getSpecial(com.egoal.darkestpixeldungeon.items.specials.Combo::class.java)!!.hit(enemy!!)
+//            if (hit) Buff.affect(this, Combo::class.java).hit(enemy!!)
+//            else buff(Combo::class.java)?.miss()
         }
 
         if (hit) {
