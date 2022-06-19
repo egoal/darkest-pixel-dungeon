@@ -97,6 +97,11 @@ enum class HeroSubClass(private val title: String) {
                     b.collect()
                     GLog.w(M.L(hero, "you_now_have", b.name()))
                 }
+                GLADIATOR -> {
+                    val b = Combo().identify()
+                    b.collect()
+                    GLog.w(M.L(hero, "you_now_have", b.name()))
+                }
 
                 WARLOCK -> {
                     val uos = UrnOfShadow().identify()

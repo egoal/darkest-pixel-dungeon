@@ -216,7 +216,7 @@ class Hero : Char() {
                 reg += if (it.cursed) -0.1f else (0.05f + reg * 0.2f)
         }
 
-        if (hlvl >= Hunger.HUNGRY && reg > 0f) reg *= 0.5f
+        if (hlvl >= Hunger.HUNGRY && heroClass != HeroClass.SORCERESS && reg > 0f) reg *= 0.5f
 
         return reg
     }

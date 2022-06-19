@@ -157,7 +157,7 @@ class Berserk : Buff() {
     }
 
     companion object {
-        private const val EXHAUSTION_START = 40
+        private const val EXHAUSTION_START = 60
 
         private const val LEVEL_RECOVER_START = 2.5f
 

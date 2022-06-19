@@ -69,7 +69,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
     protected var iceBlock: IceBlock? = null
     protected var darkBlock: DarkBlock? = null
     protected var torchHalo: TorchHalo? = null
-    protected var halo: EliteHalo? = null
+    protected var eliteHalo: EliteHalo? = null
 
     protected var emo: EmoIcon? = null
 
@@ -92,7 +92,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
 
     enum class State {
         BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN,
-        ILLUMINATED, CHILLED, DARKENED, MARKED, SOUL_BURNING, HALO
+        ILLUMINATED, CHILLED, DARKENED, MARKED, SOUL_BURNING, ELITE_HALO
     }
 
     init {
@@ -308,9 +308,9 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 if (visible)
                     Sample.INSTANCE.play(Assets.SND_BURNING)
             }
-            State.HALO -> {
-                halo = EliteHalo(this)
-                GameScene.effect(halo!!)
+            State.ELITE_HALO -> {
+                eliteHalo = EliteHalo(this)
+                GameScene.effect(eliteHalo!!)
             }
         }
     }
@@ -353,9 +353,9 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
                 soulburning_!!.on = false
                 soulburning_ = null
             }
-            State.HALO -> {
-                halo?.killAndErase()
-                halo = null
+            State.ELITE_HALO -> {
+                eliteHalo?.killAndErase()
+                eliteHalo = null
             }
         }
     }
@@ -428,7 +428,7 @@ open class CharSprite : MovieClip(), Tweener.Listener, MovieClip.Listener {
         emo?.killAndErase()
         emo = null
 
-        halo?.killAndErase()
+        eliteHalo?.killAndErase()
     }
 
     override fun onComplete(tweener: Tweener) {

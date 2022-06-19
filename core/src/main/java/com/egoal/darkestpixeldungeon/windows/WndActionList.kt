@@ -28,7 +28,7 @@ class WndActionList(icon: Image, title: String, actions: List<Action>) : Window(
             btn.textColor(if (pr.value.Disabled()) 0xaaaaaa else 0xffffff)
 
             if (pr.value.Info().isEmpty()) {
-                btn.setRect(MARGIN, pos, width - MARGIN * 2f, BTN_HEIGHT)
+                btn.setRect(MARGIN, pos, WIDTH - MARGIN * 2f, BTN_HEIGHT)
                 add(btn)
             } else {
                 val btnHelp = object : RedButton("?") {
@@ -38,9 +38,9 @@ class WndActionList(icon: Image, title: String, actions: List<Action>) : Window(
                 }
                 btnHelp.textColor(0xffffff)
 
-                btn.setRect(MARGIN, pos, (width - MARGIN * 3 - WIDTH_HELP_BUTTON), BTN_HEIGHT)
+                btn.setRect(MARGIN, pos, (WIDTH - MARGIN * 3 - WIDTH_HELP_BUTTON), BTN_HEIGHT)
                 add(btn)
-                btnHelp.setRect((width - MARGIN - WIDTH_HELP_BUTTON), pos, WIDTH_HELP_BUTTON, BTN_HEIGHT)
+                btnHelp.setRect((WIDTH - MARGIN - WIDTH_HELP_BUTTON), pos, WIDTH_HELP_BUTTON, BTN_HEIGHT)
                 add(btnHelp)
             }
 

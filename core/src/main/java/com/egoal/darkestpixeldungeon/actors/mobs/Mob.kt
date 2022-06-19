@@ -49,6 +49,7 @@ import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
@@ -102,6 +103,12 @@ abstract class Mob : Char() {
     var abilities: ArrayList<Ability> = arrayListOf()
     private var cntAbilities_ = 0 // number of inherent abilities
 
+    val DebugString
+        get() = "$HP+$SHLD/$HT\n" +
+                properties.joinToString { it.name } + "\n" +
+                (0 until cntAbilities_).joinToString { abilities[it].javaClass.simpleName } + "-||-" +
+                (cntAbilities_ until abilities.size).joinToString { abilities[it].javaClass.simpleName }
+
     init {
         name = M.L(this, "name")
         actPriority = 2 //hero gets priority over mobs.
@@ -114,12 +121,13 @@ abstract class Mob : Char() {
         else Log.w("dpd", "missing mob config of ${javaClass.simpleName}.")
     }
 
-    fun initialize() {
+    fun initialize(): Mob {
         cntAbilities_ = abilities.size
 
-        if (Random.Float() < .1f) {
-            //5% chance to lift as elite
-            val cnt = Random.chances(floatArrayOf(.6f, .3f, .1f))
+        // chance to lift as an elite
+        val chance = .1f + (max(0, Dungeon.depth - 5) / 10) * .05f   // 10%, 15%, 15%, 20%, 20%
+        if (Random.Float() < chance) {
+            val cnt = Random.chances(floatArrayOf(.6f, .3f, .1f)) + 1
 
             abilities.addAll(randomAbilities(cnt))
             if (cntAbilities_ < abilities.size) {
@@ -131,6 +139,8 @@ abstract class Mob : Char() {
 
         abilities.forEach { it.onInitialize(this) }
         abilities.forEach { it.onReady(this) }
+
+        return this
     }
 
     /**
@@ -199,8 +209,8 @@ abstract class Mob : Char() {
 
         cntAbilities_ = bundle.getInt("cnt-abilities")
         if (cntAbilities_ < abilities.size) {
-            properties.add(Property.MINIBOSS)
-            name = abilities[cntAbilities_].prefix()
+            properties.add(Property.ELITE)
+            name = abilities[cntAbilities_].prefix() + name
         }
     }
 
@@ -459,7 +469,7 @@ abstract class Mob : Char() {
         if (Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze::class.java) != null)
             sprite.add(CharSprite.State.PARALYSED)
 
-        if (properties.contains(Property.MINIBOSS)) sprite.add(CharSprite.State.HALO)
+        if (properties.contains(Property.ELITE)) sprite.add(CharSprite.State.ELITE_HALO)
     }
 
     override fun move(step: Int) {
@@ -636,7 +646,7 @@ abstract class Mob : Char() {
             //todo: someday i'll get rid of this
             if (name.all { it.isUpperCase() }) {
                 // should be a generator
-                val gen = Class.forName("com.egoal.darkestpixeldungeon.items.Generator.$name").kotlin.objectInstance as Generator.ItemGenerator?
+                val gen = Class.forName("com.egoal.darkestpixeldungeon.items.Generator$$name").kotlin.objectInstance as Generator.ItemGenerator?
                 return gen?.generate()
             }
 

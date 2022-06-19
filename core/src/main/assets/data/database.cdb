@@ -249,7 +249,11 @@
 						},
 						{
 							"Name": "CounterDefend",
-							"Chance": 0.2
+							"Chance": 0.3
+						},
+						{
+							"Name": "RageDying",
+							"Chance": 0.5
 						}
 					]
 				},
@@ -295,6 +299,10 @@
 						{
 							"Name": "KnockBackAttack",
 							"Chance": 0.5
+						},
+						{
+							"Name": "ExplodeDying",
+							"Chance": 0.25
 						}
 					]
 				},
@@ -579,6 +587,14 @@
 						},
 						{
 							"Name": "RageDying",
+							"Chance": 0.2
+						},
+						{
+							"Name": "AntiMagicDefend",
+							"Chance": 0.5
+						},
+						{
+							"Name": "OozeAttack",
 							"Chance": 0.2
 						}
 					]
@@ -1072,6 +1088,10 @@
 						{
 							"Name": "RageDying",
 							"Chance": 0.5
+						},
+						{
+							"Name": "OozeAttack",
+							"Chance": 0.3
 						}
 					]
 				},
@@ -1235,6 +1255,10 @@
 						{
 							"Name": "ParalysisAttack",
 							"Chance": 0.01
+						},
+						{
+							"Name": "RageDying",
+							"Chance": 0.5
 						}
 					]
 				},
@@ -1703,6 +1727,10 @@
 						{
 							"Name": "BindnessAttack",
 							"Chance": 1
+						},
+						{
+							"Name": "RageDying",
+							"Chance": 0.5
 						}
 					]
 				},

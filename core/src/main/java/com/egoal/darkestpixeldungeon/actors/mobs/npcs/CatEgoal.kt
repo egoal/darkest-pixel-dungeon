@@ -11,6 +11,7 @@ import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.OrchidRoot
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
+import com.egoal.darkestpixeldungeon.items.specials.Berserk
 import com.egoal.darkestpixeldungeon.items.specials.Combo
 import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw
 import com.egoal.darkestpixeldungeon.items.weapon.melee.ShortSticks
@@ -62,7 +63,6 @@ class CatEgoal : NPC.Unbreakable() {
             identify()
             setItems(
                     ShortSticks().identify(),
-                    Combo(),
                     // OrchidRoot(),
                     // if (praised) Generator.SCROLL.generate() else Generator.POTION.generate(),
                     GoldenClaw(),

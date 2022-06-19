@@ -22,11 +22,9 @@ package com.egoal.darkestpixeldungeon.items
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.buffs.Combo
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Knowledgeable
 import com.egoal.darkestpixeldungeon.effects.Speck
@@ -47,10 +45,7 @@ import com.watabou.noosa.particles.Emitter
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
-
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Comparator
+import java.util.*
 
 open class Item : Bundlable {
     var defaultAction: String = ""
@@ -117,7 +112,7 @@ open class Item : Bundlable {
         curUser = hero
         curItem = this
 
-        hero.buff(Combo::class.java)?.detach()
+//        hero.buff(Combo::class.java)?.detach()
 
         if (action == AC_DROP) {
             doDrop(hero)

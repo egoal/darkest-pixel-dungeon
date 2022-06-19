@@ -488,6 +488,8 @@ abstract class RegularLevel : Level() {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
 
+        Log.d("dpd", Generator.SEED.javaClass.name)
+
         spaces = bundle.getCollection(SPACES) as ArrayList<Space>
         weakFloorCreated = spaces.any { it.type == DigResult.Type.WeakFloor }
 

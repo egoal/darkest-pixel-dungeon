@@ -22,7 +22,7 @@ class ShortSticks : MeleeWeapon() {
 
     override fun defendDamage(dmg: Damage): Damage {
         if (dmg.type == Damage.Type.NORMAL) {
-            val c = .1f + .3f * (1f - 0.7f.pow(level() / 3f))
+            val c = .1f + .25f * (1f - 0.7f.pow(level() / 3f))
             if (Random.Float() < c) {
                 dmg.value = 0
                 (dmg.to as Char).sprite.showStatus(CharSprite.POSITIVE, M.L(this, "block"))
