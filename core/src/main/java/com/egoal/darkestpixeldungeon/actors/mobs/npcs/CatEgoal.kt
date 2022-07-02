@@ -14,6 +14,7 @@ import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.specials.Berserk
 import com.egoal.darkestpixeldungeon.items.specials.Combo
 import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw
+import com.egoal.darkestpixeldungeon.items.unclassified.LuckyCoin
 import com.egoal.darkestpixeldungeon.items.weapon.melee.ShortSticks
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -55,14 +56,15 @@ class CatEgoal : NPC.Unbreakable() {
         return false
     }
 
-    fun onAnsweredHero(index: Int) {
+    private fun onAnsweredHero(index: Int) {
         answered = true
         praised = index == 0
 
         val g = Gift().apply {
             identify()
             setItems(
-                    ShortSticks().identify(),
+                    LuckyCoin(),
+//                    ShortSticks().identify(),
                     // OrchidRoot(),
                     // if (praised) Generator.SCROLL.generate() else Generator.POTION.generate(),
                     GoldenClaw(),

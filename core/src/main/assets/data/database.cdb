@@ -132,7 +132,7 @@
 					"MaxHealth": 8,
 					"EXP": 1,
 					"MaxLevel": 5,
-					"LootChance": 0,
+					"LootChance": 0.05,
 					"MinDamage": 2,
 					"MaxDamage": 4,
 					"TypeDamage": 0,
@@ -152,7 +152,12 @@
 						}
 					],
 					"Properties": 0,
-					"Loot": [],
+					"Loot": [
+						{
+							"Name": "LuckyCoin",
+							"Chance": 1
+						}
+					],
 					"Shield": 0,
 					"Ability": [
 						{
@@ -338,6 +343,10 @@
 						},
 						{
 							"Name": "ExplodeDying",
+							"Chance": 0.25
+						},
+						{
+							"Name": "VertigoAttack",
 							"Chance": 0.25
 						}
 					]
@@ -590,6 +599,10 @@
 						{
 							"Name": "Gold",
 							"Chance": 0.7
+						},
+						{
+							"Name": "LuckyCoin",
+							"Chance": 0.5
 						}
 					],
 					"MinDamage": 1,
@@ -631,6 +644,10 @@
 						},
 						{
 							"Name": "OozeAttack",
+							"Chance": 0.2
+						},
+						{
+							"Name": "VertigoAttack",
 							"Chance": 0.2
 						}
 					]
@@ -994,6 +1011,10 @@
 						{
 							"Name": "Wine",
 							"Chance": 0.5
+						},
+						{
+							"Name": "LuckyCoin",
+							"Chance": 0.2
 						}
 					],
 					"MinDamage": 6,
@@ -1127,6 +1148,10 @@
 						},
 						{
 							"Name": "OozeAttack",
+							"Chance": 0.3
+						},
+						{
+							"Name": "VertigoAttack",
 							"Chance": 0.3
 						}
 					]
@@ -1294,6 +1319,10 @@
 						},
 						{
 							"Name": "RageDying",
+							"Chance": 0.5
+						},
+						{
+							"Name": "VertigoAttack",
 							"Chance": 0.5
 						}
 					]
@@ -1640,8 +1669,13 @@
 					"DefendSkill": 18,
 					"EXP": 12,
 					"MaxLevel": 22,
-					"LootChance": 0,
-					"Loot": [],
+					"LootChance": 0.1,
+					"Loot": [
+						{
+							"Name": "LuckyCoin",
+							"Chance": 1
+						}
+					],
 					"MinDamage": 25,
 					"MaxDamage": 40,
 					"TypeDamage": 0,
@@ -1828,6 +1862,10 @@
 						{
 							"Name": "RageDying",
 							"Chance": 0.5
+						},
+						{
+							"Name": "VertigoAttack",
+							"Chance": 0.25
 						}
 					]
 				},
@@ -2278,7 +2316,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 288,
+					"Properties": 32,
 					"Shield": 0,
 					"Ability": []
 				},

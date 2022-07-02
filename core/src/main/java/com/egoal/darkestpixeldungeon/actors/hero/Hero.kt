@@ -269,7 +269,14 @@ class Hero : Char() {
         return c
     }
 
-    fun wealthBonus(): Int = min(10, Ring.getBonus(this, RingOfWealth.Wealth::class.java) + if (subClass == HeroSubClass.LANCER) -1 else 0)
+    fun wealthBonus(): Int {
+//        = min(10, Ring.getBonus(this, RingOfWealth.Wealth::class.java) + if (subClass == HeroSubClass.LANCER) -1 else 0)
+        var n = Ring.getBonus(this, RingOfWealth.Wealth::class.java)
+        if (subClass == HeroSubClass.LANCER) --n
+        if (buff(Lucky::class.java) != null) ++n
+
+        return min(10, n)
+    }
 
     // followers
     fun holdFollowers(level: Level) {

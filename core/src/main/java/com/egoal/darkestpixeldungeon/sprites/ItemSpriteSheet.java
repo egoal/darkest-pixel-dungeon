@@ -84,6 +84,7 @@ public class ItemSpriteSheet {
     public static final int TOME_YELLOW = SINGLE_USE + 24;
     public static final int FIRE_BUTTERFLY = SINGLE_USE + 25;
     public static final int POISON_POWDER = SINGLE_USE + 26;
+    public static final int LUCKY_COIN = SINGLE_USE + 27;
 
     private static final int WEP_TIER1 = xy(1, 5);   //16 slots
     public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;
@@ -137,7 +138,7 @@ public class ItemSpriteSheet {
     public static final int HALBERD = WEP_TIER4 + 7;
     public static final int SCYTHE = WEP_TIER4 + 8;
     // 9, 10
-    public static final int KUSARIGAMA = WEP_TIER4+ 11;
+    public static final int KUSARIGAMA = WEP_TIER4 + 11;
 
     private static final int WEP_TIER5 = xy(1, 9);   //16 slots
     public static final int Claymore = WEP_TIER5 + 0;
@@ -199,7 +200,7 @@ public class ItemSpriteSheet {
     public static final int HELMET_GUARD = HELMET + 16;
     public static final int STRAW_HAT = HELMET + 17;
     public static final int MANTILLA = HELMET + 18;
-    public static final int SLAVE_COLLAR = HELMET+ 19;
+    public static final int SLAVE_COLLAR = HELMET + 19;
 
     //16 free slots
 
@@ -381,8 +382,8 @@ public class ItemSpriteSheet {
     public static final int ASTROLABE_2 = ASTROLABE + 2;
     public static final int PENETRATION_RDY = SPECIALS + 5;
     public static final int PENETRATION = PENETRATION_RDY + 1;
-    public static final int SHADOWMOON_RDY = SPECIALS+ 7;
-    public static final int SHADOWMOON = SHADOWMOON_RDY+ 1;
+    public static final int SHADOWMOON_RDY = SPECIALS + 7;
+    public static final int SHADOWMOON = SHADOWMOON_RDY + 1;
 
     //32 free slots
 

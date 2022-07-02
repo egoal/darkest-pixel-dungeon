@@ -46,6 +46,12 @@ enum class Prize {
         }
     },
 
+    WISH_ME_LUCK {
+        override fun collect(hero: Hero) {
+            LuckyCoin().apply { quantity = Random.NormalIntRange(1, 3) }.collect()
+        }
+    },
+
     NOTHING {
         override fun collect(hero: Hero) {}
     },

@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.actors.buffs.Invisibility
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.messages.M
@@ -55,10 +56,11 @@ class Berserk : Special() {
 //        hero.sprite.bloodBurstB(char.sprite.center(), 10) // we only have one instance to splash...
             Wound.hit(hero.pos)
 
-            Char.ProcessAttackDamage(hero.giveDamage(char).apply {
-                value += Random.Int(value / 2, value) // extra crit?
+            Char.ProcessAttackDamage(Damage(sac * 2, hero, char).type(Damage.Type.MAGICAL).apply {
+                // extra crit
                 addFeature(Damage.Feature.ACCURATE or Damage.Feature.CRITICAL)
             })
+            Invisibility.dispel()
             hero.spendAndNext(hero.attackDelay())
 
             Camera.main.shake(2f, .3f)

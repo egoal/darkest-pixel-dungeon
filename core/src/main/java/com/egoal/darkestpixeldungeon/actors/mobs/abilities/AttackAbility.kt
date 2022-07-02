@@ -46,6 +46,12 @@ class PoisonAttack : Ability() {
     }
 }
 
+class VertigoAttack : Ability() {
+    override fun onAttack(belonger: Mob, damage: Damage) {
+        if (Random.Int(3) == 0) Buff.prolong(damage.to as Char, Vertigo::class.java, 5f)
+    }
+}
+
 class CharmAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
