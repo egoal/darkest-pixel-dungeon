@@ -275,7 +275,7 @@ class Hero : Char() {
     fun holdFollowers(level: Level) {
         followers.clear()
 
-        level.mobs.filterTo(followers) { it.camp == Camp.HERO }
+        level.mobs.filterTo(followers) { it.camp == Camp.HERO && !it.properties().contains(Property.IMMOVABLE) }
         level.mobs.removeAll(followers)
 
         // todo: MAX FOLLOWERS CONTROL

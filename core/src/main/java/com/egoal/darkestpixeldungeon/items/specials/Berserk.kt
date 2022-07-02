@@ -49,16 +49,19 @@ class Berserk : Special() {
     }
 
     private fun attack(hero: Hero, char: Char) {
-        val sac = round(hero.HT * .15f).toInt()
-        hero.takeDamage(Damage(sac, hero, hero).type(Damage.Type.MAGICAL))
+        hero.sprite.attack(char.pos) {
+            val sac = round(hero.HT * .2f).toInt()
+            hero.takeDamage(Damage(sac, hero, hero).type(Damage.Type.MAGICAL))
 //        hero.sprite.bloodBurstB(char.sprite.center(), 10) // we only have one instance to splash...
-        Wound.hit(hero.pos)
+            Wound.hit(hero.pos)
 
-        Char.ProcessAttackDamage(hero.giveDamage(char).apply {
-            value += Random.Int(value / 2, value) // extra crit?
-            addFeature(Damage.Feature.ACCURATE or Damage.Feature.CRITICAL)
-        })
+            Char.ProcessAttackDamage(hero.giveDamage(char).apply {
+                value += Random.Int(value / 2, value) // extra crit?
+                addFeature(Damage.Feature.ACCURATE or Damage.Feature.CRITICAL)
+            })
+            hero.spendAndNext(hero.attackDelay())
 
-        Camera.main.shake(2f, .3f)
+            Camera.main.shake(2f, .3f)
+        }
     }
 }

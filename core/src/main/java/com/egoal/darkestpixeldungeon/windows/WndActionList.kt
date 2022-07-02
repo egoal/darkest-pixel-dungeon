@@ -25,7 +25,7 @@ class WndActionList(icon: Image, title: String, actions: List<Action>) : Window(
                     pr.value.Execute()
                 }
             }
-            btn.textColor(if (pr.value.Disabled()) 0xaaaaaa else 0xffffff)
+            btn.enable(!pr.value.Disabled())
 
             if (pr.value.Info().isEmpty()) {
                 btn.setRect(MARGIN, pos, WIDTH - MARGIN * 2f, BTN_HEIGHT)

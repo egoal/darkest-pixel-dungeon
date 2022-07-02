@@ -170,6 +170,42 @@
 					]
 				},
 				{
+					"Class": "Albino",
+					"AttackSkill": 10,
+					"DefendSkill": 3,
+					"MaxHealth": 15,
+					"EXP": 1,
+					"MaxLevel": 5,
+					"LootChance": 0,
+					"MinDamage": 2,
+					"MaxDamage": 4,
+					"TypeDamage": 0,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"MinDefend": 0,
+					"MaxDefend": 1,
+					"Resistance": [
+						{
+							"Magic": -0.3,
+							"Fire": 0,
+							"Poison": 0.1,
+							"Ice": 0,
+							"Light": 0,
+							"Shadow": 0,
+							"Holy": 0
+						}
+					],
+					"Properties": 0,
+					"Loot": [],
+					"Shield": 0,
+					"Ability": [
+						{
+							"Name": "VampireAttack",
+							"Chance": 0.3333
+						}
+					]
+				},
+				{
 					"Class": "Slug",
 					"MaxHealth": 6,
 					"AttackSkill": 8,
@@ -483,7 +519,7 @@
 				},
 				{
 					"Class": "Skeleton",
-					"MaxHealth": 50,
+					"MaxHealth": 35,
 					"AttackSkill": 12,
 					"DefendSkill": 9,
 					"EXP": 5,
@@ -1537,6 +1573,67 @@
 					]
 				},
 				{
+					"Class": "Senior",
+					"MaxHealth": 80,
+					"AttackSkill": 30,
+					"DefendSkill": 30,
+					"EXP": 11,
+					"MaxLevel": 21,
+					"LootChance": 0.08,
+					"Loot": [
+						{
+							"Name": "FOOD",
+							"Chance": 1
+						}
+					],
+					"MinDamage": 16,
+					"MaxDamage": 25,
+					"TypeDamage": 0,
+					"CritChance": 0.05,
+					"CritRatio": 1.2,
+					"MinDefend": 0,
+					"MaxDefend": 2,
+					"Resistance": [
+						{
+							"Magic": -0.2,
+							"Fire": 0.2,
+							"Poison": 0.2,
+							"Ice": 0.2,
+							"Light": 0.2,
+							"Shadow": -0.5,
+							"Holy": -0.2
+						}
+					],
+					"Properties": 0,
+					"Shield": 20,
+					"Ability": [
+						{
+							"Name": "ExtraShield",
+							"Chance": 0.3
+						},
+						{
+							"Name": "ExtraHealth",
+							"Chance": 0.3
+						},
+						{
+							"Name": "VampireAttack",
+							"Chance": 0.1
+						},
+						{
+							"Name": "FeedbackDefend",
+							"Chance": 0.1
+						},
+						{
+							"Name": "AntiMagicDefend",
+							"Chance": 0.1
+						},
+						{
+							"Name": "RespawnDying",
+							"Chance": 0.05
+						}
+					]
+				},
+				{
 					"Class": "Golem",
 					"MaxHealth": 70,
 					"AttackSkill": 28,
@@ -2079,7 +2176,7 @@
 					"AttackSkill": 0,
 					"DefendSkill": 0,
 					"EXP": 0,
-					"MaxLevel": 0,
+					"MaxLevel": 30,
 					"LootChance": 0.2,
 					"Loot": [
 						{
@@ -2222,7 +2319,7 @@
 					"AttackSkill": 0,
 					"DefendSkill": 0,
 					"EXP": 0,
-					"MaxLevel": 0,
+					"MaxLevel": 30,
 					"LootChance": 1,
 					"Loot": [],
 					"MinDamage": 0,
@@ -2312,11 +2409,11 @@
 				}
 			],
 			"separators": [
-				9,
-				20,
-				26,
+				10,
+				21,
+				28,
 				35,
-				43
+				46
 			],
 			"props": {}
 		},

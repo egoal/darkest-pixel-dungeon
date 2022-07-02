@@ -48,6 +48,8 @@ class Combo : Special() {
             adrenaline = max(0, adrenaline - 1)
         }
 
+        for (a in actions) a.cd = max(0, a.cd - 1)
+
         //todo: update image?
         updateQuickslot()
     }
@@ -81,6 +83,8 @@ class Combo : Special() {
         bundle.put(ADRENALINE, adrenaline)
         bundle.put(FOCUS_ID, focusId)
         bundle.put(FOCUS_COUNT, focusCount)
+
+        bundle.put("cds", actions.map { it.cd }.toIntArray())
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -90,6 +94,9 @@ class Combo : Special() {
         adrenaline = bundle.getInt(ADRENALINE)
         focusId = bundle.getInt(FOCUS_ID)
         focusCount = bundle.getInt(FOCUS_COUNT)
+
+        val cds = bundle.getIntArray("cds")
+        (0 until min(actions.size, cds.size)).forEach { actions[it].cd = cds[it] }
     }
 
     companion object {
@@ -100,10 +107,12 @@ class Combo : Special() {
         private const val FOCUS_COUNT = "focus-count"
     }
 
-    abstract inner class ComboAction(val cost: Int) : WndActionList.Action() {
+    abstract inner class ComboAction(val cost: Int, val cooldown: Int) : WndActionList.Action() {
+        var cd = 0
+
         override fun Name(): String = M.L(this, "name") + "($cost)"
-        override fun Info(): String = M.L(this, "info", cost)
-        override fun Disabled(): Boolean = cost > adrenaline
+        override fun Info(): String = M.L(this, "info", cost, cooldown)
+        override fun Disabled(): Boolean = cost > adrenaline || cd > 0
 
         override fun Execute() {
             Execute(Dungeon.hero)
@@ -113,8 +122,9 @@ class Combo : Special() {
         protected abstract fun Execute(hero: Hero)
     }
 
-    inner class Endurance : ComboAction(5) {
+    inner class Endurance : ComboAction(5, 10) {
         override fun Execute(hero: Hero) {
+            cd = cooldown
             adrenaline -= cost
             hero.apply {
                 SHLD += Random.NormalIntRange(10, hero.HT / 3)
@@ -126,10 +136,11 @@ class Combo : Special() {
         }
     }
 
-    inner class Kick : ComboAction(8) {
+    inner class Kick : ComboAction(8, 3) {
         override fun Execute(hero: Hero) {
             GameScene.selectCell(object : CellSelectListener(FLAG_ENEMY, 1) {
                 override fun onSelected(cell: Int) {
+                    cd = cooldown
                     adrenaline -= cost
 
                     hero.sprite.attack(cell) {
@@ -148,7 +159,7 @@ class Combo : Special() {
         }
     }
 
-    inner class Dash : ComboAction(12) {
+    inner class Dash : ComboAction(12, 5) {
         override fun Execute(hero: Hero) {
             GameScene.selectCell(object : CellSelectListener(FLAG_CELL, 8, false) {
                 override fun onSelected(cell: Int) {
@@ -163,6 +174,7 @@ class Combo : Special() {
                 return
             }
 
+            cd = cooldown
             adrenaline -= cost
 
             val route = Ballistica(hero.pos, cell, Ballistica.PROJECTILE)
@@ -199,12 +211,13 @@ class Combo : Special() {
         }
     }
 
-    inner class Crush : ComboAction(15) {
+    inner class Crush : ComboAction(15, 2) {
         private var count = 0
         override fun Execute(hero: Hero) {
             GameScene.selectCell(object : CellSelectListener(FLAG_ENEMY, hero.belongings.weapon?.reachFactor(hero)
                     ?: 1) {
                 override fun onSelected(cell: Int) {
+                    cd = cooldown
                     adrenaline -= cost
 
                     count = 10 // at most 10 times

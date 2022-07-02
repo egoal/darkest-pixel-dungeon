@@ -10,8 +10,8 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.wands.WandOfBlastWave
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.watabou.noosa.audio.Sample
+import com.watabou.utils.GameMath
 import com.watabou.utils.Random
-import kotlin.math.min
 
 class BleedingAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
@@ -68,14 +68,14 @@ class CrippleAttack : Ability() {
 class ParalysisAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         val enemy = damage.to as Char
-        if (Random.Int(3) == 0 && enemy.buff(Paralysis::class.java) == null) Buff.prolong(enemy, Paralysis::class.java, 1f)
+        if (Random.Int(5) == 0 && enemy.buff(Paralysis::class.java) == null) Buff.prolong(enemy, Paralysis::class.java, 1.1f)
     }
 }
 
 class VampireAttack : Ability() {
     override fun onAttack(belonger: Mob, damage: Damage) {
         if (damage.type != Damage.Type.MENTAL) {
-            val reg = min(damage.value, belonger.HT - belonger.HP) / 3
+            val reg = GameMath.clamp(damage.value / 3, 1, (belonger.HT - belonger.HP) / 2)
             if (reg > 0) {
                 belonger.recoverHP(reg)
                 belonger.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)

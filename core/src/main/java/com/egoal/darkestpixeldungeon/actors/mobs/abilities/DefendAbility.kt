@@ -10,6 +10,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
+import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -18,7 +20,7 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
-class EnchantDefend(private val prob: Float, private val enchantClass: Class<out Enchantment>, private val duration: Float) : Ability() {
+open class EnchantDefend(private val prob: Float, private val enchantClass: Class<out Enchantment>, private val duration: Float) : Ability() {
     override fun onDefend(belonger: Mob, damage: Damage) {
         if (damage.from is Hero) {
             val hero = damage.from as Hero
@@ -29,6 +31,10 @@ class EnchantDefend(private val prob: Float, private val enchantClass: Class<out
         }
     }
 }
+
+class EnchantDefend_Fire : EnchantDefend(.3333f, Blazing::class.java, 8f)
+
+class EnchantDefend_Venomous : EnchantDefend(.25f, Venomous::class.java, 8f)
 
 open class ReleaseGasDefend(private val gas: Class<out Blob>) : Ability() {
     override fun onReady(belonger: Mob) {

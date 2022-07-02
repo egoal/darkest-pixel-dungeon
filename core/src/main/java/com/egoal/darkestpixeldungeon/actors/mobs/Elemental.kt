@@ -28,6 +28,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Chill
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BurningAttack
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend_Fire
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
@@ -44,7 +45,7 @@ open class Elemental : Mob() {
         flying = true
 
         abilities.add(BurningAttack())
-        abilities.add(EnchantDefend(0.333f, Blazing::class.java, 8f))
+        abilities.add(EnchantDefend_Fire())
     }
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.FIRE)

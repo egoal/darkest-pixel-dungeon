@@ -106,7 +106,7 @@ class VillageLevel : RegularLevel() {
         // seeker
         putMobAt(Seeker::class.java, 12, 18)
 
-        // Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
+//         Buff.affect(putMobAt(Rat::class.java, 16, 29), Dementage::class.java)
 //        (putMobAt(Merchant::class.java, 16, 27) as Merchant).apply {
 //            for (i in 1..10) addItemToSell(Generator.generate())
 //        }

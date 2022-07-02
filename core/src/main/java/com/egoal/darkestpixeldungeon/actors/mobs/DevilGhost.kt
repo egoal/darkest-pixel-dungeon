@@ -1,6 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
@@ -26,6 +27,8 @@ import com.watabou.utils.Random
 class DevilGhost : Wraith() {
     init {
         spriteClass = DevilGhostSprite::class.java
+
+        Config = Database.ConfigOfMob("DevilGhost")!!
     }
 
     override fun giveDamage(target: Char): Damage {
@@ -36,9 +39,7 @@ class DevilGhost : Wraith() {
     }
 
     override fun takeDamage(dmg: Damage): Int {
-        if (dmg.value > 0) {
-            dmg.value = 1
-        }
+        if (dmg.value > 0) dmg.value = 1
 
         return super.takeDamage(dmg)
     }

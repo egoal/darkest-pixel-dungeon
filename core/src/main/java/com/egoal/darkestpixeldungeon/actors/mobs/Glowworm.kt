@@ -11,6 +11,8 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Light
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend_Fire
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend_Venomous
 import com.egoal.darkestpixeldungeon.items.unclassified.PoisonPowder
 import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
@@ -29,6 +31,8 @@ class Glowworm(private var level: Int = 1) : Mob() {
         spriteClass = Sprite::class.java
 
         flying = true
+
+        abilities.add(EnchantDefend_Venomous())
 
         setLevel(level)
         Buff.affect(this, Light::class.java).prolong(Float.MAX_VALUE) // for a whole light...
@@ -50,20 +54,6 @@ class Glowworm(private var level: Int = 1) : Mob() {
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply {
         value -= Random.NormalIntRange(1, level)
-    }
-
-    override fun defenseProc(dmg: Damage): Damage {
-        if (dmg.from is Hero) {
-            val hero = dmg.from as Hero
-            if (Dungeon.level.adjacent(hero.pos, pos) && Random.Int(4) == 0) {
-                val weapon = hero.belongings.weapon
-                if (weapon is MeleeWeapon && weapon.enchantment == null) {
-                    weapon.enchant(Venomous::class.java, 8f)
-                }
-            }
-        }
-
-        return super.defenseProc(dmg)
     }
 
     override fun die(cause: Any?) {

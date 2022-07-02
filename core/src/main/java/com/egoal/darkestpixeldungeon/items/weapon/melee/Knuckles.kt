@@ -31,11 +31,7 @@ class Knuckles : MeleeWeapon() {
         DLY = 0.5f //2x speed
     }
 
-    override fun min(lvl: Int): Int {
-        return tier + 1 + //base
-
-                lvl    //level scaling
-    }
+    override fun min(lvl: Int) = tier + 1 + lvl
 
     override fun max(lvl: Int): Int {
         return 3 * (tier + 1) +    //6 base, down from 10

@@ -6,9 +6,6 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.armor.RaggedArmor
-import com.egoal.darkestpixeldungeon.items.food.Humanity
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -31,11 +28,12 @@ class MadMan : Mob(), Callback {
     init {
         spriteClass = Sprite::class.java
 
-        HT = 10 + 2 * Dungeon.depth
-        HP = HT
-        defSkill = 5f + Dungeon.depth
-
-        Config = Config.copy(EXP = min(3 + Dungeon.depth / 2, 12), MaxLevel = Dungeon.depth + 3)
+        Config = Config.copy(MaxHealth = 10 + 2 * Dungeon.depth,
+                EXP = min(3 + Dungeon.depth / 2, 12),
+                MaxLevel = Dungeon.depth + 3,
+                DefendSkill = 5f + Dungeon.depth,
+                MinDefend = 1,
+                MaxDefend = Dungeon.depth / 5 + 3)
     }
 
     override fun giveDamage(enemy: Char): Damage {
@@ -52,15 +50,6 @@ class MadMan : Mob(), Callback {
     }
 
     override fun attackDelay(): Float = 1f
-
-    override fun defendDamage(dmg: Damage): Damage {
-        // lower physical defense,
-        // magic resistance is really high
-        if (dmg.type == Damage.Type.NORMAL)
-            dmg.value -= Random.NormalIntRange(0, Dungeon.depth / 5 * 3)
-
-        return dmg
-    }
 
     override fun canAttack(enemy: Char): Boolean {
         return Dungeon.level.distance(pos, enemy.pos) <= SHOUT_RANGE && Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos

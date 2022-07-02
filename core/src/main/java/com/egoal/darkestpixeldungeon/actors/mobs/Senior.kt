@@ -25,6 +25,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ParalysisAttack
 import com.egoal.darkestpixeldungeon.sprites.SeniorSprite
 import com.watabou.utils.Random
 
@@ -32,16 +33,8 @@ class Senior : Monk() {
 
     init {
         spriteClass = SeniorSprite::class.java
-    }
 
-    override fun giveDamage(target: Char): Damage = Damage(Random.NormalIntRange(16, 24), this, target)
-
-    override fun attackProc(damage: Damage): Damage {
-        val enemy = damage.to as Char
-        if (Random.Int(10) == 0) {
-            Buff.prolong(enemy, Paralysis::class.java, 1.1f)
-        }
-        return super.attackProc(damage)
+        abilities.add(ParalysisAttack())
     }
 
     override fun die(cause: Any?) {

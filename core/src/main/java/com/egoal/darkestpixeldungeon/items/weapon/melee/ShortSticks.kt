@@ -18,7 +18,7 @@ class ShortSticks : MeleeWeapon() {
     override fun STRReq(lvl: Int): Int = super.STRReq(lvl) - 1
 
     override fun min(lvl: Int): Int = tier + 1 + lvl
-    override fun max(lvl: Int): Int = 3 * (tier + 1) + lvl * tier
+    override fun max(lvl: Int): Int = 3 * (tier + 1) + lvl * (tier + 1) / 2
 
     override fun defendDamage(dmg: Damage): Damage {
         if (dmg.type == Damage.Type.NORMAL) {

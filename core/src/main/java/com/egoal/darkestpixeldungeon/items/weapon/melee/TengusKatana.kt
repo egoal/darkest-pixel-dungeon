@@ -18,7 +18,7 @@ class TengusKatana : MeleeWeapon() {
 
     override fun max(lvl: Int): Int = 4 * (tier + 1) + lvl * (tier + 1)
 
-    override fun price(): Int = 40 * tier
+    override fun price(): Int = 40 * tier + 30 * level()
 
     override fun giveDamage(hero: Hero, target: Char): Damage {
         val dmg = super.giveDamage(hero, target)

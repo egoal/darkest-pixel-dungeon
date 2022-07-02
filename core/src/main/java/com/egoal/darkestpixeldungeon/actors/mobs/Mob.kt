@@ -118,7 +118,10 @@ abstract class Mob : Char() {
         // by default, just class name.
         val con = Database.ConfigOfMob(javaClass.simpleName)
         if (con != null) Config = con
-        else Log.w("dpd", "missing mob config of ${javaClass.simpleName}.")
+        else {
+            Config = Database.DummyMobConfig.copy()
+            Log.w("dpd", "missing mob config of ${javaClass.simpleName}.")
+        }
     }
 
     fun initialize(): Mob {

@@ -21,15 +21,13 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttack
 import com.egoal.darkestpixeldungeon.sprites.AlbinoSprite
 
 class Albino : Rat() {
     init {
         spriteClass = AlbinoSprite::class.java
-
-        HT = 15
-        HP = HT
 
         abilities.add(BleedingAttack())
     }
