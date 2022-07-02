@@ -31,10 +31,4 @@ feel free to contact me, english& chinese is okay.
 screenshots:
 
 ![](dev/screenshots/00.png)
-![](dev/screenshots/01.png)
-![](dev/screenshots/02.png)
-![](dev/screenshots/03.png)
-![](dev/screenshots/04.jpg)
 ![](dev/screenshots/05.png)
-![](dev/screenshots/06.png)
-![](dev/screenshots/07.png)
