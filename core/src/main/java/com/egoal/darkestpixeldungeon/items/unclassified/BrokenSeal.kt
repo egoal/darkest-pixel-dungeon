@@ -121,10 +121,17 @@ open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
                 return value
             }
         }
+
+        fun regShiled(): Float = when {
+            armor == null -> 0f
+            armor!!.checkSeal()?.enchanted == true -> .2f
+            else -> .1f
+        }
     }
 
     companion object {
         private const val AC_AFFIX = "AFFIX"
+
         //only to be used from the quickslot, for tutorial purposes mostly.
         private const val AC_INFO = "INFO_WINDOW"
         private const val ENCHANTED = "enchanted"

@@ -61,6 +61,10 @@
 					"display": null
 				},
 				{
+					"typeStr": "4",
+					"name": "AttackDelay"
+				},
+				{
 					"typeStr": "3",
 					"name": "MinDefend",
 					"display": null
@@ -123,7 +127,8 @@
 					],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Rat",
@@ -171,8 +176,13 @@
 						{
 							"Name": "VampireAttack",
 							"Chance": 0.3333
+						},
+						{
+							"Name": "TileDefend_Grass",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Albino",
@@ -208,7 +218,8 @@
 							"Name": "VampireAttack",
 							"Chance": 0.3333
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Slug",
@@ -239,7 +250,8 @@
 					"Loot": [],
 					"LootChance": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1.5
 				},
 				{
 					"Class": "Gnoll",
@@ -295,8 +307,17 @@
 						{
 							"Name": "RageDying",
 							"Chance": 0.5
+						},
+						{
+							"Name": "TileDefend_Grass",
+							"Chance": 0.3
+						},
+						{
+							"Name": "TileDefend_Water",
+							"Chance": 0.3
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Crab",
@@ -348,8 +369,13 @@
 						{
 							"Name": "VertigoAttack",
 							"Chance": 0.25
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 0.2
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "FetidRat",
@@ -380,7 +406,8 @@
 					"Loot": [],
 					"LootChance": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "GnollTrickster",
@@ -416,7 +443,8 @@
 						}
 					],
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "GreatCrab",
@@ -452,7 +480,8 @@
 						}
 					],
 					"Shield": 10,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Goo",
@@ -488,7 +517,8 @@
 						}
 					],
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Swarm",
@@ -524,7 +554,8 @@
 					],
 					"LootChance": 0.08,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Skeleton",
@@ -567,7 +598,7 @@
 						},
 						{
 							"Name": "CounterDefend",
-							"Chance": 0.1
+							"Chance": 0.25
 						},
 						{
 							"Name": "MentalExplodeDying",
@@ -580,8 +611,13 @@
 						{
 							"Name": "AntiMagicDefend",
 							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 0.25
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Thief",
@@ -649,8 +685,13 @@
 						{
 							"Name": "VertigoAttack",
 							"Chance": 0.2
+						},
+						{
+							"Name": "TileDefend_Grass",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 0.5
 				},
 				{
 					"Class": "Bandit",
@@ -690,7 +731,8 @@
 					],
 					"Properties": 8,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Shaman",
@@ -738,8 +780,13 @@
 						{
 							"Name": "RespawnDying",
 							"Chance": 0.5
+						},
+						{
+							"Name": "TileDefend_Water",
+							"Chance": 1
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Guard",
@@ -807,8 +854,13 @@
 						{
 							"Name": "AntiMagicDefend",
 							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "RotHeart",
@@ -839,7 +891,8 @@
 					],
 					"Properties": 34,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "NewbornElemental",
@@ -870,7 +923,8 @@
 					],
 					"Properties": 10,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "WitchDoctor",
@@ -931,7 +985,8 @@
 							"Name": "OozeAttack",
 							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Tengu",
@@ -962,7 +1017,8 @@
 					],
 					"Properties": 1,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Tengu_Phantom",
@@ -993,7 +1049,8 @@
 					],
 					"Properties": 64,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "SkeletonKnight",
@@ -1052,7 +1109,7 @@
 						},
 						{
 							"Name": "ParalysisAttack",
-							"Chance": 0.5
+							"Chance": 0.25
 						},
 						{
 							"Name": "FeedbackDefend",
@@ -1061,8 +1118,13 @@
 						{
 							"Name": "AntiMagicDefend",
 							"Chance": 0.5
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "AshesSkull",
@@ -1093,7 +1155,8 @@
 					],
 					"Properties": 4,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Bat",
@@ -1153,8 +1216,13 @@
 						{
 							"Name": "VertigoAttack",
 							"Chance": 0.3
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Brute",
@@ -1210,8 +1278,21 @@
 						{
 							"Name": "ParalysisAttack",
 							"Chance": 0.1
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 0.3
+						},
+						{
+							"Name": "TileDefend_Water",
+							"Chance": 0.5
+						},
+						{
+							"Name": "TileDefend_Grass",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Shielded",
@@ -1267,8 +1348,21 @@
 						{
 							"Name": "ParalysisAttack",
 							"Chance": 0.1
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 1
+						},
+						{
+							"Name": "TileDefend_Grass",
+							"Chance": 0.3
+						},
+						{
+							"Name": "TileDefend_Water",
+							"Chance": 0.3
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Spinner",
@@ -1324,8 +1418,13 @@
 						{
 							"Name": "VertigoAttack",
 							"Chance": 0.5
+						},
+						{
+							"Name": "TileDefend_Grass",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "DM300",
@@ -1361,7 +1460,8 @@
 					],
 					"Properties": 17,
 					"Shield": 50,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Elemental",
@@ -1401,7 +1501,8 @@
 					],
 					"Properties": 8,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Ballista",
@@ -1445,7 +1546,8 @@
 					],
 					"Properties": 16,
 					"Shield": 20,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "QuickFiringGun",
@@ -1485,7 +1587,8 @@
 					],
 					"Properties": 16,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 0.334
 				},
 				{
 					"Class": "Warlock",
@@ -1538,7 +1641,8 @@
 							"Name": "ReleaseGasDying_Toxic",
 							"Chance": 0.4
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Monk",
@@ -1555,7 +1659,7 @@
 						}
 					],
 					"MinDamage": 12,
-					"MaxDamage": 25,
+					"MaxDamage": 24,
 					"TypeDamage": 0,
 					"CritChance": 0.05,
 					"CritRatio": 1.2,
@@ -1598,8 +1702,13 @@
 						{
 							"Name": "RespawnDying",
 							"Chance": 0.05
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 0.05
 						}
-					]
+					],
+					"AttackDelay": 0.45
 				},
 				{
 					"Class": "Senior",
@@ -1660,7 +1769,8 @@
 							"Name": "RespawnDying",
 							"Chance": 0.05
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Golem",
@@ -1717,7 +1827,8 @@
 							"Name": "RageDying",
 							"Chance": 1
 						}
-					]
+					],
+					"AttackDelay": 1.5
 				},
 				{
 					"Class": "King",
@@ -1748,7 +1859,8 @@
 					],
 					"Properties": 5,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "King_Revived",
@@ -1779,7 +1891,8 @@
 					],
 					"Properties": 5,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "King_Undead",
@@ -1810,7 +1923,8 @@
 					],
 					"Properties": 68,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Succubus",
@@ -1866,8 +1980,17 @@
 						{
 							"Name": "VertigoAttack",
 							"Chance": 0.25
+						},
+						{
+							"Name": "ExtraAttackSpeed",
+							"Chance": 1
+						},
+						{
+							"Name": "TileDefend_Water",
+							"Chance": 0.5
 						}
-					]
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Eye",
@@ -1903,7 +2026,33 @@
 					],
 					"Properties": 8,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [
+						{
+							"Name": "ExtraHealth",
+							"Chance": 1
+						},
+						{
+							"Name": "ExtraShield",
+							"Chance": 0.5
+						},
+						{
+							"Name": "ReleaseGasDefend_WhiteFog",
+							"Chance": 0.5
+						},
+						{
+							"Name": "EnchantDefend_Unstable",
+							"Chance": 0.2
+						},
+						{
+							"Name": "ReleaseGasDying_WhiteFog",
+							"Chance": 0.5
+						},
+						{
+							"Name": "MentalExplodeDying",
+							"Chance": 0.5
+						}
+					],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Scorpio",
@@ -1943,7 +2092,8 @@
 					],
 					"Properties": 8,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Acidic",
@@ -1979,7 +2129,8 @@
 						}
 					],
 					"Properties": 136,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Yog",
@@ -2010,7 +2161,8 @@
 					],
 					"Properties": 41,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Yog_RottingFist",
@@ -2041,7 +2193,8 @@
 					],
 					"Properties": 9,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Yog_BurningFist",
@@ -2072,7 +2225,8 @@
 					],
 					"Properties": 9,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Yog_Larva",
@@ -2103,7 +2257,8 @@
 					],
 					"Properties": 8,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Bee",
@@ -2134,7 +2289,8 @@
 					],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "DarkSpirit",
@@ -2170,7 +2326,8 @@
 					],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "DevilGhost",
@@ -2206,7 +2363,8 @@
 					],
 					"Properties": 8,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Glowworm",
@@ -2242,7 +2400,8 @@
 					],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "MadMan",
@@ -2282,7 +2441,8 @@
 					],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "RotLasher",
@@ -2318,7 +2478,8 @@
 					],
 					"Properties": 32,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "Statue",
@@ -2349,7 +2510,8 @@
 					],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 0
 				},
 				{
 					"Class": "WandGuard",
@@ -2380,7 +2542,8 @@
 					],
 					"Properties": 48,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "",
@@ -2401,7 +2564,8 @@
 					"Resistance": [],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "",
@@ -2422,7 +2586,8 @@
 					"Resistance": [],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				},
 				{
 					"Class": "",
@@ -2443,7 +2608,8 @@
 					"Resistance": [],
 					"Properties": 0,
 					"Shield": 0,
-					"Ability": []
+					"Ability": [],
+					"AttackDelay": 1
 				}
 			],
 			"separators": [

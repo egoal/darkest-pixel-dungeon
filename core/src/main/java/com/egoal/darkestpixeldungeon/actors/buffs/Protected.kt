@@ -5,18 +5,18 @@ import com.egoal.darkestpixeldungeon.items.armor.glyphs.Protection
 import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 
 class Protected : Buff() {
-    var _par = 0f
+    var par_ = 0f
 
     override fun act(): Boolean {
         if (!target.isAlive)
             diactivate()
         else {
-            if (target.SHLD > shieldCap())
+            if (target.SHLD >= shieldCap())
                 target.SHLD -= 1
             else {
-                _par += shieldReg()
-                while (_par >= 1) {
-                    --_par
+                par_ += shieldReg()
+                while (par_ >= 1) {
+                    --par_
                     ++target.SHLD
                 }
             }
@@ -35,12 +35,20 @@ class Protected : Buff() {
             shld += (hero.belongings.armor!!.glyph as Protection).Shield(hero.belongings.armor!!)
         }
 
-        shld += (target.buff(BrokenSeal.WarriorShield::class.java)?.maxShield() ?: 0)
+        target.buff(BrokenSeal.WarriorShield::class.java)?.let {
+            shld += it.maxShield()
+        }
 
         return shld
     }
 
-    private fun shieldReg() = 0.1f + if (target.buff(BrokenSeal.WarriorShield::class.java) != null) 0.1f else 0f
+    private fun shieldReg(): Float {
+        var reg = .1f
+        target.buff(BrokenSeal.WarriorShield::class.java)?.let {
+            reg += it.regShiled()
+        }
+        return reg
+    }
 
     companion object {
         private const val STEP = 3f

@@ -6,7 +6,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 
 // see Proctected::ShiledCap()
 class Protection : Armor.Glyph() {
-    fun Shield(armor: Armor): Int = armor.tier + armor.level()
+    fun Shield(armor: Armor): Int = armor.tier + armor.level() * 2
 
     override fun proc(armor: Armor, damage: Damage): Damage = damage
 

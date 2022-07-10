@@ -11,8 +11,6 @@ class QuickFiringGun : Ballista() {
         spriteClass = Sprite::class.java
     }
 
-    override fun attackDelay(): Float = super.attackDelay() / 3f // triple speed
-
     override fun ammoCapacity(): Int = 3
 
     override fun die(cause: Any?) {

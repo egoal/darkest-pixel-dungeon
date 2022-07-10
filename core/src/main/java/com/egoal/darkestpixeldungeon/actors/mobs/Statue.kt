@@ -88,7 +88,7 @@ open class Statue : Mob() {
 
     override fun accRoll(damage: Damage): Float = super.accRoll(damage) * weapon.ACC
 
-    override fun attackDelay(): Float = weapon.DLY
+    override fun attackSpeed(): Float = 1f / weapon.DLY
 
     override fun canAttack(enemy: Char): Boolean = Dungeon.level.distance(pos, enemy.pos) <= weapon.RCH
 

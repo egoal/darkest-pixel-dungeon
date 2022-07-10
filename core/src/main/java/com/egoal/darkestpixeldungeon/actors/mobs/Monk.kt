@@ -52,8 +52,6 @@ open class Monk : Mob() {
         return dmg
     }
 
-    override fun attackDelay(): Float = 0.45f
-
     override fun die(cause: Any?) {
         Imp.Quest.process(this)
 

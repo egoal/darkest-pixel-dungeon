@@ -483,8 +483,12 @@ abstract class Mob : Char() {
         }
     }
 
-    protected open fun attackDelay(): Float {
-        return if (buff(Rage::class.java) == null) 1f else 0.667f
+    protected fun attackDelay(): Float = Config.AttackDelay / attackSpeed()
+
+    protected open fun attackSpeed(): Float {
+        var b = 1f
+        if (buff(Rage::class.java) != null) b *= .5f
+        return b
     }
 
     protected open fun doAttack(enemy: Char): Boolean {

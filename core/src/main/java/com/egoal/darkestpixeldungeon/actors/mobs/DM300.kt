@@ -123,7 +123,7 @@ class DM300 : Mob() {
         cross.visible = false
     }
 
-    public override fun attackDelay(): Float = if (overloaded) .667f else 1f
+    override fun attackSpeed(): Float = super.attackSpeed() * if (overloaded) 1.5f else 1f
 
     override fun description(): String {
         var desc = Messages.get(this, "desc")

@@ -62,8 +62,6 @@ open class Thief : Mob() {
     override fun speed(): Float = if (item != null) super.speed() * 0.83333f
     else super.speed()
 
-    override fun attackDelay(): Float = 0.5f
-
     override fun die(cause: Any?) {
         super.die(cause)
 

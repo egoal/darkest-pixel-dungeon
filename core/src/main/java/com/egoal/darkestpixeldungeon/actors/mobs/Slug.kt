@@ -25,8 +25,6 @@ class Slug : Mob() {
         return super.defendDamage(dmg)
     }
 
-    override fun attackDelay(): Float = 1.5f
-
     override fun immunizedBuffs() = IMMUNS
 
     companion object {

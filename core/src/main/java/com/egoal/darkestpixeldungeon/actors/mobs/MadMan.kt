@@ -49,8 +49,6 @@ class MadMan : Mob(), Callback {
                     .addFeature(Damage.Feature.ACCURATE)
     }
 
-    override fun attackDelay(): Float = 1f
-
     override fun canAttack(enemy: Char): Boolean {
         return Dungeon.level.distance(pos, enemy.pos) <= SHOUT_RANGE && Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
     }

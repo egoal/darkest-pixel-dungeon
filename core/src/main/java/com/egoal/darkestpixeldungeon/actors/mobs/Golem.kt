@@ -33,8 +33,6 @@ class Golem : Mob() {
         immunities.addAll(listOf(Amok::class.java, Terror::class.java, Sleep::class.java, Bleeding::class.java))
     }
 
-    override fun attackDelay(): Float = 1.5f
-
     override fun die(cause: Any?) {
         Imp.Quest.process(this)
 

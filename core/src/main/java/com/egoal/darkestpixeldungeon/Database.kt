@@ -41,11 +41,13 @@ object Database {
      * TypeDamage: 0-Normal, 1-Magical, 2-Mental
      */
     @Serializable
-    data class MobsLine(val Class: String, val MaxHealth: Int, val Shield: Int, val AttackSkill: Float, val DefendSkill: Float,
-                        val EXP: Int, val MaxLevel: Int, val MinDamage: Int, val MaxDamage: Int, val TypeDamage: Int,
-                        val CritChance: Float, val CritRatio: Float, val MinDefend: Int, val MaxDefend: Int,
-                        val Resistance: List<ResistanceLine>, val Properties: Int,
-                        val LootChance: Float, val Loot: List<LootLine>, val Ability: List<AbilityLine>) {
+    data class MobsLine(
+            val Class: String, val MaxHealth: Int, val Shield: Int, val AttackSkill: Float, val DefendSkill: Float,
+            val EXP: Int, val MaxLevel: Int, val MinDamage: Int, val MaxDamage: Int, val TypeDamage: Int,
+            val CritChance: Float, val CritRatio: Float, val AttackDelay: Float,
+            val MinDefend: Int, val MaxDefend: Int,
+            val Resistance: List<ResistanceLine>, val Properties: Int,
+            val LootChance: Float, val Loot: List<LootLine>, val Ability: List<AbilityLine>) {
         val DamageType: Damage.Type by lazy {
             when (TypeDamage) {
                 0 -> Damage.Type.NORMAL

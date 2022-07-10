@@ -841,9 +841,7 @@ abstract class Level : Bundlable {
 
         var trap: Trap? = null
         when (map[cell]) {
-
             Terrain.TRAP -> trap = traps.get(cell)
-
             Terrain.DOOR -> Door.Enter(cell, mob)
         }
 
