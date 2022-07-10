@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.helmets
 
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
@@ -42,6 +43,7 @@ class MaskOfMadness : Helmet() {
 
             upgrade()
             GLog.p(Messages.get(this, "levelup"))
+            if (level() == 10) Badges.validate_MaskOfMadness()
         }
     }
 

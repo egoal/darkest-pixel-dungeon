@@ -20,6 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.items.wands
 
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.Actor
@@ -98,6 +99,7 @@ class WandOfDisintegration : DamageWand(isMissile = false) {
             ch.sprite.centerEmitter().burst(PurpleParticle.BURST, Random.IntRange(1, 2))
             ch.sprite.flash()
         }
+        if (chars.count { !it.isAlive } >= 3) Badges.validate_WandOfDisintergration()
     }
 
     override fun onHit(staff: MagesStaff, damage: Damage) {

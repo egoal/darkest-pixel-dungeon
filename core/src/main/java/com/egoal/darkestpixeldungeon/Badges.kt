@@ -174,7 +174,9 @@ object Badges {
         GAMES_PLAYED_4(63, true),
         HAPPY_END(38, true),
         CHAMPION(39, true),
-        SUPPORTER(31, true);
+        SUPPORTER(31, true),
+        MASK_OF_MADNESS(75),
+        WAND_OF_DISINTEGRATION(76);
 
         fun desc(): String = M.L(this, name)
     }
@@ -963,6 +965,14 @@ object Badges {
             if (Dungeon.hero.challenge != Challenge.LowPressure) displayBadge(Badge.CHAMPION)
             Challenge.PassChallenge(Dungeon.hero.challenge!!)
         }
+    }
+
+    fun validate_MaskOfMadness() {
+        if (!Dungeon.IsChallenged()) displayBadge(Badge.MASK_OF_MADNESS)
+    }
+
+    fun validate_WandOfDisintergration() {
+        if (!Dungeon.IsChallenged()) displayBadge(Badge.WAND_OF_DISINTEGRATION)
     }
 
     private fun displayBadge(badge: Badge?) {
