@@ -1,6 +1,5 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.Dungeon
@@ -33,15 +32,14 @@ class DarkSpirit : Mob() {
     private var potionCD = 0
 
     init {
-        HT = 20 + level * 4
-        HP = HT
+        Config = Config.copy(
+                MaxHealth = 20 + level * 4,
+                AttackSkill = 10f + level,
+                DefendSkill = 5f + level)
 
         name = userName
 
         potions = Random.IntRange(2, 3)
-
-        atkSkill = 10f + level
-        defSkill = 5f + level
 
         state = WANDERING
     }

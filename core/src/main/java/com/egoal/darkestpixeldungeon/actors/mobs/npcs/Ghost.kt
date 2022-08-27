@@ -154,6 +154,7 @@ class Ghost : NPC.Unbreakable() {
                 }
             }
 
+            questBoss.initialize()
             questBoss.pos = Dungeon.level.randomRespawnCell()
 
             if (questBoss.pos != -1) {

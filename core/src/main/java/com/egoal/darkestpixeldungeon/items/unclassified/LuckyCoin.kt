@@ -29,6 +29,7 @@ class LuckyCoin : Item() {
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)
         if (action == AC_USE) {
+            detach(hero.belongings.backpack)
             Buff.prolong(hero, Lucky::class.java, 150f)
             GameScene.effect(Flare(7, 32f).color(0xffc203, true).show(
                     hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 2f))

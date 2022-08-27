@@ -20,12 +20,45 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BleedingAttack
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.PoisonAttack
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.OozeAttack
+import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefend_StenchGas
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
+import com.egoal.darkestpixeldungeon.sprites.AlbinoSprite
+import com.egoal.darkestpixeldungeon.sprites.FetidRatSprite
 import com.egoal.darkestpixeldungeon.sprites.RatSprite
 
-open class Rat : Mob() {
+class Rat : Mob() {
     init {
-        spriteClass = RatSprite::class.java
+        spriteClass = RatSprite::class.java;
+    }
+}
+
+class Albino : Mob() {
+    init {
+        spriteClass = AlbinoSprite::class.java
+        abilities.add(BleedingAttack())
+    }
+
+    override fun die(cause: Any?) {
+        super.die(cause)
+        Badges.validateRare(this)
+    }
+}
+
+class FetidRat : Mob() {
+    init {
+        spriteClass = FetidRatSprite::class.java
+        state = WANDERING
+
+        abilities.add(OozeAttack())
+        abilities.add(ReleaseGasDefend_StenchGas())
+    }
+
+    override fun die(cause: Any?) {
+        super.die(cause)
+
+        Ghost.Quest.process()
     }
 }

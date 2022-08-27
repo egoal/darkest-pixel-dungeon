@@ -483,7 +483,7 @@ abstract class Mob : Char() {
         }
     }
 
-    protected fun attackDelay(): Float = Config.AttackDelay / attackSpeed()
+    protected fun attackDelay(): Float = (if (Config.AttackDelay == 0f) 1f else Config.AttackDelay) / attackSpeed()
 
     protected open fun attackSpeed(): Float {
         var b = 1f

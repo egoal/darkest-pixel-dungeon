@@ -17,7 +17,6 @@ open class Salt(n: Int = 1) : MissileWeapon(1) {
     override fun breakChance(): Float = 1f // always
 
     override fun miss(cell: Int) {
-        // super.miss(cell)
         // do nothing, it just, disappear...
         CellEmitter.get(cell).burst(Speck.factory(Speck.STEAM), 6)
     }
@@ -27,7 +26,9 @@ open class Salt(n: Int = 1) : MissileWeapon(1) {
         return super.proc(dmg)
     }
 
-    override fun giveDamage(hero: Hero, target: Char): Damage = super.giveDamage(hero, target).type(Damage.Type.MAGICAL)
+    // wont miss
+    override fun giveDamage(hero: Hero, target: Char): Damage =
+            super.giveDamage(hero, target).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.ACCURATE)
 }
 
 class RefinedSalt(n: Int = 1) : MissileWeapon(3) {
@@ -39,5 +40,15 @@ class RefinedSalt(n: Int = 1) : MissileWeapon(3) {
 
     override fun breakChance(): Float = 1f
 
-    override fun giveDamage(hero: Hero, target: Char): Damage = super.giveDamage(hero, target).type(Damage.Type.MAGICAL)
+    override fun miss(cell: Int) {
+        CellEmitter.get(cell).burst(Speck.factory(Speck.STEAM), 6)
+    }
+
+    override fun proc(dmg: Damage): Damage {
+        CellEmitter.get((dmg.to as Char).pos).burst(Speck.factory(Speck.STEAM), 6)
+        return super.proc(dmg)
+    }
+
+    override fun giveDamage(hero: Hero, target: Char): Damage =
+            super.giveDamage(hero, target).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.ACCURATE)
 }
