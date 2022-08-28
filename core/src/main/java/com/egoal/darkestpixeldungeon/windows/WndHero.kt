@@ -20,18 +20,19 @@
  */
 package com.egoal.darkestpixeldungeon.windows
 
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
-import com.egoal.darkestpixeldungeon.scenes.PixelScene
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.buffs.Protected
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.scenes.PixelScene
 import com.egoal.darkestpixeldungeon.sprites.HeroSprite
 import com.egoal.darkestpixeldungeon.ui.*
 import com.watabou.gltextures.SmartTexture
@@ -41,8 +42,7 @@ import com.watabou.noosa.Image
 import com.watabou.noosa.RenderedText
 import com.watabou.noosa.TextureFilm
 import com.watabou.noosa.ui.Button
-
-import java.util.Locale
+import java.util.*
 import kotlin.math.round
 
 // window shown when press the status pane avatar
@@ -53,6 +53,7 @@ class WndHero : WndTabbed() {
     private val perks: PerksTab
 
     private val icons: SmartTexture = TextureCache.get(Assets.BUFFS_LARGE)
+
     // private val perkIcons = TextureCache.get(Assets.PERKS)
     private val film: TextureFilm
 
@@ -290,7 +291,10 @@ class WndHero : WndTabbed() {
             val hero = Dungeon.hero
             thetop = addLine(thetop, M.L(this, "critical_chance", round(hero.criticalChance() * 100).toInt()))
             thetop = addLine(thetop, M.L(this, "evasion_chance", round(hero.evasionProbability() * 100).toInt()))
-            if (hero.isAlive) addLine(thetop, M.L(this, "regeneration", hero.regenerateSpeed()))
+            if (hero.isAlive) {
+                thetop = addLine(thetop, M.L(this, "regeneration", hero.regenerateSpeed()))
+                thetop = addLine(thetop, M.L(this, "shield", hero.buff(Protected::class.java)!!.shieldCap()))
+            }
         }
 
         private fun layoutResistances(top: Float): Float {

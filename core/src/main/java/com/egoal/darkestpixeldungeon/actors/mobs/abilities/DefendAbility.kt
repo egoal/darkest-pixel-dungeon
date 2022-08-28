@@ -8,7 +8,6 @@ import com.egoal.darkestpixeldungeon.actors.blobs.StenchGas
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.blobs.WhiteFog
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
-import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
@@ -73,7 +72,7 @@ class EnrageDefend : Ability() {
     override fun onDefend(belonger: Mob, damage: Damage) {
         if (actived) return
 
-        if (belonger.isAlive && belonger.HP < belonger.HT * 2 / 5) {
+        if (belonger.isAlive && (belonger.HP - damage.value) < belonger.HT * 2 / 5) {
             actived = true
             if (Dungeon.visible[belonger.pos]) {
                 GLog.w(M.L(this, "enraged-info", belonger.name))

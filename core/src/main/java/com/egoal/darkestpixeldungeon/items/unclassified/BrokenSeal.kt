@@ -20,25 +20,23 @@
  */
 package com.egoal.darkestpixeldungeon.items.unclassified
 
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.Armor
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.egoal.darkestpixeldungeon.windows.WndBag
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.windows.WndItem
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
-
-import java.util.ArrayList
+import java.util.*
 
 open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
     init {
@@ -96,6 +94,12 @@ open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
         if (enchanted) enchantByBlueprint()
     }
 
+    fun maxShield(a: Armor): Int {
+        var value = 3 + a.tier + a.level()
+        if (enchanted) value += 2 + a.level()
+        return value
+    }
+
     class WarriorShield : Buff() {
         private var armor: Armor? = null
 
@@ -108,18 +112,6 @@ open class BrokenSeal : Item(), GreatBlueprint.Enchantable {
 
         fun setArmor(arm: Armor?) {
             armor = arm
-        }
-
-        fun maxShield(): Int {
-            if (armor == null) return 0
-            else {
-                val am = armor!!
-                var value = 3 + am.tier + am.level()
-
-                if (am.checkSeal()?.enchanted == true) value += 2 + am.level()
-
-                return value
-            }
         }
 
         fun regShiled(): Float = when {

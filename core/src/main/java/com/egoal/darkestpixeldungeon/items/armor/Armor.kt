@@ -176,6 +176,15 @@ open class Armor(var tier: Int) : EquipableItem() {
     // scaling: 2, 2.5, 3, 3.5, 4
     open fun MRES(lvl: Int = level()): Float = ((4f + tier) + (2f + (tier - 1) * 0.5f) * lvl) / 100f
 
+    fun SHLD(lvl: Int = level()): Int {
+        var s = 1 + (tier + 1) * lvl / 2
+        s += seal?.maxShield(this) ?: 0
+
+        if (glyph is Protection) s += (glyph as Protection).Shield(this)
+
+        return s
+    }
+
     override fun upgrade(): Item = upgrade(false)
 
     fun upgrade(inscribe: Boolean): Item {
@@ -220,7 +229,7 @@ open class Armor(var tier: Int) : EquipableItem() {
 
         if (levelKnown) {
             info += "\n\n" + Messages.get(Armor::class.java, "curr_absorb",
-                    DRMin(), DRMax(), round(MRES() * 100f).toInt(), STRReq())
+                    DRMin(), DRMax(), SHLD(), round(MRES() * 100f).toInt(), STRReq())
 
             if (STRReq() > Dungeon.hero.STR()) {
                 info += " " + Messages.get(Armor::class.java, "too_heavy")

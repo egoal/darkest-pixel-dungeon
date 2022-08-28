@@ -27,19 +27,9 @@ class Protected : Buff() {
         return true
     }
 
-    private fun shieldCap(): Int {
+    fun shieldCap(): Int {
         val hero = target as Hero
-
-        var shld = hero.MSHLD
-        if (hero.belongings.armor?.glyph is Protection) {
-            shld += (hero.belongings.armor!!.glyph as Protection).Shield(hero.belongings.armor!!)
-        }
-
-        target.buff(BrokenSeal.WarriorShield::class.java)?.let {
-            shld += it.maxShield()
-        }
-
-        return shld
+        return  hero.MSHLD+ (hero.belongings.armor?.SHLD()?:0)
     }
 
     private fun shieldReg(): Float {

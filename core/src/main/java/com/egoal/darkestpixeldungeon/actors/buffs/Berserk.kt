@@ -22,8 +22,8 @@ package com.egoal.darkestpixeldungeon.actors.buffs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
-import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal.WarriorShield
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
@@ -107,7 +107,9 @@ class Berserk : Buff() {
     fun berserking(): Boolean {
         if (target.HP == 0 && state == State.NORMAL) {
 
-            val shld = target.buff(WarriorShield::class.java)?.maxShield() ?: 3
+            val hero = target as Hero
+            var shld = hero.MSHLD + (hero.belongings.armor?.SHLD() ?: 0)
+            if (shld == 0) shld = 3
 
             state = State.BERSERK
             BuffIndicator.refreshHero()

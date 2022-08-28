@@ -8,7 +8,6 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Bundle
-import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -74,6 +73,14 @@ class EvasionTenacity : Perk(3) {
     fun procEvasionDamage(dmg: Damage) {
         val hero = dmg.to as Hero
         if (hero.SHLD < hero.HT) hero.SHLD += level * 2 + 1
+    }
+
+    override fun onGain() {
+        Dungeon.hero.MSHLD += 3
+    }
+
+    override fun onLose() {
+        Dungeon.hero.MSHLD -= 3
     }
 }
 

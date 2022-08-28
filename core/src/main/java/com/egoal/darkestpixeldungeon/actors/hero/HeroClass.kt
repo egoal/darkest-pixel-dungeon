@@ -42,8 +42,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
         override fun initHeroStatus(hero: Hero) {
             super.initHeroStatus(hero)
-            hero.HP += 5 // 25
-            hero.HT += 5
+//            hero.HP += 5 // 25
+//            hero.HT += 5
+            hero.MSHLD += 3
         }
 
         override fun onHeroUpgraded(hero: Hero) {
