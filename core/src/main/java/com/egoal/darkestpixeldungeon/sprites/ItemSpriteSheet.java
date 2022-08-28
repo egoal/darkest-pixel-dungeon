@@ -386,6 +386,7 @@ public class ItemSpriteSheet {
     public static final int PENETRATION = PENETRATION_RDY + 1;
     public static final int SHADOWMOON_RDY = SPECIALS + 7;
     public static final int SHADOWMOON = SHADOWMOON_RDY + 1;
+    public static final int KNIGHT = SPECIALS + 9;
 
     //32 free slots
 

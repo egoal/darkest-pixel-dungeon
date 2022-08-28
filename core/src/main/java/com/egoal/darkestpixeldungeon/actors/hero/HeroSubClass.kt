@@ -42,6 +42,7 @@ enum class HeroSubClass(private val title: String) {
 
     GLADIATOR("gladiator"),
     BERSERKER("berserker"),
+    KNIGHTT("knight"),
 
     WARLOCK("warlock"),
     BATTLEMAGE("battlemage"),
@@ -99,6 +100,12 @@ enum class HeroSubClass(private val title: String) {
                 }
                 GLADIATOR -> {
                     val b = Combo().identify()
+                    b.collect()
+                    GLog.w(M.L(hero, "you_now_have", b.name()))
+                }
+                KNIGHTT -> {
+                    hero.MSHLD += 5
+                    val b = KnightCore().identify()
                     b.collect()
                     GLog.w(M.L(hero, "you_now_have", b.name()))
                 }

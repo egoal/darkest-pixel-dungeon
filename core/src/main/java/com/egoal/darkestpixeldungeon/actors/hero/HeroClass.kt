@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.CollarOfSlave
+import com.egoal.darkestpixeldungeon.items.helmets.Headgear
 import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
@@ -34,7 +35,7 @@ import com.watabou.utils.Random
 import kotlin.math.min
 
 enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass) {
-    WARRIOR("warrior", HeroSubClass.GLADIATOR, HeroSubClass.BERSERKER) {
+    WARRIOR("warrior", HeroSubClass.GLADIATOR, HeroSubClass.BERSERKER, HeroSubClass.KNIGHTT) {
         override fun masteryBadge(): Badges.Badge = Badges.Badge.MASTERY_WARRIOR
         override fun spritesheet(): String = Assets.WARRIOR
         override fun perks(): List<String> = (1..3).map { Messages.get(HeroClass::class.java, "warrior_perk$it") }
@@ -311,6 +312,8 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
 //        ChaliceOfBlood().collect()
+
+//        initDebug(hero)
     }
 
     // called when hero level up
@@ -373,10 +376,12 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
         PotionOfHealing().quantity(99).identify().collect()
         PotionOfLiquidFlame().quantity(99).identify().collect()
-        PotionOfMagicalFog().quantity(99).identify().collect()
+        PotionOfExperience().quantity(99).identify().collect()
 
         PlateArmor().identify().upgrade(6).collect()
         Claymore().identify().upgrade(6).collect()
+
+        Headgear().collect()
 
         Amulet().collect()
     }

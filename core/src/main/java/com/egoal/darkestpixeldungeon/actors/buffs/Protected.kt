@@ -1,7 +1,7 @@
 package com.egoal.darkestpixeldungeon.actors.buffs
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Protection
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 
 class Protected : Buff() {
@@ -29,11 +29,13 @@ class Protected : Buff() {
 
     fun shieldCap(): Int {
         val hero = target as Hero
-        return  hero.MSHLD+ (hero.belongings.armor?.SHLD()?:0)
+        return hero.MSHLD + (hero.belongings.armor?.SHLD() ?: 0)
     }
 
     private fun shieldReg(): Float {
         var reg = .1f
+        if ((target as Hero).subClass == HeroSubClass.KNIGHTT) reg += .1f;
+
         target.buff(BrokenSeal.WarriorShield::class.java)?.let {
             reg += it.regShiled()
         }

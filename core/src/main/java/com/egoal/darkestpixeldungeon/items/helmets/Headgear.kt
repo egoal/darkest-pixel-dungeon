@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.items.helmets
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
 class Headgear : Helmet() {
@@ -22,6 +23,18 @@ class Headgear : Helmet() {
             true
         } else false
     }
+
+    override fun desc(): String {
+        var desc = super.desc()
+        if (isIdentified) {
+            desc += "\n\n" + M.L(this, "effect-desc")
+            if (cursed)
+                desc += "\n\n" + M.L(this, "cursed-desc")
+        }
+
+        return desc
+    }
+
 
     override fun uncurse() {
         super.uncurse()

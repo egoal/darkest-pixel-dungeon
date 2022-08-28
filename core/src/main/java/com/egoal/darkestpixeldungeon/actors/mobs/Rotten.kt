@@ -7,7 +7,6 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Ooze
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.OozeAttack
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
@@ -23,8 +22,6 @@ import com.watabou.utils.Random
 class Rotten : Mob(), Callback {
     init {
         spriteClass = Sprite::class.java
-
-        abilities.add(OozeAttack())
     }
 
     override fun giveDamage(enemy: Char): Damage {
@@ -70,9 +67,13 @@ class Rotten : Mob(), Callback {
         val dmg = giveDamage(enemy)
         if (enemy.checkHit(dmg)) {
             enemy.takeDamage(dmg)
-            if (!enemy.isAlive && enemy === Dungeon.hero) {
-                Dungeon.fail(javaClass)
-                GLog.n(Messages.get(this, "kill"))
+            if (enemy === Dungeon.hero) {
+                if (Random.Int(2) == 0) Buff.affect(enemy, Ooze::class.java)
+
+                if (!enemy.isAlive) {
+                    Dungeon.fail(javaClass)
+                    GLog.n(Messages.get(this, "kill"))
+                }
             }
         } else
             enemy.sprite.showStatus(CharSprite.NEUTRAL, enemy.defenseVerb())
