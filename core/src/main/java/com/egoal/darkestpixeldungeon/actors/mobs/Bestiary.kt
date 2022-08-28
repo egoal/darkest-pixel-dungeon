@@ -102,9 +102,9 @@ object Bestiary {
                         Thief::class.java, MadMan::class.java, WitchDoctor::class.java)
             }
             9 -> {
-                chances = floatArrayOf(3f, 2f, 2f, 1f, 0.6f, 0.05f)
+                chances = floatArrayOf(3f, 2f, 2f, 1f, 0.5f, 0.5f, 0.05f)
                 classes = arrayOf(Skeleton::class.java, Guard::class.java, Shaman::class.java,
-                        WitchDoctor::class.java, Thief::class.java, Bat::class.java)
+                        WitchDoctor::class.java, Thief::class.java, Rotten::class.java, Bat::class.java)
             }
             10 -> {
                 chances = floatArrayOf(1f)
@@ -113,25 +113,25 @@ object Bestiary {
 
             // caves
             11 -> {
-                chances = floatArrayOf(1.5f, .5f, .4f, 0.2f, 0.2f)
-                classes = arrayOf(Bat::class.java, AshesSkull::class.java, SkeletonKnight::class.java, Brute::class.java, WitchDoctor::class.java)
+                chances = floatArrayOf(1.2f, .5f, .4f, 0.2f, 0.2f, 0.3f)
+                classes = arrayOf(Bat::class.java, AshesSkull::class.java, SkeletonKnight::class.java, Brute::class.java, WitchDoctor::class.java, Rotten::class.java)
             }
             12 -> {
-                chances = floatArrayOf(1f, .75f, 1f, 1f, .75f, .2f)
+                chances = floatArrayOf(1f, .75f, 1f, 1f, .75f, .2f, .2f)
                 classes = arrayOf(Bat::class.java, AshesSkull::class.java, Brute::class.java,
-                        SkeletonKnight::class.java, WitchDoctor::class.java, MadMan::class.java)
+                        SkeletonKnight::class.java, WitchDoctor::class.java, MadMan::class.java, Rotten::class.java)
             }
             13 -> {
                 chances = floatArrayOf(1f, .75f, 1f, .2f, 3f, 1f, 1f, 0.1f, 0.1f)
                 classes = arrayOf(Bat::class.java, AshesSkull::class.java, SkeletonKnight::class.java,
                         MadMan::class.java, Brute::class.java, Spinner::class.java,
-                        WitchDoctor::class.java, Ballista::class.java, Elemental::class.java)
+                        WitchDoctor::class.java, Ballista::class.java, Rotten::class.java)
             }
             14 -> {
                 chances = floatArrayOf(0.4f, 0.4f, 0.4f, 1f, 3f, 4f, .75f, 0.05f, 0.05f)
                 classes = arrayOf(Bat::class.java, AshesSkull::class.java, WitchDoctor::class.java,
                         SkeletonKnight::class.java, Brute::class.java, Spinner::class.java,
-                        Ballista::class.java, Elemental::class.java, Monk::class.java)
+                        Ballista::class.java, Elemental::class.java, Rotten::class.java)
             }
             15 -> {
                 chances = floatArrayOf(1f)

@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
+import java.util.ArrayList
 
 class LuckyCoin : Item() {
     init {
@@ -25,6 +26,10 @@ class LuckyCoin : Item() {
         get() = true
 
     override fun price(): Int = 5 * quantity
+
+    override fun actions(hero: Hero): ArrayList<String> {
+        return super.actions(hero).apply { add(AC_USE) }
+    }
 
     override fun execute(hero: Hero, action: String) {
         super.execute(hero, action)

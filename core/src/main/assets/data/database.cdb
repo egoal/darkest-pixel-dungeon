@@ -989,6 +989,43 @@
 					"AttackDelay": 1
 				},
 				{
+					"Class": "Rotten",
+					"MaxHealth": 30,
+					"Shield": 0,
+					"AttackSkill": 16,
+					"DefendSkill": 6,
+					"EXP": 6,
+					"MaxLevel": 16,
+					"MinDamage": 3,
+					"MaxDamage": 9,
+					"TypeDamage": 2,
+					"CritChance": 0,
+					"CritRatio": 0,
+					"AttackDelay": 1.5,
+					"MinDefend": 0,
+					"MaxDefend": 0,
+					"LootChance": 0.8,
+					"Loot": [
+						{
+							"Name": "RotCore",
+							"Chance": 1
+						}
+					],
+					"Resistance": [
+						{
+							"Magic": -0.5,
+							"Fire": -0.5,
+							"Poison": 0.8,
+							"Ice": -0.1,
+							"Light": 0.3,
+							"Shadow": 0.35,
+							"Holy": -0.1
+						}
+					],
+					"Properties": 0,
+					"Ability": []
+				},
+				{
 					"Class": "Tengu",
 					"MaxHealth": 150,
 					"AttackSkill": 20,
@@ -2614,10 +2651,10 @@
 			],
 			"separators": [
 				10,
-				21,
-				28,
-				35,
-				46
+				22,
+				29,
+				36,
+				47
 			],
 			"props": {}
 		},

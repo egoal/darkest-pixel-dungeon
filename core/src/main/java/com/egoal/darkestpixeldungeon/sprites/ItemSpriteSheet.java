@@ -85,6 +85,7 @@ public class ItemSpriteSheet {
     public static final int FIRE_BUTTERFLY = SINGLE_USE + 25;
     public static final int POISON_POWDER = SINGLE_USE + 26;
     public static final int LUCKY_COIN = SINGLE_USE + 27;
+    public static final int ROT_CORE = SINGLE_USE + 28;
 
     private static final int WEP_TIER1 = xy(1, 5);   //16 slots
     public static final int WORN_SHORTSWORD = WEP_TIER1 + 0;

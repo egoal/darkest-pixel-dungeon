@@ -119,6 +119,7 @@ public class Assets {
     public static final String SLUG = ACTORS + "slug.png";
     public static final String WITCH_DOCTOR = ACTORS + "witchdoctor.png";
     public static final String BARTER_MAN = ACTORS + "barter_man.png";
+    public static final String ROTTEN = ACTORS + "rotten.png";
 
     // levels=====================================================================
     // tile
