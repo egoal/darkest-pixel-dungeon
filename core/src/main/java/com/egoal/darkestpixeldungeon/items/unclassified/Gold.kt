@@ -60,9 +60,7 @@ class Gold(value: Int = 1) : Item() {
         Statistics.GoldCollected += get
         Badges.validateGoldCollected()
 
-        hero.buff(MasterThievesArmband.Thievery::class.java)?.let { thievery ->
-            thievery.collect(get)
-        }
+        hero.buff(MasterThievesArmband.Thievery::class.java)?.collect(get)
         GameScene.pickUp(this)
 
         hero.sprite.showStatus(CharSprite.NEUTRAL, if (greedyCollect == 0) "+$get" else "+$quantity(+$greedyCollect)")

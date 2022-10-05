@@ -12,7 +12,8 @@ class LittlePail : Helmet() {
     }
 
     override fun procTakenDamage(dmg: Damage) {
-        dmg.value -= Random.NormalIntRange(0, 2)
+        if (dmg.type == Damage.Type.NORMAL)
+            dmg.value -= Random.NormalIntRange(0, 2)
     }
 
     override fun random(): Item = this.apply { cursed = Random.Float() < 0.1f }

@@ -31,7 +31,7 @@ import com.watabou.noosa.RenderedText
 import com.watabou.noosa.ui.Component
 
 class WndInfoMob(mob: Mob) : WndTitledMessage(MobTitle(mob),
-        mob.description() + "\n\n" + mob.state.status() + "\n\n" + mob.DebugString) {
+        mob.description() + "\n\n" + mob.state.status()) {
     private class MobTitle(mob: Mob) : Component() {
         private val image: CharSprite
         private val name: RenderedText

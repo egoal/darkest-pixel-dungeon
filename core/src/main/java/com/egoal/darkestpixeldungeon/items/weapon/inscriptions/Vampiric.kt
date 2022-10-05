@@ -36,8 +36,8 @@ class Vampiric : Inscription(9) {
         val defender = damage.to as Char
         val attacker = damage.from as Char
 
-        if(defender.properties().contains(Char.Property.UNDEAD) ||
-                defender.properties().contains(Char.Property.MACHINE)) {
+        if(!defender.properties().contains(Char.Property.UNDEAD) &&
+                !defender.properties().contains(Char.Property.MACHINE)) {
             val level = max(0, weapon.level())
 
             // lvl 0 - 20% -> .25

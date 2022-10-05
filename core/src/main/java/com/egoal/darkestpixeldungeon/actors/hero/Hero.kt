@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.SacrificialFire
 import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.actors.buffs.Berserk
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.actors.mobs.DarkSpirit
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
@@ -23,10 +24,7 @@ import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.helmets.*
 import com.egoal.darkestpixeldungeon.items.rings.*
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
-import com.egoal.darkestpixeldungeon.items.specials.Combo
-import com.egoal.darkestpixeldungeon.items.specials.Penetration
-import com.egoal.darkestpixeldungeon.items.specials.Shadowmoon
-import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
+import com.egoal.darkestpixeldungeon.items.specials.*
 import com.egoal.darkestpixeldungeon.items.unclassified.Ankh
 import com.egoal.darkestpixeldungeon.items.unclassified.CriticalRune
 import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
@@ -262,6 +260,8 @@ class Hero : Char() {
 
         var c = criticalChance
         if (pressure.level == Pressure.Level.CONFIDENT) c += 0.07f
+
+        if (subClass == HeroSubClass.KNIGHTT) c += belongings.getSpecial(KnightCore::class.java)!!.CRIT
 
         val level = Ring.getBonus(this, RingOfCritical.Critical::class.java)
         if (level > 0)
@@ -1272,6 +1272,8 @@ class Hero : Char() {
         }
 
         if (belongings.helmet is MaskOfMadness) (belongings.helmet as MaskOfMadness).onEnemySlayed(ch)
+
+        if (subClass == HeroSubClass.KNIGHTT) belongings.getSpecial(KnightCore::class.java)!!.onEnemySlayed(ch)
 
         buff(BloodSuck::class.java)?.onEnemySlayed(ch)
         buff(ChaliceOfBlood.Store::class.java)?.onEnemySlayed(ch)

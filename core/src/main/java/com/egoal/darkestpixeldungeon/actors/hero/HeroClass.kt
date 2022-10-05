@@ -298,8 +298,6 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         hero.belongings.armor = ClothArmor().identify() as Armor
 
         Food().collect()
-        // Torch().identify().collect()
-//        CollarOfSlave().random().collect()
         Dungeon.torch += 1f
 
         ScrollOfIdentify().setKnown()
@@ -312,6 +310,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
 //        ChaliceOfBlood().collect()
+
 
 //        initDebug(hero)
     }

@@ -47,6 +47,12 @@ enum class Challenge {
             val e = GoldenClaw.Evil()
             if (!e.doPickUp(hero)) Dungeon.level.drop(e, hero.pos)
         }
+
+        override fun live(hero: Hero) {
+            hero.belongings.getItem(GoldenClaw.Evil::class.java)?.let {
+                Buff.affect(hero, GoldenClaw.Evil.Cooldown::class.java)
+            }
+        }
     },
     CastingMaster {
         override fun affect(hero: Hero) {

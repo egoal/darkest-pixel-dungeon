@@ -182,8 +182,7 @@ open class GoldenClaw : Item() {
             CellEmitter.get(mob.pos).burst(Speck.factory(Speck.COIN), Random.IntRange(10, 15))
 
             val gold = 20 + Random.Int(mob.exp() * 12, mob.exp() * 20)
-            Dungeon.gold += gold
-            Statistics.GoldCollected += gold
+            gainGold(Dungeon.hero, gold)
 
             cooldown += gold * 4 / 5
             updateQuickslot()
@@ -198,25 +197,9 @@ open class GoldenClaw : Item() {
         }
 
         override fun gainGold(hero: Hero, q: Int) {
-            val g = Gold(q)
-            hero.heroPerk.get(GreedyMidas::class.java)?.procGold(g)
-            if (g.quantity() > q) {
-                GameScene.effect(Flare(5, 32f).color(0xffdd00, true).show(
-                        hero.sprite.parent, DungeonTilemap.tileCenterToWorld(hero.pos), 1.5f))
-            }
-
-            // g.doPickUp(hero)
-            Dungeon.gold += g.quantity()
-            Statistics.GoldCollected += g.quantity()
-
-            hero.sprite.operate(hero.pos)
-            hero.spend(1f)
-            hero.busy()
+            super.gainGold(hero, q)
 
             CellEmitter.get(hero.pos).burst(Speck.factory(Speck.COIN), Random.IntRange(6, 10))
-            hero.sprite.showStatus(CharSprite.NEUTRAL, "+${g.quantity()}")
-
-            Sample.INSTANCE.play(Assets.SND_GOLD, 1f, 1f, Random.Float(0.9f, 1.1f))
         }
 
         private val caster = object : CellSelector.Listener {
