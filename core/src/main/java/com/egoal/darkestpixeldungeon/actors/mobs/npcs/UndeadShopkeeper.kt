@@ -65,7 +65,7 @@ class UndeadShopkeeper : Merchant() {
         }
         if (arts < 1) addItemToSell(Generator.ARTIFACT.generate())
 
-        if (Random.Float() < 0.05) addItemToSell(TomeOfPerk())
+        if (Random.Float() < 0.2) addItemToSell(TomeOfPerk())
     }
 
     class Sprite : SimpleMobSprite(Assets.UNDEAD_SHOPKEEPER)

@@ -5,30 +5,27 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
 import com.egoal.darkestpixeldungeon.actors.hero.perks.*
 import com.egoal.darkestpixeldungeon.effects.PerkGain
-import com.egoal.darkestpixeldungeon.items.armor.*
-import com.egoal.darkestpixeldungeon.items.armor.glyphs.Peaceful
-import com.egoal.darkestpixeldungeon.items.artifacts.*
+import com.egoal.darkestpixeldungeon.items.armor.Armor
+import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
+import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
+import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.food.Food
 import com.egoal.darkestpixeldungeon.items.food.Wine
-import com.egoal.darkestpixeldungeon.items.helmets.CollarOfSlave
 import com.egoal.darkestpixeldungeon.items.helmets.Headgear
-import com.egoal.darkestpixeldungeon.items.helmets.RangerHat
 import com.egoal.darkestpixeldungeon.items.potions.*
 import com.egoal.darkestpixeldungeon.items.scrolls.*
-import com.egoal.darkestpixeldungeon.items.specials.Astrolabe
-import com.egoal.darkestpixeldungeon.items.specials.Penetration
-import com.egoal.darkestpixeldungeon.items.specials.Shadowmoon
-import com.egoal.darkestpixeldungeon.items.specials.UrnOfShadow
 import com.egoal.darkestpixeldungeon.items.unclassified.*
-import com.egoal.darkestpixeldungeon.items.wands.*
+import com.egoal.darkestpixeldungeon.items.wands.WandOfMagicMissile
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.*
-import com.egoal.darkestpixeldungeon.items.weapon.missiles.*
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Dart
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.FlyCutter
+import com.egoal.darkestpixeldungeon.items.weapon.missiles.Salt
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.plants.CorrodeCyan
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
@@ -178,7 +175,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //            rh.identify()
 //            rh.activate(hero)
 //            Dungeon.quickslot.setSlot(0, rh)
-;
+            ;
             val b = Boomerang()
             b.identify().collect()
             Dungeon.quickslot.setSlot(0, b)
@@ -310,7 +307,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
 //        ChaliceOfBlood().collect()
-
+//        hero.heroPerk.add(BaredRelieve())
 
 //        initDebug(hero)
     }

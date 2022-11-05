@@ -154,6 +154,7 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
                 BaredAngry() to 1f,
                 BaredSwiftness() to 1f,
                 BaredStealth() to 1f,
+                BaredRelieve() to 1f,
                 ExtraMagicalResistance() to 1f,
                 QuickLearner() to 1f,
 //                LevelPerception() to 1f

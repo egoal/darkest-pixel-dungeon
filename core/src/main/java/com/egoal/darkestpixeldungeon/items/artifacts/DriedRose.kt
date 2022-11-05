@@ -65,6 +65,8 @@ class DriedRose : Artifact() {
                 if (avpos.isEmpty()) {
                     GLog.i(Messages.get(this, "no_space"))
                 } else {
+                    hero.recoverSanity(Random.Float(level().toFloat()))
+
                     val ghost = GhostHero(level()).apply { pos = Random.element(avpos) }
 
                     GameScene.add(ghost, 1f)

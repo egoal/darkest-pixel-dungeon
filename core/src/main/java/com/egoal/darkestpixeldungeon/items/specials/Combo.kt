@@ -28,7 +28,7 @@ import kotlin.math.pow
 
 class Combo : Special() {
     init {
-        image = ItemSpriteSheet.NULLWARN
+        image = ItemSpriteSheet.GLADIATOR
     }
 
     private var comboTime = 0

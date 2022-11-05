@@ -803,7 +803,7 @@ abstract class Level : Bundlable {
 
             Terrain.HIGH_GRASS, Terrain.HIGH_GRASS_COLLECTED -> HighGrass.Trample(this, cell, ch)
 
-            Terrain.WELL -> WellWater.AffectCell(cell)
+            Terrain.WELL -> WellWater.AffectCell(cell) // MagicWellWater.Affect(cell)
 
             Terrain.DOOR -> Door.Enter(cell, ch)
         }

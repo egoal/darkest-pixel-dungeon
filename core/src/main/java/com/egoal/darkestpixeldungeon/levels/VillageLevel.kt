@@ -3,7 +3,8 @@ package com.egoal.darkestpixeldungeon.levels
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.mobs.*
+import com.egoal.darkestpixeldungeon.actors.blobs.MagicWellWater
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.*
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.watabou.utils.PathFinder
@@ -42,8 +43,11 @@ class VillageLevel : RegularLevel() {
         paintGrass()
 
 //        val cell = xy2cell(15, 26)
-//        setTrap(PrizeTrap().reveal(), cell)
-//        map[cell] = Terrain.TRAP
+//        map[cell] = Terrain.WELL
+//        val b = blobs[MagicWellWater::class.java]
+//        val mww = if (b == null) MagicWellWater() else b as MagicWellWater
+//        mww.seed(this, cell, 10)
+//        blobs[MagicWellWater::class.java] = mww
 
         return true
     }

@@ -32,7 +32,7 @@ class KnightCore : Special() {
         private set
 
     val SHLD: Int
-        get() = honor * 2
+        get() = honor + min(honor, 5)
 
     val CRIT: Float
         get() = 0.01f * honor

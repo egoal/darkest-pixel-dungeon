@@ -41,7 +41,6 @@ import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.AlchemyPot
 import com.egoal.darkestpixeldungeon.levels.features.EnchantingStation
-import com.egoal.darkestpixeldungeon.levels.features.MagicWell
 import com.egoal.darkestpixeldungeon.levels.features.Sign
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages

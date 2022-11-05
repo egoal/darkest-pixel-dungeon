@@ -670,6 +670,7 @@ class Hero : Char() {
 
         val dmgToken = super.takeDamage(dmg)
         heroPerk.get(LowHealthRegeneration::class.java)?.onDamageTaken(this)
+        heroPerk.get(BaredRelieve::class.java)?.onDamageTaken(this, dmg)
 
         if (isAlive) {
             //todo: refactor

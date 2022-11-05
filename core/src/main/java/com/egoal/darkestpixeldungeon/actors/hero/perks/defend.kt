@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Bundle
+import com.watabou.utils.Random
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -201,6 +202,17 @@ class PressureRelieve : Perk(2) {
         // 1: -0.05, 2: +0.05
         val r = 1f - (p - 0.15f + 0.1f * level) * (p - 0.15f + 0.1f * level) * 0.8f
         dmg.value = round(dmg.value * r).toInt()
+    }
+}
+
+class BaredRelieve : Perk() {
+    override fun image(): Int = PerkImageSheet.BARED_RELIEVE
+
+    fun onDamageTaken(hero: Hero, damage: Damage) {
+        if (!damage.isFeatured(Damage.Feature.CRITICAL) && damage.value > 1 && Random.Int(4) == 0) {
+            hero.recoverSanity(Random.Float(1f, 1f + (1f - hero.HP.toFloat() / hero.HT) * 4f)) // 1 -> 5
+            hero.say(M.L(this, "line_${Random.Int(3)}"))
+        }
     }
 }
 
