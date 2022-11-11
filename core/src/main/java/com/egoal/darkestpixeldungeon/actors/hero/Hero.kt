@@ -1304,12 +1304,8 @@ class Hero : Char() {
         AttackIndicator.target(enemy)
 
         val hit = attack(enemy!!)
-
-        if (subClass == HeroSubClass.GLADIATOR) {
-            belongings.getSpecial(Combo::class.java)!!.hit(enemy!!)
-        }
-
         if (hit) {
+            belongings.getSpecial(Combo::class.java)?.hit(enemy!!)
             belongings.getSpecial(Penetration::class.java)?.hit(this)
             if (belongings.armor?.glyph is Peaceful)
                 (belongings.armor?.glyph as Peaceful).broken(this)

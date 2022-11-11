@@ -56,7 +56,7 @@ class Berserk : Special() {
 //        hero.sprite.bloodBurstB(char.sprite.center(), 10) // we only have one instance to splash...
             Wound.hit(hero.pos)
 
-            Char.ProcessAttackDamage(Damage(sac * 2, hero, char).type(Damage.Type.MAGICAL).apply {
+            char.takeDamage(Damage(sac * 2, hero, char).type(Damage.Type.MAGICAL).apply {
                 // extra crit
                 addFeature(Damage.Feature.ACCURATE or Damage.Feature.CRITICAL)
             })

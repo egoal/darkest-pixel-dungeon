@@ -59,7 +59,7 @@ import java.util.HashSet
 object Dungeon {
 
     var initialDepth_ = -1
-    const val VERSION_STRING = "0.7.0-0.299b"
+    const val VERSION_STRING = "0.7.0-0.299c"
 
     lateinit var hero: Hero
     lateinit var level: Level

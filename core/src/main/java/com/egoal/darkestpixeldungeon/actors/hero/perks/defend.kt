@@ -209,7 +209,8 @@ class BaredRelieve : Perk() {
     override fun image(): Int = PerkImageSheet.BARED_RELIEVE
 
     fun onDamageTaken(hero: Hero, damage: Damage) {
-        if (!damage.isFeatured(Damage.Feature.CRITICAL) && damage.value > 1 && Random.Int(4) == 0) {
+        if (hero.belongings.armor == null && !damage.isFeatured(Damage.Feature.CRITICAL) &&
+                damage.value > 1 && Random.Int(4) == 0) {
             hero.recoverSanity(Random.Float(1f, 1f + (1f - hero.HP.toFloat() / hero.HT) * 4f)) // 1 -> 5
             hero.say(M.L(this, "line_${Random.Int(3)}"))
         }

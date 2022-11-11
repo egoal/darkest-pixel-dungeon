@@ -24,7 +24,6 @@ import android.opengl.GLES20;
 
 import com.egoal.darkestpixeldungeon.Assets;
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
-import com.egoal.darkestpixeldungeon.Database;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.TopExceptionHandler;
 import com.egoal.darkestpixeldungeon.effects.BannerSprites;
@@ -35,7 +34,7 @@ import com.egoal.darkestpixeldungeon.ui.Archs;
 import com.egoal.darkestpixeldungeon.ui.ChangesButton;
 import com.egoal.darkestpixeldungeon.ui.ErrorButton;
 import com.egoal.darkestpixeldungeon.ui.ExitButton;
-import com.egoal.darkestpixeldungeon.windows.InputDialog;
+import com.egoal.darkestpixeldungeon.ui.QQGroupButton;
 import com.egoal.darkestpixeldungeon.windows.WndDonate;
 import com.egoal.darkestpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.BitmapText;
@@ -147,7 +146,9 @@ public class TitleScene extends PixelScene {
                 },
                 new DashboardItem(M.INSTANCE.L(this, "donate"), 6) {
                     @Override
-                    protected void onClick() { parent.add(new WndDonate()); }
+                    protected void onClick() {
+                        parent.add(new WndDonate());
+                    }
                 }
         };
         // align main buttons
@@ -217,6 +218,11 @@ public class TitleScene extends PixelScene {
             eb.setPos(w - eb.width() - 1, changes.top() - eb.height() - 1);
             add(eb);
         }
+
+        // qq group
+        QQGroupButton qqGroupButton = new QQGroupButton();
+        qqGroupButton.setPos(1, h - qqGroupButton.height() - 1);
+        add(qqGroupButton);
 
         // exit
         ExitButton btnExit = new ExitButton();
