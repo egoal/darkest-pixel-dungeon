@@ -70,6 +70,8 @@ enum class Icons {
     ARROW_RIGHT,
     TORCH,
 
+    QQ,
+
     LIX;
 
     fun get(): Image {
@@ -123,6 +125,8 @@ enum class Icons {
                 DOT_OFF -> icon.frame(icon.texture.uvRect(109, 42, 114, 47))
                 DOT_ON -> icon.frame(icon.texture.uvRect(114, 42, 119, 47))
                 ARROW_RIGHT -> icon.frame(icon.texture.uvRect(109, 47, 116, 59))
+
+                QQ-> icon.frame(icon.texture.uvRect(43, 64, 55, 77))
 
                 PERK -> icon.frame(icon.texture.uvRect(0, 57, 8, 65))
                 TORCH -> icon.frame(icon.texture.uvRect(16, 64, 32, 80))

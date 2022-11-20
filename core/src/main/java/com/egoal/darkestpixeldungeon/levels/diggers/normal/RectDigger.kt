@@ -7,7 +7,7 @@ import com.watabou.utils.Point
 import com.watabou.utils.Random
 
 open class RectDigger : Digger() {
-    open fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(4, 8), Random.IntRange(4, 8))
+    open fun chooseRoomSize(wall: Wall) = Point(Random.IntRange(4, 9), Random.IntRange(4, 9))
 
     override fun chooseDigArea(wall: Wall): Rect {
         val size = chooseRoomSize(wall)

@@ -24,12 +24,13 @@ class QQGroupButton : Button() {
     override fun createChildren() {
         super.createChildren()
 
-        image = Icons.EXIT.get()
+        image = Icons.QQ.get()
+        image.brightness(1.5f)
         add(image)
 
         idstr = BitmapText("QQ: 818725226", PixelScene.pixelFont)
         idstr.measure()
-        idstr.hardlight(0xcccccc)
+        idstr.hardlight(0x888888)
         add(idstr)
     }
 
@@ -42,17 +43,18 @@ class QQGroupButton : Button() {
     }
 
     override fun onTouchDown() {
-        image.brightness(1.5f)
+        image.resetColor()
         Sample.INSTANCE.play(Assets.SND_CLICK)
     }
 
     override fun onTouchUp() {
-        image.resetColor()
+        image.brightness(1.5f)
     }
 
     override fun onClick() {
         if (!joinQQGroup("8b5zo1eBuFe00y43QfoLoiTChOzjPKEn")) {
-            val wnd = WndOptions.CreateConfirm(Icons.WARNING.get(), M.L(this, "qq_title"), M.L(this, "qq_desc")) {}
+//            val wnd = WndOptions.Show(Icons.WARNING.get(), M.L(this, "qq_title"), M.L(this, "qq_desc")) {}
+            val wnd = WndOptions(Icons.WARNING.get(), M.L(this, "qq_title"), M.L(this, "qq_desc"))
             Game.scene().addToFront(wnd)
         }
     }

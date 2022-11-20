@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
+import com.egoal.darkestpixeldungeon.items.artifacts.EtherealChains
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.food.Food
@@ -310,6 +311,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //        hero.heroPerk.add(BaredRelieve())
 
 //        initDebug(hero)
+//        EtherealChains().identify().collect()
     }
 
     // called when hero level up

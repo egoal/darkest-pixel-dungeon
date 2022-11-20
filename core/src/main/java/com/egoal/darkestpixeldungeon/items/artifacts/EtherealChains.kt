@@ -23,14 +23,17 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Cripple
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Chains
 import com.egoal.darkestpixeldungeon.effects.Pushing
+import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -39,8 +42,7 @@ import com.egoal.darkestpixeldungeon.ui.QuickSlotButton
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.round
 
 class EtherealChains : Artifact() {
@@ -61,38 +63,63 @@ class EtherealChains : Artifact() {
                 //determine if we're grabbing an enemy, pulling to a location, or
                 // doing nothing.
                 if (Actor.findChar(chain.collisionPos) != null) {
-                    var newPos = -1
-                    for (i in chain.subPath(1, chain.dist)) {
-                        if (!Level.solid[i] && Actor.findChar(i) == null) {
-                            newPos = i
-                            break
+                    val pulltarget = Actor.findChar(chain.collisionPos)!!
+
+                    val props = pulltarget.properties()
+                    val pullhero = props.contains(Char.Property.IMMOVABLE) || props.contains(Char.Property.BOSS) ||
+                            props.contains(Char.Property.STATIC) || props.contains(Char.Property.HEAVY)
+
+                    val newpos = if (pullhero) {
+                        var pos = -1
+                        for (i in chain.subPath(0, chain.dist - 1).reversed()) {
+                            if (!Level.solid[i] && Actor.findChar(i) == null) {
+                                pos = i;
+                                break
+                            }
                         }
-                    }
-                    if (newPos == -1) {
-                        GLog.w(Messages.get(EtherealChains::class.java, "does_nothing"))
+                        pos
                     } else {
-                        val newMobPos = newPos
-                        val affected = Actor.findChar(chain.collisionPos)
-                        val chargeUse = Dungeon.level.distance(affected!!.pos, newMobPos)
-                        if (chargeUse > charge) {
-                            GLog.w(Messages.get(EtherealChains::class.java, "no_charge"))
-                            return
-                        } else if (affected.properties().contains(Char.Property.IMMOVABLE)) {
-                            GLog.w(Messages.get(EtherealChains::class.java, "cant_pull"))
-                            return
-                        } else {
-                            charge -= chargeUse
-                            updateQuickslot()
+                        var pos = -1
+                        for (i in chain.subPath(1, chain.dist)) {
+                            if (!Level.solid[i] && Actor.findChar(i) == null) {
+                                pos = i
+                                break
+                            }
                         }
-                        curUser.busy()
-                        curUser.sprite.parent.add(Chains(curUser.pos, affected.pos, Callback {
-                            Actor.add(Pushing(affected, affected.pos, newMobPos, Callback { Dungeon.level.press(newMobPos, affected) }))
-                            affected.pos = newMobPos
-                            Dungeon.observe()
-                            GameScene.updateFog()
-                            curUser.spendAndNext(1f)
-                        }))
+                        pos
                     }
+
+                    // cannot go there
+                    if (newpos == -1) {
+                        GLog.w(Messages.get(EtherealChains::class.java, "does_nothing"))
+                        return
+                    }
+
+                    val affected = if (pullhero) curUser else pulltarget
+
+                    val chargeUse = Dungeon.level.distance(affected.pos, newpos)
+                    if (chargeUse > charge) {
+                        GLog.w(M.L(EtherealChains::class.java, "no_charge"))
+                        return
+                    }
+
+                    charge -= chargeUse
+                    updateQuickslot()
+
+                    curUser.busy()
+                    curUser.sprite.parent.add(Chains(curUser.pos, pulltarget.pos, Callback {
+                        Actor.add(Pushing(affected, affected.pos, newpos, Callback { Dungeon.level.press(newpos, affected) }))
+                        affected.pos = newpos
+                        if (pullhero) {
+                            Wound.hit(pulltarget.pos)
+                            curUser.sprite.turnTo(affected.pos, pulltarget.pos)
+                            Char.ProcessAttackDamage(affected.giveDamage(pulltarget).addFeature(Damage.Feature.ACCURATE))
+                        }
+                        else Buff.prolong(affected, Cripple::class.java, 2f + level() / 2f)
+                        Dungeon.observe()
+                        GameScene.updateFog()
+                        curUser.spendAndNext(1f)
+                    }))
 
                 } else if (Level.solid[chain.path[chain.dist]]
                         || chain.dist > 0 && Level.solid[chain.path[chain.dist - 1]]

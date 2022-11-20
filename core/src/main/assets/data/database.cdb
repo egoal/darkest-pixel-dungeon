@@ -89,7 +89,7 @@
 					"display": 1
 				},
 				{
-					"typeStr": "10:BOSS,MINIBOSS,UNDEAD,DEMONIC,MACHINE,IMMOVABLE,PHANTOM,ELITE,STATIC",
+					"typeStr": "10:BOSS,MINIBOSS,UNDEAD,DEMONIC,MACHINE,IMMOVABLE,PHANTOM,ELITE,STATIC,HEAVY",
 					"name": "Properties"
 				},
 				{
@@ -471,7 +471,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 2,
+					"Properties": 514,
 					"LootChance": 0.1667,
 					"Loot": [
 						{
@@ -828,7 +828,7 @@
 							"Holy": -0.1
 						}
 					],
-					"Properties": 8,
+					"Properties": 520,
 					"Shield": 15,
 					"Ability": [
 						{
@@ -1293,7 +1293,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 0,
+					"Properties": 512,
 					"Shield": 10,
 					"Ability": [
 						{
@@ -1363,7 +1363,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 0,
+					"Properties": 512,
 					"Shield": 30,
 					"Ability": [
 						{
@@ -1495,7 +1495,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 17,
+					"Properties": 529,
 					"Shield": 50,
 					"Ability": [],
 					"AttackDelay": 1
@@ -1841,7 +1841,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 16,
+					"Properties": 528,
 					"Shield": 30,
 					"Ability": [
 						{
@@ -2061,7 +2061,7 @@
 							"Holy": -0.25
 						}
 					],
-					"Properties": 8,
+					"Properties": 520,
 					"Shield": 0,
 					"Ability": [
 						{
@@ -2545,7 +2545,7 @@
 							"Holy": 0
 						}
 					],
-					"Properties": 0,
+					"Properties": 512,
 					"Shield": 0,
 					"Ability": [],
 					"AttackDelay": 1

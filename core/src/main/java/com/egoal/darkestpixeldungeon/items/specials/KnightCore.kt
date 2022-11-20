@@ -202,6 +202,7 @@ class KnightCore : Special() {
             honor -= cost
 
             hero.say(M.L(this, "cry_${Random.Int(3)}"))
+            hero.busy()
             doAttack(hero, enemy)
         }
 
@@ -221,6 +222,7 @@ class KnightCore : Special() {
         }
 
         private fun finish(hero: Hero, enemy: Mob) {
+            hero.ready()
             if (hero.isAlive) {
                 if (enemy.Config.MaxLevel >= hero.lvl - 1) {
                     hero.MSHLD++
