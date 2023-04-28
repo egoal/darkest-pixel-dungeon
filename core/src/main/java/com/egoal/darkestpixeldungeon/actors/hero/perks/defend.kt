@@ -13,6 +13,10 @@ import kotlin.math.pow
 import kotlin.math.round
 
 class Blur : Perk() {
+    init {
+        addTags(Tag.Evade, Tag.Viability)
+    }
+
     override fun image(): Int = PerkImageSheet.BLUR
 
     override fun onGain() {
@@ -59,6 +63,9 @@ class Blur : Perk() {
 }
 
 class CounterStrike : Perk() {
+    init {
+        addTags(Tag.Evade, Tag.Melee)
+    }
     override fun image(): Int = PerkImageSheet.COUNTER_STRIKE
 
     fun procEvasionDamage(dmg: Damage) {
@@ -69,6 +76,9 @@ class CounterStrike : Perk() {
 }
 
 class EvasionTenacity : Perk(3) {
+    init {
+        addTags(Tag.Evade, Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.EVASION_TENACITY
 
     fun procEvasionDamage(dmg: Damage) {
@@ -86,6 +96,9 @@ class EvasionTenacity : Perk(3) {
 }
 
 class ExtraDexterous : Perk.Additional(5) {
+    init {
+        addTags(Tag.Evade)
+    }
     override fun image(): Int = PerkImageSheet.DEX_EXTRA
 
     override fun onGain() {
@@ -100,6 +113,9 @@ class ExtraDexterous : Perk.Additional(5) {
 }
 
 class ExtraDexterousGrowth : Perk(5) {
+    init {
+        addTags(Tag.Evade)
+    }
     override fun image(): Int = PerkImageSheet.DEX_GROWTH
 
     private fun extraDex(): Float = level * 0.5f
@@ -110,6 +126,9 @@ class ExtraDexterousGrowth : Perk(5) {
 }
 
 class ExtraEvasion : Perk(4) {
+    init {
+        addTags(Tag.Evade)
+    }
     override fun image(): Int = PerkImageSheet.DEX_EXTRA
 
     fun prob(): Float = 0.075f * level
@@ -118,6 +137,9 @@ class ExtraEvasion : Perk(4) {
 }
 
 class ExtraMagicalResistance : Perk(3) {
+    init {
+        addTags(Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.MAGICAL_RESISTANCE
 
     fun ratio(): Float = 0.05f + level * 0.15f
@@ -126,6 +148,9 @@ class ExtraMagicalResistance : Perk(3) {
 }
 
 class FastRegeneration : Perk.Additional(5) {
+    init {
+        addTags(Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.FASTER_REG
 
     override fun onGain() {
@@ -148,6 +173,9 @@ class Fearless : Perk() {
 }
 
 class LowHealthDexterous : Perk(3) {
+    init {
+        addTags(Tag.Evade, Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_DEX
 
     fun extraEvasion(hero: Hero): Float {
@@ -158,6 +186,9 @@ class LowHealthDexterous : Perk(3) {
 }
 
 class LowHealthRegeneration : Perk(5) {
+    init {
+        addTags(Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.LOW_HEALTH_REG
 
     //    fun extraRegeneration(hero: Hero): Float {
@@ -179,10 +210,16 @@ class LowHealthRegeneration : Perk(5) {
 }
 
 class LowWeightDexterous : Perk(1) {
+    init {
+        addTags(Tag.Evade)
+    }
     override fun image(): Int = PerkImageSheet.LOW_WEIGHT_DEX
 }
 
 class Optimistic : Perk(2) {
+    init {
+        addTags(Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.OPTIMISTIC
 
     fun resistChance(): Float = 0.1f * level // 0.1-> 0.2
@@ -191,6 +228,9 @@ class Optimistic : Perk(2) {
 }
 
 class PressureRelieve : Perk(2) {
+    init {
+        addTags(Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.PRESSURE_RELIEVE
 
     fun affectDamage(dmg: Damage, hero: Hero, pressure: Pressure) {
@@ -206,6 +246,9 @@ class PressureRelieve : Perk(2) {
 }
 
 class BaredRelieve : Perk() {
+    init {
+        addTags(Tag.Bare, Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.BARED_RELIEVE
 
     fun onDamageTaken(hero: Hero, damage: Damage) {
@@ -218,6 +261,9 @@ class BaredRelieve : Perk() {
 }
 
 class StrongConstitution : Perk(5) {
+    init {
+        addTags(Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.STRONG_COSTITUION
 
     private fun extraHT(): Int = 2 * level

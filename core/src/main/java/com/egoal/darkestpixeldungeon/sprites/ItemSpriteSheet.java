@@ -112,6 +112,7 @@ public class ItemSpriteSheet {
     public static final int CEREMONIAL_SWORD = WEP_TIER2 + 10;
     public static final int BUTCHERS_KNIFE = WEP_TIER2 + 11;
     public static final int SHORT_STICKS = WEP_TIER2 + 12;
+    public static final int NUNCHAKUS = WEP_TIER2 + 13;
 
     private static final int WEP_TIER3 = xy(1, 7);   //16 slots
     public static final int SWORD = WEP_TIER3 + 0;
@@ -149,6 +150,7 @@ public class ItemSpriteSheet {
     public static final int GREATSHIELD = WEP_TIER5 + 4;
     public static final int PAIR_SWORDS = WEP_TIER5 + 5;
     public static final int LANCE = WEP_TIER5 + 6;
+    public static final int LONG_SPEAR = WEP_TIER5 + 7;
 
     private static final int MISSILE_WEP = xy(1, 10);  //16 slots
     public static final int DART = MISSILE_WEP + 0;

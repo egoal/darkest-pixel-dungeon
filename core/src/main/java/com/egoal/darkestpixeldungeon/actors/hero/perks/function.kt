@@ -27,6 +27,9 @@ import kotlin.math.min
 import kotlin.math.round
 
 class BrewEnhancedPotion : Perk() {
+    init {
+        addTags(Tag.Viability)
+    }
     override fun image(): Int = PerkImageSheet.BREW_ENHANCED
     private var nextProb = 0.333f
 
@@ -76,6 +79,10 @@ class Ease : Perk() {
 }
 
 class EfficientPotionOfHealing : Perk(3) {
+    init {
+        addTags(Tag.Viability)
+    }
+
     override fun image(): Int = PerkImageSheet.POTION_EFF_HEALING
 }
 
@@ -88,6 +95,10 @@ class ExtraPerkChoice : Perk() {
 }
 
 class ExtraRuneRegularly : TimingPerk(GainRune::class.java) {
+    init {
+        addTags(Tag.Viability)
+    }
+
     override fun image(): Int = PerkImageSheet.RUNE_EXTRA
 
     class GainRune : TimingPerk.Timing(Statistics.ClockTime.TimePerDay() / 2f) {
@@ -150,6 +161,10 @@ class GoodAppetite : Perk() {
 }
 
 class GreedyMidas : Perk() {
+    init {
+        addTags(Tag.Viability)
+    }
+
     override fun image(): Int = PerkImageSheet.GREEDY_MIDAS
 
     fun procGold(gold: Gold) = gold.apply {

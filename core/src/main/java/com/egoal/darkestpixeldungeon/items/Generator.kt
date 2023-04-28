@@ -117,7 +117,8 @@ object Generator {
                     Tulwar::class to 4f,
                     CeremonialSword::class to 4f,
                     ButchersKnife::class to 5f,
-                    ShortSticks::class to 4f
+                    ShortSticks::class to 4f,
+                    Nunchakus::class to 4f,
             ))
 
             object T3 : BalancedClassMapGenerator(hashMapOf(
@@ -153,7 +154,8 @@ object Generator {
                     Glaive::class to 5f,
                     Greataxe::class to 4f,
                     Greatshield::class to 4f,
-                    Lance::class to 5f
+                    Lance::class to 5f,
+                    LongSpear::class to 5f,
             ))
 
             private val Ts = arrayOf(T1, T2, T3, T4, T5)

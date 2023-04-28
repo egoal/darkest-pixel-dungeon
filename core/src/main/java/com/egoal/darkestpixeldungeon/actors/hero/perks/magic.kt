@@ -13,6 +13,9 @@ import kotlin.math.pow
 import kotlin.math.round
 
 class ArcaneCrit : Perk(5) {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.ARCANE_CRIT
 
     fun affectDamage(hero: Hero, dmg: Damage) {
@@ -30,6 +33,9 @@ class ArcaneCrit : Perk(5) {
 }
 
 class CloseZap : Perk() {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.CLOSE_ZAP
 
     fun procDamage(damage: Damage) {
@@ -46,6 +52,9 @@ class CloseZap : Perk() {
 }
 
 class ManaDrine : Perk() {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.MANA_DRINE
     fun affect(hero: Hero) {
         Buff.affect(hero, Recharging::class.java, 1f) // +0.25 for all wands
@@ -53,30 +62,48 @@ class ManaDrine : Perk() {
 }
 
 class PreheatedZap : Perk() {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.PREHEATED_ZAP
 }
 
 class QuickZap : Perk() {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.WAND_QUICK_ZAP
 }
 
 class StealthCaster : Perk() {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.STEALTH_CASTER
 }
 
 class WandArcane : Perk(3) {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.WAND_ARCANE
 
     fun factor(): Float = 1f + 0.2f * level // 2f - 0.8f.pow(level)
 }
 
 class WandCharger : Perk(3) {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.WAND_CHARGE
 
     fun factor(): Float = 2f - 0.8f.pow(level)
 }
 
 class WandPerception : Perk(2) {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.WAND_PERCEPTION
 
     fun onWandUsed(wand: Wand) {
@@ -88,6 +115,9 @@ class WandPerception : Perk(2) {
 }
 
 class WandPiercing : Perk(3) {
+    init {
+        addTags(Tag.Wand)
+    }
     override fun image(): Int = PerkImageSheet.WAND_PIERCING
 
     fun onHit(char: Char) {

@@ -11,13 +11,14 @@ import com.watabou.noosa.Game
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.ui.Button
+import kotlin.math.max
 
 class QQGroupButton : Button() {
     lateinit var image: Image
     lateinit var idstr: BitmapText
 
     init {
-        width = image.width
+        width = max(image.width, idstr.width() / 2f)
         height = image.height + idstr.height()
     }
 

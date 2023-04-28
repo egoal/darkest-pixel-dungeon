@@ -9,10 +9,27 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.messages.M
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
+import kotlin.math.pow
 
 private const val STR_LEVEL = "level"
 
 abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
+    enum class Tag {
+        Bare,
+        Crit,
+        Melee,
+        Ranged,
+        Wand,
+        Evade,
+        Viability
+    }
+
+    private val tags = HashSet<Tag>()
+
+    protected fun addTags(vararg thetags: Tag) {
+        tags.addAll(thetags)
+    }
+
     open fun description(): String = M.L(this, "desc")
 
     open fun image(): Int = PerkImageSheet.NONE
@@ -80,15 +97,39 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
         })?.javaClass?.newInstance() ?: LuckFromAuthor()
 
         fun RandomPositives(hero: Hero, count: Int): List<Perk> {
-            val avialables = positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) }
-            return if (avialables.size > count)
-                KRandom.Chances(avialables, count).map { it.javaClass.newInstance() }
-            else {
-                val perks = avialables.keys.map { it.javaClass.newInstance() }.toMutableList()
+            return RandomPositiveFor(hero, count)
+//            val availables = positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) }
+//            return if (availables.size > count)
+//                KRandom.Chances(availables, count).map { it.javaClass.newInstance() }
+//            else {
+//                val perks = availables.keys.map { it.javaClass.newInstance() }.toMutableList()
+//
+//                for (i in 1..(count - perks.size)) perks.add(LuckFromAuthor())
+//                perks
+//            }
+        }
 
+        private fun RandomPositiveFor(hero: Hero, count: Int): List<Perk> {
+            val availables = positives.filter { it.value > 0f && it.key.isAcquireAllowed(hero) }.toMutableMap()
+            if (availables.size <= count) {
+                val perks = availables.keys.map { it.javaClass.newInstance() }.toMutableList()
                 for (i in 1..(count - perks.size)) perks.add(LuckFromAuthor())
-                perks
+                return perks
             }
+
+            // alter probs
+            val countmap = HashMap<Tag, Int>()
+            for (t in Tag.values()) countmap[t] = 0
+            for (p in hero.heroPerk.perks)
+                for (t in p.tags)
+                    countmap[t] = countmap[t]!! + 1
+
+            for ((perk, prob) in availables) {
+                val cnt = perk.tags.sumOf { countmap[it]!! }
+                val fix = 3f - 2f * .85f.pow(cnt)
+                availables[perk] = prob * fix
+            }
+            return KRandom.Chances(availables, count).map { it.javaClass.newInstance() }
         }
 
         fun RandomNegative(hero: Hero): Perk {
