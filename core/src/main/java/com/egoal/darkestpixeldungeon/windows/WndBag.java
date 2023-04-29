@@ -22,42 +22,42 @@ package com.egoal.darkestpixeldungeon.windows;
 
 import android.graphics.RectF;
 
-import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
-import com.egoal.darkestpixeldungeon.actors.hero.Hero;
-import com.egoal.darkestpixeldungeon.items.bags.SkillTree;
-import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
-import com.egoal.darkestpixeldungeon.items.unclassified.FishBone;
-import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
-import com.egoal.darkestpixeldungeon.items.armor.Armor;
-import com.egoal.darkestpixeldungeon.items.bags.Bag;
-import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
-import com.egoal.darkestpixeldungeon.items.food.Food;
-import com.egoal.darkestpixeldungeon.items.rings.Ring;
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
-import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw;
-import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
-import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
-import com.egoal.darkestpixeldungeon.plants.Plant;
-import com.egoal.darkestpixeldungeon.ui.ItemSlot;
-import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.egoal.darkestpixeldungeon.Assets;
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon;
 import com.egoal.darkestpixeldungeon.Dungeon;
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings;
+import com.egoal.darkestpixeldungeon.actors.hero.Hero;
 import com.egoal.darkestpixeldungeon.items.EquipableItem;
 import com.egoal.darkestpixeldungeon.items.Item;
+import com.egoal.darkestpixeldungeon.items.armor.Armor;
+import com.egoal.darkestpixeldungeon.items.bags.Bag;
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier;
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder;
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch;
+import com.egoal.darkestpixeldungeon.items.bags.SkillTree;
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster;
+import com.egoal.darkestpixeldungeon.items.food.Blandfruit;
+import com.egoal.darkestpixeldungeon.items.food.Food;
+import com.egoal.darkestpixeldungeon.items.food.MysteryMeat;
 import com.egoal.darkestpixeldungeon.items.potions.Potion;
+import com.egoal.darkestpixeldungeon.items.rings.Ring;
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll;
+import com.egoal.darkestpixeldungeon.items.unclassified.FishBone;
+import com.egoal.darkestpixeldungeon.items.unclassified.Gold;
+import com.egoal.darkestpixeldungeon.items.unclassified.GoldenClaw;
+import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot;
 import com.egoal.darkestpixeldungeon.items.wands.Wand;
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon;
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.Boomerang;
 import com.egoal.darkestpixeldungeon.messages.Messages;
+import com.egoal.darkestpixeldungeon.plants.Plant;
 import com.egoal.darkestpixeldungeon.scenes.GameScene;
 import com.egoal.darkestpixeldungeon.scenes.PixelScene;
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet;
 import com.egoal.darkestpixeldungeon.ui.Icons;
+import com.egoal.darkestpixeldungeon.ui.ItemSlot;
+import com.egoal.darkestpixeldungeon.ui.QuickSlotButton;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
@@ -243,7 +243,7 @@ public class WndBag extends WndTabbed {
 
             row = nRows - 1;
             col = nCols - 1;
-            placeItem(new Gold(Dungeon.INSTANCE.getGold()));
+            placeItem(new Gold(Dungeon.INSTANCE.getGold(), false));
         }
     }
 
@@ -531,8 +531,8 @@ public class WndBag extends WndTabbed {
                 return item instanceof Ring;
             case ALCHEMY:
                 return item instanceof Plant.Seed || item instanceof MysteryMeat || item instanceof FishBone ||
-                        item.getClass()== Food.class ||
-                        // item instanceof Honeypot.ShatteredPot ||
+                        item.getClass() == Food.class ||
+                        item instanceof Honeypot.ShatteredPot ||
                         (item instanceof Blandfruit && ((Blandfruit) item).getPotionAttrib() == null);
 //          case SMEARABLE:
 //              return item instanceof MeleeWeapon || item instanceof Boomerang;

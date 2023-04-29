@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.items.food.*
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.unclassified.FishBone
+import com.egoal.darkestpixeldungeon.items.unclassified.Honeypot
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -62,6 +63,9 @@ object AlchemyPot {
 
 //                pr = SplitTwoItem({it is MysteryMeat}, {it is Honeypot.ShatteredPot}, items[0], items[1])
 //                if(pr!=null) return Pair(true, SkewerMeat())
+
+                pr = SplitTwoItem({ it is Honeypot.ShatteredPot }, { it is Wine }, items[0], items[1])
+                if (pr != null) return Pair(true, MeadWine())
 
                 return Pair(false, null)
             }

@@ -1,6 +1,8 @@
 package com.egoal.darkestpixeldungeon.items
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Ghost
 import com.egoal.darkestpixeldungeon.items.armor.*
 import com.egoal.darkestpixeldungeon.items.artifacts.*
@@ -132,7 +134,9 @@ object Generator {
                     DaggerAxe::class to 5f,
                     InvisibleBlade::class to 5f,
                     BoethiahsBlade::class to 0f, // by statuary
-                    Flag::class to 3f
+                    Flag::class to 3f,
+                    TengusKatana::class to 0f, // by tengu
+                    CarvedStaff::class to 5f,
             ))
 
             object T4 : BalancedClassMapGenerator(hashMapOf(
@@ -468,6 +472,29 @@ object Generator {
         categoryMap[cat] = categoryMap[cat]!! / 2f // simply lower its probs
 
         return cat.generate()
+    }
+
+    /**
+     * cheat generating by checking hero's backpack.
+     */
+    fun generate(hero: Hero): Item {
+        val backpack = hero.belongings.backpack
+
+        val catmap = HashMap<ItemGenerator, Float>()
+        for ((key, value) in InitCategoryMap) catmap[key] = value
+
+        // slightly adjust spawn ratio [maxratio-> 1]
+        val pfun = { x: Int, xmax: Int, maxratio: Float ->
+            GameMath.clampf(maxratio + (1f - maxratio) * x / xmax, 0.8f, maxratio)
+        }
+        catmap[WEAPON] = catmap[WEAPON]!! * pfun(backpack.count { it is MeleeWeapon }, 3, 1.5f) // todo:
+        catmap[ARMOR] = catmap[ARMOR]!! * pfun(backpack.count { it is Armor }, 3, 1.5f)
+        catmap[ARTIFACT] = catmap[ARTIFACT]!! * pfun(backpack.count { it is Artifact }, 3, 1.5f)
+        catmap[HELMET] = catmap[HELMET]!! * pfun(backpack.count { it is Helmet }, 1, 1.2f)
+        if (hero.heroClass == HeroClass.MAGE) catmap[WAND] = catmap[WAND]!! * 1.1f
+        else catmap[WAND] = catmap[WAND]!! * pfun(backpack.count { it is Wand }, 4, 1.5f)
+
+        return Random.chances(catmap).generate()
     }
 
     // reset all prob: for start a new game

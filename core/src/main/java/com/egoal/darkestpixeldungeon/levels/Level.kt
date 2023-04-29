@@ -974,7 +974,7 @@ abstract class Level : Bundlable {
         }
 
         // torch
-        if (Dungeon.torch < 5) {
+        if (Dungeon.torch < 4) {
             val prop = 0.3f - Dungeon.depth / 5 * 0.025f
             var cnt = 0
             while (Random.Float() < prop && cnt++ < 5) items.add(Torch())

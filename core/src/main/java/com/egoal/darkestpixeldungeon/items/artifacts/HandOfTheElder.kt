@@ -42,7 +42,7 @@ class HandOfTheElder : Artifact() {
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
         if (isEquipped(hero)) {
-            if (level() < levelCap && rings.size < MAX_RINGS_TO_WEAR) actions.add(AC_WEAR)
+            if (rings.size < MAX_RINGS_TO_WEAR) actions.add(AC_WEAR)
             if (charge > 0) actions.add(AC_POINT)
         }
         return actions
@@ -64,7 +64,7 @@ class HandOfTheElder : Artifact() {
         } else if (action == AC_WEAR) {
             if (cursed)
                 GLog.w(Messages.get(this, "cannot_wear"))
-            else if (level() < levelCap)
+            else if (rings.size < MAX_RINGS_TO_WEAR)
                 GameScene.selectItem(ringSelector, WndBag.Mode.RING, Messages.get(this, "wear_prompt"))
         }
     }

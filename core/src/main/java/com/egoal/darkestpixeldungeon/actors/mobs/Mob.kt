@@ -21,10 +21,7 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
 import android.util.Log
-import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.Database
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.Statistics
+import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -129,7 +126,7 @@ abstract class Mob : Char() {
 
         // chance to lift as an elite
         val chance = .1f + (max(0, Dungeon.depth - 5) / 10) * .05f   // 10%, 15%, 15%, 20%, 20%
-        if (Random.Float() < chance) {
+        if (Dungeon.hero.challenge == Challenge.Outrage || Random.Float() < chance) {
             val cnt = Random.chances(floatArrayOf(.6f, .3f, .1f)) + 1
 
             abilities.addAll(randomAbilities(cnt))

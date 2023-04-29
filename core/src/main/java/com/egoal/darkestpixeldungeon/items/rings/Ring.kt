@@ -180,7 +180,7 @@ open abstract class Ring : KindofMisc() {
 
     companion object {
 
-        private const val TICKS_TO_KNOW = 200
+        private const val TICKS_TO_KNOW = 250
         private const val UNFAMILIRIARITY = "unfamiliarity"
 
         private val rings = arrayOf(

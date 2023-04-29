@@ -158,6 +158,7 @@ class DarkSpirit : Mob() {
         private var armor: Armor? = null
 
         fun Leave() {
+            depth = -1
             if (Dungeon.depth <= 5 || Dungeon.bossLevel() || abs(Dungeon.depth - Dungeon.hero.lvl) > 5) return
 
             // those who won, die far above their max depth, or who are challenged drop no bones.

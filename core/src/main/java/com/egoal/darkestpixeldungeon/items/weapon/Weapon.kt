@@ -246,7 +246,7 @@ abstract class Weapon : KindOfWeapon() {
     override fun glowing(): ItemSprite.Glowing? = enchantment?.glowing()
 
     companion object {
-        private const val HITS_TO_KNOW = 20
+        private const val HITS_TO_KNOW = 30
 
         private const val UNFAMILIRIARITY = "unfamiliarity"
         private const val INSCRIPTION = "inscription"

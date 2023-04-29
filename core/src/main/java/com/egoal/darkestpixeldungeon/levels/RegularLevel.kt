@@ -8,16 +8,12 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.DarkSpirit
 import com.egoal.darkestpixeldungeon.actors.mobs.RotLasher
-import com.egoal.darkestpixeldungeon.actors.mobs.WandGuard
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.BarterMan
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Merchant
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.PotionSeller
 import com.egoal.darkestpixeldungeon.actors.mobs.npcs.ScrollSeller
-
-import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.rings.Ring
-import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth
+import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
 import com.egoal.darkestpixeldungeon.levels.diggers.Digger
@@ -275,6 +271,11 @@ abstract class RegularLevel : Level() {
     }
 
     override fun createItems() {
+        val random_item = {
+            if (Dungeon.depth > 5) Generator.generate(Dungeon.hero)
+            else Generator.generate()
+        }
+
         var nItems = 3
 
         // bonus from wealth
@@ -287,8 +288,7 @@ abstract class RegularLevel : Level() {
                 in 1..4 -> if (Dungeon.depth > 1 && Random.Float() < 0.25f) Heap.Type.MIMIC else Heap.Type.CHEST
                 else -> Heap.Type.HEAP
             }
-
-            drop(Generator.generate(), randomDropCell()).type = heap
+            drop(random_item(), randomDropCell()).type = heap
         }
 
         // extra missile weapon

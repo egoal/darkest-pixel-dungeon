@@ -128,6 +128,7 @@ public class ItemSpriteSheet {
     public static final int BOETHIAHS_BLADE = WEP_TIER3 + 10;
     public static final int FLAG = WEP_TIER3 + 11;
     public static final int KATANA = WEP_TIER3 + 12;
+    public static final int CARVED_STAFF = WEP_TIER3 + 13;
 
     private static final int WEP_TIER4 = xy(1, 8);   //16 slots
     public static final int LONGSWORD = WEP_TIER4 + 0;
@@ -358,6 +359,7 @@ public class ItemSpriteSheet {
     public static final int GLAND = FOOD + 14;
     public static final int ROOT = FOOD + 15;
     public static final int RICE_WINE = FOOD + 16;
+    public static final int MEAD_WINE = FOOD + 17;
 
     private static final int QUEST = xy(1, 27);  //16 slots
     public static final int SKULL = QUEST + 0;
@@ -389,7 +391,7 @@ public class ItemSpriteSheet {
     public static final int SHADOWMOON_RDY = SPECIALS + 7;
     public static final int SHADOWMOON = SHADOWMOON_RDY + 1;
     public static final int KNIGHT = SPECIALS + 9;
-    public static final int GLADIATOR = SPECIALS+10;
+    public static final int GLADIATOR = SPECIALS + 10;
 
     //32 free slots
 

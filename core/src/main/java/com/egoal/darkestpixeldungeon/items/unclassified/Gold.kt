@@ -12,7 +12,6 @@ import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -20,11 +19,13 @@ import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-import java.util.ArrayList
-import kotlin.math.max
+import java.util.*
 import kotlin.math.min
 
-class Gold(value: Int = 1) : Item() {
+/**
+ * pure: if it check the GreedIsGood challenge
+ */
+class Gold(value: Int = 1, private val pure: Boolean = false) : Item() {
     init {
         image = ItemSpriteSheet.GOLD
         stackable = true
@@ -45,7 +46,7 @@ class Gold(value: Int = 1) : Item() {
     }
 
     override fun doPickUp(hero: Hero): Boolean {
-        if (hero.challenge == Challenge.GreedIsGood) {
+        if (!pure && hero.challenge == Challenge.GreedIsGood) {
             GLog.n(M.L(Challenge::class.java, "gone", name()))
             hero.next()
             return true

@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Drunkard
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -65,8 +66,8 @@ open class Wine(val gourdValue: Int = 5) : Item() {
             } else {
                 hero.recoverSanity(value)
                 // get drunk
-                Drunk.Affect(hero)
-                // hero.takeDamage(Damage(hero.HP / 4, this, hero).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.PURE))
+                if (this is MeadWine) hero.sayShort(HeroLines.GOOD_WINE)
+                else Drunk.Affect(hero)
             }
 
             onDrunk(hero)
@@ -106,4 +107,17 @@ class RiceWine : Wine(3) {
     }
 
     override fun price(): Int = 20 * quantity()
+}
+
+class MeadWine : Wine(5) {
+    init {
+        image = ItemSpriteSheet.MEAD_WINE
+    }
+
+    override fun price(): Int = 30 * quantity()
+
+    override fun onDrunk(hero: Hero) {
+        hero.recoverHP(hero.HP / 5)
+        hero.sprite.emitter().start(Speck.factory(Speck.HEALING), 0.4f, 2)
+    }
 }

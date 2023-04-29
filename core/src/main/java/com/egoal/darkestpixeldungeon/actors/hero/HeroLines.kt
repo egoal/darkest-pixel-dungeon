@@ -9,6 +9,7 @@ object HeroLines {
     const val BAD_NOISE = "bad_noise"
     const val DELICIOUS = "delicious"
     const val AWFUL = "awful"
+    const val GOOD_WINE = "good_wine"
     const val I_MAY_DIE = "i_may_die"
     const val GRIN = "grin"
     const val WHY_NOT_EAT = "why_not_eat"

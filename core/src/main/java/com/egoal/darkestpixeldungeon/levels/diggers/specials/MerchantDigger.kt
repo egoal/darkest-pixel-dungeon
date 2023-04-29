@@ -133,6 +133,7 @@ class MerchantDigger : RectDigger() {
             val wine = when {
                 p < 0.4f -> Wine()
                 p < 0.7f -> BrownAle()
+                p < 0.5f -> MeadWine()
                 else -> RiceWine()
             }
             itemsToSpawn.add(wine)

@@ -13,6 +13,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.EtherealChains
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.food.Food
+import com.egoal.darkestpixeldungeon.items.food.MeadWine
 import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.helmets.Headgear
 import com.egoal.darkestpixeldungeon.items.potions.*
@@ -310,7 +311,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //        ChaliceOfBlood().collect()
 //        hero.heroPerk.add(BaredRelieve())
 
-//        initDebug(hero)
+        initDebug(hero)
 //        EtherealChains().identify().collect()
     }
 
@@ -356,6 +357,10 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         hero.STR = 20
         hero.HT = 1000
         hero.HP = hero.HT
+
+        LongSpear().identify().collect()
+        Nunchakus().identify().collect()
+        MeadWine().identify().collect()
 
         hero.heroPerk.add(IntendedTransportation())
 

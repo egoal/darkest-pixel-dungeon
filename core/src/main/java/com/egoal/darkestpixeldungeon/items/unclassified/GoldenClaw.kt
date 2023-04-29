@@ -67,7 +67,7 @@ open class GoldenClaw : Item() {
     }
 
     protected open fun gainGold(hero: Hero, q: Int) {
-        val g = Gold(q)
+        val g = Gold(q, true)
         hero.heroPerk.get(GreedyMidas::class.java)?.procGold(g)
         if (g.quantity() > q) {
             GameScene.effect(Flare(5, 32f).color(0xffdd00, true).show(

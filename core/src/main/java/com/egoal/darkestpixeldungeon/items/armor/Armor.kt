@@ -410,7 +410,7 @@ open class Armor(var tier: Int) : EquipableItem() {
     }
 
     companion object {
-        private const val HITS_TO_KNOW = 10
+        private const val HITS_TO_KNOW = 15
 
         protected const val AC_DETACH = "DETACH"
 

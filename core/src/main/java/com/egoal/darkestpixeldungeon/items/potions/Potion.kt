@@ -161,7 +161,7 @@ open class Potion : Item() {
             GameScene.selectItem({
                 if (it != null) {
                     detach(hero.belongings.backpack)
-                    Enchantment.DoEnchant(hero, it as Weapon, javaClass, if (reinforced) 40f else 24f)
+                    Enchantment.DoEnchant(hero, it as Weapon, javaClass, if (reinforced) 30f else 20f)
                 }
             }, WndBag.Mode.SMEARABLE, M.L(Potion::class.java, "select_weapon"))
         }

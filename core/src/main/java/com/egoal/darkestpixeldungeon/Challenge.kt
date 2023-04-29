@@ -68,6 +68,7 @@ enum class Challenge {
     },
     Faith,
     // Loner,
+    Outrage,
     ;
 
     fun title(): String = M.L(this, "${name.toLowerCase()}.name")
