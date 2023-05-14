@@ -10,6 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Drunkard
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.unclassified.EmptyBottle
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
@@ -52,6 +53,8 @@ open class Wine(val gourdValue: Int = 5) : Item() {
             }
 
             detach(hero.belongings.backpack)
+            EmptyBottle.produce()
+
             Statistics.WineDrunk++
             hero.spend(TIME_TO_DRINK)
             hero.busy()

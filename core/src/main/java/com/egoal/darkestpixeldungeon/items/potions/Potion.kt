@@ -21,40 +21,34 @@
 package com.egoal.darkestpixeldungeon.items.potions
 
 import android.util.Log
-
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Pressure
-import com.egoal.darkestpixeldungeon.actors.buffs.Weakness
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.effects.Splash
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.ItemStatusHandler
+import com.egoal.darkestpixeldungeon.items.unclassified.EmptyBottle
+import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.windows.WndOptions
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
-import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.windows.WndBag
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
-
-import java.util.ArrayList
-import java.util.HashMap
-import java.util.HashSet
+import java.util.*
 
 open class Potion : Item() {
 
@@ -188,6 +182,7 @@ open class Potion : Item() {
     protected open fun drink(hero: Hero) {
 
         detach(hero.belongings.backpack)
+        EmptyBottle.produce()
 
         hero.spend(TIME_TO_DRINK)
         hero.busy()

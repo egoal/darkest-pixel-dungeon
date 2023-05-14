@@ -22,8 +22,6 @@ package com.egoal.darkestpixeldungeon.actors.blobs
 
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.BlobEmitter
@@ -31,19 +29,21 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Random
+import kotlin.math.max
 
 class ToxicGas : Blob(), Hero.Doom {
 
     override fun evolve() {
         super.evolve()
 
-        val levelDamage = 5 + Dungeon.depth * 5
+        val levelDamage = 5 + Dungeon.depth * 4
         for (ch in affectedChars()) {
-            var damage = (ch.HT + levelDamage) / 40
-            if (Random.Int(40) < (ch.HT + levelDamage) % 40) damage++
+            var damage = max(1, (ch.HT + levelDamage) / 30)
+            if (Random.Int(30) < (ch.HT + levelDamage) % 30) damage += Random.Int(Dungeon.depth)
 
             ch.takeDamage(Damage(damage, this, ch)
-                    .addElement(Damage.Element.POISON).type(Damage.Type.MAGICAL))
+                    .type(Damage.Type.MAGICAL)
+                    .addElement(Damage.Element.POISON))
         }
     }
 

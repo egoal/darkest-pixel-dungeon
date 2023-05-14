@@ -35,8 +35,8 @@ import com.watabou.utils.Bundle
 import kotlin.math.max
 
 open class Poison : Buff(), Hero.Doom {
-    protected var left: Float = 0.toFloat()
-    private var extraDamage = 0f
+    protected var left: Float = 0f
+    private var extraDamage = 1
 
     init {
         type = buffType.NEGATIVE
@@ -51,15 +51,15 @@ open class Poison : Buff(), Hero.Doom {
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         left = bundle.getFloat(LEFT)
-        extraDamage = bundle.getFloat(EXTRA_DAMAGE)
+        extraDamage = bundle.getInt(EXTRA_DAMAGE)
     }
 
     fun set(duration: Float) {
         left = max(duration, left)
     }
 
-    fun addDamage(damage: Int) {
-        extraDamage = damage.toFloat()
+    fun addExtraDamage(damage: Int) {
+        extraDamage += damage
     }
 
     fun extend(duration: Float) {
@@ -84,7 +84,9 @@ open class Poison : Buff(), Hero.Doom {
 
     override fun act(): Boolean {
         if (target.isAlive) {
-            val dmg = Damage((left / 3 + extraDamage).toInt() + 1, this, target).type(Damage.Type.MAGICAL).addElement(Damage.Element.POISON)
+            val dmg = Damage((left / 3 + extraDamage).toInt() + 1, this, target)
+                    .type(Damage.Type.MAGICAL)
+                    .addElement(Damage.Element.POISON)
             target.takeDamage(dmg)
             spend(TICK)
 

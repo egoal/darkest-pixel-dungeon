@@ -27,7 +27,6 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PathFinder
@@ -70,7 +69,7 @@ class PotionOfToxicGas : Potion() {
     private fun reinforced_affect(c: Char) {
         val p = Buff.affect(c, Poison::class.java)
         p.set(Random.Int(6, 10).toFloat())
-        p.addDamage(Dungeon.depth / 2 + Random.Int(1, 4))
+        p.addExtraDamage(Dungeon.depth / 2 + Random.Int(1, 4))
     }
 
     override fun price(): Int {

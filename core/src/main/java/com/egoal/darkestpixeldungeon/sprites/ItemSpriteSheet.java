@@ -319,6 +319,7 @@ public class ItemSpriteSheet {
     public static final int POTION_IVORY = POTIONS + 11;
     public static final int POTION_DARK_GREEN = POTIONS + 12;
     public static final int POTION_STEEL_BLUE = POTIONS + 13;
+    public static final int POTION_EMPTY_BOTTLE = POTIONS + 14;
 
     private static final int SEEDS = xy(1, 22);  //16 slots
     public static final int SEED_ROTBERRY = SEEDS + 0;

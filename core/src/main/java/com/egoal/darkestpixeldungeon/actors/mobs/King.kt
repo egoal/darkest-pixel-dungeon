@@ -48,7 +48,7 @@ class King : Mob() {
         val p = HP / HT.toFloat()
         var ratio = when {
             p > 0.5f -> 1f
-            p > 0.1f -> 1.5f
+            p > 0.3f -> 1.5f
             else -> 2f
         }
         if (Revivable) ratio *= 0.75f
@@ -109,7 +109,7 @@ class King : Mob() {
 
     override fun getCloser(target: Int): Boolean {
         // retreat
-        if (HP < HT / 2 && Dungeon.level.mobs.count { it is Undead } > 3)
+        if (HP <= HT / 2 && Dungeon.level.mobs.count { it is Undead } >= 3)
             return super.getFurther(target)
 
         return super.getCloser(target)
@@ -196,7 +196,9 @@ class King : Mob() {
         }
 
         override fun attackProc(dmg: Damage): Damage {
-            if (Random.Float() < 0.15f) Buff.prolong(dmg.to as Char, Paralysis::class.java, 1f)
+            val target = dmg.to as Char
+            val prob = if (target.buff(Paralysis::class.java) == null) 0.2f else 0.1f
+            if (Random.Float() < prob) Buff.prolong(dmg.to as Char, Paralysis::class.java, 1f)
             return super.attackProc(dmg)
         }
 
@@ -216,11 +218,11 @@ class King : Mob() {
     companion object {
         private val IMMUNITIES = hashSetOf<Class<*>>(
                 Paralysis::class.java, Vertigo::class.java, Corruption::class.java,
-                Terror::class.java, Charm::class.java, MagicalSleep::class.java
+                Terror::class.java, Charm::class.java, MagicalSleep::class.java, Bleeding::class.java,
         )
 
         private val UNDEAD_IMMUNITIES = hashSetOf<Class<*>>(
-                Grim::class.java, Paralysis::class.java
+                Grim::class.java, Paralysis::class.java, Bleeding::class.java,
         )
 
         private const val ANGER = "anger"

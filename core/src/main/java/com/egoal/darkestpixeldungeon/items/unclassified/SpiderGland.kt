@@ -30,6 +30,8 @@ class SpiderGland : Item() {
         quantity = if (Random.Float() < .3f) 2 else 1
     }
 
+    override fun price(): Int = 2 * quantity
+
     override fun onThrow(cell: Int) {
         if (Level.pit[cell]) super.onThrow(cell)
         else {

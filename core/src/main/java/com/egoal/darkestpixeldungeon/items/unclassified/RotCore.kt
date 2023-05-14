@@ -39,4 +39,6 @@ class RotCore : Item() {
             }
         }
     }
+
+    override fun price(): Int = 2 * quantity
 }

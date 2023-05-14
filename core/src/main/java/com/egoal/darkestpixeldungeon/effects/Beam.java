@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.Assets;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -78,6 +79,10 @@ public class Beam extends Image {
     public ThickDeathRay(PointF s, PointF e) {
       super(s, e, Effects.Type.THICK_DEATH_RAY, 0.5f);
     }
+  }
+
+  public static class DarkRay extends Beam{
+    public DarkRay(PointF s, PointF e){ super(s, e, Effects.Type.DARK_RAY, 2f);}
   }
 
   @Override

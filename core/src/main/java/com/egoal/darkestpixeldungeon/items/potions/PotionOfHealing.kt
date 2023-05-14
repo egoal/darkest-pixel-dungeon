@@ -72,17 +72,7 @@ class PotionOfHealing : Potion() {
         if (!reinforced && isKnown && hero.buff(Decayed::class.java) != null) {
             //todo:
             WndOptions.Confirm(ItemSprite(this), name, M.L(this, "decayed")) {
-                detach(hero.belongings.backpack)
-
-                hero.spend(1f)
-                hero.busy()
-
-                Buff.detach(hero, Bleeding::class.java)
-                doDrink(hero)
-
-                Sample.INSTANCE.play(Assets.SND_DRINK)
-
-                hero.sprite.operate(hero.pos)
+                super.drink(hero)
             }
         } else
             super.drink(hero)

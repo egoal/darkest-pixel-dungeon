@@ -21,66 +21,55 @@
 package com.egoal.darkestpixeldungeon.levels
 
 import android.util.Log
-
-import com.egoal.darkestpixeldungeon.*
-import com.egoal.darkestpixeldungeon.actors.buffs.Shadows
-import com.egoal.darkestpixeldungeon.actors.buffs.ViewMark
-import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath
-import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.food.BrownAle
-import com.egoal.darkestpixeldungeon.items.food.Wine
-import com.egoal.darkestpixeldungeon.items.rings.RingOfWealth
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby
-import com.egoal.darkestpixeldungeon.levels.diggers.Digger
-import com.egoal.darkestpixeldungeon.levels.features.HighGrass
-import com.egoal.darkestpixeldungeon.levels.features.Luminary
-import com.egoal.darkestpixeldungeon.plants.Plant
-import com.egoal.darkestpixeldungeon.ui.CustomTileVisual
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
-import com.egoal.darkestpixeldungeon.actors.blobs.MagicWellWater
 import com.egoal.darkestpixeldungeon.actors.blobs.WellWater
-import com.egoal.darkestpixeldungeon.actors.buffs.Awareness
-import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
-import com.egoal.darkestpixeldungeon.actors.buffs.MindVision
+import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Ease
+import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.particles.FlowParticle
 import com.egoal.darkestpixeldungeon.effects.particles.WindParticle
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
-import com.egoal.darkestpixeldungeon.items.unclassified.Torch
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
+import com.egoal.darkestpixeldungeon.items.food.BrownAle
 import com.egoal.darkestpixeldungeon.items.food.Food
+import com.egoal.darkestpixeldungeon.items.food.Wine
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
-import com.egoal.darkestpixeldungeon.items.rings.Ring
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
+import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
+import com.egoal.darkestpixeldungeon.items.unclassified.Torch
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
+import com.egoal.darkestpixeldungeon.levels.diggers.Digger
 import com.egoal.darkestpixeldungeon.levels.features.Chasm
 import com.egoal.darkestpixeldungeon.levels.features.Door
+import com.egoal.darkestpixeldungeon.levels.features.HighGrass
+import com.egoal.darkestpixeldungeon.levels.features.Luminary
 import com.egoal.darkestpixeldungeon.levels.traps.Trap
 import com.egoal.darkestpixeldungeon.mechanics.ShadowCaster
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.ui.CustomTileVisual
 import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Game
 import com.watabou.noosa.Group
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.*
-
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.HashMap
-import java.util.HashSet
+import com.watabou.utils.Random
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -758,6 +747,16 @@ abstract class Level : Bundlable {
         return trap
     }
 
+    fun tryRemoveTrapAt(pos: Int): Boolean {
+        val trap = traps.get(pos)
+        if (trap != null) {
+            traps.remove(pos)
+            if (trap.hasSprite) trap.sprite.kill()
+            return true
+        }
+        return false
+    }
+
     fun disarmTrap(pos: Int) {
         set(pos, Terrain.INACTIVE_TRAP)
         GameScene.updateMap(pos)
@@ -1034,9 +1033,9 @@ abstract class Level : Bundlable {
         return Point(cell % width(), cell / width())
     }
 
-    fun pointToCell(p: Point): Int= p.x + p.y * width()
+    fun pointToCell(p: Point): Int = p.x + p.y * width()
 
-    fun xy2cell(x: Int, y: Int): Int=  x + y * width()
+    fun xy2cell(x: Int, y: Int): Int = x + y * width()
 
     open fun tileName(tile: Int): String {
 

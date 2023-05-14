@@ -5,20 +5,15 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
-import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.unclassified.EmptyBottle
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.sprites.CharSprite
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
-import java.util.ArrayList
-import kotlin.math.max
-import kotlin.math.min
+import java.util.*
 import kotlin.math.round
 
 class ReagentOfHealing : Item() {
@@ -42,13 +37,9 @@ class ReagentOfHealing : Item() {
         super.execute(hero, action)
         if (action == AC_DRINK) {
             if (hero.HP >= hero.HT / 2) {
-                GameScene.show(object : WndOptions(ItemSprite(image, null), name,
-                        M.L(ReagentOfHealing::class.java, "uneconomic"),
-                        M.L(Potion::class.java, "yes"), M.L(Potion::class.java, "no")) {
-                    override fun onSelect(index: Int) {
-                        if (index == 0) drink(hero)
-                    }
-                })
+                WndOptions.Confirm(name, M.L(ReagentOfHealing::class.java, "uneconomic")) {
+                    drink(hero)
+                }
             } else drink(hero)
         }
     }
@@ -62,6 +53,7 @@ class ReagentOfHealing : Item() {
 
     private fun drink(hero: Hero) {
         detach(hero.belongings.backpack)
+        EmptyBottle.produce()
 
         hero.spend(1f)
         hero.busy()

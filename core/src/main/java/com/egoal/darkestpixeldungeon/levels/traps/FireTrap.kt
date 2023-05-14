@@ -35,9 +35,7 @@ class FireTrap : Trap() {
     }
 
     override fun activate() {
-
         GameScene.add(Blob.seed(pos, 2, Fire::class.java))
         CellEmitter.get(pos).burst(FlameParticle.FACTORY, 5)
-
     }
 }

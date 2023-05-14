@@ -6,6 +6,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Alchemy
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.keys.IronKey
 import com.egoal.darkestpixeldungeon.items.potions.Potion
+import com.egoal.darkestpixeldungeon.items.unclassified.EmptyBottle
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.DigResult
@@ -54,15 +55,16 @@ class LaboratoryDigger : RectDigger() {
         Set(level, cE, Terrain.ENCHANTING_STATION)
 
         // two potions, perhaps some day, i should add some enchanting stone
-        val n = Random.IntRange(2, 3)
-        for (i in 1..n) {
+        val select_drop_pos = {
             var pos: Int
             do {
                 pos = level.pointToCell(rect.random())
             } while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get(pos) != null)
-
-            level.drop(prize(level), pos)
+            pos
         }
+
+        repeat(Random.IntRange(2, 3)) { level.drop(prize(level), select_drop_pos()) }
+        repeat(Random.IntRange(1, 3)) { level.drop(EmptyBottle(), select_drop_pos()) }
 
         return DigResult(rect, DigResult.Type.Locked)
     }

@@ -20,25 +20,22 @@
  */
 package com.egoal.darkestpixeldungeon.actors.buffs
 
-import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfEnchanting
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Thief
 import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.Heap
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.glyphs.Brimstone
 import com.egoal.darkestpixeldungeon.items.food.ChargrilledMeat
 import com.egoal.darkestpixeldungeon.items.food.MysteryMeat
 import com.egoal.darkestpixeldungeon.items.rings.RingOfResistance.Resistance
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -50,12 +47,11 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
 class Burning : Buff(), Hero.Doom {
-
-    private var left: Float = 0.toFloat()
+    private var left: Float = 0f
     private var burnedSomething = false
 
     init {
-        type = Buff.buffType.NEGATIVE
+        type = buffType.NEGATIVE
     }
 
     override fun storeInBundle(bundle: Bundle) {
@@ -75,8 +71,8 @@ class Burning : Buff(), Hero.Doom {
         if (target.isAlive) {
 
             //maximum damage scales from 6 to 2 depending on remaining hp.
-            val maxDmg = 3 + Math.round(4 * target.HP / target.HT.toFloat())
-            val damage = Random.Int(1, maxDmg)
+            val maxval = 3 + 4 * target.HP / target.HT + Dungeon.depth / 5 * 5
+            val damage = Random.Int(1, maxval)
             Buff.detach(target, Chill::class.java)
 
             if (target is Hero) {

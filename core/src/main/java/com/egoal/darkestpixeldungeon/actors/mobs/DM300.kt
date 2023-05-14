@@ -20,7 +20,10 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.*
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -44,13 +47,16 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.DM300Sprite
 import com.egoal.darkestpixeldungeon.ui.BossHealthBar
 import com.egoal.darkestpixeldungeon.ui.Icons
+import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Image
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
+import com.watabou.utils.GameMath
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
+import kotlin.math.max
 
 class DM300 : Mob() {
     private var overloaded = false
@@ -68,6 +74,8 @@ class DM300 : Mob() {
 
         immunities.addAll(listOf(ToxicGas::class.java, Terror::class.java,
                 Corruption::class.java, Charm::class.java, MagicalSleep::class.java, Cripple::class.java))
+
+        FLEEING = HeadToTrap()
     }
 
     override fun viewDistance(): Int = 6
@@ -136,12 +144,17 @@ class DM300 : Mob() {
     override fun move(step: Int) {
         super.move(step)
 
-        if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && HP < HT) {
+        if (state === FLEEING && Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && HP < HT) {
             HP += Random.Int(1, HT - HP)
+            SHLD += 20
             sprite.emitter().burst(ElmoParticle.FACTORY, 5)
 
             if (Dungeon.visible[step] && Dungeon.hero.isAlive)
                 GLog.n(Messages.get(this, "repair"))
+
+            Dungeon.level.tryRemoveTrapAt(step)
+            Dungeon.level.map[step] = Terrain.EMPTY_DECO
+            GameScene.updateMap(step)
         }
 
         val cells = intArrayOf(step - 1, step + 1, step - Dungeon.level.width(), step + Dungeon
@@ -170,13 +183,44 @@ class DM300 : Mob() {
     override fun takeDamage(dmg: Damage): Int {
         val taken = super.takeDamage(dmg)
 
+        if (taken >= 4) {
+            val dht = GameMath.clamp(taken / 2, 5, 1)
+            HT = max(HT - dht, 10)
+        }
+
         val lock = Dungeon.hero.buff(LockedFloor::class.java)
         if (lock != null && !immunizedBuffs().contains(dmg.from.javaClass))
             lock.addTime(dmg.value * 1.5f)
 
+        val heal = SHLD <= 0 && (if (overloaded) HP < HT * .3 else HP < HT * .5)
+        if (heal) {
+            trapPos_ = nearestTrap()
+            if (trapPos_ > 0) {
+                state = FLEEING
+//                GLog.i("DM300 is looking to save self.")
+            }
+        }
+
         if (HP < HT * .3 && !overloaded) overload()
 
         return taken
+    }
+
+    private fun nearestTrap(): Int {
+        var cell = -1
+        var celldis = Int.MAX_VALUE
+
+        val maxlen = 4
+        PathFinder.buildDistanceMap(pos, BArray.not(Level.solid, null), maxlen)
+        for (i in PathFinder.distance.indices)
+            if (PathFinder.distance[i] < Integer.MAX_VALUE && Dungeon.level.map[i] == Terrain.INACTIVE_TRAP &&
+                    Dungeon.level.distance(pos, i) < celldis && findChar(i) == null) {
+                //todo: the findChar condition
+                cell = i
+                celldis = Dungeon.level.distance(pos, cell)
+            }
+
+        return cell
     }
 
     override fun attackProc(dmg: Damage): Damage {
@@ -249,19 +293,21 @@ class DM300 : Mob() {
                 val dmg = giveDamage(ch)
                 ch.defendDamage(dmg)
                 ch.takeDamage(dmg)
-                Buff.prolong(ch, Paralysis::class.java, 1.1f)
+                Buff.prolong(ch, ArmorExpose::class.java, 5f)
             }
+
             // splash
-            for (i in PathFinder.NEIGHBOURS8) {
-                val ch = Actor.findChar(pos + i)
-                if (ch != null && !bumpedChars.contains(ch)) {
-                    // damage only
-                    val dmg = giveDamage(ch)
-                    dmg.value /= 2
-                    ch.defendDamage(dmg)
-                    ch.takeDamage(dmg)
-                }
-            }
+            PathFinder.NEIGHBOURS8
+                    .map { Actor.findChar(pos + it) }
+                    .filterNotNull()
+                    .filter { !bumpedChars.contains(it) }
+                    .forEach {
+                        val dmg = giveDamage(it)
+                        dmg.value /= 2
+                        it.defendDamage(dmg)
+                        it.takeDamage(dmg)
+                        Buff.prolong(it, ArmorExpose::class.java, 3f)
+                    }
 
             spend(2f)
             next()
@@ -307,6 +353,7 @@ class DM300 : Mob() {
         bundle.put(OVERLOADED, overloaded)
         bundle.put(BUMP_CELL, bumpcell)
         bundle.put(BUMP_CD, bumpcd)
+        bundle.put(TRAP_POS, trapPos_)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -318,13 +365,33 @@ class DM300 : Mob() {
         }
         bumpcell = bundle.getInt(BUMP_CELL)
         bumpcd = bundle.getInt(BUMP_CD)
+        trapPos_ = bundle.getInt(TRAP_POS)
 
         BossHealthBar.assignBoss(this)
+    }
+
+    private var trapPos_: Int = -1
+
+    private inner class HeadToTrap : AiState {
+        override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
+            val curpos = pos
+            if (trapPos_ != -1 && curpos != trapPos_ && getCloser(trapPos_)) {
+                spend(1 / (speed() * 1.5f)) // move slightly faster
+                return moveSprite(curpos, pos)
+            } else {
+                SHLD += 30
+                state = HUNTING
+                return true
+            }
+        }
+
+        override fun status(): String = M.L(Fleeing::class.java, "status", name)
     }
 
     companion object {
         private const val OVERLOADED = "overloaded"
         private const val BUMP_CELL = "bumpcell"
         private const val BUMP_CD = "bumpcd"
+        private const val TRAP_POS = "trappos"
     }
 }

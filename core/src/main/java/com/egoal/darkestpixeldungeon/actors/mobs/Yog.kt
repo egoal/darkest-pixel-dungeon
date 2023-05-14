@@ -22,17 +22,20 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Database
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.DungeonTilemap
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.effects.Beam
 import com.egoal.darkestpixeldungeon.effects.Pushing
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.*
@@ -42,14 +45,16 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
 import java.util.*
+import kotlin.math.max
 import kotlin.math.min
 
 class Yog : Mob() {
+    private var zapCD_ = 3;
 
     init {
         spriteClass = YogSprite::class.java
 
-        state = PASSIVE
+        state = Watching() // PASSIVE
     }
 
     fun spawnFists() {
@@ -147,9 +152,35 @@ class Yog : Mob() {
 
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
 
+    override fun storeInBundle(bundle: Bundle) {
+        super.storeInBundle(bundle)
+        bundle.put("zapcd", zapCD_)
+    }
+
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         BossHealthBar.assignBoss(this)
+        zapCD_ = bundle.getInt("zapcd")
+    }
+
+    private inner class Watching : AiState {
+        override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
+            enemy = Dungeon.hero
+            if (enemy!!.isAlive && zapCD_ <= 0) {
+                val value = Random.NormalIntRange(5, 15 + (10 * (1f - HP / HT.toFloat())).toInt())
+                val dmg = Damage(value, this@Yog, enemy).type(Damage.Type.MENTAL)
+                enemy!!.takeDamage(dmg)
+                GLog.n(M.L(Yog::class.java, "no_hiding"))
+                zapCD_ = 5
+
+                sprite.parent.add(Beam.DarkRay(sprite.center(), DungeonTilemap.tileCenterToWorld(enemy!!.pos * 2 - pos)))
+            } else zapCD_ = max(zapCD_ - 1, 0)
+
+            spend(1 / speed())
+            return true
+        }
+
+        override fun status(): String = M.L(Hunting::class.java, "status", this)
     }
 
     class RottingFist : Mob() {
@@ -215,7 +246,7 @@ class Yog : Mob() {
         companion object {
             private const val REGENERATION = 4
 
-            private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Sleep::class.java,
+            private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Sleep::class.java, Burning::class.java,
                     Terror::class.java, Poison::class.java, Vertigo::class.java, Corruption::class.java, MagicalSleep::class.java)
         }
     }
@@ -312,7 +343,8 @@ class Yog : Mob() {
     }
 
     companion object {
-        private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Sleep::class.java,
-                Terror::class.java, Poison::class.java, Vertigo::class.java, Corruption::class.java, MagicalSleep::class.java)
+        private val IMMUNITIES = hashSetOf<Class<*>>(Amok::class.java, Sleep::class.java, Terror::class.java,
+                Poison::class.java, Vertigo::class.java, Corruption::class.java,
+                MagicalSleep::class.java, Paralysis::class.java)
     }
 }

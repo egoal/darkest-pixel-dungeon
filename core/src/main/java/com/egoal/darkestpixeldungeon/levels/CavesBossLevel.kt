@@ -79,7 +79,7 @@ class CavesBossLevel : Level() {
             map[xy2cell(x, y)] = Terrain.WALL
         }
 
-        val patch = Patch.Generate(this, 0.45f, 4)
+        val patch = Patch.Generate(this, 0.4f, 4)
         for (i in 0 until length()) {
             if (map[i] == Terrain.EMPTY && patch[i]) {
                 map[i] = Terrain.WATER
@@ -87,7 +87,7 @@ class CavesBossLevel : Level() {
         }
 
         for (i in 0 until length()) {
-            if (map[i] == Terrain.EMPTY && Random.Int(6) == 0) {
+            if (map[i] == Terrain.EMPTY && Random.Int(5) == 0) {
                 map[i] = Terrain.INACTIVE_TRAP
                 val t = ToxicTrap().reveal()
                 t.active = false

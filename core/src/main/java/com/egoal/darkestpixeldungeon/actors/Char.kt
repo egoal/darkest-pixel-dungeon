@@ -20,38 +20,32 @@
  */
 package com.egoal.darkestpixeldungeon.actors
 
-import com.egoal.darkestpixeldungeon.Statistics
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.mobs.Mob
-import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
-import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.buffs.*
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
-import com.egoal.darkestpixeldungeon.actors.hero.perks.ArcaneCrit
-import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPerception
-import com.egoal.darkestpixeldungeon.actors.hero.perks.WandPiercing
-import com.egoal.darkestpixeldungeon.effects.Splash
-import com.egoal.darkestpixeldungeon.items.rings.Ring
-import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy
-import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
-import com.egoal.darkestpixeldungeon.items.wands.Wand
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
+import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.features.Door
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
 import com.watabou.noosa.audio.Sample
-import com.watabou.utils.*
-
-import java.util.Arrays
-import java.util.HashSet
-import kotlin.math.*
+import com.watabou.utils.Bundle
+import com.watabou.utils.GameMath
+import com.watabou.utils.PathFinder
+import com.watabou.utils.Random
+import java.util.*
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.round
 
 abstract class Char : Actor() {
     interface IIncomingDamageProc {
@@ -198,7 +192,7 @@ abstract class Char : Actor() {
                 ch.takeDamage(dmg)
                 ch.sprite.showStatus(0x000000, M.L(LifeLink::class.java, "transform"))
                 return 0
-            }
+            } else it.detach() // item not found
         }
 
         // currently, only hero suffer from mental damage

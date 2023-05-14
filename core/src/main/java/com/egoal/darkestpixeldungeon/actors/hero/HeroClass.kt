@@ -311,7 +311,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //        ChaliceOfBlood().collect()
 //        hero.heroPerk.add(BaredRelieve())
 
-        initDebug(hero)
+//        initDebug(hero)
 //        EtherealChains().identify().collect()
     }
 

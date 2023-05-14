@@ -81,7 +81,7 @@ class Tengu : Mob() {
                     }
                 }
 
-                if (Dungeon.hero === enemy) Dungeon.hero.resting = false
+//                if (Dungeon.hero === enemy) Dungeon.hero.resting = false
 
                 sprite.attack(enemy.pos)
                 spend(attackDelay())
@@ -101,7 +101,7 @@ class Tengu : Mob() {
         Dungeon.hero.buff(LockedFloor::class.java)?.addTime(value * 2f)
 
         val hpBracket = if (attackStage == 0) 15 else 20
-        val bracketExceed = HP < (HT - 30) && (HP + value) / hpBracket != HP / hpBracket
+        val bracketExceed = HP < (HT - 15) && (HP + value) / hpBracket != HP / hpBracket
 
         //todo: code cleanse
         if (attackStage == 0) {
@@ -123,9 +123,9 @@ class Tengu : Mob() {
                 nextAction = AttackAction.JUMP_AWAY
                 attackStage = 1
             } else {
-                // jump away when hard attack from face
-                if (bracketExceed || (value > 15 &&
-                                dmg.from is Char && Dungeon.level.adjacent((dmg.from as Char).pos, pos)))
+                // jump away when hard attack from face / no where
+                if (bracketExceed ||
+                        (value >= 15 && (!enemySeen || (dmg.from is Char && Dungeon.level.adjacent((dmg.from as Char).pos, pos)))))
                     nextAction = AttackAction.JUMP_AWAY
             }
         } else if (attackStage == 1) {
@@ -138,9 +138,9 @@ class Tengu : Mob() {
                 // phantom strike
                 if (dmg.from is Char) {
                     val c = dmg.from as Char
-                    if (Dungeon.level.adjacent(c.pos, pos) && Random.Int(5) == 0) nextAction = AttackAction.JUMP_AWAY
+                    if (!enemySeen || (Dungeon.level.adjacent(c.pos, pos) && Random.Int(4) == 0)) nextAction = AttackAction.JUMP_AWAY
                     else nextAction = AttackAction.JUMP_PHANHOM_ATTACK
-                } else if (bracketExceed) nextAction = AttackAction.JUMP_AWAY
+                } else if (bracketExceed || (!enemySeen && Random.Int(2) == 0)) nextAction = AttackAction.JUMP_AWAY
             }
         }
 
