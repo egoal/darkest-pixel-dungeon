@@ -3,12 +3,9 @@ package com.egoal.darkestpixeldungeon.levels.diggers.normal
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.*
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
 import com.watabou.utils.Random
-
-/**
- * Created by 93942 on 2018/12/20.
- */
 
 open class DiamondDigger : Digger() {
     override fun chooseDigArea(wall: Wall): Rect {
@@ -22,6 +19,17 @@ open class DiamondDigger : Digger() {
         for (p in rect.getAllPoints())
             if (Point.DistanceL1(cen, p) <= hs)
                 Set(level, p, Terrain.EMPTY)
+
+        rect.getAllPoints()
+                .filter {
+                    val i = level.pointToCell(it)
+                    level.map[i] == Terrain.WALL &&
+                            PathFinder.NEIGHBOURS4.any { level.map[i + it] == Terrain.EMPTY }
+                }.filter {
+                    Random.Float() < .3f
+                }.forEach {
+                    Set(level, it, Terrain.EMPTY)
+                }
 
         val door = rect.center
         if (wall.direction.horizontal)
@@ -38,7 +46,7 @@ open class DiamondDigger : Digger() {
             walls.add(Wall(cen.x, rect.y1 - 1, Direction.Up))
         if (wall.direction.opposite != Direction.Down)
             walls.add(Wall(cen.x, rect.y2 + 1, Direction.Down))
-        
+
         return DigResult(rect, walls.toList(), DigResult.Type.Special)
     }
 }

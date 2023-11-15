@@ -9,16 +9,19 @@ import com.egoal.darkestpixeldungeon.levels.diggers.*
 import com.egoal.darkestpixeldungeon.levels.diggers.normal.RectDigger
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
+import com.watabou.utils.Random
 
 class WandDigger : RectDigger() {
     val guard = WandGuard()
 
     override fun chooseRoomSize(wall: Wall): Point {
-        val size = super.chooseRoomSize(wall)
+        val x = Random.IntRange(5, 9)
+        val y = Random.IntRange(5, 9)
+
         return if (wall.direction.vertical)
-            if (size.x > size.y) Point(size.y, size.x) else size
+            if (x > y) Point(y, x) else Point(x, y)
         else
-            if (size.x > size.y) size else Point(size.y, size.x)
+            if (x > y) Point(x, y) else Point(y, x)
     }
 
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {

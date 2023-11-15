@@ -3,6 +3,7 @@ package com.egoal.darkestpixeldungeon.levels.diggers.normal
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
 import com.egoal.darkestpixeldungeon.levels.diggers.*
+import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 
@@ -22,6 +23,17 @@ open class RoundDigger : Digger() {
         for (p in rect.getAllPoints())
             if (Point.DistanceL22(cen, p) <= hs2)
                 Set(level, p, Terrain.EMPTY)
+
+        rect.getAllPoints()
+                .filter {
+                    val i = level.pointToCell(it)
+                    level.map[i] == Terrain.WALL &&
+                            PathFinder.NEIGHBOURS4.any { level.map[i + it] == Terrain.EMPTY }
+                }.filter {
+                    Random.Float() < .3f
+                }.forEach {
+                    Set(level, it, Terrain.EMPTY)
+                }
 
         val door = rect.center
         if (wall.direction.horizontal)

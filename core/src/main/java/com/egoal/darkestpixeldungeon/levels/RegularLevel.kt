@@ -537,7 +537,7 @@ abstract class RegularLevel : Level() {
                 CircleDigger::class.java to .05f,
                 DiamondDigger::class.java to .05f,
                 LatticeDigger::class.java to .025f,
-                RectDigger::class.java to 1.25f,
+                RectDigger::class.java to 1f,
                 RoundDigger::class.java to .05f,
                 StripDigger::class.java to .1f,
                 CrossDigger::class.java to .05f,

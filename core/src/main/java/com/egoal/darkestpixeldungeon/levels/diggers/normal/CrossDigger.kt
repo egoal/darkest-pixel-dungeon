@@ -34,7 +34,6 @@ class CrossDigger : Digger() {
         else door.y = wall.y1
         Set(level, door, Terrain.DOOR)
 
-        val cen = rect.center
         val walls = ArrayList<Wall>()
         if (wall.direction.opposite != Direction.Left)
             walls.add(Wall.Left(rect.x1 - 1, rect.y1 + dh, rect.y2 - dh))
