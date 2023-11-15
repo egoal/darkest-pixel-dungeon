@@ -20,46 +20,25 @@
  */
 package com.egoal.darkestpixeldungeon.items.weapon
 
+import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.EnchantmentExtraDamage
 import com.egoal.darkestpixeldungeon.actors.hero.perks.ExtraStrengthPower
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Arrogant
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Bloodthirsty
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Provocation
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Dazzling
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Projecting
-import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.KindOfWeapon
 import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfFuror
 import com.egoal.darkestpixeldungeon.items.rings.RingOfSharpshooting
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Annoying
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Displacing
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Exhausting
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Fragile
-import com.egoal.darkestpixeldungeon.items.weapon.curses.Sacrificial
 import com.egoal.darkestpixeldungeon.items.weapon.curses.Wayward
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Blazing
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Chilling
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Eldritch
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Lucky
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Shocking
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Storming
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Stunning
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Suppress
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Unstable
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vampiric
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
-import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Vorpal
+import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Projecting
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.MissileWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.max
@@ -95,7 +74,12 @@ abstract class Weapon : KindOfWeapon() {
     override fun proc(dmg: Damage): Damage {
         var dmg = dmg
         if (inscription != null) dmg = inscription!!.proc(this, dmg)
-        if (enchantment != null) dmg = enchantment!!.proc(this, dmg)
+        if (enchantment != null) {
+            dmg = enchantment!!.proc(this, dmg)
+            if (dmg.from is Hero) {
+                Dungeon.hero.heroPerk.get(EnchantmentExtraDamage::class.java)?.procDamage(dmg)
+            }
+        }
 
         if (!levelKnown) {
             if (--hitsToKnow <= 0) {

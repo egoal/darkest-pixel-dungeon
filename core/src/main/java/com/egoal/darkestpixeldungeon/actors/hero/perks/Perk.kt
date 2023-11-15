@@ -201,7 +201,9 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
 //                LevelPerception() to 1f
                 Maniac() to 1f,
                 PolearmMaster() to 0.8f,
-                Ease() to 1f
+                Ease() to 1f,
+                EnchantmentExtraDamage() to 1f,
+                FastMoveOnKilling() to 1f,
         )
     }
 }

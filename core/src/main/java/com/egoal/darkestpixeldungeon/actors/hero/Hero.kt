@@ -1083,10 +1083,11 @@ class Hero : Char() {
     }
 
     override fun recoverHP(dhp: Int, src: Any?) {
-        if (dhp > 0 && belongings.weapon is BoethiahsBlade) {
-            super.recoverHP(dhp / 2, src)
-        } else
-            super.recoverHP(dhp, src)
+        val adhp = if (dhp > 0 && belongings.weapon is BoethiahsBlade) dhp / 2
+        else dhp
+
+        super.recoverHP(adhp, src)
+        if (buff(TorsoOfTheElder.HealthChecker::class.java) != null) HP = min(HP, (HT * .3f).toInt())
 
         if (!isAlive) Dungeon.fail(src?.javaClass)
     }
@@ -1282,6 +1283,10 @@ class Hero : Char() {
         if (rangedWeapon != null) {
             // killed by a ranged weapon
             heroPerk.get(FinishingShot::class.java)?.onKilledChar(this, ch, rangedWeapon!!)
+        }
+
+        if (heroPerk.has(FastMoveOnKilling::class.java)) {
+            Buff.prolong(this, HasteRune.Haste::class.java, 3f)
         }
 
         GLog.i(Messages.capitalize(Messages.get(Char::class.java, "defeat", ch.name)))

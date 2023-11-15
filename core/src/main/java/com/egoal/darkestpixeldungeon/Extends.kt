@@ -48,7 +48,3 @@ object KRandom {
         return selected
     }
 }
-
-object KGameMath {
-
-}

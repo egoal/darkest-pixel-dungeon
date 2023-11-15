@@ -328,7 +328,8 @@ object Generator {
             EyeballOfTheElder.Left::class to 1f,
             // HomurasShield::class to 0.5f,
             DragonsSquama::class to 1f,
-            GoddessRadiance::class to 0f
+            GoddessRadiance::class to 0f,
+            TorsoOfTheElder::class to 1f,
     )
 
     object ARTIFACT : ClassMapGenerator(HashMap()), Bundlable {

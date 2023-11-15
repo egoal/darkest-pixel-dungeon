@@ -30,6 +30,7 @@ class BrewEnhancedPotion : Perk() {
     init {
         addTags(Tag.Viability)
     }
+
     override fun image(): Int = PerkImageSheet.BREW_ENHANCED
     private var nextProb = 0.333f
 
@@ -254,4 +255,9 @@ class Telepath : Perk(2) {
     }
 
     fun range() = 2 * level // 2, 4
+}
+
+// see Hero::onKillChar
+class FastMoveOnKilling : Perk() {
+    override fun image(): Int = PerkImageSheet.FastMoveOnKilling
 }

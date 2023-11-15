@@ -25,6 +25,7 @@ class BaredAngry : Perk() {
     init {
         addTags(Tag.Bare, Tag.Crit)
     }
+
     override fun image(): Int = PerkImageSheet.BARED_ANGRY
 
     fun procGivenDamage(dmg: Damage, hero: Hero) {
@@ -40,6 +41,7 @@ class BaredSwiftness : Perk() {
     init {
         addTags(Tag.Bare, Tag.Evade)
     }
+
     override fun image(): Int = PerkImageSheet.BARED_SWIFTNESS
 
     fun speedFactor(hero: Hero): Float = if (noArmor(hero)) 1.2f else 1f
@@ -49,10 +51,11 @@ class BaredSwiftness : Perk() {
     private fun noArmor(hero: Hero): Boolean = hero.belongings.armor == null
 }
 
-class BaredStealth: Perk(){
+class BaredStealth : Perk() {
     init {
         addTags(Tag.Bare, Tag.Evade, Tag.Viability)
     }
+
     override fun image(): Int = PerkImageSheet.BARED_STEALTH
 }
 
@@ -60,6 +63,7 @@ class ExplodeBrokenShot : Perk() {
     init {
         addTags(Tag.Ranged)
     }
+
     override fun image(): Int = PerkImageSheet.SHOT_EXPLODE
 }
 
@@ -67,6 +71,7 @@ class ExtraCritProbability : Perk.Additional(5) {
     init {
         addTags(Tag.Melee, Tag.Crit)
     }
+
     override fun image(): Int = PerkImageSheet.CRIT_PROB
 
     private fun extraProb(): Float = 0.01f + 0.05f * level
@@ -84,6 +89,7 @@ class ExtraStrengthPower : Perk(3) {
     init {
         addTags(Tag.Melee)
     }
+
     override fun image(): Int = PerkImageSheet.STRENGTH_POWER
 
     fun affectDamage(dmg: Damage, exStr: Int) {
@@ -96,6 +102,7 @@ class FinishingShot : Perk() {
     init {
         addTags(Tag.Ranged)
     }
+
     override fun image(): Int = PerkImageSheet.FINISHING_SHOT
 
     fun onKilledChar(hero: Hero, ch: Char, weapon: MissileWeapon) {
@@ -107,6 +114,7 @@ class HardCrit : Perk(5) {
     init {
         addTags(Tag.Crit)
     }
+
     override fun image(): Int = PerkImageSheet.CRIT_HARD
 
     fun procCrit(dmg: Damage) {
@@ -120,6 +128,7 @@ class Maniac : Perk() {
     init {
         addTags(Tag.Melee)
     }
+
     override fun image(): Int = PerkImageSheet.MANIAC
 
     fun speedFactor(hero: Hero): Float {
@@ -164,6 +173,7 @@ class PressureIsPower : Perk() {
     init {
         addTags(Tag.Melee)
     }
+
     override fun image(): Int = PerkImageSheet.PRESSURE_POWER
 
     fun affectDamage(dmg: Damage, hero: Hero, pressure: Pressure) {
@@ -179,6 +189,7 @@ class PureCrit : Perk() {
     init {
         addTags(Tag.Crit)
     }
+
     override fun image(): Int = PerkImageSheet.CRIT_PURE
 
     fun procCrit(dmg: Damage) {
@@ -190,6 +201,7 @@ class RangedShot : Perk() {
     init {
         addTags(Tag.Ranged)
     }
+
     override fun image(): Int = PerkImageSheet.RANGED_SHOT
 
     fun affectDamage(dmg: Damage) {
@@ -204,6 +216,7 @@ class VampiricCrit : Perk(5) {
     init {
         addTags(Tag.Crit, Tag.Melee, Tag.Viability)
     }
+
     override fun image(): Int = PerkImageSheet.CRIT_VAMP
 
     fun procCrit(dmg: Damage) {
@@ -214,5 +227,19 @@ class VampiricCrit : Perk(5) {
 
         if (eff > 0)
             hero.recoverHP(eff, this)
+    }
+}
+
+// see Weapon::proc
+class EnchantmentExtraDamage : Perk(3) {
+    init {
+        addTags(Tag.Melee)
+    }
+
+    override fun image(): Int = PerkImageSheet.EnchantmentExtraDamage
+
+    fun procDamage(dmg: Damage) {
+        val r = 1f + 0.05 + 0.15 * level
+        dmg.value = (dmg.value * r).toInt()
     }
 }

@@ -66,8 +66,10 @@ object PerkImageSheet {
     const val EASE = 59
     const val BARED_STEALTH = 60
     const val BARED_RELIEVE = 61
+    const val EnchantmentExtraDamage = 62
+    const val FastMoveOnKilling = 63
 
-    private const val NEGATIVE = 64
+    private const val NEGATIVE = 80
     const val APPETITE_RAVENOUS = NEGATIVE + 0
     const val DISCOUNT_NEG = NEGATIVE + 1
 }

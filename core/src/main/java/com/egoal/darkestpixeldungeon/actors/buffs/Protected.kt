@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.items.specials.KnightCore
 import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
+import kotlin.math.min
 
 class Protected : Buff() {
     var par_ = 0f
@@ -12,13 +13,15 @@ class Protected : Buff() {
         if (!target.isAlive)
             diactivate()
         else {
-            if (target.SHLD >= shieldCap())
+            val cap = shieldCap()
+
+            if (target.SHLD > cap)
                 target.SHLD -= 1
             else {
                 par_ += shieldReg()
                 while (par_ >= 1) {
                     --par_
-                    ++target.SHLD
+                    target.SHLD = min(target.SHLD+ 1, cap)
                 }
             }
 

@@ -28,13 +28,20 @@ import com.watabou.utils.Random
 import kotlin.math.max
 
 class Lucky : Inscription(4) {
-    private val rpr = Random.PseudoRadix(RADIX)
+    private var chanceFix = 0f // no need to store.
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         val level = max(0, weapon.level())
-        val ratio = (55f + level) / 100f
-        if (rpr.check(ratio)) damage.value *= 2
-        else damage.value = 0
+        val ratio = .55f + chanceFix
+
+        if(Random.Float()< ratio) {
+            damage.value *= 2
+            chanceFix = 0f
+        }
+        else {
+            damage.value = 0
+            chanceFix += 0.01f * level
+        }
 
         return damage
     }
