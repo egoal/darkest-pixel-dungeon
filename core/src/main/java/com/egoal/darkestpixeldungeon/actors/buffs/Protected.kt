@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
+import com.egoal.darkestpixeldungeon.items.artifacts.TorsoOfTheElder
 import com.egoal.darkestpixeldungeon.items.specials.KnightCore
 import com.egoal.darkestpixeldungeon.items.unclassified.BrokenSeal
 import kotlin.math.min
@@ -45,6 +46,11 @@ class Protected : Buff() {
         target.buff(BrokenSeal.WarriorShield::class.java)?.let {
             reg += it.regShiled()
         }
+
+        target.buff(TorsoOfTheElder.HealthChecker::class.java)?.let {
+            reg += .05f
+        }
+
         return reg
     }
 

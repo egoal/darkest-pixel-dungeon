@@ -6,10 +6,12 @@ import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
+import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.egoal.darkestpixeldungeon.actors.hero.perks.GoodAppetite
 import com.egoal.darkestpixeldungeon.effects.BubbleText
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
@@ -55,7 +57,10 @@ open class Food(val enery: Float = Hunger.HUNGRY,
             Statistics.FoodEaten++
             Badges.validateFoodEaten()
 
-            hero.say(message)
+            if(hero.subClass== HeroSubClass.WINEBIBBER && javaClass== Food::class.java)
+                hero.say(M.L(this, "bibber_msg"))
+            else
+                hero.say(message)
         }
     }
 

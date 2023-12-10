@@ -279,7 +279,7 @@ abstract class RegularLevel : Level() {
         var nItems = 3
 
         // bonus from wealth
-        while (nItems <= 6 && Random.Float() < .2f + Dungeon.hero.wealthBonus() * 0.05f)
+        while (nItems <= 6 && Random.Float() < .25f + Dungeon.hero.wealthBonus() * 0.05f)
             ++nItems
 
         for (i in 1..nItems) {

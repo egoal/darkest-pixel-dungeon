@@ -4,6 +4,7 @@ import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Drunk
+import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
 import com.egoal.darkestpixeldungeon.actors.buffs.Tipsy
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
@@ -92,6 +93,7 @@ class Gourd : Item(), GreatBlueprint.Enchantable {
             if (enchanted) value += value / 4f
 
             hero.recoverSanity(value)
+            hero.buff(Hunger::class.java)!!.satisfy(Hunger.HUNGRY)
             Buff.prolong(hero, Drunk::class.java, 180f)
             hero.say(M.L(this, "get_drunk"))
         } else {

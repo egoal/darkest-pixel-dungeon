@@ -30,6 +30,12 @@ open class DiamondDigger : Digger() {
                 }.forEach {
                     Set(level, it, Terrain.EMPTY)
                 }
+        rect.getAllPoints().filter {
+            val i = level.pointToCell(it)
+            level.map[i] == Terrain.WALL && PathFinder.NEIGHBOURS4.count { level.map[i + it] == Terrain.EMPTY } == 3
+        }.forEach {
+            Set(level, it, Terrain.EMPTY)
+        }
 
         val door = rect.center
         if (wall.direction.horizontal)

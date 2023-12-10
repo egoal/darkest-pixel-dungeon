@@ -309,9 +309,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
         // testing code from here
-        TorsoOfTheElder().random().collect()
-        hero.heroPerk.add(EnchantmentExtraDamage())
-        hero.heroPerk.add(FastMoveOnKilling())
+//        TorsoOfTheElder().random().collect()
+//        hero.heroPerk.add(EnchantmentExtraDamage())
+//        hero.heroPerk.add(FastMoveOnKilling())
     }
 
     // called when hero level up

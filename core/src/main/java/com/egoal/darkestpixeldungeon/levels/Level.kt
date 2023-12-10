@@ -47,6 +47,7 @@ import com.egoal.darkestpixeldungeon.items.potions.PotionOfMight
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfStrength
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfLullaby
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
+import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfUpgrade
 import com.egoal.darkestpixeldungeon.items.unclassified.Stylus
 import com.egoal.darkestpixeldungeon.items.unclassified.Torch
@@ -987,6 +988,16 @@ abstract class Level : Bundlable {
             if (Dungeon.daggerNeeded() || Random.Float() < prob) {
                 items.add(CeremonialDagger())
                 Dungeon.limitedDrops.ceremonialDagger.count++
+            }
+        }
+
+        // extra remove curse if needed.
+        run {
+            val b = Dungeon.hero.belongings
+            if (b.getItem(ScrollOfRemoveCurse::class.java) == null) {
+                val cnt = b.equippedItems().count { it?.cursed == true } + b.backpack.items.count { it.cursed }
+                val p = (cnt - 1) * .1
+                if (Random.Float() < p) items.add(ScrollOfRemoveCurse())
             }
         }
 

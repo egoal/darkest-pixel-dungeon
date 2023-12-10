@@ -19,7 +19,7 @@ open class RoundDigger : Digger() {
 
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         val cen = rect.center
-        val hs2 = (rect.width/2) * (rect.width / 2)
+        val hs2 = (rect.width / 2) * (rect.width / 2)
         for (p in rect.getAllPoints())
             if (Point.DistanceL22(cen, p) <= hs2)
                 Set(level, p, Terrain.EMPTY)
@@ -34,6 +34,12 @@ open class RoundDigger : Digger() {
                 }.forEach {
                     Set(level, it, Terrain.EMPTY)
                 }
+        rect.getAllPoints().filter {
+            val i = level.pointToCell(it)
+            level.map[i] == Terrain.WALL && PathFinder.NEIGHBOURS4.count { level.map[i + it] == Terrain.EMPTY } == 3
+        }.forEach {
+            Set(level, it, Terrain.EMPTY)
+        }
 
         val door = rect.center
         if (wall.direction.horizontal)

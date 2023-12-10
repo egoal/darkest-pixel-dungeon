@@ -33,7 +33,7 @@ class TorsoOfTheElder : Artifact() {
         if (re) {
             hero.MSHLD += shld()
             hero.HP = min(hero.HP, (hero.HT * .3f).toInt())
-            hero.magicalResistance = min(hero.magicalResistance + .25f, .5f)
+            hero.magicalResistance += .25f
         }
         return re
     }

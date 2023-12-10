@@ -442,8 +442,8 @@ object Generator {
 
     // 
     private val InitCategoryMap = hashMapOf(
-            WEAPON to 100f,
-            ARMOR to 60f,
+            WEAPON to 110f,
+            ARMOR to 50f,
             POTION to 300f,
             SCROLL to 250f,
             WAND to 40f,

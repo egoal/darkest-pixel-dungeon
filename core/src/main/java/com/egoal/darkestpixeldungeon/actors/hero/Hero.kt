@@ -627,6 +627,7 @@ class Hero : Char() {
     override fun defenseProc(dmg: Damage): Damage {
         buff(Earthroot.Armor::class.java)?.procTakenDamage(dmg)
         buff(Sungrass.Health::class.java)?.absorb(dmg.value)
+        buff(TorsoOfTheElder.HealthChecker::class.java)?.hit()
 
         if (belongings.armor != null && buff(ArmorExpose::class.java) == null)
             belongings.armor!!.proc(dmg)
@@ -667,6 +668,10 @@ class Hero : Char() {
         drunk?.procTakenDamage(dmg)
 
         if (dmg.type == Damage.Type.MENTAL) return takeMentalDamage(dmg)
+        else if (HP > HT / 3 && dmg.value >= HP && Random.Int(5) == 0) {
+            dmg.value = HP - 1
+            GLog.n(M.L(this, "almost_dead"))
+        }
 
         val dmgToken = super.takeDamage(dmg)
         heroPerk.get(LowHealthRegeneration::class.java)?.onDamageTaken(this)
