@@ -394,6 +394,7 @@ public class ItemSpriteSheet {
     public static final int SHADOWMOON = SHADOWMOON_RDY + 1;
     public static final int KNIGHT = SPECIALS + 9;
     public static final int GLADIATOR = SPECIALS + 10;
+    public static final int BERSERK = SPECIALS + 11;
 
     //32 free slots
 

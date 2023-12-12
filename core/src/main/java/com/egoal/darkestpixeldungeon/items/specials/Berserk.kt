@@ -20,7 +20,7 @@ import kotlin.math.round
 
 class Berserk : Special() {
     init {
-        image = ItemSpriteSheet.NULLWARN
+        image = ItemSpriteSheet.BERSERK
 
         usesTargeting = true
     }

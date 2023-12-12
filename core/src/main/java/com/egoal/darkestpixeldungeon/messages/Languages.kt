@@ -35,7 +35,7 @@ enum class Languages(val nativeName: String,
 
     CHINESE("中文", Locale.CHINESE, Status.REVIEWED, arrayOf<String>("Jinkeloid(zdx00793)"),
             arrayOf<String>("931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "Hmdzl001", "Tempest102")),
-    RUSSIAN("русский", Locale("ru"), Status.REVIEWED, arrayOf<String>("John Deeper"), arrayOf<String>("Red Rum")),
+    RUSSIAN("русский", Locale("ru"), Status.UNREVIEWED, arrayOf<String>("John Deeper"), arrayOf<String>("Red Rum")),
     ;
 
     enum class Status {
