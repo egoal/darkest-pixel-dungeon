@@ -398,6 +398,9 @@ class Hero : Char() {
         val roe = Ring.getBonus(this, RingOfEvasion.Evasion::class.java)
         var factor = 1.1f.pow(roe)
 
+        // weapon
+        dex *= (rangedWeapon ?: belongings.weapon)?.evasionFactor(this, damage.to as Char) ?: 1f
+
         if (paralysed > 0) factor *= 0.5f
 
         if (heroClass == HeroClass.SORCERESS) factor *= 0.8f
@@ -796,7 +799,10 @@ class Hero : Char() {
     }
 
     fun interrupt() {
-        if (isAlive && curAction is HeroAction.Move && (curAction as HeroAction.Move).dst != pos)
+        if (isAlive &&
+                ((curAction is HeroAction.Move && curAction!!.dst != pos) ||
+                        curAction is HeroAction.Descend ||
+                        curAction is HeroAction.Ascend))
             lastAction = curAction
         curAction = null
     }

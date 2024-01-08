@@ -142,6 +142,7 @@ public class ItemSpriteSheet {
     public static final int SCYTHE = WEP_TIER4 + 8;
     // 9, 10
     public static final int KUSARIGAMA = WEP_TIER4 + 11;
+    public static final int LONGEST_SPEAR = WEP_TIER4 + 12;
 
     private static final int WEP_TIER5 = xy(1, 9);   //16 slots
     public static final int Claymore = WEP_TIER5 + 0;

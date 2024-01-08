@@ -81,9 +81,9 @@ abstract class HeroAction(var dst: Int = 0) {
             if (hero.pos == dst) {
                 val heap = Dungeon.level.heaps.get(dst)
                 if (heap != null) {
-                    val item = heap.peek()
+                    val item = heap.peek()!!
 
-                    if (item!!.doPickUp(hero)) {
+                    if (item.doPickUp(hero)) {
                         heap.pickUp()
 
                         if (item is Dewdrop || item is TimekeepersHourglass.Companion.SandBag ||
@@ -104,7 +104,7 @@ abstract class HeroAction(var dst: Int = 0) {
 
                         hero.curAction = null
                     } else {
-                        heap.sprite!!.drop()
+                        heap.sprite.drop()
                         hero.ready()
                     }
                 } else

@@ -80,6 +80,8 @@ abstract class KindOfWeapon : EquipableItem() {
 
     open fun accuracyFactor(hero: Hero, target: Char): Float = 1f
 
+    open fun evasionFactor(hero: Hero, target: Char): Float = 1f
+
     open fun speedFactor(hero: Hero): Float = 1f
 
     open fun reachFactor(hero: Hero): Int = 1
