@@ -46,7 +46,7 @@ class WandGuard : Mob() {
         wand.execute(Dungeon.hero, "") //patch: assign curUser
 
         if (enemy is Hero) enemy.busy()
-        wand.fx(shot, Callback {
+        wand.fx(shot) {
             // hit hero 
             val dmg = giveDamage(enemy)
             // enemy.defendDamage(dmg)
@@ -61,11 +61,14 @@ class WandGuard : Mob() {
 
             //todo: i cannot use Wand::onZap(): coupling with Hero, may find way out
             //todo: fire wand performs not well
-        })
 
-        spend(TIME_TO_ZAP) //fixme: this wont wait the above animation
+            next()
+        }
 
-        return true
+        spend(TIME_TO_ZAP)
+
+        return false
+//        return true
     }
 
     private fun damageRoll(): Int = Random.NormalIntRange(2 + 2 * wand.level(), 8 + 3 * wand.level())

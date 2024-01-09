@@ -50,6 +50,7 @@ import com.egoal.darkestpixeldungeon.scenes.SurfaceScene
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndMessage
+import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.noosa.Camera
 import com.watabou.noosa.Game
 import com.watabou.noosa.audio.Sample
@@ -219,18 +220,27 @@ abstract class HeroAction(var dst: Int = 0) {
     }
 
     class Descend(stairs: Int) : HeroAction(stairs) {
+        private var confirmed = false
 
         override fun act(hero: Hero): Boolean {
             if (hero.pos == dst && hero.pos == Dungeon.level.exit) {
-                if (Dungeon.depth == 0) {
-                    // leave village 
+                if (Dungeon.depth == 0 && !confirmed) {
+                    // leave village
+                    hero.interrupt()
+                    WndOptions.Show(M.L(HeroAction::class.java, "descend_title"), M.L(HeroAction::class.java, "descend_message"),
+                            M.L(HeroAction::class.java, "descend_yes"), M.L(HeroAction::class.java, "descend_no")) {
+                        if (it == 0) {
+                            confirmed = true
+                            hero.resume()
+                        }
+                    }
+                } else {
+                    hero.curAction = null
+                    hero.buff(TimekeepersHourglass.TimeFreeze::class.java)?.detach()
+
+                    InterlevelScene.mode = InterlevelScene.Mode.DESCEND
+                    Game.switchScene(InterlevelScene::class.java)
                 }
-
-                hero.curAction = null
-                hero.buff(TimekeepersHourglass.TimeFreeze::class.java)?.let { it.detach() }
-
-                InterlevelScene.mode = InterlevelScene.Mode.DESCEND
-                Game.switchScene(InterlevelScene::class.java)
                 return false
             }
 

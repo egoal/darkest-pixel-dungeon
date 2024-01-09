@@ -942,7 +942,7 @@ class Hero : Char() {
         if (cell == -1) return false
 
         curAction = defineAction(cell)
-        if (curAction is HeroAction.Move) lastAction = null // move call last action
+        if (curAction is HeroAction.Move) lastAction = null // move cancel last action
 
         return true
     }

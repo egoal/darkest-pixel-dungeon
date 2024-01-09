@@ -20,11 +20,11 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
+import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.sprites.BatSprite
-import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.VampireAttack
+import com.egoal.darkestpixeldungeon.sprites.BatSprite
 import com.watabou.utils.Random
 
 class Bat : Mob() {
@@ -38,7 +38,7 @@ class Bat : Mob() {
         abilities.add(VampireAttack())
     }
 
-    override fun viewDistance(): Int = seeDistance()
+    override fun viewDistance(): Int = if (Statistics.Clock.state == Statistics.ClockTime.State.Day) 3 else seeDistance()
 
     override fun giveDamage(enemy: Char): Damage {
         return if (Random.Int(4) == 0)
