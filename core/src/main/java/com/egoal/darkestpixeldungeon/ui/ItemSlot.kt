@@ -20,13 +20,13 @@
  */
 package com.egoal.darkestpixeldungeon.ui
 
-import com.egoal.darkestpixeldungeon.items.armor.Armor
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
-import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.potions.Potion
+import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
+import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.PixelScene
@@ -87,9 +87,9 @@ open class ItemSlot() : Button() {
         bottomRight.x = x + (width - bottomRight.width())
         bottomRight.y = y + (height - bottomRight.height())
 
-        if (bottomRightIcon != null) {
-            bottomRightIcon!!.x = bottomRight.x - bottomRightIcon!!.width() - 2
-            bottomRightIcon!!.y = y + (height - bottomRightIcon!!.height())
+        bottomRightIcon?.let {
+            it.x = bottomRight.x - it.width() - 2
+            it.y = y + (height - it.height())
         }
     }
 

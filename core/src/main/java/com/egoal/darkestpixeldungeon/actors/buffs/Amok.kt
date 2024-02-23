@@ -25,7 +25,7 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 
-class Amok : FlavourBuff() {
+open class Amok : FlavourBuff() {
     init {
         type = buffType.NEGATIVE
     }

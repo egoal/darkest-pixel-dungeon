@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.bags
 import com.egoal.darkestpixeldungeon.actors.hero.Belongings
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.Potion
+import com.egoal.darkestpixeldungeon.items.potions.Reagent
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 
 class PotionBandolier : Bag() {
@@ -32,7 +33,7 @@ class PotionBandolier : Bag() {
         size = Belongings.BACKPACK_SIZE
     }
 
-    override fun canHold(item: Item): Boolean = item is Potion && super.canHold(item)
+    override fun canHold(item: Item): Boolean = (item is Potion || item is Reagent) && super.canHold(item)
 
     override fun price(): Int = 40
 }

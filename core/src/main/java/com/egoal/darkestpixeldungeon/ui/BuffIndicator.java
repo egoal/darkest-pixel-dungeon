@@ -113,6 +113,7 @@ public class BuffIndicator extends Component {
   public static final int SHIELDS_UP = 69;
   public static final int ARMOR_EXPOSE = 70;
   public static final int HASTE = 71;
+  public static final int CATWALK = 72;
 
   public static final int SIZE = 7;
 

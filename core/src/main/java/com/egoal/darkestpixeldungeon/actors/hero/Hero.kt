@@ -1090,6 +1090,8 @@ class Hero : Char() {
 
         if (heroPerk.has(BaredStealth::class.java)) stealth += 3
 
+        buff(Catwalk::class.java)?.let { stealth += 1 }
+
         return stealth
     }
 

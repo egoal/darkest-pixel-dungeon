@@ -228,6 +228,17 @@ object Generator {
             PotionOfStrength::class to 0f
     ))
 
+    object REAGENT: BalancedClassMapGenerator(hashMapOf(
+            ReagentOfHealing::class to 15f,
+            ReagentOfCatwalk::class to 10f,
+            ReagentOfSorcery::class to 5f,
+            ReagentOfSnakeBite::class to 15f,
+            ReagentOfHallucinogenic::class to 5f,
+            ReagentOfPetrifaction::class to 5f,
+            ReagentOfSweet::class to 15f,
+            ReagentOfPrecipitate::class to 10f,
+    ))
+
     object SCROLL : BalancedClassMapGenerator(hashMapOf(
             ScrollOfIdentify::class to 25f,
             ScrollOfTeleportation::class to 10f,

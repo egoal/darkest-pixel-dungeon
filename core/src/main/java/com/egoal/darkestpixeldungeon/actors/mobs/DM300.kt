@@ -184,7 +184,7 @@ class DM300 : Mob() {
         val taken = super.takeDamage(dmg)
 
         if (taken >= 4) {
-            val dht = GameMath.clamp(taken / 2, 5, 1)
+            val dht = GameMath.clamp(taken / 2, 1, 5)
             HT = max(HT - dht, 10)
         }
 

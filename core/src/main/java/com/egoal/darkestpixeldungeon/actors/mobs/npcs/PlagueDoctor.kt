@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
 import com.egoal.darkestpixeldungeon.items.potions.ReagentOfHealing
 import com.egoal.darkestpixeldungeon.items.weapon.missiles.CeremonialDagger
@@ -16,9 +17,9 @@ class PlagueDoctor : PotionSeller() {
     override fun initSellItems() {
         addItemToSell(PotionOfToxicGas())
         addItemToSell(CeremonialDagger())
-        if (com.watabou.utils.Random.Float() < 0.3f)
-            addItemToSell(CeremonialDagger())
-        if (Dungeon.depth < 5 || com.watabou.utils.Random.Float() < 0.3f) addItemToSell(ReagentOfHealing())
+        if (com.watabou.utils.Random.Float() < 0.3f) addItemToSell(CeremonialDagger())
+        addItemToSell(Generator.REAGENT.generate())
+
         Dungeon.limitedDrops.ceremonialDagger.count++
 
         super.initSellItems()

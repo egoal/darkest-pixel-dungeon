@@ -6,12 +6,11 @@ import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.unclassified.PotionTestPaper
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
 import com.egoal.darkestpixeldungeon.items.potions.ReagentOfHealing
+import com.egoal.darkestpixeldungeon.items.unclassified.PotionTestPaper
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.PotionSellerSprite
 import com.watabou.noosa.audio.Sample
@@ -30,7 +29,9 @@ open class PotionSeller : Merchant() {
     override fun initSellItems() {
         // potions
         val cntItems = Random.NormalIntRange(3, 8)
-        if(Dungeon.depth<5) addItemToSell(ReagentOfHealing())
+        if (Dungeon.depth < 5) addItemToSell(ReagentOfHealing())
+        else addItemToSell(Generator.REAGENT.generate())
+        addItemToSell(Generator.REAGENT.generate())
 
         repeat(cntItems) {
             val item = if (Random.Float() < 0.6f) Generator.POTION.generate()
@@ -41,7 +42,7 @@ open class PotionSeller : Merchant() {
                 item.reinforce()
             addItemToSell(item)
         }
-        addItemToSell(PotionOfHealing())
+//        addItemToSell(PotionOfHealing())
         addItemToSell(PotionTestPaper().quantity(Random.Int(1, 3)))
 
         shuffleItems()

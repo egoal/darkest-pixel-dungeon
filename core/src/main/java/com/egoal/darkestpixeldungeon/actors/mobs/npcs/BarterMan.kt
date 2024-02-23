@@ -11,9 +11,7 @@ import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.SimpleMobSprite
-import com.egoal.darkestpixeldungeon.windows.WndOptions
 import com.watabou.utils.Random
 
 class BarterMan : Merchant() {
@@ -63,6 +61,10 @@ class BarterMan : Merchant() {
     }
 
     inner class WndTrade : WndShop() {
+        init {
+            goodsButtons.forEach { it.hidePrice() }
+        }
+
         override fun onWantBuy(item: Item, itemIndex: Int) {
 //            val wnd = object : WndOptions(ItemSprite(item), item.name(), item.info(), M.L(BarterMan::class.java, "swap")) {
 //                override fun onSelect(index: Int) {

@@ -244,6 +244,7 @@ open class Merchant : NPC() {
     open inner class GoodsButton(item: Item) : ItemSlot(item) {
         private lateinit var bg: ColorBlock
         private lateinit var price: BitmapText
+        private var price_hidden = false
 
         init {
             price.text(buyPrice(item).toString())
@@ -288,8 +289,18 @@ open class Merchant : NPC() {
         }
 
         fun redPrice(on: Boolean = true) {
-            if (on) price.hardlight(0xff0000)
-            else price.hardlight(0xffff00)
+            if (price_hidden) {
+                price.hardlight(0x808080)
+            } else {
+                if (on) price.hardlight(0xff0000)
+                else price.hardlight(0xffff00)
+            }
+        }
+
+        fun hidePrice() {
+            price_hidden = true
+            price.text("---")
+            redPrice()
         }
     }
 }

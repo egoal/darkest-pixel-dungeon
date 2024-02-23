@@ -78,7 +78,7 @@ public class ItemSpriteSheet {
     public static final int GREAT_BLUEPRINT = SINGLE_USE + 18;
     public static final int GOLDEN_CLAW = SINGLE_USE + 19;
     public static final int EVIL_GOLDEN_CLAW = GOLDEN_CLAW + 1;
-    public static final int HEAL_REAGENT = SINGLE_USE + 21;
+//    public static final int HEAL_REAGENT = SINGLE_USE + 21;
     public static final int FISH_BONE = SINGLE_USE + 22;
     public static final int TOME_BLUE = SINGLE_USE + 23;
     public static final int TOME_YELLOW = SINGLE_USE + 24;
@@ -342,7 +342,15 @@ public class ItemSpriteSheet {
     public static final int DPD_BOOKS = BOOKS + 0;
     public static final int DPD_NOTES = BOOKS + 1;
 
-    //16 free slots
+    public static final int REAGENT_EMPTY = xy(1, 24);
+    public static final int REAGENT_HEALING = REAGENT_EMPTY + 1;
+    public static final int REAGENT_CATWALK = REAGENT_EMPTY + 2;
+    public static final int REAGENT_SORCERY = REAGENT_EMPTY + 3;
+    public static final int REAGENT_SNAKE_BITE = REAGENT_EMPTY + 4;
+    public static final int REAGENT_HALLUCINOGENIC = REAGENT_EMPTY + 5;
+    public static final int REAGENT_PETRIFACTION = REAGENT_EMPTY + 6;
+    public static final int REAGENT_SWEET = REAGENT_EMPTY + 7;
+    public static final int REAGENT_PRECIPITATE = REAGENT_EMPTY + 8;
 
     private static final int FOOD = xy(1, 25);  //32m slots
     public static final int MEAT = FOOD + 0;
