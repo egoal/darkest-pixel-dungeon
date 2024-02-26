@@ -25,10 +25,12 @@ class ReagentOfPrecipitate : Reagent(false) {
         super.execute(hero, action)
         if (action == AC_SMEAR) {
             GameScene.selectItem({
-                detach(hero.belongings.backpack)
-                val weapon = it as Weapon
-                weapon.enchantment!!.left += max(weapon.enchantment!!.left, 10f)
-                GLog.p(M.L(this, "smeared", weapon.name()))
+                if(it!=null) {
+                    detach(hero.belongings.backpack)
+                    val weapon = it as Weapon
+                    weapon.enchantment!!.left += max(weapon.enchantment!!.left, 10f)
+                    GLog.p(M.L(this, "smeared", weapon.name()))
+                }
             }, M.L(this, "select_item"), {
                 it is Weapon && it.enchantment != null && it.enchantment!!.left > 0f
             })

@@ -18,6 +18,7 @@ import com.egoal.darkestpixeldungeon.items.food.*
 import com.egoal.darkestpixeldungeon.items.helmets.StrawHat
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfHealing
+import com.egoal.darkestpixeldungeon.items.potions.Reagent
 import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
 import com.egoal.darkestpixeldungeon.items.unclassified.*
@@ -36,6 +37,7 @@ import com.watabou.utils.PathFinder
 import com.watabou.utils.Point
 import com.watabou.utils.Random
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * Created by 93942 on 2018/12/8.
@@ -124,7 +126,7 @@ class MerchantDigger : RectDigger() {
         if (Random.Float() < (Dungeon.depth / 5) * 0.2f)
             itemsToSpawn.add(SmokeSparks().quantity(Random.NormalIntRange(1, 4)))
 
-        ChooseBag(Dungeon.hero.belongings)?.let { itemsToSpawn.add(it) }
+        chooseBag(Dungeon.hero.belongings)?.let { itemsToSpawn.add(it) }
 
         itemsToSpawn.add(OverpricedRation())
         itemsToSpawn.add(OverpricedRation())
@@ -161,59 +163,43 @@ class MerchantDigger : RectDigger() {
 
         itemsToSpawn.add(rare)
 
-        val hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass::class.java)
-        if (hourglass != null) {
-            var bags = 0
+        Dungeon.hero.belongings.getItem(TimekeepersHourglass::class.java)?.let {
             //creates the given float percent of the remaining bags to be dropped.
             //this way players who get the hourglass late can still max it, usually.
-            when (Dungeon.depth) {
-                6 -> bags = Math.ceil(((5 - hourglass.sandBags) * 0.20)).toInt()
-                11 -> bags = Math.ceil(((5 - hourglass.sandBags) * 0.25)).toInt()
-                16 -> bags = Math.ceil(((5 - hourglass.sandBags) * 0.50)).toInt()
-                21 -> bags = Math.ceil(((5 - hourglass.sandBags) * 0.80)).toInt()
+            val bags = when (Dungeon.depth) {
+                6 -> ceil((5 - it.sandBags) * .2f).toInt()
+                11 -> ceil((5 - it.sandBags) * .25f).toInt()
+                16 -> ceil((5 - it.sandBags) * .5f).toInt()
+                21 -> ceil((5 - it.sandBags) * .8f).toInt()
+                else -> 0
             }
-
-            for (i in 1..bags) {
+            repeat(bags) { i ->
                 itemsToSpawn.add(TimekeepersHourglass.Companion.SandBag())
-                hourglass.sandBags++
+                it.sandBags++
             }
         }
 
         return itemsToSpawn
     }
 
-    private fun ChooseBag(pack: Belongings): Item? {
-        var seeds = 0
-        var scrolls = 0
-        var potions = 0
-        var wands = 0
-
-        for (item in pack.backpack.items) {
-            if (!Dungeon.limitedDrops.seedBag.dropped() && item is Plant.Seed)
-                ++seeds
-            else if (!Dungeon.limitedDrops.scrollBag.dropped() && item is Scroll)
-                ++scrolls
-            else if (!Dungeon.limitedDrops.potionBag.dropped() && item is Potion)
-                ++potions
-            else if (!Dungeon.limitedDrops.wandBag.dropped() && item is Wand)
-                ++wands
-        }
+    private fun chooseBag(pack: Belongings): Item? {
+        val seeds = if (Dungeon.limitedDrops.seedBag.dropped()) -1 else pack.backpack.items.count { it is Plant.Seed }
+        val scrolls = if (Dungeon.limitedDrops.scrollBag.dropped()) -1 else pack.backpack.items.count { it is Scroll }
+        val potions = if (Dungeon.limitedDrops.potionBag.dropped()) -1 else pack.backpack.items.count { it is Potion || it is Reagent }
+        val wands = if (Dungeon.limitedDrops.wandBag.dropped()) -1 else pack.backpack.items.count { it is Wand }
 
         //then pick whichever valid bag has the most items available to put into it.
         //note that the order here gives a perference if counts are otherwise equal
-        if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon
-                        .limitedDrops.seedBag.dropped()) {
+        if (seeds >= scrolls && seeds >= potions && seeds >= wands && seeds >= 0) {
             Dungeon.limitedDrops.seedBag.drop()
             return SeedPouch()
-
-        } else if (scrolls >= potions && scrolls >= wands &&
-                !Dungeon.limitedDrops.scrollBag.dropped()) {
+        } else if (scrolls >= potions && scrolls >= wands && scrolls >= 0) {
             Dungeon.limitedDrops.scrollBag.drop()
             return ScrollHolder()
-        } else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
+        } else if (potions >= wands && potions >= 0) {
             Dungeon.limitedDrops.potionBag.drop()
             return PotionBandolier()
-        } else if (!Dungeon.limitedDrops.wandBag.dropped()) {
+        } else if (wands >= 0) {
             Dungeon.limitedDrops.wandBag.drop()
             return WandHolster()
         }

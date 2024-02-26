@@ -31,6 +31,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Charm
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.items.Heap
+import com.egoal.darkestpixeldungeon.items.potions.ReagentOfSorcery
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.windows.WndQuest
 import com.watabou.utils.PathFinder
@@ -81,7 +82,7 @@ abstract class NPC : Mob() {
 
         companion object {
             private val IMMUNITIES = hashSetOf<Class<*>>(
-                    Corruption::class.java, Charm::class.java
+                    Corruption::class.java, Charm::class.java, ReagentOfSorcery::class.java
             )
         }
     }

@@ -22,9 +22,11 @@ class ReagentOfSorcery : Reagent(false) {
 
         Actor.findChar(cell)?.let {
             val props = it.properties()
-            if (props.contains(Char.Property.BOSS) || props.contains(Char.Property.MINIBOSS))
+            if (it.immunities.contains(ReagentOfSorcery::class.java)) it.say("?")
+            else if (props.contains(Char.Property.BOSS) || props.contains(Char.Property.MINIBOSS)) {
+                it.say("?")
                 GLog.n(M.L(this, "powerful"))
-            else if (props.contains(Char.Property.PHANTOM)) {
+            } else if (props.contains(Char.Property.PHANTOM)) {
                 it.destroy()
                 it.sprite.killAndErase()
                 Dungeon.level.mobs.remove(it)

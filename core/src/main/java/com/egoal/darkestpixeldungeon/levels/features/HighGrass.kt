@@ -53,6 +53,16 @@ object HighGrass {
 
     fun Harvest(level: Level, pos: Int, ch: Char?): Item? {
         var naturalismLevel = 0
+        if (ch is Hero) {
+            ch.buff(SandalsOfNature.Naturalism::class.java)?.let {
+                naturalismLevel = if (it.isCursed) -1
+                else {
+                    it.charge()
+                    it.itemLevel() + 1
+                }
+            }
+        }
+
         ch?.buff(SandalsOfNature.Naturalism::class.java)?.let { naturalism ->
             naturalismLevel = if (naturalism.isCursed) -1 else {
                 naturalism.charge()

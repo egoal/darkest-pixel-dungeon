@@ -8,6 +8,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.potions.Potion
 import com.egoal.darkestpixeldungeon.items.potions.PotionOfToxicGas
@@ -38,10 +39,11 @@ import com.watabou.noosa.ui.Component
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.ArrayList
-import kotlin.math.exp
+import java.util.*
 
 class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
+    private var energy = 80
+
     init {
         image = ItemSpriteSheet.EXTRACTION_FLASK
 
@@ -58,6 +60,8 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         reinforced = true
         GLog.p(Messages.get(this, "upgrade"))
     }
+
+    override fun status(): String? = "$energy"
 
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
@@ -186,6 +190,8 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
                         GLog.w(Messages.get(this, "cannot_inscribe"))
                 }
             }
+
+            earnEnergy(Random.Int(10) + if (reinforced) 30 else 25)
         }
 
         // spend time
@@ -216,6 +222,8 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         if (!p.doPickUp(Dungeon.hero))
             Dungeon.level.drop(p, Dungeon.hero.pos).sprite.drop()
 
+        earnEnergy(Random.Int(10) + if (reinforced) 15 else 5) // actually you cannot strengthen if not reinforced.
+
         // spend time
 
         with(curUser) {
@@ -227,6 +235,18 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
     }
 
     private fun minDewRequired() = if (reinforced) 3 else 4
+
+    private fun earnEnergy(amount: Int) {
+        energy += amount
+        while (energy >= 100) {
+            energy -= 100
+            val reagent = Generator.REAGENT.generate()
+            if (!reagent.doPickUp(curUser)) Dungeon.level.drop(reagent, curUser.pos).sprite.drop()
+
+            GLog.p(M.L(this, "reagent_generated", reagent.name()))
+            Sample.INSTANCE.play(Assets.SND_PUFF)
+        }
+    }
 
     private fun purifyWater() {
         val cnt = PathFinder.NEIGHBOURS9.count { Level.water[curUser.pos + it] }

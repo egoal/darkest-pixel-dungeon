@@ -142,7 +142,7 @@ public class Messages {
         return get(c.getSuperclass(), k, args);
       } else {
         Log.d("dpd", "missed string: " + k + " || " + key);
-        return "missed string: " + k;
+        return key; // missed string.
       }
     }
   }
