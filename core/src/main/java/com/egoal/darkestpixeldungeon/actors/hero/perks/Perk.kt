@@ -118,17 +118,17 @@ abstract class Perk(val maxLevel: Int = 1, var level: Int = 1) : Bundlable {
             }
 
             // alter probs
-            val countmap = HashMap<Tag, Int>()
-            for (t in Tag.values()) countmap[t] = 0
-            for (p in hero.heroPerk.perks)
-                for (t in p.tags)
-                    countmap[t] = countmap[t]!! + 1
-
-            for ((perk, prob) in availables) {
-                val cnt = perk.tags.sumOf { countmap[it]!! }
-                val fix = 3f - 2f * .85f.pow(cnt)
-                availables[perk] = prob * fix
-            }
+//            val countmap = HashMap<Tag, Int>()
+//            for (t in Tag.values()) countmap[t] = 0
+//            for (p in hero.heroPerk.perks)
+//                for (t in p.tags)
+//                    countmap[t] = countmap[t]!! + 1
+//
+//            for ((perk, prob) in availables) {
+//                val cnt = perk.tags.sumOf { countmap[it]!! }
+//                val fix = 3f - 2f * .85f.pow(cnt)
+//                availables[perk] = prob * fix
+//            }
             return KRandom.Chances(availables, count).map { it.javaClass.newInstance() }
         }
 

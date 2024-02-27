@@ -380,19 +380,19 @@ class Toolbar : Component() {
     }
 
     companion object {
-        private lateinit var instance: Toolbar
+        private var instance: Toolbar? =null
         private const val NUM_QUICK_SLOTS = 8
         private const val TAB_QUICK_SLOTS = 2
         private const val TOTAL_SLOTS_COUNT = NUM_QUICK_SLOTS * TAB_QUICK_SLOTS
 
         @JvmStatic
         fun updateLayout() {
-            instance.layout()
+            instance?.layout()
         }
 
         private val informer: CellSelector.Listener = object : CellSelector.Listener {
             override fun onSelect(cell: Int?) {
-                instance.examining = false
+                instance!!.examining = false
                 GameScene.examineCell(cell)
             }
 
