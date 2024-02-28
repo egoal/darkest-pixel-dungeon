@@ -239,7 +239,7 @@ class EnchantmentExtraDamage : Perk(3) {
     override fun image(): Int = PerkImageSheet.EnchantmentExtraDamage
 
     fun procDamage(dmg: Damage) {
-        val r = 1f + 0.05 + 0.15 * level
-        dmg.value = (dmg.value * r).toInt()
+        if (dmg.add_value > 0) dmg.add_value = (dmg.add_value * (1.25f + .25f * level)).toInt()
+        else dmg.value = (dmg.value * (1.05f + .15f * level)).toInt()
     }
 }

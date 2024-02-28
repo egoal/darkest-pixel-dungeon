@@ -47,7 +47,7 @@ class LightningTrap : Trap() {
 
     override fun activate() {
         Actor.findChar(pos)?.let {
-            it.takeDamage(Damage(max(1, Random.Int(it.HP / 3, it.HP * 2 / 3)), this, it).type(Damage.Type.MAGICAL).addElement(Damage.Element.LIGHT))
+            it.takeDamage(Damage(max(1, Random.Int(it.HP / 3, it.HP * 2 / 3)), this, it).convertToElement(Damage.Element.LIGHT))
 
             if (it === Dungeon.hero) {
                 Camera.main.shake(2f, 0.3f)

@@ -22,7 +22,7 @@ class ReagentOfSorcery : Reagent(false) {
 
         Actor.findChar(cell)?.let {
             val props = it.properties()
-            if (it.immunities.contains(ReagentOfSorcery::class.java)) it.say("?")
+            if (it.immunizedBuffs().contains(ReagentOfSorcery::class.java)) it.say("?")
             else if (props.contains(Char.Property.BOSS) || props.contains(Char.Property.MINIBOSS)) {
                 it.say("?")
                 GLog.n(M.L(this, "powerful"))

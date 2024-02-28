@@ -168,7 +168,7 @@ class Yog : Mob() {
             enemy = Dungeon.hero
             if (enemy!!.isAlive && zapCD_ <= 0) {
                 val value = Random.NormalIntRange(5, 15 + (10 * (1f - HP / HT.toFloat())).toInt())
-                val dmg = Damage(value, this@Yog, enemy).type(Damage.Type.MENTAL)
+                val dmg = Damage(value, this@Yog, enemy!!).type(Damage.Type.MENTAL)
                 enemy!!.takeDamage(dmg)
                 GLog.n(M.L(Yog::class.java, "no_hiding"))
                 zapCD_ = 5
@@ -270,7 +270,7 @@ class Yog : Mob() {
             if (!Dungeon.level.adjacent(pos, enemy.pos)) {
                 spend(attackDelay())
 
-                val dmg = giveDamage(enemy).type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE)
+                val dmg = giveDamage(enemy).convertToElement(Damage.Element.FIRE)
                 if (enemy.checkHit(dmg)) {
 
                     enemy.takeDamage(dmg)

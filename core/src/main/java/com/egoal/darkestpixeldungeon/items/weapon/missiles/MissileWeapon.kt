@@ -86,7 +86,7 @@ abstract class MissileWeapon(val tier: Int, protected val stick: Boolean = false
                         Actor.findChar(i + cell)?.let {
                             if (it.isAlive)
                                 it.takeDamage(Damage(Random.IntRange(min(level()), max(level())) + extra, Item.curUser, it)
-                                        .type(Damage.Type.MAGICAL).addElement(Damage.Element.FIRE))
+                                        .type(Damage.Type.MAGICAL))
                         }
                     }
 

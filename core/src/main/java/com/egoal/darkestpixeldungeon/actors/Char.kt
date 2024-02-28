@@ -215,7 +215,7 @@ abstract class Char : Actor() {
 
         // buffs when take damage
         buff(Paralysis::class.java)?.let {
-            if (Random.Int(dmg.value) >= Random.Int(HP)) {
+            if (Random.Int(dmg.value + dmg.add_value) >= Random.Int(HP)) {
                 Buff.detach(this, Paralysis::class.java)
                 if (Dungeon.visible[pos])
                     GLog.i(M.L(Char::class.java, "out_of_paralysis", name))
@@ -233,7 +233,9 @@ abstract class Char : Actor() {
                     SHLD = 0
                 }
             Damage.Type.MAGICAL -> HP -= dmg.value
+            Damage.Type.MENTAL -> 0
         }
+        HP -= dmg.add_value
 
         if (HP <= 0) {
             val ten = buff(Tenacity::class.java)
@@ -257,11 +259,25 @@ abstract class Char : Actor() {
 
                 sprite.showStatus(color, number)
             }
+            if (dmg.add_value > 0) {
+                //todo: use enum
+                val color = when (dmg.element) {
+                    Damage.Element.FIRE -> 0xee7722
+                    Damage.Element.POISON -> 0x8844ff
+                    Damage.Element.ICE -> 0x88ccff
+                    Damage.Element.LIGHT -> 0xffffff
+                    Damage.Element.SHADOW -> 0x2a1a33
+                    Damage.Element.HOLY -> 0xffff00
+                    else -> -1
+                }
+                sprite.burst(color, Random.Int(2, min(dmg.add_value / 4, 6)))
+                sprite.showStatus(0xFF8800, "${dmg.add_value}")
+            }
         }
 
         if (!isAlive) die(dmg.from)
 
-        return dmg.value
+        return dmg.value + dmg.add_value
     }
 
     fun addResistances(element: Int, r: Float) {
@@ -273,18 +289,20 @@ abstract class Char : Actor() {
     protected open fun resistDamage(dmg: Damage): Damage {
         if (immunizedBuffs().any { it == dmg.from.javaClass }) {
             dmg.value = 0
+            dmg.add_value = 0
             return dmg
         }
-
-        // elemental resistance
-        for (of in 0 until Damage.Element.ELEMENT_COUNT)
-            if (dmg.hasElement(0x01 shl of))
-                dmg.value -= round(dmg.value * elementalResistance[of]).toInt()
 
         if (dmg.type == Damage.Type.MAGICAL)
             dmg.value -= round(dmg.value * magicalResistance()).toInt()
 
-        if (dmg.value < 0) dmg.value = 0
+        // elemental resistance
+        for (of in 0 until Damage.Element.ELEMENT_COUNT)
+            if (dmg.hasElement(0x01 shl of))
+                dmg.add_value -= round(dmg.add_value * elementalResistance[of]).toInt()
+
+        dmg.value = max(0, dmg.value)
+        dmg.add_value = max(0, dmg.add_value)
 
         return dmg
     }

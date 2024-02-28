@@ -13,8 +13,6 @@ import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
-import javax.microedition.khronos.opengles.GL
-
 /**
  * Created by 93942 on 5/5/2018.
  */
@@ -44,7 +42,9 @@ class SoulBurning : Buff(), Hero.Doom {
             if (target is Hero) {
                 //todo: affect hero
             } else {
-                target.takeDamage(Damage(dmgHP, this, target).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW))
+                target.takeDamage(Damage(dmgHP, this, target)
+                        .type(Damage.Type.MAGICAL)
+                        .setAdditionalDamage(Damage.Element.SHADOW, dmgHP / 4))
             }
         } else {
             detach()

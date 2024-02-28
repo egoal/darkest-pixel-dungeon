@@ -54,7 +54,7 @@ class Eye : Mob() {
 
     override fun viewDistance(): Int = 6
 
-    override fun giveDamage(target: Char): Damage = super.giveDamage(target).addElement(Damage.Element.SHADOW)
+    override fun giveDamage(target: Char): Damage = super.giveDamage(target).convertToElement(Damage.Element.SHADOW)
 
     override fun canAttack(enemy: Char): Boolean {
         if (beamCooldown == 0) {

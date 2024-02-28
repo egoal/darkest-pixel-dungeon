@@ -175,7 +175,7 @@ class HandOfTheElder : Artifact() {
             val duration = (level() / 2 + 2) * bonus
 
             // root& damage
-            c.takeDamage(Damage(Random.Int(c.HT / 10, c.HT / 5), Item.curUser, c).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW))
+            c.takeDamage(Damage(Random.Int(c.HT / 10, c.HT / 5), Item.curUser, c).convertToElement(Damage.Element.SHADOW))
 
             // buffs
             if (c.isAlive) {

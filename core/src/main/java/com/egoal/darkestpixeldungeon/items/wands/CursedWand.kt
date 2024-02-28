@@ -196,7 +196,7 @@ object CursedWand {
                     cursedFX(user, bolt, object : Callback {
                         override fun call() {
                             // int damage = user.lvl * 2;
-                            val damage = Damage(user.lvl * 2, this, target).type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW)
+                            val damage = Damage(user.lvl * 2, this, target).type(Damage.Type.MAGICAL)
                             when (Random.Int(2)) {
                                 0 -> {
                                     user.HP = Math.min(user.HT, user.HP + damage.value)

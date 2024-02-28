@@ -53,7 +53,7 @@ class ChillingTrap : Trap() {
         if (ch != null) {
             Buff.prolong(ch, Chill::class.java, 5f+ Random.Int(Dungeon.depth))
             ch.takeDamage(Damage(Random.NormalIntRange(1, Dungeon.depth), this,
-                    ch).addElement(Damage.Element.ICE))
+                    ch).convertToElement(Damage.Element.ICE))
             if (!ch.isAlive && ch === Dungeon.hero) {
                 Dungeon.fail(javaClass)
                 GLog.n(Messages.get(this, "ondeath"))

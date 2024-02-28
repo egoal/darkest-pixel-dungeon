@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
+import com.watabou.utils.Random
 import kotlin.math.max
 
 class Slug : Mob() {
@@ -15,7 +16,7 @@ class Slug : Mob() {
     }
 
     override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).addElement(Damage.Element.POISON)
+        return super.giveDamage(enemy).setAdditionalDamage(Damage.Element.POISON, Random.NormalIntRange(1, 3))
     }
 
     override fun defendDamage(dmg: Damage): Damage {

@@ -57,7 +57,7 @@ class WandOfPrismaticLight : DamageWand(isMissile = false) {
     override fun max(lvl: Int): Int = 9 + 3 * lvl
 
     override fun giveDamage(enemy: Char): Damage {
-        val damage = super.giveDamage(enemy).addElement(Damage.Element.HOLY)
+        val damage = super.giveDamage(enemy).convertToElement(Damage.Element.HOLY)
         if (enemy.properties().contains(Char.Property.DEMONIC) || enemy.properties().contains(Char.Property.UNDEAD))
             damage.value += damage.value / 4
         return damage

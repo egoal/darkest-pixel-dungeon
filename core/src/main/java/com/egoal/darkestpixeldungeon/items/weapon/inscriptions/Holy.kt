@@ -6,7 +6,6 @@ import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.weapon.Inscription
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
 
 /**
@@ -31,6 +30,6 @@ class Holy : Inscription(3) {
             damage.addFeature(Damage.Feature.CRITICAL)
         }
 
-        return damage.addElement(Damage.Element.HOLY)
+        return damage.setAdditionalDamage(Damage.Element.HOLY, damage.value / 5)
     }
 }

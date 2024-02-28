@@ -48,7 +48,7 @@ class WandOfVenom : DamageWand(isMissile = true) {
 
     override fun max(lvl: Int): Int = 8 + lvl * 5 / 2
 
-    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.POISON)
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy)
 
     override fun onZap(bolt: Ballistica) {
         super.onZap(bolt)

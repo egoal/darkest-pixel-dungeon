@@ -48,7 +48,7 @@ class Grim : Inscription(2) {
         val chance = round((defender.HT - enemyHealth) / defender.HT.toFloat() * 30 + level)
 
         if (Random.Int(100) < chance) {
-            defender.takeDamage(Damage(defender.HP, this, defender).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.DEATH).addElement(Damage.Element.SHADOW))
+            defender.takeDamage(Damage(defender.HP, this, defender).type(Damage.Type.MAGICAL).addFeature(Damage.Feature.DEATH))
             defender.sprite.emitter().burst(ShadowParticle.UP, 5)
 
             if (!defender.isAlive && attacker is Hero)

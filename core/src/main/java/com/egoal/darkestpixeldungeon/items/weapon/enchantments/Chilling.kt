@@ -42,7 +42,7 @@ class Chilling : Enchantment() {
             Splash.at(defender.sprite.center(), -0x4d2901, 5)
         }
 
-        return damage.addElement(Damage.Element.ICE)
+        return damage.setAdditionalDamage(Damage.Element.ICE, Random.Int(2, damage.value / 5))
     }
 
     override fun glowing(): ItemSprite.Glowing = TEAL

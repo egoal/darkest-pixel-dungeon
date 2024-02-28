@@ -16,14 +16,13 @@ import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast
-import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
-import java.util.HashSet
+import java.util.*
 
 class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     init {
@@ -92,7 +91,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     }
 
     override fun giveDamage(enemy: Char): Damage {
-        val dmg = Damage(Random.IntRange(1 + level, 5 + 8 * level), this, enemy).addElement(Damage.Element.SHADOW)
+        val dmg = Damage(Random.IntRange(1 + level, 5 + 6 * level), this, enemy)
+                .setAdditionalDamage(Damage.Element.SHADOW, Random.NormalIntRange(1, 2 * level))
         if (Random.Float() < 0.15f) {
             dmg.value = dmg.value * 5 / 4
             dmg.addFeature(Damage.Feature.CRITICAL)

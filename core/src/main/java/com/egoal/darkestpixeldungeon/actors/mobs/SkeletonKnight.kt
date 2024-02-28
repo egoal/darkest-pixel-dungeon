@@ -35,8 +35,6 @@ class SkeletonKnight : Mob() {
         return super.act()
     }
 
-    override fun giveDamage(target: Char): Damage = super.giveDamage(target).addElement(Damage.Element.SHADOW)
-
     override fun attack(enemy: Char): Boolean {
         if (combocd <= 0 && Random.Float() < COMBO) {
             combocd = COMBO_COOLDOWN

@@ -44,9 +44,9 @@ class Bat : Mob() {
         return if (Random.Int(4) == 0)
             Damage(Random.NormalIntRange(1, 5), this, enemy).type(Damage.Type.MENTAL)
         else {
-            val dmg = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
+            val dmg = super.giveDamage(enemy)
             if (Statistics.Clock.state != Statistics.ClockTime.State.Day)
-                dmg.value += dmg.value / 4
+                dmg.setAdditionalDamage(Damage.Element.SHADOW, dmg.value / 4)
 
             dmg
         }

@@ -27,7 +27,6 @@ import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Chill
 import com.egoal.darkestpixeldungeon.actors.buffs.Frost
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.BurningAttack
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend_Fire
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.wands.WandOfFireblast
@@ -48,7 +47,7 @@ open class Elemental : Mob() {
         abilities.add(EnchantDefend_Fire())
     }
 
-    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.FIRE)
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).convertToElement(Damage.Element.FIRE)
 
     override fun add(buff: Buff) {
         if (buff is Burning) {
@@ -57,12 +56,10 @@ open class Elemental : Mob() {
                 sprite.emitter().burst(Speck.factory(Speck.HEALING), 1)
             }
         } else if (buff is Frost || buff is Chill) {
-            if (Level.water[this.pos])
-                takeDamage(Damage(Random.NormalIntRange(HT / 2, HT), buff, this)
-                        .addElement(Damage.Element.ICE))
-            else
-                takeDamage(Damage(Random.NormalIntRange(1, HT * 2 / 3), buff,
-                        this).addElement(Damage.Element.ICE))
+            val value = if (Level.water[pos])
+                Random.NormalIntRange(HT / 2, HT)
+            else Random.NormalIntRange(1, HT * 2 / 3)
+            takeDamage(Damage(0, buff, this).setAdditionalDamage(Damage.Element.ICE, value))
         } else {
             super.add(buff)
         }

@@ -43,7 +43,7 @@ class Spinner : Mob() {
         abilities.add(PoisonAttack())
     }
 
-    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.POISON)
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy)
 
     override fun act(): Boolean {
         val result = super.act()

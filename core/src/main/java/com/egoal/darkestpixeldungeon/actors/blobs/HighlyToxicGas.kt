@@ -2,8 +2,6 @@ package com.egoal.darkestpixeldungeon.actors.blobs
 
 import com.egoal.darkestpixeldungeon.Badges
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.BlobEmitter
@@ -27,7 +25,7 @@ class HighlyToxicGas : Blob(), Hero.Doom {
         affectedChars().forEach {
             var dmg = (it.HT + levelDamage) / 40
             if (Random.Int(40) < (it.HT + levelDamage) % 40) dmg += 1
-            it.takeDamage(Damage(dmg, this, it).addElement(Damage.Element.POISON))
+            it.takeDamage(Damage(0, this, it).setAdditionalDamage(Damage.Element.POISON, dmg))
         }
     }
 

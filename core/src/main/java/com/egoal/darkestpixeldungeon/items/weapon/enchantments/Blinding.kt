@@ -10,7 +10,6 @@ import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.watabou.utils.Random
-import kotlin.math.max
 
 class Blinding : Enchantment() {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
@@ -26,7 +25,7 @@ class Blinding : Enchantment() {
             }
         }
 
-        return damage.addElement(Damage.Element.SHADOW)
+        return damage.setAdditionalDamage(Damage.Element.SHADOW, Random.Int(2, damage.value / 5))
     }
 
     override fun glowing(): ItemSprite.Glowing = COLOR

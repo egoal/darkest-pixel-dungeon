@@ -24,7 +24,6 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
-import com.egoal.darkestpixeldungeon.effects.particles.FlameParticle
 import com.egoal.darkestpixeldungeon.items.weapon.Enchantment
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
@@ -34,18 +33,12 @@ class Blazing : Enchantment() {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         use(weapon)
 
+        damage.setAdditionalDamage(Damage.Element.FIRE, Random.Int(2, damage.value / 5))
+
         val defender = damage.to as Char
-
-
-        defender.takeDamage(Damage(Random.Int(1, damage.value/10), this, defender)
-                .type(Damage.Type.MAGICAL)
-                .addElement(Damage.Element.FIRE))
-
-        defender.sprite.emitter().burst(FlameParticle.FACTORY, 3)
-
         if (Random.Float() < 0.3f) Buff.affect(defender, Burning::class.java).reignite(defender)
 
-        return damage.addElement(Damage.Element.FIRE)
+        return damage
     }
 
     override fun glowing(): ItemSprite.Glowing = ORANGE

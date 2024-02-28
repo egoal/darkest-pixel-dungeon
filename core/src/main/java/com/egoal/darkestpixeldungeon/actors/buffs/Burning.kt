@@ -90,8 +90,7 @@ class Burning : Buff(), Hero.Doom {
                     }
 
                 } else {
-                    hero.takeDamage(Damage(damage, this, hero).type(Damage.Type
-                            .MAGICAL).addElement(Damage.Element.FIRE))
+                    hero.takeDamage(Damage(0, this, hero).setAdditionalDamage(Damage.Element.FIRE, damage))
 
                     // burn something
                     if (!burnedSomething) {
@@ -122,9 +121,7 @@ class Burning : Buff(), Hero.Doom {
                 }
 
             } else {
-                // targetpos.damage( damage, this );
-                target.takeDamage(Damage(damage, this, target).type(Damage.Type
-                        .MAGICAL).addElement(Damage.Element.FIRE))
+                target.takeDamage(Damage(0, this, target).setAdditionalDamage(Damage.Element.FIRE, damage))
             }
 
             if (target is Thief) {

@@ -32,7 +32,7 @@ class WandOfAbel : DamageWand(isMissile = true) {
 
     override fun max(lvl: Int): Int = 9 + lvl * 3
 
-    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).addElement(Damage.Element.SHADOW)
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy)
 
     override fun onZap(attack: Ballistica) {
         // swap with char

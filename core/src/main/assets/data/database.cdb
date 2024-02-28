@@ -229,7 +229,7 @@
 					"EXP": 1,
 					"MaxLevel": 5,
 					"MinDamage": 1,
-					"MaxDamage": 4,
+					"MaxDamage": 3,
 					"TypeDamage": 0,
 					"CritChance": 0,
 					"CritRatio": 0,
@@ -748,8 +748,8 @@
 							"Chance": 1
 						}
 					],
-					"MinDamage": 2,
-					"MaxDamage": 8,
+					"MinDamage": 1,
+					"MaxDamage": 5,
 					"TypeDamage": 1,
 					"CritChance": 0,
 					"CritRatio": 0,
@@ -1641,8 +1641,8 @@
 							"Chance": 1
 						}
 					],
-					"MinDamage": 12,
-					"MaxDamage": 18,
+					"MinDamage": 6,
+					"MaxDamage": 12,
 					"TypeDamage": 1,
 					"CritChance": 0,
 					"CritRatio": 0,
@@ -1977,8 +1977,8 @@
 							"Chance": 1
 						}
 					],
-					"MinDamage": 20,
-					"MaxDamage": 26,
+					"MinDamage": 15,
+					"MaxDamage": 20,
 					"TypeDamage": 0,
 					"CritChance": 0.1,
 					"CritRatio": 1.5,
@@ -2109,8 +2109,8 @@
 							"Chance": 0.3
 						}
 					],
-					"MinDamage": 26,
-					"MaxDamage": 36,
+					"MinDamage": 20,
+					"MaxDamage": 30,
 					"TypeDamage": 0,
 					"CritChance": 0,
 					"CritRatio": 0,

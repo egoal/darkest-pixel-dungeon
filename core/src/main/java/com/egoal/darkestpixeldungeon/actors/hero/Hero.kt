@@ -671,8 +671,9 @@ class Hero : Char() {
         drunk?.procTakenDamage(dmg)
 
         if (dmg.type == Damage.Type.MENTAL) return takeMentalDamage(dmg)
-        else if (HP > HT / 3 && dmg.value >= HP && Random.Int(5) == 0) {
+        else if (HP > HT / 3 && dmg.value >= HP + SHLD && Random.Int(5) == 0) {
             dmg.value = HP - 1
+            dmg.add_value = 0
             GLog.n(M.L(this, "almost_dead"))
         }
 

@@ -56,7 +56,7 @@ class FrostTrap : Trap() {
         val ch = Actor.findChar(pos)
         if (ch != null) {
             ch.takeDamage(Damage(Random.NormalIntRange(1, Dungeon.depth), this,
-                    ch).addElement(Damage.Element.ICE))
+                    ch).convertToElement(Damage.Element.ICE))
             Buff.prolong(ch, Frost::class.java, 10f + Random.Int(Dungeon.depth))
             if (!ch.isAlive && ch === Dungeon.hero) {
                 Dungeon.fail(javaClass)

@@ -102,7 +102,7 @@ open class MagicalSleep : Buff() {
                             val dmg = damage!!
                             if (dmg.value > 0) {
                                 dmg.value = (1 + dmg.value * ratio).toInt()
-                                target.takeDamage(dmg.type(Damage.Type.MAGICAL).addElement(Damage.Element.SHADOW))
+                                target.takeDamage(dmg.type(Damage.Type.MAGICAL))
                             }
 
                             if (dmg.from is Char)

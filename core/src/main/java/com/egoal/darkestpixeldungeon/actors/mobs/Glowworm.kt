@@ -10,12 +10,7 @@ import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Light
 import com.egoal.darkestpixeldungeon.actors.buffs.Poison
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend_Fire
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.EnchantDefend_Venomous
-import com.egoal.darkestpixeldungeon.items.unclassified.PoisonPowder
-import com.egoal.darkestpixeldungeon.items.weapon.enchantments.Venomous
-import com.egoal.darkestpixeldungeon.items.weapon.melee.MeleeWeapon
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
@@ -50,7 +45,8 @@ class Glowworm(private var level: Int = 1) : Mob() {
     }
 
     override fun giveDamage(enemy: Char): Damage =
-            Damage(Random.NormalIntRange(1 + level / 2, 2 + level), this, enemy).addElement(Damage.Element.POISON)
+            Damage(Random.NormalIntRange(1, level / 2), this, enemy)
+                    .setAdditionalDamage(Damage.Element.POISON, Random.NormalIntRange(1, level))
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply {
         value -= Random.NormalIntRange(1, level)

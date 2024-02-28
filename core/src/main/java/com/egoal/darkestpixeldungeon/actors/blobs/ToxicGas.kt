@@ -41,9 +41,9 @@ class ToxicGas : Blob(), Hero.Doom {
             var damage = max(1, (ch.HT + levelDamage) / 30)
             if (Random.Int(30) < (ch.HT + levelDamage) % 30) damage += Random.Int(Dungeon.depth)
 
-            ch.takeDamage(Damage(damage, this, ch)
+            ch.takeDamage(Damage(0, this, ch)
                     .type(Damage.Type.MAGICAL)
-                    .addElement(Damage.Element.POISON))
+                    .setAdditionalDamage(Damage.Element.POISON, damage))
         }
     }
 

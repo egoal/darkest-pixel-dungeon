@@ -44,7 +44,7 @@ class Potential : Armor.Glyph() {
 
             shockDmg *= Math.pow(0.9, level.toDouble()).toInt()
 
-            defender.takeDamage(Damage(shockDmg, this, defender).addElement(Damage.Element.LIGHT))
+            defender.takeDamage(Damage(shockDmg, this, defender).convertToElement(Damage.Element.LIGHT))
 
             checkOwner(defender)
             if (defender === Dungeon.hero) {

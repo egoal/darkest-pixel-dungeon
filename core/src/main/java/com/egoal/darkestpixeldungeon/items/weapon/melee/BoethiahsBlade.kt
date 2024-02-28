@@ -32,7 +32,7 @@ class BoethiahsBlade : MeleeWeapon() {
     override fun STRReq(lvl: Int): Int = super.STRReq(lvl) - 1
 
     override fun proc(dmg: Damage): Damage {
-        dmg.addElement(Damage.Element.SHADOW)
+        dmg.setAdditionalDamage(Damage.Element.SHADOW, Random.Int(2, dmg.value / 5))
         if (dmg.isFeatured(Damage.Feature.CRITICAL))
             dmg.value += (2 + level()) * tier
 

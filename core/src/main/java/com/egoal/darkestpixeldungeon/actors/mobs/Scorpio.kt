@@ -26,6 +26,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.CrippleAttack
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.sprites.ScorpioSprite
+import com.watabou.utils.Random
 
 open class Scorpio : Mob() {
     init {
@@ -36,7 +37,9 @@ open class Scorpio : Mob() {
 
     override fun viewDistance(): Int = 6
 
-    override fun giveDamage(target: Char): Damage = super.giveDamage(target).addElement(Damage.Element.POISON).addFeature(Damage.Feature.RANGED)
+    override fun giveDamage(target: Char): Damage = super.giveDamage(target)
+            .setAdditionalDamage(Damage.Element.POISON, Random.NormalIntRange(0, 12))
+            .addFeature(Damage.Feature.RANGED)
 
     override fun canAttack(enemy: Char): Boolean {
         val attack = Ballistica(pos, enemy.pos, Ballistica.PROJECTILE)
