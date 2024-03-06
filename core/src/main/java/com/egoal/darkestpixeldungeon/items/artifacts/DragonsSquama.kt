@@ -106,7 +106,7 @@ class DragonsSquama : Artifact() {
 
     private fun burnChar(char: Char) {
         val value = Random.IntRange(2 + 2 * level(), 6 + 5 * level())
-        val dmg = Damage(value, Dungeon.hero, char).convertToElement(Damage.Element.FIRE)
+        val dmg = Damage(Dungeon.hero, char).setAdditionalDamage(Damage.Element.Fire, value)
         char.takeDamage(dmg)
         if (char.isAlive && char !is Hero) {
             Buff.prolong(char, Shock::class.java, 1.5f)

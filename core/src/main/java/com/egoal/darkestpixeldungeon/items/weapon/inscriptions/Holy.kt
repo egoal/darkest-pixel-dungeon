@@ -30,6 +30,6 @@ class Holy : Inscription(3) {
             damage.addFeature(Damage.Feature.CRITICAL)
         }
 
-        return damage.setAdditionalDamage(Damage.Element.HOLY, damage.value / 5)
+        return damage.setAdditionalDamage(Damage.Element.Holy, damage.value / 4)
     }
 }

@@ -90,7 +90,7 @@ class Burning : Buff(), Hero.Doom {
                     }
 
                 } else {
-                    hero.takeDamage(Damage(0, this, hero).setAdditionalDamage(Damage.Element.FIRE, damage))
+                    hero.takeDamage(Damage(0, this, hero).setAdditionalDamage(Damage.Element.Fire, damage))
 
                     // burn something
                     if (!burnedSomething) {
@@ -121,7 +121,7 @@ class Burning : Buff(), Hero.Doom {
                 }
 
             } else {
-                target.takeDamage(Damage(0, this, target).setAdditionalDamage(Damage.Element.FIRE, damage))
+                target.takeDamage(Damage(this, target).setAdditionalDamage(Damage.Element.Fire, damage))
             }
 
             if (target is Thief) {

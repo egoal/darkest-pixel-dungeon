@@ -43,7 +43,7 @@ class Warlock : Mob(), Callback {
     }
 
     override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy)
-            .setAdditionalDamage(Damage.Element.SHADOW, Random.NormalIntRange(2, 10))
+            .setAdditionalDamage(Damage.Element.Shadow, Random.NormalIntRange(2, 10))
 
     override fun canAttack(enemy: Char): Boolean = Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
 

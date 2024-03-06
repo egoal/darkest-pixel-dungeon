@@ -194,8 +194,8 @@ class Yog : Mob() {
             properties.add(Char.Property.BOSS)
             properties.add(Char.Property.DEMONIC)
 
-            addResistances(Damage.Element.POISON, 0.2f)
-            addResistances(Damage.Element.HOLY, -0.25f)
+            addResistances(Damage.Element.Poison, 0.2f)
+            addResistances(Damage.Element.Holy, -0.25f)
         }
 
         override fun attackProc(damage: Damage): Damage {
@@ -270,7 +270,7 @@ class Yog : Mob() {
             if (!Dungeon.level.adjacent(pos, enemy.pos)) {
                 spend(attackDelay())
 
-                val dmg = giveDamage(enemy).convertToElement(Damage.Element.FIRE)
+                val dmg = giveDamage(enemy).convertToElement(Damage.Element.Fire)
                 if (enemy.checkHit(dmg)) {
 
                     enemy.takeDamage(dmg)

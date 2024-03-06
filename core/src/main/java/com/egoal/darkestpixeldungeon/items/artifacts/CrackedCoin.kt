@@ -226,7 +226,8 @@ class CrackedCoin : Artifact() {
     private fun onZap(hero: Hero, beam: Ballistica) {
         for (c in beam.subPath(1, beam.dist)) {
             Actor.findChar(c)?.let {
-                val dmg = Damage(Random.IntRange(8 + 5 * level(), 8 + 10 * level()), hero, it).convertToElement(Damage.Element.LIGHT)
+                val dmg =  Damage(hero, it, Damage.Type.MAGICAL)
+                        .setAdditionalDamage(Damage.Element.Light, Random.IntRange(8 + 5 * level(), 8 + 10 * level()))
                 it.takeDamage(dmg)
                 if (it.isAlive) {
                     Buff.prolong(it, Paralysis::class.java, Random.Float(1f, 1.5f) + level() / 2f)

@@ -20,21 +20,19 @@
  */
 package com.egoal.darkestpixeldungeon.levels.traps
 
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.Damage
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Lightning
 import com.egoal.darkestpixeldungeon.effects.particles.SparkParticle
 import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.TrapSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.Camera
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.ceil
 import kotlin.math.max
 
@@ -47,7 +45,8 @@ class LightningTrap : Trap() {
 
     override fun activate() {
         Actor.findChar(pos)?.let {
-            it.takeDamage(Damage(max(1, Random.Int(it.HP / 3, it.HP * 2 / 3)), this, it).convertToElement(Damage.Element.LIGHT))
+            it.takeDamage(Damage(this, it, Damage.Type.MAGICAL)
+                    .setAdditionalDamage(Damage.Element.Light, max(1, Random.Int(it.HP / 3, it.HP * 2 / 3))))
 
             if (it === Dungeon.hero) {
                 Camera.main.shake(2f, 0.3f)

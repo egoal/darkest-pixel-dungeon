@@ -11,7 +11,7 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.noosa.audio.Sample
 
-open class ElementWeaken(icon: Int, private val element: Int, private val ratio: Float) : Item() {
+open class ElementWeaken(icon: Int, private val element: Damage.Element, private val ratio: Float) : Item() {
     init {
         image = icon
         bones = false
@@ -39,10 +39,10 @@ open class ElementWeaken(icon: Int, private val element: Int, private val ratio:
     protected open fun color() = 0x000000
 }
 
-class FireButterfly : ElementWeaken(ItemSpriteSheet.FIRE_BUTTERFLY, Damage.Element.FIRE, 1.25f) {
+class FireButterfly : ElementWeaken(ItemSpriteSheet.FIRE_BUTTERFLY, Damage.Element.Fire, 1.25f) {
     override fun color(): Int = 0xff7f00
 }
 
-class PoisonPowder : ElementWeaken(ItemSpriteSheet.POISON_POWDER, Damage.Element.POISON, 1.25f) {
+class PoisonPowder : ElementWeaken(ItemSpriteSheet.POISON_POWDER, Damage.Element.Poison, 1.25f) {
     override fun color(): Int = 0x1d7a3b
 }

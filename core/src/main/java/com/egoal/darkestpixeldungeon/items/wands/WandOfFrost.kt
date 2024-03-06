@@ -32,7 +32,7 @@ class WandOfFrost : DamageWand(isMissile = true) {
     override fun max(lvl: Int): Int = 9 + lvl * 11 / 2
 
     override fun giveDamage(enemy: Char): Damage {
-        val damage = super.giveDamage(enemy).convertToElement(Damage.Element.ICE)
+        val damage = super.giveDamage(enemy).convertToElement(Damage.Element.Ice)
 
         if (enemy.buff(Frost::class.java) != null) {
             damage.value = 0

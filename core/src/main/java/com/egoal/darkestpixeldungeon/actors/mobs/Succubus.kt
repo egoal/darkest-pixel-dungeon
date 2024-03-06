@@ -47,7 +47,7 @@ class Succubus : Mob() {
     override fun viewDistance(): Int = 6
 
     override fun giveDamage(target: Char): Damage = super.giveDamage(target)
-            .setAdditionalDamage(Damage.Element.ICE, Random.NormalIntRange(2, 10))
+            .setAdditionalDamage(Damage.Element.Ice, Random.NormalIntRange(2, 10))
 
     override fun getCloser(target: Int): Boolean {
         if (Level.fieldOfView[target] && Dungeon.level.distance(pos, target) > 2

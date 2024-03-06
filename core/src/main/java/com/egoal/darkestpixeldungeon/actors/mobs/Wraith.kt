@@ -51,8 +51,8 @@ open class Wraith : Mob() {
                 DefendSkill = 1000f,
         )
         properties.add(Property.UNDEAD)
-        addResistances(Damage.Element.SHADOW, 0.25f)
-        addResistances(Damage.Element.HOLY, -0.5f)
+        addResistances(Damage.Element.Shadow, 0.25f)
+        addResistances(Damage.Element.Holy, -0.5f)
 
         flying = true
     }

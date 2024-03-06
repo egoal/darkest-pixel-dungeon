@@ -8,20 +8,14 @@ import com.watabou.utils.Bundle
 import kotlin.math.round
 
 class ElementBroken : FlavourBuff(), Char.IIncomingDamageProc {
-    private val ratios = FloatArray(Damage.Element.ELEMENT_COUNT)
+    private val ratios = FloatArray(Damage.Element.values().size) { 1f }
 
     init {
         type = buffType.NEGATIVE
     }
 
-    fun add(element: Int, ratio: Float): ElementBroken {
-        var ele = element
-        var i = 0
-        while (ele != 1) {
-            ele = ele shr 1
-            i++
-        }
-        if (i < Damage.Element.ELEMENT_COUNT) ratios[i] = ratio
+    fun add(element: Damage.Element, ratio: Float): ElementBroken {
+        ratios[element.ordinal] = ratio
         return this
     }
 
@@ -30,18 +24,12 @@ class ElementBroken : FlavourBuff(), Char.IIncomingDamageProc {
     override fun toString(): String = M.L(this, "name")
 
     override fun desc(): String {
-        val elestr = ratios.indices.filter { ratios[it] > 0 }.joinToString { Damage.Element.names[it] }
+        val elestr = ratios.indices.filter { ratios[it] > 0 }.joinToString { Damage.Element.values()[it].textName }
         return M.L(this, "desc", elestr, dispTurns())
     }
 
     override fun procIncommingDamage(damage: Damage) {
-        var r = 1f
-        for (i in 0 until Damage.Element.ELEMENT_COUNT) {
-            val ele = 0x01 shl i
-            if (ratios[i] != 0f && damage.hasElement(ele)) r *= ratios[i]
-        }
-
-        damage.value = round(damage.value * r).toInt()
+        damage.value = round(damage.value * ratios[damage.element.ordinal]).toInt()
     }
 
     override fun storeInBundle(bundle: Bundle) {

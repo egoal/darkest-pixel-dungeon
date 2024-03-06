@@ -112,7 +112,7 @@ class EyeballOfTheElder : Artifact() {
 
             var zapdmg = Random.IntRange(4 + level(), 6 + level() * 4)
             if (cursed) zapdmg += (zapdmg * 0.3f).toInt()
-            val dmg = Damage(zapdmg, hero, e).convertToElement(Damage.Element.SHADOW)
+            val dmg = Damage(hero, e).setAdditionalDamage(Damage.Element.Shadow, zapdmg)
             e.takeDamage(dmg)
             e.sprite.flash()
         }
@@ -265,7 +265,7 @@ class EyeballOfTheElder : Artifact() {
                 }
 
                 Actor.findChar(cell)?.let {
-                    val dmg = Damage(zapDamage(), Item.curUser, it).convertToElement(Damage.Element.SHADOW)
+                    val dmg = Damage(curUser, it).setAdditionalDamage(Damage.Element.Shadow, zapDamage())
                     // no need to check damage
                     it.takeDamage(dmg)
                     it.sprite.flash()

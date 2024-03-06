@@ -311,7 +311,7 @@ class WndHero : WndTabbed() {
 
             val hero = Dungeon.hero
 
-            for (i in 0 until Damage.Element.ELEMENT_COUNT) {
+            for (i in Damage.Element.values().indices) {
                 val icon = Image(resistIcons)
                 icon.frame(ICON_SIZE * i, 16, ICON_SIZE, ICON_SIZE)
                 icon.x = GAP

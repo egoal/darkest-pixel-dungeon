@@ -47,7 +47,7 @@ open class Elemental : Mob() {
         abilities.add(EnchantDefend_Fire())
     }
 
-    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).convertToElement(Damage.Element.FIRE)
+    override fun giveDamage(enemy: Char): Damage = super.giveDamage(enemy).convertToElement(Damage.Element.Fire)
 
     override fun add(buff: Buff) {
         if (buff is Burning) {
@@ -59,7 +59,7 @@ open class Elemental : Mob() {
             val value = if (Level.water[pos])
                 Random.NormalIntRange(HT / 2, HT)
             else Random.NormalIntRange(1, HT * 2 / 3)
-            takeDamage(Damage(0, buff, this).setAdditionalDamage(Damage.Element.ICE, value))
+            takeDamage(Damage(0, buff, this).setAdditionalDamage(Damage.Element.Ice, value))
         } else {
             super.add(buff)
         }

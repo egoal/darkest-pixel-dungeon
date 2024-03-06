@@ -59,8 +59,8 @@ class DisintegrationTrap : Trap() {
 
         val ch = Actor.findChar(pos)
         if (ch != null) {
-            ch.takeDamage(Damage(Math.max(ch.HT / 5, Random.Int(ch.HP / 2, 2 * ch.HP / 3)),
-                    this, ch).convertToElement(Damage.Element.SHADOW))
+            ch.takeDamage(Damage(this, ch, Damage.Type.MAGICAL)
+                    .setAdditionalDamage(Damage.Element.Shadow, Math.max(ch.HT / 5, Random.Int(ch.HP / 2, 2 * ch.HP / 3))))
             if (ch === Dungeon.hero) {
                 val hero = ch as Hero?
                 if (!hero!!.isAlive) {

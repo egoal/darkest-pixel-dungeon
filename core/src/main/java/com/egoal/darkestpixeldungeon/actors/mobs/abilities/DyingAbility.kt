@@ -30,8 +30,8 @@ class ExplodeDying : Ability() {
         }.filter {
             it?.isAlive == true
         }.forEach {
-            val damage = Damage(dmgval, belonger, it!!).convertToElement(Damage.Element.FIRE)
-            it!!.takeDamage(damage)
+            val damage = Damage(dmgval, belonger, it!!).convertToElement(Damage.Element.Fire)
+            it.takeDamage(damage)
         }
 
         if (Dungeon.visible[belonger.pos]) Sample.INSTANCE.play(Assets.SND_BONES)

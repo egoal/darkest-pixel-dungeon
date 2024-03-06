@@ -44,7 +44,7 @@ class Venomous : Enchantment() {
             CellEmitter.center(defender.pos).burst(PoisonParticle.SPLASH, 5)
         }
 
-        return damage.setAdditionalDamage(Damage.Element.POISON, Random.Int(2, damage.value / 5))
+        return damage.setAdditionalDamage(Damage.Element.Poison, Random.Int(2, damage.value / 4))
     }
 
     override fun glowing(): Glowing = PURPLE

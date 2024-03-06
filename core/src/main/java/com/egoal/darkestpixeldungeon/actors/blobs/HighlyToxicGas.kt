@@ -25,7 +25,7 @@ class HighlyToxicGas : Blob(), Hero.Doom {
         affectedChars().forEach {
             var dmg = (it.HT + levelDamage) / 40
             if (Random.Int(40) < (it.HT + levelDamage) % 40) dmg += 1
-            it.takeDamage(Damage(0, this, it).setAdditionalDamage(Damage.Element.POISON, dmg))
+            it.takeDamage(Damage(0, this, it).setAdditionalDamage(Damage.Element.Poison, dmg))
         }
     }
 

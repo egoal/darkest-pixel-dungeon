@@ -46,7 +46,7 @@ class Glowworm(private var level: Int = 1) : Mob() {
 
     override fun giveDamage(enemy: Char): Damage =
             Damage(Random.NormalIntRange(1, level / 2), this, enemy)
-                    .setAdditionalDamage(Damage.Element.POISON, Random.NormalIntRange(1, level))
+                    .setAdditionalDamage(Damage.Element.Poison, Random.NormalIntRange(1, level))
 
     override fun defendDamage(dmg: Damage): Damage = dmg.apply {
         value -= Random.NormalIntRange(1, level)

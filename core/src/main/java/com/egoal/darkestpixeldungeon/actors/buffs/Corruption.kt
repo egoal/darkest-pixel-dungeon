@@ -47,7 +47,8 @@ open class Corruption : Buff() {
         buildToDamage -= damage.toFloat()
 
         if (damage > 0)
-            target.takeDamage(Damage(0, this, target).setAdditionalDamage(Damage.Element.SHADOW, damage))
+            target.takeDamage(Damage(this, target, Damage.Type.MAGICAL)
+                    .setAdditionalDamage(Damage.Element.Shadow, damage))
 
         spend(TICK)
 

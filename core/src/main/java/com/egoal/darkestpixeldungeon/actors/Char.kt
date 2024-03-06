@@ -49,7 +49,7 @@ import kotlin.math.round
 
 abstract class Char : Actor() {
     interface IIncomingDamageProc {
-        abstract fun procIncommingDamage(damage: Damage)
+        fun procIncommingDamage(damage: Damage)
     }
 
     //
@@ -82,7 +82,7 @@ abstract class Char : Actor() {
 
     // resistances
     var magicalResistance = 0f
-    var elementalResistance = FloatArray(Damage.Element.ELEMENT_COUNT)
+    var elementalResistance = FloatArray(Damage.Element.values().size)
 
     val immunities = hashSetOf<Class<*>>()
 
@@ -224,18 +224,25 @@ abstract class Char : Actor() {
 
         // deal with types
         when (dmg.type) {
-            Damage.Type.NORMAL ->
+            Damage.Type.NORMAL -> {
                 // physical
+                if (SHLD >= dmg.add_value) SHLD -= dmg.add_value
+                else {
+                    HP -= dmg.add_value - SHLD
+                    SHLD = 0
+                }
+
                 if (SHLD >= dmg.value)
                     SHLD -= dmg.value
                 else {
                     HP -= dmg.value - SHLD
                     SHLD = 0
                 }
-            Damage.Type.MAGICAL -> HP -= dmg.value
-            Damage.Type.MENTAL -> 0
+            }
+            Damage.Type.MAGICAL ->
+                HP -= (dmg.value + dmg.add_value)
+//            Damage.Type.MENTAL -> 0
         }
-        HP -= dmg.add_value
 
         if (HP <= 0) {
             val ten = buff(Tenacity::class.java)
@@ -260,17 +267,7 @@ abstract class Char : Actor() {
                 sprite.showStatus(color, number)
             }
             if (dmg.add_value > 0) {
-                //todo: use enum
-                val color = when (dmg.element) {
-                    Damage.Element.FIRE -> 0xee7722
-                    Damage.Element.POISON -> 0x8844ff
-                    Damage.Element.ICE -> 0x88ccff
-                    Damage.Element.LIGHT -> 0xffffff
-                    Damage.Element.SHADOW -> 0x2a1a33
-                    Damage.Element.HOLY -> 0xffff00
-                    else -> -1
-                }
-                sprite.burst(color, Random.Int(2, min(dmg.add_value / 4, 6)))
+                sprite.burst(dmg.element.color, Random.Int(2, min(dmg.add_value / 2, 6)))
                 sprite.showStatus(0xFF8800, "${dmg.add_value}")
             }
         }
@@ -280,10 +277,8 @@ abstract class Char : Actor() {
         return dmg.value + dmg.add_value
     }
 
-    fun addResistances(element: Int, r: Float) {
-        for (i in 0 until Damage.Element.ELEMENT_COUNT)
-            if (element and (0x01 shl i) != 0)
-                elementalResistance[i] = r
+    fun addResistances(element: Damage.Element, r: Float) {
+        elementalResistance[element.ordinal] = r
     }
 
     protected open fun resistDamage(dmg: Damage): Damage {
@@ -297,9 +292,7 @@ abstract class Char : Actor() {
             dmg.value -= round(dmg.value * magicalResistance()).toInt()
 
         // elemental resistance
-        for (of in 0 until Damage.Element.ELEMENT_COUNT)
-            if (dmg.hasElement(0x01 shl of))
-                dmg.add_value -= round(dmg.add_value * elementalResistance[of]).toInt()
+        dmg.add_value -= round(dmg.add_value * elementalResistance[dmg.element.ordinal]).toInt()
 
         dmg.value = max(0, dmg.value)
         dmg.add_value = max(0, dmg.add_value)

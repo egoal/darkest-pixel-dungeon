@@ -73,9 +73,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
             PotionOfStrength().setKnown()
 
             // resists
-            hero.addResistances(Damage.Element.FIRE, 0.1f)
-            hero.addResistances(Damage.Element.LIGHT, -0.1f)
-            hero.addResistances(Damage.Element.SHADOW, -0.2f)
+            hero.addResistances(Damage.Element.Fire, 0.1f)
+            hero.addResistances(Damage.Element.Light, -0.1f)
+            hero.addResistances(Damage.Element.Shadow, -0.2f)
         }
     },
 
@@ -106,10 +106,10 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
             ScrollOfUpgrade().setKnown()
 
-            hero.addResistances(Damage.Element.FIRE, 0.1f)
-            hero.addResistances(Damage.Element.POISON, -0.2f)
-            hero.addResistances(Damage.Element.LIGHT, -0.1f)
-            hero.addResistances(Damage.Element.SHADOW, 0.1f)
+            hero.addResistances(Damage.Element.Fire, 0.1f)
+            hero.addResistances(Damage.Element.Poison, -0.2f)
+            hero.addResistances(Damage.Element.Light, -0.1f)
+            hero.addResistances(Damage.Element.Shadow, 0.1f)
         }
 
         override fun upgradeHero(hero: Hero) {
@@ -154,9 +154,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
             ScrollOfMagicMapping().setKnown()
 
-            hero.addResistances(Damage.Element.POISON, 0.2f)
-            hero.addResistances(Damage.Element.ICE, -0.2f)
-            hero.addResistances(Damage.Element.SHADOW, -0.1f)
+            hero.addResistances(Damage.Element.Poison, 0.2f)
+            hero.addResistances(Damage.Element.Ice, -0.2f)
+            hero.addResistances(Damage.Element.Shadow, -0.1f)
         }
     },
 
@@ -183,9 +183,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
             PotionOfMindVision().setKnown()
 
-            hero.addResistances(Damage.Element.POISON, 0.2f)
-            hero.addResistances(Damage.Element.ICE, -0.1f)
-            hero.addResistances(Damage.Element.FIRE, -0.2f)
+            hero.addResistances(Damage.Element.Poison, 0.2f)
+            hero.addResistances(Damage.Element.Ice, -0.1f)
+            hero.addResistances(Damage.Element.Fire, -0.2f)
         }
     },
 
@@ -206,8 +206,9 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
             hero.regeneration += 0.02f
             hero.magicalResistance = 0.15f
-            hero.addResistances(Damage.Element.all(), 0.1f)
-            hero.addResistances(Damage.Element.POISON, 0.5f)
+
+            Damage.Element.values().forEach { hero.addResistances(it, .1f) }
+            hero.addResistances(Damage.Element.Poison, 0.5f)
         }
 
         override fun initHeroClass(hero: Hero) {
@@ -237,10 +238,10 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
             super.initHeroStatus(hero)
 
             hero.magicalResistance = 0.04f
-            hero.addResistances(Damage.Element.ICE, 0.25f)
-            hero.addResistances(Damage.Element.FIRE, -0.2f)
-            hero.addResistances(Damage.Element.SHADOW, 0.2f)
-            hero.addResistances(Damage.Element.LIGHT, -0.1f)
+            hero.addResistances(Damage.Element.Ice, 0.25f)
+            hero.addResistances(Damage.Element.Fire, -0.2f)
+            hero.addResistances(Damage.Element.Shadow, 0.2f)
+            hero.addResistances(Damage.Element.Light, -0.1f)
         }
 
         override fun initHeroClass(hero: Hero) {

@@ -140,7 +140,7 @@ open class Bomb : Item() {
                     val minDamage = if (c == cell) Dungeon.depth + 5 else 1
                     val maxDamage = 10 + Dungeon.depth * 2
 
-                    val dmg = Damage(Random.NormalIntRange(minDamage, maxDamage), this, ch).convertToElement(Damage.Element.FIRE)
+                    val dmg = Damage(Random.NormalIntRange(minDamage, maxDamage), this, ch).convertToElement(Damage.Element.Fire)
                     ch.defendDamage(dmg)
                     ch.takeDamage(dmg)
 

@@ -47,7 +47,7 @@ class Piranha : Mob() {
                 DefendSkill = 10f + Dungeon.depth * 2,
                 AttackSkill = 20f + Dungeon.depth * 2)
 
-        addResistances(Damage.Element.LIGHT, -0.5f)
+        addResistances(Damage.Element.Light, -0.5f)
     }
 
     override fun act(): Boolean {

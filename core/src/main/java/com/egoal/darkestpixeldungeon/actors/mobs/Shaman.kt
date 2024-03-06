@@ -51,7 +51,7 @@ class Shaman : Mob(), Callback {
     private var buffcd = 0f //todo: rework skilled ai
 
     override fun giveDamage(target: Char): Damage = super.giveDamage(target)
-            .setAdditionalDamage(Damage.Element.LIGHT, Random.NormalIntRange(1, 5))
+            .setAdditionalDamage(Damage.Element.Light, Random.NormalIntRange(1, 5))
 
     override fun canAttack(enemy: Char): Boolean = Ballistica(pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos
 

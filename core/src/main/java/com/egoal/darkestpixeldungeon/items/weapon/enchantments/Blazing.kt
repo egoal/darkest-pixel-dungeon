@@ -33,7 +33,7 @@ class Blazing : Enchantment() {
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         use(weapon)
 
-        damage.setAdditionalDamage(Damage.Element.FIRE, Random.Int(2, damage.value / 5))
+        damage.setAdditionalDamage(Damage.Element.Fire, Random.Int(2, damage.value / 5))
 
         val defender = damage.to as Char
         if (Random.Float() < 0.3f) Buff.affect(defender, Burning::class.java).reignite(defender)

@@ -10,7 +10,7 @@ class Rousing: Enchantment() {
 
     override fun proc(weapon: Weapon, damage: Damage): Damage {
         use(weapon)
-        return damage.setAdditionalDamage(Damage.Element.HOLY, Random.Int(2, damage.value / 5))
+        return damage.setAdditionalDamage(Damage.Element.Holy, Random.Int(2, damage.value / 4))
     }
 
     override fun glowing(): ItemSprite.Glowing = COLOR

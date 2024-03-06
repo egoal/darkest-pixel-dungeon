@@ -18,7 +18,7 @@ class ReagentOfSnakeBite : Reagent(false) {
         super.shatter(cell)
 
         Actor.findChar(cell)?.let {
-            Buff.prolong(it, ElementBroken::class.java, 10f).add(Damage.Element.POISON, 2f)
+            Buff.prolong(it, ElementBroken::class.java, 10f).add(Damage.Element.Poison, 2f)
             Buff.affect(it, Poison::class.java).apply {
                 set(3f)
                 addExtraDamage(Dungeon.depth / 3 + Random.Int(1, 4))

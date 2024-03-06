@@ -44,7 +44,7 @@ class SoulBurning : Buff(), Hero.Doom {
             } else {
                 target.takeDamage(Damage(dmgHP, this, target)
                         .type(Damage.Type.MAGICAL)
-                        .setAdditionalDamage(Damage.Element.SHADOW, dmgHP / 4))
+                        .setAdditionalDamage(Damage.Element.Shadow, dmgHP / 4))
             }
         } else {
             detach()

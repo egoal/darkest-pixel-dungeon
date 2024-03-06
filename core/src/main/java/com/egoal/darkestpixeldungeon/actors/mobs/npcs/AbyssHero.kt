@@ -35,8 +35,8 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         camp = if (friendly) Camp.HERO else Camp.ENEMY
 
         Config = Database.DummyMobConfig
-        addResistances(Damage.Element.LIGHT, 0.5f)
-        addResistances(Damage.Element.SHADOW, 1.25f)
+        addResistances(Damage.Element.Light, 0.5f)
+        addResistances(Damage.Element.Shadow, 1.25f)
 
         if (friendly)
             initLevelStatus(level)
@@ -92,7 +92,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
 
     override fun giveDamage(enemy: Char): Damage {
         val dmg = Damage(Random.IntRange(1 + level, 5 + 6 * level), this, enemy)
-                .setAdditionalDamage(Damage.Element.SHADOW, Random.NormalIntRange(1, 2 * level))
+                .setAdditionalDamage(Damage.Element.Shadow, Random.NormalIntRange(1, 2 * level))
         if (Random.Float() < 0.15f) {
             dmg.value = dmg.value * 5 / 4
             dmg.addFeature(Damage.Feature.CRITICAL)

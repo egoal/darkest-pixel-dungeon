@@ -25,7 +25,7 @@ class Blinding : Enchantment() {
             }
         }
 
-        return damage.setAdditionalDamage(Damage.Element.SHADOW, Random.Int(2, damage.value / 5))
+        return damage.setAdditionalDamage(Damage.Element.Shadow, Random.Int(2, damage.value / 5))
     }
 
     override fun glowing(): ItemSprite.Glowing = COLOR

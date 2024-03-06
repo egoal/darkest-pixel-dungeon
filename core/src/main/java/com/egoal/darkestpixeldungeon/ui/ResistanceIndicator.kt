@@ -26,7 +26,7 @@ class ResistanceIndicator(val char: Char) : Component() {
         elementalText.x = x
         add(elementalText)
 
-        for (i in 0 until Damage.Element.ELEMENT_COUNT) {
+        for (i in Damage.Element.values().indices) {
             val r = i / ICON_COLS
             val c = i % ICON_COLS
 

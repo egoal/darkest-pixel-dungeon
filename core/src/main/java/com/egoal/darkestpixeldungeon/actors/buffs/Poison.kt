@@ -84,7 +84,8 @@ open class Poison : Buff(), Hero.Doom {
 
     override fun act(): Boolean {
         if (target.isAlive) {
-            val dmg = Damage(0, this, target).setAdditionalDamage(Damage.Element.POISON, (left / 3 + extraDamage).toInt() + 1)
+            val dmg = Damage(this, target, Damage.Type.MAGICAL)
+                    .setAdditionalDamage(Damage.Element.Poison, (left / 3 + extraDamage).toInt() + 1)
             target.takeDamage(dmg)
             spend(TICK)
 

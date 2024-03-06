@@ -22,10 +22,8 @@ package com.egoal.darkestpixeldungeon.actors.mobs
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Bleeding
 import com.egoal.darkestpixeldungeon.actors.buffs.Terror
-import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefend
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.ReleaseGasDefend_Toxic
 import com.egoal.darkestpixeldungeon.plants.Rotberry
 import com.egoal.darkestpixeldungeon.sprites.RotHeartSprite
@@ -42,7 +40,7 @@ class RotHeart : Mob() {
     }
 
     override fun takeDamage(dmg: Damage): Int {
-        if (dmg.hasElement(Damage.Element.FIRE)) {
+        if (dmg.element == Damage.Element.Fire && dmg.add_value > 0) {
             destroy()
             sprite.die()
 

@@ -90,7 +90,7 @@ class ArchDemon : NPC.Unbreakable() {
 
     private fun giveRandomPerk(hero: Hero) {
         val newPerk = Perk.RandomPositive(hero)
-        PerkGain.Show(Dungeon.hero!!, newPerk)
+        PerkGain.Show(Dungeon.hero, newPerk)
         hero.heroPerk.add(newPerk)
         hero.perkGained += 1
     }
@@ -103,11 +103,11 @@ class ArchDemon : NPC.Unbreakable() {
                     hero.regeneration -= min(hero.regeneration * 0.5f, 0.5f)
                     GLog.n(M.L(ArchDemon::class.java, "regeneration"))
                 } else if (Random.Float() < 0.3f) {
-                    val index = (0 until Damage.Element.ELEMENT_COUNT).maxByOrNull { i -> hero.elementalResistance[i] }!!
+                    val index = hero.elementalResistance.indices.maxByOrNull { hero.elementalResistance[it] }!!
                     if (hero.elementalResistance[index] > 0f) {
                         hero.elementalResistance[index] -= 0.3f
                     } else {
-                        for (i in 0 until Damage.Element.ELEMENT_COUNT) hero.elementalResistance[i] -= 0.05f
+                        for (i in 0 until hero.elementalResistance.size) hero.elementalResistance[i] -= 0.05f
                     }
                     GLog.n(M.L(this, "resistance"))
                 } else removeHT(hero, Random.Float(0.12f, 0.25f))
@@ -119,7 +119,7 @@ class ArchDemon : NPC.Unbreakable() {
                 hero.heroPerk.downgrade(thePerk)
             }
 
-            PerkGain.Show(Dungeon.hero!!, perk)
+            PerkGain.Show(Dungeon.hero, perk)
             hero.heroPerk.add(perk)
             hero.perkGained += 1
             say(M.L(ArchDemon::class.java, "deal"))

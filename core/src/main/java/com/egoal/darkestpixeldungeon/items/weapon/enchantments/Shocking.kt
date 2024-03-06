@@ -60,7 +60,7 @@ class Shocking : Enchantment() {
 
         }
 
-        return damage.setAdditionalDamage(Damage.Element.LIGHT, Random.Int(2, damage.value / 5))
+        return damage.setAdditionalDamage(Damage.Element.Light, Random.Int(2, damage.value / 4))
 
     }
 
@@ -78,7 +78,7 @@ class Shocking : Enchantment() {
             damage * 2
         else
             damage,
-                this, ch).convertToElement(Damage.Element.LIGHT))
+                this, ch).convertToElement(Damage.Element.Light))
 
         ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3)
         ch.sprite.flash()

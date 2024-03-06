@@ -59,7 +59,7 @@ class Venom : Poison(), Hero.Doom {
 
     override fun act(): Boolean {
         if (target.isAlive) {
-            target.takeDamage(Damage(0, this, target).setAdditionalDamage(Damage.Element.POISON, damage))
+            target.takeDamage(Damage(this, target, Damage.Type.MAGICAL).setAdditionalDamage(Damage.Element.Poison, damage))
             if (damage < (Dungeon.depth + 1) / 2 + 1)
                 damage++
 

@@ -16,7 +16,7 @@ class Slug : Mob() {
     }
 
     override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).setAdditionalDamage(Damage.Element.POISON, Random.NormalIntRange(1, 3))
+        return super.giveDamage(enemy).setAdditionalDamage(Damage.Element.Poison, Random.NormalIntRange(1, 3))
     }
 
     override fun defendDamage(dmg: Damage): Damage {

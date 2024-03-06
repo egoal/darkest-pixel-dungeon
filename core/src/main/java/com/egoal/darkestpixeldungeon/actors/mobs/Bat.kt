@@ -46,7 +46,7 @@ class Bat : Mob() {
         else {
             val dmg = super.giveDamage(enemy)
             if (Statistics.Clock.state != Statistics.ClockTime.State.Day)
-                dmg.setAdditionalDamage(Damage.Element.SHADOW, dmg.value / 4)
+                dmg.setAdditionalDamage(Damage.Element.Shadow, dmg.value / 4)
 
             dmg
         }

@@ -38,7 +38,7 @@ open class Scorpio : Mob() {
     override fun viewDistance(): Int = 6
 
     override fun giveDamage(target: Char): Damage = super.giveDamage(target)
-            .setAdditionalDamage(Damage.Element.POISON, Random.NormalIntRange(0, 12))
+            .setAdditionalDamage(Damage.Element.Poison, Random.NormalIntRange(0, 12))
             .addFeature(Damage.Feature.RANGED)
 
     override fun canAttack(enemy: Char): Boolean {

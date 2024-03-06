@@ -70,7 +70,7 @@ class WandOfFireblast : DamageWand(isMissile = false) {
 
     // accurate
     override fun giveDamage(enemy: Char): Damage {
-        return super.giveDamage(enemy).convertToElement(Damage.Element.FIRE).addFeature(Damage.Feature.ACCURATE)
+        return super.giveDamage(enemy).convertToElement(Damage.Element.Fire).addFeature(Damage.Feature.ACCURATE)
     }
 
     override fun onZap(bolt: Ballistica) {

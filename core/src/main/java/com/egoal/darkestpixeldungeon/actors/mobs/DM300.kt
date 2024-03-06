@@ -337,8 +337,8 @@ class DM300 : Mob() {
         overloaded = true
 
         // remove ice resistance, immune fire damage
-        addResistances(Damage.Element.ICE, 0f)
-        addResistances(Damage.Element.FIRE, 0.5f)
+        addResistances(Damage.Element.Ice, 0f)
+        addResistances(Damage.Element.Fire, 0.5f)
 
         sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "overload"))
         sprite.emitter().burst(Speck.factory(Speck.WOOL), 5)
@@ -360,8 +360,8 @@ class DM300 : Mob() {
         super.restoreFromBundle(bundle)
         overloaded = bundle.getBoolean(OVERLOADED)
         if (overloaded) {
-            addResistances(Damage.Element.ICE, 0f)
-            addResistances(Damage.Element.FIRE, 0.5f)
+            addResistances(Damage.Element.Ice, 0f)
+            addResistances(Damage.Element.Fire, 0.5f)
         }
         bumpcell = bundle.getInt(BUMP_CELL)
         bumpcd = bundle.getInt(BUMP_CD)
