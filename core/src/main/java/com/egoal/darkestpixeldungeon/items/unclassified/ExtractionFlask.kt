@@ -5,6 +5,7 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.actors.hero.perks.BrewEnhancedPotion
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.effects.particles.PurpleParticle
@@ -169,6 +170,8 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
             Statistics.PotionsCooked++
             Badges.validatePotionsCooked()
 
+            Dungeon.hero.heroPerk.get(BrewEnhancedPotion::class.java)?.affectPotion(it)
+
             //^ refined okay, do inscribe
             GLog.p(Messages.get(this, "refine", potion.name()))
             if (!potion.doPickUp(curUser))
@@ -265,6 +268,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         bundle.put(REFINED, refined)
         bundle.put(ENHANCED, enhanced)
         bundle.put(PURIFIED_WATER, purifiedWater)
+        bundle.put(ENERGY, energy)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -274,6 +278,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         enhanced = bundle.getBoolean(ENHANCED)
         if (enhanced) enchantByBlueprint()
         purifiedWater = bundle.getInt(PURIFIED_WATER)
+        energy = bundle.getInt(ENERGY)
     }
 
     class PurifyCounter : FlavourBuff() {
@@ -303,6 +308,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
         private const val REFINED = "refined"
         private const val ENHANCED = "enhanced"
         private const val PURIFIED_WATER = "purified_water"
+        private const val ENERGY = "energy"
 
         // interact
         private const val MODE_REFINE = 0

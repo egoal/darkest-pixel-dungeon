@@ -30,7 +30,7 @@ class ScrollOfLight : Scroll() {
 
     override fun doRead() {
         // light!
-        ExpandHalo(8f, 48f).show(Item.curUser.sprite, 0.5f)
+        ExpandHalo(8f, 48f, 0xffffff).show(Item.curUser.sprite, 0.5f)
         Sample.INSTANCE.play(Assets.SND_READ)
         Invisibility.dispel()
 

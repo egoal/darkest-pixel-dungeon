@@ -309,15 +309,15 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
         SkillTree().identify().collect()
 
         //* testing code from here
-        LongestSpear().identify().collect()
-        ReagentOfCatwalk().quantity(9).collect()
-        ReagentOfHallucinogenic().quantity(9).collect()
-        ReagentOfHealing().quantity(9).collect()
-        ReagentOfPetrifaction().quantity(9).collect()
-        ReagentOfPrecipitate().quantity(9).collect()
-        ReagentOfSnakeBite().quantity(9).collect()
-        ReagentOfSorcery().quantity(9).collect()
-        ReagentOfSweet().quantity(9).collect()
+//        LongestSpear().identify().collect()
+//        ReagentOfCatwalk().quantity(9).collect()
+//        ReagentOfHallucinogenic().quantity(9).collect()
+//        ReagentOfHealing().quantity(9).collect()
+//        ReagentOfPetrifaction().quantity(9).collect()
+//        ReagentOfPrecipitate().quantity(9).collect()
+//        ReagentOfSnakeBite().quantity(9).collect()
+//        ReagentOfSorcery().quantity(9).collect()
+//        ReagentOfSweet().quantity(9).collect()
     }
 
     // called when hero level up

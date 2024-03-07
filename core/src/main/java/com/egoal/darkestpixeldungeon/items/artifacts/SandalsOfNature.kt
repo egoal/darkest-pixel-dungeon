@@ -22,8 +22,8 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Roots
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.EarthParticle
@@ -34,6 +34,7 @@ import com.egoal.darkestpixeldungeon.plants.Earthroot
 import com.egoal.darkestpixeldungeon.plants.Plant
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.watabou.noosa.Camera
@@ -98,14 +99,18 @@ class SandalsOfNature : Artifact() {
                 it is Plant.Seed && !seeds.contains(it.javaClass)
             })
         } else if (action == AC_ROOT && level() > 0) {
-
             if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
-            else if (charge == 0)
+            else if (hero.buff(Rooted::class.java) != null) {
+                val rooted = hero.buff(Rooted::class.java)!!
+                charge = rooted.level * 9 / 10
+                Buff.detach(rooted)
+            } else if (charge == 0)
                 GLog.i(Messages.get(this, "no_charge"))
             else {
-                Buff.prolong(hero, Roots::class.java, 5f)
-                Buff.affect(hero, Earthroot.Armor::class.java).level(charge)
+//                Buff.prolong(hero, Roots::class.java, 5f)
+//                Buff.affect(hero, Earthroot.Armor::class.java).level(charge)
+                Buff.affect(hero, Rooted::class.java).level(charge)
                 CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8)
                 Camera.main.shake(1f, 0.4f)
                 charge = 0
@@ -177,6 +182,44 @@ class SandalsOfNature : Artifact() {
                 updateQuickslot()
             }
         }
+
+        override fun attachTo(target: Char): Boolean {
+            return if (super.attachTo(target)) {
+                if (isFullyUpgraded) for (i in target.elementalResistance.indices) target.elementalResistance[i] += .1f
+                true
+            } else false
+        }
+
+        override fun detach() {
+            if (isFullyUpgraded) for (i in target.elementalResistance.indices) target.elementalResistance[i] -= .1f
+
+            target.buff(Rooted::class.java)?.let {
+                charge = it.level * 9 / 10
+                it.detach()
+            }
+
+            super.detach()
+        }
+    }
+
+    class Rooted : Earthroot.Armor() {
+        init {
+            type = buffType.POSITIVE
+        }
+
+        override fun attachTo(target: Char): Boolean {
+            target.rooted = true
+            return super.attachTo(target)
+        }
+
+        override fun detach() {
+            target.rooted = false
+            super.detach()
+        }
+
+        override fun icon(): Int = BuffIndicator.ROOT_ARMOR
+
+        override fun heroMessage(): String? = M.L(this, "heromsg")
     }
 
     companion object {

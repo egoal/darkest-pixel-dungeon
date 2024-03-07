@@ -39,6 +39,9 @@ class BrewEnhancedPotion : Perk() {
             if (com.watabou.utils.Random.Float() < nextProb) {
                 p.reinforce()
                 nextProb = 0.333f
+
+                GameScene.effect(Flare(7, 32f).color(0xffccdd, true).show(
+                        Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(Dungeon.hero.pos), 2f))
             }
         }
         nextProb += 0.333f

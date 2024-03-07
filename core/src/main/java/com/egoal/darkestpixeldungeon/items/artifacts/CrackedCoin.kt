@@ -6,18 +6,15 @@ import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.FlavourBuff
 import com.egoal.darkestpixeldungeon.actors.buffs.Paralysis
 import com.egoal.darkestpixeldungeon.actors.buffs.TempPathLight
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Lightning
-import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ElectronParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level
-import com.egoal.darkestpixeldungeon.levels.features.Luminary
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
@@ -30,7 +27,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -54,6 +51,8 @@ class CrackedCoin : Artifact() {
 
     override fun desc(): String {
         var desc = super.desc()
+        if (isFullyUpgraded) desc += "\n" + M.L(this, "desc_max")
+
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n"
             desc += if (!cursed)
@@ -69,6 +68,7 @@ class CrackedCoin : Artifact() {
         if (isEquipped(hero)) {
             actions.add(AC_SHIELD)
             actions.add(AC_SHELL)
+            if (isFullyUpgraded) actions.add(AC_THUNDER)
         }
 
         return actions
@@ -108,6 +108,17 @@ class CrackedCoin : Artifact() {
                 QuickSlotButton.cancel()
             } else {
                 GameScene.selectCell(dirSelector)
+            }
+        } else if (action == AC_THUNDER) {
+            if (!isEquipped(hero))
+                GLog.i(M.L(Artifact::class.java, "need_to_equip"))
+            else if (cursed) {
+                GLog.w(M.L(this, "cursed"))
+            } else if (charge < chargeCap) {
+                GLog.w(M.L(this, "not_charged"))
+                QuickSlotButton.cancel()
+            } else {
+                GameScene.selectCell(thunderSelector)
             }
         }
     }
@@ -180,9 +191,9 @@ class CrackedCoin : Artifact() {
         override fun desc(): String = M.L(this, "desc", dpg())
     }
 
-    private fun shellCost(): Int = 10 + 20 * level()
+    private fun shellCost(): Int = 10 + 10 * level()
 
-    private fun levelupCost(): Int = level() * level() + level() + 1
+    private fun levelupCost(): Int = level() * level() / 2 + level() + 1
 
     val arcs = ArrayList<Lightning.Arc>()
 
@@ -223,16 +234,49 @@ class CrackedCoin : Artifact() {
         Sample.INSTANCE.play(Assets.SND_LIGHTNING)
     }
 
+    private fun thunderAt(hero: Hero, pos: Int) {
+        Dungeon.gold -= min(Dungeon.gold, 10 + 20 * level())
+        charge = 0
+        updateQuickslot()
+
+        hero.sprite.zap(pos)
+        arcs.clear()
+        arcs.addAll(PathFinder.NEIGHBOURS9
+                .filter { it == 0 || Random.Int(3) != 0 }
+                .map {
+                    val np = it + pos
+                    Lightning.Arc(np - Dungeon.level.width() * 2, np)
+                })
+
+        hero.sprite.parent.add(Lightning(arcs) {
+            Dungeon.level.mobs.filter {
+                Dungeon.level.distance(it.pos, pos) <= 1
+            }.forEach {
+                it.takeDamage(Damage(Dungeon.hero, it, Damage.Type.MAGICAL)
+                        .setAdditionalDamage(Damage.Element.Light, Random.NormalIntRange(8 + 6 * level(), 12 + 12 * level())))
+                if (it.isAlive) {
+                    Buff.prolong(it, Paralysis::class.java, 3f)
+                }
+                it.sprite.flash()
+            }
+
+            hero.spendAndNext(1f)
+        })
+
+        Sample.INSTANCE.play(Assets.SND_LIGHTNING)
+        Sample.INSTANCE.play(Assets.SND_LIGHTNING)
+        Sample.INSTANCE.play(Assets.SND_LIGHTNING)
+    }
+
     private fun onZap(hero: Hero, beam: Ballistica) {
         for (c in beam.subPath(1, beam.dist)) {
             Actor.findChar(c)?.let {
-                val dmg =  Damage(hero, it, Damage.Type.MAGICAL)
+                val dmg = Damage(hero, it, Damage.Type.MAGICAL)
                         .setAdditionalDamage(Damage.Element.Light, Random.IntRange(8 + 5 * level(), 8 + 10 * level()))
                 it.takeDamage(dmg)
-                if (it.isAlive) {
+                if (it.isAlive)
                     Buff.prolong(it, Paralysis::class.java, Random.Float(1f, 1.5f) + level() / 2f)
-                    it.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12)
-                }
+                it.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 12)
             }
             if (Level.flamable[c]) {
                 Dungeon.level.destroy(c)
@@ -252,9 +296,18 @@ class CrackedCoin : Artifact() {
         }
     }
 
+    private val thunderSelector = object : CellSelector.Listener {
+        override fun prompt(): String = M.L(CrackedCoin::class.java, "prompt")
+
+        override fun onSelect(cell: Int?) {
+            if (cell != null) thunderAt(Item.curUser, cell)
+        }
+    }
+
     companion object {
         private const val AC_SHIELD = "shield"
         private const val AC_SHELL = "shell"
+        private const val AC_THUNDER = "thunder"
 
         private const val ACTIVED = "actived"
     }

@@ -60,7 +60,7 @@ open class Potion : Item() {
     var reinforced = false
 
     val isKnown: Boolean
-        get() = handler!!.isKnown(this)
+        get() = handler.isKnown(this)
 
     init {
         cursedKnown = true

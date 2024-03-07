@@ -12,8 +12,8 @@ public class ExpandHalo extends Halo {
   private Visual target;
   private final float minRadius, maxRadius;
 
-  public ExpandHalo(float rmin, float rmax) {
-    super(rmin, 0xffffff, 1f);
+  public ExpandHalo(float rmin, float rmax, int color) {
+    super(rmin, color, 1f);
 
     minRadius = rmin;
     maxRadius = rmax;

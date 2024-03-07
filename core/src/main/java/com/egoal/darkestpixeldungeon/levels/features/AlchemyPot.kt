@@ -108,7 +108,7 @@ object AlchemyPot {
         var p = Random.element(potioncls).newInstance()
         if (p is PotionOfHealing && Random.Int(12) < Dungeon.limitedDrops.cookingHP.count) p = Generator.POTION.generate() as Potion
 
-        Dungeon.hero?.heroPerk?.get(BrewEnhancedPotion::class.java)?.affectPotion(p)
+        Dungeon.hero.heroPerk.get(BrewEnhancedPotion::class.java)?.affectPotion(p)
 
         return p
     }

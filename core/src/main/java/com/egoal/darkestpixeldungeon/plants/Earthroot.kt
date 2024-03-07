@@ -26,10 +26,9 @@ import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
-import com.egoal.darkestpixeldungeon.items.potions.PotionOfParalyticGas
+import com.egoal.darkestpixeldungeon.effects.particles.EarthParticle
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.egoal.darkestpixeldungeon.effects.particles.EarthParticle
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.watabou.noosa.Camera
 import com.watabou.utils.Bundle
@@ -56,9 +55,10 @@ class Earthroot : Plant(5) {
         }
     }
 
-    class Armor : Buff() {
+    open class Armor : Buff() {
         private var pos: Int = 0
-        private var level: Int = 0
+        var level: Int = 0
+            private set
 
         init {
             type = buffType.POSITIVE

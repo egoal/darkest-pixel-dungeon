@@ -1,15 +1,20 @@
 package com.egoal.darkestpixeldungeon.items.artifacts
 
+import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.ResistAny
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.effects.ExpandHalo
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.watabou.utils.Bundle
+import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
 
 /**
@@ -32,10 +37,19 @@ class RiemannianManifoldShield : Artifact() {
     fun recharge() {
         // curUser is assigned in the execute method!!!
         if (isEquipped(Dungeon.hero)) {
-            if (level() <= 5)
-                cooldown = 45 - level() * 3
-            else
-                cooldown = 30 - (level() - 5) * 3
+            if (level() <= 5) cooldown = 56 - level() * 4
+
+            if (isFullyUpgraded) {
+                Dungeon.level.mobs.filter {
+                    Level.fieldOfView[it.pos] && Dungeon.level.distance(it.pos, Dungeon.hero.pos) <= 3
+                }.forEach {
+                    it.takeDamage(Damage(Random.NormalIntRange(10, it.HT / 5), Dungeon.hero, it).type(Damage.Type.MAGICAL))
+                    it.sprite.flash()
+                }
+
+                ExpandHalo(8f, 24f, 0xccf1ff).show(Dungeon.hero.sprite, .5f)
+                Sample.INSTANCE.play(Assets.SND_SHATTER)
+            }
         }
     }
 
@@ -64,7 +78,7 @@ class RiemannianManifoldShield : Artifact() {
 
                 exp += 1
                 // check upgrade
-                val requireExp = level() * level() + 1
+                val requireExp = level() * level() / 3 + level() + 1
                 if (exp > requireExp && level() < levelCap) {
                     exp -= requireExp
                     upgrade()
@@ -82,6 +96,7 @@ class RiemannianManifoldShield : Artifact() {
 
     override fun desc(): String {
         var desc = super.desc()
+        if (isFullyUpgraded) desc += "\n" + M.L(this, "desc_max")
 
         if (isIdentified && cursed)
             desc += "\n\n" + Messages.get(this, "desc_cursed")

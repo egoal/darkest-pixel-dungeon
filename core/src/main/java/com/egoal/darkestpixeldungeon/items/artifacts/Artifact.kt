@@ -21,16 +21,16 @@
 package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.items.KindofMisc
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.items.Catalog
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.KindofMisc
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 import kotlin.math.round
@@ -43,14 +43,17 @@ abstract class Artifact : KindofMisc() {
     // already inherited from item superclass
     // exp is used to count progress towards levels for some artifacts
     protected var exp = 0
+
     // levelCap is the artifact's maximum level
     protected var levelCap = 0
 
     // the current artifact charge
     protected var charge = 0
+
     // the build towards next charge, usually rolls over at 1.
     // better to keep charge as an int and use a separate float than casting.
     protected var partialCharge = 0f
+
     // the maximum charge, varies per artifact, not all artifacts use this.
     protected var chargeCap = 0
 
@@ -59,6 +62,8 @@ abstract class Artifact : KindofMisc() {
 
     override val isUpgradable: Boolean
         get() = false
+
+    protected val isFullyUpgraded get() = level() >= levelCap
 
     override fun doEquip(hero: Hero): Boolean {
         if (hero.belongings.miscs().any { it?.javaClass == this.javaClass }) {

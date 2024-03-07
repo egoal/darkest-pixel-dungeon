@@ -232,7 +232,7 @@ abstract class HeroAction(var dst: Int = 0) {
                         if (it == 0) {
                             confirmed = true
                             hero.resume()
-                        }
+                        } else hero.ready()
                     }
                 } else {
                     hero.curAction = null

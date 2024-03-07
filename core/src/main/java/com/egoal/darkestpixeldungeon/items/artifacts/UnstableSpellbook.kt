@@ -20,19 +20,14 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts
 
-import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
-
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.effects.particles.ElmoParticle
 import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.items.scrolls.Scroll
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfIdentify
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfMagicMapping
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRemoveCurse
+import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.scrolls.*
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -42,11 +37,13 @@ import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.collections.set
 
 class UnstableSpellbook : Artifact() {
     private val scrolls = ArrayList<Class<out Scroll>>()
+    private var cachedScroll: Scroll? = null
 
     private val mode: WndBag.Mode = WndBag.Mode.SCROLL
 
@@ -83,9 +80,9 @@ class UnstableSpellbook : Artifact() {
 
         levelCap = 10
 
-        charge = level() / 2 + 3
+        charge = level() / 2 + 2
         partialCharge = 0f
-        chargeCap = level() / 2 + 3
+        chargeCap = level() / 2 + 2
 
         defaultAction = AC_READ
 
@@ -116,34 +113,45 @@ class UnstableSpellbook : Artifact() {
         super.execute(hero, action)
 
         if (action == AC_READ) {
-
-            if (hero.buff(Blindness::class.java) != null)
-                GLog.w(Messages.get(this, "blinded"))
-            else if (!isEquipped(hero))
+            if (!isEquipped(hero))
                 GLog.i(Messages.get(Artifact::class.java, "need_to_equip"))
             else if (charge == 0)
                 GLog.i(Messages.get(this, "no_charge"))
             else if (cursed)
                 GLog.i(Messages.get(this, "cursed"))
             else {
+                val useScroll = { scroll: Scroll ->
+                    scroll.ownedByBook = true
+                    scroll.execute(hero, AC_READ)
+                }
+
                 val (first, second) = hero.canRead()
                 if (!first)
                     GLog.n(second)
                 else {
-                    charge--
+                    if (cachedScroll != null) useScroll(cachedScroll!!)
+                    else if (Random.Int(100) <= if (isFullyUpgraded) 6 else 3) {
+                        charge--
+                        val scroll = if (Random.Int(3) == 0) ScrollOfUpgrade() else ScrollOfEnchanting()
+                        useScroll(scroll)
+                    } else {
+                        charge--
 
-                    var scroll: Scroll?
-                    do {
-                        scroll = Generator.SCROLL.generate() as Scroll
-                    } while (scroll == null ||
-                            //gotta reduce the rate on these scrolls or that'll be all
-                            // the item does.
-                            (scroll is ScrollOfIdentify ||
-                                    scroll is ScrollOfRemoveCurse ||
-                                    scroll is ScrollOfMagicMapping) && Random.Int(2) == 0)
+                        var scroll: Scroll?
+                        do {
+                            scroll = Generator.SCROLL.generate() as Scroll
+                        } while (scroll == null ||
+                                //gotta reduce the rate on these scrolls or that'll be all
+                                // the item does.
+                                (scroll is ScrollOfIdentify ||
+                                        scroll is ScrollOfRemoveCurse ||
+                                        scroll is ScrollOfMagicMapping) && Random.Int(2) == 0)
 
-                    scroll.ownedByBook = true
-                    scroll.execute(hero, AC_READ)
+                        if (scroll.isKnown) {
+                            cachedScroll = scroll
+                            GLog.p(M.L(this, "cached_scroll"))
+                        } else useScroll(scroll)
+                    }
                 }
             }
 
@@ -152,14 +160,13 @@ class UnstableSpellbook : Artifact() {
         }
     }
 
-    override fun passiveBuff()= bookRecharge()
+    override fun passiveBuff() = bookRecharge()
 
     override fun upgrade(): Item {
         super.upgrade()
 
-        chargeCap = (level() + 1) / 2 + 3
-        if (level() >= levelCap)
-            scrolls.clear()
+        chargeCap = (level() + 1) / 2 + 2
+        if (isFullyUpgraded) scrolls.clear()
 
         return this
     }
@@ -171,7 +178,9 @@ class UnstableSpellbook : Artifact() {
             desc += "\n\n" + Messages.get(this, "desc_cursed")
         }
 
-        if (level() < levelCap)
+        cachedScroll?.let { desc += "\n" + M.L(it, "name") }
+
+        if (level() < levelCap) {
             if (scrolls.size > 0) {
                 desc += "\n\n" + Messages.get(this, "desc_index")
                 var i = 0
@@ -180,6 +189,7 @@ class UnstableSpellbook : Artifact() {
                     ++i
                 }
             }
+        } else desc += "\n\n" + M.L(this, "desc_max")
 
         return desc
     }

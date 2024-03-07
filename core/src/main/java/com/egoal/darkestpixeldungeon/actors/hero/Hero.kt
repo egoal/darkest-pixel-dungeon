@@ -165,6 +165,9 @@ class Hero : Char() {
 
     // can, why
     fun canRead(): Pair<Boolean, String> {
+        if (buff(Blindness::class.java) != null)
+            return Pair(false, M.L(this, "bind_to_read"))
+
         val plevel = pressure.level
         if (plevel == Pressure.Level.COLLAPSE || plevel == Pressure.Level.NERVOUS)
             return Pair(false, Messages.get(this, "nervous_to_read"))

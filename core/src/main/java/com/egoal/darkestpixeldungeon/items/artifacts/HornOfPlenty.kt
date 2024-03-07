@@ -22,31 +22,26 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.Statistics
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
-import com.egoal.darkestpixeldungeon.actors.buffs.Recharging
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.effects.Speck
-import com.egoal.darkestpixeldungeon.items.food.Blandfruit
-import com.egoal.darkestpixeldungeon.items.food.Food
-import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfRecharging
-import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.scenes.GameScene
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
+import com.egoal.darkestpixeldungeon.Statistics
+import com.egoal.darkestpixeldungeon.actors.buffs.Hunger
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.hero.perks.GoodAppetite
 import com.egoal.darkestpixeldungeon.effects.SpellSprite
 import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.sprites.ItemSprite
+import com.egoal.darkestpixeldungeon.items.food.Blandfruit
+import com.egoal.darkestpixeldungeon.items.food.Food
+import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.GameScene
+import com.egoal.darkestpixeldungeon.sprites.CharSprite
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndBag
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.max
 
 class HornOfPlenty : Artifact() {
@@ -92,6 +87,15 @@ class HornOfPlenty : Artifact() {
                 if (chargesToUse >= 3)
                     hero.heroPerk.get(GoodAppetite::class.java)?.onFoodEaten(hero, Food()) // fixme: Food() as placeholder here
 
+                if (chargesToUse >= 7 && isFullyUpgraded) {
+                    // 7: eat on hunger
+                    hero.SHLD += chargesToUse * 3
+                    val ht = Random.NormalIntRange(1, chargesToUse)
+                    hero.HT += ht
+
+                    hero.sprite.showStatus(CharSprite.POSITIVE, M.L(this, "add_ht", ht))
+                }
+
                 // mental
                 hero.recoverSanity(Random.Int(1, chargesToUse))
 
@@ -122,6 +126,8 @@ class HornOfPlenty : Artifact() {
 
     override fun desc(): String {
         var desc = super.desc()
+
+        if (isFullyUpgraded) desc += M.L(this, "desc_max")
 
         if (isEquipped(Dungeon.hero)) {
             if (!cursed) {
