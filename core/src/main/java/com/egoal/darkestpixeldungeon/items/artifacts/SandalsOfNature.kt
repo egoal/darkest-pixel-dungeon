@@ -84,10 +84,8 @@ class SandalsOfNature : Artifact() {
 
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = super.actions(hero)
-        if (isEquipped(hero) && level() < 3 && !cursed)
-            actions.add(AC_FEED)
-        if (isEquipped(hero) && charge > 0)
-            actions.add(AC_ROOT)
+        if (isEquipped(hero) && level() < 3 && !cursed) actions.add(AC_FEED)
+        if (isEquipped(hero)) actions.add(AC_ROOT)
         return actions
     }
 
@@ -148,7 +146,12 @@ class SandalsOfNature : Artifact() {
     override fun upgrade(): Item {
         updateImage()
         name = Messages.get(this, "name_" + (level() + 1))
-        return super.upgrade()
+        super.upgrade()
+
+        if (isFullyUpgraded && isEquipped(Dungeon.hero))
+            for (i in Dungeon.hero.elementalResistance.indices) Dungeon.hero.elementalResistance[i] += .1f
+
+        return this
     }
 
     private fun updateImage() {

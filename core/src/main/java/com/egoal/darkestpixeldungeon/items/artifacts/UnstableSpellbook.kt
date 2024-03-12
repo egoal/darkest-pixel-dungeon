@@ -129,8 +129,10 @@ class UnstableSpellbook : Artifact() {
                 if (!first)
                     GLog.n(second)
                 else {
-                    if (cachedScroll != null) useScroll(cachedScroll!!)
-                    else if (Random.Int(100) <= if (isFullyUpgraded) 6 else 3) {
+                    if (cachedScroll != null) {
+                        useScroll(cachedScroll!!)
+                        cachedScroll = null
+                    } else if (Random.Int(100) <= if (isFullyUpgraded) 6 else 3) {
                         charge--
                         val scroll = if (Random.Int(3) == 0) ScrollOfUpgrade() else ScrollOfEnchanting()
                         useScroll(scroll)
@@ -149,7 +151,7 @@ class UnstableSpellbook : Artifact() {
 
                         if (scroll.isKnown) {
                             cachedScroll = scroll
-                            GLog.p(M.L(this, "cached_scroll"))
+                            GLog.p(M.L(this, "cached_scroll", scroll.name()))
                         } else useScroll(scroll)
                     }
                 }
@@ -178,7 +180,7 @@ class UnstableSpellbook : Artifact() {
             desc += "\n\n" + Messages.get(this, "desc_cursed")
         }
 
-        cachedScroll?.let { desc += "\n" + M.L(it, "name") }
+        cachedScroll?.let { desc += M.L(this, "desc_cache", it.name()) }
 
         if (level() < levelCap) {
             if (scrolls.size > 0) {
@@ -197,12 +199,14 @@ class UnstableSpellbook : Artifact() {
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(SCROLLS, scrolls.toTypedArray())
+        bundle.put(CACHED_SCROLL, cachedScroll)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
         super.restoreFromBundle(bundle)
         scrolls.clear()
         scrolls.addAll(bundle.getClassArray(SCROLLS).map { it as Class<out Scroll> })
+        cachedScroll = bundle.get(CACHED_SCROLL) as Scroll?
     }
 
     inner class bookRecharge : Artifact.ArtifactBuff() {
@@ -234,5 +238,6 @@ class UnstableSpellbook : Artifact() {
         private const val AC_ADD = "ADD"
 
         private const val SCROLLS = "scrolls"
+        private const val CACHED_SCROLL = "cached_scroll"
     }
 }

@@ -706,9 +706,7 @@ abstract class Mob : Char() {
     protected inner class Sleeping : AiState {
 
         override fun act(enemyInFOV: Boolean, justAlerted: Boolean): Boolean {
-            if (enemyInFOV && !enemy!!.flying &&
-                    Random.Int(distance(enemy!!) / 2 + 1 + enemy!!.stealth() + if (enemy!!.flying) 2 else 0) == 0) {
-
+            if (enemyInFOV && alert(enemy!!)) {
                 enemySeen = true
 
                 notice()
@@ -722,8 +720,14 @@ abstract class Mob : Char() {
                 enemySeen = false
 
                 spend(Actor.TICK)
-
             }
+            return true
+        }
+
+        private fun alert(ch: Char): Boolean {
+            if (ch.flying || ch.buff(Catwalk::class.java) != null) return false
+            if (Random.Int(distance(ch) / 2 + 1 + ch.stealth()) != 0) return false
+
             return true
         }
 

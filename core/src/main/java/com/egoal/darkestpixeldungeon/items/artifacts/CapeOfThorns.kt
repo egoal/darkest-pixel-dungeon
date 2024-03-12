@@ -20,9 +20,8 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts
 
-import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
@@ -31,8 +30,6 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Random
-
-import javax.microedition.khronos.opengles.GL
 
 //* check in Hero::takeDamage
 class CapeOfThorns : Artifact() {
@@ -55,6 +52,8 @@ class CapeOfThorns : Artifact() {
 
     override fun desc(): String {
         var desc = Messages.get(this, "desc")
+        if (isFullyUpgraded) desc += "\n" + Messages.get(this, "desc_max")
+
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n"
             if (cooldown == 0)
@@ -96,11 +95,18 @@ class CapeOfThorns : Artifact() {
                 }
             } else {
                 // has the buff
-                val deflected = Random.NormalIntRange(0, dmg.value)
+                val deflected = Random.NormalIntRange(1, dmg.value)
                 dmg.value -= deflected
+                if (Random.Float() < hero.criticalChance()) {
+                    dmg.addFeature(Damage.Feature.CRITICAL)
+                    dmg.value = dmg.value * 3 / 2
+                }
 
-                if (dmg.from is Mob && Dungeon.level.adjacent((dmg.from as Mob).pos, hero.pos))
-                    (dmg.from as Mob).takeDamage(Damage(deflected, dmg.to, dmg.from))
+                if (dmg.from is Mob) {
+                    val mob = dmg.from as Mob
+                    if (isFullyUpgraded || Dungeon.level.adjacent(mob.pos, hero.pos))
+                        mob.takeDamage(Damage(deflected, dmg.to, dmg.from))
+                }
 
                 exp += deflected
                 val requireExp = (level() + 1) * 5
@@ -121,7 +127,7 @@ class CapeOfThorns : Artifact() {
         }
 
         override fun desc(): String {
-            return Messages.get(this, "desc", dispTurns(cooldown.toFloat()))
+            return Messages.get(this, if (isFullyUpgraded) "desc_max" else "desc", dispTurns(cooldown.toFloat()))
         }
 
         override fun icon(): Int {

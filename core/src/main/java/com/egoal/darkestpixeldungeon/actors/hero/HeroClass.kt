@@ -9,6 +9,8 @@ import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.armor.ClothArmor
 import com.egoal.darkestpixeldungeon.items.armor.PlateArmor
 import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfShadows
+import com.egoal.darkestpixeldungeon.items.artifacts.SandalsOfNature
+import com.egoal.darkestpixeldungeon.items.artifacts.UnstableSpellbook
 import com.egoal.darkestpixeldungeon.items.bags.SeedPouch
 import com.egoal.darkestpixeldungeon.items.bags.SkillTree
 import com.egoal.darkestpixeldungeon.items.food.Food
@@ -318,6 +320,8 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //        ReagentOfSnakeBite().quantity(9).collect()
 //        ReagentOfSorcery().quantity(9).collect()
 //        ReagentOfSweet().quantity(9).collect()
+//        UnstableSpellbook().collect()
+//        SandalsOfNature().collect()
     }
 
     // called when hero level up

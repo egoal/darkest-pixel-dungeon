@@ -47,7 +47,7 @@ class RiemannianManifoldShield : Artifact() {
                     it.sprite.flash()
                 }
 
-                ExpandHalo(8f, 24f, 0xccf1ff).show(Dungeon.hero.sprite, .5f)
+                ExpandHalo(8f, 24f, 0xccf1ff).show(Dungeon.hero.sprite, .25f)
                 Sample.INSTANCE.play(Assets.SND_SHATTER)
             }
         }

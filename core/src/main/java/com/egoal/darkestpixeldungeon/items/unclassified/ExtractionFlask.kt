@@ -249,6 +249,7 @@ class ExtractionFlask : Item(), GreatBlueprint.Enchantable {
             GLog.p(M.L(this, "reagent_generated", reagent.name()))
             Sample.INSTANCE.play(Assets.SND_PUFF)
         }
+        updateQuickslot()
     }
 
     private fun purifyWater() {

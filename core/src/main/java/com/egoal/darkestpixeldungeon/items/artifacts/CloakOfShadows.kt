@@ -24,20 +24,21 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.unclassified.GreatBlueprint
+import com.egoal.darkestpixeldungeon.items.unclassified.HasteRune
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.noosa.tweeners.AlphaTweener
 import com.watabou.utils.Bundle
-
-import java.util.ArrayList
+import java.util.*
 
 class CloakOfShadows : Artifact(), GreatBlueprint.Enchantable {
 
@@ -84,7 +85,7 @@ class CloakOfShadows : Artifact(), GreatBlueprint.Enchantable {
                     GLog.i(Messages.get(this, "no_charge"))
                 else {
                     stealthed = true
-                    hero.spend(1f)
+                    hero.spend(if (isFullyUpgraded) .01f else 1f)
                     hero.busy()
                     Sample.INSTANCE.play(Assets.SND_MELD)
                     activeBuff = activeBuff()
@@ -220,6 +221,7 @@ class CloakOfShadows : Artifact(), GreatBlueprint.Enchantable {
         override fun attachTo(target: Char): Boolean {
             if (super.attachTo(target)) {
                 target.invisible = target.invisible + 1
+                if (isFullyUpgraded) Buff.prolong(target, HasteRune.Haste::class.java, 2f)
                 return true
             } else {
                 return false
@@ -284,8 +286,7 @@ class CloakOfShadows : Artifact(), GreatBlueprint.Enchantable {
         }
 
         override fun detach() {
-            if (target.invisible > 0)
-                target.invisible = target.invisible - 1
+            if (target.invisible > 0) target.invisible = target.invisible - 1
             stealthed = false
             cooldown = 6 - level() / 4
 

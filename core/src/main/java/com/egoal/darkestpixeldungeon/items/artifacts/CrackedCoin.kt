@@ -262,6 +262,7 @@ class CrackedCoin : Artifact() {
 
             hero.spendAndNext(1f)
         })
+        hero.say(M.L(this, "say_thunder"))
 
         Sample.INSTANCE.play(Assets.SND_LIGHTNING)
         Sample.INSTANCE.play(Assets.SND_LIGHTNING)

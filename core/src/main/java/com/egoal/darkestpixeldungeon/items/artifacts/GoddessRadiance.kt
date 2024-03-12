@@ -75,7 +75,7 @@ class GoddessRadiance : Artifact() {
     private fun radiance(hero: Hero) {
         // copy from ScrollOfLight
         // light!
-        ExpandHalo(4f, 48f).show(hero.sprite, 0.75f)
+        ExpandHalo(4f, 48f, 0xffffff).show(hero.sprite, 0.75f)
         Sample.INSTANCE.play(Assets.SND_BLAST)
         Invisibility.dispel()
 
