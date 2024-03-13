@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.effects.Surprise
 import com.egoal.darkestpixeldungeon.effects.Wound
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.artifacts.MasterThievesArmband
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.rings.RingOfAccuracy
@@ -531,6 +532,8 @@ abstract class Mob : Char() {
                 Wound.hit(this)
             } else
                 Surprise.hit(this)
+
+            enemy.buff(MasterThievesArmband.Thievery::class.java)?.onSneakAttack(this)
         }
 
         // attack by a closer but not current enemy, switch
@@ -632,7 +635,7 @@ abstract class Mob : Char() {
         }
     }
 
-    protected open fun createLoot(): Item? {
+    open fun createLoot(): Item? {
         val total = Config.Loot.sumOf { it.Chance.toDouble() }.toFloat()
         if (total <= 0f) return null
 
@@ -642,7 +645,7 @@ abstract class Mob : Char() {
             if (p <= 0f) return GenerateItemFromString(l.Name)
         }
 
-        TODO()
+        return null // cannot reach here
     }
 
     protected fun GenerateItemFromString(name: String): Item? {

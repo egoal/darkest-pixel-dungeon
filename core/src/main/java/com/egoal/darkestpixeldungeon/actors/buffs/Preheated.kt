@@ -18,7 +18,7 @@ class Preheated : FlavourBuff() {
 
     fun affectWandDamage(damage: Damage) {
         damage.addFeature(Damage.Feature.CRITICAL or Damage.Feature.ACCURATE)
-        damage.value = round(damage.value * 1.25f).toInt()
+        damage.scale(1.25f)
 
         detach()
     }

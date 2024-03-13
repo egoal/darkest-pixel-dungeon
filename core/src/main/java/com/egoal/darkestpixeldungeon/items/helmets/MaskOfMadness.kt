@@ -26,6 +26,7 @@ class MaskOfMadness : Helmet() {
     override fun procGivenDamage(dmg: Damage) {
         val ratio = 2.1f - 1.5f / (Math.exp((level() / 3f).toDouble()).toFloat() + .5f)
         dmg.value = (dmg.value * ratio).toInt()
+        dmg.add_value = (dmg.add_value * ratio).toInt()
     }
 
     override fun procTakenDamage(dmg: Damage) {

@@ -20,7 +20,7 @@ class ArcaneCrit : Perk(5) {
 
     fun affectDamage(hero: Hero, dmg: Damage) {
         if (!dmg.isFeatured(Damage.Feature.CRITICAL) && com.watabou.utils.Random.Float() < prob(hero)) {
-            dmg.value = round(dmg.value * 1.75f).toInt()
+            dmg.scale(1.75f)
             dmg.addFeature(Damage.Feature.CRITICAL)
         }
     }
@@ -46,8 +46,7 @@ class CloseZap : Perk() {
             ratio *= 1.1f
             damage.addFeature(Damage.Feature.CRITICAL)
         }
-
-        damage.value = round(damage.value * ratio).toInt()
+        damage.scale(ratio)
     }
 }
 

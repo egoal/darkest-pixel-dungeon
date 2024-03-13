@@ -2,11 +2,13 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
+import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
-
-import java.util.ArrayList
+import com.watabou.utils.Random
+import java.util.*
 
 /**
  * Created by 93942 on 9/21/2018.
@@ -69,7 +71,12 @@ class GoldPlatedStatue : Artifact() {
 
     inner class Greedy : Artifact.ArtifactBuff() {
         fun extraCollect(gold: Int): Int {
-            val ratio = if (cursed) -.3f else level() * .1f
+            var ratio = if (cursed) -.3f else level() * .1f
+
+            if (isFullyUpgraded && Random.Float() < .1f) {
+                CellEmitter.get(target.pos).burst(Speck.factory(Speck.COIN), Random.IntRange(10, 15))
+                ratio += 1f
+            }
 
             return (gold * ratio).toInt()
         }

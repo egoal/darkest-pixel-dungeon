@@ -103,6 +103,7 @@ class SandalsOfNature : Artifact() {
                 val rooted = hero.buff(Rooted::class.java)!!
                 charge = rooted.level * 9 / 10
                 Buff.detach(rooted)
+                updateQuickslot()
             } else if (charge == 0)
                 GLog.i(Messages.get(this, "no_charge"))
             else {

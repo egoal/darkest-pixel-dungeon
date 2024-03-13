@@ -39,7 +39,10 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.PointF
 import com.watabou.utils.Random
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.max
+import kotlin.math.pow
+import kotlin.math.round
 
 // for wands that directly damage a targetpos
 // wands with AOE effects count here (e.g. fireblast), but wands with indrect
@@ -128,7 +131,7 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
     // moments
     //note: the wand damage is never bounded, 
     private fun procGivenDamage(damage: Damage) {
-        if (damage.value == 0) return // no damage wand.
+        if (damage.value + damage.add_value == 0) return // no damage wand.
 
         val hero = curUser
         var af = hero.arcaneFactor()
@@ -145,8 +148,7 @@ abstract class DamageWand(isMissile: Boolean) : Wand(isMissile) {
             af *= 1.5f // not bounded
             damage.addFeature(Damage.Feature.CRITICAL)
         }
-
-        damage.value = round(damage.value * af).toInt()
+        damage.scale(af)
 
         hero.buff(Preheated::class.java)?.affectWandDamage(damage) // detach here.
 

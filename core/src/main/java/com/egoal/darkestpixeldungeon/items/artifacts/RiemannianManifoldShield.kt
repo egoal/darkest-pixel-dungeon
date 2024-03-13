@@ -37,7 +37,7 @@ class RiemannianManifoldShield : Artifact() {
     fun recharge() {
         // curUser is assigned in the execute method!!!
         if (isEquipped(Dungeon.hero)) {
-            if (level() <= 5) cooldown = 56 - level() * 4
+            cooldown = 56 - level() * 4
 
             if (isFullyUpgraded) {
                 Dungeon.level.mobs.filter {

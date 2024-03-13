@@ -44,6 +44,7 @@ import kotlin.collections.set
 class UnstableSpellbook : Artifact() {
     private val scrolls = ArrayList<Class<out Scroll>>()
     private var cachedScroll: Scroll? = null
+    private var soudorps = 0
 
     private val mode: WndBag.Mode = WndBag.Mode.SCROLL
 
@@ -132,9 +133,11 @@ class UnstableSpellbook : Artifact() {
                     if (cachedScroll != null) {
                         useScroll(cachedScroll!!)
                         cachedScroll = null
-                    } else if (Random.Int(100) <= if (isFullyUpgraded) 6 else 3) {
+                    } else if (Random.Int(80 + 10 * soudorps) <= if (isFullyUpgraded) 2 else 1) {
                         charge--
-                        val scroll = if (Random.Int(3) == 0) ScrollOfUpgrade() else ScrollOfEnchanting()
+                        // todo: scroll of enchanting cannot be constructed, fixme
+//                        val scroll = if (Random.Int(3) == 0) ScrollOfUpgrade() else ScrollOfEnchanting()
+                        val scroll = ScrollOfUpgrade()
                         useScroll(scroll)
                     } else {
                         charge--
@@ -200,6 +203,7 @@ class UnstableSpellbook : Artifact() {
         super.storeInBundle(bundle)
         bundle.put(SCROLLS, scrolls.toTypedArray())
         bundle.put(CACHED_SCROLL, cachedScroll)
+        bundle.put("soudorps", soudorps)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -207,6 +211,7 @@ class UnstableSpellbook : Artifact() {
         scrolls.clear()
         scrolls.addAll(bundle.getClassArray(SCROLLS).map { it as Class<out Scroll> })
         cachedScroll = bundle.get(CACHED_SCROLL) as Scroll?
+        soudorps = bundle.getInt("soudorps")
     }
 
     inner class bookRecharge : Artifact.ArtifactBuff() {

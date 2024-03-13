@@ -2,6 +2,7 @@ package com.egoal.darkestpixeldungeon.actors
 
 import com.egoal.darkestpixeldungeon.messages.M
 import kotlin.math.max
+import kotlin.math.round
 
 /**
  * Created by 93942 on 4/30/2018.
@@ -75,5 +76,10 @@ class Damage(var value: Int, var from: Any, var to: Any) {
 
     fun isFeatured(f: Int): Boolean {
         return feature and f != 0
+    }
+
+    fun scale(s: Float) {
+        value = round(value * s).toInt()
+        add_value = round(add_value * s).toInt()
     }
 }

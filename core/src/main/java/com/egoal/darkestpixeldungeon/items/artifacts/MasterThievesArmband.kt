@@ -21,12 +21,19 @@
 package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
+import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.effects.CellEmitter
+import com.egoal.darkestpixeldungeon.effects.Speck
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
 
 class MasterThievesArmband : Artifact() {
+    private var stealCooldown = 0 //fixme: i didn't serialize this
+
     init {
         image = ItemSpriteSheet.ARTIFACT_ARMBAND
 
@@ -47,6 +54,12 @@ class MasterThievesArmband : Artifact() {
     inner class Thievery : Artifact.ArtifactBuff() {
         fun collect(gold: Int) {
             charge += gold / 2
+        }
+
+        override fun act(): Boolean {
+            if (stealCooldown > 0) stealCooldown -= 1
+            spend(TICK)
+            return true
         }
 
         override fun detach() {
@@ -82,6 +95,18 @@ class MasterThievesArmband : Artifact() {
             //get lvl*50 gold or lvl*3.33% item value of free charge, whichever is less.
             val chargeBonus = Math.min(level() * 50, value * level() / 30)
             return (charge.toFloat() + chargeBonus) / value
+        }
+
+        fun onSneakAttack(target: Mob) {
+            if (isFullyUpgraded && stealCooldown <= 0 && Random.Float() < .09f) {
+                stealCooldown = 5
+                val item = target.createLoot() ?: Generator.GOLD.generate()
+                if (!item.collect()) Dungeon.level.drop(item, target.pos)
+                Buff.prolong(target, Blindness::class.java, 2f)
+
+                CellEmitter.get(target.pos).burst(Speck.factory(Speck.WOOL), 3)
+                target.say(M.L(MasterThievesArmband::class.java, "steal${Random.Int(3)}"))
+            }
         }
     }
 }
