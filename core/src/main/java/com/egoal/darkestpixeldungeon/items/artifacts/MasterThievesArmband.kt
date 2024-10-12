@@ -23,10 +23,12 @@ package com.egoal.darkestpixeldungeon.items.artifacts
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Generator
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.watabou.utils.Random
@@ -46,6 +48,8 @@ class MasterThievesArmband : Artifact() {
 
     override fun desc(): String {
         var desc = super.desc()
+        if (isFullyUpgraded) desc += M.L(this, "desc_max")
+
         if (isEquipped(Dungeon.hero)) desc += "\n\n" + M.L(this, "desc_worn")
 
         return desc
@@ -97,14 +101,17 @@ class MasterThievesArmband : Artifact() {
             return (charge.toFloat() + chargeBonus) / value
         }
 
-        fun onSneakAttack(target: Mob) {
+        fun onSneakAttack(mob: Mob) {
             if (isFullyUpgraded && stealCooldown <= 0 && Random.Float() < .09f) {
                 stealCooldown = 5
-                val item = target.createLoot() ?: Generator.GOLD.generate()
-                if (!item.collect()) Dungeon.level.drop(item, target.pos)
-                Buff.prolong(target, Blindness::class.java, 2f)
+                val item = mob.createLoot() ?: Generator.GOLD.generate()
+//                if (!item.collect()) Dungeon.level.drop(item, mob.pos)
+                if (item.doPickUp(target as Hero)) target.spend(-Item.TIME_TO_PICK_UP) // give back the time
+                else Dungeon.level.drop(item, mob.pos)
 
-                CellEmitter.get(target.pos).burst(Speck.factory(Speck.WOOL), 3)
+                Buff.prolong(mob, Blindness::class.java, 2f)
+
+                CellEmitter.get(mob.pos).burst(Speck.factory(Speck.WOOL), 3)
                 target.say(M.L(MasterThievesArmband::class.java, "steal${Random.Int(3)}"))
             }
         }

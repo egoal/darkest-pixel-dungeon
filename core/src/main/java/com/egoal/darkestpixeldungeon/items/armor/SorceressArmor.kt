@@ -11,6 +11,8 @@ import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.actors.Damage;
+
 import com.watabou.noosa.audio.Sample
 
 class SorceressArmor : ClassArmor() {

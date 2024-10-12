@@ -21,24 +21,28 @@
 package com.egoal.darkestpixeldungeon.actors.buffs
 
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.items.artifacts.ChaliceOfBlood
-import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.items.artifacts.HeartOfSatan
 
 class Regeneration : Buff() {
     private var dreg = 0f
 
     override fun act(): Boolean {
         if (target.isAlive) {
+            var regCap = target.HT
 
-            dreg += if (target is Hero) (target as Hero).regenerateSpeed() else 0.1f
+            if (target is Hero) {
+                val hero = target as Hero
+                dreg += hero.regenerateSpeed()
+                regCap += hero.buff(HeartOfSatan.Regeneration::class.java)?.extraCap() ?: 0
+            } else dreg += 0.1f
 
-            if (target.HP < target.HT) {
+            if (target.HP < regCap) {
                 val lock = target.buff(LockedFloor::class.java)
                 if (target.HP > 0 && (lock == null || lock.regenOn())) {
                     target.HP += dreg.toInt()
                     dreg -= dreg.toInt()
-                    if (target.HP >= target.HT) {
-                        target.HP = target.HT
+                    if (target.HP >= regCap) {
+                        target.HP = regCap
                         (target as Hero).resting = false
                     }
                 }

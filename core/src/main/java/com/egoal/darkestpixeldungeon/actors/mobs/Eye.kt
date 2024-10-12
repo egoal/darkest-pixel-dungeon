@@ -111,7 +111,7 @@ class Eye : Mob() {
     }
 
     override fun takeDamage(dmg: Damage): Int {
-        if (beamCharged) dmg.value /= 4
+        if (beamCharged) dmg.scale(.25f)
 
         return super.takeDamage(dmg)
     }

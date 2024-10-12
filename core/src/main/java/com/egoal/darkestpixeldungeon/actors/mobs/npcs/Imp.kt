@@ -20,23 +20,17 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.mobs.Monk
-import com.egoal.darkestpixeldungeon.items.Generator
-import com.egoal.darkestpixeldungeon.levels.Level
-import com.egoal.darkestpixeldungeon.windows.WndImp
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.Journal
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
-import com.egoal.darkestpixeldungeon.actors.mobs.Golem
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.quest.DwarfToken
 import com.egoal.darkestpixeldungeon.items.rings.Ring
+import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ImpSprite
+import com.egoal.darkestpixeldungeon.windows.WndImp
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
 
@@ -147,7 +141,8 @@ class Imp : NPC.Unbreakable() {
                 val npc = Imp()
                 do {
                     npc.pos = level.randomRespawnCell()
-                } while (npc.pos == -1 || level.heaps.get(npc.pos) != null)
+                } while (npc.pos == -1 || level.heaps.get(npc.pos) != null || level.findMobAt(npc.pos) != null)
+                //^^^ currently Actor.chars is empty, so we need the above check
                 level.mobs.add(npc)
 
                 spawned = true

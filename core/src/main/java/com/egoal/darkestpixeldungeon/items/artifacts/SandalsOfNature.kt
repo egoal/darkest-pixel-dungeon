@@ -149,7 +149,8 @@ class SandalsOfNature : Artifact() {
         name = Messages.get(this, "name_" + (level() + 1))
         super.upgrade()
 
-        if (isFullyUpgraded && isEquipped(Dungeon.hero))
+        // get to level 10 when equipped, trigger modification
+        if (isFullyUpgraded && passiveBuff != null)
             for (i in Dungeon.hero.elementalResistance.indices) Dungeon.hero.elementalResistance[i] += .1f
 
         return this

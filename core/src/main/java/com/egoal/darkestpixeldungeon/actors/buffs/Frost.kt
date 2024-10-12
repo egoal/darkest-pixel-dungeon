@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.actors.buffs
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.mobs.Thief
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.food.FrozenCarpaccio
@@ -37,7 +38,7 @@ import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 
-class Frost : FlavourBuff() {
+class Frost : FlavourBuff(), Char.IIncomingDamageProc {
 
     init {
         type = Buff.buffType.NEGATIVE
@@ -85,6 +86,10 @@ class Frost : FlavourBuff() {
         } else {
             return false
         }
+    }
+
+    override fun procIncommingDamage(damage: Damage) {
+        damage.scale(1.5f)
     }
 
     override fun detach() {
