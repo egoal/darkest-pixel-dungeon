@@ -33,11 +33,13 @@ import com.egoal.darkestpixeldungeon.actors.hero.perks.Ease
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Telepath
 import com.egoal.darkestpixeldungeon.actors.mobs.Bestiary
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
+import com.egoal.darkestpixeldungeon.actors.mobs.npcs.Sheep
 import com.egoal.darkestpixeldungeon.effects.particles.FlowParticle
 import com.egoal.darkestpixeldungeon.effects.particles.WindParticle
 import com.egoal.darkestpixeldungeon.items.Generator
 import com.egoal.darkestpixeldungeon.items.Heap
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.items.artifacts.CloakOfSheep
 import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.artifacts.TimekeepersHourglass
 import com.egoal.darkestpixeldungeon.items.food.BrownAle
@@ -891,6 +893,10 @@ abstract class Level : Bundlable {
 
         //Currently only the hero can get mind vision or awareness
         if (c.isAlive && c === Dungeon.hero) {
+            val observe_n9 = { pos: Int ->
+                for (i in PathFinder.NEIGHBOURS9) fieldOfView[pos + i] = true
+            }
+
             Dungeon.hero.mindVisionEnemies.clear()
             if (c.buff(MindVision::class.java) != null) {
                 for (mob in mobs) {
@@ -898,26 +904,24 @@ abstract class Level : Bundlable {
 
                     val p = mob.pos
                     if (!fieldOfView[p]) Dungeon.hero.mindVisionEnemies.add(mob)
-
-                    for (i in PathFinder.NEIGHBOURS9) fieldOfView[p + i] = true
+                    observe_n9(p)
                 }
             } else {
                 c.heroPerk.get(Telepath::class.java)?.let { perk ->
                     for (mob in mobs) {
                         if (mob.isLiving && distance(mob.pos, c.pos) <= perk.range()) {
                             if (!fieldOfView[mob.pos]) Dungeon.hero.mindVisionEnemies.add(mob)
-                            for (i in PathFinder.NEIGHBOURS9) fieldOfView[mob.pos + i] = true
+                            observe_n9(mob.pos)
                         }
                     }
                 }
+
+                if (c.buff(CloakOfSheep.Recharge::class.java)?.isFullyUpgraded == true)
+                    mobs.filterIsInstance<Sheep>().forEach { observe_n9(it.pos) }
             }
 
             if (c.buff(Awareness::class.java) != null) {
-                for (heap in heaps.values()) {
-                    val p = heap.pos
-                    for (i in PathFinder.NEIGHBOURS9)
-                        fieldOfView[p + i] = true
-                }
+                heaps.values().forEach { observe_n9(it.pos) }
             }
         }
 

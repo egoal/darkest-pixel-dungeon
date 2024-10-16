@@ -114,8 +114,7 @@ class EtherealChains : Artifact() {
                             Wound.hit(pulltarget.pos)
                             curUser.sprite.turnTo(affected.pos, pulltarget.pos)
                             Char.ProcessAttackDamage(affected.giveDamage(pulltarget).addFeature(Damage.Feature.ACCURATE))
-                        }
-                        else Buff.prolong(affected, Cripple::class.java, 2f + level() / 2f)
+                        } else Buff.prolong(affected, Cripple::class.java, 2f + level() / 2f)
                         Dungeon.observe()
                         GameScene.updateFog()
                         curUser.spendAndNext(1f)
@@ -214,6 +213,7 @@ class EtherealChains : Artifact() {
 
     override fun desc(): String {
         var desc = super.desc()
+        if (isFullyUpgraded) desc += "\n" + M.L(this, "desc_max")
 
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n"
@@ -231,7 +231,8 @@ class EtherealChains : Artifact() {
             val chargeTarget = 5 + level() * 2
             val lock = target.buff(LockedFloor::class.java)
             if (charge < chargeTarget && !cursed && (lock == null || lock.regenOn())) {
-                partialCharge += 1 / (40f - (chargeTarget - charge) * 2f)
+                val s = if (isFullyUpgraded) 40f else 32f
+                partialCharge += 1 / (s - (chargeTarget - charge) * 2f)
             } else if (cursed && Random.Int(100) == 0) {
                 Buff.prolong(target, Cripple::class.java, 10f)
             }

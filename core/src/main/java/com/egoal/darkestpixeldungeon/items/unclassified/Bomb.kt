@@ -20,29 +20,28 @@
  */
 package com.egoal.darkestpixeldungeon.items.unclassified
 
+import com.egoal.darkestpixeldungeon.Assets
+import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.BlastParticle
+import com.egoal.darkestpixeldungeon.effects.particles.SmokeParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.messages.M
+import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.effects.particles.SmokeParticle
-import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.messages.Messages
-import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 
 open class Bomb : Item() {
     var fuse: Fuse? = null
@@ -117,6 +116,7 @@ open class Bomb : Item() {
         }
 
         var terrainAffected = false
+
         for (n in PathFinder.NEIGHBOURS9) {
             val c = cell + n
             if (c >= 0 && c < Dungeon.level.length()) {

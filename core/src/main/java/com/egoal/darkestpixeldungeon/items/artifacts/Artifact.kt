@@ -184,6 +184,9 @@ abstract class Artifact : KindofMisc() {
             get() = cursed
 
         fun itemLevel(): Int = level()
+
+        val isFullyUpgraded: Boolean
+            get() = this@Artifact.isFullyUpgraded
     }
 
     override fun storeInBundle(bundle: Bundle) {

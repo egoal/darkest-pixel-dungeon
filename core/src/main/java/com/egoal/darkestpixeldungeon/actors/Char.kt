@@ -196,8 +196,11 @@ abstract class Char : Actor() {
         }
 
         // currently, only hero suffer from mental damage
-        if (!isAlive || dmg.value < 0 || (dmg.type == Damage.Type.MENTAL && this !is Hero))
+        dmg.value = max(0, dmg.value)
+        dmg.add_value = max(0, dmg.add_value)
+        if (!isAlive || (dmg.value == 0 && dmg.add_value == 0) || (dmg.type == Damage.Type.MENTAL && this !is Hero))
             return 0
+
 
         buffs.filterIsInstance<IIncomingDamageProc>().forEach { it.procIncommingDamage(dmg) }
 

@@ -7,6 +7,7 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.Blob
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Shock
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.MagicMissile
@@ -18,10 +19,9 @@ import com.egoal.darkestpixeldungeon.utils.BArray
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.min
 import kotlin.math.round
-import kotlin.math.sqrt
 
 class DragonsSquama : Artifact() {
     init {
@@ -64,6 +64,10 @@ class DragonsSquama : Artifact() {
         if (isEquipped(Dungeon.hero))
             if (cursed) desc += "\n\n" + M.L(this, "desc_cursed")
             else desc += "\n\n" + M.L(this, "desc_hint")
+
+        if (isFullyUpgraded)
+            desc += "\n" + M.L(this, "desc_max");
+
         return desc
     }
 
@@ -125,9 +129,16 @@ class DragonsSquama : Artifact() {
                 damage.value += if (cursed) block else -block
             }
 
-            if (charge < chargeCap && damage.from is Char && damage.from !== Char.Nobody) {
+            val attacker = if (damage.from is Char && damage.from != Char.Nobody) damage.from as Char else null
+
+            if (charge < chargeCap && attacker != null) {
                 charge = min(chargeCap, charge + (4 - level() / 5) + if (isCrit) 1 else 0)
                 updateQuickslot()
+            }
+
+            if (isFullyUpgraded && attacker != null && Random.Float() < .25f) {
+                if (Dungeon.level.distance(attacker.pos, target.pos) <= 2)
+                    Buff.affect(attacker, Burning::class.java).reignite(attacker)
             }
         }
 

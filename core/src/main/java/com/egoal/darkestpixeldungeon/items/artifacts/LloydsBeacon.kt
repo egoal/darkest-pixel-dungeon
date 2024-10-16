@@ -33,6 +33,7 @@ import com.egoal.darkestpixeldungeon.effects.MagicMissile
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -62,8 +63,12 @@ class LloydsBeacon : Artifact() {
             updateQuickslot()
 
             if (Actor.findChar(target) === curUser) {
-                ScrollOfTeleportation.teleportHero(curUser)
-                curUser.spendAndNext(1f)
+                if (isFullyUpgraded)
+                    ScrollOfTeleportation.IntendTeleportHero(curUser)
+                else {
+                    ScrollOfTeleportation.teleportHero(curUser)
+                    curUser.spendAndNext(1f)
+                }
             } else {
                 val bolt = Ballistica(curUser.pos, target,
                         Ballistica.MAGIC_BOLT)
@@ -246,6 +251,7 @@ class LloydsBeacon : Artifact() {
 
     override fun desc(): String {
         var desc = super.desc()
+        if (isFullyUpgraded) desc += "\n" + M.L(this, "desc_max")
         if (returnDepth != -1) {
             desc += "\n\n" + Messages.get(this, "desc_set", returnDepth)
         }

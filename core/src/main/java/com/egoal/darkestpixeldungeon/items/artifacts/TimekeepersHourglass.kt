@@ -9,16 +9,16 @@ import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.Item
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.watabou.noosa.Tilemap
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.sqrt
 
 class TimekeepersHourglass : Artifact() {
@@ -97,10 +97,13 @@ class TimekeepersHourglass : Artifact() {
     override fun desc(): String {
         var desc = super.desc()
         if (isEquipped(Dungeon.hero)) {
-            if (!cursed) {
-                if (level() < levelCap)
-                    desc += "\n\n" + Messages.get(this, "desc_hint")
-            } else desc += "\n\n" + Messages.get(this, "desc_cursed")
+            val k = when {
+                cursed -> "desc_cursed"
+                isFullyUpgraded -> "desc_max"
+                else -> "desc_hint"
+            }
+
+            desc += "\n\n" + M.L(this, k)
         }
 
         return desc

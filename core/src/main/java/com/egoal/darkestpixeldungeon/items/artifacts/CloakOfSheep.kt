@@ -11,6 +11,7 @@ import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfTeleportation
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.traps.FlockTrap
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.CellSelector
 import com.egoal.darkestpixeldungeon.scenes.GameScene
@@ -18,7 +19,7 @@ import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Random
-import java.util.ArrayList
+import java.util.*
 
 class CloakOfSheep : Artifact() {
     init {
@@ -95,6 +96,7 @@ class CloakOfSheep : Artifact() {
         var desc = super.desc()
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n" + Messages.get(this, "desc_hint", range())
+            if (isFullyUpgraded) desc += "\n" + M.L(this, "desc_max")
         }
         return desc
     }

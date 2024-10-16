@@ -545,6 +545,10 @@ class Hero : Char() {
 
         buff(HasteRune.Haste::class.java)?.let { speed *= 3f }
 
+        buff(TimekeepersHourglass.TimeFreeze::class.java)?.let {
+            if (it.isFullyUpgraded) speed *= 2f
+        }
+
         var estr = if (belongings.armor != null) belongings.armor!!.STRReq() - STR() else 0
         estr += if (belongings.weapon is Weapon) (belongings.weapon as Weapon).STRReq() - STR() else 0
         if (estr > 0)
