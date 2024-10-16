@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.mobs.npcs.AbyssHero
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
@@ -17,7 +18,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.ArrayList
+import java.util.*
 
 class HandleOfAbyss : Artifact() {
     init {
@@ -81,6 +82,7 @@ class HandleOfAbyss : Artifact() {
 
     override fun desc(): String = if (isIdentified && defeated) {
         var desc = Messages.get(this, "desc-real") + "\n\n" + Messages.get(this, "desc-tip")
+        if (isFullyUpgraded) desc += M.L(this, "desc-max")
         if (cursed) desc += Messages.get(this, "desc-cursed")
         desc
     } else

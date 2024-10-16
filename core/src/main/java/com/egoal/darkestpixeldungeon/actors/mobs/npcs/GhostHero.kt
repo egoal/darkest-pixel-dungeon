@@ -16,6 +16,7 @@ import com.egoal.darkestpixeldungeon.items.artifacts.DriedRose
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.mechanics.Ballistica
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
@@ -27,7 +28,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Callback
 import com.watabou.utils.Random
-import java.util.HashSet
+import java.util.*
 import kotlin.math.ceil
 import kotlin.math.min
 
@@ -61,9 +62,9 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
         } else {
             // swap 
             swapPosition(Dungeon.hero)
-            Dungeon.hero.spend(1f/Dungeon.hero.speed())
+            Dungeon.hero.spend(1f / Dungeon.hero.speed())
             Dungeon.hero.busy()
-            
+
             return true
         }
     }
@@ -168,7 +169,7 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
     override fun immunizedBuffs(): HashSet<Class<*>> = IMMUNITIES
 
     override fun die(cause: Any?) {
-        sayDefeated()
+        if (cause != null) sayDefeated()
         super.die(cause)
     }
 
@@ -206,6 +207,10 @@ class GhostHero(var roseLevel: Int = 0) : NPC(), Callback {
 
     fun sayAnhk() {
         say(Messages.get(this, "voice_blessedankh_${Random.Int(3)}"))
+    }
+
+    fun saySacrifice() {
+        say(M.L(this, "voice_sacrifice"))
     }
 
     fun sayDefeated() {

@@ -44,6 +44,7 @@ import java.util.*
 
 class SandalsOfNature : Artifact() {
     var seeds = ArrayList<Class<*>>()
+    private var fixed = false //fixme:
 
     private var itemSelector: WndBag.Listener = WndBag.Listener { item ->
         if (item != null && item is Plant.Seed) {
@@ -150,8 +151,7 @@ class SandalsOfNature : Artifact() {
         super.upgrade()
 
         // get to level 10 when equipped, trigger modification
-        if (isFullyUpgraded && passiveBuff != null)
-            for (i in Dungeon.hero.elementalResistance.indices) Dungeon.hero.elementalResistance[i] += .1f
+        if (isFullyUpgraded && passiveBuff != null) fixOn(Dungeon.hero)
 
         return this
     }
@@ -168,6 +168,7 @@ class SandalsOfNature : Artifact() {
     override fun storeInBundle(bundle: Bundle) {
         super.storeInBundle(bundle)
         bundle.put(SEEDS, seeds.toTypedArray())
+        bundle.put(FIX_ON, fixed)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -175,8 +176,23 @@ class SandalsOfNature : Artifact() {
         if (level() > 0) name = Messages.get(this, "name_" + level())
 
         seeds.addAll(bundle.getClassArray(SEEDS))
+        fixed = bundle.getBoolean(FIX_ON)
 
         updateImage()
+    }
+
+    private fun fixOn(ch: Char) {
+        if (!fixed) {
+            fixed = true
+            for (i in ch.elementalResistance.indices) ch.elementalResistance[i] += .1f
+        }
+    }
+
+    private fun fixOff(ch: Char) {
+        if (fixed) {
+            fixed = false
+            for (i in ch.elementalResistance.indices) ch.elementalResistance[i] -= .1f
+        }
     }
 
     inner class Naturalism : Artifact.ArtifactBuff() {
@@ -190,13 +206,13 @@ class SandalsOfNature : Artifact() {
 
         override fun attachTo(target: Char): Boolean {
             return if (super.attachTo(target)) {
-                if (isFullyUpgraded) for (i in target.elementalResistance.indices) target.elementalResistance[i] += .1f
+                if (isFullyUpgraded) fixOn(target)
                 true
             } else false
         }
 
         override fun detach() {
-            if (isFullyUpgraded) for (i in target.elementalResistance.indices) target.elementalResistance[i] -= .1f
+            if (isFullyUpgraded) fixOff(target)
 
             target.buff(Rooted::class.java)?.let {
                 charge = it.level * 9 / 10
@@ -232,6 +248,7 @@ class SandalsOfNature : Artifact() {
         const val AC_ROOT = "ROOT"
 
         private const val SEEDS = "seeds"
+        private const val FIX_ON = "fix_on"
     }
 
 }

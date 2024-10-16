@@ -12,6 +12,7 @@ import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ShaftParticle
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.levels.Level
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
@@ -20,7 +21,7 @@ import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.PathFinder
 import com.watabou.utils.Random
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.max
 
 class DriedRose : Artifact() {
@@ -96,9 +97,11 @@ class DriedRose : Artifact() {
         var desc = super.desc()
 
         if (isEquipped(Dungeon.hero))
-            if (!cursed) {
-                if (level() < levelCap) desc += "\n\n" + Messages.get(this, "desc_hint")
-            } else desc += "\n\n" + Messages.get(this, "desc_cursed")
+            desc += "\n\n" + M.L(this, when {
+                cursed -> "desc_cursed"
+                level() < levelCap -> "desc_hint"
+                else -> "desc_max"
+            })
 
         return desc
     }

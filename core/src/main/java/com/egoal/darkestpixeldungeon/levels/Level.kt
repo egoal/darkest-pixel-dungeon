@@ -891,11 +891,12 @@ abstract class Level : Bundlable {
             }
         }
 
+        val observeN9 = { pos: Int ->
+            for (i in PathFinder.NEIGHBOURS9) fieldOfView[pos + i] = true
+        }
+
         //Currently only the hero can get mind vision or awareness
         if (c.isAlive && c === Dungeon.hero) {
-            val observe_n9 = { pos: Int ->
-                for (i in PathFinder.NEIGHBOURS9) fieldOfView[pos + i] = true
-            }
 
             Dungeon.hero.mindVisionEnemies.clear()
             if (c.buff(MindVision::class.java) != null) {
@@ -904,36 +905,30 @@ abstract class Level : Bundlable {
 
                     val p = mob.pos
                     if (!fieldOfView[p]) Dungeon.hero.mindVisionEnemies.add(mob)
-                    observe_n9(p)
+                    observeN9(p)
                 }
             } else {
                 c.heroPerk.get(Telepath::class.java)?.let { perk ->
                     for (mob in mobs) {
                         if (mob.isLiving && distance(mob.pos, c.pos) <= perk.range()) {
                             if (!fieldOfView[mob.pos]) Dungeon.hero.mindVisionEnemies.add(mob)
-                            observe_n9(mob.pos)
+                            observeN9(mob.pos)
                         }
                     }
                 }
 
                 if (c.buff(CloakOfSheep.Recharge::class.java)?.isFullyUpgraded == true)
-                    mobs.filterIsInstance<Sheep>().forEach { observe_n9(it.pos) }
+                    mobs.filterIsInstance<Sheep>().forEach { observeN9(it.pos) }
             }
 
             if (c.buff(Awareness::class.java) != null) {
-                heaps.values().forEach { observe_n9(it.pos) }
+                heaps.values().forEach { observeN9(it.pos) }
             }
         }
 
         // view mark
-        for (mob in mobs) {
-            val vm = mob.buff(ViewMark::class.java)
-            if (vm != null && vm.observer == c.id()) {
-                val p = mob.pos
-                for (i in PathFinder.NEIGHBOURS9)
-                    fieldOfView[p + i] = true
-            }
-        }
+        mobs.filter { it.buff(ViewMark::class.java)?.observer == c.id() }
+                .forEach { observeN9(it.pos) }
 
         if (c === Dungeon.hero) {
             for (heap in heaps.values())

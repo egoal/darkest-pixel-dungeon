@@ -1057,7 +1057,10 @@ class Hero : Char() {
 
     private fun awareness(): Float {
         var w = heroPerk.get(Keen::class.java)?.baseAwareness() ?: 0.1f
-        if (buff(TalismanOfForesight.Foresight::class.java) != null) w += 0.1f
+
+        buff(TalismanOfForesight.Foresight::class.java)?.let {
+            w = min(w + if (it.isFullyUpgraded) 0.25f else 0.1f, 1f)
+        }
 
         return w
     }
@@ -1121,20 +1124,25 @@ class Hero : Char() {
             if (item is Ankh && (ankh == null || item.isBlessed))
                 ankh = item
 
-        if (ankh?.isBlessed == true) {
-            HP = HT / 4
+        val revive = { hpRatio: Float, color: Int ->
+            HP = round(HT * hpRatio).toInt()
             //ensures that you'll get to act first in almost any case, to prevent
-            // reviving and then instantly dieing again.
+            // reviving and then instantly dying again.
             recoverSanity(min(20f, pressure.pressure * 0.25f))
             Buff.detach(this, Paralysis::class.java)
             spend(-cooldown())
 
-            Flare(8, 32f).color(0xFFFF66, true).show(sprite, 2f)
+            Flare(8, 32f).color(color, true).show(sprite, 2f)
             CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3)
+
+            Sample.INSTANCE.play(Assets.SND_TELEPORT)
+        }
+
+        if (ankh?.isBlessed == true) {
+            revive(.25f, 0xFFFF66)
 
             ankh.detach(belongings.backpack)
 
-            Sample.INSTANCE.play(Assets.SND_TELEPORT)
             GLog.w(Messages.get(this, "revive"))
             Statistics.AnkhsUsed += 1
 
@@ -1142,6 +1150,26 @@ class Hero : Char() {
             if (belongings.getItem(Ankh::class.java) == null) sayShort(HeroLines.WHAT_ABOUT_NEXT)
             return
         }
+
+        if (buff(DriedRose.Recharge::class.java)?.isFullyUpgraded == true) {
+            revive(1f, 0xFF6666)
+
+            val rose = belongings.getItem(DriedRose::class.java)!!
+            rose.cursed = false
+            rose.doUnequip(this, false)
+//            rose.detach(belongings.backpack)
+            spend(-1f) // time to equip.
+
+            GLog.w(Messages.get(this, "revive_rose"))
+
+            GhostHero.Instance()?.let {
+                it.saySacrifice()
+                it.die(null)
+            }
+
+            return
+        }
+
 
         Actor.fixTime()
         super.die(src)

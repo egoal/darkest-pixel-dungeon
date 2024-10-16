@@ -29,7 +29,7 @@ class LongestSpear : MeleeWeapon() {
 
             val dis = Dungeon.level.distance(defender.pos, attacker.pos)
             if (dis > 1) {
-                val chance = 0.1f + (dis - 1) * .5f + 0.2 * (1f - .7f.pow(level() / 2f))
+                val chance = 0.1f + (dis - 1) * .2f + 0.5f * (1f - .7f.pow(level() / 2f))
                 if (Random.Float() < chance) {
                     if (defender.SHLD > 0) defender.SHLD = 0
                     dmg.addFeature(Damage.Feature.PURE)

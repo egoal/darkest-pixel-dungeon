@@ -11,11 +11,13 @@ import com.egoal.darkestpixeldungeon.actors.blobs.VenomGas
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.Burning
 import com.egoal.darkestpixeldungeon.actors.buffs.Corruption
+import com.egoal.darkestpixeldungeon.actors.buffs.Vulnerable
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.CellEmitter
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
 import com.egoal.darkestpixeldungeon.items.artifacts.HandleOfAbyss
 import com.egoal.darkestpixeldungeon.items.scrolls.ScrollOfPsionicBlast
+import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.watabou.noosa.TextureFilm
@@ -23,6 +25,7 @@ import com.watabou.utils.Bundle
 import com.watabou.utils.GameMath
 import com.watabou.utils.Random
 import java.util.*
+import kotlin.math.max
 
 class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
     init {
@@ -94,7 +97,7 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
         val dmg = Damage(Random.IntRange(1 + level, 5 + 6 * level), this, enemy)
                 .setAdditionalDamage(Damage.Element.Shadow, Random.NormalIntRange(1, 2 * level))
         if (Random.Float() < 0.15f) {
-            dmg.value = dmg.value * 5 / 4
+            dmg.scale(1.25f)
             dmg.addFeature(Damage.Feature.CRITICAL)
         }
 
@@ -120,8 +123,24 @@ class AbyssHero(var level: Int = 0, friendly: Boolean = false) : NPC() {
             return true
         }
 
-        return super.act()
+        val r = super.act() // compute FOV here
+
+        if (level == 10) { // 10 is level cap of the Handle
+            Dungeon.level.mobs
+                    .filter { Level.fieldOfView[it.pos] && it != this }
+                    .forEach { affect(it) }
+            if (Level.fieldOfView[Dungeon.hero.pos]) affect(Dungeon.hero)
+        }
+
+        return r
     }
+
+    private fun affect(ch: Char) {
+        val v = Buff.prolong(ch, Vulnerable::class.java, 3f)
+        v.ratio = max(v.ratio, 1.25f)
+    }
+
+    override fun viewDistance(): Int = 8 // not affected by time
 
     override fun getCloser(target: Int): Boolean {
         val theTarget = if (state == WANDERING || Dungeon.level.distance(target, Dungeon.hero.pos) > 6) {

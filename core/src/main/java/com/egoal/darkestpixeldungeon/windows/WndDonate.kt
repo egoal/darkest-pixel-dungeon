@@ -70,6 +70,6 @@ class WndDonate : Window() {
 
         private const val BTN_HEIGHT = 20f
 
-        private const val WEB = "https://afdian.net/@egoal-rl"
+        private const val WEB = "https://afdian.com/a/egoal-rl"
     }
 }

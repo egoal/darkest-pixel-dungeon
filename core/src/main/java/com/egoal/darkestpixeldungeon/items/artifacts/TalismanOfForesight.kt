@@ -20,23 +20,25 @@
  */
 package com.egoal.darkestpixeldungeon.items.artifacts
 
-import com.egoal.darkestpixeldungeon.actors.Actor
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.buffs.Awareness
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.LockedFloor
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.levels.Level
 import com.egoal.darkestpixeldungeon.levels.Terrain
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.ui.BuffIndicator
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
-
-import java.util.ArrayList
+import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 class TalismanOfForesight : Artifact() {
     init {
@@ -101,12 +103,13 @@ class TalismanOfForesight : Artifact() {
         var desc = super.desc()
 
         if (isEquipped(Dungeon.hero)) {
-            if (!cursed) {
-                desc += "\n\n" + Messages.get(this, "desc_worn")
-
-            } else {
-                desc += "\n\n" + Messages.get(this, "desc_cursed")
+            val k = when {
+                cursed -> "desc_cursed"
+                isFullyUpgraded -> "desc_worn_max"
+                else -> "desc_worn"
             }
+
+            desc += "\n\n" + M.L(this, k)
         }
 
         return desc
@@ -124,22 +127,11 @@ class TalismanOfForesight : Artifact() {
 
             val cx = target.pos % Dungeon.level.width()
             val cy = target.pos / Dungeon.level.width()
-            var ax = cx - distance
-            if (ax < 0) {
-                ax = 0
-            }
-            var bx = cx + distance
-            if (bx >= Dungeon.level.width()) {
-                bx = Dungeon.level.width() - 1
-            }
-            var ay = cy - distance
-            if (ay < 0) {
-                ay = 0
-            }
-            var by = cy + distance
-            if (by >= Dungeon.level.height()) {
-                by = Dungeon.level.height() - 1
-            }
+
+            val ax = max(0, cx - distance)
+            val bx = min(cx + distance, Dungeon.level.width() - 1)
+            val ay = max(0, cy - distance)
+            val by = min(cy + distance, Dungeon.level.height() - 1)
 
             for (y in ay..by) {
                 var x = ax

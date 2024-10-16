@@ -21,22 +21,22 @@
 package com.egoal.darkestpixeldungeon.items.artifacts
 
 import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.actors.hero.Hero
-import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
-import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Char
+import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.actors.mobs.Mob
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.unclassified.DewVial
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
+import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
+import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.noosa.audio.Sample
 import com.watabou.utils.Bundle
 import com.watabou.utils.Random
-
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.min
 
 class ChaliceOfBlood : Artifact() {
@@ -84,6 +84,7 @@ class ChaliceOfBlood : Artifact() {
         val effect = min(hero.HT - hero.HP, consumed * dp.toInt())
         with(hero) {
             HP += effect
+            if (isFullyUpgraded) SHLD += effect / 2
             sprite.emitter().burst(Speck.factory(Speck.HEALING), if (consumed > 5) 2 else 1)
             sprite.showStatus(CharSprite.POSITIVE, Messages.get(DewVial::class.java, "value", effect))
 
@@ -134,6 +135,7 @@ class ChaliceOfBlood : Artifact() {
 
         if (isEquipped(Dungeon.hero)) {
             desc += "\n\n" + Messages.get(this, "desc_hint")
+            if (isFullyUpgraded) desc += "\n" + M.L(this, "desc_max")
 
             if (cursed) desc += "\n\n" + Messages.get(this, "desc_cursed")
         }
