@@ -21,14 +21,12 @@
 package com.egoal.darkestpixeldungeon.actors
 
 import android.util.SparseArray
-
 import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
-import com.egoal.darkestpixeldungeon.Statistics
 import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.Statistics
 import com.watabou.utils.Bundlable
 import com.watabou.utils.Bundle
-
-import java.util.HashSet
+import java.util.*
 
 abstract class Actor : Bundlable {
     private var time = 0f
@@ -41,6 +39,10 @@ abstract class Actor : Bundlable {
     protected var actPriority = Integer.MAX_VALUE
 
     protected abstract fun act(): Boolean
+
+    fun resetTime() {
+        time = 0f
+    }
 
     open fun spend(time: Float) {
         this.time += time

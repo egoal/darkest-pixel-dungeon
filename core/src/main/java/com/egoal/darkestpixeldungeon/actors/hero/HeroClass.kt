@@ -322,6 +322,7 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //        ReagentOfSweet().quantity(9).collect()
 //        UnstableSpellbook().collect()
 //        SandalsOfNature().collect()
+//        ReagentOfSorcery().quantity(9).collect()
     }
 
     // called when hero level up
