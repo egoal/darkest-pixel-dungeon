@@ -9,6 +9,7 @@ import com.egoal.darkestpixeldungeon.actors.hero.HeroLines
 import com.egoal.darkestpixeldungeon.actors.hero.perks.Optimistic
 import com.egoal.darkestpixeldungeon.actors.hero.perks.PressureIsPower
 import com.egoal.darkestpixeldungeon.items.artifacts.GoddessRadiance
+import com.egoal.darkestpixeldungeon.items.artifacts.ThornsOfPain
 import com.egoal.darkestpixeldungeon.items.helmets.Mantilla
 import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
@@ -79,13 +80,14 @@ class Pressure : Buff(), Hero.Doom {
         val p1 = hero.heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f
         val p2 = hero.buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f
         val p3 = if (hero.belongings.helmet is Mantilla && !hero.belongings.helmet!!.cursed) 0.1f else 0f
+        val p4 = if (hero.challenge== Challenge.PathOfAsceticism) .1f else 0f
 
-        return GameMath.ProbabilityPlus(p1, p2, p3)
+        return GameMath.ProbabilityPlus(p1, p2, p3, p4)
     }
 
     fun upPressure(p: Float): Float {
         val r = min(p, LVL_NERVOUS - pressure)
-        if (r >= 1f && Random.Float()< ignoreChance()) {
+        if (r >= 1f && Random.Float() < ignoreChance()) {
             target.sprite.showStatus(CharSprite.DEFAULT, M.L(Hero::class.java, "mental_resist"))
             return 0f
         }

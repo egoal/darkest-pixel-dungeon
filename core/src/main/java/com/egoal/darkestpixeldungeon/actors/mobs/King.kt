@@ -1,9 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.Database
-import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.blobs.ToxicGas
@@ -11,10 +8,12 @@ import com.egoal.darkestpixeldungeon.actors.buffs.*
 import com.egoal.darkestpixeldungeon.actors.mobs.abilities.RespawnDying
 import com.egoal.darkestpixeldungeon.effects.Flare
 import com.egoal.darkestpixeldungeon.items.artifacts.LloydsBeacon
+import com.egoal.darkestpixeldungeon.items.books.TomeOfPerk
 import com.egoal.darkestpixeldungeon.items.books.TomeOfUpgrade
 import com.egoal.darkestpixeldungeon.items.helmets.CrownOfDwarf
 import com.egoal.darkestpixeldungeon.items.keys.SkeletonKey
 import com.egoal.darkestpixeldungeon.items.unclassified.ArmorKit
+import com.egoal.darkestpixeldungeon.items.unclassified.MoonStone
 import com.egoal.darkestpixeldungeon.items.weapon.inscriptions.Grim
 import com.egoal.darkestpixeldungeon.levels.CityBossLevel
 import com.egoal.darkestpixeldungeon.levels.Level
@@ -142,7 +141,9 @@ class King : Mob() {
                 (Level.passable[it] || Level.avoid[it])
             }
 
-            for (item in listOf(SkeletonKey(Dungeon.depth), ArmorKit(), CrownOfDwarf(), TomeOfUpgrade())) {
+            val prizes = arrayListOf(SkeletonKey(Dungeon.depth), ArmorKit(), CrownOfDwarf())
+            if (Dungeon.hero.challenge != Challenge.PathOfAsceticism) prizes.add(TomeOfUpgrade())
+            for (item in prizes) {
                 val cell = if (avals.isEmpty()) pos else avals.random()
                 Dungeon.level.drop(item, cell).sprite.drop(pos)
             }

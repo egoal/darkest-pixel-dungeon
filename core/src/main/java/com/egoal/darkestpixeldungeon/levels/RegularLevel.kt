@@ -544,7 +544,8 @@ abstract class RegularLevel : Level() {
                 PatchDigger::class.java to .05f,
                 PillarDigger::class.java to .05f,
                 GraveyardDigger::class.java to .05f,
-                SmallCornerDigger::class.java to 0.075f
+                SmallCornerDigger::class.java to 0.075f,
+                PuddleDigger::class.java to .05f,
         )
     }
 }

@@ -20,10 +20,7 @@
  */
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.DungeonTilemap
+import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -244,7 +241,8 @@ class DM300 : Mob() {
 
         resetBumpCell();
         Dungeon.level.drop(SkeletonKey(Dungeon.depth), pos).sprite.drop()
-        Dungeon.level.drop(TomeOfRetrain(), pos).sprite.drop()
+        if (Dungeon.hero.challenge != Challenge.PathOfAsceticism)
+            Dungeon.level.drop(TomeOfRetrain(), pos).sprite.drop()
 
         Badges.validateBossSlain()
 

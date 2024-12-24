@@ -269,6 +269,7 @@ public class ItemSpriteSheet {
     public static final int DEMONIC_SKULL = ARTIFACTS + 25;
     public static final int UNHOLY_BLOOD = ARTIFACTS + 26;
     public static final int MASK_OF_MADNESS = ARTIFACTS + 27;
+    public static final int THORNS_OF_PAIN = ARTIFACTS + 28;
 
     public static final int A_TORSO = ARTIFACTS + 30;
     public static final int BONE_HAND = ARTIFACTS + 31;

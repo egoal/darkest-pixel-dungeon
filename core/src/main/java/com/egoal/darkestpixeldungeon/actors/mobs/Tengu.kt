@@ -1,9 +1,6 @@
 package com.egoal.darkestpixeldungeon.actors.mobs
 
-import com.egoal.darkestpixeldungeon.Assets
-import com.egoal.darkestpixeldungeon.Badges
-import com.egoal.darkestpixeldungeon.Database
-import com.egoal.darkestpixeldungeon.Dungeon
+import com.egoal.darkestpixeldungeon.*
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
@@ -156,10 +153,13 @@ class Tengu : Mob() {
             (Level.passable[it] || Level.avoid[it])
         }
 
-        for (item in listOf(SkeletonKey(Dungeon.depth), MoonStone(), TomeOfPerk())) {
+        val prizes = arrayListOf(SkeletonKey(Dungeon.depth), MoonStone())
+        if (Dungeon.hero.challenge != Challenge.PathOfAsceticism) prizes.add(TomeOfPerk())
+        for (item in prizes) {
             val cell = if (avals.isEmpty()) pos else avals.random()
             Dungeon.level.drop(item, cell).sprite.drop(pos)
         }
+
         if (Random.Int(3) == 0) Dungeon.level.drop(TengusKatana().identify(), pos).sprite.drop()
 
         GameScene.bossSlain()

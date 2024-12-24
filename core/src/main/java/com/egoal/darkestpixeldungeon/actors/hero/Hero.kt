@@ -687,6 +687,7 @@ class Hero : Char() {
         val dmgToken = super.takeDamage(dmg)
         heroPerk.get(LowHealthRegeneration::class.java)?.onDamageTaken(this)
         heroPerk.get(BaredRelieve::class.java)?.onDamageTaken(this, dmg)
+        buff(ThornsOfPain.Pain::class.java)?.onDamageTaken(this, dmg)
 
         if (isAlive) {
             //todo: refactor
@@ -738,19 +739,7 @@ class Hero : Char() {
             value += Random.Float(0f, v)
         }
 
-//        var chance = GameMath.ProbabilityPlus(
-//                heroPerk.get(Optimistic::class.java)?.resistChance() ?: 0f,
-//                buff(GoddessRadiance.Recharge::class.java)?.evadeRatio() ?: 0f)
-//
-//        if (belongings.helmet is Mantilla && !belongings.helmet!!.cursed)
-//            chance = GameMath.ProbabilityPlus(chance, 0.1f)
-
-//        if (Random.Float() < chance) {
-//            value = 0f
-//            sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "mental_resist"))
-//        } else {
-
-//        }
+        buff(ThornsOfPain.Pain::class.java)?.onMentalDamageTaken(this, value)
 
         // keep in mind that SAN is pressure, it increases
         val rv = pressure.upPressure(value).toInt()
@@ -1020,6 +1009,8 @@ class Hero : Char() {
                         heroPerk.add(perk)
                         PerkGain.Show(this, perk)
                     }
+                } else if(challenge== Challenge.PathOfAsceticism){
+                    // do nothing
                 } else {
                     //2, 6, 10... gain a perk
                     if ((lvl - 2) % 4 == 0) {
@@ -1290,6 +1281,8 @@ class Hero : Char() {
         buff(VampiricBite::class.java)?.onEnemySlayed(mob)
 
         if (mob.properties().contains(Property.BOSS)) GhostHero.Instance()?.sayBossBeaten()
+
+        buff(ThornsOfPain.Pain::class.java)?.onMobDied(mob)
     }
 
     fun onEvasion(dmg: Damage) {

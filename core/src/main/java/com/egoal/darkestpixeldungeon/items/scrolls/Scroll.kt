@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.scrolls
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.items.artifacts.UnstableSpellbook
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.actors.buffs.Blindness
 import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.ItemStatusHandler
@@ -98,6 +99,16 @@ abstract class Scroll : Item() {
             }
 
         }
+    }
+
+    override fun doPickUp(hero: Hero): Boolean {
+        if (hero.challenge == Challenge.PathOfAsceticism) {
+            GLog.n(M.L(Challenge::class.java, "gone", name()))
+            hero.next()
+            return true
+        }
+
+        return super.doPickUp(hero)
     }
 
     protected abstract fun doRead()

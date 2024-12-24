@@ -46,7 +46,7 @@ open class RectDigger : Digger() {
         else {
             Set(level, overlappedWall(wall, rect).random(), Terrain.DOOR)
 
-            // add remain wall is longer enough
+            // add remain wall if longer enough
             val remainWall = unoverlappedWall(wall, rect)
             if (remainWall.width >= 3)
                 walls = walls.plus(remainWall)

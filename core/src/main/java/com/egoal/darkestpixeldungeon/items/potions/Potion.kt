@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon.items.potions
 import android.util.Log
 import com.egoal.darkestpixeldungeon.Assets
 import com.egoal.darkestpixeldungeon.Badges
+import com.egoal.darkestpixeldungeon.Challenge
 import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.Actor
 import com.egoal.darkestpixeldungeon.actors.blobs.Fire
@@ -177,6 +178,16 @@ open class Potion : Item() {
         } else {
             super.doThrow(hero)
         }
+    }
+
+    override fun doPickUp(hero: Hero): Boolean {
+        if (hero.challenge == Challenge.PathOfAsceticism) {
+            GLog.n(M.L(Challenge::class.java, "gone", name()))
+            hero.next()
+            return true
+        }
+
+        return super.doPickUp(hero)
     }
 
     protected open fun drink(hero: Hero) {

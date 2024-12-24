@@ -23,6 +23,7 @@ package com.egoal.darkestpixeldungeon
 import com.egoal.darkestpixeldungeon.actors.buffs.Buff
 import com.egoal.darkestpixeldungeon.actors.buffs.VampiricBite
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
+import com.egoal.darkestpixeldungeon.items.artifacts.ThornsOfPain
 import com.egoal.darkestpixeldungeon.items.bags.PotionBandolier
 import com.egoal.darkestpixeldungeon.items.bags.ScrollHolder
 import com.egoal.darkestpixeldungeon.items.bags.WandHolster
@@ -67,8 +68,18 @@ enum class Challenge {
         }
     },
     Faith,
+
     // Loner,
     Outrage,
+    PathOfAsceticism {
+        override fun affect(hero: Hero) {
+            with(ThornsOfPain()) {
+                identify()
+                hero.belongings.misc3 = this
+                activate(hero)
+            }
+        }
+    },
     ;
 
     fun title(): String = M.L(this, "${name.toLowerCase()}.name")
