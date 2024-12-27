@@ -1,5 +1,6 @@
 package com.egoal.darkestpixeldungeon.items.artifacts
 
+import com.egoal.darkestpixeldungeon.DarkestPixelDungeon
 import com.egoal.darkestpixeldungeon.actors.Char
 import com.egoal.darkestpixeldungeon.actors.Damage
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
@@ -8,6 +9,8 @@ import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.sprites.ItemSpriteSheet
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.watabou.utils.Bundle
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -17,9 +20,11 @@ class ThornsOfPain : Artifact() {
     private var damageTakenTimes = 0
     private var mentalDamageTaken = 0f
     private var eliteKilled = 0
+    private var versionStr: String
 
     init {
         image = ItemSpriteSheet.THORNS_OF_PAIN
+        versionStr = DarkestPixelDungeon.version + "-" + SimpleDateFormat("yyyyMdd").format(Date())
     }
 
     override fun doUnequip(hero: Hero, collect: Boolean, single: Boolean): Boolean {
@@ -33,7 +38,8 @@ class ThornsOfPain : Artifact() {
         desc += "\n\n" + M.L(this, "desc_statistics", time.roundToInt(),
                 damageTaken, damageTakenTimes,
                 mentalDamageTaken.roundToInt(),
-                eliteKilled)
+                eliteKilled,
+                versionStr)
 
         return desc
     }
@@ -70,6 +76,7 @@ class ThornsOfPain : Artifact() {
         bundle.put("damageTakenTimes", damageTakenTimes)
         bundle.put("mentalDamageTaken", mentalDamageTaken)
         bundle.put("eliteKilled", eliteKilled)
+        bundle.put("versionStr", versionStr)
     }
 
     override fun restoreFromBundle(bundle: Bundle) {
@@ -79,6 +86,8 @@ class ThornsOfPain : Artifact() {
         damageTakenTimes = bundle.getInt("damageTakenTimes")
         mentalDamageTaken = bundle.getFloat("mentalDamageTaken")
         eliteKilled = bundle.getInt("eliteKilled")
+        versionStr = bundle.getString("versionStr")
+        if (versionStr.isEmpty()) versionStr = "unknown"
     }
 
     companion object {

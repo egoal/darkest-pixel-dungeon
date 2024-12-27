@@ -15,13 +15,15 @@ class PuddleDigger : RectDigger() {
     override fun dig(level: Level, wall: Wall, rect: Rect): DigResult {
         val dr = super.dig(level, wall, rect)
 
-        val w = Random.NormalIntRange(2, rect.width - 4)
-        val h = Random.NormalIntRange(2, rect.height - 4)
-        val x = Random.IntRange(rect.x1 + 2, rect.x2 - w - 1)
-        val y = Random.IntRange(rect.y1 + 2, rect.y2 - h - 1)
+        val w = Random.NormalIntRange(4, rect.width - 2)
+        val h = Random.NormalIntRange(4, rect.height - 2)
+        val x = Random.IntRange(rect.x1 + 1, rect.x2 - w)
+        val y = Random.IntRange(rect.y1 + 1, rect.y2 - h)
+        val r = Rect.Create(x, y, w, h)
 
-        Fill(level, x, y, w, h, Terrain.EMPTY_SP)
-        Fill(level, x + 1, y + 1, w - 2, h - 2, Terrain.WATER)
+        Fill(level, r, Terrain.EMPTY_SP)
+        Fill(level, r.shrink(1), Terrain.EMPTY)
+        Fill(level, r.shrink(1), Terrain.WATER)
 
         level.mobs.add(Piranha().apply {
             pos = level.pointToCell(rect.center)

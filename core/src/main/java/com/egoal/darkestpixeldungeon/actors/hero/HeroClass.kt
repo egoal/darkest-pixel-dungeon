@@ -178,7 +178,6 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 //            rh.identify()
 //            rh.activate(hero)
 //            Dungeon.quickslot.setSlot(0, rh)
-            ;
             val b = Boomerang()
             b.identify().collect()
             Dungeon.quickslot.setSlot(0, b)
