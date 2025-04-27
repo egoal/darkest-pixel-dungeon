@@ -147,16 +147,15 @@ class WndHero : WndTabbed() {
                 }
                 btn.setRect(WIDTH / 2f + GAP5, classNameText.y, 40f, classNameText.height())
                 add(btn)
-            } else {
-                hero.challenge?.let {
-                    val btn = object : RedButton(it.title()) {
-                        override fun onClick() {
-                            GameScene.show(WndMessage(it.desc()))
-                        }
+            } else if (hero.challenges.isNotEmpty()) {
+                val btn = object : RedButton(M.L(this, "challenges")) {
+                    override fun onClick() {
+                        val s = hero.challenges.joinToString { "_${it.title()}_\n${it.desc()}\n\n" }
+                        GameScene.show(WndMessage(s))
                     }
-                    btn.setRect(classNameText.x + classNameText.width() + GAP5, classNameText.y, 40f, classNameText.height())
-                    add(btn)
                 }
+                btn.setRect(classNameText.x + classNameText.width() + GAP5, classNameText.y, 60f, classNameText.height())
+                add(btn)
             }
 
             pos = classNameText.y + classNameText.height() + 2 * GAP5

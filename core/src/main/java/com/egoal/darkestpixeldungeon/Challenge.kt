@@ -127,5 +127,16 @@ enum class Challenge {
             } catch (e: IOException) {
             }
         }
+
+        private val incompatibles = listOf(Pair(Gifted, CastingMaster), Pair(Faith, Immortality))
+
+        private fun CheckCompatible(ch1: Challenge, ch2: Challenge): Boolean {
+            if (ch1 == LowPressure || ch1 == PathOfAsceticism) return false
+            if (incompatibles.any { it.first == ch1 && it.second == ch2 }) return false
+            return true
+        }
+
+        fun IsCompatible(ch1: Challenge, ch2: Challenge): Boolean =
+                CheckCompatible(ch1, ch2) && CheckCompatible(ch2, ch1)
     }
 }

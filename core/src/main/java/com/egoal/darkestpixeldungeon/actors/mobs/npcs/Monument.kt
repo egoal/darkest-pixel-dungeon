@@ -8,7 +8,6 @@ import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.CharSprite
 import com.egoal.darkestpixeldungeon.sprites.MobSprite
 import com.egoal.darkestpixeldungeon.utils.GLog
-import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndSelectChallenge
 import com.watabou.noosa.TextureFilm
 import com.watabou.utils.Bundle
@@ -26,16 +25,20 @@ class Monument : NPC.Unbreakable() {
     override fun interact(): Boolean {
         if (!activated && Dungeon.hero.lvl == 1) //todo: rework this
             GameScene.show(object : WndSelectChallenge() {
-                override fun onChallengeWouldActivate(challenge: Challenge) {
-                    val hero = Dungeon.hero
-                    if (hero.challenge != null) return
+                override fun activeChallenges(challenges: List<Challenge>) {
+                    if (challenges.isNotEmpty()) {
+                        val hero = Dungeon.hero
+                        challenges.forEach {
+                            it.affect(hero)
+                            hero.challenges.add(it)
+                        }
 
-                    activated = true
-                    (sprite as Sprite).activate()
-                    challenge.affect(hero)
-                    hero.challenge = challenge
+                        activated = true
+                        (sprite as Sprite).activate()
+                        GLog.n(M.L(Monument::class.java, "activated"))
+                    }
+
                     hide()
-                    GLog.n(M.L(Monument::class.java, "activated", challenge.title()))
                 }
             })
 

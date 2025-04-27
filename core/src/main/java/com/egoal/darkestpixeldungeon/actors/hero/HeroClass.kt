@@ -349,11 +349,11 @@ enum class HeroClass(private val title: String, vararg subclasses: HeroSubClass)
 
         onHeroUpgraded(hero)
 
-        if (hero.challenge == Challenge.Faith || hero.challenge == Challenge.Immortality) {
+        if (hero.challenges.contains(Challenge.Faith)  || hero.challenges.contains(Challenge.Immortality)) {
             hero.HP = hp
             hero.HT = ht
         }
-        if (hero.challenge == Challenge.Faith)
+        if (hero.challenges.contains(Challenge.Faith))
             Ankh().apply { isBlessed = true }.collect()
     }
 

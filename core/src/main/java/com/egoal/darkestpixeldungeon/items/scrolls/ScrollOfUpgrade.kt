@@ -26,16 +26,16 @@ import com.egoal.darkestpixeldungeon.Dungeon
 import com.egoal.darkestpixeldungeon.actors.hero.Hero
 import com.egoal.darkestpixeldungeon.effects.Speck
 import com.egoal.darkestpixeldungeon.effects.particles.ShadowParticle
+import com.egoal.darkestpixeldungeon.items.Item
 import com.egoal.darkestpixeldungeon.items.armor.Armor
 import com.egoal.darkestpixeldungeon.items.rings.Ring
 import com.egoal.darkestpixeldungeon.items.wands.Wand
 import com.egoal.darkestpixeldungeon.items.weapon.Weapon
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
+import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.utils.GLog
 import com.egoal.darkestpixeldungeon.windows.WndBag
-import com.egoal.darkestpixeldungeon.items.Item
-import com.egoal.darkestpixeldungeon.messages.M
-import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.watabou.utils.Random
 
 class ScrollOfUpgrade : InventoryScroll() {
@@ -55,7 +55,8 @@ class ScrollOfUpgrade : InventoryScroll() {
             identifiedByUse = false
         }
 
-        if (Item.curUser.challenge == Challenge.Gifted || Item.curUser.challenge == Challenge.CastingMaster)
+        if (Item.curUser.challenges.contains(Challenge.Gifted) ||
+                Item.curUser.challenges.contains(Challenge.CastingMaster))
             GLog.n(M.L(Challenge::class.java, "gone", name()))
         else
             GameScene.selectItem(itemSelector, mode, inventoryTitle)

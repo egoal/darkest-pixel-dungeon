@@ -23,9 +23,8 @@ package com.egoal.darkestpixeldungeon
 import com.egoal.darkestpixeldungeon.actors.hero.HeroClass
 import com.egoal.darkestpixeldungeon.actors.hero.HeroSubClass
 import com.watabou.noosa.Game
-
 import java.io.IOException
-import java.util.HashMap
+import java.util.*
 
 object GamesInProgress {
     private const val MAX_SLOT = 6 // enough to compatible with pre 0.6.0 saves
@@ -123,13 +122,13 @@ object GamesInProgress {
         }
     }
 
-    fun set(cl: HeroClass, depth: Int, level: Int, challenge: Challenge?) {
-        val info = Info()
-        info.depth = depth
-        info.level = level
-        info.challenge = challenge
-        state[cl] = info
-    }
+//    fun set(cl: HeroClass, depth: Int, level: Int, challenge: Challenge?) {
+//        val info = Info()
+//        info.depth = depth
+//        info.level = level
+//        info.challenge = challenge
+//        state[cl] = info
+//    }
 
     fun setUnknown(cl: HeroClass) {
         state.remove(cl)
@@ -149,8 +148,8 @@ object GamesInProgress {
         var level = 0
         var armorTier = 0
 
-        var challenge: Challenge? = null
+        var challenges: List<Challenge> = listOf()
 
-        val isChallenged: Boolean get() = challenge != null
+        val isChallenged: Boolean get() = challenges.isNotEmpty()
     }
 }

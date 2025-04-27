@@ -241,7 +241,7 @@ class DM300 : Mob() {
 
         resetBumpCell();
         Dungeon.level.drop(SkeletonKey(Dungeon.depth), pos).sprite.drop()
-        if (Dungeon.hero.challenge != Challenge.PathOfAsceticism)
+        if (!Dungeon.hero.challenges.contains(Challenge.PathOfAsceticism))
             Dungeon.level.drop(TomeOfRetrain(), pos).sprite.drop()
 
         Badges.validateBossSlain()

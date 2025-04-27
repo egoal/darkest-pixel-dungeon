@@ -154,7 +154,7 @@ class Tengu : Mob() {
         }
 
         val prizes = arrayListOf(SkeletonKey(Dungeon.depth), MoonStone())
-        if (Dungeon.hero.challenge != Challenge.PathOfAsceticism) prizes.add(TomeOfPerk())
+        if (!Dungeon.hero.challenges.contains(Challenge.PathOfAsceticism)) prizes.add(TomeOfPerk())
         for (item in prizes) {
             val cell = if (avals.isEmpty()) pos else avals.random()
             Dungeon.level.drop(item, cell).sprite.drop(pos)

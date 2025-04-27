@@ -127,9 +127,9 @@ abstract class Mob : Char() {
 
         // chance to lift as an elite
         var chance = .1f + (max(0, Dungeon.depth - 5) / 10) * .05f   // 10%, 15%, 15%, 20%, 20%
-        if (Dungeon.hero.challenge == Challenge.PathOfAsceticism) chance += .05f
+        if (Dungeon.hero.challenges.contains(Challenge.PathOfAsceticism)) chance += .05f
 
-        if (Dungeon.hero.challenge == Challenge.Outrage || Random.Float() < chance) {
+        if (Dungeon.hero.challenges.contains(Challenge.Outrage) || Random.Float() < chance) {
             val cnt = Random.chances(floatArrayOf(.6f, .3f, .1f)) + 1
 
             abilities.addAll(randomAbilities(cnt))

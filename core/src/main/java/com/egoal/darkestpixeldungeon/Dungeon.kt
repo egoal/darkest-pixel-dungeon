@@ -244,7 +244,7 @@ object Dungeon {
         hero.live()
     }
 
-    fun IsChallenged(): Boolean = ::hero.isInitialized && hero.challenge != null
+    fun IsChallenged(): Boolean = ::hero.isInitialized && hero.challenges.isNotEmpty()
 
     fun newLevel(): Level {
         nullLevel()
@@ -448,7 +448,7 @@ object Dungeon {
                 depth = this@Dungeon.depth
                 level = hero.lvl
                 armorTier = hero.tier()
-                challenge = hero.challenge
+                challenges = hero.challenges.toList()
             }
 
         } else if (WndResurrect.instance != null) {

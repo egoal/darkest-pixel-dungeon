@@ -122,7 +122,7 @@ class Hero : Char() {
     val belongings = Belongings(this)
 
     lateinit var pressure: Pressure
-    var challenge: Challenge? = null
+    val challenges: HashSet<Challenge> = hashSetOf()
 
     fun STR(): Int {
         var str = this.STR + if (weakened) -2 else 0
@@ -183,7 +183,7 @@ class Hero : Char() {
             ?: 1) > 1 && belongings.weapon !is Whip
 
     fun regenerateSpeed(): Float {
-        if (challenge == Challenge.Immortality) return 0f
+        if (challenges.contains(Challenge.Immortality)) return 0f
 
         val hlvl = buff(Hunger::class.java)!!.hunger()
         if (hlvl >= Hunger.STARVING) return 0f
@@ -331,7 +331,7 @@ class Hero : Char() {
         pressure = Buff.affect(this, Pressure::class.java)
         if (buff(SkillTree.Updater::class.java) == null)
             SkillTree.Updater().attachTo(this)
-        challenge?.live(this)
+        challenges.forEach { it.live(this) }
     }
 
     fun tier(): Int = belongings.armor?.tier ?: 0
@@ -1002,14 +1002,14 @@ class Hero : Char() {
                 heroClass.upgradeHero(this)
 
                 // perk
-                if (challenge == Challenge.Gifted) {
+                if (challenges.contains(Challenge.Gifted)) {
                     // 2, 4, 6, 8, 10...
                     if (lvl % 2 == 0) {
                         val perk = Perk.RandomPositive(this)
                         heroPerk.add(perk)
                         PerkGain.Show(this, perk)
                     }
-                } else if(challenge== Challenge.PathOfAsceticism){
+                } else if (challenges.contains(Challenge.PathOfAsceticism)) {
                     // do nothing
                 } else {
                     //2, 6, 10... gain a perk
@@ -1419,8 +1419,14 @@ class Hero : Char() {
             val armor = bundle.get("armor") as Armor?
             info.armorTier = armor?.tier ?: 0
 
-            val chastr = bundle.getString(CHALLENGE)
-            if (chastr.isNotEmpty()) info.challenge = Challenge.valueOf(chastr)
+            val a = bundle.getStringArray(CHALLENGES)
+            if (a != null) {
+                info.challenges = a.map { Challenge.valueOf(it) }.toList()
+            } else {
+                // old savers
+                val chastr = bundle.getString(CHALLENGE)
+                if (chastr.isNotEmpty()) info.challenges = listOf(Challenge.valueOf(chastr))
+            }
         }
 
         fun ReallyDie(src: Any?) {
@@ -1476,6 +1482,7 @@ class Hero : Char() {
         private const val MAGICAL_RESISTANCE = "magical_resistance"
         private const val RESERVED_PERKS = "reserved_perks"
         private const val CHALLENGE = "challenge"
+        private const val CHALLENGES = "challenges"
         private const val PERK_GAIN = "perk_gain"
         private const val SPAWNED_PERKS = "spawned-perks"
         private const val USER_NAME = "username"
@@ -1514,7 +1521,7 @@ class Hero : Char() {
 
         bundle.put(ARCANE_FACTOR, arcaneFactor)
 
-        if (challenge != null) bundle.put(CHALLENGE, challenge.toString())
+        bundle.put(CHALLENGES, challenges.map { it.toString() }.toTypedArray())
 
         belongings.storeInBundle(bundle)
     }
@@ -1557,8 +1564,14 @@ class Hero : Char() {
         val pre = buff(Pressure::class.java)
         if (pre != null) pressure = pre
 
-        val chastr = bundle.getString(CHALLENGE)
-        if (chastr.isNotEmpty()) challenge = Challenge.valueOf(chastr)
+        val a = bundle.getStringArray(CHALLENGES)
+        if (a != null) {
+            a.forEach { challenges.add(Challenge.valueOf(it)) }
+        } else {
+            // old savers
+            val chastr = bundle.getString(CHALLENGE)
+            if (chastr.isNotEmpty()) challenges.add(Challenge.valueOf(chastr))
+        }
 
     }
 }

@@ -102,7 +102,7 @@ abstract class Scroll : Item() {
     }
 
     override fun doPickUp(hero: Hero): Boolean {
-        if (hero.challenge == Challenge.PathOfAsceticism) {
+        if (hero.challenges.contains(Challenge.PathOfAsceticism)) {
             GLog.n(M.L(Challenge::class.java, "gone", name()))
             hero.next()
             return true

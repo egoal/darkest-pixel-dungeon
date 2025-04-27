@@ -35,7 +35,7 @@ class Gold(value: Int = 1, private val pure: Boolean = false) : Item() {
 
     override fun actions(hero: Hero): ArrayList<String> {
         val actions = ArrayList<String>()
-        if (hero.challenge == Challenge.CastingMaster) actions.add(AC_CAST)
+        if (hero.challenges.contains(Challenge.CastingMaster)) actions.add(AC_CAST)
         return actions
     }
 
@@ -46,7 +46,7 @@ class Gold(value: Int = 1, private val pure: Boolean = false) : Item() {
     }
 
     override fun doPickUp(hero: Hero): Boolean {
-        if (!pure && hero.challenge == Challenge.GreedIsGood) {
+        if (!pure && hero.challenges.contains(Challenge.GreedIsGood)) {
             GLog.n(M.L(Challenge::class.java, "gone", name()))
             hero.next()
             return true

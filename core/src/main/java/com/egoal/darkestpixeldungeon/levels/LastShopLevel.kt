@@ -40,7 +40,7 @@ class LastShopLevel : RegularLevel() {
         val diggers = ArrayList<Digger>()
 
         for (i in 1..4) diggers.add(Random.chances(normalDiggers).newInstance())
-        if (Dungeon.hero.challenge != Challenge.CastingMaster && Imp.Quest.isCompleted)
+        if (!Dungeon.hero.challenges.contains(Challenge.CastingMaster) && Imp.Quest.isCompleted)
             diggers.add(MerchantDigger())
 
         return diggers

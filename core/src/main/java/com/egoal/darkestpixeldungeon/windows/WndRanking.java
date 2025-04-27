@@ -49,6 +49,7 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
 
+import java.util.HashSet;
 import java.util.Locale;
 
 public class WndRanking extends WndTabbed {
@@ -301,17 +302,23 @@ public class WndRanking extends WndTabbed {
 
       camera = WndRanking.this.camera;
 
-      if (Dungeon.INSTANCE.getHero().getChallenge() != null) {
+      HashSet<Challenge> challenges = Dungeon.INSTANCE.getHero().getChallenges();
+      if (!challenges.isEmpty()) {
         //todo: redesign & use icon
-        Challenge challenge = Dungeon.INSTANCE.getHero().getChallenge();
-        RenderedText title = PixelScene.renderText(challenge.title(), 6);
-        title.x = 2f;
-        title.y = 2f;
-        add(title);
-        RenderedTextMultiline desc = PixelScene.renderMultiline(challenge.desc(), 6);
-        desc.maxWidth(WIDTH - 4);
-        desc.setPos(2f, title.y + title.height() + 2f);
-        add(desc);
+        float x = 2f;
+        float y = 2f;
+        for(Challenge challenge: challenges) {
+          RenderedText title = PixelScene.renderText(challenge.title(), 6);
+          title.x = x;
+          title.y = y;
+          add(title);
+          RenderedTextMultiline desc = PixelScene.renderMultiline(challenge.desc(), 6);
+          desc.maxWidth(WIDTH - 4);
+          desc.setPos(2f, title.y + title.height() + 2f);
+          add(desc);
+
+          y = desc.bottom()+ 4f;
+        }
       } else {
         ScrollPane list = new BadgesList(false);
         add(list);

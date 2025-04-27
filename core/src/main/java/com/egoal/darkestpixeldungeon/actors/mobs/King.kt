@@ -142,7 +142,7 @@ class King : Mob() {
             }
 
             val prizes = arrayListOf(SkeletonKey(Dungeon.depth), ArmorKit(), CrownOfDwarf())
-            if (Dungeon.hero.challenge != Challenge.PathOfAsceticism) prizes.add(TomeOfUpgrade())
+            if (!Dungeon.hero.challenges.contains(Challenge.PathOfAsceticism)) prizes.add(TomeOfUpgrade())
             for (item in prizes) {
                 val cell = if (avals.isEmpty()) pos else avals.random()
                 Dungeon.level.drop(item, cell).sprite.drop(pos)

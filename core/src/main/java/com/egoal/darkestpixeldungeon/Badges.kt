@@ -961,9 +961,11 @@ object Badges {
 
     fun validateChampion() {
 //        if (Dungeon.IsChallenged()) return
-        if (Dungeon.hero.challenge != null) {
-            if (Dungeon.hero.challenge != Challenge.LowPressure) displayBadge(Badge.CHAMPION)
-            Challenge.PassChallenge(Dungeon.hero.challenge!!)
+        with(Dungeon.hero.challenges) {
+            if (isNotEmpty()) {
+                if (!contains(Challenge.LowPressure)) displayBadge(Badge.CHAMPION)
+                forEach { Challenge.PassChallenge(it) }
+            }
         }
     }
 

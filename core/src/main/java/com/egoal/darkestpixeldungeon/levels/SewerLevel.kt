@@ -63,7 +63,7 @@ open class SewerLevel : RegularLevel() {
     override fun chooseDiggers(): ArrayList<Digger> {
         // less diggers
         val diggers = selectDiggers(Random.NormalIntRange(1, 3), Random.IntRange(11, 13))
-        if (Dungeon.shopOnLevel() && Dungeon.hero.challenge != Challenge.CastingMaster)
+        if (Dungeon.shopOnLevel() && !Dungeon.hero.challenges.contains(Challenge.CastingMaster))
             diggers.add(MerchantDigger())
 
         return diggers
