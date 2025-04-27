@@ -1,13 +1,11 @@
 package com.egoal.darkestpixeldungeon.actors.mobs.npcs
 
 import com.egoal.darkestpixeldungeon.Dungeon
-import com.egoal.darkestpixeldungeon.actors.Char
-import com.egoal.darkestpixeldungeon.actors.Damage
-import com.egoal.darkestpixeldungeon.actors.buffs.Buff
+import com.egoal.darkestpixeldungeon.messages.M
 import com.egoal.darkestpixeldungeon.messages.Messages
 import com.egoal.darkestpixeldungeon.scenes.GameScene
 import com.egoal.darkestpixeldungeon.sprites.ScholarSprite
-import com.egoal.darkestpixeldungeon.utils.GLog
+import com.egoal.darkestpixeldungeon.windows.WndDialogue
 import com.egoal.darkestpixeldungeon.windows.WndQuest
 
 /**
@@ -15,7 +13,6 @@ import com.egoal.darkestpixeldungeon.windows.WndQuest
  */
 
 class Scholar : NPC.Unbreakable() {
-
     init {
         name = Messages.get(this, "name")
         spriteClass = ScholarSprite::class.java
@@ -26,10 +23,13 @@ class Scholar : NPC.Unbreakable() {
     /// do something
     override fun interact(): Boolean {
         sprite.turnTo(pos, Dungeon.hero.pos)
-        tell(Messages.get(this, "hello"))
+
+        WndDialogue.Show(this, M.L(this, "hello"), M.L(this, "ask")) {
+            WndDialogue.Show(this, M.L(this, "work"), M.L(this, "ask_pof")) {
+                GameScene.show(WndQuest(this, M.L(this, "info_pof")))
+            }
+        }
 
         return false
     }
-
-    override fun reset(): Boolean = true
 }

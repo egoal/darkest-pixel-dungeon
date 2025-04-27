@@ -150,7 +150,7 @@ class WndHero : WndTabbed() {
             } else if (hero.challenges.isNotEmpty()) {
                 val btn = object : RedButton(M.L(this, "challenges")) {
                     override fun onClick() {
-                        val s = hero.challenges.joinToString { "_${it.title()}_\n${it.desc()}\n\n" }
+                        val s = hero.challenges.joinToString("\n") { "_${it.title()}_\n${it.desc()}\n" }
                         GameScene.show(WndMessage(s))
                     }
                 }
