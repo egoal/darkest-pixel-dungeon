@@ -185,6 +185,9 @@ public class RenderedTextMultiline extends Component {
           nLines++;
         }
 
+        // optical compensation: 了 has a tight left bearing, give it a little air
+        if (chinese && "了".equals(word.text())) x += word.width() * 0.1f;
+
         word.x = x;
         word.y = y;
         PixelScene.align(word);
